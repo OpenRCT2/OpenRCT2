@@ -78,7 +78,7 @@ static void ride_remove_station(Ride& ride, const CoordsXYZ& location)
         auto stationStart = station.getStart();
         if (stationStart == location)
         {
-            station.start.SetNull();
+            station.start.setNull();
             ride.numStations--;
             break;
         }
@@ -444,7 +444,7 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
 
     const auto& trackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
     CoordsXY trackBlockOffset = { trackBlock.x, trackBlock.y };
-    coords += trackBlockOffset.Rotate(DirectionReverse(direction));
+    coords += trackBlockOffset.rotate(DirectionReverse(direction));
     coords.z -= trackBlock.z;
 
     return CoordsXYZD(coords, direction);

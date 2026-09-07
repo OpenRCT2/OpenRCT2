@@ -401,7 +401,7 @@ namespace OpenRCT2
         auto ride = GetRide(gRideEntranceExitPlaceRideIndex);
         if (ride == nullptr)
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
@@ -410,22 +410,22 @@ namespace OpenRCT2
         auto coordsAtHeight = ScreenGetMapXYWithZ(screenCoords, stationBaseZ);
         if (!coordsAtHeight.has_value())
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
-        entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, kInvalidDirection };
+        entranceExitCoords = { coordsAtHeight->toTileStart(), stationBaseZ, kInvalidDirection };
 
         if (ride->type == kRideTypeNull)
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
         auto stationStart = ride->getStation(gRideEntranceExitPlaceStationIndex).start;
-        if (stationStart.IsNull())
+        if (stationStart.isNull())
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 

@@ -100,7 +100,7 @@ namespace OpenRCT2
         // If the start location was invalid
         // propagate the invalid location to the output.
         // This fixes a bug that caused the game to enter an infinite loop.
-        if (loc.IsNull())
+        if (loc.isNull())
         {
             return std::nullopt;
         }
@@ -715,7 +715,7 @@ namespace OpenRCT2
             auto ride = GetRide(peep.currentRide);
             if (ride != nullptr)
             {
-                auto xy = ride->overallView.ToTileCentre();
+                auto xy = ride->overallView.toTileCentre();
                 CoordsXYZ coordFocus;
                 coordFocus.x = xy.x;
                 coordFocus.y = xy.y;
@@ -1059,12 +1059,12 @@ namespace OpenRCT2
 
         if (direction != nullptr)
             *direction = my_direction;
-        return { mapCoords->ToTileStart() };
+        return { mapCoords->toTileStart() };
     }
 
     [[nodiscard]] bool Viewport::ContainsTile(const TileCoordsXY coords) const noexcept
     {
-        const auto centreCoords = coords.ToCoordsXY() + CoordsXY(kCoordsXYHalfTile, kCoordsXYHalfTile);
+        const auto centreCoords = coords.toCoordsXY() + CoordsXY(kCoordsXYHalfTile, kCoordsXYHalfTile);
         const auto screenPos = Translate3DTo2DWithZ(rotation, CoordsXYZ{ centreCoords, 0 });
         const auto left = screenPos.x - kScreenCoordsTileWidthHalf;
         const auto top = screenPos.y - (kMaxTileElementHeight * kCoordsZStep) - kScreenCoordsTileHeightHalf;
@@ -1106,7 +1106,7 @@ namespace OpenRCT2
         // Reverse of Translate3DTo2DWithZ
         CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
         auto inverseRotation = DirectionFlipXAxis(rotation);
-        return ret.Rotate(inverseRotation);
+        return ret.rotate(inverseRotation);
     }
 
     /**
@@ -1826,7 +1826,7 @@ namespace OpenRCT2
         }
 
         auto start_vp_pos = myViewport->ScreenToViewportCoord(screenCoords);
-        CoordsXY cursorMapPos = info.Loc.ToTileCentre();
+        CoordsXY cursorMapPos = info.Loc.toTileCentre();
 
         // Iterates the cursor location to work out exactly where on the tile it is
         for (int32_t i = 0; i < 5; i++)
@@ -1876,7 +1876,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *quadrant = MapGetTileQuadrant(*mapCoords);
-        return mapCoords->ToTileStart();
+        return mapCoords->toTileStart();
     }
 
     /**
@@ -1890,7 +1890,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *quadrant = MapGetTileQuadrant(*mapCoords);
-        return mapCoords->ToTileStart();
+        return mapCoords->toTileStart();
     }
 
     /**
@@ -1904,7 +1904,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *side = MapGetTileSide(*mapCoords);
-        return mapCoords->ToTileStart();
+        return mapCoords->toTileStart();
     }
 
     /**
@@ -1918,12 +1918,12 @@ namespace OpenRCT2
             return std::nullopt;
 
         *side = MapGetTileSide(*mapCoords);
-        return mapCoords->ToTileStart();
+        return mapCoords->toTileStart();
     }
 
     ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos)
     {
-        auto rotated = pos.Rotate(rotation);
+        auto rotated = pos.rotate(rotation);
         // Use right shift to avoid issues like #9301
         return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
     }

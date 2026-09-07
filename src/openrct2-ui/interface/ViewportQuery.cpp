@@ -41,7 +41,7 @@ namespace OpenRCT2::Ui
         if (window == nullptr || window->viewport == nullptr)
         {
             CoordsXY position{};
-            position.SetNull();
+            position.setNull();
             return position;
         }
         auto viewport = window->viewport;
@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui
             if (info.interactionType == ViewportInteractionItem::none)
             {
                 auto position = info.Loc;
-                position.SetNull();
+                position.setNull();
                 return position;
             }
         }
@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui
         auto minPosition = info.Loc;
         auto maxPosition = info.Loc + CoordsXY{ 31, 31 };
         auto myTileElement = info.Element;
-        auto position = info.Loc.ToTileCentre();
+        auto position = info.Loc.toTileCentre();
         auto z = 0;
         if (info.interactionType == ViewportInteractionItem::footpath)
         {
@@ -112,7 +112,7 @@ namespace OpenRCT2::Ui
             }
         }
 
-        position = position.ToTileStart();
+        position = position.toTileStart();
 
         if (direction != nullptr)
             *direction = myDirection;
@@ -140,7 +140,7 @@ namespace OpenRCT2::Ui
         if (window == nullptr || window->viewport == nullptr)
         {
             CoordsXY ret{};
-            ret.SetNull();
+            ret.setNull();
             return ret;
         }
         auto viewport = window->viewport;

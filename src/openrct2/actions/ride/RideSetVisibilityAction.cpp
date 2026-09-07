@@ -63,7 +63,7 @@ namespace OpenRCT2::GameActions
                     if (trackElement->getRideIndex() == _rideIndex)
                     {
                         trackElement->setInvisible(_visibility == RideSetVisibilityType::invisible);
-                        MapInvalidateTileFull(tileCoords.ToCoordsXY());
+                        MapInvalidateTileFull(tileCoords.toCoordsXY());
                     }
                 }
             }

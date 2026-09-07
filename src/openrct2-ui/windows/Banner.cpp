@@ -134,7 +134,7 @@ namespace OpenRCT2::Ui::Windows
             if (bannerElement == nullptr)
                 return;
 
-            _bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), bannerElement->getBaseZ() };
+            _bannerViewPos = CoordsXYZ{ banner->position.toCoordsXY().toTileCentre(), bannerElement->getBaseZ() };
             createViewport();
         }
 
@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     auto bannerRemoveAction = GameActions::BannerRemoveAction(
-                        { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->getPosition() });
+                        { banner->position.toCoordsXY(), bannerElement->getBaseZ(), bannerElement->getPosition() });
                     GameActions::Execute(&bannerRemoveAction, gameState);
                     break;
                 }

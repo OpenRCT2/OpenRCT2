@@ -1502,7 +1502,7 @@ JSValue ScriptEngine::GameActionResultToJS(
     {
         JS_SetPropertyStr(ctx, obj, "cost", JS_NewInt64(ctx, result.cost));
     }
-    if (!result.position.IsNull())
+    if (!result.position.isNull())
     {
         JS_SetPropertyStr(ctx, obj, "position", ToJSValue(ctx, result.position));
     }

@@ -143,9 +143,9 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
 
         auto res = Result();
-        if (!ride->overallView.IsNull())
+        if (!ride->overallView.isNull())
         {
-            auto location = ride->overallView.ToTileCentre();
+            auto location = ride->overallView.toTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
 

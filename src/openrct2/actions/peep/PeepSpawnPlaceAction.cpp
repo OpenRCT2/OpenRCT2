@@ -89,7 +89,7 @@ namespace OpenRCT2::GameActions
         res.position = _location;
 
         // Shift the spawn point to the edge of the tile
-        auto spawnPos = CoordsXY{ _location.ToTileCentre() }
+        auto spawnPos = CoordsXY{ _location.toTileCentre() }
             + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
 
         PeepSpawn spawn;
@@ -106,7 +106,7 @@ namespace OpenRCT2::GameActions
             auto foundSpawn = std::find_if(
                 gameState.peepSpawns.begin(), gameState.peepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
                     {
-                        return existingSpawn.ToTileStart() == spawn.ToTileStart();
+                        return existingSpawn.toTileStart() == spawn.toTileStart();
                     }
                 });
 

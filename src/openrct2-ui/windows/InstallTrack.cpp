@@ -335,7 +335,7 @@ namespace OpenRCT2::Ui::Windows
 
             screenPos.y += 4;
 
-            if (!td.statistics.spaceRequired.IsNull())
+            if (!td.statistics.spaceRequired.isNull())
             {
                 // Space required
                 auto ft = Formatter();

@@ -667,7 +667,7 @@ namespace OpenRCT2
 
         // Set the coordinate of destination to be exactly
         // in the middle of a tile.
-        CoordsXYZ destination = { location.ToCoordsXY().ToTileCentre(), tileElement->getBaseZ() + 16 };
+        CoordsXYZ destination = { location.toCoordsXY().toTileCentre(), tileElement->getBaseZ() + 16 };
 
         if (!MapIsLocationOwned(destination))
         {
@@ -869,7 +869,7 @@ namespace OpenRCT2
 
         moveTo({ x, y, saved_height });
 
-        nextLoc = { CoordsXY{ x, y }.ToTileStart(), saved_map->getBaseZ() };
+        nextLoc = { CoordsXY{ x, y }.toTileStart(), saved_map->getBaseZ() };
 
         if (saved_map->getType() != TileElementType::path)
         {
@@ -1612,7 +1612,7 @@ namespace OpenRCT2
     static void PeepReturnToCentreOfTile(Peep* peep)
     {
         peep->peepDirection = DirectionReverse(peep->peepDirection);
-        auto destination = peep->getLocation().ToTileCentre();
+        auto destination = peep->getLocation().toTileCentre();
         peep->setDestination(destination, 5);
     }
 
@@ -1817,12 +1817,12 @@ namespace OpenRCT2
             bool found = false;
             auto entrance = std::find_if(
                 gameState.park.entrances.begin(), gameState.park.entrances.end(),
-                [coords](const auto& e) { return coords.ToTileStart() == e; });
+                [coords](const auto& e) { return coords.toTileStart() == e; });
             if (entrance != gameState.park.entrances.end())
             {
                 int16_t z = entrance->z / 8;
                 entranceDirection = entrance->direction;
-                auto nextLoc = coords.ToTileStart() + CoordsDirectionDelta[entranceDirection];
+                auto nextLoc = coords.toTileStart() + CoordsDirectionDelta[entranceDirection];
 
                 // Make sure there is a path right behind the entrance, otherwise turn around
                 TileElement* nextTileElement = MapGetFirstElementAt(nextLoc);
@@ -1934,7 +1934,7 @@ namespace OpenRCT2
         const auto* pathElement = coords.element->asPath();
         assert(pathElement != nullptr);
 
-        peep->nextLoc = { coords.ToTileStart(), pathElement->getBaseZ() };
+        peep->nextLoc = { coords.toTileStart(), pathElement->getBaseZ() };
         peep->setNextFlags(pathElement->getSlopeDirection(), pathElement->isSloped(), false);
 
         int16_t z = peep->getZOnSlope(coords.x, coords.y);
@@ -2190,7 +2190,7 @@ namespace OpenRCT2
                         // Force set centre of tile to prevent issues with guests accidentally skipping the queue
                         auto queueTileCentre = CoordsXY{ CoordsXY{ guest->nextLoc }
                                                          + CoordsDirectionDelta[guest->peepDirection] }
-                                                   .ToTileCentre();
+                                                   .toTileCentre();
                         guest->setDestination(queueTileCentre);
 
                         PeepFootpathMoveForward(guest, coords, vandalismPresent);
@@ -2283,7 +2283,7 @@ namespace OpenRCT2
                 guest->spendMoney(cost, ExpenditureType::shopSales);
             }
 
-            auto coordsCentre = coords.ToTileCentre();
+            auto coordsCentre = coords.toTileCentre();
             guest->setDestination(coordsCentre, 3);
             guest->currentRide = rideIndex;
             guest->setState(PeepState::enteringRide);
@@ -2365,7 +2365,7 @@ namespace OpenRCT2
         }
 
         auto newLoc = *loc;
-        CoordsXY truncatedNewLoc = newLoc.ToTileStart();
+        CoordsXY truncatedNewLoc = newLoc.toTileStart();
         if (truncatedNewLoc == CoordsXY{ nextLoc })
         {
             int16_t height = getZOnSlope(newLoc.x, newLoc.y);
@@ -2733,7 +2733,7 @@ namespace OpenRCT2
      */
     void Peep::resetPathfindGoal()
     {
-        pathfindGoal.SetNull();
+        pathfindGoal.setNull();
         pathfindGoal.direction = kInvalidDirection;
     }
 } // namespace OpenRCT2

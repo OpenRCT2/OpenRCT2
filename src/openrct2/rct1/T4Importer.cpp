@@ -268,7 +268,7 @@ namespace OpenRCT2::RCT1
             td->statistics.ratings.intensity = td4Base.Intensity * kTD46RatingsMultiplier;
             td->statistics.ratings.nausea = td4Base.Nausea * kTD46RatingsMultiplier;
             td->statistics.upkeepCost = ToMoney64(td4Base.UpkeepCost);
-            td->statistics.spaceRequired.SetNull();
+            td->statistics.spaceRequired.setNull();
             td->operation.liftHillSpeed = 5;
             td->operation.numCircuits = 1;
             td->operation.operationSetting = std::min(

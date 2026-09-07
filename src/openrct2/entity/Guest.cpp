@@ -1183,7 +1183,7 @@ namespace OpenRCT2
         guest.setState(PeepState::walking);
 
         // Set destination to the centre of the tile.
-        const auto destination = guest.getLocation().ToTileCentre();
+        const auto destination = guest.getLocation().toTileCentre();
         guest.setDestination(destination, 5);
         guest.updateCurrentAnimationType();
     }
@@ -1204,7 +1204,7 @@ namespace OpenRCT2
             if (!(pathingResult & PATHING_DESTINATION_REACHED))
                 return;
 
-            auto loc = getLocation().ToTileStart() + CoordsXYZ{ BenchUseOffsets[var37 & 0x7], 0 };
+            auto loc = getLocation().toTileStart() + CoordsXYZ{ BenchUseOffsets[var37 & 0x7], 0 };
 
             moveTo(loc);
 
@@ -1236,7 +1236,7 @@ namespace OpenRCT2
                 setState(PeepState::walking);
 
                 // Set destination to the centre of the tile
-                auto destination = getLocation().ToTileCentre();
+                auto destination = getLocation().toTileCentre();
                 setDestination(destination, 5);
                 updateCurrentAnimationType();
                 return;
@@ -2452,13 +2452,13 @@ namespace OpenRCT2
     void Guest::goToRideEntrance(const Ride& ride)
     {
         const auto& station = ride.getStation(currentRideStation);
-        if (station.entrance.IsNull())
+        if (station.entrance.isNull())
         {
             removeFromQueue();
             return;
         }
 
-        auto location = station.entrance.ToCoordsXYZD().ToTileCentre();
+        auto location = station.entrance.toCoordsXYZD().toTileCentre();
         int16_t x_shift = DirectionOffsets[location.direction].x;
         int16_t y_shift = DirectionOffsets[location.direction].y;
 
@@ -3429,7 +3429,7 @@ namespace OpenRCT2
                 if (xy_distance < 16)
                 {
                     const auto& station = ride->getStation(currentRideStation);
-                    auto entrance = station.entrance.ToCoordsXYZ();
+                    auto entrance = station.entrance.toCoordsXYZ();
                     actionZ = entrance.z + 2;
                 }
                 moveTo({ loc.value(), actionZ });
@@ -3585,7 +3585,7 @@ namespace OpenRCT2
     void Guest::updateRideLeaveEntranceWaypoints(const Ride& ride)
     {
         const auto& station = ride.getStation(currentRideStation);
-        if (station.entrance.IsNull())
+        if (station.entrance.isNull())
         {
             return;
         }
@@ -3674,8 +3674,8 @@ namespace OpenRCT2
         if (ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
         {
             const auto& station = ride->getStation(currentRideStation);
-            auto entranceLocation = station.entrance.ToCoordsXYZD();
-            if (entranceLocation.IsNull())
+            auto entranceLocation = station.entrance.toCoordsXYZD();
+            if (entranceLocation.isNull())
             {
                 return;
             }
@@ -4256,8 +4256,8 @@ namespace OpenRCT2
             return;
         }
 
-        auto exitLocation = station.exit.ToCoordsXYZD();
-        if (exitLocation.IsNull())
+        auto exitLocation = station.exit.toCoordsXYZD();
+        if (exitLocation.isNull())
         {
             return;
         }
@@ -4318,7 +4318,7 @@ namespace OpenRCT2
             return;
 
         auto exit = ride->getStation(currentRideStation).exit;
-        auto newDestination = exit.ToCoordsXY().ToTileCentre();
+        auto newDestination = exit.toCoordsXY().toTileCentre();
 
         auto [xShift, yShift] = [exit]() {
             if (exit.direction < DirectionOffsets.size())
@@ -4409,7 +4409,7 @@ namespace OpenRCT2
 
     CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation)
     {
-        return ride.getStation(CurrentRideStation).start.ToTileCentre();
+        return ride.getStation(CurrentRideStation).start.toTileCentre();
     }
 
     CoordsXY GetGuestWaypointLocationEnterprise(
@@ -4577,7 +4577,7 @@ namespace OpenRCT2
 
         var37 |= 3;
 
-        auto targetLoc = ride->getStation(currentRideStation).exit.ToCoordsXYZD().ToTileCentre();
+        auto targetLoc = ride->getStation(currentRideStation).exit.toCoordsXYZD().toTileCentre();
         uint8_t exit_direction = DirectionReverse(targetLoc.direction);
 
         int16_t x_shift = DirectionOffsets[exit_direction].x;
@@ -4823,7 +4823,7 @@ namespace OpenRCT2
         // Actually force the final waypoint
         var37 |= 3;
 
-        auto targetLoc = ride->getStation(currentRideStation).exit.ToCoordsXYZD().ToTileCentre();
+        auto targetLoc = ride->getStation(currentRideStation).exit.toCoordsXYZD().toTileCentre();
 
         int16_t xShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].x;
         int16_t yShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].y;
@@ -4889,7 +4889,7 @@ namespace OpenRCT2
             }
         }
 
-        auto targetLoc = getDestination().ToTileStart();
+        auto targetLoc = getDestination().toTileStart();
 
         auto stationBaseZ = ride->getStation().getBaseZ();
 
@@ -4969,11 +4969,11 @@ namespace OpenRCT2
                 targetLoc = getDestination();
                 if (chosenEdge & 1)
                 {
-                    targetLoc.x = targetLoc.ToTileCentre().x;
+                    targetLoc.x = targetLoc.toTileCentre().x;
                 }
                 else
                 {
-                    targetLoc.y = targetLoc.ToTileCentre().y;
+                    targetLoc.y = targetLoc.toTileCentre().y;
                 }
                 setDestination(targetLoc);
                 var37 = 16;
@@ -5120,7 +5120,7 @@ namespace OpenRCT2
             const auto curLoc = getLocation();
             moveTo({ loc.value(), curLoc.z });
 
-            const auto newLoc = getLocation().ToTileStart();
+            const auto newLoc = getLocation().toTileStart();
             if (newLoc.x != nextLoc.x)
                 return;
             if (newLoc.y != nextLoc.y)
@@ -5894,7 +5894,7 @@ namespace OpenRCT2
             updateAnimationGroup();
             // Send peep to the centre of current tile.
 
-            auto destination = getLocation().ToTileCentre();
+            auto destination = getLocation().toTileCentre();
             setDestination(destination, 5);
             updateCurrentAnimationType();
         }
@@ -6869,7 +6869,7 @@ namespace OpenRCT2
         if (Weather::isPrecipitating() && (hasItem(ShopItem::umbrella)) && x != kLocationNull)
         {
             CoordsXY loc = { x, y };
-            if (MapIsLocationValid(loc.ToTileStart()))
+            if (MapIsLocationValid(loc.toTileStart()))
             {
                 TileElement* tileElement = MapGetFirstElementAt(loc);
                 while (true)

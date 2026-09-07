@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
                 return false;
             }
 
-            auto signViewPosition = banner->position.ToCoordsXY().ToTileCentre();
+            auto signViewPosition = banner->position.toCoordsXY().toTileCentre();
             auto* tileElement = BannerGetTileElement(GetBannerIndex());
             if (tileElement == nullptr)
                 return false;
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
                         close();
                         return;
                     }
-                    auto bannerCoords = banner->position.ToCoordsXY();
+                    auto bannerCoords = banner->position.toCoordsXY();
 
                     if (_isSmall)
                     {
@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), currentFrame };
+            auto signViewPos = CoordsXYZ{ banner->position.toCoordsXY().toTileCentre(), currentFrame };
 
             // Create viewport
             Widget* viewportWidget = &widgets[WIDX_VIEWPORT];

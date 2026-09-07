@@ -526,7 +526,7 @@ void Vehicle::UpdateWaitingForPassengers()
             return;
 
         auto& station = curRide->getStation(current_station);
-        if (station.entrance.IsNull())
+        if (station.entrance.isNull())
         {
             station.trainAtStation = RideStation::kNoTrain;
             sub_state = 2;
@@ -720,7 +720,7 @@ void Vehicle::UpdateWaitingToDepart()
             }
             else
             {
-                if (!currentStation.exit.IsNull())
+                if (!currentStation.exit.isNull())
                 {
                     SetState(Status::unloadingPassengers);
                     return;
@@ -734,7 +734,7 @@ void Vehicle::UpdateWaitingToDepart()
             {
                 if (trainCar->num_peeps != 0)
                 {
-                    if (!currentStation.exit.IsNull())
+                    if (!currentStation.exit.isNull())
                     {
                         SetState(Status::unloadingPassengers);
                         return;
@@ -950,7 +950,7 @@ void Vehicle::UpdateUnloadingPassengers()
     }
     else
     {
-        if (currentStation.exit.IsNull())
+        if (currentStation.exit.isNull())
         {
             if (sub_state != 1)
                 return;

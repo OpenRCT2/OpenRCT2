@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        auto validRange = ClampRangeWithinMap(_range.Normalise());
+        auto validRange = ClampRangeWithinMap(_range.normalise());
         CoordsXYZ centre{ (validRange.GetX1() + validRange.GetX2()) / 2 + 16,
                           (validRange.GetY1() + validRange.GetY2()) / 2 + 16, 0 };
         centre.z = TileElementHeight(centre);

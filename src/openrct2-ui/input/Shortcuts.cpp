@@ -523,7 +523,7 @@ static void ShortcutToggleWallSlope()
 
     extern TileCoordsXY windowTileInspectorTile;
     auto modifyTile = GameActions::TileModifyAction(
-        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
+        windowTileInspectorTile.toCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
         newSlopeValue);
     GameActions::Execute(&modifyTile, getGameState());
 }

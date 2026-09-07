@@ -542,7 +542,7 @@ namespace OpenRCT2::Park
             {
                 peep->orientation = direction << 3;
 
-                auto destination = peep->getLocation().ToTileCentre();
+                auto destination = peep->getLocation().toTileCentre();
                 peep->setDestination(destination, 5);
                 peep->peepDirection = direction;
                 peep->var37 = 0;

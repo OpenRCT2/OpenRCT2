@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        MapRange normRange = _range.Normalise();
+        MapRange normRange = _range.normalise();
         // Keep big coordinates within map boundaries
         auto mapSizeMaxXY = GetMapSizeMaxXY();
         auto aX = std::max<decltype(normRange.GetX1())>(32, normRange.GetX1());

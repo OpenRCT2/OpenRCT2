@@ -122,7 +122,7 @@ namespace OpenRCT2::Ui::Windows
             ShowGridlines();
             _miniPreview.resize(kTrackMiniPreviewSize.width * kTrackMiniPreviewSize.height);
             _placementCost = kMoney64Undefined;
-            _placementLoc.SetNull();
+            _placementLoc.setNull();
             _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
         }
 
@@ -149,14 +149,14 @@ namespace OpenRCT2::Ui::Windows
                     clearProvisional();
                     _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
                     invalidate();
-                    _placementLoc.SetNull();
+                    _placementLoc.setNull();
                     DrawMiniPreview(*_trackDesign);
                     break;
                 case WIDX_MIRROR:
                     TrackDesignMirror(*_trackDesign);
                     _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
                     invalidate();
-                    _placementLoc.SetNull();
+                    _placementLoc.setNull();
                     DrawMiniPreview(*_trackDesign);
                     break;
                 case WIDX_SELECT_DIFFERENT_DESIGN:
@@ -196,7 +196,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Get the tool map position
             CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
-            if (mapCoords.IsNull())
+            if (mapCoords.isNull())
             {
                 clearProvisional();
                 return;
@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Get the tool map position
             CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
-            if (mapCoords.IsNull())
+            if (mapCoords.isNull())
             {
                 clearProvisional();
                 return;
@@ -603,7 +603,7 @@ namespace OpenRCT2::Ui::Windows
         {
             for (const auto& entrance : td.entranceElements)
             {
-                auto rotatedAndOffsetEntrance = origin + entrance.location.ToCoordsXY().Rotate(rotation);
+                auto rotatedAndOffsetEntrance = origin + entrance.location.toCoordsXY().rotate(rotation);
 
                 if (pass == 0)
                 {
@@ -645,7 +645,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     const auto& trackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
                     auto rotatedAndOffsetTrackBlock = curTrackStart
-                        + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(curTrackRotation);
+                        + CoordsXY{ trackBlock.x, trackBlock.y }.rotate(curTrackRotation);
 
                     if (pass == 0)
                     {
@@ -688,7 +688,7 @@ namespace OpenRCT2::Ui::Windows
 
                 const TrackCoordinates* track_coordinate = &ted.coordinates;
 
-                curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
+                curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.rotate(curTrackRotation);
                 curTrackRotation += track_coordinate->rotationEnd - track_coordinate->rotationBegin;
                 curTrackRotation &= 3;
                 if (track_coordinate->rotationEnd & 4)
@@ -709,7 +709,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
             for (const auto& mazeElement : td.mazeElements)
             {
-                auto rotatedMazeCoords = origin + mazeElement.location.ToCoordsXY().Rotate(rotation);
+                auto rotatedMazeCoords = origin + mazeElement.location.toCoordsXY().rotate(rotation);
 
                 if (pass == 0)
                 {

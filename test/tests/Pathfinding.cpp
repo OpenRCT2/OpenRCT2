@@ -71,7 +71,7 @@ protected:
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
         // Add 16 so the peep spawns in the centre of the tile.
-        auto* peep = Guest::generate(pos->ToCoordsXYZ().ToTileCentre());
+        auto* peep = Guest::generate(pos->toCoordsXYZ().toTileCentre());
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
@@ -115,7 +115,7 @@ protected:
 
             // Check that the peep is still on a footpath. Use next_z instead of pos->z here because pos->z will change
             // when the peep is halfway up a slope, but next_z will not change until they move to the next tile.
-            EXPECT_NE(MapGetFootpathElement({ pos->ToCoordsXY(), peep->nextLoc.z }), nullptr);
+            EXPECT_NE(MapGetFootpathElement({ pos->toCoordsXY(), peep->nextLoc.z }), nullptr);
         }
 
         // Clean up the peep, because we're reusing this loaded context for all tests.
@@ -134,7 +134,7 @@ protected:
     static testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
         const uint32_t expectedSurfaceStyle = 11u;
-        const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->getSurfaceObjectIndex();
+        const uint32_t style = MapGetSurfaceElementAt(location.toCoordsXYZ())->getSurfaceObjectIndex();
 
         if (style != expectedSurfaceStyle)
             return testing::AssertionFailure()
@@ -149,7 +149,7 @@ protected:
     {
         const uint32_t forbiddenSurfaceStyle = 8u;
 
-        const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->getSurfaceObjectIndex();
+        const uint32_t style = MapGetSurfaceElementAt(location.toCoordsXYZ())->getSurfaceObjectIndex();
 
         if (style == forbiddenSurfaceStyle)
             return testing::AssertionFailure()

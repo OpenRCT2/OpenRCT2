@@ -617,7 +617,7 @@ namespace OpenRCT2::Scripting
             if (JS_IsArray(coordsOrRange))
             {
                 JSIterateArray(ctx, coordsOrRange, [staff, reset](JSContext* ctx2, JSValue v) {
-                    auto coord = JSToCoordsXY(ctx2, v);
+                    auto coord = JStoCoordsXY(ctx2, v);
                     staff->setPatrolArea(coord, reset);
                     MapInvalidateTileFull(coord);
                 });
@@ -712,7 +712,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr)
         {
-            auto pos = JSToCoordsXY(ctx, coord);
+            auto pos = JStoCoordsXY(ctx, coord);
             return JS_NewBool(ctx, staff->isLocationInPatrol(pos));
         }
         return JS_NewBool(ctx, false);

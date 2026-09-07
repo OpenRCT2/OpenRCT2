@@ -76,7 +76,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            auto start = JSToCoordsXYZ(ctx, value);
+            auto start = JStoCoordsXYZ(ctx, value);
             station->start = { start.x, start.y };
             station->setBaseZ(start.z);
         }
@@ -107,7 +107,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            return ToJSValue(ctx, station->entrance.ToCoordsXYZD());
+            return ToJSValue(ctx, station->entrance.toCoordsXYZD());
         }
         return JS_NULL;
     }
@@ -119,7 +119,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            station->entrance = JSToCoordsXYZD(ctx, value);
+            station->entrance = JStoCoordsXYZD(ctx, value);
         }
         return JS_UNDEFINED;
     }
@@ -129,7 +129,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            return ToJSValue(ctx, station->exit.ToCoordsXYZD());
+            return ToJSValue(ctx, station->exit.toCoordsXYZD());
         }
         return JS_NULL;
     }
@@ -141,7 +141,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            station->exit = JSToCoordsXYZD(ctx, value);
+            station->exit = JStoCoordsXYZD(ctx, value);
         }
         return JS_UNDEFINED;
     }

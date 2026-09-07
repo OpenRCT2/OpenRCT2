@@ -56,7 +56,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }
 
-        if (!_loc.IsNull() && !LocationValid(_loc))
+        if (!_loc.isNull() && !LocationValid(_loc))
         {
             return Result(Status::invalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, kStringIdNone);
         }

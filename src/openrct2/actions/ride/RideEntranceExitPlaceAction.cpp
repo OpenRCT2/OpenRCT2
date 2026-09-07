@@ -90,9 +90,9 @@ namespace OpenRCT2::GameActions
         const auto& station = ride->getStation(_stationNum);
         const auto location = _isExit ? station.exit : station.entrance;
 
-        if (!location.IsNull())
+        if (!location.isNull())
         {
-            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.toCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = QueryNested(&rideEntranceExitRemove, gameState);
@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.position = { _loc.ToTileCentre(), z };
+        res.position = { _loc.toTileCentre(), z };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
         return res;
@@ -165,9 +165,9 @@ namespace OpenRCT2::GameActions
 
         auto& station = ride->getStation(_stationNum);
         const auto location = _isExit ? station.exit : station.entrance;
-        if (!location.IsNull())
+        if (!location.isNull())
         {
-            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.toCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = ExecuteNested(&rideEntranceExitRemove, gameState);
@@ -196,7 +196,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.position = { _loc.ToTileCentre(), z };
+        res.position = { _loc.toTileCentre(), z };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
 
@@ -272,7 +272,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, errorTitle, STR_TOO_HIGH);
         }
         auto res = Result();
-        res.position = { loc.ToTileCentre(), TileElementHeight(loc) };
+        res.position = { loc.toTileCentre(), TileElementHeight(loc) };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
         return res;

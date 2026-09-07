@@ -270,7 +270,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
         for (auto& tile : sceneryTiles)
         {
             CoordsXY offsetPos{ tile.offset };
-            auto rotatedOffsetPos = offsetPos.Rotate(direction);
+            auto rotatedOffsetPos = offsetPos.rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile.offset.z };
@@ -484,7 +484,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         for (auto& tile : sceneryTiles)
         {
             CoordsXY offsetPos{ tile.offset };
-            auto rotatedOffsetPos = offsetPos.Rotate(direction);
+            auto rotatedOffsetPos = offsetPos.rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile.offset.z };
@@ -616,7 +616,7 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
                 {
                     if (!TrackDesignSaveContainsTileElement(tileElement))
                     {
-                        TrackDesignSaveAddTileElement(TileCoordsXY(x, y).ToCoordsXY(), tileElement);
+                        TrackDesignSaveAddTileElement(TileCoordsXY(x, y).toCoordsXY(), tileElement);
                     }
                 }
             } while (!(tileElement++)->isLastForTile());
