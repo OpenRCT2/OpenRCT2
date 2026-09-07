@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/ViewportQuery.h"
-
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -162,7 +160,7 @@ namespace OpenRCT2::Ui::Windows
             if (!gMapSelectFlags.has(MapSelectFlag::enable))
                 stateChanged = true;
 
-            if (gMapSelectType != MapSelectType::full)
+            if (gMapSelectType != MapSelectType::fullTerrainAndWater)
                 stateChanged = true;
 
             auto toolSize = std::max<uint16_t>(1, gLandToolSize);
@@ -182,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
             if (stateChanged)
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
-                gMapSelectType = MapSelectType::full;
+                gMapSelectType = MapSelectType::fullTerrainAndWater;
                 gMapSelectPositionA = posA;
                 gMapSelectPositionB = posB;
             }
@@ -279,8 +277,14 @@ namespace OpenRCT2::Ui::Windows
 
         std::optional<CoordsXY> GetBestCoordsFromPos(const ScreenCoordsXY& pos)
         {
-            auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
-            return coords.isNull() ? std::nullopt : std::make_optional(coords);
+            auto info = GetMapCoordinatesFromPos(
+                pos,
+                EnumsToFlags(
+                    ViewportInteractionItem::terrain, ViewportInteractionItem::water, ViewportInteractionItem::footpath));
+            if (info.interactionType == ViewportInteractionItem::none)
+                return std::nullopt;
+
+            return info.Loc;
         }
     };
 

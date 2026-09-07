@@ -806,7 +806,8 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
 
 std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY& pos)
 {
-    bool selected = gMapSelectFlags.has(MapSelectFlag::enable) && gMapSelectType == MapSelectType::full
+    bool selected = gMapSelectFlags.has(MapSelectFlag::enable)
+        && (gMapSelectType == MapSelectType::full || gMapSelectType == MapSelectType::fullTerrainAndWater)
         && pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
         && pos.y <= gMapSelectPositionB.y;
 

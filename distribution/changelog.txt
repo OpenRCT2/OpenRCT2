@@ -1,5 +1,6 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
+- Improved: [#21400] The selector for setting staff patrol areas is now drawn on the water as well as on the surface under water.
 - Fix: [#21320] RCT1 allows more cars per train on some rides than OpenRCT2.
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
