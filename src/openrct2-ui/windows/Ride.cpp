@@ -1075,6 +1075,9 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_RIDE_PAGE_MAIN:
                     MainOnTextInput(widgetIndex, text);
                     break;
+                case WINDOW_RIDE_PAGE_VEHICLE:
+                    VehicleOnTextInput(widgetIndex, text);
+                    break;
                 case WINDOW_RIDE_PAGE_OPERATING:
                     OperatingOnTextInput(widgetIndex, text);
                     break;
@@ -2702,6 +2705,25 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX:
                     ride->setReversedTrains(!ride->flags.has(RideFlag::reversedTrains));
                     break;
+                case WIDX_VEHICLE_TRAINS:
+                {
+                    bool limit = !getGameState().cheats.disableTrainLengthLimit;
+                    uint8_t minValue = 1;
+                    uint8_t maxValue = limit ? ride->maxTrains : Limits::kMaxTrainsPerRide;
+
+                    RideComponentType vehicleType = ride->getRideTypeDescriptor().NameConvention.vehicle;
+                    StringId title = GetRideComponentName(vehicleType).capitalised_plural;
+
+                    Formatter ft;
+                    ft.Add<int16_t>(minValue);
+                    ft.Add<int16_t>(maxValue);
+
+                    uint8_t value = ride->numTrains;
+                    std::string text = FormatStringID(STR_COMMA16, static_cast<int16_t>(value));
+
+                    WindowTextInputRawOpen(this, WIDX_VEHICLE_TRAINS, title, STR_ENTER_VALUE, ft, text.c_str(), 4);
+                    break;
+                }
                 case WIDX_VEHICLE_TRAINS_INCREASE:
                     if (ride->numTrains < Limits::kMaxTrainsPerRide)
                         ride->setNumTrains(ride->numTrains + 1);
@@ -2710,6 +2732,29 @@ namespace OpenRCT2::Ui::Windows
                     if (ride->numTrains > 1)
                         ride->setNumTrains(ride->numTrains - 1);
                     break;
+                case WIDX_VEHICLE_CARS_PER_TRAIN:
+                {
+                    bool limit = !getGameState().cheats.disableTrainLengthLimit;
+                    auto rideEntry = ride->getRideEntry();
+                    int16_t minValue = (limit ? ride->minCarsPerTrain : 1) - rideEntry->zero_cars;
+                    int16_t maxValue;
+                    if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
+                        maxValue = (limit ? ride->maxCarsPerTrain : Limits::kMaxCarsPerTrain) - rideEntry->zero_cars;
+                    else
+                        maxValue = rideEntry->max_cars_in_train;
+
+                    StringId title = STR_CARS_PER_TRAIN;
+
+                    Formatter ft;
+                    ft.Add<int16_t>(minValue);
+                    ft.Add<int16_t>(maxValue);
+
+                    int16_t value = ride->numCarsPerTrain - rideEntry->zero_cars;
+                    std::string text = FormatStringID(STR_COMMA16, value);
+
+                    WindowTextInputRawOpen(this, WIDX_VEHICLE_CARS_PER_TRAIN, title, STR_ENTER_VALUE, ft, text.c_str(), 4);
+                    break;
+                }
                 case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
                     if (ride->numCarsPerTrain < Limits::kMaxCarsPerTrain)
                         ride->setNumCarsPerTrain(ride->numCarsPerTrain + 1);
@@ -2747,6 +2792,54 @@ namespace OpenRCT2::Ui::Windows
             currentFrame++;
             onPrepareDraw();
             invalidateWidget(WIDX_TAB_2);
+        }
+
+        void VehicleOnTextInput(WidgetIndex widgetIndex, std::string_view text)
+        {
+            if (text.empty())
+                return;
+
+            auto ride = GetRide(rideId);
+            if (ride == nullptr)
+                return;
+
+            if (widgetIndex == WIDX_VEHICLE_TRAINS)
+            {
+                bool limit = !getGameState().cheats.disableTrainLengthLimit;
+                uint8_t minValue = 1;
+                uint8_t maxValue = limit ? ride->maxTrains : Limits::kMaxTrainsPerRide;
+                try
+                {
+                    int32_t input = std::stol(std::string(text));
+                    uint8_t value = std::clamp<int32_t>(input, minValue, maxValue);
+                    ride->setNumTrains(value);
+                }
+                catch (const std::logic_error&)
+                {
+                    // std::stol can throw std::out_of_range or std::invalid_argument
+                }
+            }
+            else if (widgetIndex == WIDX_VEHICLE_CARS_PER_TRAIN)
+            {
+                bool limit = !getGameState().cheats.disableTrainLengthLimit;
+                auto rideEntry = ride->getRideEntry();
+                uint8_t minValue = limit ? ride->minCarsPerTrain : 1;
+                uint8_t maxValue;
+                if (rideEntry->cars_per_flat_ride == kNoFlatRideCars)
+                    maxValue = limit ? ride->maxCarsPerTrain : Limits::kMaxCarsPerTrain;
+                else
+                    maxValue = rideEntry->max_cars_in_train;
+                try
+                {
+                    int32_t input = std::stol(std::string(text)) + rideEntry->zero_cars;
+                    uint8_t value = std::clamp<int32_t>(input, minValue, maxValue);
+                    ride->setNumCarsPerTrain(value);
+                }
+                catch (const std::logic_error&)
+                {
+                    // std::stol can throw std::out_of_range or std::invalid_argument
+                }
+            }
         }
 
         StringWithArgs VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
