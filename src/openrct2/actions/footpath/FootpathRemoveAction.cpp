@@ -108,7 +108,7 @@ namespace OpenRCT2::GameActions
                     gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
                     [this](const CoordsXYZ& spawn) {
                         {
-                            return spawn.ToTileStart() == _loc.ToTileStart();
+                            return spawn.toTileStart() == _loc.toTileStart();
                         }
                     }),
                 gameState.peepSpawns.end());

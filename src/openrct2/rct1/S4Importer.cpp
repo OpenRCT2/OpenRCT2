@@ -868,11 +868,11 @@ namespace OpenRCT2::RCT1
             // Station
             if (src->overallView.IsNull())
             {
-                dst->overallView.SetNull();
+                dst->overallView.setNull();
             }
             else
             {
-                dst->overallView = TileCoordsXY{ src->overallView.x, src->overallView.y }.ToCoordsXY();
+                dst->overallView = TileCoordsXY{ src->overallView.x, src->overallView.y }.toCoordsXY();
             }
 
             for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
@@ -880,12 +880,12 @@ namespace OpenRCT2::RCT1
                 auto& dstStation = dst->getStation(StationIndex::FromUnderlying(i));
                 if (src->stationStarts[i].IsNull())
                 {
-                    dstStation.start.SetNull();
+                    dstStation.start.setNull();
                 }
                 else
                 {
                     auto tileStartLoc = TileCoordsXY{ src->stationStarts[i].x, src->stationStarts[i].y };
-                    dstStation.start = tileStartLoc.ToCoordsXY();
+                    dstStation.start = tileStartLoc.toCoordsXY();
                 }
                 dstStation.setBaseZ(src->stationHeights[i] * Limits::kCoordsZStep);
                 dstStation.length = src->stationLengths[i];
@@ -895,12 +895,12 @@ namespace OpenRCT2::RCT1
 
                 // Direction is fixed later.
                 if (src->entrances[i].IsNull())
-                    dstStation.entrance.SetNull();
+                    dstStation.entrance.setNull();
                 else
                     dstStation.entrance = { src->entrances[i].x, src->entrances[i].y, src->stationHeights[i] / 2, 0 };
 
                 if (src->exits[i].IsNull())
-                    dstStation.exit.SetNull();
+                    dstStation.exit.setNull();
                 else
                     dstStation.exit = { src->exits[i].x, src->exits[i].y, src->stationHeights[i] / 2, 0 };
 
@@ -915,10 +915,10 @@ namespace OpenRCT2::RCT1
             for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->getStation(StationIndex::FromUnderlying(i));
-                dstStation.start.SetNull();
+                dstStation.start.setNull();
                 dstStation.trainAtStation = RideStation::kNoTrain;
-                dstStation.entrance.SetNull();
-                dstStation.exit.SetNull();
+                dstStation.entrance.setNull();
+                dstStation.exit.setNull();
                 dstStation.lastPeepInQueue = EntityId::GetNull();
             }
 
@@ -1051,7 +1051,7 @@ namespace OpenRCT2::RCT1
 
             if (src->curTestTrackLocation.IsNull())
             {
-                dst->curTestTrackLocation.SetNull();
+                dst->curTestTrackLocation.setNull();
             }
             else
             {
@@ -2542,7 +2542,7 @@ namespace OpenRCT2::RCT1
                 if ((element->asEntrance()->getSequenceIndex()) != ParkEntranceSequence::centre)
                     continue;
 
-                CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->getBaseZ(), element->getDirection() };
+                CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).toCoordsXY(), element->getBaseZ(), element->getDirection() };
                 park.entrances.push_back(entrance);
             }
         }
@@ -2877,13 +2877,13 @@ namespace OpenRCT2::RCT1
         dst->current_station = StationIndex::FromUnderlying(src->CurrentStation);
         if (src->BoatLocation.IsNull() || ride->mode != RideMode::boatHire || statusSrc != ::Vehicle::Status::travellingBoat)
         {
-            dst->BoatLocation.SetNull();
+            dst->BoatLocation.setNull();
             dst->SetTrackDirection(src->GetTrackDirection());
             dst->SetTrackType(RCT1TrackTypeToOpenRCT2(src->GetTrackType(), ride->type));
         }
         else
         {
-            dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
+            dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.toCoordsXY();
             dst->SetTrackDirection(0);
             dst->SetTrackType(TrackElemType::flat);
         }

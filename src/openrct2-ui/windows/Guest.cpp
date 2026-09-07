@@ -647,7 +647,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     _pickedPeepX = peep->x;
                     CoordsXYZ nullLoc{};
-                    nullLoc.SetNull();
+                    nullLoc.setNull();
                     GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup,
                                                                 EntityId::FromUnderlying(number), nullLoc,
                                                                 Network::GetCurrentPlayerId() };
@@ -979,7 +979,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto mapCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, nullptr);
-            if (!mapCoords.IsNull())
+            if (!mapCoords.isNull())
             {
                 gMapSelectFlags.set(MapSelectFlag::enable);
                 gMapSelectType = MapSelectType::full;
@@ -1017,7 +1017,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement* tileElement;
             auto destCoords = FootpathGetCoordinatesFromPos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
-            if (destCoords.IsNull())
+            if (destCoords.isNull())
                 return;
 
             GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::place,

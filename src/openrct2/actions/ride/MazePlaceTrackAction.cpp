@@ -109,7 +109,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
+            { _loc.toTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -166,14 +166,14 @@ namespace OpenRCT2::GameActions
         if (!flags.has(CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
-            WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
+            WallRemoveAt({ _loc.toTileStart(), _loc.z, _loc.z + 32 });
         }
 
         auto baseHeight = _loc.z;
         auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
+            { _loc.toTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
             GetFlags().with(CommandFlag::apply));
         if (canBuild.error != Status::ok)
         {
@@ -183,7 +183,7 @@ namespace OpenRCT2::GameActions
 
         res.cost = MazeCalculateCost(canBuild.cost, *ride, _loc);
 
-        auto startLoc = _loc.ToTileStart();
+        auto startLoc = _loc.toTileStart();
 
         auto* trackElement = TileElementInsert<TrackElement>(_loc, 0b1111);
         Guard::Assert(trackElement != nullptr);

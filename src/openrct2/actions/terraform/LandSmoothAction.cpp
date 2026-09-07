@@ -335,7 +335,7 @@ namespace OpenRCT2::GameActions
         const auto selectionType = _selectionType;
         const int32_t heightOffset = raiseLand ? 2 : -2;
 
-        auto normRange = _range.Normalise();
+        auto normRange = _range.normalise();
         // Cap bounds to map
         auto l = std::max(normRange.GetX1(), 32);
         auto t = std::max(normRange.GetY1(), 32);

@@ -318,7 +318,7 @@ void EditorScene::FinaliseMainView()
 void EditorScene::resetMainViewport()
 {
     auto* mainWindow = WindowGetMain();
-    mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+    mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.toCoordsXYZ());
 }
 
 /**

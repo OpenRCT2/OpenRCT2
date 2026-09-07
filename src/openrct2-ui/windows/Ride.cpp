@@ -1471,7 +1471,7 @@ namespace OpenRCT2::Ui::Windows
                 if (it.element->asTrack()->getRideIndex() != ride.id)
                     continue;
 
-                auto location = TileCoordsXY(it.x, it.y).ToCoordsXY();
+                auto location = TileCoordsXY(it.x, it.y).toCoordsXY();
                 int32_t baseZ = it.element->getBaseZ();
                 int32_t clearZ = it.element->getClearanceZ();
 
@@ -1528,7 +1528,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (const auto& station : ride->getStations())
             {
-                if (!station.start.IsNull() && viewSelectionIndex-- == 0)
+                if (!station.start.isNull() && viewSelectionIndex-- == 0)
                 {
                     const auto stationIndex = ride->getStationIndex(&station);
                     return std::make_optional(stationIndex);
@@ -1613,7 +1613,7 @@ namespace OpenRCT2::Ui::Windows
             focus = newFocus;
 
             // rct2: 0x006aec9c only used here so brought it into the function
-            if (viewport == nullptr && !ride->overallView.IsNull() && focus.has_value())
+            if (viewport == nullptr && !ride->overallView.isNull() && focus.has_value())
             {
                 const auto& viewWidget = widgets[WIDX_VIEWPORT];
 
@@ -2563,14 +2563,14 @@ namespace OpenRCT2::Ui::Windows
             // Entrance / exit
             if (ride->status == RideStatus::closed)
             {
-                if (station.entrance.IsNull())
+                if (station.entrance.isNull())
                     stringId = STR_NO_ENTRANCE;
-                else if (station.exit.IsNull())
+                else if (station.exit.isNull())
                     stringId = STR_NO_EXIT;
             }
             else
             {
-                if (station.entrance.IsNull())
+                if (station.entrance.isNull())
                     stringId = STR_EXIT_ONLY;
             }
             // Queue length
@@ -7288,7 +7288,7 @@ namespace OpenRCT2::Ui::Windows
         // View
         for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
         {
-            if (ride.getStations()[i].start.IsNull())
+            if (ride.getStations()[i].start.isNull())
             {
                 stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
             }

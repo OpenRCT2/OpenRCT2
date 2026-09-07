@@ -34,7 +34,7 @@ namespace OpenRCT2
      */
     void RideUpdateStation(Ride& ride, StationIndex stationIndex)
     {
-        if (ride.getStation(stationIndex).start.IsNull())
+        if (ride.getStation(stationIndex).start.isNull())
             return;
 
         switch (ride.mode)
@@ -381,7 +381,7 @@ namespace OpenRCT2
     {
         for (const auto& station : ride.getStations())
         {
-            if (!station.exit.IsNull())
+            if (!station.exit.isNull())
             {
                 return ride.getStationIndex(&station);
             }
@@ -393,7 +393,7 @@ namespace OpenRCT2
     {
         for (const auto& station : ride.getStations())
         {
-            if (!station.start.IsNull())
+            if (!station.start.isNull())
             {
                 return ride.getStationIndex(&station);
             }
@@ -405,7 +405,7 @@ namespace OpenRCT2
     {
         for (const auto& station : ride.getStations())
         {
-            if (station.start.IsNull())
+            if (station.start.isNull())
             {
                 return ride.getStationIndex(&station);
             }

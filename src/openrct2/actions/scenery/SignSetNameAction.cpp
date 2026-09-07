@@ -60,7 +60,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        CoordsXYZ loc = { banner->position.ToCoordsXY(), tileElement->getBaseZ() };
+        CoordsXYZ loc = { banner->position.toCoordsXY(), tileElement->getBaseZ() };
 
         if (!LocationValid(loc))
         {
@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
         else
         {
             // If empty name take closest ride name.
-            RideId rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
+            RideId rideIndex = BannerGetClosestRideIndex({ banner->position.toCoordsXY(), 16 });
             if (rideIndex.IsNull())
             {
                 banner->flags.unset(BannerFlag::linkedToRide);

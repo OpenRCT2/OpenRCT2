@@ -793,8 +793,8 @@ namespace OpenRCT2::Drawing::LightFx
     void AddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset)
     {
         uint8_t relativeRotation = (4 - GetCurrentRotation()) % 4;
-        CoordsXY lanternOffset1 = CoordsXY(0, 16).Rotate(relativeRotation);
-        CoordsXY lanternOffset2 = CoordsXY(16, 0).Rotate(relativeRotation);
+        CoordsXY lanternOffset1 = CoordsXY(0, 16).rotate(relativeRotation);
+        CoordsXY lanternOffset2 = CoordsXY(16, 0).rotate(relativeRotation);
         Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset1.x, lanternOffset1.y, height + zOffset, LightType::lantern3);
         Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset2.x, lanternOffset2.y, height + zOffset, LightType::lantern3);
         Add3DLightMagicFromDrawingTile(mapPosition, 8, 32, height, LightType::spot1);
@@ -811,23 +811,23 @@ namespace OpenRCT2::Drawing::LightFx
     {
         if (direction == (4 - GetCurrentRotation()) % 4) // Back Right Facing Stall
         {
-            CoordsXY spotOffset1 = CoordsXY(-32, 8).Rotate(direction);
-            CoordsXY spotOffset2 = CoordsXY(-32, 4).Rotate(direction);
+            CoordsXY spotOffset1 = CoordsXY(-32, 8).rotate(direction);
+            CoordsXY spotOffset2 = CoordsXY(-32, 4).rotate(direction);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::spot2);
         }
         else if (direction == (7 - GetCurrentRotation()) % 4) // Back left Facing Stall
         {
-            CoordsXY spotOffset1 = CoordsXY(-32, -8).Rotate(direction);
-            CoordsXY spotOffset2 = CoordsXY(-32, -4).Rotate(direction);
+            CoordsXY spotOffset1 = CoordsXY(-32, -8).rotate(direction);
+            CoordsXY spotOffset2 = CoordsXY(-32, -4).rotate(direction);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::spot2);
         }
         else // Forward Facing Stall
         {
-            CoordsXY spotOffset1 = CoordsXY(-32, 8).Rotate(direction);
-            CoordsXY spotOffset2 = CoordsXY(-32, -8).Rotate(direction);
-            CoordsXY lanternOffset = CoordsXY(-16, 0).Rotate(direction);
+            CoordsXY spotOffset1 = CoordsXY(-32, 8).rotate(direction);
+            CoordsXY spotOffset2 = CoordsXY(-32, -8).rotate(direction);
+            CoordsXY lanternOffset = CoordsXY(-16, 0).rotate(direction);
             Add3DLightMagicFromDrawingTile(
                 mapPosition, lanternOffset.x, lanternOffset.y, height + zOffset, LightType::lantern3);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);

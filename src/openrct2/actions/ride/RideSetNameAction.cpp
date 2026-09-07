@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
         auto res = Result();
-        auto location = ride->overallView.ToTileCentre();
+        auto location = ride->overallView.toTileCentre();
         res.position = { location, TileElementHeight(location) };
 
         return res;

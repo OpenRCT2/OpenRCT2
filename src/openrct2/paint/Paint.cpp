@@ -153,18 +153,18 @@ static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uin
         case 0:
             output.x--;
             output.y--;
-            output = { output.Rotate(0), output.z };
+            output = { output.rotate(0), output.z };
             break;
         case 1:
             output.x--;
-            output = { output.Rotate(3), output.z };
+            output = { output.rotate(3), output.z };
             break;
         case 2:
-            output = { output.Rotate(2), output.z };
+            output = { output.rotate(2), output.z };
             break;
         case 3:
             output.y--;
-            output = { output.Rotate(1), output.z };
+            output = { output.rotate(1), output.z };
             break;
     }
     return output;
@@ -183,7 +183,7 @@ static PaintStruct* CreateNormalPaintStruct(
     }
 
     const auto swappedRotation = DirectionFlipXAxis(session.CurrentRotation);
-    auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
+    auto swappedRotCoord = CoordsXYZ{ offset.rotate(swappedRotation), offset.z };
     swappedRotCoord += session.SpritePosition;
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
@@ -193,7 +193,7 @@ static PaintStruct* CreateNormalPaintStruct(
         return nullptr;
     }
 
-    const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z };
+    const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.rotate(swappedRotation), boundBox.offset.z };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
 
     auto* ps = session.AllocateNormalPaintEntry();
@@ -231,7 +231,7 @@ static PaintStruct* CreateNormalPaintStructHeight(
     }
 
     const auto swappedRotation = DirectionFlipXAxis(session.CurrentRotation);
-    auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z + height };
+    auto swappedRotCoord = CoordsXYZ{ offset.rotate(swappedRotation), offset.z + height };
     swappedRotCoord += session.SpritePosition;
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
@@ -241,7 +241,7 @@ static PaintStruct* CreateNormalPaintStructHeight(
         return nullptr;
     }
 
-    const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z + height };
+    const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.rotate(swappedRotation), boundBox.offset.z + height };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
 
     auto* ps = session.AllocateNormalPaintEntry();
@@ -275,23 +275,23 @@ void PaintSessionGenerateRotate(PaintSession& session)
     // Optimised modified version of ViewportPosToMapPos
     ScreenCoordsXY screenCoord = { floor2(session.rt.WorldX(), 32), floor2((session.rt.WorldY() - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
-    mapTile = mapTile.Rotate(direction);
+    mapTile = mapTile.rotate(direction);
 
     if constexpr (direction & 1)
     {
         mapTile.y -= 16;
     }
-    mapTile = mapTile.ToTileStart();
+    mapTile = mapTile.toTileStart();
 
     uint16_t numVerticalTiles = (session.rt.WorldHeight() + 2128) >> 5;
 
     // Adjacent tiles to also check due to overlapping of sprites
     constexpr CoordsXY adjacentTiles[] = {
-        CoordsXY{ -32, 32 }.Rotate(direction),
-        CoordsXY{ 0, 32 }.Rotate(direction),
-        CoordsXY{ 32, 0 }.Rotate(direction),
+        CoordsXY{ -32, 32 }.rotate(direction),
+        CoordsXY{ 0, 32 }.rotate(direction),
+        CoordsXY{ 32, 0 }.rotate(direction),
     };
-    constexpr CoordsXY nextVerticalTile = CoordsXY{ 32, 32 }.Rotate(direction);
+    constexpr CoordsXY nextVerticalTile = CoordsXY{ 32, 32 }.rotate(direction);
 
     for (; numVerticalTiles > 0; --numVerticalTiles)
     {

@@ -22,7 +22,7 @@ namespace OpenRCT2::Title
         WindowBase* w = WindowGetMain();
         if (w != nullptr)
         {
-            auto loc = TileCoordsXY(Location.X, Location.Y).ToCoordsXY().ToTileCentre();
+            auto loc = TileCoordsXY(Location.X, Location.Y).toCoordsXY().toTileCentre();
             int32_t z = TileElementHeight(loc);
 
             // Prevent scroll adjustment due to window placement when in-game

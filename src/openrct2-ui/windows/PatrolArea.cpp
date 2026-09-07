@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
             // Move to tool bottom left
             mapTile->x -= (toolSize - 1) * 16;
             mapTile->y -= (toolSize - 1) * 16;
-            mapTile = mapTile->ToTileStart();
+            mapTile = mapTile->toTileStart();
             auto posA = *mapTile;
             mapTile->x += toolLength;
             mapTile->y += toolLength;
@@ -280,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<CoordsXY> GetBestCoordsFromPos(const ScreenCoordsXY& pos)
         {
             auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
-            return coords.IsNull() ? std::nullopt : std::make_optional(coords);
+            return coords.isNull() ? std::nullopt : std::make_optional(coords);
         }
     };
 

@@ -50,7 +50,7 @@ namespace OpenRCT2::GameActions
         res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
         res.expenditure = ExpenditureType::landscaping;
 
-        auto validRange = ClampRangeWithinMap(_range.Normalise());
+        auto validRange = ClampRangeWithinMap(_range.normalise());
         auto& objManager = GetContext()->GetObjectManager();
         if (_surfaceStyle != kObjectEntryIndexNull)
         {
@@ -147,7 +147,7 @@ namespace OpenRCT2::GameActions
         res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
         res.expenditure = ExpenditureType::landscaping;
 
-        auto validRange = ClampRangeWithinMap(_range.Normalise());
+        auto validRange = ClampRangeWithinMap(_range.normalise());
         auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
         auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });

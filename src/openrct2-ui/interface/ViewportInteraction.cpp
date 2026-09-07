@@ -395,7 +395,7 @@ namespace OpenRCT2::Ui
                     stationIndex = tileElement->asTrack()->getStationIndex().ToUnderlying();
 
                 for (int32_t i = stationIndex; i >= 0; i--)
-                    if (ride->getStations()[i].start.IsNull())
+                    if (ride->getStations()[i].start.isNull())
                         stationIndex--;
                 stationIndex++;
                 ft.Add<uint16_t>(stationIndex);
@@ -793,7 +793,7 @@ namespace OpenRCT2::Ui
         if (window == nullptr || window->viewport == nullptr)
         {
             CoordsXY ret{};
-            ret.SetNull();
+            ret.setNull();
             return ret;
         }
         auto viewport = window->viewport;
@@ -803,7 +803,7 @@ namespace OpenRCT2::Ui
 
         if (info.interactionType == ViewportInteractionItem::none)
         {
-            initialPos.SetNull();
+            initialPos.setNull();
             return initialPos;
         }
 
@@ -828,6 +828,6 @@ namespace OpenRCT2::Ui
             mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
         }
 
-        return mapPos.ToTileStart();
+        return mapPos.toTileStart();
     }
 } // namespace OpenRCT2::Ui

@@ -556,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                 if (staff->state == PeepState::picked)
                 {
                     CoordsXYZ nullLoc{};
-                    nullLoc.SetNull();
+                    nullLoc.setNull();
 
                     GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup, staff->id, nullLoc,
                                                                 Network::GetCurrentPlayerId() };
@@ -653,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t direction{};
             TileElement* tileElement{};
             auto footpathCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
-            if (footpathCoords.IsNull())
+            if (footpathCoords.isNull())
                 return nullptr;
 
             auto isPatrolAreaSet = IsPatrolAreaSetForStaffType(GetSelectedStaffType(), footpathCoords);

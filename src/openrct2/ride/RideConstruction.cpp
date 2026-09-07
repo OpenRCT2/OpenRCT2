@@ -465,8 +465,8 @@ namespace OpenRCT2
         auto exitPosition = CoordsXYZD{ 0, 0, 0, kInvalidDirection };
         if (!stationIndex.IsNull())
         {
-            auto location = getStation(stationIndex).exit.ToCoordsXYZD();
-            if (!location.IsNull())
+            auto location = getStation(stationIndex).exit.toCoordsXYZD();
+            if (!location.isNull())
             {
                 auto direction = DirectionReverse(location.direction);
                 exitPosition = location;
@@ -496,7 +496,7 @@ namespace OpenRCT2
 
                 if (exitPosition.direction == kInvalidDirection)
                 {
-                    CoordsXYZ newLoc = { peep->nextLoc.ToTileCentre(), peep->nextLoc.z };
+                    CoordsXYZ newLoc = { peep->nextLoc.toTileCentre(), peep->nextLoc.z };
                     if (peep->getNextIsSloped())
                         newLoc.z += kCoordsZStep;
                     newLoc.z++;
@@ -526,7 +526,7 @@ namespace OpenRCT2
 
                 if (exitPosition.direction == kInvalidDirection)
                 {
-                    CoordsXYZ newLoc = { peep->nextLoc.ToTileCentre(), peep->nextLoc.z };
+                    CoordsXYZ newLoc = { peep->nextLoc.toTileCentre(), peep->nextLoc.z };
                     if (peep->getNextIsSloped())
                         newLoc.z += kCoordsZStep;
                     newLoc.z++;
@@ -556,14 +556,14 @@ namespace OpenRCT2
         {
             for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
             {
-                for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
+                for (auto* trackElement : TileElementsView<TrackElement>(tilePos.toCoordsXY()))
                 {
                     if (trackElement->getRideIndex() != ride.id)
                         continue;
 
                     // Unblock footpath element that is at same position
                     auto* footpathElement = MapGetFootpathElement(
-                        TileCoordsXYZ{ tilePos, trackElement->baseHeight }.ToCoordsXYZ());
+                        TileCoordsXYZ{ tilePos, trackElement->baseHeight }.toCoordsXYZ());
 
                     if (footpathElement == nullptr)
                         continue;
@@ -613,7 +613,7 @@ namespace OpenRCT2
 
         CoordsXY offsets = { trackBlock.x, trackBlock.y };
         CoordsXY newCoords = location;
-        newCoords += offsets.Rotate(DirectionReverse(mapDirection));
+        newCoords += offsets.rotate(DirectionReverse(mapDirection));
 
         auto retCoordsXYZ = CoordsXYZ{ newCoords.x, newCoords.y, location.z - trackBlock.z };
 
@@ -627,7 +627,7 @@ namespace OpenRCT2
             const auto& block = ted.sequenceData.sequences[i].clearance;
             CoordsXY cur = { retCoordsXYZ };
             offsets = { block.x, block.y };
-            cur += offsets.Rotate(mapDirection);
+            cur += offsets.rotate(mapDirection);
             int32_t cur_z = start_z + block.z;
 
             MapInvalidateTileFull(cur);
@@ -727,7 +727,7 @@ namespace OpenRCT2
             case RideConstructionState::back:
                 if (_currentTrackSelectionFlags.has(TrackSelectionFlag::arrow))
                 {
-                    MapInvalidateTileFull(_currentTrackBegin.ToTileStart());
+                    MapInvalidateTileFull(_currentTrackBegin.toTileStart());
                 }
                 RideConstructionRemoveGhosts();
                 break;
@@ -1394,7 +1394,7 @@ namespace OpenRCT2
             // find the stations of the ride to begin stepping over track elements from
             for (const auto& station : stations)
             {
-                if (station.start.IsNull())
+                if (station.start.isNull())
                     continue;
 
                 CoordsXYZ location = station.getStart();
@@ -1464,7 +1464,7 @@ namespace OpenRCT2
                 for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
                 {
                     const auto& block = ted.sequenceData.sequences[i].clearance;
-                    CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ block.x, block.y }.Rotate(direction), 0 };
+                    CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ block.x, block.y }.rotate(direction), 0 };
 
                     bool trackFound = false;
                     tileElement = MapGetFirstElementAt(blockLocation);
@@ -1500,16 +1500,16 @@ namespace OpenRCT2
         sfl::static_vector<TileCoordsXYZD, kMaxStationLocations> locations;
         for (auto& station : stations)
         {
-            if (!station.entrance.IsNull())
+            if (!station.entrance.isNull())
             {
                 locations.push_back(station.entrance);
-                station.entrance.SetNull();
+                station.entrance.setNull();
             }
 
-            if (!station.exit.IsNull())
+            if (!station.exit.isNull())
             {
                 locations.push_back(station.exit);
-                station.exit.SetNull();
+                station.exit.setNull();
             }
         }
 
@@ -1537,7 +1537,7 @@ namespace OpenRCT2
                 continue;
             }
             // if it's not a duplicate location
-            CoordsXY location = locationCoords.ToCoordsXY();
+            CoordsXY location = locationCoords.toCoordsXY();
 
             TileElement* tileElement = MapGetFirstElementAt(location);
             if (tileElement == nullptr)
@@ -1600,7 +1600,7 @@ namespace OpenRCT2
                     if (tileElement->asEntrance()->getEntranceType() == EntranceType::rideExit)
                     {
                         // if the location is already set for this station, big problem!
-                        if (!station.exit.IsNull())
+                        if (!station.exit.isNull())
                             break;
                         // set the station's exit location to this one
                         CoordsXYZD loc = { location, station.getBaseZ(), tileElement->getDirection() };
@@ -1609,7 +1609,7 @@ namespace OpenRCT2
                     else
                     {
                         // if the location is already set for this station, big problem!
-                        if (!station.entrance.IsNull())
+                        if (!station.entrance.isNull())
                             break;
                         // set the station's entrance location to this one
                         CoordsXYZD loc = { location, station.getBaseZ(), tileElement->getDirection() };
@@ -1693,15 +1693,15 @@ namespace OpenRCT2
 
         for (auto& station : ride.getStations())
         {
-            if (station.start.IsNull())
+            if (station.start.isNull())
             {
                 continue;
             }
-            if (station.entrance.IsNull())
+            if (station.entrance.isNull())
             {
                 return { false, STR_ENTRANCE_NOT_YET_BUILT };
             }
-            if (station.exit.IsNull())
+            if (station.exit.isNull())
             {
                 return { false, STR_EXIT_NOT_YET_BUILT };
             }

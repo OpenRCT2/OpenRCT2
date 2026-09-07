@@ -212,9 +212,9 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        if (!ride->overallView.IsNull())
+        if (!ride->overallView.isNull())
         {
-            auto location = ride->overallView.ToTileCentre();
+            auto location = ride->overallView.toTileCentre();
             res.position = { location, TileElementHeight(res.position) };
         }
 

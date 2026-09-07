@@ -145,14 +145,14 @@ namespace OpenRCT2::GameActions
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
         ride->setColourPreset(_trackColourPreset, _vehicleColourPreset);
-        ride->overallView.SetNull();
+        ride->overallView.setNull();
         ride->setNameToDefault();
 
         // Default initialize all stations.
         RideStation station{};
-        station.start.SetNull();
-        station.entrance.SetNull();
-        station.exit.SetNull();
+        station.start.setNull();
+        station.entrance.setNull();
+        station.exit.setNull();
         std::ranges::fill(ride->getStations(), station);
 
         ride->status = RideStatus::closed;

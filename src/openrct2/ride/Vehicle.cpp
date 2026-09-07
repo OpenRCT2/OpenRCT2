@@ -457,7 +457,7 @@ namespace OpenRCT2
             return;
 
         const auto& currentStation = curRide->getStation(curRide->currentTestStation);
-        if (!currentStation.entrance.IsNull())
+        if (!currentStation.entrance.isNull())
         {
             uint8_t test_segment = curRide->currentTestSegment;
             StationIndex stationIndex = StationIndex::FromUnderlying(test_segment);
@@ -517,7 +517,7 @@ namespace OpenRCT2
         {
             curRide->curTestTrackLocation = curTrackLoc;
 
-            if (currentStation.entrance.IsNull())
+            if (currentStation.entrance.isNull())
                 return;
 
             auto trackElemType = GetTrackType();
@@ -705,7 +705,7 @@ namespace OpenRCT2
             }
         }
 
-        if (currentStation.entrance.IsNull())
+        if (currentStation.entrance.isNull())
             return;
 
         if (x == kLocationNull)
@@ -971,7 +971,7 @@ namespace OpenRCT2
         ride.previousVerticalG = MakeFixed16_2dp(1, 0);
         ride.previousLateralG = 0;
         ride.testingFlags.clearAll();
-        ride.curTestTrackLocation.SetNull();
+        ride.curTestTrackLocation.setNull();
         ride.turnCountDefault = 0;
         ride.turnCountBanked = 0;
         ride.turnCountSloped = 0;

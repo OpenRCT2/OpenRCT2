@@ -74,7 +74,7 @@ namespace OpenRCT2::GameActions
                     TileElementType::largeScenery);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            loc = { banner->position.ToCoordsXY(), tileElement->getBaseZ() };
+            loc = { banner->position.toCoordsXY(), tileElement->getBaseZ() };
         }
         else
         {
@@ -85,7 +85,7 @@ namespace OpenRCT2::GameActions
                 LOG_ERROR("Wall element not found for bannerIndex", _bannerIndex);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            loc = { banner->position.ToCoordsXY(), wallElement->getBaseZ() };
+            loc = { banner->position.toCoordsXY(), wallElement->getBaseZ() };
         }
 
         if (!LocationValid(loc))
@@ -109,7 +109,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
-        CoordsXY coords = banner->position.ToCoordsXY();
+        CoordsXY coords = banner->position.toCoordsXY();
 
         if (_isLarge)
         {
