@@ -224,6 +224,7 @@ namespace OpenRCT2::Ui
         { WindowClass::console,                     "WC_CONSOLE",                        STR_CONSOLE,                                      { translucent(Drawing::Colour::lightBlue),          opaque(Drawing::Colour::white)                                                                                        } },
         { WindowClass::progressWindow,              "WC_PROGRESS_WINDOW",                STR_THEME_LOADING_WINDOW,                         { opaque(Drawing::Colour::black)                                                                                                                                 } },
         { WindowClass::editorParkEntrance,          "WC_EDITOR_PARK_ENTRANCE",           STR_OBJECT_SELECTION_PARK_ENTRANCE,               { opaque(Drawing::Colour::darkGreen),               opaque(Drawing::Colour::darkBrown)                                                                                   } },
+        { WindowClass::touchActionBar,              "WC_TOUCH_ACTION_BAR",               STR_TOUCH_ACTION_BAR,                             { opaque(Drawing::Colour::darkGreen),               opaque(Drawing::Colour::darkGreen)                                                                                   } },
     };
 
 #pragma endregion

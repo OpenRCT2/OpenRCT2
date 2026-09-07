@@ -11,6 +11,7 @@
 
 #include <openrct2/interface/WindowBase.h>
 #include <openrct2/interface/WindowTypes.h>
+#include <openrct2/platform/Platform.h>
 
 namespace OpenRCT2
 {
@@ -82,6 +83,10 @@ namespace OpenRCT2::Ui::Windows
     void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords);
     void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
     void WindowRelocateWindows(int32_t width, int32_t height);
+
+    void TouchCentreWindow(WindowBase& w);
+
+    Platform::SafeAreaInsets GetLogicalSafeAreaInsets();
 
     bool WindowSetResize(WindowBase& w, ScreenSize minSize, ScreenSize maxSize);
 

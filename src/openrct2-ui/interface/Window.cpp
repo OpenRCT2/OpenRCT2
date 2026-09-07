@@ -25,6 +25,7 @@
 #include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
 
@@ -1080,6 +1081,51 @@ namespace OpenRCT2::Ui::Windows
     void WindowZoomOut(WindowBase& w, bool atCursor)
     {
         WindowZoomSet(w, w.viewport->zoom + 1, atCursor);
+    }
+
+    /**
+     * The platform reports obscured edges in physical pixels; windows are laid out in logical
+     * ones, so the two disagree by the UI scale on every phone.
+     */
+    Platform::SafeAreaInsets GetLogicalSafeAreaInsets()
+    {
+        auto insets = Platform::GetSafeAreaInsets();
+        if (insets.IsEmpty())
+            return insets;
+
+        const auto scale = Config::Get().general.windowScale;
+        if (scale <= 0.0f)
+            return insets;
+
+        return {
+            static_cast<int32_t>(insets.left / scale),
+            static_cast<int32_t>(insets.top / scale),
+            static_cast<int32_t>(insets.right / scale),
+            static_cast<int32_t>(insets.bottom / scale),
+        };
+    }
+
+    /**
+     * Moves a window to the middle of the screen when the touch layout option is on.
+     *
+     * Applied to the windows a player browses rather than glances at -- rides, scenery and track
+     * designs. Cascading from a corner suits a large monitor; on a phone held in two hands the
+     * thing being read belongs in the middle. Small windows keep cascading so they do not bury
+     * each other.
+     */
+    void TouchCentreWindow(WindowBase& w)
+    {
+        if (!Config::Get().interface.touchCentreWindows)
+            return;
+
+        const auto insets = GetLogicalSafeAreaInsets();
+        const auto screenWidth = ContextGetWidth() - insets.left - insets.right;
+        const auto screenHeight = ContextGetHeight() - insets.top - insets.bottom;
+
+        WindowSetPosition(
+            w,
+            { insets.left + ((screenWidth - w.width) / 2),
+              std::max(kTopToolbarHeight + 1, insets.top + ((screenHeight - w.height) / 2)) });
     }
 
     void MainWindowZoom(bool zoomIn, bool atCursor)

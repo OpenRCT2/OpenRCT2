@@ -11,6 +11,7 @@
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/TouchSelection.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -1511,6 +1512,14 @@ namespace OpenRCT2::Ui::Windows
             if (scenery.IsUndefined())
                 return;
 
+            if (!_touchSelection.shouldCommit(scenery))
+            {
+                // First tap only shows the item's name and cost, as hovering would with a mouse.
+                _selectedScenery = scenery;
+                invalidate();
+                return;
+            }
+
             auto lastScenery = GetSelectedScenery(_activeTabIndex);
             if (lastScenery != scenery && !MatchFilter(lastScenery))
             {
@@ -1526,6 +1535,8 @@ namespace OpenRCT2::Ui::Windows
             gSceneryPlaceCost = kMoney64Undefined;
             invalidate();
         }
+
+        TouchTwoStepSelection<ScenerySelection> _touchSelection;
 
         void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
@@ -3499,6 +3510,7 @@ namespace OpenRCT2::Ui::Windows
         if (w == nullptr)
         {
             w = windowMgr->Create<SceneryWindow>(WindowClass::scenery);
+            TouchCentreWindow(*w);
         }
         return w;
     }

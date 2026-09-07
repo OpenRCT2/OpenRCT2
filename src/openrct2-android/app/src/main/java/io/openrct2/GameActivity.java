@@ -5,7 +5,13 @@ import android.icu.util.Currency;
 import android.icu.util.LocaleData;
 import android.icu.util.ULocale;
 import android.os.Build;
+import android.os.CombinedVibration;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.os.VibratorManager;
+import android.view.DisplayCutout;
 import android.view.View;
+import android.view.WindowInsets;
 
 import org.libsdl.app.SDLActivity;
 
@@ -70,6 +76,71 @@ public class GameActivity extends SDLActivity {
         Locale deviceLocale = getDeviceLocale();
         String localeCountry = deviceLocale.getCountry();
         return localeCountry.equals(Locale.US.getCountry()) || localeCountry.equals(new Locale("xx", "LR").getCountry()) || localeCountry.equals(new Locale("xx", "MM").getCountry());
+    }
+
+    /**
+     * Called from native code. Returns {left, top, right, bottom} in pixels.
+     *
+     * The game runs edge to edge in immersive mode, so the camera cutout and the rounded corners
+     * sit inside the drawable area. Anything drawn in these margins is physically not visible.
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    public int[] getSafeAreaInsets() {
+        int[] insets = new int[]{ 0, 0, 0, 0 };
+
+        View decorView = getWindow().getDecorView();
+        WindowInsets windowInsets = decorView.getRootWindowInsets();
+        if (windowInsets == null) {
+            return insets;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            android.graphics.Insets cutout = windowInsets.getInsets(WindowInsets.Type.displayCutout());
+            insets[0] = cutout.left;
+            insets[1] = cutout.top;
+            insets[2] = cutout.right;
+            insets[3] = cutout.bottom;
+            return insets;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            DisplayCutout cutout = windowInsets.getDisplayCutout();
+            if (cutout != null) {
+                insets[0] = cutout.getSafeInsetLeft();
+                insets[1] = cutout.getSafeInsetTop();
+                insets[2] = cutout.getSafeInsetRight();
+                insets[3] = cutout.getSafeInsetBottom();
+            }
+        }
+
+        return insets;
+    }
+
+    /**
+     * Called from native code. A touchscreen has no click and no cursor, so a gesture that fires
+     * without moving anything visible gives no sign that it registered.
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    public void vibrate(int milliseconds) {
+        if (milliseconds <= 0) {
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            VibratorManager manager = (VibratorManager) getSystemService(VIBRATOR_MANAGER_SERVICE);
+            if (manager == null) {
+                return;
+            }
+            manager.vibrate(CombinedVibration.createParallel(
+                    VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE)));
+            return;
+        }
+
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        if (vibrator == null || !vibrator.hasVibrator()) {
+            return;
+        }
+        vibrator.vibrate(VibrationEffect.createOneShot(milliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 
     @Override

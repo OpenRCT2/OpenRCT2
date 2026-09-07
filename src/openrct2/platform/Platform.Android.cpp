@@ -245,6 +245,46 @@ namespace OpenRCT2::Platform
         return displayScale;
     }
 
+    SafeAreaInsets GetSafeAreaInsets()
+    {
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getSafeAreaInsets = env->GetMethodID(activityClass, "getSafeAreaInsets", "()[I");
+
+        auto insetArray = static_cast<jintArray>(env->CallObjectMethod(activity, getSafeAreaInsets));
+
+        SafeAreaInsets insets{};
+        if (insetArray != nullptr && env->GetArrayLength(insetArray) == 4)
+        {
+            jint values[4]{};
+            env->GetIntArrayRegion(insetArray, 0, 4, values);
+            insets = { values[0], values[1], values[2], values[3] };
+        }
+
+        if (insetArray != nullptr)
+            env->DeleteLocalRef(insetArray);
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        return insets;
+    }
+
+    void Vibrate(int32_t durationMs)
+    {
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID vibrate = env->GetMethodID(activityClass, "vibrate", "(I)V");
+
+        env->CallVoidMethod(activity, vibrate, static_cast<jint>(durationMs));
+
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+    }
+
     jclass AndroidFindClass(JNIEnv* env, std::string_view name)
     {
         return static_cast<jclass>(env->CallObjectMethod(

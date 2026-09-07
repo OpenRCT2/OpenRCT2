@@ -10,6 +10,7 @@
 #include <cassert>
 #include <iterator>
 #include <limits>
+#include <openrct2-ui/interface/TouchSelection.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/ride/Construction.h>
@@ -456,6 +457,8 @@ namespace OpenRCT2::Ui::Windows
             return { widgets[WIDX_RIDE_LIST].width() - 1, ((count + (itemsPerRow - 1)) / itemsPerRow) * kScrollItemSize };
         }
 
+        TouchTwoStepSelection<RideSelection> _touchSelection;
+
         void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
             RideSelection item = ScrollGetRideListItemAt(screenCoords);
@@ -473,6 +476,14 @@ namespace OpenRCT2::Ui::Windows
             RideSelection item = ScrollGetRideListItemAt(screenCoords);
             if (item.Type == kRideTypeNull && item.EntryIndex == kObjectEntryIndexNull)
             {
+                return;
+            }
+
+            if (!_touchSelection.shouldCommit(item))
+            {
+                // First tap only shows the ride's description, as hovering would with a mouse.
+                _newRideVars.HighlightedRide = item;
+                invalidate();
                 return;
             }
 
@@ -1073,6 +1084,7 @@ namespace OpenRCT2::Ui::Windows
         window = windowMgr->Create<NewRideWindow>(
             WindowClass::constructRide, kWindowSize,
             { WindowFlag::higherContrastOnPress, WindowFlag::autoPosition, WindowFlag::resizable });
+        TouchCentreWindow(*window);
         return window;
     }
 
