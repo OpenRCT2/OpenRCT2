@@ -682,14 +682,14 @@ static StringId window_cheats_page_titles[] = {
 
         void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
-            if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
+            switch (page)
             {
-                auto val = StringToMoney(std::string(text).c_str());
-                if (val != kMoney64Undefined)
-                {
-                    _moneySpinnerValue = val;
-                }
-                invalidate();
+                case WINDOW_CHEATS_PAGE_MONEY:
+                    onTextInputMoney(widgetIndex, text);
+                    break;
+                case WINDOW_CHEATS_PAGE_DATE:
+                    onTextInputDate(widgetIndex, text);
+                    break;
             }
         }
 
@@ -850,6 +850,15 @@ static StringId window_cheats_page_titles[] = {
 
             switch (widgetIndex)
             {
+                case WIDX_YEAR_BOX:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(1);
+                    ft.Add<int16_t>(kMaxYear);
+                    const std::string text = FormatStringID(STR_FORMAT_INTEGER, _yearSpinnerValue);
+                    WindowTextInputRawOpen(this, WIDX_YEAR_BOX, STR_ENTER_NEW_VALUE, STR_ENTER_VALUE, ft, text.c_str(), 4);
+                    break;
+                }
                 case WIDX_YEAR_UP:
                     _yearSpinnerValue++;
                     _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, kMaxYear);
@@ -860,6 +869,15 @@ static StringId window_cheats_page_titles[] = {
                     _yearSpinnerValue = std::clamp(_yearSpinnerValue, 1, kMaxYear);
                     invalidateWidget(WIDX_YEAR_BOX);
                     break;
+                case WIDX_MONTH_BOX:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(1);
+                    ft.Add<int16_t>(MONTH_COUNT);
+                    const std::string text = FormatStringID(STR_FORMAT_INTEGER, _monthSpinnerValue);
+                    WindowTextInputRawOpen(this, WIDX_MONTH_BOX, STR_ENTER_NEW_VALUE, STR_ENTER_VALUE, ft, text.c_str(), 2);
+                    break;
+                }
                 case WIDX_MONTH_UP:
                     _monthSpinnerValue++;
                     _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
@@ -874,6 +892,15 @@ static StringId window_cheats_page_titles[] = {
                     invalidateWidget(WIDX_MONTH_BOX);
                     invalidateWidget(WIDX_DAY_BOX);
                     break;
+                case WIDX_DAY_BOX:
+                {
+                    Formatter ft;
+                    ft.Add<int16_t>(1);
+                    ft.Add<int16_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1));
+                    const std::string text = FormatStringID(STR_FORMAT_INTEGER, _daySpinnerValue);
+                    WindowTextInputRawOpen(this, WIDX_DAY_BOX, STR_ENTER_NEW_VALUE, STR_ENTER_VALUE, ft, text.c_str(), 2);
+                    break;
+                }
                 case WIDX_DAY_UP:
                     _daySpinnerValue++;
                     _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
@@ -1327,6 +1354,53 @@ static StringId window_cheats_page_titles[] = {
                     CheatsSet(CheatType::allowTrackPlaceInvalidHeights, !gameState.cheats.allowTrackPlaceInvalidHeights);
                 }
                 break;
+            }
+        }
+
+        void onTextInputMoney(WidgetIndex widgetIndex, std::string_view text)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_MONEY_SPINNER:
+                {
+                    auto val = StringToMoney(std::string(text).c_str());
+                    if (val != kMoney64Undefined)
+                    {
+                        _moneySpinnerValue = val;
+                    }
+                    invalidate();
+                }
+                break;
+            }
+        }
+
+        void onTextInputDate(WidgetIndex widgetIndex, std::string_view text)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_YEAR_BOX:
+                {
+                    const int32_t input = std::stol(std::string(text));
+                    _yearSpinnerValue = std::clamp<int32_t>(input, 1, kMaxYear);
+                    invalidateWidget(WIDX_YEAR_BOX);
+                    break;
+                }
+                case WIDX_MONTH_BOX:
+                {
+                    const int32_t input = std::stol(std::string(text));
+                    _monthSpinnerValue = std::clamp(input, 1, static_cast<int32_t>(MONTH_COUNT));
+                    _daySpinnerValue = std::clamp(_daySpinnerValue, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
+                    invalidateWidget(WIDX_MONTH_BOX);
+                    invalidateWidget(WIDX_DAY_BOX);
+                    break;
+                }
+                case WIDX_DAY_BOX:
+                {
+                    const int32_t input = std::stol(std::string(text));
+                    _daySpinnerValue = std::clamp(input, 1, Date::GetDaysInMonth(_monthSpinnerValue - 1));
+                    invalidateWidget(WIDX_DAY_BOX);
+                    break;
+                }
             }
         }
     };
