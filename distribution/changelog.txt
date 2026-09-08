@@ -3,6 +3,7 @@
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
+- Fix: [#27087] The ‘Update available’ widget is offset incorrectly.
 
 0.5.5 (2026-09-06)
 ------------------------------------------------------------------------
