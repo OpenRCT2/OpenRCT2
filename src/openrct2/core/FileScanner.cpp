@@ -24,6 +24,7 @@
 #include "String.hpp"
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <stack>
 #include <string>
@@ -148,17 +149,8 @@ public:
 
     virtual void getDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) = 0;
 
-private:
-    void pushState(const std::string& directory)
-    {
-        DirectoryState newState;
-        newState.path = directory;
-        newState.index = -1;
-        getDirectoryChildren(newState.listing, directory);
-        _directoryStack.push(newState);
-    }
-
-    bool patternMatch(const std::string& fileName)
+protected:
+    bool patternMatch(const std::string& fileName) const
     {
         for (const auto& pattern : _patterns)
         {
@@ -168,6 +160,16 @@ private:
             }
         }
         return false;
+    }
+
+private:
+    void pushState(const std::string& directory)
+    {
+        DirectoryState newState;
+        newState.path = directory;
+        newState.index = -1;
+        getDirectoryChildren(newState.listing, directory);
+        _directoryStack.push(newState);
     }
 
     static std::vector<std::string> getPatterns(const std::string& delimitedPatterns)
@@ -328,7 +330,11 @@ public:
                 const struct dirent* node = namelist[i];
                 if (!String::equals(node->d_name, ".") && !String::equals(node->d_name, ".."))
                 {
-                    children.push_back(createChild(path.c_str(), node));
+                    auto child = createChild(path.c_str(), node);
+                    if (child.has_value())
+                    {
+                        children.push_back(std::move(child.value()));
+                    }
                 }
                 free(namelist[i]);
             }
@@ -342,7 +348,7 @@ private:
         return 1;
     }
 
-    static DirectoryChild createChild(const utf8* directory, const struct dirent* node)
+    std::optional<DirectoryChild> createChild(const utf8* directory, const struct dirent* node) const
     {
         DirectoryChild result;
         result.name = std::string(node->d_name);
@@ -358,6 +364,19 @@ private:
         }
         else
         {
+    #ifndef __HAIKU__
+            // Reading the size and modified time of a file costs a stat call each, which is
+            // expensive on file systems with a high per-operation cost, such as network shares or
+            // the FUSE file system that Flatpak's document portal provides. Files that cannot match
+            // the search pattern are never returned, so skip them before paying for that. Entries of
+            // an unknown type still have to be queried to find out whether they are a directory
+            // which has to be recursed into.
+            if (node->d_type == DT_REG && !patternMatch(result.name))
+            {
+                return std::nullopt;
+            }
+    #endif
+
             result.type = DirectoryChildType::file;
 
             // Get the full path of the file
