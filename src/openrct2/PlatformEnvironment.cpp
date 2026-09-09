@@ -14,9 +14,15 @@
 #include "config/Config.h"
 #include "core/EnumUtils.hpp"
 #include "core/File.h"
+#include "core/FileSystem.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "platform/Platform.h"
+
+#include <map>
+#include <mutex>
+#include <optional>
+#include <unordered_map>
 
 using namespace OpenRCT2;
 
@@ -80,11 +86,125 @@ static constexpr u8string_view kFileNames[] = {
     u8"contributors.md",                         // CONTRIBUTORS
 };
 
+/**
+ * Lower cases ASCII characters only, which matches how String::iequals compares strings.
+ */
+static u8string ToLowerAscii(u8string_view str)
+{
+    u8string result(str);
+    for (auto& c : result)
+    {
+        if (c >= 'A' && c <= 'Z')
+            c += 'a' - 'A';
+    }
+    return result;
+}
+
+/**
+ * Caches the file names of the original game data directories so that they can be looked up case
+ * insensitively without hitting the file system.
+ *
+ * The game refers to the original files by their MS-DOS era upper case names, while an actual
+ * installation may use any casing, so every look up has to consider all the names in a directory.
+ * Doing that per look up means listing a directory of a few thousand files hundreds of times while
+ * loading a park, which is ruinously slow on file systems with a high per-operation cost, such as
+ * the FUSE file system Flatpak's document portal provides. The original game data does not change
+ * while the game is running, so each directory only has to be listed once.
+ */
+class OriginalGameDataIndex
+{
+private:
+    struct Entry
+    {
+        u8string path;
+        int32_t depth{};
+    };
+
+    // Maps the lower cased name of a file to the file it was found as.
+    using Listing = std::unordered_map<u8string, Entry, String::Hash, std::equal_to<>>;
+
+    std::mutex _mutex;
+    std::map<u8string, std::optional<Listing>, std::less<>> _listings;
+
+public:
+    /**
+     * Returns the real path of the file with the given name inside the given directory or one of its
+     * sub directories, matching the name case insensitively. Returns an empty string if there is no
+     * such file.
+     */
+    u8string FindFile(const u8string& directory, u8string_view fileName)
+    {
+        std::lock_guard guard(_mutex);
+
+        const auto& listing = GetListing(directory);
+        if (!listing.has_value())
+        {
+            // The directory could not be listed, fall back to querying the file system.
+            return Path::ResolveCasing(Path::Combine(directory, fileName));
+        }
+
+        auto it = listing->find(ToLowerAscii(fileName));
+        if (it == listing->end())
+            return {};
+
+        return it->second.path;
+    }
+
+    void Clear()
+    {
+        std::lock_guard guard(_mutex);
+        _listings.clear();
+    }
+
+private:
+    const std::optional<Listing>& GetListing(const u8string& directory)
+    {
+        auto it = _listings.find(directory);
+        if (it != _listings.end())
+            return it->second;
+
+        return _listings.emplace(directory, ReadListing(directory)).first->second;
+    }
+
+    static std::optional<Listing> ReadListing(const u8string& directory)
+    {
+        std::error_code ec;
+        auto it = fs::recursive_directory_iterator(fs::u8path(directory), fs::directory_options::skip_permission_denied, ec);
+        if (ec)
+            return std::nullopt;
+
+        Listing listing;
+        const auto end = fs::recursive_directory_iterator();
+        for (; it != end; it.increment(ec))
+        {
+            if (ec)
+                break;
+
+            // Asks the directory entry rather than the file system, as the entry already knows the
+            // type of the file on the platforms that report it while listing a directory.
+            std::error_code typeEc;
+            if (it->is_directory(typeEc) || typeEc)
+                continue;
+
+            const auto depth = it.depth();
+            auto entry = Entry{ it->path().u8string(), depth };
+            auto [entryIt, inserted] = listing.try_emplace(ToLowerAscii(it->path().filename().u8string()), entry);
+
+            // Prefer the files closest to the root of the directory, files in sub directories are
+            // only meant to be used when there is none of that name next to the other game files.
+            if (!inserted && depth < entryIt->second.depth)
+                entryIt->second = std::move(entry);
+        }
+        return listing;
+    }
+};
+
 class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     u8string _basePath[kDirBaseCount];
     RCT2Variant _rct2Variant = RCT2Variant::rct2Original;
+    mutable OriginalGameDataIndex _originalGameDataIndex;
 
 public:
     explicit PlatformEnvironment(DirBaseValues basePaths)
@@ -175,7 +295,7 @@ public:
             }
         }
 
-        auto path = Path::ResolveCasing(Path::Combine(dataPath, fileName));
+        auto path = ResolveOriginalGameDataPath(base, dataPath, fileName);
         if (base == DirBase::rct1 && did == DirId::data && !File::Exists(path))
         {
             // Special case, handle RCT1 steam layout where some data files are under a CD root
@@ -193,6 +313,7 @@ public:
     void SetBasePath(DirBase base, u8string_view path) override
     {
         _basePath[EnumValue(base)] = path;
+        _originalGameDataIndex.Clear();
 
         if (base == DirBase::rct2)
         {
@@ -209,6 +330,22 @@ public:
     }
 
 private:
+    /**
+     * Resolves the casing of a file inside one of the original game data directories, using the
+     * cached directory listings where possible.
+     */
+    u8string ResolveOriginalGameDataPath(DirBase base, const u8string& dataPath, u8string_view fileName) const
+    {
+        const auto isOriginalGameData = base == DirBase::rct1 || base == DirBase::rct2;
+        const auto isPlainFileName = fileName.find_first_of("/\\") == u8string_view::npos;
+        if (!isOriginalGameData || !isPlainFileName || dataPath.empty())
+        {
+            return Path::ResolveCasing(Path::Combine(dataPath, fileName));
+        }
+
+        return _originalGameDataIndex.FindFile(dataPath, fileName);
+    }
+
     static DirBase GetDefaultBaseDirectory(PathId pathid)
     {
         switch (pathid)
