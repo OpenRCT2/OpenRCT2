@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Thunder Rocks",
+    "sha256": "3fbb7adbe31ddf495720bf63e7a70921b38243b75d9b7996faf693dfd381f4e4",
+    "rides": [
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Thunder Drops"
+        }
+    ]
+}

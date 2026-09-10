@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Fruit Farm",
+    "sha256": "fe61281babdfc19b4d837650eb9d1c31a928d203b1e6a0f978fcdc33d190004f",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Orchard Railway"
+        }
+    ]
+}

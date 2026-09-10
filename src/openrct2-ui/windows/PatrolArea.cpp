@@ -19,6 +19,7 @@
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/peep/StaffSetPatrolAreaAction.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -170,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
             // Move to tool bottom left
             mapTile->x -= (toolSize - 1) * 16;
             mapTile->y -= (toolSize - 1) * 16;
-            mapTile = mapTile->ToTileStart();
+            mapTile = mapTile->toTileStart();
             auto posA = *mapTile;
             mapTile->x += toolLength;
             mapTile->y += toolLength;
@@ -191,7 +192,7 @@ namespace OpenRCT2::Ui::Windows
         {
             HideGridlines();
             ClearPatrolAreaToRender();
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
         void onToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -199,7 +200,7 @@ namespace OpenRCT2::Ui::Windows
             auto mapTile = GetBestCoordsFromPos(screenCoords);
             if (mapTile)
             {
-                auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
+                auto staff = getGameState().entities.getEntity<Staff>(_staffId);
                 if (staff != nullptr)
                 {
                     _mode = staff->isPatrolAreaSet(*mapTile) ? GameActions::StaffSetPatrolAreaMode::unset
@@ -212,7 +213,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
+            auto staff = getGameState().entities.getEntity<Staff>(_staffId);
             if (staff != nullptr)
             {
                 MapRange range(gMapSelectPositionA, gMapSelectPositionB);
@@ -241,7 +242,7 @@ namespace OpenRCT2::Ui::Windows
             if (PatrolAreaToolIsActive())
             {
                 SetPatrolAreaToRender(_staffId);
-                GfxInvalidateScreen();
+                Drawing::GfxInvalidateScreen();
             }
             else
             {
@@ -249,7 +250,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ShowGridlines();
                     SetPatrolAreaToRender(_staffId);
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                 }
             }
         }
@@ -279,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<CoordsXY> GetBestCoordsFromPos(const ScreenCoordsXY& pos)
         {
             auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
-            return coords.IsNull() ? std::nullopt : std::make_optional(coords);
+            return coords.isNull() ? std::nullopt : std::make_optional(coords);
         }
     };
 

@@ -443,6 +443,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 loadDesignsList(_window_track_list_item);
                 selectedListItem = 0;
+                _loadedTrackDesignIndex = kTrackDesignIndexUnloaded;
                 invalidate();
                 _reloadTrackDesigns = false;
             }
@@ -650,7 +651,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos.y += 4;
             }
 
-            if (!_loadedTrackDesign->statistics.spaceRequired.IsNull())
+            if (!_loadedTrackDesign->statistics.spaceRequired.isNull())
             {
                 // Space required
                 ft = Formatter();

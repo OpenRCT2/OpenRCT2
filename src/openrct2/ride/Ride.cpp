@@ -24,7 +24,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
@@ -337,8 +337,8 @@ namespace OpenRCT2
     {
         int32_t queueLength = 0;
         for (const auto& station : stations)
-            if (!station.Entrance.IsNull())
-                queueLength += station.QueueLength;
+            if (!station.entrance.isNull())
+                queueLength += station.queueLength;
         return queueLength;
     }
 
@@ -346,8 +346,8 @@ namespace OpenRCT2
     {
         uint8_t queueTime = 0;
         for (const auto& station : stations)
-            if (!station.Entrance.IsNull())
-                queueTime = std::max(queueTime, station.QueueTime);
+            if (!station.entrance.isNull())
+                queueTime = std::max(queueTime, station.queueTime);
         return static_cast<int32_t>(queueTime);
     }
 
@@ -355,8 +355,8 @@ namespace OpenRCT2
     {
         Guest* peep;
         Guest* result = nullptr;
-        auto spriteIndex = getStation(stationIndex).LastPeepInQueue;
-        while ((peep = getGameState().entities.TryGetEntity<Guest>(spriteIndex)) != nullptr)
+        auto spriteIndex = getStation(stationIndex).lastPeepInQueue;
+        while ((peep = getGameState().entities.tryGetEntity<Guest>(spriteIndex)) != nullptr)
         {
             spriteIndex = peep->guestNextInQueue;
             result = peep;
@@ -369,13 +369,13 @@ namespace OpenRCT2
         uint16_t count = 0;
         Guest* peep;
         auto& station = getStation(stationIndex);
-        auto spriteIndex = station.LastPeepInQueue;
-        while ((peep = getGameState().entities.TryGetEntity<Guest>(spriteIndex)) != nullptr)
+        auto spriteIndex = station.lastPeepInQueue;
+        while ((peep = getGameState().entities.tryGetEntity<Guest>(spriteIndex)) != nullptr)
         {
             spriteIndex = peep->guestNextInQueue;
             count++;
         }
-        station.QueueLength = count;
+        station.queueLength = count;
     }
 
     void Ride::queueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
@@ -387,7 +387,7 @@ namespace OpenRCT2
         auto* queueHeadGuest = getQueueHeadGuest(peep->currentRideStation);
         if (queueHeadGuest == nullptr)
         {
-            getStation(peep->currentRideStation).LastPeepInQueue = peep->id;
+            getStation(peep->currentRideStation).lastPeepInQueue = peep->id;
         }
         else
         {
@@ -565,7 +565,7 @@ namespace OpenRCT2
         }
         else if (mode == RideMode::race && !flags.has(RideFlag::passStationNoStopping) && !raceWinner.IsNull())
         {
-            auto peep = getGameState().entities.GetEntity<Guest>(raceWinner);
+            auto peep = getGameState().entities.getEntity<Guest>(raceWinner);
             if (peep != nullptr)
             {
                 ft.Add<StringId>(STR_RACE_WON_BY);
@@ -592,7 +592,7 @@ namespace OpenRCT2
     {
         int32_t totalLength = 0;
         for (int32_t i = 0; i < numStations; i++)
-            totalLength += stations[i].SegmentLength;
+            totalLength += stations[i].segmentLength;
         return totalLength;
     }
 
@@ -600,7 +600,7 @@ namespace OpenRCT2
     {
         int32_t totalTime = 0;
         for (int32_t i = 0; i < numStations; i++)
-            totalTime += stations[i].SegmentTime;
+            totalTime += stations[i].segmentTime;
         return totalTime;
     }
 
@@ -766,7 +766,7 @@ namespace OpenRCT2
         StationIndex::UnderlyingType nullStationsSeen{ 0 };
         for (size_t i = 0; i < in.ToUnderlying(); i++)
         {
-            if (stations[i].Start.IsNull())
+            if (stations[i].start.isNull())
             {
                 nullStationsSeen++;
             }
@@ -884,10 +884,10 @@ namespace OpenRCT2
         if (oldChairliftBullwheelRotation == ride.speed / 8)
             return;
 
-        auto bullwheelLoc = ride.chairliftBullwheelLocation[0].ToCoordsXYZ();
+        auto bullwheelLoc = ride.chairliftBullwheelLocation[0].toCoordsXYZ();
         MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * kCoordsZStep) });
 
-        bullwheelLoc = ride.chairliftBullwheelLocation[1].ToCoordsXYZ();
+        bullwheelLoc = ride.chairliftBullwheelLocation[1].toCoordsXYZ();
         MapInvalidateTileZoom1({ bullwheelLoc, bullwheelLoc.z, bullwheelLoc.z + (4 * kCoordsZStep) });
     }
 
@@ -976,7 +976,7 @@ namespace OpenRCT2
         {
             ride.slideInUse = 0;
 
-            auto* peep = getGameState().entities.GetEntity<Guest>(ride.slidePeep);
+            auto* peep = getGameState().entities.getEntity<Guest>(ride.slidePeep);
             if (peep != nullptr)
             {
                 peep->spiralSlideSubstate = PeepSpiralSlideSubState::finishedSliding;
@@ -987,10 +987,10 @@ namespace OpenRCT2
         // Invalidate something related to station start
         for (int32_t i = 0; i < Limits::kMaxStationsPerRide; i++)
         {
-            if (ride.stations[i].Start.IsNull())
+            if (ride.stations[i].start.isNull())
                 continue;
 
-            auto startLoc = ride.stations[i].Start;
+            auto startLoc = ride.stations[i].start;
 
             TileElement* tileElement = RideGetStationStartTrackElement(ride, StationIndex::FromUnderlying(i));
             if (tileElement == nullptr)
@@ -1280,7 +1280,7 @@ namespace OpenRCT2
                     ride.brokenCar = ScenarioRand() % ride.numCarsPerTrain;
 
                     // Set flag on broken car
-                    vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[ride.brokenTrain]);
+                    vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[ride.brokenTrain]);
                     if (vehicle != nullptr)
                     {
                         vehicle = vehicle->GetCar(ride.brokenCar);
@@ -1297,7 +1297,7 @@ namespace OpenRCT2
                 ride.brokenCar = 0;
 
                 // Set flag on broken train, first car
-                vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[ride.brokenTrain]);
+                vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[ride.brokenTrain]);
                 if (vehicle != nullptr)
                 {
                     vehicle->flags.set(VehicleFlag::trainIsBroken);
@@ -1493,22 +1493,22 @@ namespace OpenRCT2
 
         // Get either exit position or entrance position if there is no exit
         const auto& station = ride.getStation(stationIndex);
-        TileCoordsXYZD location = station.Exit;
-        if (location.IsNull())
+        TileCoordsXYZD location = station.exit;
+        if (location.isNull())
         {
-            location = station.Entrance;
-            if (station.Entrance.IsNull())
+            location = station.entrance;
+            if (station.entrance.isNull())
                 return nullptr;
         }
 
         // Get station start track element and position
-        auto mapLocation = location.ToCoordsXYZ();
+        auto mapLocation = location.toCoordsXYZ();
         TileElement* tileElement = RideGetStationExitElement(mapLocation);
         if (tileElement == nullptr)
             return nullptr;
 
         // Set x,y to centre of the station exit for the mechanic search.
-        auto centreMapLocation = mapLocation.ToTileCentre();
+        auto centreMapLocation = mapLocation.toTileCentre();
 
         return FindClosestMechanic(centreMapLocation, forInspection);
     }
@@ -1547,7 +1547,7 @@ namespace OpenRCT2
                     continue;
             }
 
-            auto location = entrancePosition.ToTileStart();
+            auto location = entrancePosition.toTileStart();
             if (MapIsLocationInPark(location))
                 if (!peep->isLocationInPatrol(location))
                     continue;
@@ -1569,7 +1569,7 @@ namespace OpenRCT2
 
     Staff* RideGetMechanic(const Ride& ride)
     {
-        auto staff = getGameState().entities.GetEntity<Staff>(ride.mechanic);
+        auto staff = getGameState().entities.getEntity<Staff>(ride.mechanic);
         if (staff != nullptr && staff->isMechanic())
         {
             return staff;
@@ -1655,7 +1655,7 @@ namespace OpenRCT2
      */
     void CircusMusicUpdate(Ride& ride)
     {
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle == nullptr || vehicle->status != Vehicle::Status::doingCircusShow)
         {
             ride.musicPosition = 0;
@@ -1668,7 +1668,7 @@ namespace OpenRCT2
             return;
         }
 
-        CoordsXYZ rideCoords = ride.getStation().GetStart().ToTileCentre();
+        CoordsXYZ rideCoords = ride.getStation().getStart().toTileCentre();
 
         const auto sampleRate = RideMusicSampleRate(ride);
 
@@ -1706,7 +1706,7 @@ namespace OpenRCT2
             return;
         }
 
-        CoordsXYZ rideCoords = ride.getStation().GetStart().ToTileCentre();
+        CoordsXYZ rideCoords = ride.getStation().getStart().toTileCentre();
 
         int32_t sampleRate = RideMusicSampleRate(ride);
 
@@ -1735,7 +1735,7 @@ namespace OpenRCT2
         if (measurement.vehicle_index >= std::size(ride.vehicles))
             return;
 
-        auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[measurement.vehicle_index]);
+        auto vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[measurement.vehicle_index]);
         if (vehicle == nullptr)
             return;
 
@@ -1832,7 +1832,7 @@ namespace OpenRCT2
                     for (int32_t j = 0; j < ride.numTrains; j++)
                     {
                         auto vehicleSpriteIdx = ride.vehicles[j];
-                        auto vehicle = gameState.entities.GetEntity<Vehicle>(vehicleSpriteIdx);
+                        auto vehicle = gameState.entities.getEntity<Vehicle>(vehicleSpriteIdx);
                         if (vehicle != nullptr)
                         {
                             if (vehicle->status == Vehicle::Status::departing
@@ -2035,7 +2035,7 @@ namespace OpenRCT2
      */
     static bool RideEntranceExitIsReachable(const TileCoordsXYZD& coordinates)
     {
-        if (coordinates.IsNull())
+        if (coordinates.isNull())
             return true;
 
         TileCoordsXYZ loc{ coordinates.x, coordinates.y, coordinates.z };
@@ -2048,14 +2048,14 @@ namespace OpenRCT2
     {
         for (auto& station : ride.getStations())
         {
-            auto station_start = station.Start;
-            auto entrance = station.Entrance;
-            auto exit = station.Exit;
+            auto station_start = station.start;
+            auto entrance = station.entrance;
+            auto exit = station.exit;
 
-            if (station_start.IsNull())
+            if (station_start.isNull())
                 continue;
 
-            if (!entrance.IsNull() && !RideEntranceExitIsReachable(entrance))
+            if (!entrance.isNull() && !RideEntranceExitIsReachable(entrance))
             {
                 // name of ride is parameter of the format string
                 Formatter ft;
@@ -2067,7 +2067,7 @@ namespace OpenRCT2
                 ride.connectedMessageThrottle = 3;
             }
 
-            if (!exit.IsNull() && !RideEntranceExitIsReachable(exit))
+            if (!exit.isNull() && !RideEntranceExitIsReachable(exit))
             {
                 // name of ride is parameter of the format string
                 Formatter ft;
@@ -2083,8 +2083,8 @@ namespace OpenRCT2
 
     static void RideShopConnected(const Ride& ride)
     {
-        auto shopLoc = TileCoordsXY(ride.getStation().Start);
-        if (shopLoc.IsNull())
+        auto shopLoc = TileCoordsXY(ride.getStation().start);
+        if (shopLoc.isNull())
             return;
 
         TrackElement* trackElement = nullptr;
@@ -2217,9 +2217,9 @@ namespace OpenRCT2
             // Get the queue length
             int32_t queueLength = 0;
             const auto stationIndex = entranceElement.getStationIndex();
-            if (!ride->getStation(stationIndex).Entrance.IsNull())
+            if (!ride->getStation(stationIndex).entrance.isNull())
             {
-                queueLength = ride->getStation(stationIndex).QueueLength;
+                queueLength = ride->getStation(stationIndex).queueLength;
             }
 
             auto ft = Formatter();
@@ -2304,7 +2304,7 @@ namespace OpenRCT2
         uint16_t numStations = 0;
         for (const auto& station : ride.getStations())
         {
-            if (!station.Start.IsNull())
+            if (!station.start.isNull())
             {
                 numStations++;
             }
@@ -2377,22 +2377,22 @@ namespace OpenRCT2
         uint8_t exit = 0;
         for (const auto& station : ride->getStations())
         {
-            if (station.Start.IsNull())
+            if (station.start.isNull())
                 continue;
 
-            if (!station.Entrance.IsNull())
+            if (!station.entrance.isNull())
             {
                 entrance = 1;
             }
 
-            if (!station.Exit.IsNull())
+            if (!station.exit.isNull())
             {
                 exit = 1;
             }
 
             // If station start and no entrance/exit
             // Sets same error message as no entrance
-            if (station.Exit.IsNull() && station.Entrance.IsNull())
+            if (station.exit.isNull() && station.entrance.isNull())
             {
                 entrance = 0;
                 break;
@@ -2420,14 +2420,14 @@ namespace OpenRCT2
     {
         for (const auto& station : stations)
         {
-            if (station.Entrance.IsNull())
+            if (station.entrance.isNull())
                 continue;
 
-            auto mapLocation = station.Entrance.ToCoordsXYZ();
+            auto mapLocation = station.entrance.toCoordsXYZ();
 
             // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
             // the ride or not.
-            TileElement* tileElement = MapGetFirstElementAt(station.Entrance);
+            TileElement* tileElement = MapGetFirstElementAt(station.entrance);
             if (tileElement != nullptr)
             {
                 do
@@ -2764,21 +2764,21 @@ namespace OpenRCT2
         TileCoordsXYZD* position = positions;
         for (const auto& station : ride.getStations())
         {
-            if (!station.Entrance.IsNull())
+            if (!station.entrance.isNull())
             {
-                *position++ = station.Entrance;
+                *position++ = station.entrance;
             }
-            if (!station.Exit.IsNull())
+            if (!station.exit.isNull())
             {
-                *position++ = station.Exit;
+                *position++ = station.exit;
             }
         }
-        position->SetNull();
+        position->setNull();
 
         // Enumerate entrance and exit positions
-        for (position = positions; !position->IsNull(); position++)
+        for (position = positions; !position->isNull(); position++)
         {
-            auto entranceExitMapPos = position->ToCoordsXYZ();
+            auto entranceExitMapPos = position->toCoordsXYZ();
 
             TileElement* tileElement = MapGetFirstElementAt(*position);
             do
@@ -2935,8 +2935,8 @@ namespace OpenRCT2
     static int32_t count_free_misc_sprite_slots()
     {
         auto& gameState = getGameState();
-        int32_t miscSpriteCount = gameState.entities.GetMiscEntityCount();
-        int32_t remainingSpriteCount = gameState.entities.GetNumFreeEntities();
+        int32_t miscSpriteCount = gameState.entities.getMiscEntityCount();
+        int32_t remainingSpriteCount = gameState.entities.getNumFreeEntities();
         return std::max(0, miscSpriteCount + remainingSpriteCount - 300);
     }
 
@@ -2978,7 +2978,7 @@ namespace OpenRCT2
 
         auto& carEntry = rideEntry->Cars[carEntryIndex];
 
-        auto* vehicle = getGameState().entities.CreateEntity<Vehicle>();
+        auto* vehicle = getGameState().entities.createEntity<Vehicle>();
         if (vehicle == nullptr)
             return nullptr;
 
@@ -3166,7 +3166,7 @@ namespace OpenRCT2
         // Loc6DDD5E:
         vehicle->num_peeps = 0;
         vehicle->next_free_seat = 0;
-        vehicle->BoatLocation.SetNull();
+        vehicle->BoatLocation.setNull();
         return vehicle;
     }
 
@@ -3263,7 +3263,7 @@ namespace OpenRCT2
      */
     static void RidecreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYElement)
     {
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle == nullptr)
             return;
 
@@ -3386,7 +3386,7 @@ namespace OpenRCT2
         flags.set(RideFlag::onTrack);
         for (int32_t i = 0; i < Limits::kMaxStationsPerRide; i++)
         {
-            stations[i].Depart = (stations[i].Depart & kStationDepartFlag) | 1;
+            stations[i].depart = (stations[i].depart & kStationDepartFlag) | 1;
         }
 
         const auto& rtd = getRideTypeDescriptor();
@@ -3403,7 +3403,7 @@ namespace OpenRCT2
             {
                 for (int32_t i = 0; i < numTrains; i++)
                 {
-                    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicles[i]);
+                    Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(vehicles[i]);
                     if (vehicle == nullptr)
                     {
                         continue;
@@ -3447,7 +3447,7 @@ namespace OpenRCT2
 
         for (int32_t i = 0; i < numTrains; i++)
         {
-            auto train = getGameState().entities.GetEntity<Vehicle>(vehicles[i]);
+            auto train = getGameState().entities.getEntity<Vehicle>(vehicles[i]);
             if (train == nullptr)
                 continue;
 
@@ -3484,7 +3484,7 @@ namespace OpenRCT2
                 }
                 firstBlock.setBrakeClosed(true);
                 for (Vehicle* car = train; car != nullptr;
-                     car = getGameState().entities.GetEntity<Vehicle>(car->next_vehicle_on_train))
+                     car = getGameState().entities.getEntity<Vehicle>(car->next_vehicle_on_train))
                 {
                     car->velocity = 0;
                     car->acceleration = 0;
@@ -3501,7 +3501,7 @@ namespace OpenRCT2
                 BlockBrakeSetLinkedBrakesClosed(firstBlockPosition, firstBlock, true);
             }
             for (Vehicle* car = train; car != nullptr;
-                 car = getGameState().entities.GetEntity<Vehicle>(car->next_vehicle_on_train))
+                 car = getGameState().entities.getEntity<Vehicle>(car->next_vehicle_on_train))
             {
                 car->flags.unset(VehicleFlag::collisionDisabled);
                 car->SetState(Vehicle::Status::travelling, car->sub_state);
@@ -3523,8 +3523,8 @@ namespace OpenRCT2
     {
         for (const auto& station : ride.getStations())
         {
-            CoordsXYZ trackStart = station.GetStart();
-            if (trackStart.IsNull())
+            CoordsXYZ trackStart = station.getStart();
+            if (trackStart.isNull())
                 continue;
 
             TileElement* tileElement = MapGetTrackElementAtOfType(trackStart, TrackElemType::endStation);
@@ -3695,17 +3695,17 @@ namespace OpenRCT2
         const RideStation* incompleteStation = nullptr;
         for (const auto& station : stations)
         {
-            if (station.Start.IsNull())
+            if (station.start.isNull())
                 continue;
 
-            if (station.Entrance.IsNull())
+            if (station.entrance.isNull())
             {
                 entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
                 incompleteStation = &station;
                 break;
             }
 
-            if (station.Exit.IsNull())
+            if (station.exit.isNull())
             {
                 entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
                 incompleteStation = &station;
@@ -3721,7 +3721,7 @@ namespace OpenRCT2
         const auto& rtd = getRideTypeDescriptor();
         if (rtd.specialType != RtdSpecialType::maze)
         {
-            auto location = incompleteStation->GetStart();
+            auto location = incompleteStation->getStart();
             WindowScrollToLocation(*w, location);
 
             CoordsXYE trackElement;
@@ -3763,7 +3763,7 @@ namespace OpenRCT2
      */
     TrackElement* Ride::getOriginElement(StationIndex stationIndex) const
     {
-        auto stationLoc = getStation(stationIndex).Start;
+        auto stationLoc = getStation(stationIndex).start;
         TileElement* tileElement = MapGetFirstElementAt(stationLoc);
         if (tileElement == nullptr)
             return nullptr;
@@ -4403,7 +4403,7 @@ namespace OpenRCT2
         {
             for (int32_t i = 0; i < ride.numTrains; i++)
             {
-                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
+                Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]);
                 if (vehicle != nullptr)
                 {
                     vehicle->flags.unset(VehicleFlag::testing);
@@ -4431,8 +4431,8 @@ namespace OpenRCT2
         {
             for (int32_t i = 0; i < ride.numTrains; i++)
             {
-                for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
-                     vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                for (Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
+                     vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
                     vehicle->flags.unset(
                         VehicleFlag::stoppedBySafetyCutout, VehicleFlag::carIsBroken, VehicleFlag::trainIsBroken);
@@ -4453,15 +4453,15 @@ namespace OpenRCT2
         const auto& rtd = ride.getRideTypeDescriptor();
         if (rtd.specialType == RtdSpecialType::spaceRings || rtd.flags.has(RtdFlag::vehicleIsIntegral))
         {
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
         auto& entities = getGameState().entities;
         for (int32_t i = 0; i <= Limits::kMaxTrainsPerRide; i++)
         {
             int32_t carIndex = 0;
-            for (Vehicle* vehicle = entities.GetEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
-                 vehicle = entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+            for (Vehicle* vehicle = entities.getEntity<Vehicle>(ride.vehicles[i]); vehicle != nullptr;
+                 vehicle = entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
                 VehicleColour colours = {};
                 switch (ride.vehicleColourSettings)
@@ -4723,11 +4723,11 @@ namespace OpenRCT2
         std::optional<int32_t> result;
         for (const auto& station : ride.getStations())
         {
-            if (!station.Start.IsNull())
+            if (!station.start.isNull())
             {
-                if (!result.has_value() || station.Length < result.value())
+                if (!result.has_value() || station.length < result.value())
                 {
-                    result = station.Length;
+                    result = station.length;
                 }
             }
         }
@@ -4747,8 +4747,8 @@ namespace OpenRCT2
 
         for (const auto& station : ride.getStations())
         {
-            trackStart = station.GetStart();
-            if (trackStart.IsNull())
+            trackStart = station.getStart();
+            if (trackStart.isNull())
                 continue;
 
             tileElement = MapGetFirstElementAt(trackStart);
@@ -5013,7 +5013,7 @@ namespace OpenRCT2
      */
     void Ride::crash(uint8_t vehicleIndex)
     {
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicles[vehicleIndex]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(vehicles[vehicleIndex]);
 
         if (gLegacyScene != LegacyScene::titleSequence && vehicle != nullptr)
         {
@@ -5059,7 +5059,7 @@ namespace OpenRCT2
     Vehicle* RideGetBrokenVehicle(const Ride& ride)
     {
         auto vehicleIndex = ride.vehicles[ride.brokenTrain];
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicleIndex);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(vehicleIndex);
         if (vehicle != nullptr)
         {
             return vehicle->GetCar(ride.brokenCar);
@@ -5186,8 +5186,8 @@ namespace OpenRCT2
          * adjacent station on either side. */
         for (const auto& station : ride.getStations())
         {
-            auto stationStart = station.GetStart();
-            if (!stationStart.IsNull())
+            auto stationStart = station.getStart();
+            if (!stationStart.isNull())
             {
                 /* Get the map element for the station start. */
                 TileElement* stationElement = GetStationPlatform({ stationStart, stationStart.z + 0 });
@@ -5213,7 +5213,7 @@ namespace OpenRCT2
     bool RideHasStationShelter(const Ride& ride)
     {
         const auto* stationObj = ride.getStationObject();
-        return stationObj != nullptr && (stationObj->Flags & StationObjectFlags::hasShelter);
+        return stationObj != nullptr && stationObj->Flags.has(StationObjectFlag::hasShelter);
     }
 
     bool RideHasRatings(const Ride& ride)
@@ -5233,8 +5233,8 @@ namespace OpenRCT2
         {
             for (auto entityIndex : ride.vehicles)
             {
-                for (Vehicle* vehicle = getGameState().entities.TryGetEntity<Vehicle>(entityIndex); vehicle != nullptr;
-                     vehicle = getGameState().entities.TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                for (Vehicle* vehicle = getGameState().entities.tryGetEntity<Vehicle>(entityIndex); vehicle != nullptr;
+                     vehicle = getGameState().entities.tryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
                     auto carEntry = vehicle->Entry();
                     if (carEntry == nullptr)
@@ -5330,15 +5330,15 @@ namespace OpenRCT2
             for (auto& station : ride.getStations())
             {
                 auto stationIndex = ride.getStationIndex(&station);
-                TileCoordsXYZD entranceLoc = station.Entrance;
-                TileCoordsXYZD exitLoc = station.Exit;
+                TileCoordsXYZD entranceLoc = station.entrance;
+                TileCoordsXYZD exitLoc = station.exit;
                 bool fixEntrance = false;
                 bool fixExit = false;
 
                 // Skip if the station has no entrance
-                if (!entranceLoc.IsNull())
+                if (!entranceLoc.isNull())
                 {
-                    const EntranceElement* entranceElement = MapGetRideEntranceElementAt(entranceLoc.ToCoordsXYZD(), false);
+                    const EntranceElement* entranceElement = MapGetRideEntranceElementAt(entranceLoc.toCoordsXYZD(), false);
 
                     if (entranceElement == nullptr || entranceElement->getRideIndex() != ride.id
                         || entranceElement->getStationIndex() != stationIndex)
@@ -5347,13 +5347,13 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        station.Entrance.direction = entranceElement->getDirection();
+                        station.entrance.direction = entranceElement->getDirection();
                     }
                 }
 
-                if (!exitLoc.IsNull())
+                if (!exitLoc.isNull())
                 {
-                    const EntranceElement* entranceElement = MapGetRideExitElementAt(exitLoc.ToCoordsXYZD(), false);
+                    const EntranceElement* entranceElement = MapGetRideExitElementAt(exitLoc.toCoordsXYZD(), false);
 
                     if (entranceElement == nullptr || entranceElement->getRideIndex() != ride.id
                         || entranceElement->getStationIndex() != stationIndex)
@@ -5362,7 +5362,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        station.Exit.direction = entranceElement->getDirection();
+                        station.exit.direction = entranceElement->getDirection();
                     }
                 }
 
@@ -5400,20 +5400,20 @@ namespace OpenRCT2
                                 }
 
                                 // The expected height is where entrances and exit reside in non-hacked parks.
-                                const uint8_t expectedHeight = station.Height;
+                                const uint8_t expectedHeight = station.height;
 
                                 if (fixEntrance && entranceElement->getEntranceType() == EntranceType::rideEntrance)
                                 {
                                     if (alreadyFoundEntrance)
                                     {
-                                        if (station.Entrance.z == expectedHeight)
+                                        if (station.entrance.z == expectedHeight)
                                             continue;
-                                        if (station.Entrance.z > entranceElement->baseHeight)
+                                        if (station.entrance.z > entranceElement->baseHeight)
                                             continue;
                                     }
 
                                     // Found our entrance
-                                    station.Entrance = { x, y, entranceElement->baseHeight, entranceElement->getDirection() };
+                                    station.entrance = { x, y, entranceElement->baseHeight, entranceElement->getDirection() };
                                     alreadyFoundEntrance = true;
 
                                     LOG_VERBOSE(
@@ -5424,14 +5424,14 @@ namespace OpenRCT2
                                 {
                                     if (alreadyFoundExit)
                                     {
-                                        if (station.Exit.z == expectedHeight)
+                                        if (station.exit.z == expectedHeight)
                                             continue;
-                                        if (station.Exit.z > entranceElement->baseHeight)
+                                        if (station.exit.z > entranceElement->baseHeight)
                                             continue;
                                     }
 
                                     // Found our exit
-                                    station.Exit = { x, y, entranceElement->baseHeight, entranceElement->getDirection() };
+                                    station.exit = { x, y, entranceElement->baseHeight, entranceElement->getDirection() };
                                     alreadyFoundExit = true;
 
                                     LOG_VERBOSE(
@@ -5445,12 +5445,12 @@ namespace OpenRCT2
 
                 if (fixEntrance && !alreadyFoundEntrance)
                 {
-                    station.Entrance.SetNull();
+                    station.entrance.setNull();
                     LOG_VERBOSE("Cleared disconnected entrance of ride %d, station %d.", ride.id, stationIndex);
                 }
                 if (fixExit && !alreadyFoundExit)
                 {
-                    station.Exit.SetNull();
+                    station.exit.setNull();
                     LOG_VERBOSE("Cleared disconnected exit of ride %d, station %d.", ride.id, stationIndex);
                 }
             }
@@ -5464,7 +5464,7 @@ namespace OpenRCT2
         {
             for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
             {
-                for (auto* entrance : TileElementsView<EntranceElement>(tilePos.ToCoordsXY()))
+                for (auto* entrance : TileElementsView<EntranceElement>(tilePos.toCoordsXY()))
                 {
                     const bool isRideEntranceExit = entrance->getEntranceType() == EntranceType::rideEntrance
                         || entrance->getEntranceType() == EntranceType::rideExit;
@@ -5634,7 +5634,7 @@ namespace OpenRCT2
 
     ResultWithMessage Ride::changeStatusGetStartElement(StationIndex stationIndex, CoordsXYE& trackElement)
     {
-        auto startLoc = getStation(stationIndex).Start;
+        auto startLoc = getStation(stationIndex).start;
         trackElement.x = startLoc.x;
         trackElement.y = startLoc.y;
         trackElement.element = reinterpret_cast<TileElement*>(getOriginElement(stationIndex));

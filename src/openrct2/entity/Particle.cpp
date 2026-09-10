@@ -75,7 +75,7 @@ namespace OpenRCT2
      */
     void VehicleCrashParticle::create(VehicleColour& colours, const CoordsXYZ& vehiclePos)
     {
-        VehicleCrashParticle* sprite = getGameState().entities.CreateEntity<VehicleCrashParticle>();
+        VehicleCrashParticle* sprite = getGameState().entities.createEntity<VehicleCrashParticle>();
         if (sprite != nullptr)
         {
             sprite->moveTo(vehiclePos);
@@ -96,7 +96,7 @@ namespace OpenRCT2
         timeToLive--;
         if (timeToLive == 0)
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
             return;
         }
 
@@ -128,7 +128,7 @@ namespace OpenRCT2
             // Splash
             Audio::Play3D(Audio::SoundId::water2, { x, y, waterZ });
             CrashSplashParticle::create({ x, y, waterZ });
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
             return;
         }
 
@@ -168,7 +168,7 @@ namespace OpenRCT2
      */
     void CrashSplashParticle::create(const CoordsXYZ& splashPos)
     {
-        auto* sprite = getGameState().entities.CreateEntity<CrashSplashParticle>();
+        auto* sprite = getGameState().entities.createEntity<CrashSplashParticle>();
         if (sprite != nullptr)
         {
             sprite->spriteData.width = 33;
@@ -189,7 +189,7 @@ namespace OpenRCT2
         frame += 85;
         if (frame >= 7168)
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 
@@ -208,7 +208,7 @@ namespace OpenRCT2
         auto surfaceElement = MapGetSurfaceElementAt(coords);
         if (surfaceElement != nullptr && coords.z > surfaceElement->getBaseZ())
         {
-            SteamParticle* steam = getGameState().entities.CreateEntity<SteamParticle>();
+            SteamParticle* steam = getGameState().entities.createEntity<SteamParticle>();
             if (steam == nullptr)
                 return;
 
@@ -238,7 +238,7 @@ namespace OpenRCT2
         frame += 64;
         if (frame >= (56 * 64))
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 
@@ -255,7 +255,7 @@ namespace OpenRCT2
      */
     void ExplosionCloud::create(const CoordsXYZ& cloudPos)
     {
-        auto* entity = getGameState().entities.CreateEntity<ExplosionCloud>();
+        auto* entity = getGameState().entities.createEntity<ExplosionCloud>();
         if (entity != nullptr)
         {
             entity->spriteData.width = 44;
@@ -276,7 +276,7 @@ namespace OpenRCT2
         frame += 128;
         if (frame >= (36 * 128))
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 
@@ -292,7 +292,7 @@ namespace OpenRCT2
      */
     void ExplosionFlare::create(const CoordsXYZ& flarePos)
     {
-        auto* entity = getGameState().entities.CreateEntity<ExplosionFlare>();
+        auto* entity = getGameState().entities.createEntity<ExplosionFlare>();
         if (entity != nullptr)
         {
             entity->spriteData.width = 25;
@@ -313,7 +313,7 @@ namespace OpenRCT2
         frame += 64;
         if (frame >= (124 * 64))
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 

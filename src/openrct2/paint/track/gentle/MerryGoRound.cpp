@@ -63,7 +63,7 @@ static void PaintCarousel(
     if (rideEntry == nullptr)
         return;
 
-    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+    auto vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::entity;

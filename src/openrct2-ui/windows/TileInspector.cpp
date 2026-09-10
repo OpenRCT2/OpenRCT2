@@ -1822,7 +1822,7 @@ namespace OpenRCT2::Ui::Windows
             // Invalidate the previous selection
             if (auto* elem = OpenRCT2::TileInspector::GetSelectedElement(); elem != nullptr)
             {
-                MapInvalidateElement(windowTileInspectorTile.ToCoordsXY(), elem);
+                MapInvalidateElement(windowTileInspectorTile.toCoordsXY(), elem);
             }
 
             _tileSelected = true;

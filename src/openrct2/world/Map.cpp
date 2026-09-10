@@ -384,7 +384,7 @@ namespace OpenRCT2
 
     void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements)
     {
-        if (!MapIsLocationValid(tilePos.ToCoordsXY()))
+        if (!MapIsLocationValid(tilePos.toCoordsXY()))
         {
             LOG_ERROR("Trying to access element outside of range");
             return;
@@ -406,7 +406,7 @@ namespace OpenRCT2
 
     PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc)
     {
-        for (auto* element : TileElementsView<PathElement>(loc.ToCoordsXY()))
+        for (auto* element : TileElementsView<PathElement>(loc.toCoordsXY()))
         {
             if (element->isGhost())
                 continue;
@@ -943,7 +943,7 @@ namespace OpenRCT2
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
-                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                if (!MapIsLocationInPark(tileCoords.toCoordsXY()))
                     continue;
             }
 
@@ -963,7 +963,7 @@ namespace OpenRCT2
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
-                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                if (!MapIsLocationInPark(tileCoords.toCoordsXY()))
                     continue;
             }
 
@@ -1033,7 +1033,7 @@ namespace OpenRCT2
                     [[fallthrough]];
                 case TileElementType::track:
                     FootpathQueueChainReset();
-                    FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
+                    FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.toCoordsXY(), it.element);
                     TileElementRemove(it.element);
                     TileElementIteratorRestartForTile(&it);
                     break;
@@ -1207,7 +1207,7 @@ namespace OpenRCT2
             {
                 for (int32_t blockX = 0; blockX < gameState.mapSize.x; blockX += 256)
                 {
-                    auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
+                    auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.toCoordsXY();
                     if (MapIsEdge(mapPos))
                         continue;
 
@@ -1353,7 +1353,7 @@ namespace OpenRCT2
                 {
                     MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 1);
                 }
-                Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
+                Park::UpdateFences(TileCoordsXY{ x, y }.toCoordsXY());
             }
         }
     }
@@ -1370,7 +1370,7 @@ namespace OpenRCT2
                 {
                     MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 2);
                 }
-                Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
+                Park::UpdateFences(TileCoordsXY{ x, y }.toCoordsXY());
             }
         }
     }
@@ -1479,7 +1479,7 @@ namespace OpenRCT2
         gameState.peepSpawns.erase(
             std::remove_if(
                 gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
-                [loc](const CoordsXY& spawn) { return spawn.ToTileStart() == loc.ToTileStart(); }),
+                [loc](const CoordsXY& spawn) { return spawn.toTileStart() == loc.toTileStart(); }),
             gameState.peepSpawns.end());
 
         TileElement* tileElement = MapGetFirstElementAt(loc);
@@ -1648,7 +1648,7 @@ namespace OpenRCT2
         auto& tile = sceneryEntry->tiles[sequence];
 
         CoordsXY offsetPos{ tile.offset };
-        auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
+        auto rotatedOffsetPos = offsetPos.rotate(sceneryPos.direction);
 
         auto origin = CoordsXYZ{ sceneryPos.x - rotatedOffsetPos.x, sceneryPos.y - rotatedOffsetPos.y,
                                  sceneryPos.z - tile.offset.z };
@@ -1678,7 +1678,7 @@ namespace OpenRCT2
         for (auto& tile : sceneryEntry->tiles)
         {
             CoordsXY offsetPos{ tile.offset };
-            auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);
+            auto rotatedOffsetPos = offsetPos.rotate(signPos.direction);
 
             auto tmpSignPos = CoordsXYZD{ sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                           sceneryOrigin->z + tile.offset.z, signPos.direction };
@@ -2127,13 +2127,13 @@ namespace OpenRCT2
 
     static inline void shiftIfNotNull(TileCoordsXY& coords, const TileCoordsXY& amount)
     {
-        if (!coords.IsNull())
+        if (!coords.isNull())
             coords += amount;
     }
 
     static inline void shiftIfNotNull(CoordsXY& coords, const CoordsXY& amount)
     {
-        if (!coords.IsNull())
+        if (!coords.isNull())
             coords += amount;
     }
 
@@ -2142,7 +2142,7 @@ namespace OpenRCT2
         if (amount.x == 0 && amount.y == 0)
             return;
 
-        auto amountToMove = amount.ToCoordsXY();
+        auto amountToMove = amount.toCoordsXY();
         auto& gameState = getGameState();
 
         // Tile elements
@@ -2191,17 +2191,17 @@ namespace OpenRCT2
             shiftIfNotNull(entrance, amountToMove);
 
         // Entities
-        auto& entityTweener = EntityTweener::Get();
+        auto& entityTweener = EntityTweener::get();
         for (auto i = 0; i < EnumValue(EntityType::count); i++)
         {
             auto entityType = static_cast<EntityType>(i);
-            auto& list = getGameState().entities.GetEntityList(entityType);
+            auto& list = getGameState().entities.getEntityList(entityType);
             for (const auto& entityId : list)
             {
-                auto entity = getGameState().entities.GetEntity(entityId);
+                auto entity = getGameState().entities.getEntity(entityId);
 
                 // Do not tween the entity
-                entityTweener.RemoveEntity(entity);
+                entityTweener.removeEntity(entity);
 
                 auto location = entity->getLocation();
                 shiftIfNotNull(location, amountToMove);
@@ -2265,11 +2265,11 @@ namespace OpenRCT2
                         auto patrol = staff->patrolInfo;
                         if (patrol != nullptr)
                         {
-                            auto positions = patrol->ToVector();
+                            auto positions = patrol->toVector();
                             for (auto& p : positions)
                                 shiftIfNotNull(p, amount);
-                            patrol->Clear();
-                            patrol->Union(positions);
+                            patrol->clear();
+                            patrol->unify(positions);
                         }
                     }
                 }
@@ -2283,9 +2283,9 @@ namespace OpenRCT2
             auto stations = ride.getStations();
             for (auto& station : stations)
             {
-                shiftIfNotNull(station.Start, amountToMove);
-                shiftIfNotNull(station.Entrance, amount);
-                shiftIfNotNull(station.Exit, amount);
+                shiftIfNotNull(station.start, amountToMove);
+                shiftIfNotNull(station.entrance, amount);
+                shiftIfNotNull(station.exit, amount);
             }
 
             shiftIfNotNull(ride.overallView, amountToMove);

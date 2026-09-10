@@ -516,7 +516,7 @@ namespace OpenRCT2::Ui
 
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     {
-        const uint8_t buttonOffset = (Config::Get().interface.windowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
+        const uint8_t buttonOffset = (Config::Get().interface.windowButtonsOnTheLeft) ? kCloseButtonSize.width + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
 } // namespace OpenRCT2::Ui
@@ -616,6 +616,14 @@ namespace OpenRCT2::Ui::Windows
     void SetTexboxSession(TextInputSession* session)
     {
         _textInput = session;
+    }
+    void SetTextboxCaret(size_t position)
+    {
+        if (_textInput != nullptr)
+        {
+            _textInput->SelectionStart = std::clamp<size_t>(position, 0, _textInput->Length);
+            _textInput->SelectionSize = 0;
+        }
     }
     bool IsUsingWidgetTextBox()
     {

@@ -218,7 +218,7 @@ namespace OpenRCT2
 
     Vehicle* TryGetVehicle(EntityId spriteIndex)
     {
-        return getGameState().entities.TryGetEntity<Vehicle>(spriteIndex);
+        return getGameState().entities.tryGetEntity<Vehicle>(spriteIndex);
     }
 
     /**
@@ -253,8 +253,8 @@ namespace OpenRCT2
             return true;
 
         bool restraintsClosed = true;
-        for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
-             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+        for (Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(id); vehicle != nullptr;
+             vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
             if (vehicle->flags.has(VehicleFlag::carIsBroken) && vehicle->restraints_position != 0
                 && (curRide->breakdownReasonPending == Breakdown::restraintsStuckOpen
@@ -271,7 +271,7 @@ namespace OpenRCT2
 
                     curRide->mechanicStatus = MechanicStatus::calling;
 
-                    Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(
+                    Vehicle* broken_vehicle = getGameState().entities.getEntity<Vehicle>(
                         curRide->vehicles[curRide->brokenTrain]);
                     if (broken_vehicle != nullptr)
                     {
@@ -303,8 +303,8 @@ namespace OpenRCT2
     bool Vehicle::OpenRestraints()
     {
         int32_t restraintsOpen = true;
-        for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
-             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+        for (Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(id); vehicle != nullptr;
+             vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
             vehicle->SwingPosition = 0;
             vehicle->SwingSpeed = 0;
@@ -389,7 +389,7 @@ namespace OpenRCT2
 
                     curRide->mechanicStatus = MechanicStatus::calling;
 
-                    Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(
+                    Vehicle* broken_vehicle = getGameState().entities.getEntity<Vehicle>(
                         curRide->vehicles[curRide->brokenTrain]);
                     if (broken_vehicle != nullptr)
                     {
@@ -457,7 +457,7 @@ namespace OpenRCT2
             return;
 
         const auto& currentStation = curRide->getStation(curRide->currentTestStation);
-        if (!currentStation.Entrance.IsNull())
+        if (!currentStation.entrance.isNull())
         {
             uint8_t test_segment = curRide->currentTestSegment;
             StationIndex stationIndex = StationIndex::FromUnderlying(test_segment);
@@ -476,13 +476,13 @@ namespace OpenRCT2
             if (curRide->averageSpeedTestTimeout == 0 && absVelocity > 0)
             {
                 curRide->averageSpeed = AddClamp<int32_t>(curRide->averageSpeed, absVelocity);
-                stationForTestSegment.SegmentTime++;
+                stationForTestSegment.segmentTime++;
             }
 
             int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
             if (NumLaps == 0)
             {
-                stationForTestSegment.SegmentLength = AddClamp<int32_t>(stationForTestSegment.SegmentLength, distance);
+                stationForTestSegment.segmentLength = AddClamp<int32_t>(stationForTestSegment.segmentLength, distance);
             }
 
             if (curRide->getRideTypeDescriptor().flags.has(RtdFlag::hasGForces))
@@ -517,7 +517,7 @@ namespace OpenRCT2
         {
             curRide->curTestTrackLocation = curTrackLoc;
 
-            if (currentStation.Entrance.IsNull())
+            if (currentStation.entrance.isNull())
                 return;
 
             auto trackElemType = GetTrackType();
@@ -705,7 +705,7 @@ namespace OpenRCT2
             }
         }
 
-        if (currentStation.Entrance.IsNull())
+        if (currentStation.entrance.isNull())
             return;
 
         if (x == kLocationNull)
@@ -892,12 +892,12 @@ namespace OpenRCT2
      */
     void Vehicle::PeepEasterEggHereWeAre() const
     {
-        for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
-             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+        for (Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(id); vehicle != nullptr;
+             vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
             for (int32_t i = 0; i < vehicle->num_peeps; ++i)
             {
-                auto* curPeep = getGameState().entities.GetEntity<Guest>(vehicle->peep[i]);
+                auto* curPeep = getGameState().entities.getEntity<Guest>(vehicle->peep[i]);
                 if (curPeep != nullptr && curPeep->peepFlags.has(PeepFlag::hereWeAre))
                 {
                     curPeep->insertNewThought(PeepThoughtType::hereWeAre, curPeep->currentRide);
@@ -919,22 +919,22 @@ namespace OpenRCT2
         auto rideStations = ride.getStations();
         for (int32_t i = ride.numStations - 1; i >= 1; i--)
         {
-            if (rideStations[i - 1].SegmentTime != 0)
+            if (rideStations[i - 1].segmentTime != 0)
                 continue;
 
-            uint16_t oldTime = rideStations[i - 1].SegmentTime;
-            rideStations[i - 1].SegmentTime = rideStations[i].SegmentTime;
-            rideStations[i].SegmentTime = oldTime;
+            uint16_t oldTime = rideStations[i - 1].segmentTime;
+            rideStations[i - 1].segmentTime = rideStations[i].segmentTime;
+            rideStations[i].segmentTime = oldTime;
 
-            int32_t oldLength = rideStations[i - 1].SegmentLength;
-            rideStations[i - 1].SegmentLength = rideStations[i].SegmentLength;
-            rideStations[i].SegmentLength = oldLength;
+            int32_t oldLength = rideStations[i - 1].segmentLength;
+            rideStations[i - 1].segmentLength = rideStations[i].segmentLength;
+            rideStations[i].segmentLength = oldLength;
         }
 
         uint32_t totalTime = 0;
         for (uint8_t i = 0; i < ride.numStations; ++i)
         {
-            totalTime += rideStations[i].SegmentTime;
+            totalTime += rideStations[i].segmentTime;
         }
 
         totalTime = std::max(totalTime, 1u);
@@ -971,7 +971,7 @@ namespace OpenRCT2
         ride.previousVerticalG = MakeFixed16_2dp(1, 0);
         ride.previousLateralG = 0;
         ride.testingFlags.clearAll();
-        ride.curTestTrackLocation.SetNull();
+        ride.curTestTrackLocation.setNull();
         ride.turnCountDefault = 0;
         ride.turnCountBanked = 0;
         ride.turnCountSloped = 0;
@@ -988,8 +988,8 @@ namespace OpenRCT2
         ride.specialTrackElements.clearAll();
         for (auto& station : ride.getStations())
         {
-            station.SegmentLength = 0;
-            station.SegmentTime = 0;
+            station.segmentLength = 0;
+            station.segmentTime = 0;
         }
         ride.totalAirTime = 0;
         ride.currentTestStation = curStation;
@@ -1048,7 +1048,7 @@ namespace OpenRCT2
         if (curRide == nullptr)
             return;
 
-        Vehicle* cableLift = getGameState().entities.GetEntity<Vehicle>(curRide->cableLift);
+        Vehicle* cableLift = getGameState().entities.getEntity<Vehicle>(curRide->cableLift);
         if (cableLift == nullptr)
             return;
 
@@ -1137,7 +1137,7 @@ namespace OpenRCT2
 
         // This is slightly different to the vanilla function
         auto& currentStation = curRide->getStation(current_station);
-        currentStation.Depart &= kStationDepartFlag;
+        currentStation.depart &= kStationDepartFlag;
         uint8_t waitingTime = 3;
         if (curRide->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
@@ -1145,7 +1145,7 @@ namespace OpenRCT2
             waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
         }
 
-        currentStation.Depart |= waitingTime;
+        currentStation.depart |= waitingTime;
     }
 
     /**
@@ -1217,7 +1217,7 @@ namespace OpenRCT2
 
         for (;;)
         {
-            prevVehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            prevVehicle = getGameState().entities.getEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
             if (prevVehicle == nullptr)
                 return nullptr;
             if (prevVehicle->next_vehicle_on_train.IsNull())
@@ -1236,7 +1236,7 @@ namespace OpenRCT2
         EntityId spriteIndex = vehicle->next_vehicle_on_train;
         while (!spriteIndex.IsNull())
         {
-            vehicle = getGameState().entities.GetEntity<Vehicle>(spriteIndex);
+            vehicle = getGameState().entities.getEntity<Vehicle>(spriteIndex);
             if (vehicle == nullptr)
             {
                 return const_cast<Vehicle*>(this);
@@ -1280,8 +1280,8 @@ namespace OpenRCT2
     int32_t Vehicle::NumPeepsUntilTrainTail() const
     {
         int32_t numPeeps = 0;
-        for (const Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(id); vehicle != nullptr;
-             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+        for (const Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(id); vehicle != nullptr;
+             vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
             numPeeps += vehicle->num_peeps;
         }
@@ -1445,7 +1445,7 @@ namespace OpenRCT2
         auto v = this;
         while (v != nullptr && !v->IsHead())
         {
-            v = getGameState().entities.GetEntity<Vehicle>(v->prev_vehicle_on_ride);
+            v = getGameState().entities.getEntity<Vehicle>(v->prev_vehicle_on_ride);
         }
         return v;
     }
@@ -1460,7 +1460,7 @@ namespace OpenRCT2
         auto car = const_cast<Vehicle*>(this);
         for (; carIndex != 0; carIndex--)
         {
-            car = getGameState().entities.GetEntity<Vehicle>(car->next_vehicle_on_train);
+            car = getGameState().entities.getEntity<Vehicle>(car->next_vehicle_on_train);
             if (car == nullptr)
             {
                 LOG_ERROR("Tried to get non-existent car from index!");
@@ -1487,7 +1487,7 @@ namespace OpenRCT2
     {
         assert(this->IsHead());
         for (auto vehicle = this; vehicle != nullptr;
-             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+             vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
             vehicle->flags.unset(VehicleFlag::collisionDisabled);
         }

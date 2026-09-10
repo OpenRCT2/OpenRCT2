@@ -212,8 +212,8 @@ namespace OpenRCT2
             if (velocity > -2.75_mph)
                 return SoundId::null;
 
-            for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(id); vehicle2 != nullptr;
-                 vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
+            for (Vehicle* vehicle2 = getGameState().entities.getEntity<Vehicle>(id); vehicle2 != nullptr;
+                 vehicle2 = getGameState().entities.getEntity<Vehicle>(vehicle2->next_vehicle_on_train))
             {
                 if (vehicle2->pitch < VehiclePitch::up12)
                     continue;
@@ -234,8 +234,8 @@ namespace OpenRCT2
         if (velocity < 2.75_mph)
             return SoundId::null;
 
-        for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(id); vehicle2 != nullptr;
-             vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
+        for (Vehicle* vehicle2 = getGameState().entities.getEntity<Vehicle>(id); vehicle2 != nullptr;
+             vehicle2 = getGameState().entities.getEntity<Vehicle>(vehicle2->next_vehicle_on_train))
         {
             if (vehicle2->pitch < VehiclePitch::down12)
                 continue;

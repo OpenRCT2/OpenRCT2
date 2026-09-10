@@ -187,7 +187,7 @@ namespace OpenRCT2::GameActions
         for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), 0 };
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.rotate(_origin.direction), 0 };
             auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
             if (!LocationValid(tileCoords))
@@ -236,7 +236,7 @@ namespace OpenRCT2::GameActions
         for (int32_t blockIndex = 0; blockIndex < ted.sequenceData.numSequences; blockIndex++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[blockIndex].clearance;
-            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.rotate(_origin.direction), trackBlock.z };
             auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
             auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
 
@@ -270,8 +270,8 @@ namespace OpenRCT2::GameActions
             // When placing from a track design, ignore track elements from the same ride to allow it to intersect itself.
             auto ignoreRideId = _fromTrackDesign ? _rideIndex : RideId::GetNull();
             auto canBuild = MapCanConstructWithClearAt(
-                { mapLoc, baseZ, clearanceZ }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
-                crossingMode, false, ignoreRideId);
+                { mapLoc, baseZ, clearanceZ }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(),
+                { .crossingMode = crossingMode, .ignoreRideId = ignoreRideId });
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -452,11 +452,11 @@ namespace OpenRCT2::GameActions
         const auto& block0 = ted.sequenceData.sequences[0].clearance;
         auto clearanceHeight = rideEntry->Clearance;
         CoordsXYZ originLocation = CoordsXYZ{ _origin.x, _origin.y, _origin.z }
-            + CoordsXYZ{ CoordsXY{ block0.x, block0.y }.Rotate(_origin.direction), block0.z };
+            + CoordsXYZ{ CoordsXY{ block0.x, block0.y }.rotate(_origin.direction), block0.z };
         for (int32_t blockIndex = 0; blockIndex < ted.sequenceData.numSequences; blockIndex++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[blockIndex].clearance;
-            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.rotate(_origin.direction), trackBlock.z };
             auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
             auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
@@ -482,7 +482,7 @@ namespace OpenRCT2::GameActions
             auto ignoreRideId = _fromTrackDesign ? _rideIndex : RideId::GetNull();
             auto canBuild = MapCanConstructWithClearAt(
                 mapLocWithClearance, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
-                kTileSlopeFlat, crossingMode, false, ignoreRideId);
+                { .crossingMode = crossingMode, .ignoreRideId = ignoreRideId });
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -554,7 +554,7 @@ namespace OpenRCT2::GameActions
             supportCosts += (supportHeight / (2 * kCoordsZStep)) * rtd.BuildCosts.SupportPrice;
 
             bool isOrigin = false;
-            if (!ride->overallView.IsNull())
+            if (!ride->overallView.isNull())
             {
                 if (!GetFlags().has(CommandFlag::noSpend))
                 {
@@ -562,7 +562,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (isOrigin || ride->overallView.IsNull())
+            if (isOrigin || ride->overallView.isNull())
             {
                 ride->overallView = mapLoc;
             }
@@ -746,7 +746,7 @@ namespace OpenRCT2::GameActions
         for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-            auto rotatedTrack = CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction);
+            auto rotatedTrack = CoordsXY{ trackBlock.x, trackBlock.y }.rotate(_origin.direction);
 
             auto tileCoords = CoordsXY{ _origin.x, _origin.y } + rotatedTrack;
             if (!MapCheckCapacityAndReorganise(tileCoords, numTiles))

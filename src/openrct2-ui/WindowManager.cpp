@@ -27,7 +27,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -162,6 +162,10 @@ public:
                 return AssetPacksOpen();
             case WindowClass::editorParkEntrance:
                 return EditorParkEntranceOpen();
+            case WindowClass::editorStepController:
+                return editorStepControllerOpen();
+            case WindowClass::editorStatusLine:
+                return editorStatusLineOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -192,8 +196,6 @@ public:
                 return MazeConstructionOpen();
             case WindowView::networkPassword:
                 return NetworkStatusOpenPassword();
-            case WindowView::editorBottomToolbar:
-                return EditorBottomToolbarOpen();
             case WindowView::changelog:
                 return ChangelogOpen(WindowView::changelog);
             case WindowView::newVersionInfo:

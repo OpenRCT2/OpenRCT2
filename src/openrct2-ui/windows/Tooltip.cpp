@@ -14,7 +14,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.String.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/localisation/Formatter.h>
@@ -125,10 +124,10 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::filter(rt, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::paletteDarken3);
 
             // Corners
-            GfxFilterPixel(rt, { left + 1, top + 1 }, FilterPaletteID::paletteDarken3);
-            GfxFilterPixel(rt, { right - 1, top + 1 }, FilterPaletteID::paletteDarken3);
-            GfxFilterPixel(rt, { left + 1, bottom - 1 }, FilterPaletteID::paletteDarken3);
-            GfxFilterPixel(rt, { right - 1, bottom - 1 }, FilterPaletteID::paletteDarken3);
+            Rectangle::filterPixel(rt, { left + 1, top + 1 }, FilterPaletteID::paletteDarken3);
+            Rectangle::filterPixel(rt, { right - 1, top + 1 }, FilterPaletteID::paletteDarken3);
+            Rectangle::filterPixel(rt, { left + 1, bottom - 1 }, FilterPaletteID::paletteDarken3);
+            Rectangle::filterPixel(rt, { right - 1, bottom - 1 }, FilterPaletteID::paletteDarken3);
 
             // Text
             left = windowPos.x + ((width + 1) / 2) - 1;

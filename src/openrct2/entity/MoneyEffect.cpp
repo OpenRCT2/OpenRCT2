@@ -46,7 +46,7 @@ namespace OpenRCT2
         if (value == 0.00_GBP)
             return;
 
-        MoneyEffect* moneyEffect = getGameState().entities.CreateEntity<MoneyEffect>();
+        MoneyEffect* moneyEffect = getGameState().entities.createEntity<MoneyEffect>();
         if (moneyEffect == nullptr)
             return;
 
@@ -62,7 +62,7 @@ namespace OpenRCT2
     void MoneyEffect::create(money64 value, const CoordsXYZ& loc)
     {
         auto offsetLoc = loc;
-        if (loc.IsNull())
+        if (loc.isNull())
         {
             // If game actions return no valid location of the action we can not use the screen
             // coordinates as every client will have different ones.
@@ -150,7 +150,7 @@ namespace OpenRCT2
             return;
         }
 
-        getGameState().entities.EntityRemove(this);
+        getGameState().entities.entityRemove(this);
     }
 
     std::pair<StringId, money64> MoneyEffect::getStringId() const

@@ -379,6 +379,9 @@ namespace OpenRCT2::Scripting
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
 
+            if (plugin && plugin->IsStopping())
+                return 0;
+
             return scriptEngine.AddInterval(plugin, delay, repeat, callback);
         }
 

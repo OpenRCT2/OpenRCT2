@@ -51,7 +51,7 @@ namespace OpenRCT2::Scripting
     Staff* ScStaff::GetStaff(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<Staff>(id);
+        return getGameState().entities.getEntity<Staff>(id);
     }
 
     JSValue ScStaff::staffType_get(JSContext* ctx, JSValue thisVal)
@@ -606,7 +606,7 @@ namespace OpenRCT2::Scripting
     Staff* ScPatrolArea::GetStaff(JSValue thisVal)
     {
         OpaquePatrolAreaData* data = gScPatrolArea.GetOpaque<OpaquePatrolAreaData*>(thisVal);
-        return getGameState().entities.GetEntity<Staff>(data->staffId);
+        return getGameState().entities.getEntity<Staff>(data->staffId);
     }
 
     void ScPatrolArea::ModifyArea(JSContext* ctx, JSValue thisVal, JSValue coordsOrRange, bool reset)
@@ -617,7 +617,7 @@ namespace OpenRCT2::Scripting
             if (JS_IsArray(coordsOrRange))
             {
                 JSIterateArray(ctx, coordsOrRange, [staff, reset](JSContext* ctx2, JSValue v) {
-                    auto coord = JSToCoordsXY(ctx2, v);
+                    auto coord = JStoCoordsXY(ctx2, v);
                     staff->setPatrolArea(coord, reset);
                     MapInvalidateTileFull(coord);
                 });
@@ -647,7 +647,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr && staff->patrolInfo != nullptr)
         {
-            auto tiles = staff->patrolInfo->ToVector();
+            auto tiles = staff->patrolInfo->toVector();
 
             auto index = 0;
             for (const auto& tile : tiles)
@@ -712,7 +712,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr)
         {
-            auto pos = JSToCoordsXY(ctx, coord);
+            auto pos = JStoCoordsXY(ctx, coord);
             return JS_NewBool(ctx, staff->isLocationInPatrol(pos));
         }
         return JS_NewBool(ctx, false);

@@ -124,7 +124,7 @@ namespace OpenRCT2::Park
                     continue;
                 if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasDataLogging))
                     continue;
-                if (ride.getStation().SegmentLength < (600 << 16))
+                if (ride.getStation().segmentLength < (600 << 16))
                     continue;
                 if (ride.ratings.excitement < RideRating::make(6, 00))
                     continue;
@@ -542,7 +542,7 @@ namespace OpenRCT2::Park
             {
                 peep->orientation = direction << 3;
 
-                auto destination = peep->getLocation().ToTileCentre();
+                auto destination = peep->getLocation().toTileCentre();
                 peep->setDestination(destination, 5);
                 peep->peepDirection = direction;
                 peep->var37 = 0;

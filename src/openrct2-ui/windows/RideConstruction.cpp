@@ -1649,7 +1649,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TITLE].setString(_windowTitle.c_str());
         }
 
-        static void onDrawUpdateCoveredPieces(const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets)
+        static void onDrawUpdateCoveredPieces(
+            const TrackDrawerDescriptor& trackDrawerDescriptor, std::span<Widget> widgets, bool hasFlatRollBanking)
         {
             widgets[WIDX_U_TRACK].setHidden();
             widgets[WIDX_O_TRACK].setHidden();
@@ -1676,6 +1677,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_O_TRACK].image = ImageId(trackDrawerDescriptor.Covered.icon);
             widgets[WIDX_U_TRACK].tooltip = trackDrawerDescriptor.Regular.tooltip;
             widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
+
+            widgets[WIDX_U_TRACK].moveToX(hasFlatRollBanking ? 25 : 41);
+            widgets[WIDX_O_TRACK].moveToX(hasFlatRollBanking ? 128 : 144);
         }
 
         void onDraw(Drawing::RenderTarget& rt) override
@@ -1745,12 +1749,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STRAIGHT].setVisible(IsTrackEnabled(TrackGroup::straight));
             widgets[WIDX_LEFT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
             widgets[WIDX_RIGHT_CURVE_LARGE].setVisible(IsTrackEnabled(TrackGroup::curveLarge));
-            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
-            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVertical));
             widgets[WIDX_LEFT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
             widgets[WIDX_RIGHT_CURVE].setVisible(IsTrackEnabled(TrackGroup::curve));
-            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
-            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveSmall));
+            widgets[WIDX_LEFT_CURVE_SMALL].setVisible(
+                IsTrackEnabled(TrackGroup::curveSmall) || IsTrackEnabled(TrackGroup::curveVertical));
+            widgets[WIDX_RIGHT_CURVE_SMALL].setVisible(
+                IsTrackEnabled(TrackGroup::curveSmall) || IsTrackEnabled(TrackGroup::curveVertical));
             widgets[WIDX_LEFT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
             widgets[WIDX_RIGHT_CURVE_VERY_SMALL].setVisible(IsTrackEnabled(TrackGroup::curveVerySmall));
 
@@ -1931,7 +1935,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_BANK_LEFT].setVisible(hasFlatRollBanking);
                 widgets[WIDX_BANK_STRAIGHT].setVisible(hasFlatRollBanking);
                 widgets[WIDX_BANK_RIGHT].setVisible(hasFlatRollBanking);
-                onDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets);
+                onDrawUpdateCoveredPieces(trackDrawerDescriptor, widgets, hasFlatRollBanking);
             }
             else
             {
@@ -2230,7 +2234,7 @@ namespace OpenRCT2::Ui::Windows
             for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
             {
                 CoordsXY offsets = { ted.sequenceData.sequences[i].clearance.x, ted.sequenceData.sequences[i].clearance.y };
-                CoordsXY currentTileCoords = tileCoords + offsets.Rotate(trackDirection);
+                CoordsXY currentTileCoords = tileCoords + offsets.rotate(trackDirection);
 
                 MapSelection::addSelectedTile(currentTileCoords);
             }
@@ -2660,7 +2664,7 @@ namespace OpenRCT2::Ui::Windows
                 mapCoords.y = 0;
             }
 
-            auto rotatedMapCoords = mapCoords.Rotate(trackDirection);
+            auto rotatedMapCoords = mapCoords.rotate(trackDirection);
             // this is actually case 0, but the other cases all jump to it
             mapCoords.x = 4112 + (rotatedMapCoords.x / 2);
             mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
@@ -2727,7 +2731,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto quarterTile = trackBlock.quarterTile.Rotate(trackDirection);
                 CoordsXY offsets = { trackBlock.x, trackBlock.y };
-                CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
+                CoordsXY coords = originCoords + offsets.rotate(trackDirection);
 
                 int32_t baseZ = originZ + trackBlock.z;
                 int32_t clearanceZ = trackBlock.clearanceZ + clearanceHeight + baseZ + (4 * kCoordsZStep);
@@ -3059,7 +3063,7 @@ namespace OpenRCT2::Ui::Windows
         if (!_trackPlaceCtrlState)
         {
             mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
-            if (mapCoords.IsNull())
+            if (mapCoords.isNull())
                 return std::nullopt;
 
             _trackPlaceZ = 0;
@@ -3097,7 +3101,7 @@ namespace OpenRCT2::Ui::Windows
         if (mapCoords.x == kLocationNull)
             return std::nullopt;
 
-        return mapCoords.ToTileStart();
+        return mapCoords.toTileStart();
     }
 
     /**
@@ -4914,7 +4918,7 @@ namespace OpenRCT2::Ui::Windows
 
             CoordsXY offsets = { trackCoordinates.x, trackCoordinates.y };
             CoordsXY coords = { x, y };
-            coords += offsets.Rotate(DirectionReverse(trackDirection));
+            coords += offsets.rotate(DirectionReverse(trackDirection));
             x = static_cast<uint16_t>(coords.x);
             y = static_cast<uint16_t>(coords.y);
         }

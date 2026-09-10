@@ -1784,7 +1784,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementSmallScenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -1861,7 +1861,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementPathItem(screenPos, selection.EntryIndex, mapTile, &z);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -1901,7 +1901,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementWall(screenPos, selection.EntryIndex, mapTile, &edge);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -1951,7 +1951,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementLargeScenery(screenPos, selection.EntryIndex, mapTile, &direction);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -1972,7 +1972,7 @@ namespace OpenRCT2::Ui::Windows
             MapSelection::clearSelectedTiles();
             for (auto& tile : sceneryEntry->tiles)
             {
-                MapSelection::addSelectedTile(mapTile + tile.offset.Rotate(direction));
+                MapSelection::addSelectedTile(mapTile + tile.offset.rotate(direction));
             }
 
             SceneryRemoveGhostToolPlacement();
@@ -2010,7 +2010,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementBanner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -2475,7 +2475,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
             if (sceneryEntry == nullptr)
             {
-                gridPos.SetNull();
+                gridPos.setNull();
                 return;
             }
 
@@ -2498,7 +2498,7 @@ namespace OpenRCT2::Ui::Windows
                     auto gridCoords = ScreenGetMapXYQuadrant(screenPos, &quadrant);
                     if (!gridCoords.has_value())
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
                     gridPos = gridCoords.value();
@@ -2512,7 +2512,7 @@ namespace OpenRCT2::Ui::Windows
 
                         if (surfaceElement == nullptr)
                         {
-                            gridPos.SetNull();
+                            gridPos.setNull();
                             return;
                         }
 
@@ -2531,7 +2531,7 @@ namespace OpenRCT2::Ui::Windows
                     auto mapCoords = ScreenGetMapXYQuadrantWithZ(screenPos, z, &quadrant);
                     if (!mapCoords.has_value())
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
                     gridPos = mapCoords.value();
@@ -2547,7 +2547,7 @@ namespace OpenRCT2::Ui::Windows
                     gSceneryPlaceZ = z;
                 }
 
-                if (gridPos.IsNull())
+                if (gridPos.isNull())
                     return;
 
                 uint8_t rotation = gWindowSceneryRotation;
@@ -2581,7 +2581,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (info.interactionType == ViewportInteractionItem::none)
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                     return;
                 }
 
@@ -2595,7 +2595,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
 
@@ -2617,7 +2617,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                 }
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
@@ -2630,10 +2630,10 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
-            gridPos = gridPos.ToTileStart();
+            gridPos = gridPos.toTileStart();
             uint8_t rotation = gWindowSceneryRotation;
 
             if (!sceneryEntry->flags.has(SmallSceneryFlag::isRotatable))
@@ -2666,7 +2666,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (info.interactionType == ViewportInteractionItem::none)
             {
-                gridPos.SetNull();
+                gridPos.setNull();
                 return;
             }
 
@@ -2701,7 +2701,7 @@ namespace OpenRCT2::Ui::Windows
                 auto gridCoords = ScreenGetMapXYSide(screenPos, &edge);
                 if (!gridCoords.has_value())
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                     return;
                 }
                 gridPos = gridCoords.value();
@@ -2715,7 +2715,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
 
@@ -2733,7 +2733,7 @@ namespace OpenRCT2::Ui::Windows
                 auto mapCoords = ScreenGetMapXYSideWithZ(screenPos, z, &edge);
                 if (!mapCoords.has_value())
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                     return;
                 }
                 gridPos = mapCoords.value();
@@ -2749,10 +2749,10 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
-            gridPos = gridPos.ToTileStart();
+            gridPos = gridPos.toTileStart();
 
             if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
             {
@@ -2789,7 +2789,7 @@ namespace OpenRCT2::Ui::Windows
                 const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenPos);
                 gridPos = mapCoords;
 
-                if (gridPos.IsNull())
+                if (gridPos.isNull())
                     return;
 
                 gSceneryPlaceZ = 0;
@@ -2801,7 +2801,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
 
@@ -2823,7 +2823,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                 }
 
                 // If SHIFT pressed
@@ -2837,10 +2837,10 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
-            gridPos = gridPos.ToTileStart();
+            gridPos = gridPos.toTileStart();
 
             Direction rotation = gWindowSceneryRotation;
             rotation -= GetCurrentRotation();
@@ -2868,7 +2868,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (info.interactionType == ViewportInteractionItem::none)
             {
-                gridPos.SetNull();
+                gridPos.setNull();
                 return;
             }
 
@@ -2902,7 +2902,7 @@ namespace OpenRCT2::Ui::Windows
             Direction rotation;
 
             updatePlacementSmallScenery(screenCoords, selectedScenery, gridPos, &quadrant, &rotation);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             int32_t quantity = 1;
@@ -3029,7 +3029,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t z;
 
             updatePlacementPathItem(screenCoords, selectedScenery, gridPos, &z);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery);
@@ -3067,7 +3067,7 @@ namespace OpenRCT2::Ui::Windows
                 coords = info.Loc;
             }
 
-            coords = coords.ToTileStart();
+            coords = coords.toTileStart();
             return coords;
         }
 
@@ -3076,7 +3076,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY gridPos;
             uint8_t edges;
             updatePlacementWall(screenCoords, selectedScenery, gridPos, &edges);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             uint8_t zAttemptRange = 1;
@@ -3347,7 +3347,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY gridPos;
             Direction direction;
             updatePlacementLargeScenery(screenCoords, selectedScenery, gridPos, &direction);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             uint8_t zAttemptRange = 1;
@@ -3409,7 +3409,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t z;
             Direction direction;
             updatePlacementBanner(screenCoords, selectedScenery, gridPos, &z, &direction);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             CoordsXYZD loc{ gridPos, z, direction };

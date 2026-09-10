@@ -11,7 +11,7 @@
 
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
 #include "../../entity/Staff.h"
@@ -62,7 +62,7 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetPatrolAreaAction::QueryExecute(GameState_t& gameState, bool executing) const
     {
-        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
+        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteID %u", _spriteId.ToUnderlying());
@@ -99,7 +99,7 @@ namespace OpenRCT2::GameActions
                     break;
                 case StaffSetPatrolAreaMode::clearAll:
                     staff->clearPatrolArea();
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
             }
             UpdateConsolidatedPatrolAreas();

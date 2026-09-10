@@ -11,7 +11,7 @@
 
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Staff.h"
 #include "../../ui/WindowManager.h"
@@ -47,7 +47,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
+        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
@@ -68,7 +68,7 @@ namespace OpenRCT2::GameActions
 
     Result StaffFireAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
+        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
 
         PeepEntityRemove(staff);
         // Due to patrol areas best to invalidate the whole screen on removal of staff
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
 
         return Result();
     }

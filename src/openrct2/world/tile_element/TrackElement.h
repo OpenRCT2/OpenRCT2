@@ -33,14 +33,11 @@ namespace OpenRCT2
     };
     using TrackTileElementFlags = FlagHolder<uint8_t, TrackTileElementFlag>;
 
-    enum
-    {
-        TRACK_ELEMENT_COLOUR_SCHEME_MASK = 0b00000011,
-        // Not colour related, but shares the field.
-        TRACK_ELEMENT_COLOUR_DOOR_A_MASK = 0b00011100,
-        TRACK_ELEMENT_COLOUR_DOOR_B_MASK = 0b11100000,
-        TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
-    };
+    constexpr uint8_t kTrackElementColourSchemeMask = 0b00000011;
+    // Not colour related, but shares the field.
+    constexpr uint8_t kTrackElementColourDoorAMask = 0b00011100;
+    constexpr uint8_t kTrackElementColourDoorBMask = 0b11100000;
+    constexpr uint8_t kTrackElementColourSeatRotationMask = 0b11110000;
 
     constexpr int32_t kLandEdgeDoorFrameClosed = 0;
     constexpr int32_t kLandEdgeDoorFrameOpening = 1;

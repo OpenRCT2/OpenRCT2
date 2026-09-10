@@ -230,7 +230,6 @@ STR_0820    :Lis
 STR_0821    :Gru
 STR_0822    :Nie można otworzyć pliku danych grafiki
 STR_0823    :Plik danych grafiki nie istnieje lub jest niedostępny
-STR_0824    :{BLACK}❌
 STR_0825    :Wybrana nazwa jest już w użyciu
 STR_0826    :Zdefiniowano za dużo nazw
 STR_0827    :Za mało pieniędzy - potrzeba {CURRENCY2DP}
@@ -2675,7 +2674,7 @@ STR_5573    :Usuń z ulubionych
 STR_5574    :Nazwa:
 STR_5575    :Limit graczy:
 STR_5576    :Port:
-STR_5577    :Won południowokoreański (W)
+STR_5577    :Won południowokoreański (₩)
 STR_5578    :Rosyjski rubel (₽)
 STR_5579    :Współczynnik skali okna:
 STR_5580    :Korona czeska (Kč)
@@ -3200,7 +3199,6 @@ STR_6160    :{WINDOW_COLOUR_2}Dostępne pojazdy: {BLACK}{STRING}
 STR_6161    :Przełącz widok siatki
 STR_6162    :Wirująca szalona mysz
 STR_6163    :Wagoniki w kształcie myszy pokonujące ostre zakręty i krótkie zjazdy, wirujące łagodnie w celu zdezorientowania pasażerów
-STR_6164    :{WHITE}❌
 STR_6165    :Synchronizacja pionowa
 STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością odświeżania monitora, zapobiegając rozrywaniu ekranu
 STR_6167    :Zaawansowane

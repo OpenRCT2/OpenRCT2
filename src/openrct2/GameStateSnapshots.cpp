@@ -61,7 +61,7 @@ struct GameStateSnapshot_t
     {
         uint32_t size = sizeof(T);
         ds << size;
-        if (ds.IsLoading())
+        if (ds.isLoading())
         {
             return size == sizeof(T);
         }
@@ -189,7 +189,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(getGameState().entities.GetEntity(index)); },
+            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(getGameState().entities.getEntity(index)); },
             kMaxEntities, true);
 
         // LOG_INFO("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));

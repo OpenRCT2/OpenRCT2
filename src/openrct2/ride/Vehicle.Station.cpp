@@ -94,7 +94,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
 
     /* Station is not ready to depart, so just return;
      * vehicle_id for this station is SPRITE_INDEX_NULL. */
-    if (!(ride->getStation(stationIndex).Depart & kStationDepartFlag))
+    if (!(ride->getStation(stationIndex).depart & kStationDepartFlag))
     {
         return true;
     }
@@ -102,7 +102,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
     // Look for a vehicle on this station waiting to depart.
     for (int32_t i = 0; i < ride->numTrains; i++)
     {
-        auto* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[i]);
+        auto* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[i]);
         if (vehicle == nullptr)
         {
             continue;
@@ -149,7 +149,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
 static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex stationIndex)
 {
     const auto& station = ride.getStation(stationIndex);
-    auto location = station.GetStart();
+    auto location = station.getStart();
 
     auto tileElement = MapGetTrackElementAt(location);
     if (tileElement == nullptr)
@@ -184,7 +184,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     }
 
     // Other search direction.
-    location = station.GetStart();
+    location = station.getStart();
     direction = DirectionReverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[kSynchronisedVehicleCount - 1])
@@ -217,7 +217,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
             {
                 if (sv_ride->isBlockSectioned())
                 {
-                    if (!(sv_ride->getStation(sv->stationIndex).Depart & kStationDepartFlag))
+                    if (!(sv_ride->getStation(sv->stationIndex).depart & kStationDepartFlag))
                     {
                         sv = _synchronisedVehicles;
                         RideId rideId = RideId::GetNull();
@@ -240,7 +240,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         {
                             for (int32_t i = 0; i < curRide->numTrains; i++)
                             {
-                                Vehicle* v = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[i]);
+                                Vehicle* v = getGameState().entities.getEntity<Vehicle>(curRide->vehicles[i]);
                                 if (v == nullptr)
                                 {
                                     continue;
@@ -278,7 +278,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     auto currentStation = sv->stationIndex;
                     for (int32_t i = 0; i < sv_ride->numTrains; i++)
                     {
-                        auto* otherVehicle = getGameState().entities.GetEntity<Vehicle>(sv_ride->vehicles[i]);
+                        auto* otherVehicle = getGameState().entities.getEntity<Vehicle>(sv_ride->vehicles[i]);
                         if (otherVehicle == nullptr)
                         {
                             continue;
@@ -322,7 +322,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     // At this point all vehicles in _snychronisedVehicles can depart.
     for (SynchronisedVehicle* sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++)
     {
-        auto v = getGameState().entities.GetEntity<Vehicle>(sv->vehicle_id);
+        auto v = getGameState().entities.getEntity<Vehicle>(sv->vehicle_id);
         if (v != nullptr)
         {
             v->flags.unset(VehicleFlag::waitingOnAdjacentStation);
@@ -477,7 +477,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         // Boat Hire with passengers on it.
         if (curRide->status != RideStatus::closed || (curRide->numRiders != 0 && rtd.specialType != RtdSpecialType::boatHire))
         {
-            curRide->getStation(current_station).TrainAtStation = RideStation::kNoTrain;
+            curRide->getStation(current_station).trainAtStation = RideStation::kNoTrain;
             sub_state = 2;
             return;
         }
@@ -488,7 +488,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         uint8_t seat = ((-flatRideAnimationFrame) / 8) & 0xF;
         if (!peep[seat].IsNull())
         {
-            curRide->getStation(current_station).TrainAtStation = RideStation::kNoTrain;
+            curRide->getStation(current_station).trainAtStation = RideStation::kNoTrain;
             SetState(Status::unloadingPassengers);
             return;
         }
@@ -496,7 +496,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         if (num_peeps == 0)
             return;
 
-        curRide->getStation(current_station).TrainAtStation = RideStation::kNoTrain;
+        curRide->getStation(current_station).trainAtStation = RideStation::kNoTrain;
         sub_state = 2;
         return;
     }
@@ -504,7 +504,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (num_peeps_on_train == 0)
         return;
 
-    curRide->getStation(current_station).TrainAtStation = RideStation::kNoTrain;
+    curRide->getStation(current_station).trainAtStation = RideStation::kNoTrain;
     SetState(Status::waitingForPassengers);
 }
 
@@ -526,9 +526,9 @@ void Vehicle::UpdateWaitingForPassengers()
             return;
 
         auto& station = curRide->getStation(current_station);
-        if (station.Entrance.IsNull())
+        if (station.entrance.isNull())
         {
-            station.TrainAtStation = RideStation::kNoTrain;
+            station.trainAtStation = RideStation::kNoTrain;
             sub_state = 2;
             return;
         }
@@ -539,10 +539,10 @@ void Vehicle::UpdateWaitingForPassengers()
             return;
         }
 
-        if (station.TrainAtStation != RideStation::kNoTrain)
+        if (station.trainAtStation != RideStation::kNoTrain)
             return;
 
-        station.TrainAtStation = trainIndex.value();
+        station.trainAtStation = trainIndex.value();
         sub_state = 1;
         time_waiting = 0;
 
@@ -559,8 +559,8 @@ void Vehicle::UpdateWaitingForPassengers()
         // 0xF64E31, 0xF64E32, 0xF64E33
         uint8_t num_peeps_on_train = 0, num_used_seats_on_train = 0, num_seats_on_train = 0;
 
-        for (const Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(id); trainCar != nullptr;
-             trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+        for (const Vehicle* trainCar = getGameState().entities.getEntity<Vehicle>(id); trainCar != nullptr;
+             trainCar = getGameState().entities.getEntity<Vehicle>(trainCar->next_vehicle_on_train))
         {
             num_peeps_on_train += trainCar->num_peeps;
             num_used_seats_on_train += trainCar->next_free_seat;
@@ -614,7 +614,7 @@ void Vehicle::UpdateWaitingForPassengers()
                 if (train_id == id)
                     continue;
 
-                Vehicle* train = getGameState().entities.GetEntity<Vehicle>(train_id);
+                Vehicle* train = getGameState().entities.getEntity<Vehicle>(train_id);
                 if (train == nullptr)
                     continue;
 
@@ -720,7 +720,7 @@ void Vehicle::UpdateWaitingToDepart()
             }
             else
             {
-                if (!currentStation.Exit.IsNull())
+                if (!currentStation.exit.isNull())
                 {
                     SetState(Status::unloadingPassengers);
                     return;
@@ -729,12 +729,12 @@ void Vehicle::UpdateWaitingToDepart()
         }
         else
         {
-            for (const Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(id); trainCar != nullptr;
-                 trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+            for (const Vehicle* trainCar = getGameState().entities.getEntity<Vehicle>(id); trainCar != nullptr;
+                 trainCar = getGameState().entities.getEntity<Vehicle>(trainCar->next_vehicle_on_train))
             {
                 if (trainCar->num_peeps != 0)
                 {
-                    if (!currentStation.Exit.IsNull())
+                    if (!currentStation.exit.isNull())
                     {
                         SetState(Status::unloadingPassengers);
                         return;
@@ -747,7 +747,7 @@ void Vehicle::UpdateWaitingToDepart()
 
     if (!skipCheck)
     {
-        if (!(currentStation.Depart & kStationDepartFlag))
+        if (!(currentStation.depart & kStationDepartFlag))
             return;
     }
 
@@ -929,7 +929,7 @@ void Vehicle::UpdateUnloadingPassengers()
         {
             next_free_seat -= 2;
 
-            auto firstGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2]);
+            auto firstGuest = getGameState().entities.getEntity<Guest>(peep[seat * 2]);
             peep[seat * 2] = EntityId::GetNull();
 
             if (firstGuest != nullptr)
@@ -938,7 +938,7 @@ void Vehicle::UpdateUnloadingPassengers()
                 firstGuest->rideSubState = PeepRideSubState::leaveVehicle;
             }
 
-            auto secondGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2 + 1]);
+            auto secondGuest = getGameState().entities.getEntity<Guest>(peep[seat * 2 + 1]);
             peep[seat * 2 + 1] = EntityId::GetNull();
 
             if (secondGuest != nullptr)
@@ -950,7 +950,7 @@ void Vehicle::UpdateUnloadingPassengers()
     }
     else
     {
-        if (currentStation.Exit.IsNull())
+        if (currentStation.exit.isNull())
         {
             if (sub_state != 1)
                 return;
@@ -964,8 +964,8 @@ void Vehicle::UpdateUnloadingPassengers()
             return;
         }
 
-        for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(id); train != nullptr;
-             train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
+        for (Vehicle* train = getGameState().entities.getEntity<Vehicle>(id); train != nullptr;
+             train = getGameState().entities.getEntity<Vehicle>(train->next_vehicle_on_train))
         {
             if (train->restraints_position != 255)
                 continue;
@@ -976,7 +976,7 @@ void Vehicle::UpdateUnloadingPassengers()
             train->next_free_seat = 0;
             for (uint8_t peepIndex = 0; peepIndex < train->num_peeps; peepIndex++)
             {
-                Peep* curPeep = getGameState().entities.GetEntity<Guest>(train->peep[peepIndex]);
+                Peep* curPeep = getGameState().entities.getEntity<Guest>(train->peep[peepIndex]);
                 if (curPeep != nullptr)
                 {
                     curPeep->setState(PeepState::leavingRide);
@@ -989,8 +989,8 @@ void Vehicle::UpdateUnloadingPassengers()
     if (sub_state != 1)
         return;
 
-    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(id); train != nullptr;
-         train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
+    for (Vehicle* train = getGameState().entities.getEntity<Vehicle>(id); train != nullptr;
+         train = getGameState().entities.getEntity<Vehicle>(train->next_vehicle_on_train))
     {
         if (train->num_peeps != train->next_free_seat)
             return;
@@ -1268,7 +1268,7 @@ void Vehicle::FinishDeparting()
     if (curRide->mode != RideMode::race && !curRide->isBlockSectioned())
     {
         auto& currentStation = curRide->getStation(current_station);
-        currentStation.Depart &= kStationDepartFlag;
+        currentStation.depart &= kStationDepartFlag;
         uint8_t waitingTime = 3;
         if (curRide->departFlags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
@@ -1276,7 +1276,7 @@ void Vehicle::FinishDeparting()
             waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
         }
 
-        currentStation.Depart |= waitingTime;
+        currentStation.depart |= waitingTime;
     }
     lost_time_out = 0;
     SetState(Status::travelling, 1);

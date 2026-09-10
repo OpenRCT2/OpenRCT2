@@ -16,12 +16,14 @@
 #include "../../actions/ResultWithMessage.h"
 #include "../../audio/Audio.h"
 #include "../../core/EnumUtils.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
+#include "../../drawing/Palette.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/Guest.h"
 #include "../../entity/Staff.h"
 #include "../../localisation/Formatting.h"
 #include "../../localisation/LocalisationService.h"
+#include "../../localisation/StringIds.h"
 #include "../../management/Research.h"
 #include "../../object/DefaultObjects.h"
 #include "../../object/FootpathEntry.h"
@@ -54,12 +56,12 @@
 namespace OpenRCT2::Editor
 {
     u8string gSceneryGroupPartialSelectError;
-    std::vector<uint8_t> _objectSelectionFlags;
+    std::vector<ObjectSelectionFlags> _objectSelectionFlags;
     uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
 
     static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::count)];
 
-    static std::array<std::vector<uint8_t>, EnumValue(ObjectType::count)> _editorSelectedObjectFlags;
+    static std::array<std::vector<ObjectSelectionFlags>, EnumValue(ObjectType::count)> _editorSelectedObjectFlags;
 
     void ObjectListLoad()
     {
@@ -204,9 +206,9 @@ namespace OpenRCT2::Editor
         return { true, kStringIdNone };
     }
 
-    uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index)
+    ObjectSelectionFlags GetSelectedObjectFlags(ObjectType objectType, size_t index)
     {
-        uint8_t result = 0;
+        ObjectSelectionFlags result{};
         auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() > index)
         {
@@ -215,17 +217,17 @@ namespace OpenRCT2::Editor
         return result;
     }
 
-    void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
+    void ClearSelectedObject(ObjectType objectType, size_t index)
     {
         auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() <= index)
         {
             list.resize(index + 1);
         }
-        list[index] &= ~flags;
+        list[index] = {};
     }
 
-    void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
+    void SetSelectedObject(ObjectType objectType, size_t index, ObjectSelectionFlags flags)
     {
         if (index != kObjectEntryIndexNull)
         {
@@ -271,17 +273,17 @@ namespace OpenRCT2::Editor
         const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
         for (int32_t i = 0; i < numObjects; i++)
         {
-            uint8_t* selectionFlags = &_objectSelectionFlags[i];
+            ObjectSelectionFlags* selectionFlags = &_objectSelectionFlags[i];
             const ObjectRepositoryItem* item = &items[i];
             if (item->Type == ObjectType::ride)
             {
-                *selectionFlags |= ObjectSelectionFlags::Flag6;
+                selectionFlags->set(ObjectSelectionFlag::flag5);
 
                 for (auto rideType : item->RideInfo.RideType)
                 {
                     if (GetRideTypeDescriptor(rideType).flags.has(RtdFlag::hasTrack))
                     {
-                        *selectionFlags &= ~ObjectSelectionFlags::Flag6;
+                        selectionFlags->unset(ObjectSelectionFlag::flag5);
                         break;
                     }
                 }
@@ -300,11 +302,11 @@ namespace OpenRCT2::Editor
         selectTrackDesignerObjects();
         for (int32_t i = 0; i < numObjects; i++)
         {
-            uint8_t* selectionFlags = &_objectSelectionFlags[i];
+            ObjectSelectionFlags* selectionFlags = &_objectSelectionFlags[i];
             const ObjectRepositoryItem* item = &items[i];
             if (item->Type == ObjectType::ride)
             {
-                *selectionFlags |= ObjectSelectionFlags::Flag6;
+                selectionFlags->set(ObjectSelectionFlag::flag5);
 
                 for (auto rideType : item->RideInfo.RideType)
                 {
@@ -312,7 +314,7 @@ namespace OpenRCT2::Editor
                     {
                         if (GetRideTypeDescriptor(rideType).flags.has(RtdFlag::showInTrackDesigner))
                         {
-                            *selectionFlags &= ~ObjectSelectionFlags::Flag6;
+                            selectionFlags->unset(ObjectSelectionFlag::flag5);
                             break;
                         }
                     }
@@ -333,12 +335,12 @@ namespace OpenRCT2::Editor
         {
             for (auto i = 0u; i < getObjectEntryGroupCount(objectType); i++)
             {
-                ClearSelectedObject(objectType, i, ObjectSelectionFlags::AllFlags);
+                ClearSelectedObject(objectType, i);
 
                 auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
                 if (loadedObj != nullptr)
                 {
-                    SetSelectedObject(objectType, i, ObjectSelectionFlags::Selected);
+                    SetSelectedObject(objectType, i, ObjectSelectionFlag::selected);
                 }
             }
         }
@@ -358,8 +360,8 @@ namespace OpenRCT2::Editor
                     auto surfaceIndex = surfaceEl->getSurfaceObjectIndex();
                     auto edgeIndex = surfaceEl->getEdgeObjectIndex();
 
-                    Editor::SetSelectedObject(ObjectType::terrainSurface, surfaceIndex, ObjectSelectionFlags::InUse);
-                    Editor::SetSelectedObject(ObjectType::terrainEdge, edgeIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::terrainSurface, surfaceIndex, ObjectSelectionFlag::inUse);
+                    Editor::SetSelectedObject(ObjectType::terrainEdge, edgeIndex, ObjectSelectionFlag::inUse);
                     break;
                 }
                 case TileElementType::track:
@@ -372,23 +374,23 @@ namespace OpenRCT2::Editor
                     {
                         auto surfaceEntryIndex = footpathEl->getSurfaceEntryIndex();
                         auto railingEntryIndex = footpathEl->getRailingsEntryIndex();
-                        Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
-                        Editor::SetSelectedObject(ObjectType::footpathRailings, railingEntryIndex, ObjectSelectionFlags::InUse);
+                        Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlag::inUse);
+                        Editor::SetSelectedObject(ObjectType::footpathRailings, railingEntryIndex, ObjectSelectionFlag::inUse);
                     }
                     else
                     {
-                        Editor::SetSelectedObject(ObjectType::paths, legacyPathEntryIndex, ObjectSelectionFlags::InUse);
+                        Editor::SetSelectedObject(ObjectType::paths, legacyPathEntryIndex, ObjectSelectionFlag::inUse);
                     }
                     if (footpathEl->hasAddition())
                     {
                         auto pathAdditionEntryIndex = footpathEl->getAdditionEntryIndex();
-                        SetSelectedObject(ObjectType::pathAdditions, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
+                        SetSelectedObject(ObjectType::pathAdditions, pathAdditionEntryIndex, ObjectSelectionFlag::inUse);
                     }
                     break;
                 }
                 case TileElementType::smallScenery:
                     type = iter.element->asSmallScenery()->getEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::smallScenery, type, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::smallScenery, type, ObjectSelectionFlag::inUse);
                     break;
                 case TileElementType::entrance:
                 {
@@ -397,7 +399,7 @@ namespace OpenRCT2::Editor
                         break;
 
                     type = iter.element->asEntrance()->getEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::parkEntrance, type, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::parkEntrance, type, ObjectSelectionFlag::inUse);
 
                     if (parkEntranceEl->getSequenceIndex() != ParkEntranceSequence::centre)
                         break;
@@ -406,21 +408,21 @@ namespace OpenRCT2::Editor
                     if (legacyPathEntryIndex == kObjectEntryIndexNull)
                     {
                         auto surfaceEntryIndex = parkEntranceEl->getSurfaceEntryIndex();
-                        Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlags::InUse);
+                        Editor::SetSelectedObject(ObjectType::footpathSurface, surfaceEntryIndex, ObjectSelectionFlag::inUse);
                     }
                     else
                     {
-                        Editor::SetSelectedObject(ObjectType::paths, legacyPathEntryIndex, ObjectSelectionFlags::InUse);
+                        Editor::SetSelectedObject(ObjectType::paths, legacyPathEntryIndex, ObjectSelectionFlag::inUse);
                     }
                     break;
                 }
                 case TileElementType::wall:
                     type = iter.element->asWall()->getEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::walls, type, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::walls, type, ObjectSelectionFlag::inUse);
                     break;
                 case TileElementType::largeScenery:
                     type = iter.element->asLargeScenery()->getEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::largeScenery, type, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::largeScenery, type, ObjectSelectionFlag::inUse);
                     break;
                 case TileElementType::banner:
                 {
@@ -428,7 +430,7 @@ namespace OpenRCT2::Editor
                     if (banner != nullptr)
                     {
                         type = banner->type;
-                        Editor::SetSelectedObject(ObjectType::banners, type, ObjectSelectionFlags::InUse);
+                        Editor::SetSelectedObject(ObjectType::banners, type, ObjectSelectionFlag::inUse);
                     }
                     break;
                 }
@@ -438,9 +440,9 @@ namespace OpenRCT2::Editor
         auto& gameState = getGameState();
         for (auto& ride : RideManager(gameState))
         {
-            Editor::SetSelectedObject(ObjectType::ride, ride.subtype, ObjectSelectionFlags::InUse);
-            Editor::SetSelectedObject(ObjectType::station, ride.entranceStyle, ObjectSelectionFlags::InUse);
-            Editor::SetSelectedObject(ObjectType::music, ride.music, ObjectSelectionFlags::InUse);
+            Editor::SetSelectedObject(ObjectType::ride, ride.subtype, ObjectSelectionFlag::inUse);
+            Editor::SetSelectedObject(ObjectType::station, ride.entranceStyle, ObjectSelectionFlag::inUse);
+            Editor::SetSelectedObject(ObjectType::music, ride.music, ObjectSelectionFlag::inUse);
         }
 
         ObjectEntryIndex lastIndex = kObjectEntryIndexNull;
@@ -450,7 +452,7 @@ namespace OpenRCT2::Editor
                 continue;
 
             lastIndex = peep->animationObjectIndex;
-            Editor::SetSelectedObject(ObjectType::peepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+            Editor::SetSelectedObject(ObjectType::peepAnimations, lastIndex, ObjectSelectionFlag::inUse);
         }
         for (auto* peep : EntityList<Staff>())
         {
@@ -458,7 +460,7 @@ namespace OpenRCT2::Editor
                 continue;
 
             lastIndex = peep->animationObjectIndex;
-            Editor::SetSelectedObject(ObjectType::peepAnimations, lastIndex, ObjectSelectionFlags::InUse);
+            Editor::SetSelectedObject(ObjectType::peepAnimations, lastIndex, ObjectSelectionFlag::inUse);
         }
 
         // Apply selected object status for hacked vehicles that may not have an associated ride
@@ -467,7 +469,7 @@ namespace OpenRCT2::Editor
             ObjectEntryIndex type = vehicle->ride_subtype;
             if (type != kObjectEntryIndexNull) // cable lifts use index null. Ignore them
             {
-                Editor::SetSelectedObject(ObjectType::ride, type, ObjectSelectionFlags::InUse);
+                Editor::SetSelectedObject(ObjectType::ride, type, ObjectSelectionFlag::inUse);
             }
         }
         for (auto vehicle : EntityList<Vehicle>())
@@ -475,7 +477,7 @@ namespace OpenRCT2::Editor
             ObjectEntryIndex type = vehicle->ride_subtype;
             if (type != kObjectEntryIndexNull) // cable lifts use index null. Ignore them
             {
-                Editor::SetSelectedObject(ObjectType::ride, type, ObjectSelectionFlags::InUse);
+                Editor::SetSelectedObject(ObjectType::ride, type, ObjectSelectionFlag::inUse);
             }
         }
 
@@ -485,7 +487,7 @@ namespace OpenRCT2::Editor
         {
             auto* selectionFlags = &_objectSelectionFlags[i];
             const auto* item = &items[i];
-            *selectionFlags &= ~ObjectSelectionFlags::InUse;
+            selectionFlags->unset(ObjectSelectionFlag::inUse);
 
             if (item->LoadedObject != nullptr)
             {
@@ -503,7 +505,7 @@ namespace OpenRCT2::Editor
     void Sub6AB211()
     {
         int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
-        _objectSelectionFlags = std::vector<uint8_t>(numObjects);
+        _objectSelectionFlags = std::vector<ObjectSelectionFlags>(numObjects);
 
         for (uint8_t objectType = 0; objectType < EnumValue(ObjectType::count); objectType++)
         {
@@ -606,7 +608,7 @@ namespace OpenRCT2::Editor
 
         for (int32_t i = 0; i < numItems; i++)
         {
-            if (!(_objectSelectionFlags[i] & ObjectSelectionFlags::Selected))
+            if (!(_objectSelectionFlags[i].has(ObjectSelectionFlag::selected)))
             {
                 auto descriptor = ObjectEntryDescriptor(items[i]);
                 if (!IsIntransientObjectType(items[i].Type))
@@ -672,7 +674,7 @@ namespace OpenRCT2::Editor
         auto newPaletteEntry = ObjectEntryDescriptor(*item);
         if (objectManager.GetLoadedObject(newPaletteEntry) != nullptr || objectManager.LoadObject(newPaletteEntry) != nullptr)
         {
-            LoadPalette();
+            Drawing::LoadPalette();
         }
         else
         {
@@ -696,7 +698,7 @@ namespace OpenRCT2::Editor
         for (int32_t i = 0; i < numObjects; i++)
         {
             ObjectType objectType = items[i].Type;
-            if (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
+            if (_objectSelectionFlags[i].has(ObjectSelectionFlag::selected))
             {
                 _numSelectedObjectsForType[EnumValue(objectType)]++;
             }
@@ -719,7 +721,7 @@ namespace OpenRCT2::Editor
             }
 
             gameState.editorStep = Editor::Step::rollerCoasterDesigner;
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
         else
         {
@@ -729,7 +731,7 @@ namespace OpenRCT2::Editor
             ContextBroadcastIntent(&intent);
 
             gameState.editorStep = Editor::Step::landscapeEditor;
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
     }
 
@@ -757,20 +759,20 @@ namespace OpenRCT2::Editor
             }
         }
 
-        uint8_t* selectionFlags = &_objectSelectionFlags[index];
+        ObjectSelectionFlags* selectionFlags = &_objectSelectionFlags[index];
         if (!flags.has(InputFlag::select))
         {
-            if (!(*selectionFlags & ObjectSelectionFlags::Selected))
+            if (!(selectionFlags->has(ObjectSelectionFlag::selected)))
             {
                 return { true };
             }
 
-            if (*selectionFlags & ObjectSelectionFlags::InUse)
+            if (selectionFlags->has(ObjectSelectionFlag::inUse))
             {
                 return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE);
             }
 
-            if (*selectionFlags & ObjectSelectionFlags::AlwaysRequired)
+            if (selectionFlags->has(ObjectSelectionFlag::alwaysRequired))
             {
                 return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_ALWAYS_REQUIRED);
             }
@@ -785,7 +787,7 @@ namespace OpenRCT2::Editor
             }
 
             _numSelectedObjectsForType[EnumValue(objectType)]--;
-            *selectionFlags &= ~ObjectSelectionFlags::Selected;
+            selectionFlags->unset(ObjectSelectionFlag::selected);
             return { true };
         }
 
@@ -793,11 +795,11 @@ namespace OpenRCT2::Editor
         {
             if (flags.has(InputFlag::objectAlwaysRequired))
             {
-                *selectionFlags |= ObjectSelectionFlags::AlwaysRequired;
+                selectionFlags->set(ObjectSelectionFlag::alwaysRequired);
             }
         }
 
-        if (*selectionFlags & ObjectSelectionFlags::Selected)
+        if (selectionFlags->has(ObjectSelectionFlag::selected))
         {
             return { true };
         }
@@ -853,7 +855,7 @@ namespace OpenRCT2::Editor
 
         _numSelectedObjectsForType[EnumValue(objectType)]++;
 
-        *selectionFlags |= ObjectSelectionFlags::Selected;
+        selectionFlags->set(ObjectSelectionFlag::selected);
         return { true };
     }
 
@@ -873,7 +875,7 @@ namespace OpenRCT2::Editor
         for (size_t i = 0; i < numObjects; i++)
         {
             auto objectType = items[i].Type;
-            if (checkObjectType == objectType && (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected))
+            if (checkObjectType == objectType && (_objectSelectionFlags[i].has(ObjectSelectionFlag::selected)))
             {
                 return true;
             }
@@ -889,7 +891,7 @@ namespace OpenRCT2::Editor
         for (size_t i = 0; i < numObjects; i++)
         {
             const auto isAnimObjectType = items[i].Type == ObjectType::peepAnimations;
-            const bool isSelected = _objectSelectionFlags[i] & ObjectSelectionFlags::Selected;
+            const bool isSelected = _objectSelectionFlags[i].has(ObjectSelectionFlag::selected);
             if (isAnimObjectType && isSelected && items[i].PeepAnimationsInfo.PeepType == peepType)
             {
                 return true;
@@ -906,7 +908,7 @@ namespace OpenRCT2::Editor
         {
             const auto& ori = items[i];
             auto isQueue = (ori.FootpathSurfaceInfo.Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0;
-            if (ori.Type == ObjectType::footpathSurface && (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
+            if (ori.Type == ObjectType::footpathSurface && (_objectSelectionFlags[i].has(ObjectSelectionFlag::selected))
                 && queue == isQueue)
             {
                 return true;
@@ -926,10 +928,10 @@ namespace OpenRCT2::Editor
         int32_t numUnselectedObjects = 0;
         for (int32_t i = 0; i < numObjects; i++)
         {
-            if (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
+            if (_objectSelectionFlags[i].has(ObjectSelectionFlag::selected))
             {
-                if (!(_objectSelectionFlags[i] & ObjectSelectionFlags::InUse)
-                    && !(_objectSelectionFlags[i] & ObjectSelectionFlags::AlwaysRequired))
+                if (!(_objectSelectionFlags[i].has(ObjectSelectionFlag::inUse))
+                    && !(_objectSelectionFlags[i].has(ObjectSelectionFlag::alwaysRequired)))
                 {
                     const ObjectRepositoryItem* item = &items[i];
                     ObjectType objectType = item->Type;
@@ -957,7 +959,7 @@ namespace OpenRCT2::Editor
                         continue;
 
                     _numSelectedObjectsForType[EnumValue(objectType)]--;
-                    _objectSelectionFlags[i] &= ~ObjectSelectionFlags::Selected;
+                    _objectSelectionFlags[i].unset(ObjectSelectionFlag::selected);
                     numUnselectedObjects++;
                 }
             }
@@ -970,4 +972,22 @@ namespace OpenRCT2::Editor
 
         return numUnselectedObjects;
     }
+
+    static constexpr StringId kEditorStepNames[] = {
+        STR_EDITOR_STEP_OBJECT_SELECTION,       // Editor::Step::objectSelection
+        STR_EDITOR_STEP_LANDSCAPE_EDITOR,       // Editor::Step::landscapeEditor
+        STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP, // Editor::Step::inventionsListSetUp
+        STR_EDITOR_STEP_OPTIONS_SELECTION,      // Editor::Step::optionsSelection
+        STR_EDITOR_STEP_OBJECTIVE_SELECTION,    // Editor::Step::objectiveSelection
+        STR_EDITOR_STEP_SCENARIO_DETAILS,       // Editor::Step::scenarioDetails
+        STR_EDITOR_STEP_SAVE_SCENARIO,          // Editor::Step::saveScenario
+        STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, // Editor::Step::rollerCoasterDesigner
+        STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,  // Editor::Step::designsManager
+    };
+
+    StringId getStepStringId(Step step)
+    {
+        return kEditorStepNames[EnumValue(step)];
+    }
+
 } // namespace OpenRCT2::Editor

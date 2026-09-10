@@ -224,7 +224,6 @@ STR_0820    :Nov
 STR_0821    :Des
 STR_0822    :Klarer ikke åpne grafikk-datafilen
 STR_0823    :Manglende eller utilgjengelig datafil
-STR_0824    :{BLACK}❌
 STR_0825    :Navnet er allerede i bruk
 STR_0826    :For mange navn definert
 STR_0827    :Ikke nok penger - {CURRENCY2DP} trengs
@@ -2669,7 +2668,7 @@ STR_5573    :Fjern Fra Favoritter
 STR_5574    :Server Name:
 STR_5575    :Maks Spillere:
 STR_5576    :Port:
-STR_5577    :Sør-Koreanske Won (W)
+STR_5577    :Sør-Koreanske Won (₩)
 STR_5578    :Russiske Rubler (₽)
 STR_5579    :Vinduskaleringsfaktor:
 STR_5580    :Tsjekkiske koruna (Kč)
@@ -3194,7 +3193,6 @@ STR_6160    :{WINDOW_COLOUR_2}Tilgjengelige kjøretøy: {BLACK}{STRING}
 STR_6161    :Vis/skjul rutemønster i landskap
 STR_6162    :Spinnende ville mus
 STR_6163    :Museformede vogner suser gjennom skarpe svinger og små fall mens de sakte spinner for å desorientere passasjerene
-STR_6164    :{WHITE}❌
 STR_6165    :Bruk Vertical Sync
 STR_6166    :Synkroniserer visning av bilder med skjermens oppdateringsfrekvens; forhindrer “screen tearing”.
 STR_6167    :Avansert

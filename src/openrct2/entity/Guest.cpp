@@ -238,6 +238,7 @@ namespace OpenRCT2
         "NANCY STILLWAGON",
         "DAVID ELLIS",
     };
+    static_assert(std::size(gPeepEasterEggNames) == EnumValue(EasterEggPeepName::count));
     // clang-format on
 
     // Flags used by PeepThoughtToActionMap
@@ -601,7 +602,7 @@ namespace OpenRCT2
         }
     }
 
-    int32_t Guest::getEasterEggNameId() const
+    EasterEggPeepName Guest::getEasterEggNameId() const
     {
         char buffer[256]{};
 
@@ -612,20 +613,20 @@ namespace OpenRCT2
         for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
         {
             if (String::iequals(buffer, gPeepEasterEggNames[i]))
-                return static_cast<int32_t>(i);
+                return static_cast<EasterEggPeepName>(i);
         }
 
-        return -1;
+        return EasterEggPeepName::none;
     }
 
     void Guest::handleEasterEggName()
     {
-        peepFlags.set(PeepFlag::waving, checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW));
-        peepFlags.set(PeepFlag::photo, checkEasterEggName(EASTEREGG_PEEP_NAME_CHRIS_SAWYER));
-        peepFlags.set(PeepFlag::painting, checkEasterEggName(EASTEREGG_PEEP_NAME_SIMON_FOSTER));
-        peepFlags.set(PeepFlag::wow, checkEasterEggName(EASTEREGG_PEEP_NAME_JOHN_WARDLEY));
+        peepFlags.set(PeepFlag::waving, checkEasterEggName(EasterEggPeepName::katieBrayshaw));
+        peepFlags.set(PeepFlag::photo, checkEasterEggName(EasterEggPeepName::chrisSawyer));
+        peepFlags.set(PeepFlag::painting, checkEasterEggName(EasterEggPeepName::simonFoster));
+        peepFlags.set(PeepFlag::wow, checkEasterEggName(EasterEggPeepName::johnWardley));
 
-        if (checkEasterEggName(EASTEREGG_PEEP_NAME_MELANIE_WARN))
+        if (checkEasterEggName(EasterEggPeepName::melanieWarn))
         {
             happiness = 250;
             happinessTarget = 250;
@@ -635,27 +636,27 @@ namespace OpenRCT2
             nauseaTarget = 0;
         }
 
-        peepFlags.set(PeepFlag::litter, checkEasterEggName(EASTEREGG_PEEP_NAME_LISA_STIRLING));
-        peepFlags.set(PeepFlag::lost, checkEasterEggName(EASTEREGG_PEEP_NAME_DONALD_MACRAE));
-        peepFlags.set(PeepFlag::hunger, checkEasterEggName(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN));
-        peepFlags.set(PeepFlag::toilet, checkEasterEggName(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN));
-        peepFlags.set(PeepFlag::crowded, checkEasterEggName(EASTEREGG_PEEP_NAME_CORINA_MASSOURA));
-        peepFlags.set(PeepFlag::happiness, checkEasterEggName(EASTEREGG_PEEP_NAME_CAROL_YOUNG));
-        peepFlags.set(PeepFlag::nausea, checkEasterEggName(EASTEREGG_PEEP_NAME_MIA_SHERIDAN));
+        peepFlags.set(PeepFlag::litter, checkEasterEggName(EasterEggPeepName::lisaStirling));
+        peepFlags.set(PeepFlag::lost, checkEasterEggName(EasterEggPeepName::donaldMacrae));
+        peepFlags.set(PeepFlag::hunger, checkEasterEggName(EasterEggPeepName::katherineMcGowan));
+        peepFlags.set(PeepFlag::toilet, checkEasterEggName(EasterEggPeepName::francesMcGowan));
+        peepFlags.set(PeepFlag::crowded, checkEasterEggName(EasterEggPeepName::corinaMassoura));
+        peepFlags.set(PeepFlag::happiness, checkEasterEggName(EasterEggPeepName::carolYoung));
+        peepFlags.set(PeepFlag::nausea, checkEasterEggName(EasterEggPeepName::miaSheridan));
 
-        if (checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_RODGER))
+        if (checkEasterEggName(EasterEggPeepName::katieRodger))
         {
             peepFlags.set(PeepFlag::leavingPark);
             peepFlags.unset(PeepFlag::parkEntranceChosen);
         }
 
-        peepFlags.set(PeepFlag::purple, checkEasterEggName(EASTEREGG_PEEP_NAME_EMMA_GARRELL));
-        peepFlags.set(PeepFlag::pizza, checkEasterEggName(EASTEREGG_PEEP_NAME_JOANNE_BARTON));
-        peepFlags.set(PeepFlag::contagious, checkEasterEggName(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON));
-        peepFlags.set(PeepFlag::joy, checkEasterEggName(EASTEREGG_PEEP_NAME_KATIE_SMITH));
-        peepFlags.set(PeepFlag::angry, checkEasterEggName(EASTEREGG_PEEP_NAME_EILIDH_BELL));
-        peepFlags.set(PeepFlag::iceCream, checkEasterEggName(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON));
-        peepFlags.set(PeepFlag::hereWeAre, checkEasterEggName(EASTEREGG_PEEP_NAME_DAVID_ELLIS));
+        peepFlags.set(PeepFlag::purple, checkEasterEggName(EasterEggPeepName::emmaGarrell));
+        peepFlags.set(PeepFlag::pizza, checkEasterEggName(EasterEggPeepName::joanneBarton));
+        peepFlags.set(PeepFlag::contagious, checkEasterEggName(EasterEggPeepName::felicityAnderson));
+        peepFlags.set(PeepFlag::joy, checkEasterEggName(EasterEggPeepName::katieSmith));
+        peepFlags.set(PeepFlag::angry, checkEasterEggName(EasterEggPeepName::eilidhBell));
+        peepFlags.set(PeepFlag::iceCream, checkEasterEggName(EasterEggPeepName::nancyStillwagon));
+        peepFlags.set(PeepFlag::hereWeAre, checkEasterEggName(EasterEggPeepName::davidEllis));
     }
 
     /**
@@ -663,7 +664,7 @@ namespace OpenRCT2
      *  rct2: 0x0069A5A0
      * tests if a peep's name matches a cheat code, normally returns using a register flag
      */
-    bool Guest::checkEasterEggName(int32_t index) const
+    bool Guest::checkEasterEggName(EasterEggPeepName peepName) const
     {
         char buffer[256]{};
 
@@ -671,7 +672,7 @@ namespace OpenRCT2
         formatNameTo(ft);
         FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
-        return String::iequals(buffer, gPeepEasterEggNames[index]);
+        return String::iequals(buffer, gPeepEasterEggNames[EnumValue(peepName)]);
     }
 
     void Guest::updateMotivesIdle()
@@ -1182,7 +1183,7 @@ namespace OpenRCT2
         guest.setState(PeepState::walking);
 
         // Set destination to the centre of the tile.
-        const auto destination = guest.getLocation().ToTileCentre();
+        const auto destination = guest.getLocation().toTileCentre();
         guest.setDestination(destination, 5);
         guest.updateCurrentAnimationType();
     }
@@ -1203,7 +1204,7 @@ namespace OpenRCT2
             if (!(pathingResult & PATHING_DESTINATION_REACHED))
                 return;
 
-            auto loc = getLocation().ToTileStart() + CoordsXYZ{ BenchUseOffsets[var37 & 0x7], 0 };
+            auto loc = getLocation().toTileStart() + CoordsXYZ{ BenchUseOffsets[var37 & 0x7], 0 };
 
             moveTo(loc);
 
@@ -1235,7 +1236,7 @@ namespace OpenRCT2
                 setState(PeepState::walking);
 
                 // Set destination to the centre of the tile
-                auto destination = getLocation().ToTileCentre();
+                auto destination = getLocation().toTileCentre();
                 setDestination(destination, 5);
                 updateCurrentAnimationType();
                 return;
@@ -1726,9 +1727,9 @@ namespace OpenRCT2
 
         if (GuestShouldPreferredIntensityIncrease(*this))
         {
-            if (intensity.GetMaximum() < 15)
+            if (intensity.getMaximum() < 15)
             {
-                intensity = intensity.WithMaximum(intensity.GetMaximum() + 1);
+                intensity = intensity.withMaximum(intensity.getMaximum() + 1);
             }
         }
 
@@ -1911,7 +1912,7 @@ namespace OpenRCT2
                 // Rides without queues can only have one peep waiting at a time.
                 if (!atQueue)
                 {
-                    if (!station.LastPeepInQueue.IsNull())
+                    if (!station.lastPeepInQueue.IsNull())
                     {
                         GuestTriedToEnterFullQueue(*this, ride);
                         return false;
@@ -1920,7 +1921,7 @@ namespace OpenRCT2
                 else
                 {
                     // Check if there's room in the queue for the peep to enter.
-                    Guest* lastPeepInQueue = getGameState().entities.GetEntity<Guest>(station.LastPeepInQueue);
+                    Guest* lastPeepInQueue = getGameState().entities.getEntity<Guest>(station.lastPeepInQueue);
                     if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                     {
                         int32_t dx = abs(lastPeepInQueue->x - x);
@@ -2033,8 +2034,8 @@ namespace OpenRCT2
                                 // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                                 // at 10.0 (before happiness calculations). A full happiness bar will increase the max
                                 // intensity and decrease the min intensity by about 2.5.
-                                RideRating_t maxIntensity = std::min(intensity.GetMaximum() * 100, 1000) + happiness;
-                                RideRating_t minIntensity = (intensity.GetMinimum() * 100) - happiness;
+                                RideRating_t maxIntensity = std::min(intensity.getMaximum() * 100, 1000) + happiness;
+                                RideRating_t minIntensity = (intensity.getMinimum() * 100) - happiness;
                                 if (ride.ratings.intensity < minIntensity)
                                 {
                                     if (peepAtRide)
@@ -2409,7 +2410,7 @@ namespace OpenRCT2
 
         guest.currentCar = carArray[chosen_car];
 
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[guest.currentTrain]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[guest.currentTrain]);
         if (vehicle == nullptr)
         {
             return nullptr;
@@ -2451,13 +2452,13 @@ namespace OpenRCT2
     void Guest::goToRideEntrance(const Ride& ride)
     {
         const auto& station = ride.getStation(currentRideStation);
-        if (station.Entrance.IsNull())
+        if (station.entrance.isNull())
         {
             removeFromQueue();
             return;
         }
 
-        auto location = station.Entrance.ToCoordsXYZD().ToTileCentre();
+        auto location = station.entrance.toCoordsXYZD().toTileCentre();
         int16_t x_shift = DirectionOffsets[location.direction].x;
         int16_t y_shift = DirectionOffsets[location.direction].y;
 
@@ -2500,7 +2501,7 @@ namespace OpenRCT2
 
             for (int32_t i = 0; i < ride.numTrains; ++i)
             {
-                Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
+                Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[i]);
                 if (vehicle == nullptr)
                     continue;
 
@@ -2515,7 +2516,7 @@ namespace OpenRCT2
         }
         else
         {
-            chosen_train = ride.getStation(guest.currentRideStation).TrainAtStation;
+            chosen_train = ride.getStation(guest.currentRideStation).trainAtStation;
         }
         if (chosen_train >= Limits::kMaxTrainsPerRide)
         {
@@ -2527,8 +2528,8 @@ namespace OpenRCT2
         int32_t i = 0;
 
         auto vehicle_id = ride.vehicles[chosen_train];
-        for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
-             vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
+        for (Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(vehicle_id); vehicle != nullptr;
+             vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
         {
             uint8_t num_seats = vehicle->num_seats;
             if (vehicle->IsUsedInPairs())
@@ -2706,8 +2707,8 @@ namespace OpenRCT2
 
         uint8_t intensitySatisfaction = 3;
         uint8_t nauseaSatisfaction = 3;
-        RideRating_t maxIntensity = guest.intensity.GetMaximum() * 100;
-        RideRating_t minIntensity = guest.intensity.GetMinimum() * 100;
+        RideRating_t maxIntensity = guest.intensity.getMaximum() * 100;
+        RideRating_t minIntensity = guest.intensity.getMinimum() * 100;
         if (minIntensity <= ride.ratings.intensity && maxIntensity >= ride.ratings.intensity)
         {
             intensitySatisfaction--;
@@ -3172,7 +3173,7 @@ namespace OpenRCT2
             auto ride = GetRide(potentialRides[i]);
             if (ride != nullptr)
             {
-                auto rideLocation = ride->getStation().Start;
+                auto rideLocation = ride->getStation().start;
                 int32_t distance = abs(rideLocation.x - guest.x) + abs(rideLocation.y - guest.y);
                 if (distance < closestRideDistance)
                 {
@@ -3428,7 +3429,7 @@ namespace OpenRCT2
                 if (xy_distance < 16)
                 {
                     const auto& station = ride->getStation(currentRideStation);
-                    auto entrance = station.Entrance.ToCoordsXYZ();
+                    auto entrance = station.entrance.toCoordsXYZ();
                     actionZ = entrance.z + 2;
                 }
                 moveTo({ loc.value(), actionZ });
@@ -3517,7 +3518,7 @@ namespace OpenRCT2
 
     void PeepUpdateRideLeaveEntranceSpiralSlide(Guest& guest, Ride& ride, CoordsXYZD& entrance_loc)
     {
-        entrance_loc = { ride.getStation(guest.currentRideStation).GetStart(), entrance_loc.direction };
+        entrance_loc = { ride.getStation(guest.currentRideStation).getStart(), entrance_loc.direction };
 
         TileElement* tile_element = RideGetStationStartTrackElement(ride, guest.currentRideStation);
 
@@ -3584,17 +3585,17 @@ namespace OpenRCT2
     void Guest::updateRideLeaveEntranceWaypoints(const Ride& ride)
     {
         const auto& station = ride.getStation(currentRideStation);
-        if (station.Entrance.IsNull())
+        if (station.entrance.isNull())
         {
             return;
         }
-        uint8_t direction_entrance = station.Entrance.direction;
+        uint8_t direction_entrance = station.entrance.direction;
 
         TileElement* tile_element = RideGetStationStartTrackElement(ride, currentRideStation);
 
         uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->getDirection());
 
-        auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[currentTrain]);
+        auto vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             // TODO: Goto ride exit on failure.
@@ -3652,7 +3653,7 @@ namespace OpenRCT2
                 rideSubState = PeepRideSubState::freeVehicleCheck;
             }
 
-            actionZ = ride->getStation(currentRideStation).GetBaseZ();
+            actionZ = ride->getStation(currentRideStation).getBaseZ();
 
             distanceThreshold += 4;
             if (xy_distance < distanceThreshold)
@@ -3673,8 +3674,8 @@ namespace OpenRCT2
         if (ride->getRideTypeDescriptor().flags.has(RtdFlag::noVehicles))
         {
             const auto& station = ride->getStation(currentRideStation);
-            auto entranceLocation = station.Entrance.ToCoordsXYZD();
-            if (entranceLocation.IsNull())
+            auto entranceLocation = station.entrance.toCoordsXYZD();
+            if (entranceLocation.isNull())
             {
                 return;
             }
@@ -3684,7 +3685,7 @@ namespace OpenRCT2
             return;
         }
 
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             return;
@@ -3763,7 +3764,7 @@ namespace OpenRCT2
         guest.moveTo({ x, y, z });
 
         Guard::Assert(guest.currentRideStation.ToUnderlying() < Limits::kMaxStationsPerRide);
-        auto exit = ride.getStation(guest.currentRideStation).Exit;
+        auto exit = ride.getStation(guest.currentRideStation).exit;
         x = exit.x;
         y = exit.y;
         x *= 32;
@@ -3835,9 +3836,9 @@ namespace OpenRCT2
 
         queueTime /= 2;
         auto& station = ride.getStation(currentRideStation);
-        if (queueTime != station.QueueTime)
+        if (queueTime != station.queueTime)
         {
-            station.QueueTime = queueTime;
+            station.queueTime = queueTime;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByNumber(WindowClass::ride, currentRide.ToUnderlying());
         }
@@ -3875,7 +3876,7 @@ namespace OpenRCT2
      */
     static void PeepUpdateRideNoFreeVehicleRejoinQueue(Guest& guest, Ride& ride)
     {
-        TileCoordsXYZD entranceLocation = ride.getStation(guest.currentRideStation).Entrance;
+        TileCoordsXYZD entranceLocation = ride.getStation(guest.currentRideStation).entrance;
 
         int32_t x = entranceLocation.x * 32;
         int32_t y = entranceLocation.y * 32;
@@ -3920,7 +3921,7 @@ namespace OpenRCT2
         }
 
         auto& gameState = getGameState();
-        Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             // TODO: Leave ride on failure goes for all returns on nullptr in this function
@@ -3942,11 +3943,11 @@ namespace OpenRCT2
 
             for (size_t i = 0; i < ride->numTrains; ++i)
             {
-                Vehicle* train = gameState.entities.GetEntity<Vehicle>(ride->vehicles[i]);
+                Vehicle* train = gameState.entities.getEntity<Vehicle>(ride->vehicles[i]);
                 if (train == nullptr)
                     continue;
 
-                Vehicle* second_vehicle = gameState.entities.GetEntity<Vehicle>(train->next_vehicle_on_train);
+                Vehicle* second_vehicle = gameState.entities.getEntity<Vehicle>(train->next_vehicle_on_train);
                 if (second_vehicle == nullptr)
                     continue;
 
@@ -3984,7 +3985,7 @@ namespace OpenRCT2
             }
         }
 
-        Vehicle* currentTrainEntity = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* currentTrainEntity = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (currentTrainEntity == nullptr)
         {
             return;
@@ -4023,7 +4024,7 @@ namespace OpenRCT2
         auto* ride = GetRide(currentRide);
         if (ride != nullptr)
         {
-            auto* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+            auto* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
             if (vehicle != nullptr)
             {
                 vehicle = vehicle->GetCar(currentCar);
@@ -4040,7 +4041,7 @@ namespace OpenRCT2
 
                 if (vehicle->IsUsedInPairs())
                 {
-                    auto* seatedGuest = gameState.entities.GetEntity<Guest>(vehicle->peep[currentSeat ^ 1]);
+                    auto* seatedGuest = gameState.entities.getEntity<Guest>(vehicle->peep[currentSeat ^ 1]);
                     if (seatedGuest != nullptr)
                     {
                         if (seatedGuest->rideSubState != PeepRideSubState::enterVehicle)
@@ -4086,7 +4087,7 @@ namespace OpenRCT2
         if (ride == nullptr)
             return;
 
-        Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
             return;
 
@@ -4138,16 +4139,16 @@ namespace OpenRCT2
 
         if (!carEntry->flags.has(CarEntryFlag::loadingWaypoints))
         {
-            TileCoordsXYZD exitLocation = station.Exit;
+            TileCoordsXYZD exitLocation = station.exit;
             CoordsXYZD platformLocation;
-            platformLocation.z = station.GetBaseZ();
+            platformLocation.z = station.getBaseZ();
 
             platformLocation.direction = DirectionReverse(exitLocation.direction);
 
             if (!ride->getRideTypeDescriptor().flags.has(RtdFlag::vehicleIsIntegral))
             {
                 for (; vehicle != nullptr && !vehicle->IsHead();
-                     vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
+                     vehicle = gameState.entities.getEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
                 {
                     auto trackType = vehicle->GetTrackType();
                     if (trackType == TrackElemType::flat || trackType > TrackElemType::middleStation)
@@ -4248,15 +4249,15 @@ namespace OpenRCT2
                     carEntry->guestLoadingPositions.size());
             }
 
-            platformLocation.z = station.GetBaseZ();
+            platformLocation.z = station.getBaseZ();
 
             PeepGoToRideExit(
                 *this, *ride, platformLocation.x, platformLocation.y, platformLocation.z, platformLocation.direction);
             return;
         }
 
-        auto exitLocation = station.Exit.ToCoordsXYZD();
-        if (exitLocation.IsNull())
+        auto exitLocation = station.exit.toCoordsXYZD();
+        if (exitLocation.isNull())
         {
             return;
         }
@@ -4265,7 +4266,7 @@ namespace OpenRCT2
 
         Direction station_direction = (trackElement == nullptr ? 0 : trackElement->getDirection());
 
-        vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             return;
@@ -4316,8 +4317,8 @@ namespace OpenRCT2
         if (ride == nullptr || currentRideStation.ToUnderlying() >= std::size(ride->getStations()))
             return;
 
-        auto exit = ride->getStation(currentRideStation).Exit;
-        auto newDestination = exit.ToCoordsXY().ToTileCentre();
+        auto exit = ride->getStation(currentRideStation).exit;
+        auto newDestination = exit.toCoordsXY().toTileCentre();
 
         auto [xShift, yShift] = [exit]() {
             if (exit.direction < DirectionOffsets.size())
@@ -4383,7 +4384,7 @@ namespace OpenRCT2
         {
             if (xy_distance >= 16)
             {
-                int16_t actionZ = ride->getStation(currentRideStation).GetBaseZ();
+                int16_t actionZ = ride->getStation(currentRideStation).getBaseZ();
 
                 actionZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
                 moveTo({ loc.value(), actionZ });
@@ -4408,7 +4409,7 @@ namespace OpenRCT2
 
     CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation)
     {
-        return ride.getStation(CurrentRideStation).Start.ToTileCentre();
+        return ride.getStation(CurrentRideStation).start.toTileCentre();
     }
 
     CoordsXY GetGuestWaypointLocationEnterprise(
@@ -4447,7 +4448,7 @@ namespace OpenRCT2
         // This is incrementing the actual peep waypoint
         var37++;
 
-        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+        Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
         if (vehicle == nullptr)
         {
             return;
@@ -4477,7 +4478,7 @@ namespace OpenRCT2
     {
         auto ride = GetRide(guest.currentRide);
         // Motion simulators have steps. This moves the peeps up the steps.
-        int16_t actionZ = ride->getStation(guest.currentRideStation).GetBaseZ() + 2;
+        int16_t actionZ = ride->getStation(guest.currentRideStation).getBaseZ() + 2;
 
         uint8_t waypoint = guest.var37 & 3;
         if (waypoint == 2)
@@ -4517,7 +4518,7 @@ namespace OpenRCT2
 
             if (ride->getRideTypeDescriptor().specialType == RtdSpecialType::motionSimulator)
             {
-                actionZ = ride->getStation(currentRideStation).GetBaseZ() + 2;
+                actionZ = ride->getStation(currentRideStation).getBaseZ() + 2;
 
                 if ((var37 & 3) == 1)
                 {
@@ -4544,7 +4545,7 @@ namespace OpenRCT2
             }
 
             var37--;
-            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[currentTrain]);
+            Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[currentTrain]);
             if (vehicle == nullptr)
             {
                 return;
@@ -4576,7 +4577,7 @@ namespace OpenRCT2
 
         var37 |= 3;
 
-        auto targetLoc = ride->getStation(currentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
+        auto targetLoc = ride->getStation(currentRideStation).exit.toCoordsXYZD().toTileCentre();
         uint8_t exit_direction = DirectionReverse(targetLoc.direction);
 
         int16_t x_shift = DirectionOffsets[exit_direction].x;
@@ -4652,7 +4653,7 @@ namespace OpenRCT2
 
             if (lastRide)
             {
-                auto exit = ride->getStation(currentRideStation).Exit;
+                auto exit = ride->getStation(currentRideStation).exit;
                 waypoint = 1;
                 auto directionTemp = exit.direction;
                 if (exit.direction == kInvalidDirection)
@@ -4660,7 +4661,7 @@ namespace OpenRCT2
                     directionTemp = 0;
                 }
                 var37 = (directionTemp * 4) | (var37 & 0x30) | waypoint;
-                CoordsXY targetLoc = ride->getStation(currentRideStation).Start;
+                CoordsXY targetLoc = ride->getStation(currentRideStation).start;
 
                 assert(rtd.specialType == RtdSpecialType::spiralSlide);
                 targetLoc += kSpiralSlideWalkingPath[var37];
@@ -4675,7 +4676,7 @@ namespace OpenRCT2
         // Actually increment the real peep waypoint
         var37++;
 
-        CoordsXY targetLoc = ride->getStation(currentRideStation).Start;
+        CoordsXY targetLoc = ride->getStation(currentRideStation).start;
 
         assert(rtd.specialType == RtdSpecialType::spiralSlide);
         targetLoc += kSpiralSlideWalkingPath[var37];
@@ -4737,7 +4738,7 @@ namespace OpenRCT2
                     return;
                 case PeepSpiralSlideSubState::finishedSliding:
                 {
-                    auto newLocation = ride->getStation(currentRideStation).Start;
+                    auto newLocation = ride->getStation(currentRideStation).start;
                     uint8_t dir = (var37 / 4) & 3;
 
                     // Set the location that the guest walks to go on slide again
@@ -4770,7 +4771,7 @@ namespace OpenRCT2
         uint8_t waypoint = 2;
         var37 = (var37 * 4 & 0x30) + waypoint;
 
-        CoordsXY targetLoc = ride->getStation(currentRideStation).Start;
+        CoordsXY targetLoc = ride->getStation(currentRideStation).start;
 
         targetLoc += kSpiralSlideWalkingPath[var37];
 
@@ -4809,7 +4810,7 @@ namespace OpenRCT2
             waypoint--;
             // Actually decrement the peep waypoint
             var37--;
-            CoordsXY targetLoc = ride->getStation(currentRideStation).Start;
+            CoordsXY targetLoc = ride->getStation(currentRideStation).start;
 
             [[maybe_unused]] const auto& rtd = ride->getRideTypeDescriptor();
             assert(rtd.specialType == RtdSpecialType::spiralSlide);
@@ -4822,7 +4823,7 @@ namespace OpenRCT2
         // Actually force the final waypoint
         var37 |= 3;
 
-        auto targetLoc = ride->getStation(currentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
+        auto targetLoc = ride->getStation(currentRideStation).exit.toCoordsXYZD().toTileCentre();
 
         int16_t xShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].x;
         int16_t yShift = DirectionOffsets[DirectionReverse(targetLoc.direction)].y;
@@ -4888,9 +4889,9 @@ namespace OpenRCT2
             }
         }
 
-        auto targetLoc = getDestination().ToTileStart();
+        auto targetLoc = getDestination().toTileStart();
 
-        auto stationBaseZ = ride->getStation().GetBaseZ();
+        auto stationBaseZ = ride->getStation().getBaseZ();
 
         // Find the station track element
         auto trackElement = MapGetTrackElementAt({ targetLoc, stationBaseZ });
@@ -4968,11 +4969,11 @@ namespace OpenRCT2
                 targetLoc = getDestination();
                 if (chosenEdge & 1)
                 {
-                    targetLoc.x = targetLoc.ToTileCentre().x;
+                    targetLoc.x = targetLoc.toTileCentre().x;
                 }
                 else
                 {
-                    targetLoc.y = targetLoc.ToTileCentre().y;
+                    targetLoc.y = targetLoc.toTileCentre().y;
                 }
                 setDestination(targetLoc);
                 var37 = 16;
@@ -4998,7 +4999,7 @@ namespace OpenRCT2
         {
             if (ride != nullptr)
             {
-                moveTo({ loc.value(), ride->getStation(currentRideStation).GetBaseZ() });
+                moveTo({ loc.value(), ride->getStation(currentRideStation).getBaseZ() });
             }
             return;
         }
@@ -5119,7 +5120,7 @@ namespace OpenRCT2
             const auto curLoc = getLocation();
             moveTo({ loc.value(), curLoc.z });
 
-            const auto newLoc = getLocation().ToTileStart();
+            const auto newLoc = getLocation().toTileStart();
             if (newLoc.x != nextLoc.x)
                 return;
             if (newLoc.y != nextLoc.y)
@@ -5647,7 +5648,7 @@ namespace OpenRCT2
             // first check if the next in queue is actually nearby
             // if they are not then it's safe to assume that this is
             // the front of the queue.
-            Peep* nextGuest = getGameState().entities.GetEntity<Guest>(guestNextInQueue);
+            Peep* nextGuest = getGameState().entities.getEntity<Guest>(guestNextInQueue);
             if (nextGuest != nullptr)
             {
                 if (abs(nextGuest->x - x) < 32 && abs(nextGuest->y - y) < 32)
@@ -5893,7 +5894,7 @@ namespace OpenRCT2
             updateAnimationGroup();
             // Send peep to the centre of current tile.
 
-            auto destination = getLocation().ToTileCentre();
+            auto destination = getLocation().toTileCentre();
             setDestination(destination, 5);
             updateCurrentAnimationType();
         }
@@ -6868,7 +6869,7 @@ namespace OpenRCT2
         if (Weather::isPrecipitating() && (hasItem(ShopItem::umbrella)) && x != kLocationNull)
         {
             CoordsXY loc = { x, y };
-            if (MapIsLocationValid(loc.ToTileStart()))
+            if (MapIsLocationValid(loc.toTileStart()))
             {
                 TileElement* tileElement = MapGetFirstElementAt(loc);
                 while (true)
@@ -7147,10 +7148,10 @@ namespace OpenRCT2
     Guest* Guest::generate(const CoordsXYZ& coords)
     {
         auto& gameState = getGameState();
-        if (gameState.entities.GetNumFreeEntities() < 400)
+        if (gameState.entities.getNumFreeEntities() < 400)
             return nullptr;
 
-        Guest* peep = gameState.entities.CreateEntity<Guest>();
+        Guest* peep = gameState.entities.createEntity<Guest>();
 
         peep->animationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::guest);
         peep->animationGroup = PeepAnimationGroup::normal;
@@ -7437,7 +7438,7 @@ namespace OpenRCT2
     {
         timeInQueue = AddClamp<uint16_t>(timeInQueue, 1);
 
-        auto* guestNext = getGameState().entities.GetEntity<Guest>(guestNextInQueue);
+        auto* guestNext = getGameState().entities.getEntity<Guest>(guestNextInQueue);
         if (guestNext == nullptr)
         {
             return false;
@@ -7516,25 +7517,25 @@ namespace OpenRCT2
         auto& station = ride->getStation(currentRideStation);
         // Make sure we don't underflow, building while paused might reset it to 0 where peeps have
         // not yet left the queue.
-        if (station.QueueLength > 0)
+        if (station.queueLength > 0)
         {
-            station.QueueLength--;
+            station.queueLength--;
         }
 
-        if (id == station.LastPeepInQueue)
+        if (id == station.lastPeepInQueue)
         {
-            station.LastPeepInQueue = guestNextInQueue;
+            station.lastPeepInQueue = guestNextInQueue;
             return;
         }
 
         auto& gameState = getGameState();
-        auto* otherGuest = gameState.entities.GetEntity<Guest>(station.LastPeepInQueue);
+        auto* otherGuest = gameState.entities.getEntity<Guest>(station.lastPeepInQueue);
         if (otherGuest == nullptr)
         {
             LOG_ERROR("Invalid Guest Queue list!");
             return;
         }
-        for (; otherGuest != nullptr; otherGuest = gameState.entities.GetEntity<Guest>(otherGuest->guestNextInQueue))
+        for (; otherGuest != nullptr; otherGuest = gameState.entities.getEntity<Guest>(otherGuest->guestNextInQueue))
         {
             if (id == otherGuest->guestNextInQueue)
             {

@@ -41,6 +41,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
@@ -1289,6 +1290,24 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        static ImageId applyPreviewVehicleColour(
+            ImageIndex imageIndex, const CarEntry& carEntry, const VehicleColour& vehicleColour)
+        {
+            imageIndex &= carEntry.tabRotationMask;
+            imageIndex *= carEntry.baseNumFrames;
+            imageIndex += carEntry.baseImageId;
+
+            auto imageId = ImageId(imageIndex);
+            if (carEntry.flags.has(CarEntryFlag::enableBodyColour))
+                imageId = imageId.WithPrimary(vehicleColour.Body);
+            if (carEntry.flags.has(CarEntryFlag::enableTrimColour))
+                imageId = imageId.WithSecondary(vehicleColour.Trim);
+            if (carEntry.flags.has(CarEntryFlag::enableTertiaryColour))
+                imageId = imageId.WithTertiary(vehicleColour.Tertiary);
+
+            return imageId;
+        }
+
         void DrawTabVehicle(RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
@@ -1331,7 +1350,7 @@ namespace OpenRCT2::Ui::Windows
                     spriteCoords.y *= 2;
                 }
 
-                const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, rideEntry->TabCar);
+                const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, rideEntry->zero_cars + 1, rideEntry->TabCar);
                 const auto& carEntry = rideEntry->Cars[vehicle];
 
                 spriteCoords.y += carEntry.tabHeight;
@@ -1344,10 +1363,8 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_RIDE_PAGE_VEHICLE)
                     imageIndex += currentFrame;
                 imageIndex = carEntry.spriteByYaw(imageIndex / 2, SpriteGroupType::slopeFlat);
-                imageIndex &= carEntry.tabRotationMask;
-                imageIndex *= carEntry.baseNumFrames;
-                imageIndex += carEntry.baseImageId;
-                auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
+
+                auto imageId = applyPreviewVehicleColour(imageIndex, carEntry, vehicleColour);
                 GfxDrawSprite(clipRT, imageId, spriteCoords);
             }
         }
@@ -1454,7 +1471,7 @@ namespace OpenRCT2::Ui::Windows
                 if (it.element->asTrack()->getRideIndex() != ride.id)
                     continue;
 
-                auto location = TileCoordsXY(it.x, it.y).ToCoordsXY();
+                auto location = TileCoordsXY(it.x, it.y).toCoordsXY();
                 int32_t baseZ = it.element->getBaseZ();
                 int32_t clearZ = it.element->getClearanceZ();
 
@@ -1511,7 +1528,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (const auto& station : ride->getStations())
             {
-                if (!station.Start.IsNull() && viewSelectionIndex-- == 0)
+                if (!station.start.isNull() && viewSelectionIndex-- == 0)
                 {
                     const auto stationIndex = ride->getStationIndex(&station);
                     return std::make_optional(stationIndex);
@@ -1539,7 +1556,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto* rideEntry = ride->getRideEntry();
                 if (rideEntry != nullptr && rideEntry->TabCar != 0)
                 {
-                    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehId);
+                    Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(vehId);
                     if (vehicle == nullptr)
                     {
                         vehId = EntityId::GetNull();
@@ -1559,7 +1576,7 @@ namespace OpenRCT2::Ui::Windows
                 auto stationIndex = GetStationIndexFromViewSelection();
                 if (stationIndex)
                 {
-                    const auto location = ride->getStation(*stationIndex).GetStart();
+                    const auto location = ride->getStation(*stationIndex).getStart();
                     newFocus = Focus(location);
                 }
             }
@@ -1596,7 +1613,7 @@ namespace OpenRCT2::Ui::Windows
             focus = newFocus;
 
             // rct2: 0x006aec9c only used here so brought it into the function
-            if (viewport == nullptr && !ride->overallView.IsNull() && focus.has_value())
+            if (viewport == nullptr && !ride->overallView.isNull() && focus.has_value())
             {
                 const auto& viewWidget = widgets[WIDX_VIEWPORT];
 
@@ -2000,7 +2017,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_viewIndex <= ride->numTrains)
                         {
-                            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+                            Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
                             if (vehicle != nullptr)
                             {
                                 auto headVehicleSpriteIndex = vehicle->id;
@@ -2316,7 +2333,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_viewIndex <= ride->numTrains)
                     {
-                        Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+                        Vehicle* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
                         if (vehicle == nullptr
                             || (vehicle->status != Vehicle::Status::travelling
                                 && vehicle->status != Vehicle::Status::travellingCableLift
@@ -2485,7 +2502,7 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return kStringIdEmpty;
 
-            auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
+            auto vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[_viewIndex - 1]);
             if (vehicle == nullptr)
                 return kStringIdEmpty;
 
@@ -2546,21 +2563,21 @@ namespace OpenRCT2::Ui::Windows
             // Entrance / exit
             if (ride->status == RideStatus::closed)
             {
-                if (station.Entrance.IsNull())
+                if (station.entrance.isNull())
                     stringId = STR_NO_ENTRANCE;
-                else if (station.Exit.IsNull())
+                else if (station.exit.isNull())
                     stringId = STR_NO_EXIT;
             }
             else
             {
-                if (station.Entrance.IsNull())
+                if (station.entrance.isNull())
                     stringId = STR_EXIT_ONLY;
             }
             // Queue length
             if (stringId == kStringIdEmpty)
             {
                 stringId = STR_QUEUE_EMPTY;
-                uint16_t queueLength = ride->getStation(*stationIndex).QueueLength;
+                uint16_t queueLength = ride->getStation(*stationIndex).queueLength;
                 if (queueLength == 1)
                     stringId = STR_QUEUE_ONE_PERSON;
                 else if (queueLength > 1)
@@ -2916,8 +2933,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         static ImageId getVehiclePreviewImageId(
-            const Ride& ride, const RideObjectEntry& rideEntry, const CarEntry& carEntry, int32_t trainIndex, int32_t carIndex,
-            bool isReversed)
+            const Ride& ride, const CarEntry& carEntry, int32_t trainIndex, int32_t carIndex, bool isReversed)
         {
             int32_t vehicleColourIndex = 0;
 
@@ -2947,11 +2963,7 @@ namespace OpenRCT2::Ui::Windows
                     (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::slopeFlat);
             }
 
-            imageIndex &= carEntry.tabRotationMask;
-            imageIndex *= carEntry.baseNumFrames;
-            imageIndex += carEntry.baseImageId;
-
-            return ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
+            return applyPreviewVehicleColour(imageIndex, carEntry, vehicleColour);
         }
 
         struct VehicleDrawInfo
@@ -2980,7 +2992,7 @@ namespace OpenRCT2::Ui::Windows
                 x += dx;
                 y -= dy;
 
-                auto imageId = getVehiclePreviewImageId(ride, rideEntry, carEntry, trainIndex, carIndex, isReversed);
+                auto imageId = getVehiclePreviewImageId(ride, carEntry, trainIndex, carIndex, isReversed);
 
                 out[count++] = VehicleDrawInfo{ .x = static_cast<int16_t>(x),
                                                 .y = static_cast<int16_t>(y),
@@ -3997,9 +4009,9 @@ namespace OpenRCT2::Ui::Windows
                                     break;
                                 for (int32_t i = 0; i < ride->numTrains; ++i)
                                 {
-                                    for (vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[i]);
+                                    for (vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[i]);
                                          vehicle != nullptr;
-                                         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                                         vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
                                     {
                                         vehicle->flags.unset(
                                             VehicleFlag::carIsBroken, VehicleFlag::stoppedBySafetyCutout,
@@ -4011,14 +4023,14 @@ namespace OpenRCT2::Ui::Windows
                             case Breakdown::restraintsStuckOpen:
                             case Breakdown::doorsStuckClosed:
                             case Breakdown::doorsStuckOpen:
-                                vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
+                                vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
                                 if (vehicle != nullptr)
                                 {
                                     vehicle->flags.unset(VehicleFlag::carIsBroken);
                                 }
                                 break;
                             case Breakdown::vehicleMalfunction:
-                                vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
+                                vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[ride->brokenTrain]);
                                 if (vehicle != nullptr)
                                 {
                                     vehicle->flags.unset(VehicleFlag::trainIsBroken);
@@ -4222,7 +4234,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        auto staff = getGameState().entities.GetEntity<Staff>(ride->mechanic);
+                        auto staff = getGameState().entities.getEntity<Staff>(ride->mechanic);
                         if (staff != nullptr && staff->isMechanic())
                         {
                             ft = Formatter();
@@ -4241,7 +4253,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t HasTrackColour(const Ride& ride, int32_t trackColour)
         {
             // Get station flags (shops don't have them)
-            auto stationObjFlags = 0;
+            StationObjectFlags stationObjFlags{};
             if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             {
                 auto stationObj = ride.getStationObject();
@@ -4251,16 +4263,16 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            if (stationObjFlags == 0 && ride.getRideEntry()->flags.has(RideEntryFlag::disableColourTab))
+            if (stationObjFlags.isEmpty() && ride.getRideEntry()->flags.has(RideEntryFlag::disableColourTab))
                 return 0;
 
             switch (trackColour)
             {
                 case 0:
-                    return (stationObjFlags & StationObjectFlags::hasPrimaryColour)
+                    return stationObjFlags.has(StationObjectFlag::hasPrimaryColour)
                         || ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrackColourMain);
                 case 1:
-                    return (stationObjFlags & StationObjectFlags::hasSecondaryColour)
+                    return stationObjFlags.has(StationObjectFlag::hasSecondaryColour)
                         || ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrackColourAdditional);
                 case 2:
                     return ride.getRideTypeDescriptor().flags.has(RtdFlag::hasTrackColourSupports);
@@ -5233,7 +5245,7 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(rt, frontImageId, { 34, 20 });
 
             // Glass
-            if (stationObj->Flags & StationObjectFlags::isTransparent)
+            if (stationObj->Flags.has(StationObjectFlag::isTransparent))
             {
                 auto glassImageId = ImageId(stationObj->entranceFrontGlassIndex).WithTransparency(trackColour.main);
                 GfxDrawSprite(rt, glassImageId, { 34, 20 });
@@ -5271,10 +5283,8 @@ namespace OpenRCT2::Ui::Windows
             // Draw the coloured spinning vehicle
             // currentFrame represents a SpritePrecision of 64
             ImageIndex imageIndex = carEntry.spriteByYaw(currentFrame / 2, SpriteGroupType::slopeFlat);
-            imageIndex &= carEntry.tabRotationMask;
-            imageIndex *= carEntry.baseNumFrames;
-            imageIndex += carEntry.baseImageId;
-            auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
+
+            auto imageId = applyPreviewVehicleColour(imageIndex, carEntry, vehicleColour);
             GfxDrawSprite(rt, imageId, screenCoords);
         }
 
@@ -6006,7 +6016,7 @@ namespace OpenRCT2::Ui::Windows
                             for (int32_t i = 0; i < std::min<int32_t>(ride->numStations, 4); i++)
                             {
                                 StationIndex stationIndex = StationIndex::FromUnderlying(numTimes);
-                                auto time = ride->getStation(stationIndex).SegmentTime;
+                                auto time = ride->getStation(stationIndex).segmentTime;
                                 if (time != 0)
                                 {
                                     ft.Add<uint16_t>(STR_RIDE_TIME_ENTRY_WITH_SEPARATOR);
@@ -6045,7 +6055,7 @@ namespace OpenRCT2::Ui::Windows
                         for (int32_t i = 0; i < std::min<int32_t>(ride->numStations, 4); i++)
                         {
                             StationIndex stationIndex = StationIndex::FromUnderlying(i);
-                            auto length = ride->getStation(stationIndex).SegmentLength;
+                            auto length = ride->getStation(stationIndex).segmentLength;
                             if (length != 0)
                             {
                                 length >>= 16;
@@ -7278,7 +7288,7 @@ namespace OpenRCT2::Ui::Windows
         // View
         for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
         {
-            if (ride.getStations()[i].Start.IsNull())
+            if (ride.getStations()[i].start.isNull())
             {
                 stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
             }
@@ -7371,7 +7381,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t numPeepsLeft = vehicle->num_peeps;
                 for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
                 {
-                    Peep* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[i]);
+                    Peep* peep = getGameState().entities.getEntity<Guest>(vehicle->peep[i]);
                     if (peep == nullptr)
                         continue;
 

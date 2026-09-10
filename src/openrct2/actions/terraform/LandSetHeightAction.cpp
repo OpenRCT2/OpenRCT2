@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
         StringId errorMessage = CheckParameters();
         if (errorMessage != kStringIdNone)
         {
-            return Result(Status::disallowed, kStringIdNone, errorMessage);
+            return Result(Status::disallowed, STR_CANT_CHANGE_LAND_HEIGHT_HERE, errorMessage);
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
@@ -85,7 +85,7 @@ namespace OpenRCT2::GameActions
                 TileElement* tileElement = CheckTreeObstructions();
                 if (tileElement != nullptr)
                 {
-                    auto res = Result(Status::disallowed, kStringIdNone, kStringIdNone);
+                    auto res = Result(Status::disallowed, STR_CANT_CHANGE_LAND_HEIGHT_HERE, kStringIdNone);
                     MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
@@ -99,7 +99,7 @@ namespace OpenRCT2::GameActions
             errorMessage = CheckRideSupports();
             if (errorMessage != kStringIdNone)
             {
-                return Result(Status::disallowed, kStringIdNone, errorMessage);
+                return Result(Status::disallowed, STR_CANT_CHANGE_LAND_HEIGHT_HERE, errorMessage);
             }
         }
 
@@ -121,7 +121,7 @@ namespace OpenRCT2::GameActions
             TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
             if (tileElement != nullptr)
             {
-                auto res = Result(Status::disallowed, kStringIdNone, kStringIdNone);
+                auto res = Result(Status::disallowed, STR_CANT_CHANGE_LAND_HEIGHT_HERE, kStringIdNone);
                 MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
 
             auto clearResult = MapCanConstructWithClearAt(
                 { _coords, _height * kCoordsZStep, zCorner * kCoordsZStep }, MapSetLandHeightClearFunc, { 0b1111, 0 }, {},
-                _style, CreateCrossingMode::none);
+                { .slope = _style });
             if (clearResult.error != Status::ok)
             {
                 clearResult.error = Status::disallowed;

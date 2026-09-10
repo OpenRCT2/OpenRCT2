@@ -94,7 +94,7 @@ struct CoordsXY
         return { x / rhs, y / rhs };
     }
 
-    constexpr CoordsXY Rotate(int32_t direction) const
+    constexpr CoordsXY rotate(int32_t direction) const
     {
         CoordsXY rotatedCoords;
         switch (direction & 3)
@@ -131,24 +131,24 @@ struct CoordsXY
         return !(*this == other);
     }
 
-    constexpr CoordsXY ToTileCentre() const
+    constexpr CoordsXY toTileCentre() const
     {
-        return ToTileStart() + CoordsXY{ kCoordsXYHalfTile, kCoordsXYHalfTile };
+        return toTileStart() + CoordsXY{ kCoordsXYHalfTile, kCoordsXYHalfTile };
     }
 
-    constexpr CoordsXY ToTileStart() const
+    constexpr CoordsXY toTileStart() const
     {
         using namespace OpenRCT2::Numerics;
 
         return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep) };
     }
 
-    constexpr bool IsNull() const
+    constexpr bool isNull() const
     {
         return x == kCoordsNull;
     }
 
-    constexpr void SetNull()
+    constexpr void setNull()
     {
         x = kCoordsNull;
         y = 0;
@@ -187,21 +187,21 @@ struct CoordsXYZ : public CoordsXY
         return x == other.x && y == other.y && z == other.z;
     }
 
-    constexpr CoordsXYZ ToTileStart() const
+    constexpr CoordsXYZ toTileStart() const
     {
         using namespace OpenRCT2::Numerics;
 
         return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep), z };
     }
 
-    constexpr CoordsXYZ ToTileCentre() const
+    constexpr CoordsXYZ toTileCentre() const
     {
-        return ToTileStart() + CoordsXYZ{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0 };
+        return toTileStart() + CoordsXYZ{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0 };
     }
 
-    constexpr void SetNull()
+    constexpr void setNull()
     {
-        CoordsXY::SetNull();
+        CoordsXY::setNull();
         z = 0;
     }
 };
@@ -293,19 +293,19 @@ struct TileCoordsXY
         return *this;
     }
 
-    constexpr CoordsXY ToCoordsXY() const
+    constexpr CoordsXY toCoordsXY() const
     {
-        if (IsNull())
+        if (isNull())
         {
             CoordsXY ret{};
-            ret.SetNull();
+            ret.setNull();
             return ret;
         }
 
         return { x * kCoordsXYStep, y * kCoordsXYStep };
     }
 
-    constexpr TileCoordsXY Rotate(int32_t direction) const
+    constexpr TileCoordsXY rotate(int32_t direction) const
     {
         TileCoordsXY rotatedCoords;
         switch (direction & 3)
@@ -342,12 +342,12 @@ struct TileCoordsXY
         return !(*this == other);
     }
 
-    constexpr bool IsNull() const
+    constexpr bool isNull() const
     {
         return x == kCoordsNull;
     }
 
-    constexpr void SetNull()
+    constexpr void setNull()
     {
         x = kCoordsNull;
         y = 0;
@@ -407,20 +407,20 @@ struct TileCoordsXYZ : public TileCoordsXY
         return !(*this == other);
     }
 
-    constexpr CoordsXYZ ToCoordsXYZ() const
+    constexpr CoordsXYZ toCoordsXYZ() const
     {
-        if (IsNull())
+        if (isNull())
         {
             CoordsXYZ ret{};
-            ret.SetNull();
+            ret.setNull();
             return ret;
         }
         return { x * kCoordsXYStep, y * kCoordsXYStep, z * kCoordsZStep };
     }
 
-    constexpr void SetNull()
+    constexpr void setNull()
     {
-        TileCoordsXY::SetNull();
+        TileCoordsXY::setNull();
         z = 0;
     }
 };
@@ -596,16 +596,16 @@ struct CoordsXYZD : public CoordsXYZ
         return { x - rhs.x, y - rhs.y, z - rhs.z, direction };
     }
 
-    constexpr CoordsXYZD ToTileStart() const
+    constexpr CoordsXYZD toTileStart() const
     {
         using namespace OpenRCT2::Numerics;
 
         return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep), z, direction };
     }
 
-    constexpr CoordsXYZD ToTileCentre() const
+    constexpr CoordsXYZD toTileCentre() const
     {
-        return ToTileStart() + CoordsXYZD{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0, 0 };
+        return toTileStart() + CoordsXYZD{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0, 0 };
     }
 };
 
@@ -650,20 +650,20 @@ struct TileCoordsXYZD : public TileCoordsXYZ
     {
     }
 
-    constexpr CoordsXYZD ToCoordsXYZD() const
+    constexpr CoordsXYZD toCoordsXYZD() const
     {
-        if (IsNull())
+        if (isNull())
         {
             CoordsXYZD ret{};
-            ret.SetNull();
+            ret.setNull();
             return ret;
         }
         return { x * kCoordsXYStep, y * kCoordsXYStep, z * kCoordsZStep, direction };
     }
 
-    constexpr void SetNull()
+    constexpr void setNull()
     {
-        TileCoordsXYZ::SetNull();
+        TileCoordsXYZ::setNull();
         direction = kInvalidDirection;
     }
 };
@@ -676,7 +676,7 @@ struct MapRange : public CoordsRange<CoordsXY>
 {
     using CoordsRange::CoordsRange;
 
-    constexpr MapRange Normalise() const
+    constexpr MapRange normalise() const
     {
         // Don't use std::min/max, as they require <algorithm>, one of C++'s heaviest
         // in this very common header.

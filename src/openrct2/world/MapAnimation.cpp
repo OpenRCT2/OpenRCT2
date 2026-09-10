@@ -335,7 +335,7 @@ static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Vi
     do
     {
         const auto baseZ = tileElement->getBaseZ();
-        const CoordsXYZ loc{ coords.ToCoordsXY(), baseZ };
+        const CoordsXYZ loc{ coords.toCoordsXY(), baseZ };
 
         switch (tileElement->getType())
         {
@@ -595,7 +595,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
 
 void MapAnimations::MarkTileForInvalidation(const TileCoordsXY coords)
 {
-    if (!MapIsEdge(coords.ToCoordsXY()) && !_mapAnimationsUpdate.contains(coords))
+    if (!MapIsEdge(coords.toCoordsXY()) && !_mapAnimationsUpdate.contains(coords))
     {
         _mapAnimationsInvalidate[coords.x + (coords.y * kMaximumMapSizeTechnical)] = true;
     }
@@ -603,7 +603,7 @@ void MapAnimations::MarkTileForInvalidation(const TileCoordsXY coords)
 
 void MapAnimations::MarkTileForUpdate(const TileCoordsXY coords)
 {
-    if (!MapIsEdge(coords.ToCoordsXY()))
+    if (!MapIsEdge(coords.toCoordsXY()))
     {
         _mapAnimationsInvalidate[coords.x + (coords.y * kMaximumMapSizeTechnical)] = false;
         _mapAnimationsUpdate.insert(coords);
@@ -653,7 +653,7 @@ static void InvalidateAll(const ViewportList& viewports)
 
         const auto direction = DirectionFlipXAxis(viewport->rotation);
         const int32_t numVerticalTiles = (viewport->ViewHeight() + maxTileHeight) / kScreenCoordsTileHeight;
-        const TileCoordsXY nextVerticalTile = TileCoordsXY{ 1, 1 }.Rotate(direction);
+        const TileCoordsXY nextVerticalTile = TileCoordsXY{ 1, 1 }.rotate(direction);
         const int32_t screenCoordY = Numerics::floor2(
             (viewport->viewPos.y - kScreenCoordsTileHeightHalf), kScreenCoordsTileWidthHalf);
 
@@ -662,17 +662,17 @@ static void InvalidateAll(const ViewportList& viewports)
         {
             const ScreenCoordsXY screenCoord = { Numerics::floor2(x, kScreenCoordsTileWidthHalf), screenCoordY };
             CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
-            mapTile = mapTile.Rotate(direction);
+            mapTile = mapTile.rotate(direction);
             if (direction & 1)
             {
                 mapTile.y -= kCoordsXYHalfTile;
             }
-            mapTile = mapTile.ToTileStart();
+            mapTile = mapTile.toTileStart();
             TileCoordsXY tileCoords(mapTile);
 
             for (int32_t i = 0; i < numVerticalTiles; ++i)
             {
-                if (!MapIsEdge(tileCoords.ToCoordsXY())
+                if (!MapIsEdge(tileCoords.toCoordsXY())
                     && _mapAnimationsInvalidate[tileCoords.x + (tileCoords.y * kMaximumMapSizeTechnical)])
                 {
                     if (!UpdateTile<true, false>(tileCoords, viewport))
@@ -777,7 +777,7 @@ void MapAnimations::ShiftAll(const TileCoordsXY amount)
         {
             const bool animated = _mapAnimationsInvalidate[x + (y * kMaximumMapSizeTechnical)];
             const TileCoordsXY newCoords = TileCoordsXY(x, y) + amount;
-            if (!MapIsEdge(newCoords.ToCoordsXY()))
+            if (!MapIsEdge(newCoords.toCoordsXY()))
             {
                 newMapAnimationsInvalidate[newCoords.x + (newCoords.y * kMaximumMapSizeTechnical)] = animated;
             }
@@ -795,7 +795,7 @@ void MapAnimations::ShiftAll(const TileCoordsXY amount)
     std::set<TemporaryMapAnimation> newTemporaryMapAnimations;
     for (const auto& a : _temporaryMapAnimations)
     {
-        newTemporaryMapAnimations.insert(TemporaryMapAnimation{ a.location + CoordsXYZ(amount.ToCoordsXY(), 0), a.type });
+        newTemporaryMapAnimations.insert(TemporaryMapAnimation{ a.location + CoordsXYZ(amount.toCoordsXY(), 0), a.type });
     }
     _temporaryMapAnimations = std::move(newTemporaryMapAnimations);
 }

@@ -27,5 +27,12 @@
             ],
             "queue": true
         }
+    ],
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Bugulator"
+        }
     ]
 }

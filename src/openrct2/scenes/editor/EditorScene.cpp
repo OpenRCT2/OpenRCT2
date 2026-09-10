@@ -20,7 +20,7 @@
 #include "../../actions/park/LandSetRightsAction.h"
 #include "../../audio/Audio.h"
 #include "../../core/Path.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Palette.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/Guest.h"
 #include "../../entity/PatrolArea.h"
@@ -58,7 +58,7 @@ void EditorScene::Load()
     OpenEditorWindows();
     resetMainViewport();
 
-    LoadPalette();
+    Drawing::LoadPalette();
     gScreenAge = 0;
     gameState.scenarioOptions.name = LanguageGetString(STR_MY_NEW_SCENARIO);
 
@@ -186,7 +186,7 @@ void EditorScene::clearMapForEditing()
     }
 
     auto& gameState = getGameState();
-    gameState.entities.ResetAllEntities();
+    gameState.entities.resetAllEntities();
 
     UpdateConsolidatedPatrolAreas();
 
@@ -234,7 +234,9 @@ void EditorScene::OpenEditorWindows()
 {
     ContextOpenWindow(WindowClass::mainWindow);
     ContextOpenWindow(WindowClass::topToolbar);
-    ContextOpenWindowView(WindowView::editorBottomToolbar);
+    ContextOpenWindow(WindowClass::editorStepController); // previous step
+    ContextOpenWindow(WindowClass::editorStatusLine);
+    ContextOpenWindow(WindowClass::editorStepController); // next step
 }
 
 /**
@@ -310,13 +312,13 @@ void EditorScene::FinaliseMainView()
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
 
     gWindowUpdateTicks = 0;
-    LoadPalette();
+    Drawing::LoadPalette();
 }
 
 void EditorScene::resetMainViewport()
 {
     auto* mainWindow = WindowGetMain();
-    mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+    mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.toCoordsXYZ());
 }
 
 /**

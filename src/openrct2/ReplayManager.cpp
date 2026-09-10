@@ -178,7 +178,7 @@ namespace OpenRCT2
 
             if ((_mode == ReplayMode::recording || _mode == ReplayMode::normalisation) && currentTicks == _nextChecksumTick)
             {
-                EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
+                EntitiesChecksum checksum = getGameState().entities.getAllEntitiesChecksum();
                 AddChecksum(currentTicks, std::move(checksum));
 
                 _nextChecksumTick = currentTicks + ChecksumTicksDelta();
@@ -308,7 +308,7 @@ namespace OpenRCT2
             _currentRecording->tickEnd = currentTicks;
 
             {
-                EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
+                EntitiesChecksum checksum = getGameState().entities.getAllEntitiesChecksum();
                 AddChecksum(currentTicks, std::move(checksum));
             }
 
@@ -317,7 +317,7 @@ namespace OpenRCT2
             // Serialise Body.
             DataSerialiser recSerialiser(true);
             Serialise(recSerialiser, *_currentRecording);
-            auto& stream = recSerialiser.GetStream();
+            auto& stream = recSerialiser.getStream();
 
             MemoryStream compressed;
             stream.SetPosition(0);
@@ -539,7 +539,7 @@ namespace OpenRCT2
                 auto& gameState = getGameState();
                 importer->Import(gameState);
 
-                EntityTweener::Get().Reset();
+                EntityTweener::get().reset();
 
                 // Load all map global variables.
                 DataSerialiser parkParamsDs(false, data.parkParams);
@@ -685,7 +685,7 @@ namespace OpenRCT2
             serialiser << command.commandIndex;
 
             uint32_t actionType = 0;
-            if (serialiser.IsSaving())
+            if (serialiser.isSaving())
             {
                 if (!command.action)
                 {
@@ -695,7 +695,7 @@ namespace OpenRCT2
             }
             serialiser << actionType;
 
-            if (serialiser.IsLoading())
+            if (serialiser.isLoading())
             {
                 command.action = Create(static_cast<GameCommand>(actionType));
             }
@@ -748,7 +748,7 @@ namespace OpenRCT2
             uint32_t countCommands = static_cast<uint32_t>(data.commands.size());
             serialiser << countCommands;
 
-            if (serialiser.IsSaving())
+            if (serialiser.isSaving())
             {
                 for (auto& command : data.commands)
                 {
@@ -769,7 +769,7 @@ namespace OpenRCT2
             uint32_t countChecksums = static_cast<uint32_t>(data.checksums.size());
             serialiser << countChecksums;
 
-            if (serialiser.IsLoading())
+            if (serialiser.isLoading())
             {
                 data.checksums.resize(countChecksums);
             }
@@ -799,7 +799,7 @@ namespace OpenRCT2
             {
                 _currentReplay->checksumIndex++;
 
-                EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
+                EntitiesChecksum checksum = getGameState().entities.getAllEntitiesChecksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
                     uint32_t replayTick = currentTicks - _currentReplay->tickStart;
@@ -807,7 +807,7 @@ namespace OpenRCT2
                     // Detected different game state.
                     LOG_WARNING(
                         "Different sprite checksum at tick %u (Replay Tick: %u) ; Saved: %s, Current: %s", currentTicks,
-                        replayTick, savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
+                        replayTick, savedChecksum.second.toString().c_str(), checksum.toString().c_str());
 
                     _faultyChecksumIndex = checksumIndex;
                 }
@@ -815,8 +815,8 @@ namespace OpenRCT2
                 {
                     // Good state.
                     LOG_VERBOSE(
-                        "Good state at tick %u ; Saved: %s, Current: %s", currentTicks, savedChecksum.second.ToString().c_str(),
-                        checksum.ToString().c_str());
+                        "Good state at tick %u ; Saved: %s, Current: %s", currentTicks, savedChecksum.second.toString().c_str(),
+                        checksum.toString().c_str());
                 }
             }
         }
@@ -860,7 +860,7 @@ namespace OpenRCT2
                 }
 
                 // Focus camera on event.
-                if (!gSilentReplays && isPositionValid && !result.position.IsNull())
+                if (!gSilentReplays && isPositionValid && !result.position.isNull())
                 {
                     auto* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)

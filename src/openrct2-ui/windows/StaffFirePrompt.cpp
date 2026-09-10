@@ -77,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
         {
             drawWidgets(rt);
 
-            Peep* peep = getGameState().entities.GetEntity<Staff>(EntityId::FromUnderlying(number));
+            Peep* peep = getGameState().entities.getEntity<Staff>(EntityId::FromUnderlying(number));
             // The staff member may have been fired in the meantime.
             if (peep == nullptr)
             {

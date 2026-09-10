@@ -299,10 +299,10 @@ namespace OpenRCT2::Title
         std::vector<std::string> saves;
 
         auto pattern = Path::Combine(path, u8"*.sc6;*.sv6;*.park;*.sv4;*.sc4");
-        auto scanner = Path::ScanDirectory(pattern, true);
-        while (scanner->Next())
+        auto scanner = Path::scanDirectory(pattern, true);
+        while (scanner->next())
         {
-            saves.push_back(scanner->GetPathRelative());
+            saves.push_back(scanner->getPathRelative());
         }
         return saves;
     }

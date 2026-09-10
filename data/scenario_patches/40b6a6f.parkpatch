@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Diamond Heights",
+    "sha256": "40b6a6f516491f903b695362d2d1823039b4019a3b923e690ac8caee4a9fac5a",
+    "rides": [
+        {
+            "id": 3,
+            "operation": "set_name",
+            "name": "Doppelgänger"
+        }
+    ]
+}

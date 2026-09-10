@@ -232,7 +232,6 @@ STR_0820    :nov.
 STR_0821    :déc.
 STR_0822    :Impossible d’accéder au fichier de données graphiques
 STR_0823    :Fichier de données manquant ou inaccessible
-STR_0824    :{BLACK}❌
 STR_0825    :Nom choisi déjà utilisé
 STR_0826    :Trop de noms définis
 STR_0827    :Pas assez d’argent — Nécessite {CURRENCY2DP}
@@ -2681,7 +2680,7 @@ STR_5573    :Retirer des favoris
 STR_5574    :Nom du serveur :
 STR_5575    :Joueurs max. :
 STR_5576    :Port :
-STR_5577    :Won Sud-Coréen (W)
+STR_5577    :Won Sud-Coréen (₩)
 STR_5578    :Rouble Russe (₽)
 STR_5579    :Mise à l’échelle :
 STR_5580    :Couronne Tchèque (Kč)
@@ -3206,7 +3205,6 @@ STR_6160    :{WINDOW_COLOUR_2}Véhicules disponibles : {BLACK}{STRING}
 STR_6161    :Afficher/masquer les lignes de quadrillage
 STR_6162    :Souris folle tournante
 STR_6163    :Des voitures en forme de souris se faufilent dans des virages serrés et de petites chutes en tournant doucement pour désorienter les passagers
-STR_6164    :{WHITE}❌
 STR_6165    :Synchro. verticale
 STR_6166    :Synchronise chaque image affichée sur la fréquence de rafraîchissement du moniteur, ce qui empêche un décalage visuel.
 STR_6167    :Paramètres avancés

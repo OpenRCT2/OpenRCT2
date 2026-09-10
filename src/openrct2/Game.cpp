@@ -28,7 +28,7 @@
 #include "core/FileSystem.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "drawing/Drawing.h"
+#include "drawing/Palette.h"
 #include "drawing/ScrollingText.h"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
@@ -257,7 +257,7 @@ static void FixPeepsWithInvalidRideReference()
     if (!peepsToRemove.empty())
     {
         // Some broken saves have broken spatial indexes
-        getGameState().entities.ResetEntitySpatialIndices();
+        getGameState().entities.resetEntitySpatialIndices();
     }
 
     for (auto ptr : peepsToRemove)
@@ -280,7 +280,7 @@ static void FixInvalidSurfaces()
             if (surfaceElement == nullptr)
             {
                 LOG_ERROR("Null map element at x = %d and y = %d. Fixing...", x, y);
-                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
+                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.toCoordsXYZ(), 0b0000);
                 if (surfaceElement == nullptr)
                 {
                     LOG_ERROR("Unable to fix: Map element limit reached.");
@@ -368,13 +368,13 @@ void GameLoadInit()
     {
         GameActions::ClearQueue();
     }
-    getGameState().entities.ResetEntitySpatialIndices();
+    getGameState().entities.resetEntitySpatialIndices();
     ResetAllSpriteQuadrantPlacements();
 
     gWindowUpdateTicks = 0;
     gCurrentRealTimeTicks = 0;
 
-    LoadPalette();
+    Drawing::LoadPalette();
 
     if (!gOpenRCT2Headless)
     {
@@ -437,7 +437,7 @@ void ResetAllSpriteQuadrantPlacements()
 {
     for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
     {
-        auto* spr = getGameState().entities.GetEntity(EntityId::FromUnderlying(i));
+        auto* spr = getGameState().entities.getEntity(EntityId::FromUnderlying(i));
         if (spr != nullptr && spr->type != EntityType::null)
         {
             spr->moveTo(spr->getLocation());
@@ -548,8 +548,8 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
     // At first, count how many autosaves there are
     {
-        auto scanner = Path::ScanDirectory(filter, false);
-        while (scanner->Next())
+        auto scanner = Path::scanDirectory(filter, false);
+        while (scanner->next())
         {
             autosavesCount++;
         }
@@ -563,12 +563,12 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
     std::vector<u8string> autosaveFiles;
     {
-        auto scanner = Path::ScanDirectory(filter, false);
+        auto scanner = Path::scanDirectory(filter, false);
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            if (scanner->Next())
+            if (scanner->next())
             {
-                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->GetPathRelative()));
+                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->getPathRelative()));
             }
         }
     }
@@ -736,7 +736,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         default:
             GameUnloadScripts();
-            getGameState().entities.ResetAllEntities();
+            getGameState().entities.resetAllEntities();
             GetContext()->Finish();
             break;
     }

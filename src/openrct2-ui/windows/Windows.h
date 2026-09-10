@@ -93,9 +93,6 @@ namespace OpenRCT2::Ui::Windows
     // EditorInventionsList
     WindowBase* EditorInventionsListOpen();
 
-    // EditorBottomToolbar
-    WindowBase* EditorBottomToolbarOpen();
-
     // EditorObjectSelection
     WindowBase* EditorObjectSelectionOpen();
     bool EditorObjectSelectionWindowCheck();
@@ -106,6 +103,12 @@ namespace OpenRCT2::Ui::Windows
 
     // EditorScenarioOptions
     WindowBase* EditorScenarioOptionsOpen();
+
+    // EditorStatusLine
+    WindowBase* editorStatusLineOpen();
+
+    // EditorStepController
+    WindowBase* editorStepControllerOpen();
 
     // Error
     WindowBase* ErrorOpen(StringId title, StringId message, const class Formatter& formatter, bool autoClose = false);

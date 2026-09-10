@@ -223,21 +223,21 @@ namespace OpenRCT2
         static void encode(IStream* stream, const DataSerialiserTag<T>& tag)
         {
             DataSerializerTraits<T> s;
-            s.encode(stream, tag.Data());
+            s.encode(stream, tag.data());
         }
         static void decode(IStream* stream, DataSerialiserTag<T>& tag)
         {
             DataSerializerTraits<T> s;
-            s.decode(stream, tag.Data());
+            s.decode(stream, tag.data());
         }
         static void log(IStream* stream, const DataSerialiserTag<T>& tag)
         {
-            const char* name = tag.Name();
+            const char* name = tag.name();
             stream->Write(name, strlen(name));
             stream->Write(" = ", 3);
 
             DataSerializerTraits<T> s;
-            s.log(stream, tag.Data());
+            s.log(stream, tag.data());
 
             stream->Write("; ", 2);
         }
@@ -881,7 +881,7 @@ namespace OpenRCT2
         static void log(IStream* stream, const IntensityRange& val)
         {
             char msg[128] = {};
-            snprintf(msg, sizeof(msg), "IntensityRange(min = %d, max = %d)", val.GetMinimum(), val.GetMaximum());
+            snprintf(msg, sizeof(msg), "IntensityRange(min = %d, max = %d)", val.getMinimum(), val.getMaximum());
             stream->Write(msg, strlen(msg));
         }
     };

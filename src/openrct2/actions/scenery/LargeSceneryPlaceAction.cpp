@@ -128,7 +128,7 @@ namespace OpenRCT2::GameActions
 
         for (auto& tile : sceneryEntry->tiles)
         {
-            auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
+            auto curTile = CoordsXY{ tile.offset }.rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -139,8 +139,7 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
-                CreateCrossingMode::none, isTree);
+                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), { .isTree = isTree });
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -260,7 +259,7 @@ namespace OpenRCT2::GameActions
 
         for (auto& tile : sceneryEntry->tiles)
         {
-            auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
+            auto curTile = CoordsXY{ tile.offset }.rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -271,8 +270,7 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
-                CreateCrossingMode::none, isTree);
+                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), { .isTree = isTree });
             if (canBuild.error != Status::ok)
             {
                 if (banner != nullptr)
@@ -330,7 +328,7 @@ namespace OpenRCT2::GameActions
     {
         for (auto& tile : tiles)
         {
-            auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
+            auto curTile = CoordsXY{ tile.offset }.rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -347,7 +345,7 @@ namespace OpenRCT2::GameActions
         int16_t maxHeight = -1;
         for (auto& tile : tiles)
         {
-            auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
+            auto curTile = CoordsXY{ tile.offset }.rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;

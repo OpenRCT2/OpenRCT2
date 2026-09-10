@@ -13,7 +13,7 @@
 #include "../../Diagnostic.h"
 #include "../../Game.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../entity/EntityList.h"
 #include "../../management/NewsItem.h"
@@ -148,9 +148,9 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost = refundPrice;
 
-        if (!ride.overallView.IsNull())
+        if (!ride.overallView.isNull())
         {
-            auto xy = ride.overallView.ToTileCentre();
+            auto xy = ride.overallView.toTileCentre();
             res.position = { xy, TileElementHeight(xy) };
         }
 
@@ -170,7 +170,7 @@ namespace OpenRCT2::GameActions
         windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
         Drawing::ScrollingText::invalidate();
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
 
         return res;
     }
@@ -200,7 +200,7 @@ namespace OpenRCT2::GameActions
         {
             for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
             {
-                const auto tileCoords = tilePos.ToCoordsXY();
+                const auto tileCoords = tilePos.toCoordsXY();
                 // Loop over all elements of the tile until there are no more items to remove
                 int offset = -1;
                 bool lastForTileReached = false;
@@ -279,9 +279,9 @@ namespace OpenRCT2::GameActions
 
         ride.windowInvalidateFlags.set(RideInvalidateFlag::maintenance, RideInvalidateFlag::customers);
 
-        if (!ride.overallView.IsNull())
+        if (!ride.overallView.isNull())
         {
-            auto location = ride.overallView.ToTileCentre();
+            auto location = ride.overallView.toTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
 

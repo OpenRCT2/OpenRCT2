@@ -25,6 +25,11 @@
         {
             "id": 29,
             "operation": "open_ride"
+        },
+        {
+            "id": 33,
+            "operation": "set_name",
+            "name": "Hex... the Legend of the Towers"
         }
     ]
 }

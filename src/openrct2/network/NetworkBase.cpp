@@ -24,7 +24,7 @@
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
 #include "../localisation/Formatter.h"
@@ -47,7 +47,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 4;
+constexpr uint8_t kStreamVersion = 0;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -204,7 +204,7 @@ namespace OpenRCT2::Network
             scriptEngine.RemoveNetworkPlugins();
     #endif
 
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
 
             _requireClose = false;
         }
@@ -856,8 +856,8 @@ namespace OpenRCT2::Network
 
         if (!storedTick.spriteHash.empty())
         {
-            EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
-            std::string clientSpriteHash = checksum.ToString();
+            EntitiesChecksum checksum = getGameState().entities.getAllEntitiesChecksum();
+            std::string clientSpriteHash = checksum.toString();
             if (clientSpriteHash != storedTick.spriteHash)
             {
                 LOG_INFO(
@@ -1601,8 +1601,8 @@ namespace OpenRCT2::Network
         packet << flags;
         if (flags & TickFlags::kChecksums)
         {
-            EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
-            packet.writeString(checksum.ToString());
+            EntitiesChecksum checksum = getGameState().entities.getAllEntitiesChecksum();
+            packet.writeString(checksum.toString());
         }
 
         SendPacketToClients(packet);
@@ -2881,7 +2881,7 @@ namespace OpenRCT2::Network
             auto& gameState = getGameState();
             importer->Import(gameState);
 
-            EntityTweener::Get().Reset();
+            EntityTweener::get().reset();
             MapAnimations::MarkAllTiles();
 
             gLastAutoSaveUpdate = kAutosavePause;
@@ -3087,8 +3087,8 @@ namespace OpenRCT2::Network
 
         DataSerialiser stream(false);
         const size_t size = packet.header.size - packet.bytesRead;
-        stream.GetStream().WriteArray(packet.read(size), size);
-        stream.GetStream().SetPosition(0);
+        stream.getStream().WriteArray(packet.read(size), size);
+        stream.getStream().SetPosition(0);
 
         ga->Serialise(stream);
         // Set player to sender, should be 0 if sent from client.

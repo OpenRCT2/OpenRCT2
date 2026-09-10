@@ -5280,6 +5280,11 @@ declare global {
     interface TextBoxWidget extends WidgetBase {
         type: "textbox";
         text: string;
+        /**
+         * The position of the text cursor while typing into the textbox.
+         * Only available when the textbox is in focus.
+         */
+        caret: number;
         maxLength: number;
         focus(): void;
     }

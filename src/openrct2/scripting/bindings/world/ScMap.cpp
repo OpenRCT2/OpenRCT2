@@ -84,7 +84,7 @@ namespace OpenRCT2::Scripting
     {
         JS_UNPACK_INT32(x, ctx, argv[0]);
         JS_UNPACK_INT32(y, ctx, argv[1]);
-        auto coords = TileCoordsXY(x, y).ToCoordsXY();
+        auto coords = TileCoordsXY(x, y).toCoordsXY();
         return gScTile.New(ctx, coords);
     }
 
@@ -95,7 +95,7 @@ namespace OpenRCT2::Scripting
         if (id >= 0 && id < kMaxEntities)
         {
             auto spriteId = EntityId::FromUnderlying(id);
-            auto sprite = getGameState().entities.GetEntity(spriteId);
+            auto sprite = getGameState().entities.getEntity(spriteId);
             if (sprite != nullptr && sprite->type != EntityType::null)
             {
                 return GetEntityAsDukValue(ctx, sprite);
@@ -123,7 +123,7 @@ namespace OpenRCT2::Scripting
             {
                 for (auto carId = trainHead->id; !carId.IsNull();)
                 {
-                    auto car = getGameState().entities.GetEntity<Vehicle>(carId);
+                    auto car = getGameState().entities.getEntity<Vehicle>(carId);
 
                     if (car == nullptr)
                     {
@@ -186,7 +186,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Staff>())
             {
-                auto staff = getGameState().entities.GetEntity<Staff>(sprite->id);
+                auto staff = getGameState().entities.getEntity<Staff>(sprite->id);
                 if (staff != nullptr)
                 {
                     switch (staff->assignedStaffType)
@@ -233,7 +233,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_STR(type, ctx, argv[0]);
 
         // Get the tile position
-        const auto pos = JSToCoordsXY(ctx, argv[1]);
+        const auto pos = JStoCoordsXY(ctx, argv[1]);
 
         // Declare an array that will hold the result to return
         JSValue result = JS_NewArray(ctx);
@@ -286,7 +286,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<Staff>(pos))
             {
-                auto staff = getGameState().entities.GetEntity<Staff>(sprite->id);
+                auto staff = getGameState().entities.getEntity<Staff>(sprite->id);
                 if (staff != nullptr)
                 {
                     switch (staff->assignedStaffType)
@@ -332,7 +332,7 @@ namespace OpenRCT2::Scripting
     template<typename TEntityType, typename TScriptType>
     JSValue createEntityType(JSContext* ctx, JSValue initializer)
     {
-        TEntityType* entity = getGameState().entities.CreateEntity<TEntityType>();
+        TEntityType* entity = getGameState().entities.createEntity<TEntityType>();
         if (entity == nullptr)
         {
             // Probably no more space for entities for this specified entity type.
@@ -354,7 +354,7 @@ namespace OpenRCT2::Scripting
         JSValue res;
         if (type == "car")
         {
-            Vehicle* entity = getGameState().entities.CreateEntity<Vehicle>();
+            Vehicle* entity = getGameState().entities.createEntity<Vehicle>();
             if (entity == nullptr)
             {
                 // Probably no more space for entities for this specified entity type.
@@ -375,7 +375,7 @@ namespace OpenRCT2::Scripting
                 {
                     entity->peep[i] = EntityId::GetNull();
                 }
-                entity->BoatLocation.SetNull();
+                entity->BoatLocation.setNull();
 
                 res = ScVehicle::New(ctx, entity->id);
             }
@@ -442,7 +442,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_OBJECT(pos, ctx, argv[0]);
         JS_UNPACK_UINT32(elementIndex, ctx, argv[1]);
 
-        const auto position = JSToCoordsXY(ctx, pos);
+        const auto position = JStoCoordsXY(ctx, pos);
         return ScTrackIterator::FromElement(ctx, position, elementIndex);
     }
 
@@ -490,11 +490,11 @@ namespace OpenRCT2::Scripting
 
         if (hasElementIndex)
         {
-            const auto position = JSToCoordsXY(ctx, pos);
+            const auto position = JStoCoordsXY(ctx, pos);
             return ScPathNavigator::fromElement(ctx, position, elementIndex, options);
         }
 
-        const auto position = JSToCoordsXYZ(ctx, pos);
+        const auto position = JStoCoordsXYZ(ctx, pos);
         return ScPathNavigator::fromPosition(ctx, position, options);
     }
 
@@ -531,7 +531,7 @@ namespace OpenRCT2::Scripting
                 return ScVehicle::New(ctx, spriteId);
             case EntityType::staff:
             {
-                auto staff = getGameState().entities.GetEntity<Staff>(spriteId);
+                auto staff = getGameState().entities.getEntity<Staff>(spriteId);
                 if (staff != nullptr)
                 {
                     switch (staff->assignedStaffType)

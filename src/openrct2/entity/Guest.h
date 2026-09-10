@@ -220,24 +220,24 @@ namespace OpenRCT2
         {
         }
 
-        uint8_t GetMinimum() const
+        uint8_t getMinimum() const
         {
             return _value & 0x0F;
         }
 
-        uint8_t GetMaximum() const
+        uint8_t getMaximum() const
         {
             return _value >> 4;
         }
 
-        IntensityRange WithMinimum(uint8_t value) const
+        IntensityRange withMinimum(uint8_t value) const
         {
-            return IntensityRange(value, GetMaximum());
+            return IntensityRange(value, getMaximum());
         }
 
-        IntensityRange WithMaximum(uint8_t value) const
+        IntensityRange withMaximum(uint8_t value) const
         {
-            return IntensityRange(GetMinimum(), value);
+            return IntensityRange(getMinimum(), value);
         }
 
         explicit operator uint8_t() const
@@ -254,6 +254,36 @@ namespace OpenRCT2
         {
             return lhs._value != rhs._value;
         }
+    };
+
+    enum class EasterEggPeepName : uint8_t
+    {
+        michaelSchumacher,
+        jacquesVilleneuve,
+        damonHill,
+        mrBean,
+        chrisSawyer,
+        katieBrayshaw,
+        melanieWarn,
+        simonFoster,
+        johnWardley,
+        lisaStirling,
+        donaldMacrae,
+        katherineMcGowan,
+        francesMcGowan,
+        corinaMassoura,
+        carolYoung,
+        miaSheridan,
+        katieRodger,
+        emmaGarrell,
+        joanneBarton,
+        felicityAnderson,
+        katieSmith,
+        eilidhBell,
+        nancyStillwagon,
+        davidEllis,
+        count,
+        none = 255,
     };
 
     struct Guest : Peep
@@ -343,7 +373,7 @@ namespace OpenRCT2
         void checkCantFindRide();
         void checkCantFindExit();
         void setAnimationGroup(PeepAnimationGroup new_sprite_type);
-        int32_t getEasterEggNameId() const;
+        EasterEggPeepName getEasterEggNameId() const;
         void updateEasterEggInteractions();
         void insertNewThought(PeepThoughtType thought_type);
         void insertNewThought(PeepThoughtType thought_type, ShopItem thought_arguments);
@@ -410,7 +440,7 @@ namespace OpenRCT2
         void updateRidePrepareForExit();
         void updateMotivesIdle();
         void updateConsumptionMotives();
-        bool checkEasterEggName(int32_t index) const;
+        bool checkEasterEggName(EasterEggPeepName peepName) const;
         void givePassingGuestPurpleClothes(Guest& passingPeep);
         void givePassingGuestPizza(Guest& passingPeep);
         void makePassingGuestSick(Guest& passingPeep);
@@ -422,34 +452,6 @@ namespace OpenRCT2
     void updateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
 
     static_assert(sizeof(Guest) <= 512);
-
-    enum
-    {
-        EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER,
-        EASTEREGG_PEEP_NAME_JACQUES_VILLENEUVE,
-        EASTEREGG_PEEP_NAME_DAMON_HILL,
-        EASTEREGG_PEEP_NAME_MR_BEAN,
-        EASTEREGG_PEEP_NAME_CHRIS_SAWYER,
-        EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW,
-        EASTEREGG_PEEP_NAME_MELANIE_WARN,
-        EASTEREGG_PEEP_NAME_SIMON_FOSTER,
-        EASTEREGG_PEEP_NAME_JOHN_WARDLEY,
-        EASTEREGG_PEEP_NAME_LISA_STIRLING,
-        EASTEREGG_PEEP_NAME_DONALD_MACRAE,
-        EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN,
-        EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN,
-        EASTEREGG_PEEP_NAME_CORINA_MASSOURA,
-        EASTEREGG_PEEP_NAME_CAROL_YOUNG,
-        EASTEREGG_PEEP_NAME_MIA_SHERIDAN,
-        EASTEREGG_PEEP_NAME_KATIE_RODGER,
-        EASTEREGG_PEEP_NAME_EMMA_GARRELL,
-        EASTEREGG_PEEP_NAME_JOANNE_BARTON,
-        EASTEREGG_PEEP_NAME_FELICITY_ANDERSON,
-        EASTEREGG_PEEP_NAME_KATIE_SMITH,
-        EASTEREGG_PEEP_NAME_EILIDH_BELL,
-        EASTEREGG_PEEP_NAME_NANCY_STILLWAGON,
-        EASTEREGG_PEEP_NAME_DAVID_ELLIS
-    };
 
     void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
 

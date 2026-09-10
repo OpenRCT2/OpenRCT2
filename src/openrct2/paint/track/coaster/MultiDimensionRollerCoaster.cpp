@@ -125,7 +125,7 @@ static void MultiDimensionRCTrackStation(
     const TrackElement& trackElement, SupportType supportType)
 {
     const auto* const stationObj = ride.getStationObject();
-    const bool noPlatforms = stationObj != nullptr && stationObj->Flags & StationObjectFlags::noPlatforms;
+    const bool noPlatforms = stationObj != nullptr && stationObj->Flags.has(StationObjectFlag::noPlatforms);
 
     static constexpr uint32_t imageIds[2][kNumOrthogonalDirections][3] = {
         {
@@ -157,7 +157,7 @@ static void MultiDimensionRCTrackStation(
             { { 0, 3, height + 3 }, { 32, 26, 1 } });
     }
 
-    if (stationObj != nullptr && !(stationObj->Flags & StationObjectFlags::noPlatforms))
+    if (stationObj != nullptr && !stationObj->Flags.has(StationObjectFlag::noPlatforms))
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
 

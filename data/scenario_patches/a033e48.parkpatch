@@ -1,0 +1,31 @@
+{
+    "scenario_name": "Dusty Desert",
+    "sha256": "a033e481196ffb4f07c02dde1bcca2e27afb3d7cf6320421cdb55077707287ed",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Dusty Rattler"
+        },
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Dusty Flight"
+        },
+        {
+            "id": 2,
+            "operation": "set_name",
+            "name": "Dusty Dangler"
+        },
+        {
+            "id": 3,
+            "operation": "set_name",
+            "name": "Dusty Twister"
+        },
+        {
+            "id": 4,
+            "operation": "set_name",
+            "name": "Dusty Drop"
+        }
+    ]
+}

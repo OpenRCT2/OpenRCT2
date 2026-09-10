@@ -34,7 +34,7 @@ namespace OpenRCT2
             frame++;
             if (frame >= 5)
             {
-                getGameState().entities.EntityRemove(this);
+                getGameState().entities.entityRemove(this);
             }
         }
         else
@@ -98,7 +98,7 @@ namespace OpenRCT2
 
     void Balloon::create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped)
     {
-        auto* balloon = getGameState().entities.CreateEntity<Balloon>();
+        auto* balloon = getGameState().entities.createEntity<Balloon>();
         if (balloon == nullptr)
             return;
 

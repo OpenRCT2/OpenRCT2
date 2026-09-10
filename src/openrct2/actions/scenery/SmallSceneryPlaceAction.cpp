@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
             surfaceHeight = waterHeight;
         }
         auto res = Result();
-        auto centre = _loc.ToTileCentre();
+        auto centre = _loc.toTileCentre();
         res.position.x = centre.x;
         res.position.y = centre.y;
         res.position.z = surfaceHeight;
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
         auto loc2 = _loc;
         if (sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
         {
-            loc2 = loc2.ToTileCentre();
+            loc2 = loc2.toTileCentre();
         }
         else
         {
@@ -265,8 +265,7 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->flags.has(SmallSceneryFlag::isTree);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, CreateCrossingMode::none,
-            isTree);
+            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), { .isTree = isTree });
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -300,7 +299,7 @@ namespace OpenRCT2::GameActions
             surfaceHeight = waterHeight;
         }
         auto res = Result();
-        auto centre = _loc.ToTileCentre();
+        auto centre = _loc.toTileCentre();
         res.position.x = centre.x;
         res.position.y = centre.y;
         res.position.z = surfaceHeight;
@@ -405,8 +404,8 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->flags.has(SmallSceneryFlag::isTree);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply), kTileSlopeFlat,
-            CreateCrossingMode::none, isTree);
+            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
+            { .isTree = isTree });
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;

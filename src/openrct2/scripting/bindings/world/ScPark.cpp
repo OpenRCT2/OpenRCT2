@@ -14,7 +14,7 @@
     #include "../../../Context.h"
     #include "../../../GameState.h"
     #include "../../../core/EnumMap.hpp"
-    #include "../../../drawing/Drawing.h"
+    #include "../../../drawing/Drawing.Screen.h"
     #include "../../../ui/WindowManager.h"
     #include "../../../windows/Intent.h"
     #include "../../../world/Park.h"
@@ -322,7 +322,7 @@ namespace OpenRCT2::Scripting
         if (park.name != valueStr)
         {
             park.name = std::move(valueStr);
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
         return JS_UNDEFINED;
     }
@@ -343,7 +343,7 @@ namespace OpenRCT2::Scripting
         const auto flag = kParkFlagMap[key];
         auto& gameState = getGameState();
         gameState.park.flags.set(flag, value);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
         return JS_UNDEFINED;
     }
 

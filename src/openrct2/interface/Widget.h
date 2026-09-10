@@ -74,10 +74,10 @@ namespace OpenRCT2
         SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
     };
 
-    constexpr const char* kCloseBoxStringBlackNormal = u8"{BLACK}❌";
-    constexpr const char* kCloseBoxStringBlackLarge = u8"{BLACK}X";
-    constexpr const char* kCloseBoxStringWhiteNormal = u8"{WHITE}❌";
-    constexpr const char* kCloseBoxStringWhiteLarge = u8"{WHITE}X";
+    constexpr const char* kCloseBoxStringBlackNormal = u8"{BLACK}✕";
+    constexpr const char* kCloseBoxStringBlackLarge = u8"{BLACK}❌";
+    constexpr const char* kCloseBoxStringWhiteNormal = u8"{WHITE}✕";
+    constexpr const char* kCloseBoxStringWhiteLarge = u8"{WHITE}❌";
 
     struct Widget
     {
@@ -211,11 +211,11 @@ namespace OpenRCT2
         }
     };
 
-    constexpr uint8_t kTitleHeightNormal = 13;
-    constexpr uint8_t kTitleHeightLarge = 24;
+    constexpr uint8_t kTitleHeightNormal = 14;
+    constexpr uint8_t kTitleHeightLarge = 25;
 
-    constexpr uint8_t kCloseButtonSize = 10;
-    constexpr uint8_t kCloseButtonSizeTouch = 20;
+    constexpr ScreenSize kCloseButtonSize = { 11, kTitleHeightNormal - 2 };
+    constexpr ScreenSize kCloseButtonSizeTouch = { 21, kTitleHeightLarge - 2 };
 
     constexpr int32_t kScrollableRowHeight = 12;
     constexpr uint8_t kListRowHeight = 12;

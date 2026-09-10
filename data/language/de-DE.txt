@@ -230,7 +230,6 @@ STR_0820    :Nov
 STR_0821    :Dez
 STR_0822    :Zugriff auf Grafikdatei nicht möglich
 STR_0823    :Datei fehlt oder kann nicht aufgerufen werden
-STR_0824    :{BLACK}❌
 STR_0825    :Der gewählte Name wird bereits verwendet
 STR_0826    :Es sind zu viele Namen definiert
 STR_0827    :Nicht genügend Geld - erforderlich sind {CURRENCY2DP}
@@ -2676,7 +2675,7 @@ STR_5573    :Aus Favoriten entfernen
 STR_5574    :Servername:
 STR_5575    :Max. Spieler:
 STR_5576    :Port:
-STR_5577    :Südkorean. Won (W)
+STR_5577    :Südkorean. Won (₩)
 STR_5578    :Russischer Rubel (₽)
 STR_5579    :Skalierungsfaktor:
 STR_5580    :Tschechische Krone (Kč)
@@ -3197,7 +3196,6 @@ STR_6160    :{WINDOW_COLOUR_2}Verfügbare Fahrzeuge: {BLACK}{STRING}
 STR_6161    :Gitternetzlinien ein-/ausblenden
 STR_6162    :Rotierende Wilde Maus
 STR_6163    :Mausförmige Wagen rasen um enge Kurven und kurze Gefälle herunter, wobei sie sich sanft drehen, um die Fahrgäste zu desorientieren
-STR_6164    :{WHITE}❌
 STR_6165    :Vertikale Synchr.
 STR_6166    :Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen-Tearing
 STR_6167    :Erweitert
@@ -3817,3 +3815,14 @@ STR_7029    :Viertelspirale n. unten
 STR_7030    :{WINDOW_COLOUR_2}Bespaßte Gäste: {BLACK}{COMMA32}
 STR_7031    :Graswachsum deaktivieren
 STR_7032    :Die Alterung des Grases deaktivieren, damit es nicht wächst.
+STR_7033    :Streckenstil
+STR_7034    :Labyrinthstil
+STR_7035    :Ladenstil
+STR_7036    :Fahrzeugstil
+STR_7037    :Betriebsmodus
+STR_7038    :Warten und laden
+STR_7039    :Fahrgeschäftstyp
+STR_7040    :Fußwegextras
+STR_7041    :Parkinfotafel
+STR_7042    :Datumsinfotafel
+STR_7043    :Landhöhe kann hier nicht geändert werden …

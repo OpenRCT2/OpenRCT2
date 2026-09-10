@@ -11,7 +11,7 @@
 
 #include "../../Context.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../scripting/ScriptEngine.h"
 #include "../../ui/UiContext.h"
 #include "../../ui/WindowManager.h"
@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
         Park::UpdateSize(park);
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
 
         auto& hookEngine = ctx->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::mapResize))

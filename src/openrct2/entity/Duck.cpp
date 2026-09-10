@@ -84,7 +84,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
     void Duck::remove()
     {
         invalidate();
-        getGameState().entities.EntityRemove(this);
+        getGameState().entities.entityRemove(this);
     }
 
     void Duck::updateFlyToWater()
@@ -289,7 +289,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
 
     void Duck::create(const CoordsXY& pos)
     {
-        auto* duck = getGameState().entities.CreateEntity<Duck>();
+        auto* duck = getGameState().entities.createEntity<Duck>();
         if (duck == nullptr)
             return;
 

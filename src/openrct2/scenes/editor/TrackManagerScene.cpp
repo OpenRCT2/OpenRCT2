@@ -15,7 +15,7 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Palette.h"
 #include "../../world/Map.h"
 #include "EditorController.h"
 
@@ -39,7 +39,7 @@ void TrackManagerScene::Load()
     OpenEditorWindows();
     resetMainViewport();
 
-    LoadPalette();
+    Drawing::LoadPalette();
 
     GameLoadScripts();
     GameNotifyMapChanged();

@@ -31,7 +31,7 @@ static void Paint3dCinemaDome(
     if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
         session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        session.CurrentlyDrawnEntity = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
     }
 
     auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);

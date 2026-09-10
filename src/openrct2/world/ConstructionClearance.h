@@ -13,6 +13,7 @@
 #include "../actions/CommandFlag.h"
 #include "../actions/GameActionResult.h"
 #include "Location.hpp"
+#include "tile_element/Slope.h"
 
 #include <cstdint>
 
@@ -53,10 +54,17 @@ struct ConstructClearResult
     uint8_t GroundFlags{ 0 };
 };
 
+struct MapProposedConstructionInfo
+{
+    uint8_t slope = OpenRCT2::kTileSlopeFlat;
+    CreateCrossingMode crossingMode = CreateCrossingMode::none;
+    bool isTree = false;
+    RideId ignoreRideId = RideId::GetNull();
+};
+
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, ClearingFunction clearFunc, QuarterTile quarterTile, OpenRCT2::GameActions::CommandFlags flags,
-    uint8_t slope, CreateCrossingMode crossingMode = CreateCrossingMode::none, bool isTree = false,
-    RideId ignoreRideId = RideId::GetNull());
+    MapProposedConstructionInfo additionalInfo = {});
 
 [[nodiscard]] OpenRCT2::GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 

@@ -130,7 +130,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                auto pos = JSToCoordsXY(ctx, value);
+                auto pos = JStoCoordsXY(ctx, value);
                 peep->setDestination(pos);
                 peep->invalidate();
             }
@@ -198,7 +198,7 @@ namespace OpenRCT2::Scripting
         static Peep* GetPeep(JSValue thisVal)
         {
             auto id = GetEntityId(thisVal);
-            return getGameState().entities.GetEntity<Peep>(id);
+            return getGameState().entities.getEntity<Peep>(id);
         }
     };
 

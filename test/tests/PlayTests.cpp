@@ -23,6 +23,7 @@
 #include <openrct2/actions/ride/RideSetPriceAction.h>
 #include <openrct2/actions/ride/RideSetStatusAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Palette.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
 #include <openrct2/entity/Peep.h>
@@ -57,11 +58,11 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     auto& gameState = getGameState();
     importer->Import(gameState);
 
-    gameState.entities.ResetEntitySpatialIndices();
+    gameState.entities.resetEntitySpatialIndices();
 
     ResetAllSpriteQuadrantPlacements();
-    LoadPalette();
-    EntityTweener::Get().Reset();
+    Drawing::LoadPalette();
+    EntityTweener::get().reset();
     MapAnimations::MarkAllTiles();
     FixInvalidVehicleSpriteSizes();
 

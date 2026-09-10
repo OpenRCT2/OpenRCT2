@@ -217,7 +217,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             velocity = 0;
             uint8_t direction = orientation | 1;
 
-            Vehicle* collideVehicle = getGameState().entities.GetEntity<Vehicle>(collideSprite.value());
+            Vehicle* collideVehicle = getGameState().entities.getEntity<Vehicle>(collideSprite.value());
             if (collideVehicle != nullptr)
             {
                 var_34 = (ScenarioRand() & 1) ? 1 : -1;

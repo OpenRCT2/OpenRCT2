@@ -109,8 +109,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
-            kTileSlopeFlat);
+            { _loc.toTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -167,15 +166,15 @@ namespace OpenRCT2::GameActions
         if (!flags.has(CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
-            WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
+            WallRemoveAt({ _loc.toTileStart(), _loc.z, _loc.z + 32 });
         }
 
         auto baseHeight = _loc.z;
         auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
-            GetFlags().with(CommandFlag::apply), kTileSlopeFlat);
+            { _loc.toTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
+            GetFlags().with(CommandFlag::apply));
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -184,7 +183,7 @@ namespace OpenRCT2::GameActions
 
         res.cost = MazeCalculateCost(canBuild.cost, *ride, _loc);
 
-        auto startLoc = _loc.ToTileStart();
+        auto startLoc = _loc.toTileStart();
 
         auto* trackElement = TileElementInsert<TrackElement>(_loc, 0b1111);
         Guard::Assert(trackElement != nullptr);
@@ -199,8 +198,8 @@ namespace OpenRCT2::GameActions
         MapInvalidateTileFull(startLoc);
 
         ride->mazeTiles++;
-        ride->getStation().SetBaseZ(trackElement->getBaseZ());
-        ride->getStation().Start = { 0, 0 };
+        ride->getStation().setBaseZ(trackElement->getBaseZ());
+        ride->getStation().start = { 0, 0 };
 
         if (ride->mazeTiles == 1)
         {

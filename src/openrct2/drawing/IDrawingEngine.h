@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "ColourPalette.h"
+#include "PaletteType.h"
 #include "WeatherDrawer.h"
 
 #include <memory>

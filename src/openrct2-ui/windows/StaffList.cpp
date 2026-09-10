@@ -26,6 +26,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/RenderTarget.h>
@@ -186,10 +187,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 for (auto peep : EntityList<Staff>())
                 {
-                    getGameState().entities.EntitySetFlashing(peep, false);
+                    getGameState().entities.entitySetFlashing(peep, false);
                     if (peep->assignedStaffType == GetSelectedStaffType())
                     {
-                        getGameState().entities.EntitySetFlashing(peep, true);
+                        getGameState().entities.entitySetFlashing(peep, true);
                     }
                 }
             }
@@ -349,7 +350,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        auto peep = gameState.entities.GetEntity<Staff>(entry.Id);
+                        auto peep = gameState.entities.getEntity<Staff>(entry.Id);
                         if (peep != nullptr)
                         {
                             auto intent = Intent(WindowClass::peep);
@@ -388,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (y + 11 >= rt.y)
                 {
-                    const auto* peep = getGameState().entities.GetEntity<Staff>(entry.Id);
+                    const auto* peep = getGameState().entities.getEntity<Staff>(entry.Id);
                     if (peep == nullptr)
                     {
                         continue;
@@ -487,10 +488,10 @@ namespace OpenRCT2::Ui::Windows
 
             for (auto* peep : EntityList<Staff>())
             {
-                getGameState().entities.EntitySetFlashing(peep, false);
+                getGameState().entities.entitySetFlashing(peep, false);
                 if (peep->assignedStaffType == GetSelectedStaffType())
                 {
-                    getGameState().entities.EntitySetFlashing(peep, true);
+                    getGameState().entities.entitySetFlashing(peep, true);
 
                     StaffEntry entry;
                     entry.Id = peep->id;
@@ -547,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 auto actionResult = res->getData<GameActions::StaffHireNewActionResult>();
-                auto* staff = getGameState().entities.GetEntity<Staff>(actionResult.StaffEntityId);
+                auto* staff = getGameState().entities.getEntity<Staff>(actionResult.StaffEntityId);
                 if (staff == nullptr)
                     return;
 
@@ -555,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                 if (staff->state == PeepState::picked)
                 {
                     CoordsXYZ nullLoc{};
-                    nullLoc.SetNull();
+                    nullLoc.setNull();
 
                     GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup, staff->id, nullLoc,
                                                                 Network::GetCurrentPlayerId() };
@@ -564,7 +565,7 @@ namespace OpenRCT2::Ui::Windows
                             if (result->error != GameActions::Status::ok)
                                 return;
 
-                            auto* staff2 = getGameState().entities.GetEntity<Staff>(staffId);
+                            auto* staff2 = getGameState().entities.getEntity<Staff>(staffId);
                             auto intent = Intent(WindowClass::peep);
                             intent.PutExtra(INTENT_EXTRA_PEEP, staff2);
                             auto* wind = ContextOpenIntent(&intent);
@@ -652,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t direction{};
             TileElement* tileElement{};
             auto footpathCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
-            if (footpathCoords.IsNull())
+            if (footpathCoords.isNull())
                 return nullptr;
 
             auto isPatrolAreaSet = IsPatrolAreaSetForStaffType(GetSelectedStaffType(), footpathCoords);

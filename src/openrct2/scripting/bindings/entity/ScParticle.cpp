@@ -54,7 +54,7 @@ namespace OpenRCT2::Scripting
     VehicleCrashParticle* ScCrashedVehicleParticle::GetCrashedVehicleParticle(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<VehicleCrashParticle>(id);
+        return getGameState().entities.getEntity<VehicleCrashParticle>(id);
     }
 
     JSValue ScCrashedVehicleParticle::frame_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
@@ -123,7 +123,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetCrashedVehicleParticle(thisVal);
         if (entity != nullptr)
         {
-            auto velocity = JSToCoordsXYZ(ctx, obj);
+            auto velocity = JStoCoordsXYZ(ctx, obj);
             entity->velocityX = velocity.x;
             entity->velocityY = velocity.y;
             entity->velocityZ = velocity.z;
@@ -147,7 +147,7 @@ namespace OpenRCT2::Scripting
         auto entity = GetCrashedVehicleParticle(thisVal);
         if (entity != nullptr)
         {
-            auto acceleration = JSToCoordsXYZ(ctx, obj);
+            auto acceleration = JStoCoordsXYZ(ctx, obj);
             entity->accelerationX = acceleration.x;
             entity->accelerationY = acceleration.y;
             entity->accelerationZ = acceleration.z;
@@ -191,14 +191,14 @@ namespace OpenRCT2::Scripting
             }
             if (JS_IsObject(acceleration))
             {
-                auto accelerationXYZ = JSToCoordsXYZ(ctx, acceleration);
+                auto accelerationXYZ = JStoCoordsXYZ(ctx, acceleration);
                 entity->accelerationX = accelerationXYZ.x;
                 entity->accelerationY = accelerationXYZ.y;
                 entity->accelerationZ = accelerationXYZ.z;
             }
             if (JS_IsObject(velocity))
             {
-                auto velocityXYZ = JSToCoordsXYZ(ctx, velocity);
+                auto velocityXYZ = JStoCoordsXYZ(ctx, velocity);
                 entity->velocityX = velocityXYZ.x;
                 entity->velocityY = velocityXYZ.y;
                 entity->velocityZ = velocityXYZ.z;

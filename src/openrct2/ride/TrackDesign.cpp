@@ -270,24 +270,24 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         for (const auto& station : ride.getStations())
         {
-            z = station.GetBaseZ();
+            z = station.getBaseZ();
 
             TileCoordsXYZD location;
             if (i == 0)
             {
-                location = station.Entrance;
+                location = station.entrance;
             }
             else
             {
-                location = station.Exit;
+                location = station.exit;
             }
 
-            if (location.IsNull())
+            if (location.isNull())
             {
                 continue;
             }
 
-            CoordsXY mapLocation = location.ToCoordsXY();
+            CoordsXY mapLocation = location.toCoordsXY();
 
             TileElement* tileElement = MapGetFirstElementAt(mapLocation);
             if (tileElement == nullptr)
@@ -309,7 +309,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
             mapLocation -= tds.origin;
             // Rotate entrance coordinates backwards to the correct direction
-            auto rotatedMapLocation = TileCoordsXY(mapLocation.Rotate(0 - _saveDirection));
+            auto rotatedMapLocation = TileCoordsXY(mapLocation.rotate(0 - _saveDirection));
 
             z -= tds.origin.z;
             z /= kCoordsZStep;
@@ -390,13 +390,13 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
         x = 0;
     }
 
-    auto location = ride.getStation().Entrance;
-    if (location.IsNull())
+    auto location = ride.getStation().entrance;
+    if (location.isNull())
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    CoordsXY entranceLoc = location.ToCoordsXY();
+    CoordsXY entranceLoc = location.toCoordsXY();
     auto tileElement = MapGetFirstElementAt(entranceLoc);
     do
     {
@@ -417,13 +417,13 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     mazeEntrance.isExit = false;
     entranceElements.push_back(mazeEntrance);
 
-    location = ride.getStation().Exit;
-    if (location.IsNull())
+    location = ride.getStation().exit;
+    if (location.isNull())
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    CoordsXY exitLoc = location.ToCoordsXY();
+    CoordsXY exitLoc = location.toCoordsXY();
     tileElement = MapGetFirstElementAt(exitLoc);
     if (tileElement == nullptr)
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
@@ -524,7 +524,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
         }
 
         const auto relativeMapPosition = scenery.loc - tds.origin;
-        const CoordsXY rotatedRelativeMapPos = relativeMapPosition.Rotate(0 - _saveDirection);
+        const CoordsXY rotatedRelativeMapPos = relativeMapPosition.rotate(0 - _saveDirection);
 
         if (rotatedRelativeMapPos.x > 127 * kCoordsXYStep || rotatedRelativeMapPos.y > 127 * kCoordsXYStep
             || rotatedRelativeMapPos.x < -126 * kCoordsXYStep || rotatedRelativeMapPos.y < -126 * kCoordsXYStep)
@@ -544,7 +544,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 
 void TrackDesign::Serialise(DataSerialiser& stream)
 {
-    if (stream.IsLogging())
+    if (stream.isLogging())
     {
         stream << DS_TAG(gameStateData.name);
         // There is too much information logged.
@@ -1307,7 +1307,7 @@ static GameActions::Result TrackDesignPlaceAllScenery(
 
         for (const auto& scenery : sceneryList)
         {
-            auto mapCoord = CoordsXYZ{ CoordsXY(origin) + scenery.loc.Rotate(rotation), origin.z };
+            auto mapCoord = CoordsXYZ{ CoordsXY(origin) + scenery.loc.rotate(rotation), origin.z };
             TrackDesignUpdatePreviewBounds(tds, mapCoord);
 
             auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
@@ -1341,8 +1341,8 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
     for (const auto& entrance : td.entranceElements)
     {
         auto rotation = _currentTrackPieceDirection & 3;
-        CoordsXY entranceMapPos = entrance.location.ToCoordsXY();
-        auto rotatedEntranceMapPos = entranceMapPos.Rotate(rotation);
+        CoordsXY entranceMapPos = entrance.location.toCoordsXY();
+        auto rotatedEntranceMapPos = entranceMapPos.rotate(rotation);
         newCoords = { rotatedEntranceMapPos + tds.origin, newCoords.z };
 
         TrackDesignUpdatePreviewBounds(tds, newCoords);
@@ -1462,8 +1462,8 @@ static GameActions::Result TrackDesignPlaceMaze(
     for (const auto& maze_element : td.mazeElements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
-        CoordsXY mazeMapPos = maze_element.location.ToCoordsXY();
-        auto mapCoord = mazeMapPos.Rotate(rotation);
+        CoordsXY mazeMapPos = maze_element.location.toCoordsXY();
+        auto mapCoord = mazeMapPos.rotate(rotation);
         mapCoord += origin;
 
         TrackDesignUpdatePreviewBounds(tds, { mapCoord, origin.z });
@@ -1603,7 +1603,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
                 {
                     const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(rotation);
+                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.rotate(rotation);
                     TrackDesignUpdatePreviewBounds(tds, { tile, newCoords.z });
                     TrackDesignAddSelectedTile(tile);
                 }
@@ -1678,7 +1678,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
                 {
                     const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(rotation);
+                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.rotate(rotation);
                     if (!MapIsLocationValid(tile))
                     {
                         continue;
@@ -1719,7 +1719,7 @@ static GameActions::Result TrackDesignPlaceRide(
 
         const TrackCoordinates& track_coordinates = ted.coordinates;
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
-            + CoordsXY{ track_coordinates.x, track_coordinates.y }.Rotate(rotation);
+            + CoordsXY{ track_coordinates.x, track_coordinates.y }.rotate(rotation);
 
         newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates.zBegin + track_coordinates.zEnd };
         rotation = (rotation + track_coordinates.rotationEnd - track_coordinates.rotationBegin) & 3;

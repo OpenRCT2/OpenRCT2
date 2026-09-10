@@ -230,7 +230,6 @@ STR_0820    :Nov.
 STR_0821    :Des.
 STR_0822    :No s’ha pogut accedir al fitxer de gràfics.
 STR_0823    :Falta o no es pot accedir al fitxer de dades.
-STR_0824    :{BLACK}❌
 STR_0825    :El nom ja està en ús.
 STR_0826    :S’estan usant massa noms.
 STR_0827    :No hi ha prou diners - fan falta {CURRENCY2DP}.
@@ -2680,7 +2679,7 @@ STR_5573    :Treure dels favorits
 STR_5574    :Nom del servidor:
 STR_5575    :Nombre màx. de jugadors:
 STR_5576    :Port:
-STR_5577    :Won sud-coreà (W)
+STR_5577    :Won sud-coreà (₩)
 STR_5578    :Ruble rus (₽)
 STR_5579    :Factor d’escala:
 STR_5580    :Corona txeca (Kč)
@@ -3205,7 +3204,6 @@ STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori
 STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument que desorienten els passatgers.
-STR_6164    :{WHITE}❌
 STR_6165    :Sincronització vertical
 STR_6166    :Sincronitza cada fotograma amb la freqüència del monitor, evitant l’efecte de pantalla partida.
 STR_6167    :Avançat

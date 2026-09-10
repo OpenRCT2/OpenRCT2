@@ -230,7 +230,6 @@ STR_0820    :Tháng 11
 STR_0821    :Tháng 12
 STR_0822    :Không thể truy cập tệp dữ liệu đồ họa
 STR_0823    :Tệp dữ liệu bị thiếu hoặc không thể truy cập
-STR_0824    :{BLACK}❌
 STR_0825    :Tên đã chọn đang được sử dụng
 STR_0826    :Quá nhiều tên được định nghĩa
 STR_0827    :Không đủ tiền mặt - cần {CURRENCY2DP}
@@ -2621,7 +2620,7 @@ STR_5573    :Xóa khỏi mục yêu thích
 STR_5574    :Tên máy chủ:
 STR_5575    :Số người chơi tối đa:
 STR_5576    :Cổng:
-STR_5577    :Won Hàn Quốc (W)
+STR_5577    :Won Hàn Quốc (₩)
 STR_5578    :Rúp Nga (₽)
 STR_5579    :Hệ số tỷ lệ cửa sổ:
 STR_5580    :Koruna Séc (Kč)
@@ -3142,7 +3141,6 @@ STR_6160    :{WINDOW_COLOUR_2}Phương tiện có sẵn: {BLACK}{STRING}
 STR_6161    :Chuyển đổi hiển thị đường lưới
 STR_6162    :Chuột hoang dã quay
 STR_6163    :Những chiếc xe hình chuột chạy qua các khúc cua gắt và đoạn dốc ngắn, nhẹ nhàng quay để làm mất phương hướng của người chơi
-STR_6164    :{WHITE}❌
 STR_6165    :Sử dụng đồng bộ dọc
 STR_6166    :Đồng bộ hóa mỗi khung hình hiển thị với tần số làm mới của màn hình, ngăn chặn hiện tượng xé hình.
 STR_6167    :Nâng cao

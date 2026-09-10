@@ -146,7 +146,7 @@ namespace OpenRCT2::GameActions
         auto startLoc = _origin;
         startLoc.direction = foundElement->getDirection();
 
-        auto rotatedTrack = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.Rotate(startLoc.direction),
+        auto rotatedTrack = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.rotate(startLoc.direction),
                                        currentTrackBlock.z };
         startLoc.x -= rotatedTrack.x;
         startLoc.y -= rotatedTrack.y;
@@ -160,7 +160,7 @@ namespace OpenRCT2::GameActions
         for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-            rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(startLoc.direction), trackBlock.z };
+            rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.rotate(startLoc.direction), trackBlock.z };
             auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrack;
 
             if (!LocationValid(mapLoc))
@@ -304,7 +304,7 @@ namespace OpenRCT2::GameActions
         startLoc.direction = foundElement->getDirection();
 
         const auto& currentTrackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
-        auto rotatedTrackLoc = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.Rotate(startLoc.direction),
+        auto rotatedTrackLoc = CoordsXYZ{ CoordsXY{ currentTrackBlock.x, currentTrackBlock.y }.rotate(startLoc.direction),
                                           currentTrackBlock.z };
         startLoc.x -= rotatedTrackLoc.x;
         startLoc.y -= rotatedTrackLoc.y;
@@ -319,7 +319,7 @@ namespace OpenRCT2::GameActions
         {
             const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
 
-            rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(startLoc.direction), trackBlock.z };
+            rotatedTrackLoc = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.rotate(startLoc.direction), trackBlock.z };
             auto mapLoc = CoordsXYZ{ startLoc.x, startLoc.y, startLoc.z } + rotatedTrackLoc;
 
             MapInvalidateTileFull(mapLoc);

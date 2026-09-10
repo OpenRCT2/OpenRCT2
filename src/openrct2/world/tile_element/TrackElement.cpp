@@ -64,7 +64,7 @@ namespace OpenRCT2
 
     void TrackElement::setSeatRotation(uint8_t newSeatRotation)
     {
-        uRide.colourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
+        uRide.colourScheme &= ~kTrackElementColourSeatRotationMask;
         uRide.colourScheme |= (newSeatRotation << 4);
     }
 
@@ -155,24 +155,24 @@ namespace OpenRCT2
 
     uint8_t TrackElement::getDoorAState() const
     {
-        return (uRide.colourScheme & TRACK_ELEMENT_COLOUR_DOOR_A_MASK) >> 2;
+        return (uRide.colourScheme & kTrackElementColourDoorAMask) >> 2;
     }
 
     uint8_t TrackElement::getDoorBState() const
     {
-        return (uRide.colourScheme & TRACK_ELEMENT_COLOUR_DOOR_B_MASK) >> 5;
+        return (uRide.colourScheme & kTrackElementColourDoorBMask) >> 5;
     }
 
     void TrackElement::setDoorAState(uint8_t newState)
     {
-        uRide.colourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_A_MASK;
-        uRide.colourScheme |= ((newState << 2) & TRACK_ELEMENT_COLOUR_DOOR_A_MASK);
+        uRide.colourScheme &= ~kTrackElementColourDoorAMask;
+        uRide.colourScheme |= ((newState << 2) & kTrackElementColourDoorAMask);
     }
 
     void TrackElement::setDoorBState(uint8_t newState)
     {
-        uRide.colourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_B_MASK;
-        uRide.colourScheme |= ((newState << 5) & TRACK_ELEMENT_COLOUR_DOOR_B_MASK);
+        uRide.colourScheme &= ~kTrackElementColourDoorBMask;
+        uRide.colourScheme |= ((newState << 5) & kTrackElementColourDoorBMask);
     }
 
     RideId TrackElement::getRideIndex() const
@@ -187,13 +187,13 @@ namespace OpenRCT2
 
     uint8_t TrackElement::getColourScheme() const
     {
-        return uRide.colourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK;
+        return uRide.colourScheme & kTrackElementColourSchemeMask;
     }
 
     void TrackElement::setColourScheme(RideColourScheme newColourScheme)
     {
-        uRide.colourScheme &= ~TRACK_ELEMENT_COLOUR_SCHEME_MASK;
-        uRide.colourScheme |= (EnumValue(newColourScheme) & TRACK_ELEMENT_COLOUR_SCHEME_MASK);
+        uRide.colourScheme &= ~kTrackElementColourSchemeMask;
+        uRide.colourScheme |= (EnumValue(newColourScheme) & kTrackElementColourSchemeMask);
     }
 
     bool TrackElement::hasCableLift() const

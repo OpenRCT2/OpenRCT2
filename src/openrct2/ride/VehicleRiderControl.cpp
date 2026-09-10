@@ -137,7 +137,7 @@ int32_t Vehicle::CalculateRiderBraking() const
     RiderControlSettings riderSettings = riderTable[peep[0].ToUnderlying() & 0xFF];
 
     // Brake if close to the vehicle in front
-    Vehicle* prevVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+    Vehicle* prevVehicle = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
     if (prevVehicle != nullptr && this != prevVehicle && _vehicleVelocity > minFollowVelocity)
     {
         int32_t followDistance = std::max(minFollowDistance, (riderSettings.followDistance * _vehicleVelocity) >> 15);

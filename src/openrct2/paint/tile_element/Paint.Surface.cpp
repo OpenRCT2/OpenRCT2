@@ -330,7 +330,7 @@ static void ViewportSurfaceSmoothenEdge(
         return;
 
     // The edge row consists of invisible grass tiles. Do not attempt to smooth with them.
-    if (MapIsEdge(self.tile_coords.ToCoordsXY()) || MapIsEdge(neighbour.tile_coords.ToCoordsXY()))
+    if (MapIsEdge(self.tile_coords.toCoordsXY()) || MapIsEdge(neighbour.tile_coords.toCoordsXY()))
         return;
 
     uint32_t maskImageBase = 0;
@@ -436,7 +436,7 @@ static bool TileIsInsideClipView(const TileDescriptor& tile)
     if (tile.tile_element->getBaseZ() > gClipHeight * kCoordsZStep)
         return false;
 
-    auto coords = tile.tile_coords.ToCoordsXY();
+    auto coords = tile.tile_coords.toCoordsXY();
     if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
         return false;
     if (coords.y < gClipSelectionA.y || coords.y > gClipSelectionB.y)
@@ -821,7 +821,7 @@ std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY&
     else
     {
         auto& staffId = std::get<EntityId>(patrolAreaToRender);
-        auto* staff = getGameState().entities.GetEntity<Staff>(staffId);
+        auto* staff = getGameState().entities.getEntity<Staff>(staffId);
         if (staff != nullptr)
         {
             if (staff->isPatrolAreaSet(pos))
