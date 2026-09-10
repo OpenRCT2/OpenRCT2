@@ -625,7 +625,6 @@ namespace OpenRCT2::Ui::Windows
     };
     static_assert(std::size(GraphsYAxisDetails) == 4);
 
-    static constexpr auto kRideGForcesRedNegVertical = -MakeFixed16_2dp(2, 50);
     static constexpr auto kRideGForcesRedLateral = MakeFixed16_2dp(2, 80);
 
     // Used for sorting the ride type cheat dropdown.
@@ -6094,16 +6093,13 @@ namespace OpenRCT2::Ui::Windows
                         {
                             // Max. positive vertical G's
                             stringId = STR_MAX_POSITIVE_VERTICAL_G;
-
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->maxPositiveVerticalG);
                             drawText(rt, screenCoords, stringId, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Max. negative vertical G's
-                            stringId = ride->maxNegativeVerticalG <= kRideGForcesRedNegVertical
-                                ? STR_MAX_NEGATIVE_VERTICAL_G_RED
-                                : STR_MAX_NEGATIVE_VERTICAL_G;
+                            stringId = STR_MAX_NEGATIVE_VERTICAL_G;
                             ft = Formatter();
                             ft.Add<int32_t>(ride->maxNegativeVerticalG);
                             drawText(rt, screenCoords, stringId, ft);
@@ -6464,7 +6460,6 @@ namespace OpenRCT2::Ui::Windows
                     case GRAPH_VERTICAL:
                         firstPoint = measurement->vertical[x] + VerticalGraphHeightOffset;
                         secondPoint = measurement->vertical[x + 1] + VerticalGraphHeightOffset;
-                        intensityThresholdNegative = (kRideGForcesRedNegVertical / 8) + VerticalGraphHeightOffset;
                         break;
                     case GRAPH_LATERAL:
                         firstPoint = measurement->lateral[x] + LateralGraphHeightOffset;
@@ -6501,7 +6496,7 @@ namespace OpenRCT2::Ui::Windows
                     previousMeasurement ? PaletteIndex::pi17 : PaletteIndex::pi21);
 
                 // Draw red over extreme values (if supported by graph type).
-                if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
+                if (listType == GRAPH_LATERAL)
                 {
                     const auto redLineColour = previousMeasurement ? PaletteIndex::pi171 : PaletteIndex::pi173;
 
