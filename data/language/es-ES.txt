@@ -3837,3 +3837,4 @@ STR_7039    :Tipo de atracción
 STR_7040    :Adiciones de los senderos
 STR_7041    :Panel de información del parque
 STR_7042    :Panel de información de la fecha
+STR_7043    :No se puede cambiar la altura del terreno aquí…
