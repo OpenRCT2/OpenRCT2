@@ -595,12 +595,16 @@ namespace OpenRCT2
                 // As the user moved the mouse, don't interpret it as right click in any case.
                 _ticksSinceDragStart = std::nullopt;
 
-                // applying the zoom only with negative values avoids a "deadzone" effect where small positive value round to
-                // zero.
+                // Cursor position is in window pixels; savedViewPos is in viewport space. Apply zoom the same way
+                // Viewport::ScreenToViewportCoord does (only to negative values, to avoid a deadzone when zoomed in),
+                // then convert to UI pixels so panning stays 1:1 with the cursor at any window scale.
+                const auto windowScale = Config::Get().general.windowScale;
                 const bool posX = differentialCoords.x > 0;
                 const bool posY = differentialCoords.y > 0;
-                differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
-                differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+                differentialCoords.x = viewport->zoom.ApplyTo(-std::abs(differentialCoords.x));
+                differentialCoords.y = viewport->zoom.ApplyTo(-std::abs(differentialCoords.y));
+                differentialCoords.x = static_cast<int32_t>(std::round(differentialCoords.x / windowScale));
+                differentialCoords.y = static_cast<int32_t>(std::round(differentialCoords.y / windowScale));
                 differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
                 differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
 
@@ -1741,8 +1745,8 @@ namespace OpenRCT2
         // Apply zoom scaling (same logic as mouse drag)
         const bool posX = differentialCoords.x > 0;
         const bool posY = differentialCoords.y > 0;
-        differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
-        differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+        differentialCoords.x = viewport->zoom.ApplyTo(-std::abs(differentialCoords.x));
+        differentialCoords.y = viewport->zoom.ApplyTo(-std::abs(differentialCoords.y));
         differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
         differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
 
