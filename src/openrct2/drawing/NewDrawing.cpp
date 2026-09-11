@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "NewDrawing.h"
+#include "../platform/AmigaTrace.h"
 
 #include "../Context.h"
 #include "../drawing/Drawing.h"
@@ -62,9 +63,11 @@ void DrawingEngineInit()
 void DrawingEngineResize()
 {
     auto context = GetContext();
+    AMIGA_TRACE(context != nullptr ? "DrawingEngineResize: context ok" : "DrawingEngineResize: NO context");
     if (context != nullptr)
     {
         auto drawingEngine = context->GetDrawingEngine();
+        AMIGA_TRACE(drawingEngine != nullptr ? "DrawingEngineResize: engine ok" : "DrawingEngineResize: NO engine");
         if (drawingEngine != nullptr)
         {
             auto& uiContext = context->GetUiContext();

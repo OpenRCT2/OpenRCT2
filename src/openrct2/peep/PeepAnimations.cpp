@@ -10,6 +10,7 @@
 #include "PeepAnimations.h"
 
 #include "../Context.h"
+#include "../core/RandomSeed.h"
 #include "../drawing/Drawing.Sprite.h"
 #include "../drawing/RenderTarget.h"
 #include "../entity/Peep.h"
@@ -207,7 +208,7 @@ namespace OpenRCT2
             return kObjectEntryIndexNull;
 
         std::vector<ObjectEntryIndex> out{};
-        std::sample(costumes.begin(), costumes.end(), std::back_inserter(out), 1, std::mt19937{ std::random_device{}() });
+        std::sample(costumes.begin(), costumes.end(), std::back_inserter(out), 1, std::mt19937{ RandomDeviceSeed() });
         return !out.empty() ? out[0] : kObjectEntryIndexNull;
     }
 

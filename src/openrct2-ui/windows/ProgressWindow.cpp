@@ -12,6 +12,8 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/RandomSeed.h>
+#include <openrct2/platform/AmigaTrace.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.Sprite.h>
@@ -87,15 +89,24 @@ namespace OpenRCT2::Ui::Windows
     public:
         void onOpen() override
         {
+            AMIGA_TRACE("progress: onOpen");
             Audio::StopSFX();
+            AMIGA_TRACE("progress: StopSFX done");
 
             setWidgets(kProgressWindowWidgets);
             WindowSetResize(*this, kWindowSize, kWindowSize);
 
             currentFrame = 0;
 
+            AMIGA_TRACE("progress: ApplyStyle");
+
             ApplyStyle();
+
+            AMIGA_TRACE("progress: resizeFrame");
+
             resizeFrame();
+
+            AMIGA_TRACE("progress: onOpen done");
         }
 
         void onClose() override
@@ -139,10 +150,9 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 // Pick a random style to start off with
-                std::random_device r;
                 auto upperBound = static_cast<int8_t>(std::size(kVehicleStyles)) - 1;
                 std::uniform_int_distribution<int> uniform_dist(0, upperBound);
-                std::default_random_engine e(r());
+                std::default_random_engine e(RandomDeviceSeed());
                 style = static_cast<int8_t>(uniform_dist(e));
             }
         }
@@ -227,6 +237,7 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ProgressWindowOpen(const std::string& text, CloseCallback onClose)
     {
+        AMIGA_TRACE("progress: ProgressWindowOpen");
         ContextForceCloseWindowByClass(WindowClass::networkStatus);
 
         auto* windowMgr = GetWindowManager();
@@ -244,8 +255,13 @@ namespace OpenRCT2::Ui::Windows
                   WindowFlag::stickToFront });
         }
 
+        AMIGA_TRACE("progress: window created");
+
         window->setCaption(text);
+
         window->setCloseCallback(onClose);
+
+        AMIGA_TRACE("progress: caption set");
         return window;
     }
 

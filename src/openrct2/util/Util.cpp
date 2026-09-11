@@ -11,10 +11,11 @@
 
 #include <algorithm>
 #include <random>
+#include "../core/RandomSeed.h"
 
 uint32_t UtilRand()
 {
-    thread_local std::mt19937 _prng(std::random_device{}());
+    thread_local std::mt19937 _prng(OpenRCT2::RandomDeviceSeed());
     return _prng();
 }
 
@@ -22,7 +23,7 @@ uint32_t UtilRand()
 // TODO: In C++20 this can be templated, where the standard deviation is passed as a value template argument.
 float UtilRandNormalDistributed()
 {
-    thread_local std::mt19937 _prng{ std::random_device{}() };
+    thread_local std::mt19937 _prng{ OpenRCT2::RandomDeviceSeed() };
     thread_local std::normal_distribution<float> _distributor{ 0.0f, 1.0f };
     return _distributor(_prng);
 }

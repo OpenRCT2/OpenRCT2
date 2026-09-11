@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "Drawing.h"
+#include "../platform/AmigaTrace.h"
 
 #include "../Context.h"
 #include "../Diagnostic.h"
@@ -466,6 +467,7 @@ void GfxTransposePalette(ImageIndex pal, uint8_t product)
  */
 void LoadPalette()
 {
+    AMIGA_TRACE("LoadPalette");
     if (gOpenRCT2NoGraphics)
     {
         return;

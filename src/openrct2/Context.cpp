@@ -458,7 +458,9 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
+                AMIGA_TRACE("Context::Initialise: CreateWindow");
                 _uiContext->CreateWindow();
+                AMIGA_TRACE("Context::Initialise: window created");
             }
 
             EnsureUserContentDirectoriesExist();
@@ -476,11 +478,13 @@ namespace OpenRCT2
 
             if (!gOpenRCT2NoGraphics)
             {
+                AMIGA_TRACE("Context::Initialise: LoadBaseGraphics");
                 if (!LoadBaseGraphics())
                 {
                     return false;
                 }
                 Drawing::LightFx::Init();
+                AMIGA_TRACE("Context::Initialise: base graphics loaded");
             }
 
             ContextInit();
@@ -541,7 +545,9 @@ namespace OpenRCT2
             auto currentLanguage = _localisationService->GetCurrentLanguage();
 
             OpenProgress(STR_CHECKING_OBJECT_FILES);
+            AMIGA_TRACE("Context::Initialise: object repository");
             _objectRepository->LoadOrConstruct(currentLanguage);
+            AMIGA_TRACE("Context::Initialise: object repository done");
 
             // Asset packs need to be loaded before any of the objects they may override are.
             // This is especially important to keep in mind with intransient objects like Audio objects,
@@ -573,6 +579,7 @@ namespace OpenRCT2
         void InitialiseDrawingEngine() final override
         {
             assert(_drawingEngine == nullptr);
+            AMIGA_TRACE("Context::InitialiseDrawingEngine");
 
             const auto initializeEngine = [&](DrawingEngine engine) -> std::unique_ptr<Drawing::IDrawingEngine> {
                 try
@@ -630,6 +637,7 @@ namespace OpenRCT2
             }
 
             _drawingEngineType = drawingEngineType;
+            AMIGA_TRACE(_drawingEngine != nullptr ? "Context: drawing engine ready" : "Context: NO drawing engine");
 
             Config::Get().general.drawingEngine = drawingEngineType;
             Config::Save();
@@ -647,7 +655,9 @@ namespace OpenRCT2
             auto captionString = _localisationService->GetString(captionStringId);
             auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
             intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
+            AMIGA_TRACE("Context::OpenProgress: ContextOpenIntent");
             ContextOpenIntent(&intent);
+            AMIGA_TRACE("Context::OpenProgress: done");
         }
 
         void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = kStringIdNone) override
@@ -1034,6 +1044,7 @@ namespace OpenRCT2
             }
 
             IScene* nextScene{};
+            AMIGA_TRACE(String::stdFormat("Context: startup action %d", static_cast<int>(gOpenRCT2StartupAction)).c_str());
             switch (gOpenRCT2StartupAction)
             {
                 case StartupAction::intro:

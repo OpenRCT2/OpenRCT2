@@ -61,3 +61,41 @@ namespace std::chrono
 } // namespace std::chrono
 
 #endif
+
+// An uncaught exception must not leave a silent, hung process: say what it was, then exit.
+#include <exception>
+#include <cstdlib>
+#include <cstdio>
+extern "C" void amiga_trace(const char* line);
+namespace
+{
+    [[noreturn]] void AmigaTerminate()
+    {
+        const char* what = "unknown";
+        try
+        {
+            if (auto e = std::current_exception())
+                std::rethrow_exception(e);
+        }
+        catch (const std::exception& e)
+        {
+            what = e.what();
+        }
+        catch (...)
+        {
+        }
+        char line[512];
+        std::snprintf(line, sizeof line, "FATAL: uncaught exception: %s", what);
+        amiga_trace(line);
+        std::fprintf(stderr, "%s\n", line);
+        std::fflush(stderr);
+        std::_Exit(20);
+    }
+    struct TerminateInstaller
+    {
+        TerminateInstaller()
+        {
+            std::set_terminate(AmigaTerminate);
+        }
+    } gTerminateInstaller;
+} // namespace
