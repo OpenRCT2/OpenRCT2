@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/Endianness.h"
 #include "../core/FlagHolder.hpp"
 
 #include <memory>
@@ -69,6 +70,12 @@ namespace OpenRCT2
     {
         uint32_t numEntries = 0;
         uint32_t totalSize = 0;
+
+        void LittleEndianToHost()
+        {
+            numEntries = ByteSwapT<4>::SwapBE(numEntries);
+            totalSize = ByteSwapT<4>::SwapBE(totalSize);
+        }
     };
     static_assert(sizeof(G1Header) == 8);
 #pragma pack(pop)

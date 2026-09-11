@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/Endianness.h"
 #include "../core/MemoryStream.h"
 
 #include <cstdint>
@@ -30,6 +31,11 @@ namespace OpenRCT2::SawyerCoding
     {
         ChunkEncoding encoding;
         uint32_t length;
+
+        void LittleEndianToHost()
+        {
+            length = ByteSwapT<4>::SwapBE(length);
+        }
     };
     static_assert(sizeof(ChunkHeader) == 5);
 #pragma pack(pop)

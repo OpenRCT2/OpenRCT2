@@ -14,6 +14,12 @@
 #include "FileSystem.hpp"
 #include "String.hpp"
 
+#ifdef __amigaos__
+    // after the C++ headers: <unistd.h> defines read/close as macros on this libc
+    #include <sys/stat.h>
+    #include <unistd.h>
+#endif
+
 namespace OpenRCT2::Path
 {
     u8string Combine(u8string_view a, u8string_view b)

@@ -7,6 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../core/Endianness.h"
+
+#include <bit>
+#include <utility>
 #include "Drawing.Sprite.h"
 
 #include "../Context.h"
@@ -345,6 +349,18 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
 {
     auto g1Elements32 = std::make_unique<StoredG1Element[]>(count);
     stream->Read(g1Elements32.get(), count * sizeof(StoredG1Element));
+    if constexpr (std::endian::native == std::endian::big)
+    {
+        // little-endian on disk: one 32-bit field followed by six 16-bit fields
+        for (size_t i = 0; i < count; i++)
+        {
+            auto* bytes = reinterpret_cast<uint8_t*>(&g1Elements32[i]);
+            std::swap(bytes[0], bytes[3]);
+            std::swap(bytes[1], bytes[2]);
+            for (size_t o = 4; o < sizeof(StoredG1Element); o += 2)
+                std::swap(bytes[o], bytes[o + 1]);
+        }
+    }
     if (is_rctc)
     {
         // Process RCTC's g1.dat file
@@ -527,12 +543,12 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         }
         return true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
         _g1.elements.clear();
         _g1.elements.shrink_to_fit();
 
-        LOG_FATAL("Unable to load g1 graphics");
+        LOG_FATAL("Unable to load g1 graphics: %s", e.what());
         if (!gOpenRCT2Headless)
         {
             auto& uiContext = GetContext()->GetUiContext();

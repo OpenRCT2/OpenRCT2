@@ -100,6 +100,15 @@ static void DiagnosticPrint(DiagnosticLevel level, const std::string& prefix, co
 void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
+#ifdef __amigaos__
+    // Everything goes to the on-disk trace while the port is being brought up.
+    {
+        va_start(args, format);
+        auto traced = String::formatVA(format, args);
+        va_end(args);
+        amiga_trace((String::stdFormat("%s: ", kLevelStrings[EnumValue(diagnosticLevel)]) + traced).c_str());
+    }
+#endif
     if (_log_levels[EnumValue(diagnosticLevel)])
     {
         // Level

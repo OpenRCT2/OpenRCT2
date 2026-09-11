@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/Endianness.h"
 #include "../core/JsonFwd.hpp"
 #include "../core/StringTypes.h"
 #include "../drawing/ImageIndexType.h"
@@ -69,6 +70,12 @@ namespace OpenRCT2
         std::string_view GetName() const
         {
             return std::string_view(name, std::size(name));
+        }
+
+        void LittleEndianToHost()
+        {
+            flags = ByteSwapT<4>::SwapBE(flags);
+            checksum = ByteSwapT<4>::SwapBE(checksum);
         }
 
         void SetName(std::string_view value);

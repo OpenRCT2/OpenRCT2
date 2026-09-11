@@ -9,6 +9,12 @@
 
 #pragma once
 
+#include "Endianness.h"
+
+#include <bit>
+#include <cstring>
+#include <type_traits>
+
 #include <cstdint>
 #include <istream>
 #include <memory>
@@ -135,6 +141,36 @@ namespace OpenRCT2
         /**
          * Reads the given type from the stream
          */
+        // On-disk formats are little-endian; scalar reads and writes are swapped on
+        // big-endian hosts (m68k). Structs pass through untouched and must be
+        // converted at the call site.
+        static constexpr bool kHostIsBigEndian = std::endian::native == std::endian::big;
+
+        template<typename T>
+        static T LittleEndianToHost(T value)
+        {
+            if constexpr (!kHostIsBigEndian)
+            {
+                return value;
+            }
+            else if constexpr (requires { value.LittleEndianToHost(); })
+            {
+                value.LittleEndianToHost();
+            }
+            else if constexpr (requires { value.holder; })
+            {
+                value.holder = LittleEndianToHost(value.holder);
+            }
+            else if constexpr ((std::is_arithmetic_v<T> || std::is_enum_v<T>) && sizeof(T) > 1 && sizeof(T) <= 8)
+            {
+                typename ByteSwapT<sizeof(T)>::UIntType raw;
+                std::memcpy(&raw, &value, sizeof(T));
+                raw = ByteSwapT<sizeof(T)>::SwapBE(raw);
+                std::memcpy(&value, &raw, sizeof(T));
+            }
+            return value;
+        }
+
         template<typename T>
         void ReadValue(T& value)
         {
@@ -163,6 +199,7 @@ namespace OpenRCT2
             {
                 Read(&value, sizeof(T));
             }
+            value = LittleEndianToHost(value);
         }
 
         /**
@@ -180,8 +217,9 @@ namespace OpenRCT2
          * Writes the given type to the stream
          */
         template<typename T>
-        void WriteValue(const T& value)
+        void WriteValue(const T& valueIn)
         {
+            const T value = LittleEndianToHost(valueIn);
             // Selects the best path at compile time
             if constexpr (sizeof(T) == 1)
             {
