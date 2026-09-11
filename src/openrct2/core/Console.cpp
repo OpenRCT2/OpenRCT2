@@ -16,6 +16,7 @@ extern "C" void amiga_trace(const char* line);
 #include "../platform/Platform.h"
 
 #include <cstdio>
+#include <cstring>
 #include <string>
 
 namespace OpenRCT2::Console
@@ -105,7 +106,9 @@ namespace OpenRCT2::Console
             char buffer[4096];
             std::vsnprintf(buffer, sizeof(buffer), format, args);
 #ifdef __amigaos__
-            amiga_trace((std::string("CONSOLE-ERROR: ") + buffer).c_str());
+            // errors are rare and worth a disk write; warnings can come per sprite and are not
+            if (std::strncmp(buffer, "WARNING", 7) != 0)
+                amiga_trace((std::string("CONSOLE-ERROR: ") + buffer).c_str());
 #endif
             auto ctx = GetContext();
             if (ctx != nullptr)

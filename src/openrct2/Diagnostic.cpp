@@ -93,7 +93,6 @@ static void DiagnosticPrint(DiagnosticLevel level, const std::string& prefix, co
 #ifdef __amigaos__
     // Redirected output on AmigaOS is fully buffered; a hung run must still leave its log behind.
     std::fflush(stream);
-    amiga_trace((prefix + msg).c_str());
 #endif
 }
 
@@ -101,7 +100,8 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
 #ifdef __amigaos__
-    // Everything goes to the on-disk trace while the port is being brought up.
+    // Errors and fatals go to the on-disk trace; anything chattier costs an Open/Write/Close per line.
+    if (diagnosticLevel == DiagnosticLevel::fatal || diagnosticLevel == DiagnosticLevel::error)
     {
         va_start(args, format);
         auto traced = String::formatVA(format, args);
