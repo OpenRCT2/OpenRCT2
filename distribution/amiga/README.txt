@@ -1,0 +1,70 @@
+OpenRCT2 for AmigaOS 3.2 (68k) -- tester build
+================================================
+
+This is an early test build of OpenRCT2, the open-source re-implementation of
+RollerCoaster Tycoon 2, running natively on a 68k Amiga. It is a big-endian port
+of the upstream C++ engine with an Intuition/RTG display backend. It is NOT
+finished; you are testing it. Thank you.
+
+WHAT YOU NEED
+-------------
+ * AmigaOS 3.2 (tested on 3.2.3). Other 3.x versions may work but are untested.
+ * An RTG graphics card with a Picasso96 or CyberGraphX driver that offers an
+   8-bit (256-colour) 640x480 screen mode. AGA/ECS chipset-only machines are
+   NOT supported.
+ * A fast CPU: 68040 or 68060, PiStorm (Emu68), or Vampire/Apollo. Tested on
+   an emulated 68040. A plain 68020/030 will run it but very slowly.
+ * About 300 MB of FREE Fast RAM (the game uses ~256 MB). 512 MB recommended.
+ * About 80 MB of disk space for this archive, plus your RCT2 data.
+ * The data files of the ORIGINAL RollerCoaster Tycoon 2 (GOG, Steam or CD).
+   They are not included and cannot be. You need the folders
+      Data   ObjData   Scenarios   Tracks
+   copied to the Amiga (the music in Data/*.dat can be left out, it is ~480 MB
+   and there is no sound yet).
+
+INSTALL
+-------
+ 1. Extract this archive somewhere with enough room, e.g. Work:Games/.
+    You get a drawer  OpenRCT2  with an icon.
+ 2. Copy your RCT2 data folders to the Amiga, e.g. Work:Games/RCT2/.
+ 3. Tell the game where they are with an assign. In a Shell:
+        Assign RCT2: Work:Games/RCT2
+    Add that line to S:User-Startup so it survives a reboot.
+ 4. Double-click the OpenRCT2 icon (or in a Shell: CD to the drawer and type
+    Execute OpenRCT2). The first start takes a while (see below).
+
+FIRST START
+-----------
+The first start builds an index of all game objects and scenarios and writes it
+to the  user  drawer; this takes 1-2 minutes on a 68040 and is much faster on
+later starts. Loading the title screen takes 40-60 s on an emulated 68040.
+Expect ~25-30 frames per second at 640x480 on a fast machine.
+
+Cash, date and temperature appear bottom-left/right; the toolbar is at the top.
+NEW GAME lists the RollerCoaster Tycoon 2 scenarios (plus Wacky Worlds and Time
+Twister if you have them). Click a scenario to start it.
+
+KNOWN LIMITATIONS OF THIS BUILD
+-------------------------------
+ * No sound or music.
+ * RollerCoaster Tycoon 1 scenarios (.SC4) are hidden: they load, but the map
+   does not render yet. They will come back in a later build.
+ * Only the standard Intuition mouse pointer (no custom cursors), no clipboard.
+ * Resolution: 640x480 by default. You can change window_width/window_height
+   in  user/config.ini  but the frame rate drops with the pixel count
+   (1280x720 runs at ~9 fps on an emulated 68040).
+ * Saving games has had little testing. Save often, expect surprises.
+ * Multiplayer, plugins and the scenario editor are untested.
+
+REPORTING PROBLEMS
+------------------
+Please tell us: your machine (CPU, RAM, graphics card, OS version), what you
+did, and what happened. A screenshot helps. For crashes or hangs, enable the
+trace log BEFORE starting the game:
+        SetEnv OPENRCT2_TRACE T:openrct2-trace.txt
+then reproduce the problem and send us T:openrct2-trace.txt. Delete the
+environment variable again afterwards (it slows loading down):
+        UnSetEnv OPENRCT2_TRACE
+
+OpenRCT2 is GPLv3. Source of this port: the "amiga" branch of the project's
+repository (ask the person who gave you this build).

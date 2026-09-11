@@ -1,0 +1,27 @@
+; OpenRCT2 for AmigaOS 3.2 (68k) -- tester build launcher
+;
+; This script expects to be started from the OpenRCT2 drawer: double-click its
+; icon on Workbench, or  CD  into the drawer first in a Shell.
+;
+; The game needs the data files of the original RollerCoaster Tycoon 2.
+; Make an assign that points at your RCT2 folder (the one holding Data,
+; ObjData, Scenarios and Tracks), for example:
+;
+;     Assign RCT2: Work:Games/RCT2
+;
+; and put that line into S:User-Startup to keep it after a reboot.
+; Alternatively pass the folder as an argument:  OpenRCT2 Work:Games/RCT2/
+;
+.key RCT2DIR
+.def RCT2DIR "RCT2:"
+Failat 21
+If NOT EXISTS "<RCT2DIR>"
+  Echo "OpenRCT2: RollerCoaster Tycoon 2 data not found at <RCT2DIR>."
+  Echo "Assign RCT2: to your RCT2 folder (e.g. Assign RCT2: Work:Games/RCT2) and try again."
+  Quit 10
+EndIf
+If NOT EXISTS "bin/openrct2"
+  Echo "OpenRCT2: please start this script from inside the OpenRCT2 drawer."
+  Quit 10
+EndIf
+bin/openrct2 --rct2-data-path=<RCT2DIR> --openrct2-data-path=data --user-data-path=user

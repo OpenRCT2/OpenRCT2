@@ -71,16 +71,28 @@ int amiga_program_path(char* buf, unsigned size)
     return 1;
 }
 
-/* Append one line to a trace file, opening and closing it each time so it survives a wedged process. */
+/* Append one line to a trace file, opening and closing it each time so it survives a wedged process.
+ * Opt-in: the trace is written only when the environment variable OPENRCT2_TRACE names the file
+ * (e.g. `SetEnv OPENRCT2_TRACE Work:OpenRCT2/trace.txt`). Off by default so a tester's build does not
+ * pay thousands of Open() calls during the park load, nor leave a growing log behind. */
 void amiga_trace(const char* line)
 {
     static unsigned t0 = 0;
+    static int enabled = -1;
+    static char path[256];
     char stamp[24];
-    unsigned now = amiga_ticks_ms();
+    unsigned now;
     BPTR fh;
+    if (enabled < 0)
+    {
+        enabled = (GetVar((STRPTR) "OPENRCT2_TRACE", (STRPTR)path, sizeof(path), 0) > 0) ? 1 : 0;
+    }
+    if (!enabled)
+        return;
+    now = amiga_ticks_ms();
     if (t0 == 0)
         t0 = now;
-    fh = Open("Work:OpenRCT2/trace.txt", MODE_READWRITE);
+    fh = Open((STRPTR)path, MODE_READWRITE);
     if (fh == 0)
         return;
     Seek(fh, 0, OFFSET_END);

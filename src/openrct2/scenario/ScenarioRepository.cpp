@@ -122,7 +122,14 @@ class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 private:
     static constexpr uint32_t kMagicNumber = 0x58444953; // SIDX
     static constexpr uint16_t kVersion = 9;
+#if defined(__amigaos__)
+    // RCT1 (.sc4) scenarios index and load correctly on 68k since the SC4 decode fix, but the S4 gameplay
+    // fields are not byte-swapped yet, so they play to a black map. Keep them out of the scenario list
+    // until that lands; drop this #if to re-enable.
+    static constexpr auto kPattern = "*.sc6;*.sea;*.park";
+#else
     static constexpr auto kPattern = "*.sc4;*.sc6;*.sea;*.park";
+#endif
 
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
