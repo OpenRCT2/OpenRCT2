@@ -74,10 +74,31 @@ int amiga_program_path(char* buf, unsigned size)
 /* Append one line to a trace file, opening and closing it each time so it survives a wedged process. */
 void amiga_trace(const char* line)
 {
-    BPTR fh = Open("Work:OpenRCT2/trace.txt", MODE_READWRITE);
+    static unsigned t0 = 0;
+    char stamp[24];
+    unsigned now = amiga_ticks_ms();
+    BPTR fh;
+    if (t0 == 0)
+        t0 = now;
+    fh = Open("Work:OpenRCT2/trace.txt", MODE_READWRITE);
     if (fh == 0)
         return;
     Seek(fh, 0, OFFSET_END);
+    /* elapsed milliseconds since the first trace line, so the load can be profiled from the file */
+    {
+        unsigned ms = now - t0;
+        int n = 0;
+        char rev[12];
+        stamp[n++] = '[';
+        stamp[n++] = '+';
+        {
+            int r = 0;
+            do { rev[r++] = (char)('0' + ms % 10); ms /= 10; } while (ms != 0);
+            while (r > 0) stamp[n++] = rev[--r];
+        }
+        stamp[n++] = 'm'; stamp[n++] = 's'; stamp[n++] = ']'; stamp[n++] = ' ';
+        Write(fh, (APTR)stamp, n);
+    }
     Write(fh, (APTR)line, strlen(line));
     Write(fh, (APTR)"\n", 1);
     Close(fh);

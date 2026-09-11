@@ -23,6 +23,9 @@ namespace OpenRCT2
 
 namespace OpenRCT2::ObjectFactory
 {
+    // Amiga load profiling (milliseconds accumulated per phase; zero elsewhere)
+    extern unsigned gObjLoadMsZip, gObjLoadMsJsonParse, gObjLoadMsReadJson, gObjLoadMsLegacy;
+
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromFile(u8string_view path, bool loadImages);
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyFile(const utf8* path, bool loadImages);
     [[nodiscard]] std::unique_ptr<Object> CreateObjectFromLegacyData(

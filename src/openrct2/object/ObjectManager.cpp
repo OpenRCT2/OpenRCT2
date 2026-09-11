@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "ObjectManager.h"
+#include "ObjectFactory.h"
 #include "../core/String.hpp"
 #include "../platform/AmigaTrace.h"
 
@@ -747,6 +748,9 @@ namespace OpenRCT2
                     if (rides[k] == nullptr)
                         nulls += std::to_string(k) + " ";
                 AMIGA_TRACE(String::stdFormat("objmgr: %u required; ride list size %u, null slots: %s", static_cast<unsigned>(requiredObjects.size()), static_cast<unsigned>(rides.size()), nulls.c_str()).c_str());
+                {
+                    AMIGA_TRACE(String::stdFormat("objmgr: load time ms zip=%u jsonparse=%u readjson=%u legacy=%u", ObjectFactory::gObjLoadMsZip, ObjectFactory::gObjLoadMsJsonParse, ObjectFactory::gObjLoadMsReadJson, ObjectFactory::gObjLoadMsLegacy).c_str());
+                }
             }
             LOG_VERBOSE("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
         }

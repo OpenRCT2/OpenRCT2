@@ -211,8 +211,18 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
+#ifdef __amigaos__
+extern "C" unsigned amiga_ticks_ms(void);
+    #define OBJ_T0() unsigned _objT0 = amiga_ticks_ms()
+    #define OBJ_LAP(acc) do { unsigned _n = amiga_ticks_ms(); acc += _n - _objT0; _objT0 = _n; } while (0)
+#else
+    #define OBJ_T0() (void)0
+    #define OBJ_LAP(acc) (void)0
+#endif
 namespace OpenRCT2::ObjectFactory
 {
+    unsigned gObjLoadMsZip = 0, gObjLoadMsJsonParse = 0, gObjLoadMsReadJson = 0, gObjLoadMsLegacy = 0;
+
     /**
      * @param jRoot Must be JSON node of type object
      * @note jRoot is deliberately left non-const: json_t behaviour changes when const
@@ -275,7 +285,15 @@ namespace OpenRCT2::ObjectFactory
         return object;
     }
 
+    static std::unique_ptr<Object> CreateObjectFromLegacyFileImpl(const utf8* path, bool loadImages);
     std::unique_ptr<Object> CreateObjectFromLegacyFile(const utf8* path, bool loadImages)
+    {
+        OBJ_T0();
+        auto result = CreateObjectFromLegacyFileImpl(path, loadImages);
+        OBJ_LAP(gObjLoadMsLegacy);
+        return result;
+    }
+    static std::unique_ptr<Object> CreateObjectFromLegacyFileImpl(const utf8* path, bool loadImages)
     {
         LOG_VERBOSE("CreateObjectFromLegacyFile(..., \"%s\")", path);
 
@@ -448,14 +466,17 @@ namespace OpenRCT2::ObjectFactory
     {
         try
         {
+            OBJ_T0();
             auto archive = Zip::Open(path, ZipAccess::read);
             auto jsonBytes = archive->GetFileData("object.json");
             if (jsonBytes.empty())
             {
                 throw std::runtime_error("Unable to open object.json.");
             }
+            OBJ_LAP(gObjLoadMsZip);
 
             json_t jRoot = Json::FromVector(jsonBytes);
+            OBJ_LAP(gObjLoadMsJsonParse);
 
             if (jRoot.is_object())
             {
@@ -476,7 +497,9 @@ namespace OpenRCT2::ObjectFactory
 
         try
         {
+            OBJ_T0();
             json_t jRoot = Json::ReadFromFile(path.c_str());
+            OBJ_LAP(gObjLoadMsJsonParse);
             auto fileDataRetriever = FileSystemDataRetriever(Path::GetDirectory(path));
             return CreateObjectFromJson(jRoot, &fileDataRetriever, loadImages, path);
         }
@@ -589,7 +612,9 @@ namespace OpenRCT2::ObjectFactory
             result->SetFileName(Path::GetFileNameWithoutExtension(path));
             result->MarkAsJsonObject();
             auto readContext = ReadObjectContext(id, loadImageTable, fileRetriever);
+            OBJ_T0();
             result->ReadJson(&readContext, jRoot);
+            OBJ_LAP(gObjLoadMsReadJson);
             if (readContext.WasError())
             {
                 throw std::runtime_error("Object has errors");
