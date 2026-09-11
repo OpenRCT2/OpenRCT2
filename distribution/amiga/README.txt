@@ -1,4 +1,4 @@
-OpenRCT2 for AmigaOS 3.2 (68k) -- tester build
+OpenRCT2 for AmigaOS 3.2 (68k) -- tester build 2
 ================================================
 
 This is an early test build of OpenRCT2, the open-source re-implementation of
@@ -41,14 +41,18 @@ later starts. Loading the title screen takes 40-60 s on an emulated 68040.
 Expect ~25-30 frames per second at 640x480 on a fast machine.
 
 Cash, date and temperature appear bottom-left/right; the toolbar is at the top.
-NEW GAME lists the RollerCoaster Tycoon 2 scenarios (plus Wacky Worlds and Time
-Twister if you have them). Click a scenario to start it.
+NEW GAME lists the RollerCoaster Tycoon 1 and 2 scenarios found in your
+Scenarios folder (plus Wacky Worlds and Time Twister if you have them). Click a
+scenario to start it.
 
 KNOWN LIMITATIONS OF THIS BUILD
 -------------------------------
  * No sound or music.
- * RollerCoaster Tycoon 1 scenarios (.SC4) are hidden: they load, but the map
-   does not render yet. They will come back in a later build.
+ * RollerCoaster Tycoon 1 scenarios (.SC4) load and play (their simulation is
+   bit-exact with the PC build). Rides that exist only in RCT1 use fallback
+   RCT2 graphics unless you also own RCT1 and set  rct1_path  in
+   user/config.ini to its folder ("Park has objects which require RCT1 linked"
+   in the log is that, not an error).
  * Only the standard Intuition mouse pointer (no custom cursors), no clipboard.
  * Resolution: 640x480 by default. You can change window_width/window_height
    in  user/config.ini  but the frame rate drops with the pixel count

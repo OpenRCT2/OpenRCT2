@@ -1,6 +1,6 @@
 # OpenRCT2 on AmigaOS 3.2 (68k) — tester guide
 
-*Build: test1. This is an early, unfinished port. You are testing it — thank you.*
+*Build: test2. This is an early, unfinished port. You are testing it — thank you.*
 
 OpenRCT2 is the open-source re-implementation of RollerCoaster Tycoon 2. This build is a
 big-endian port of the upstream C++20 engine to 68k AmigaOS, with an Intuition/RTG display
@@ -34,7 +34,7 @@ Example target: `Work:Games/RCT2/`.
 
 1. Extract the archive where there is room, e.g. `Work:Games/`. In a Shell:
    ```
-   LhA x OpenRCT2-0.5.5-test1-*-amiga68k.lha Work:Games/
+   LhA x OpenRCT2-0.5.5-test2-*-amiga68k.lha Work:Games/
    ```
    You get a drawer `OpenRCT2` with an icon.
 2. Tell the game where your RCT2 data is with an **assign** (this is how the launcher finds it):
@@ -60,8 +60,8 @@ Example target: `Work:Games/RCT2/`.
 
 ## 5. Playing
 
-- **New Game** lists the RollerCoaster Tycoon 2 scenarios (and Wacky Worlds / Time Twister if
-  you own them), in tabs on the left. Click a scenario to start it; loading takes about a minute.
+- **New Game** lists the RollerCoaster Tycoon 1 and 2 scenarios found in your Scenarios folder
+  (and Wacky Worlds / Time Twister if you own them), in tabs on the left. Click a scenario to start it; loading takes about a minute.
 - Standard OpenRCT2 controls: left-click to select/build, right-drag to scroll the map, mouse
   wheel or the magnifier icons to zoom, `Space`/the top-left icon to pause.
 - The disk icon (third toolbar button) has **Save**, **Load**, and **Quit**. Saving works but has
@@ -73,8 +73,10 @@ Example target: `Work:Games/RCT2/`.
 ## 6. Known limitations of this build
 
 - **No sound or music.**
-- **RollerCoaster Tycoon 1 scenarios (`.SC4`) are hidden.** They load correctly now, but the
-  map does not render yet; they return in the next test build.
+- **RollerCoaster Tycoon 1 scenarios (`.SC4`) play** and their simulation is bit-exact with the
+  PC build. Rides that only exist in RCT1 use fallback RCT2 graphics unless you also own RCT1 and
+  set `rct1_path` in `user/config.ini` to its folder; the log line *"Park has objects which require
+  RCT1 linked"* means exactly that and is not an error.
 - Only the standard mouse pointer (no custom cursors); no clipboard.
 - Multiplayer, plugins and the scenario editor are untested.
 - The park load is CPU-bound (object loading, tile import); a real 68060 or PiStorm will be
