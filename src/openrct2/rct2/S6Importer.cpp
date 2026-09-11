@@ -71,6 +71,207 @@ using namespace OpenRCT2::SawyerCoding;
 
 namespace OpenRCT2::RCT2
 {
+
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+    // ---------------------------------------------------------------------
+    // SC6/SV6 are little-endian raw structs read by memcpy. On a big-endian
+    // host every multi-byte field must be swapped in place after reading.
+    // Field offsets below are the documented offsets in RCT2.h / RCT12.h.
+    // ---------------------------------------------------------------------
+    namespace S6Swap
+    {
+        static inline void b16(uint8_t* b, size_t o) { std::swap(b[o], b[o + 1]); }
+        static inline void b32(uint8_t* b, size_t o)
+        {
+            std::swap(b[o], b[o + 3]);
+            std::swap(b[o + 1], b[o + 2]);
+        }
+        static inline void b16n(uint8_t* b, size_t o, size_t n)
+        {
+            for (size_t i = 0; i < n; i++)
+                b16(b, o + i * 2);
+        }
+
+        // RCT12EntityBase, offsets 0x00-0x1E (shared by every sprite)
+        static void entityBase(uint8_t* b)
+        {
+            for (size_t o : { 0x02, 0x04, 0x06, 0x0A, 0x0C, 0x0E, 0x10, 0x12, 0x16, 0x18, 0x1A, 0x1C })
+                b16(b, o);
+        }
+        static void vehicle(uint8_t* b)
+        {
+            entityBase(b);
+            b32(b, 0x24); // RemainingDistance
+            b32(b, 0x28); // Velocity
+            b32(b, 0x2C); // Acceleration
+            for (size_t o : { 0x34, 0x36, 0x38, 0x3A, 0x3C, 0x3E, 0x40, 0x42, 0x44, 0x46, 0x48, 0x4C, 0x4E })
+                b16(b, o);
+            b16n(b, 0x52, 32); // Peep[32]
+            for (size_t o : { 0xB6, 0xB8, 0xC0 })
+                b16(b, o);
+            b32(b, 0xC8);  // AnimationState
+            b16(b, 0xD0);  // LostTimeOut
+        }
+        static void peep(uint8_t* b)
+        {
+            entityBase(b);
+            for (size_t o : { 0x22, 0x24, 0x26, 0x32, 0x34, 0x46 })
+                b16(b, o);
+            b32(b, 0x58); // ItemExtraFlags
+            for (size_t o : { 0x6B, 0x74, 0x7A })
+                b16(b, o);
+            b32(b, 0x9C); // Id
+            b32(b, 0xA0); // CashInPocket
+            b32(b, 0xA4); // CashSpent
+            b32(b, 0xA8); // ParkEntryTime
+            b16(b, 0xAE); // PreviousRideTimeOut
+            b32(b, 0xC8); // PeepFlags
+            for (size_t o : { 0xE4, 0xE6, 0xE8, 0xEA })
+                b16(b, o);
+            b32(b, 0xFC); // ItemStandardFlags
+        }
+        static void litter(uint8_t* b)
+        {
+            entityBase(b);
+            b32(b, 0x24); // CreationTick
+        }
+        static void balloon(uint8_t* b) { entityBase(b); b16(b, 0x24); }        // Popped
+        static void duck(uint8_t* b) { entityBase(b); b16(b, 0x26); b16(b, 0x30); b16(b, 0x32); }
+        static void particle(uint8_t* b) { entityBase(b); b16(b, 0x26); }        // Frame (steam/crashsplash/misc)
+        static void steam(uint8_t* b) { entityBase(b); b16(b, 0x24); b16(b, 0x26); }
+        static void fountain(uint8_t* b) { entityBase(b); b16(b, 0x30); b16(b, 0x32); b16(b, 0x46); }
+        static void money(uint8_t* b) { entityBase(b); b16(b, 0x24); b32(b, 0x28); b16(b, 0x44); b16(b, 0x46); }
+        static void crashParticle(uint8_t* b)
+        {
+            entityBase(b);
+            b16(b, 0x24); b16(b, 0x26); b16(b, 0x2E); b16(b, 0x30); b16(b, 0x32); b16(b, 0x34);
+            b32(b, 0x38); b32(b, 0x3C); b32(b, 0x40);
+        }
+
+        // Dispatch one 0x100-byte entity slot on its (still little-endian) identifier/type bytes.
+        static void entitySlot(uint8_t* b)
+        {
+            switch (static_cast<RCT12EntityIdentifier>(b[0x00]))
+            {
+                case RCT12EntityIdentifier::vehicle: vehicle(b); break;
+                case RCT12EntityIdentifier::peep: peep(b); break;
+                case RCT12EntityIdentifier::litter: litter(b); break;
+                case RCT12EntityIdentifier::misc:
+                    switch (static_cast<RCT12MiscEntityType>(b[0x01]))
+                    {
+                        case RCT12MiscEntityType::steamParticle: steam(b); break;
+                        case RCT12MiscEntityType::moneyEffect: money(b); break;
+                        case RCT12MiscEntityType::crashedVehicleParticle: crashParticle(b); break;
+                        case RCT12MiscEntityType::crashSplash:
+                        case RCT12MiscEntityType::explosionCloud:
+                        case RCT12MiscEntityType::explosionFlare: particle(b); break;
+                        case RCT12MiscEntityType::jumpingFountainWater:
+                        case RCT12MiscEntityType::jumpingFountainSnow: fountain(b); break;
+                        case RCT12MiscEntityType::balloon: balloon(b); break;
+                        case RCT12MiscEntityType::duck: duck(b); break;
+                        default: entityBase(b); break;
+                    }
+                    break;
+                default: break; // null slot
+            }
+        }
+
+        // Size-dispatched scalar swap (works for arithmetic, enums, money/StringId typedefs).
+        template<typename T>
+        static void bs(T& v)
+        {
+            auto* b = reinterpret_cast<uint8_t*>(&v);
+            if constexpr (sizeof(T) == 2)
+                std::swap(b[0], b[1]);
+            else if constexpr (sizeof(T) == 4)
+            {
+                std::swap(b[0], b[3]);
+                std::swap(b[1], b[2]);
+            }
+            else if constexpr (sizeof(T) == 8)
+            {
+                for (int i = 0; i < 4; i++)
+                    std::swap(b[i], b[7 - i]);
+            }
+        }
+
+        static void swapRide(::OpenRCT2::RCT2::Ride& r)
+        {
+            bs(r.name);
+            bs(r.nameArgumentsTypeName);
+            bs(r.nameArgumentsNumber);
+            for (auto& x : r.lastPeepInQueue) bs(x);
+            for (auto& x : r.vehicles) bs(x);
+            bs(r.maxSpeed); bs(r.averageSpeed);
+            for (auto& x : r.length) bs(x);
+            for (auto& x : r.time) bs(x);
+            bs(r.maxPositiveVerticalG); bs(r.maxNegativeVerticalG); bs(r.maxLateralG);
+            bs(r.previousVerticalG); bs(r.previousLateralG);
+            bs(r.testingFlags);
+            bs(r.turnCountDefault); bs(r.turnCountBanked); bs(r.turnCountSloped);
+            bs(r.shelteredLength); bs(r.var11C);
+            bs(r.curNumCustomers); bs(r.numCustomersTimeout);
+            for (auto& x : r.numCustomers) bs(x);
+            bs(r.price);
+            bs(r.ratings.excitement); bs(r.ratings.intensity); bs(r.ratings.nausea);
+            bs(r.value); bs(r.chairliftBullwheelRotation);
+            bs(r.totalCustomers); bs(r.totalProfit);
+            bs(r.slidePeep);
+            bs(r.buildDate); bs(r.upkeepCost); bs(r.raceWinner);
+            bs(r.musicPosition); bs(r.mechanic); bs(r.priceSecondary);
+            bs(r.reliability);
+            bs(r.numPrimaryItemsSold); bs(r.numSecondaryItemsSold);
+            bs(r.incomePerHour); bs(r.profit);
+            bs(r.vehicleChangeTimeout); bs(r.guestsFavourite); bs(r.flags);
+            bs(r.totalAirTime); bs(r.cableLiftX); bs(r.cableLiftY); bs(r.cableLift);
+            for (auto& x : r.queueLength) bs(x);
+        }
+
+        // 8-byte RCT12 tile element. Only two fields are multi-byte: maze track wall bitmap
+        // and large scenery entry index. Maze is detected via the owning ride's type.
+        static void swapTile(RCT12TileElement& e, const S6Data& s6)
+        {
+            auto* b = reinterpret_cast<uint8_t*>(&e);
+            auto type = static_cast<RCT12TileElementType>((b[0] & 0b00111100) >> 2);
+            if (type == RCT12TileElementType::track)
+            {
+                uint8_t rideIndex = b[7];
+                if (rideIndex < std::size(s6.Rides) && s6.Rides[rideIndex].type == RIDE_TYPE_MAZE)
+                    std::swap(b[5], b[6]); // MazeEntry (uint16 @5)
+            }
+            else if (type == RCT12TileElementType::largeScenery)
+            {
+                std::swap(b[4], b[5]); // EntryIndex (uint16 @4)
+            }
+        }
+
+        static void swapResearch(RCT12ResearchItem& ri) { bs(ri.RawValue); }
+        static void swapBanner(RCT12Banner& x) { bs(x.StringID); } // Type is uint8
+        static void swapNews(RCT12NewsItem& x) { bs(x.Assoc); bs(x.Ticks); bs(x.MonthYear); }
+        static void swapAward(RCT12Award& x) { bs(x.Time); bs(x.Type); }
+        static void swapPeepSpawn(RCT12PeepSpawn& x) { bs(x.x); bs(x.y); }
+        static void swapMapAnim(RCT12MapAnimation& x) { bs(x.x); bs(x.y); }
+        static void swapRideMeas(RCT12RideMeasurement& x) { bs(x.LastUseTick); bs(x.NumItems); bs(x.CurrentItem); }
+        static void swapRRC(RideRatingCalculationData& d)
+        {
+            bs(d.ProximityX); bs(d.ProximityY); bs(d.ProximityZ);
+            bs(d.ProximityStartX); bs(d.ProximityStartY); bs(d.ProximityStartZ);
+            bs(d.ProximityTotal);
+            for (auto& x : d.ProximityScores) bs(x);
+            bs(d.NumBrakes); bs(d.NumReversers); bs(d.StationFlags);
+        }
+        static void swapHeader(S6Header& h) { bs(h.NumPackedObjects); bs(h.Version); bs(h.MagicNumber); }
+        static void swapInfo(S6Info& i)
+        {
+            bs(i.ObjectiveArg2); bs(i.ObjectiveArg3);
+            auto* b = reinterpret_cast<uint8_t*>(&i.Entry);
+            std::swap(b[0], b[3]); std::swap(b[1], b[2]);       // flags
+            std::swap(b[12], b[15]); std::swap(b[13], b[14]);   // checksum
+        }
+
+    } // namespace S6Swap
+#endif
+
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
 
     /**
@@ -83,6 +284,120 @@ namespace OpenRCT2::RCT2
 
         u8string _s6Path;
         S6Data _s6{};
+
+        // On a big-endian host, swap every multi-byte field of the raw SC6/SV6 data in place after reading,
+        // so the rest of the importer (which reads _s6 fields directly) sees correct values.
+        void ByteSwapS6IfBigEndian()
+        {
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            S6Swap::swapInfo(_s6.Info);
+            for (auto& obj : _s6.Objects)
+            {
+                auto* b = reinterpret_cast<uint8_t*>(&obj);
+                S6Swap::b32(b, 0);  // flags @0
+                S6Swap::b32(b, 12); // checksum @12 (name is char[8] at offset 4)
+            }
+            for (auto& ent : _s6.Entities)
+                S6Swap::entitySlot(reinterpret_cast<uint8_t*>(&ent));
+
+            // Top-level scalars, sub-struct arrays and the map (generated from the S6Data layout).
+            S6Swap::bs(_s6.ElapsedMonths);
+            S6Swap::bs(_s6.CurrentDay);
+            S6Swap::bs(_s6.ScenarioTicks);
+            S6Swap::bs(_s6.ScenarioSrand0);
+            S6Swap::bs(_s6.ScenarioSrand1);
+            for (auto& _x : _s6.TileElements) S6Swap::swapTile(_x, _s6);
+            S6Swap::bs(_s6.NextFreeTileElementPointerIndex);
+            for (auto& _x : _s6.EntityListsHead) S6Swap::bs(_x);
+            for (auto& _x : _s6.EntityListsCount) S6Swap::bs(_x);
+            S6Swap::bs(_s6.ParkName);
+            S6Swap::bs(_s6.ParkNameArgs);
+            S6Swap::bs(_s6.InitialCash);
+            S6Swap::bs(_s6.CurrentLoan);
+            S6Swap::bs(_s6.ParkFlags);
+            S6Swap::bs(_s6.ParkEntranceFee);
+            S6Swap::bs(_s6.RCT1ParkEntranceX);
+            S6Swap::bs(_s6.RCT1ParkEntranceY);
+            for (auto& _x : _s6.PeepSpawns) S6Swap::swapPeepSpawn(_x);
+            for (auto& _x : _s6.ResearchedRideTypes) S6Swap::bs(_x);
+            for (auto& _x : _s6.ResearchedRideEntries) S6Swap::bs(_x);
+            for (auto& _x : _s6.ResearchedTrackTypesA) S6Swap::bs(_x);
+            for (auto& _x : _s6.ResearchedTrackTypesB) S6Swap::bs(_x);
+            S6Swap::bs(_s6.GuestsInPark);
+            S6Swap::bs(_s6.GuestsHeadingForPark);
+            for (auto& _x : _s6.ExpenditureTable) for (auto& _y : _x) S6Swap::bs(_y);
+            S6Swap::bs(_s6.LastGuestsInPark);
+            for (auto& _x : _s6.ResearchedSceneryItems) S6Swap::bs(_x);
+            S6Swap::bs(_s6.ParkRating);
+            S6Swap::bs(_s6.LastResearchedItemSubject);
+            S6Swap::bs(_s6.NextResearchItem);
+            S6Swap::bs(_s6.ResearchProgress);
+            S6Swap::bs(_s6.ParkSize);
+            S6Swap::bs(_s6.GuestGenerationProbability);
+            S6Swap::bs(_s6.TotalRideValueForMoney);
+            S6Swap::bs(_s6.MaximumLoan);
+            S6Swap::bs(_s6.GuestInitialCash);
+            S6Swap::bs(_s6.ObjectiveCurrency);
+            S6Swap::bs(_s6.ObjectiveGuests);
+            for (auto& _x : _s6.BalanceHistory) S6Swap::bs(_x);
+            S6Swap::bs(_s6.CurrentExpenditure);
+            S6Swap::bs(_s6.CurrentProfit);
+            S6Swap::bs(_s6.WeeklyProfitAverageDividend);
+            S6Swap::bs(_s6.WeeklyProfitAverageDivisor);
+            for (auto& _x : _s6.WeeklyProfitHistory) S6Swap::bs(_x);
+            S6Swap::bs(_s6.ParkValue);
+            for (auto& _x : _s6.ParkValueHistory) S6Swap::bs(_x);
+            S6Swap::bs(_s6.CompletedCompanyValue);
+            S6Swap::bs(_s6.TotalAdmissions);
+            S6Swap::bs(_s6.IncomeFromAdmissions);
+            S6Swap::bs(_s6.CompanyValue);
+            for (auto& _x : _s6.Awards) S6Swap::swapAward(_x);
+            S6Swap::bs(_s6.LandPrice);
+            S6Swap::bs(_s6.ConstructionRightsPrice);
+            S6Swap::bs(_s6.Word01358774);
+            S6Swap::bs(_s6.CDKey);
+            S6Swap::bs(_s6.GameVersionNumber);
+            S6Swap::bs(_s6.CompletedCompanyValueRecord);
+            S6Swap::bs(_s6.LoanHash);
+            S6Swap::bs(_s6.RideCount);
+            S6Swap::bs(_s6.HistoricalProfit);
+            S6Swap::bs(_s6.Cash);
+            S6Swap::bs(_s6.ParkRatingCasualtyPenalty);
+            S6Swap::bs(_s6.MapSizeUnits);
+            S6Swap::bs(_s6.MapSizeMinus2);
+            S6Swap::bs(_s6.MapSize);
+            S6Swap::bs(_s6.MapMaxXy);
+            S6Swap::bs(_s6.SamePriceThroughout);
+            S6Swap::bs(_s6.SuggestedMaxGuests);
+            S6Swap::bs(_s6.ParkRatingWarningDays);
+            for (auto& _x : _s6.ResearchItems) S6Swap::swapResearch(_x);
+            S6Swap::bs(_s6.MapBaseZ);
+            S6Swap::bs(_s6.SamePriceThroughoutExtended);
+            for (auto& _x : _s6.ParkEntranceX) S6Swap::bs(_x);
+            for (auto& _x : _s6.ParkEntranceY) S6Swap::bs(_x);
+            for (auto& _x : _s6.ParkEntranceZ) S6Swap::bs(_x);
+            for (auto& _x : _s6.Banners) S6Swap::swapBanner(_x);
+            S6Swap::bs(_s6.GameTicks1);
+            for (auto& _x : _s6.Rides) S6Swap::swapRide(_x);
+            S6Swap::bs(_s6.SavedAge);
+            S6Swap::bs(_s6.SavedViewX);
+            S6Swap::bs(_s6.SavedViewY);
+            for (auto& _x : _s6.MapAnimations) S6Swap::swapMapAnim(_x);
+            S6Swap::bs(_s6.NumMapAnimations);
+            S6Swap::swapRRC(_s6.RideRatingsCalcData);
+            for (auto& _x : _s6.RideMeasurements) S6Swap::swapRideMeas(_x);
+            S6Swap::bs(_s6.NextGuestIndex);
+            S6Swap::bs(_s6.GrassAndSceneryTilepos);
+            for (auto& _x : _s6.PatrolAreas) S6Swap::bs(_x);
+            S6Swap::bs(_s6.WeatherUpdateTimer);
+            for (auto& _x : _s6.recentMessages) S6Swap::swapNews(_x);
+            for (auto& _x : _s6.archivedMessages) S6Swap::swapNews(_x);
+            S6Swap::bs(_s6.RCT1ScenarioSlotIndex);
+            S6Swap::bs(_s6.RCT1ScenarioFlags);
+            S6Swap::bs(_s6.WidePathTileLoopX);
+            S6Swap::bs(_s6.WidePathTileLoopY);
+#endif
+        }
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
         bool _isScenario = false;
@@ -142,7 +457,9 @@ namespace OpenRCT2::RCT2
         {
             auto chunkReader = SawyerChunkReader(stream);
             chunkReader.ReadChunk(&_s6.Header, sizeof(_s6.Header));
-
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            S6Swap::swapHeader(_s6.Header); // NumPackedObjects is used below, before the full swap pass
+#endif
             LOG_VERBOSE("saved game classic_flag = 0x%02x", _s6.Header.ClassicFlag);
             if (isScenario)
             {
@@ -216,6 +533,7 @@ namespace OpenRCT2::RCT2
             _isScenario = isScenario;
             _s6Path = path;
 
+            ByteSwapS6IfBigEndian();
             return ParkLoadResult(GetRequiredObjects());
         }
 
