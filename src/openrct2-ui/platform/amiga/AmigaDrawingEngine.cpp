@@ -18,6 +18,7 @@
     #include <openrct2/platform/AmigaTrace.h>
     #include <openrct2/core/String.hpp>
 
+extern "C" unsigned amiga_ticks_ms(void);
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
@@ -71,6 +72,19 @@ public:
     {
         X8DrawingEngine::EndDraw();
         AMIGA_TRACE_ONCE("gfx: first EndDraw");
+        // Frame-rate probe: report frames and average blit ms every ~100 frames.
+        static unsigned frames = 0, t0 = 0;
+        if (t0 == 0)
+            t0 = amiga_ticks_ms();
+        if (++frames >= 100)
+        {
+            unsigned now = amiga_ticks_ms();
+            unsigned dt = now - t0;
+            AMIGA_TRACE(String::stdFormat("gfx: %u frames in %u ms = %u.%02u fps", frames, dt,
+                dt ? frames * 1000u / dt : 0u, dt ? (frames * 100000u / dt) % 100u : 0u).c_str());
+            frames = 0;
+            t0 = now;
+        }
     }
 
 protected:
