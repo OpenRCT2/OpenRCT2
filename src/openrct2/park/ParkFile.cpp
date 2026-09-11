@@ -8,6 +8,8 @@
  *****************************************************************************/
 
 #include "ParkFile.h"
+
+#include <bit>
 #include "../platform/AmigaTrace.h"
 
 #include "../Cheats.h"
@@ -329,10 +331,12 @@ namespace OpenRCT2
                 os.readWriteChunk(
                     ParkFileChunkType::objects, [&requiredObjects, version, &legacyPathMappings](OrcaStream::ChunkStream& cs) {
                         auto numSubLists = cs.read<uint16_t>();
+                        AMIGA_TRACE(String::stdFormat("objchunk: version %u, %u sub-lists", static_cast<unsigned>(version), static_cast<unsigned>(numSubLists)).c_str());
                         for (size_t i = 0; i < numSubLists; i++)
                         {
                             auto objectType = static_cast<ObjectType>(cs.read<uint16_t>());
                             auto subListSize = static_cast<ObjectEntryIndex>(cs.read<uint32_t>());
+                            AMIGA_TRACE(String::stdFormat("objchunk: type %d size %u", static_cast<int>(objectType), static_cast<unsigned>(subListSize)).c_str());
                             for (ObjectEntryIndex j = 0; j < subListSize; j++)
                             {
                                 auto kind = cs.read<uint8_t>();
@@ -345,6 +349,8 @@ namespace OpenRCT2
                                     {
                                         RCTObjectEntry datEntry;
                                         cs.read(&datEntry, sizeof(datEntry));
+                                        if constexpr (std::endian::native == std::endian::big)
+                                            datEntry.LittleEndianToHost(); // raw 16-byte DAT entry: flags/checksum are little-endian
                                         ObjectEntryDescriptor desc(datEntry);
                                         if (version < kFixedObsoleteFootpathsVersion && datEntry.GetType() == ObjectType::paths)
                                         {
@@ -473,7 +479,13 @@ namespace OpenRCT2
                                 else
                                 {
                                     cs.write(kDescriptorDat);
-                                    cs.write(&entry.Entry, sizeof(RCTObjectEntry));
+                                    {
+                                        // stored little-endian on disk on every host
+                                        RCTObjectEntry le = entry.Entry;
+                                        if constexpr (std::endian::native == std::endian::big)
+                                            le.LittleEndianToHost();
+                                        cs.write(&le, sizeof(RCTObjectEntry));
+                                    }
                                 }
                             }
                             else
@@ -843,7 +855,13 @@ namespace OpenRCT2
                         if (String::iequals(extension, ".dat"))
                         {
                             cs.write(kDescriptorDat);
-                            cs.write(&ori->ObjectEntry, sizeof(RCTObjectEntry));
+                            {
+                                // stored little-endian on disk on every host
+                                RCTObjectEntry le = ori->ObjectEntry;
+                                if constexpr (std::endian::native == std::endian::big)
+                                    le.LittleEndianToHost();
+                                cs.write(&le, sizeof(RCTObjectEntry));
+                            }
                         }
                         else if (String::iequals(extension, ".parkobj"))
                         {

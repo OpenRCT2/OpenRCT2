@@ -8,6 +8,8 @@
  *****************************************************************************/
 
 #include "ObjectManager.h"
+#include "../core/String.hpp"
+#include "../platform/AmigaTrace.h"
 
 #include "../Context.h"
 #include "../Diagnostic.h"
@@ -207,6 +209,20 @@ namespace OpenRCT2
 
         void LoadObjects(const ObjectList& objectList, const bool reportProgress) override
         {
+            {
+                std::string summary;
+                for (auto t : getAllObjectTypes())
+                {
+                    auto& sl = objectList.GetList(t);
+                    size_t have = 0;
+                    for (auto& e : sl)
+                        if (e.HasValue())
+                            have++;
+                    summary += String::stdFormat("%d:%u/%u ", static_cast<int>(t), static_cast<unsigned>(have), static_cast<unsigned>(sl.size()));
+                }
+                AMIGA_TRACE(("objmgr: LoadObjects lists type:withvalue/size " + summary).c_str());
+            }
+
             // Find all the required objects
             auto requiredObjects = GetRequiredObjects(objectList);
 
@@ -714,6 +730,8 @@ namespace OpenRCT2
             for (auto& otl : requiredObjects)
             {
                 auto objectType = otl.LoadedObject->GetObjectType();
+                if (otl.Index == 16)
+                    AMIGA_TRACE(String::stdFormat("objmgr: index 16 -> type %d (repo type %d, name %s)", static_cast<int>(objectType), otl.RepositoryItem != nullptr ? static_cast<int>(otl.RepositoryItem->Type) : -1, otl.RepositoryItem != nullptr ? otl.RepositoryItem->Identifier.c_str() : "?").c_str());
                 auto& list = GetObjectList(objectType);
                 if (list.size() <= otl.Index)
                 {
@@ -722,6 +740,14 @@ namespace OpenRCT2
                 list[otl.Index] = otl.LoadedObject;
             }
 
+            {
+                auto& rides = GetObjectList(ObjectType::ride);
+                std::string nulls;
+                for (size_t k = 0; k < rides.size(); k++)
+                    if (rides[k] == nullptr)
+                        nulls += std::to_string(k) + " ";
+                AMIGA_TRACE(String::stdFormat("objmgr: %u required; ride list size %u, null slots: %s", static_cast<unsigned>(requiredObjects.size()), static_cast<unsigned>(rides.size()), nulls.c_str()).c_str());
+            }
             LOG_VERBOSE("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
         }
 

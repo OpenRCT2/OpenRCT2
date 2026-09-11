@@ -8,6 +8,8 @@
  *****************************************************************************/
 
 #include "Vehicle.h"
+#include "../core/String.hpp"
+#include "../platform/AmigaTrace.h"
 
 #include "../Context.h"
 #include "../Diagnostic.h"
@@ -235,10 +237,13 @@ namespace OpenRCT2
         if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != Editor::Step::rollerCoasterDesigner)
             return;
 
+        int trains = 0;
         for (auto vehicle : TrainManager::View())
         {
+            trains++;
             vehicle->update();
         }
+        AMIGA_TRACE_ONCE(String::stdFormat("veh: VehicleUpdateAll iterated %d train heads", trains).c_str());
     }
 
     /**
@@ -755,6 +760,7 @@ namespace OpenRCT2
      */
     void Vehicle::update()
     {
+        AMIGA_TRACE_ONCE("veh: update entered");
         if (IsCableLift())
         {
             CableLiftUpdate();
@@ -763,14 +769,23 @@ namespace OpenRCT2
 
         auto rideEntry = GetRideEntry();
         if (rideEntry == nullptr)
+        {
+            AMIGA_TRACE_ONCE("veh: rideEntry null");
             return;
+        }
 
         auto curRide = GetRide();
         if (curRide == nullptr)
+        {
+            AMIGA_TRACE_ONCE("veh: ride null");
             return;
+        }
 
         if (curRide->type >= RIDE_TYPE_COUNT)
+        {
+            AMIGA_TRACE_ONCE("veh: ride type out of range");
             return;
+        }
 
         if (flags.has(VehicleFlag::testing))
             UpdateMeasurements();
