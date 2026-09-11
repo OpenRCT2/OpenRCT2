@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "ObjectRepository.h"
+#include "../platform/AmigaTrace.h"
 
 #include "../Context.h"
 #include "../Diagnostic.h"
@@ -232,6 +233,16 @@ namespace OpenRCT2
             if (kvp != _itemMap.end())
             {
                 return &_items[kvp->second];
+            }
+            {
+                std::string name(objectEntry->name, 8);
+                std::string near;
+                for (auto& item : _items)
+                {
+                    if (std::string_view(item.ObjectEntry.name, 8) == name)
+                        near += String::stdFormat("[%s flags=%08x cs=%08x id=%s] ", std::string(item.ObjectEntry.name, 8).c_str(), item.ObjectEntry.flags, item.ObjectEntry.checksum, item.Identifier.c_str());
+                }
+                AMIGA_TRACE(String::stdFormat("repo: miss [%s] flags=%08x cs=%08x; map=%u items=%u; by-name: %s", name.c_str(), objectEntry->flags, objectEntry->checksum, static_cast<unsigned>(_itemMap.size()), static_cast<unsigned>(_items.size()), near.c_str()).c_str());
             }
             return nullptr;
         }

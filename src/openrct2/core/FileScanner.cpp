@@ -350,6 +350,10 @@ private:
         struct stat stbuf;
         stat(node->d_name, &stbuf);
         if (S_ISDIR(stbuf.st_mode))
+    #elif defined(__amigaos__)
+        // libnix leaves d_type uninitialised; only stat() can tell
+        struct stat stbuf{};
+        if (stat(Path::Combine(directory, node->d_name).c_str(), &stbuf) == 0 && S_ISDIR(stbuf.st_mode))
     #else
         if (node->d_type == DT_DIR)
     #endif
