@@ -36,6 +36,11 @@ if (APPLE)
 endif()
 add_library(libopenrct2 ${LIBOPENRCT2_LINKAGE} ${OPENRCT2_QUICKJS_NG_SOURCES} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES})
 add_library(OpenRCT2::libopenrct2 ALIAS libopenrct2)
+if (AMIGA)
+    # amiga_compat.cpp lives in this archive but is only needed by libstdc++, which the
+    # linker scans later: force the two symbols in so the member is pulled.
+    target_link_options(libopenrct2 INTERFACE "-Wl,-u,___xpg_strerror_r" "-Wl,-u,__Z7statvfsPKcP7statvfs")
+endif ()
 
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
     message(WARNING "Buggy GCC 12 detected! Disabling some warnings")

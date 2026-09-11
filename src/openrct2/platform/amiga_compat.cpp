@@ -4,6 +4,9 @@
 #include <cstring>
 #include <sys/statvfs.h>
 
+// Prototypes first: the tree builds with -Wmissing-declarations.
+extern "C" int __xpg_strerror_r(int errnum, char* buf, size_t buflen);
+
 extern "C" int __xpg_strerror_r(int errnum, char* buf, size_t buflen)
 {
     const char* s = std::strerror(errnum);
