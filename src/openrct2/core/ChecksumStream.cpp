@@ -11,7 +11,7 @@
 
 namespace OpenRCT2
 {
-#if !defined(DISABLE_NETWORK) || defined(__amigaos__)
+#if !defined(DISABLE_NETWORK) || defined(__amigaos__) || defined(OPENRCT2_KEEP_CHECKSUM)
     ChecksumStream::ChecksumStream(std::array<std::byte, 20>& buf)
         : _checksum(buf)
     {

@@ -133,7 +133,7 @@ namespace OpenRCT2
         void resetAllEntities();
         void resetEntitySpatialIndices();
 
-#if !defined(DISABLE_NETWORK) || defined(__amigaos__)
+#if !defined(DISABLE_NETWORK) || defined(__amigaos__) || defined(OPENRCT2_KEEP_CHECKSUM)
 
         template<typename T>
         void networkSerialseEntityType(DataSerialiser& ds)

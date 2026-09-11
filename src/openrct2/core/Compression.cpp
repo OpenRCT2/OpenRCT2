@@ -7,6 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+// Homebrew's zlib macros use C-style casts; the tree builds with -Werror=old-style-cast.
+#if defined(__clang__)
+    #pragma clang diagnostic ignored "-Wold-style-cast"
+#endif
 #include "Compression.h"
 
 #include "../Diagnostic.h"

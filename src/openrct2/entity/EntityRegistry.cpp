@@ -7,6 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <cstdlib>
+#include <cstdio>
+#include "../core/MemoryStream.h"
 #include "EntityRegistry.h"
 
 #include "../Diagnostic.h"
@@ -200,7 +203,7 @@ namespace OpenRCT2
         }
     }
 
-#if !defined(DISABLE_NETWORK) || defined(__amigaos__) // Amiga: keep the checksum for cross-host verification
+#if !defined(DISABLE_NETWORK) || defined(__amigaos__) || defined(OPENRCT2_KEEP_CHECKSUM) // Amiga: keep the checksum for cross-host verification
     EntitiesChecksum EntityRegistry::getAllEntitiesChecksum()
     {
         EntitiesChecksum checksum{};
@@ -208,6 +211,24 @@ namespace OpenRCT2
         ChecksumStream ms(checksum.raw);
         DataSerialiser ds(true, ms);
         networkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(ds);
+
+        // Port bring-up: dump the exact bytes the checksum saw, so two hosts can be diffed.
+        const char* dumpPath = std::getenv("OPENRCT2_ENTITY_DUMP");
+#ifdef __amigaos__
+        if (dumpPath == nullptr)
+            dumpPath = "PROGDIR:entities.bin";
+#endif
+        if (dumpPath != nullptr)
+        {
+            MemoryStream buffer;
+            DataSerialiser dumpDs(true, buffer);
+            networkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(dumpDs);
+            if (auto* f = std::fopen(dumpPath, "wb"))
+            {
+                std::fwrite(buffer.GetData(), 1, static_cast<size_t>(buffer.GetLength()), f);
+                std::fclose(f);
+            }
+        }
 
         return checksum;
     }

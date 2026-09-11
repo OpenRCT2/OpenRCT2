@@ -45,11 +45,11 @@ namespace OpenRCT2
 
         static void encode(IStream* stream, const T& val)
         {
-            stream->WriteValue(ByteSwapBE(static_cast<TUnderlying>(val)));
+            { auto tmp = ByteSwapBE(static_cast<TUnderlying>(val)); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
         static void decode(IStream* stream, T& val)
         {
-            val = static_cast<T>(ByteSwapBE(stream->ReadValue<TUnderlying>()));
+            { TUnderlying tmp; stream->Read(&tmp, sizeof(tmp)); val = static_cast<T>(ByteSwapBE(tmp)); }
         }
         static void log(IStream* stream, const T& val)
         {
@@ -69,11 +69,11 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const T& val)
         {
-            stream->WriteValue(ByteSwapBE(val));
+            { auto tmp = ByteSwapBE(val); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
         static void decode(IStream* stream, T& val)
         {
-            val = ByteSwapBE(stream->ReadValue<T>());
+            { T tmp; stream->Read(&tmp, sizeof(tmp)); val = ByteSwapBE(tmp); }
         }
         static void log(IStream* stream, const T& val)
         {
@@ -156,7 +156,7 @@ namespace OpenRCT2
         static void encode(IStream* stream, const std::string& str)
         {
             uint16_t len = static_cast<uint16_t>(str.size());
-            stream->WriteValue(ByteSwapBE(len));
+            { auto tmp = ByteSwapBE(len); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
             if (len == 0)
             {
                 return;
@@ -165,7 +165,8 @@ namespace OpenRCT2
         }
         static void decode(IStream* stream, std::string& res)
         {
-            uint16_t len = ByteSwapBE(stream->ReadValue<uint16_t>());
+            uint16_t len;
+            { uint16_t tmp; stream->Read(&tmp, sizeof(tmp)); len = ByteSwapBE(tmp); }
             if (len == 0)
             {
                 res.clear();
@@ -190,11 +191,11 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const Network::PlayerId_t& val)
         {
-            stream->WriteValue(ByteSwapBE(val.id));
+            { auto tmp = ByteSwapBE(val.id); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
         static void decode(IStream* stream, Network::PlayerId_t& val)
         {
-            val.id = ByteSwapBE(stream->ReadValue<int32_t>());
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); val.id = ByteSwapBE(tmp); }
         }
         static void log(IStream* stream, const Network::PlayerId_t& val)
         {
@@ -275,7 +276,7 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const _Ty (&val)[_Size])
         {
-            stream->WriteValue(ByteSwapBE(static_cast<uint16_t>(_Size)));
+            { auto tmp = ByteSwapBE(static_cast<uint16_t>(_Size)); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
 
             DataSerializerTraits<_Ty> s;
             for (auto&& sub : val)
@@ -285,7 +286,8 @@ namespace OpenRCT2
         }
         static void decode(IStream* stream, _Ty (&val)[_Size])
         {
-            uint16_t len = ByteSwapBE(stream->ReadValue<uint16_t>());
+            uint16_t len;
+            { uint16_t tmp; stream->Read(&tmp, sizeof(tmp)); len = ByteSwapBE(tmp); }
 
             if (len != _Size)
                 throw std::runtime_error("Invalid size, can't decode");
@@ -350,7 +352,7 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const std::array<_Ty, _Size>& val)
         {
-            stream->WriteValue(ByteSwapBE(static_cast<uint16_t>(_Size)));
+            { auto tmp = ByteSwapBE(static_cast<uint16_t>(_Size)); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
 
             DataSerializerTraits<_Ty> s;
             for (auto&& sub : val)
@@ -360,7 +362,8 @@ namespace OpenRCT2
         }
         static void decode(IStream* stream, std::array<_Ty, _Size>& val)
         {
-            uint16_t len = ByteSwapBE(stream->ReadValue<uint16_t>());
+            uint16_t len;
+            { uint16_t tmp; stream->Read(&tmp, sizeof(tmp)); len = ByteSwapBE(tmp); }
 
             if (len != _Size)
                 throw std::runtime_error("Invalid size, can't decode");
@@ -389,7 +392,7 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const std::vector<_Ty>& val)
         {
-            stream->WriteValue(ByteSwapBE(static_cast<uint16_t>(val.size())));
+            { auto tmp = ByteSwapBE(static_cast<uint16_t>(val.size())); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
 
             DataSerializerTraits<_Ty> s;
             for (auto&& sub : val)
@@ -399,7 +402,8 @@ namespace OpenRCT2
         }
         static void decode(IStream* stream, std::vector<_Ty>& val)
         {
-            uint16_t len = ByteSwapBE(stream->ReadValue<uint16_t>());
+            uint16_t len;
+            { uint16_t tmp; stream->Read(&tmp, sizeof(tmp)); len = ByteSwapBE(tmp); }
 
             DataSerializerTraits<_Ty> s;
             for (auto i = 0; i < len; ++i)
@@ -427,17 +431,21 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const MapRange& v)
         {
-            stream->WriteValue(ByteSwapBE(v.GetX1()));
-            stream->WriteValue(ByteSwapBE(v.GetY1()));
-            stream->WriteValue(ByteSwapBE(v.GetX2()));
-            stream->WriteValue(ByteSwapBE(v.GetY2()));
+            { auto tmp = ByteSwapBE(v.GetX1()); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(v.GetY1()); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(v.GetX2()); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(v.GetY2()); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
         static void decode(IStream* stream, MapRange& v)
         {
-            auto l = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto t = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto r = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto b = ByteSwapBE(stream->ReadValue<int32_t>());
+            int32_t l;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); l = ByteSwapBE(tmp); }
+            int32_t t;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); t = ByteSwapBE(tmp); }
+            int32_t r;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); r = ByteSwapBE(tmp); }
+            int32_t b;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); b = ByteSwapBE(tmp); }
             v = MapRange(l, t, r, b);
         }
         static void log(IStream* stream, const MapRange& v)
@@ -501,13 +509,15 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const TileCoordsXY& coords)
         {
-            stream->WriteValue(ByteSwapBE(coords.x));
-            stream->WriteValue(ByteSwapBE(coords.y));
+            { auto tmp = ByteSwapBE(coords.x); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coords.y); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
         static void decode(IStream* stream, TileCoordsXY& coords)
         {
-            auto x = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+            int32_t x;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); x = ByteSwapBE(tmp); }
+            int32_t y;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); y = ByteSwapBE(tmp); }
             coords = TileCoordsXY{ x, y };
         }
         static void log(IStream* stream, const TileCoordsXY& coords)
@@ -523,13 +533,15 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const CoordsXY& coords)
         {
-            stream->WriteValue(ByteSwapBE(coords.x));
-            stream->WriteValue(ByteSwapBE(coords.y));
+            { auto tmp = ByteSwapBE(coords.x); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coords.y); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
         static void decode(IStream* stream, CoordsXY& coords)
         {
-            auto x = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+            int32_t x;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); x = ByteSwapBE(tmp); }
+            int32_t y;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); y = ByteSwapBE(tmp); }
             coords = CoordsXY{ x, y };
         }
         static void log(IStream* stream, const CoordsXY& coords)
@@ -545,16 +557,19 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const CoordsXYZ& coord)
         {
-            stream->WriteValue(ByteSwapBE(coord.x));
-            stream->WriteValue(ByteSwapBE(coord.y));
-            stream->WriteValue(ByteSwapBE(coord.z));
+            { auto tmp = ByteSwapBE(coord.x); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coord.y); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coord.z); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
 
         static void decode(IStream* stream, CoordsXYZ& coord)
         {
-            auto x = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto y = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto z = ByteSwapBE(stream->ReadValue<int32_t>());
+            int32_t x;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); x = ByteSwapBE(tmp); }
+            int32_t y;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); y = ByteSwapBE(tmp); }
+            int32_t z;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); z = ByteSwapBE(tmp); }
             coord = CoordsXYZ{ x, y, z };
         }
 
@@ -571,18 +586,22 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const CoordsXYZD& coord)
         {
-            stream->WriteValue(ByteSwapBE(coord.x));
-            stream->WriteValue(ByteSwapBE(coord.y));
-            stream->WriteValue(ByteSwapBE(coord.z));
-            stream->WriteValue(ByteSwapBE(coord.direction));
+            { auto tmp = ByteSwapBE(coord.x); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coord.y); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coord.z); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coord.direction); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
 
         static void decode(IStream* stream, CoordsXYZD& coord)
         {
-            auto x = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto y = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto z = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto d = ByteSwapBE(stream->ReadValue<uint8_t>());
+            int32_t x;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); x = ByteSwapBE(tmp); }
+            int32_t y;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); y = ByteSwapBE(tmp); }
+            int32_t z;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); z = ByteSwapBE(tmp); }
+            uint8_t d;
+            { uint8_t tmp; stream->Read(&tmp, sizeof(tmp)); d = ByteSwapBE(tmp); }
             coord = CoordsXYZD{ x, y, z, d };
         }
 
@@ -601,11 +620,11 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const Network::CheatType_t& val)
         {
-            stream->WriteValue(ByteSwapBE(val.id));
+            { auto tmp = ByteSwapBE(val.id); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
         static void decode(IStream* stream, Network::CheatType_t& val)
         {
-            val.id = ByteSwapBE(stream->ReadValue<int32_t>());
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); val.id = ByteSwapBE(tmp); }
         }
         static void log(IStream* stream, const Network::CheatType_t& val)
         {
@@ -619,12 +638,12 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const RCTObjectEntry& val)
         {
-            stream->WriteValue(ByteSwapBE(val.flags));
+            { auto tmp = ByteSwapBE(val.flags); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
             stream->WriteArray(val.nameWOC, 12);
         }
         static void decode(IStream* stream, RCTObjectEntry& val)
         {
-            val.flags = ByteSwapBE(stream->ReadValue<uint32_t>());
+            { uint32_t tmp; stream->Read(&tmp, sizeof(tmp)); val.flags = ByteSwapBE(tmp); }
             auto str = stream->ReadArray<char>(12);
             memcpy(val.nameWOC, str.get(), 12);
         }
@@ -918,18 +937,22 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const TileCoordsXYZD& coord)
         {
-            stream->WriteValue(ByteSwapBE(coord.x));
-            stream->WriteValue(ByteSwapBE(coord.y));
-            stream->WriteValue(ByteSwapBE(coord.z));
-            stream->WriteValue(ByteSwapBE(coord.direction));
+            { auto tmp = ByteSwapBE(coord.x); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coord.y); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coord.z); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
+            { auto tmp = ByteSwapBE(coord.direction); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
 
         static void decode(IStream* stream, TileCoordsXYZD& coord)
         {
-            auto x = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto y = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto z = ByteSwapBE(stream->ReadValue<int32_t>());
-            auto d = ByteSwapBE(stream->ReadValue<Direction>());
+            int32_t x;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); x = ByteSwapBE(tmp); }
+            int32_t y;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); y = ByteSwapBE(tmp); }
+            int32_t z;
+            { int32_t tmp; stream->Read(&tmp, sizeof(tmp)); z = ByteSwapBE(tmp); }
+            Direction d;
+            { Direction tmp; stream->Read(&tmp, sizeof(tmp)); d = ByteSwapBE(tmp); }
             coord = TileCoordsXYZD{ x, y, z, d };
         }
 
@@ -948,12 +971,13 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const TIdentifier<T, TNull, TTag>& id)
         {
-            stream->WriteValue(ByteSwapBE(id.ToUnderlying()));
+            { auto tmp = ByteSwapBE(id.ToUnderlying()); stream->Write(&tmp, sizeof(tmp)); } // network order as raw bytes on every host
         }
 
         static void decode(IStream* stream, TIdentifier<T, TNull, TTag>& id)
         {
-            auto temp = ByteSwapBE(stream->ReadValue<T>());
+            T temp;
+            { T tmp; stream->Read(&tmp, sizeof(tmp)); temp = ByteSwapBE(tmp); }
             id = TIdentifier<T, TNull, TTag>::FromUnderlying(temp);
         }
 
