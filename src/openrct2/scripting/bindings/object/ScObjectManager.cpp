@@ -12,7 +12,7 @@
     #include "ScObjectManager.h"
 
     #include "../../../Context.h"
-    #include "../../../drawing/Drawing.h"
+    #include "../../../drawing/Palette.h"
     #include "../../../object/ObjectList.h"
     #include "../../../ride/RideData.h"
     #include "../../../windows/Intent.h"
@@ -112,7 +112,7 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
         RefreshResearchedItems();
         if (loadedWater)
         {
-            LoadPalette();
+            Drawing::LoadPalette();
         }
 
         return result;
@@ -146,7 +146,7 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
 
                         if (obj->GetObjectType() == ObjectType::water)
                         {
-                            LoadPalette();
+                            Drawing::LoadPalette();
                         }
 
                         auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
@@ -164,7 +164,7 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
 
                     if (obj->GetObjectType() == ObjectType::water)
                     {
-                        LoadPalette();
+                        Drawing::LoadPalette();
                     }
 
                     auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
