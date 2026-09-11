@@ -185,6 +185,7 @@ namespace OpenRCT2::Platform
     }
 #endif
 
+#ifndef __amigaos__
     void Sleep(uint32_t ms)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(ms));
@@ -197,6 +198,7 @@ namespace OpenRCT2::Platform
         const auto processTime = std::chrono::high_resolution_clock::now() - _processStartTime;
         return static_cast<uint32_t>(std::chrono::duration_cast<std::chrono::milliseconds>(processTime).count());
     }
+#endif // __amigaos__
 
 #ifdef OPENRCT2_X86
     static bool CPUIDX86(uint32_t* cpuid_outdata, int32_t eax)

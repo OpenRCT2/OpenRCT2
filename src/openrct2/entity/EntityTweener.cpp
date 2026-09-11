@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cmath>
 
 namespace OpenRCT2
 {

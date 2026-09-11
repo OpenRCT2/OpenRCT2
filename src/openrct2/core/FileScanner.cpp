@@ -12,7 +12,7 @@
         #define WIN32_LEAN_AND_MEAN
     #endif
     #include <windows.h>
-#elif defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__)
+#elif defined(__unix__) || defined(__amigaos__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__)
     #include <dirent.h>
     #include <sys/stat.h>
 #endif
@@ -307,7 +307,7 @@ public:
 };
 #endif // __ANDROID__
 
-#if defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__) || defined(__amigaos__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
 
 class FileScannerUnix final : public FileScannerBase
 {
@@ -380,7 +380,7 @@ private:
     }
 };
 
-#endif // defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
+#endif // defined(__unix__) || defined(__amigaos__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
 
 std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bool recurse)
 {
@@ -392,7 +392,7 @@ std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bo
 #endif
 #ifdef _WIN32
     return std::make_unique<FileScannerWindows>(pattern, recurse);
-#elif defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
+#elif defined(__unix__) || defined(__amigaos__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
     return std::make_unique<FileScannerUnix>(pattern, recurse);
 #endif
 }

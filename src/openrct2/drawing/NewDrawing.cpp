@@ -183,8 +183,8 @@ void GfxDrawDashedLine(
     {
         constexpr int32_t kPrecisionFactor = 1000;
 
-        const int32_t dashedLineLength = std::hypot(
-            screenLine.GetX2() - screenLine.GetX1(), screenLine.GetY2() - screenLine.GetY1());
+        const int32_t dashedLineLength = static_cast<int32_t>(std::hypot(
+            static_cast<double>(screenLine.GetX2() - screenLine.GetX1()), static_cast<double>(screenLine.GetY2() - screenLine.GetY1())));
         const int32_t lineSegmentCount = dashedLineLength / dashedLineSegmentLength / 2;
         if (lineSegmentCount == 0)
         {

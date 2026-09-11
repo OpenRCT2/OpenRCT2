@@ -36,7 +36,7 @@
 #include "String.hpp"
 #include "UTF8.h"
 
-#if defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__unix__) || defined(__HAIKU__) || defined(__amigaos__) || (defined(__APPLE__) && defined(__MACH__))
     #define _stricmp(x, y) strcasecmp((x), (y))
 #endif
 
@@ -633,6 +633,7 @@ namespace OpenRCT2::String
     }
 
 #ifndef _WIN32
+#if !defined(_WIN32) && !defined(__amigaos__)
     static const char* getIcuCodePage(OpenRCT2::CodePage codePage)
     {
         switch (codePage)
@@ -659,6 +660,7 @@ namespace OpenRCT2::String
                 throw std::runtime_error("Unsupported code page: " + std::to_string(EnumValue(codePage)));
         }
     }
+#endif
 #endif
 
     std::string convertToUtf8(std::string_view src, CodePage srcCodePage)

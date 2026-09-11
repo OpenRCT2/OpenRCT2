@@ -13,6 +13,8 @@
 #include "GameState.h"
 #include "core/Guard.hpp"
 
+#include <ctime>
+
 using namespace OpenRCT2;
 
 constexpr int32_t kMonthTicksIncrement = 4;

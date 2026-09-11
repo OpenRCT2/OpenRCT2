@@ -16,6 +16,12 @@
 #include <cinttypes>
 #include <string_view>
 
+#ifdef __amigaos__
+    // libnix has no 64-bit file offsets
+    #define ftello ftell
+    #define fseeko fseek
+#endif
+
 #ifndef _WIN32
     #include <sys/stat.h>
 #else
