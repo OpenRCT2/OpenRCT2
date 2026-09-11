@@ -36,6 +36,8 @@
     #define OPENRCT2_ARCHITECTURE "RISC-V"
 #elif defined(__loongarch__)
     #define OPENRCT2_ARCHITECTURE "LoongArch"
+#elif defined(__m68k__)
+    #define OPENRCT2_ARCHITECTURE "m68k"
 #endif
 #ifdef __wasm64__
     #define OPENRCT2_ARCHITECTURE "wasm64"
@@ -74,6 +76,9 @@
 #endif
 #ifdef __HAIKU__
     #define OPENRCT2_PLATFORM "Haiku"
+#endif
+#ifdef __amigaos__
+    #define OPENRCT2_PLATFORM "AmigaOS"
 #endif
 #ifndef OPENRCT2_PLATFORM
     #error Unknown platform!

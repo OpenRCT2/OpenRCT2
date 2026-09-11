@@ -34,8 +34,10 @@
     #define MAX_PATH 260
 #endif
 
+#ifndef __amigaos__
 static_assert(
     std::endian::native == std::endian::little, "OpenRCT2 is known to be broken on big endian. Proceed with caution!");
+#endif
 
 enum class SpecialFolder
 {
