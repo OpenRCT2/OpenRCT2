@@ -1185,6 +1185,59 @@ namespace OpenRCT2
             }
         }
 
+
+#ifdef __amigaos__
+    // Tile elements are stored raw (16 bytes, little-endian) in the tiles chunk.
+    // Offsets from the element definitions; every other field is one byte.
+    static void SwapTileElementBytes(TileElement& el)
+    {
+        auto* b = reinterpret_cast<uint8_t*>(&el);
+        auto sw = [&](size_t o) { std::swap(b[o], b[o + 1]); };
+        switch (el.getType())
+        {
+            case TileElementType::path:
+                sw(5);  // surfaceIndex
+                sw(7);  // railingsIndex
+                if (b[0] & 0x01) // FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE lives in the type byte; only queues carry a 16-bit ride index at 13
+                    sw(13);
+                break;
+            case TileElementType::track:
+                sw(5);  // trackType
+                sw(12); // rideIndex
+                sw(14); // rideType
+                // TODO mazeEntry (uint16 at 7) for maze rides
+                break;
+            case TileElementType::smallScenery:
+                sw(5); // entryIndex
+                break;
+            case TileElementType::largeScenery:
+                sw(5); // entryIndex
+                sw(7); // bannerIndex
+                break;
+            case TileElementType::wall:
+                sw(5);  // entryIndex
+                sw(10); // bannerIndex
+                break;
+            case TileElementType::entrance:
+                sw(8);  // pathType
+                sw(10); // rideIndex
+                sw(13); // entryIndex
+                break;
+            case TileElementType::banner:
+                sw(5); // index
+                break;
+            default:
+                break;
+        }
+    }
+
+    static void FixTileElementsByteOrder(std::vector<TileElement>& elements)
+    {
+        for (auto& el : elements)
+            SwapTileElementBytes(el);
+    }
+#endif
+
         void ReadWriteTilesChunk(GameState_t& gameState, OrcaStream& os)
         {
             auto* pathToSurfaceMap = _pathToSurfaceMap;
@@ -1201,6 +1254,9 @@ namespace OpenRCT2
                     {
                         auto tileElements = GetReorganisedTileElementsWithoutGhosts();
                         cs.write(static_cast<uint32_t>(tileElements.size()));
+#ifdef __amigaos__
+                        FixTileElementsByteOrder(tileElements);
+#endif
                         cs.write(tileElements.data(), tileElements.size() * sizeof(TileElement));
                         return;
                     }
@@ -1211,6 +1267,9 @@ namespace OpenRCT2
                     std::vector<TileElement> tileElements;
                     tileElements.resize(numElements);
                     cs.read(tileElements.data(), tileElements.size() * sizeof(TileElement));
+#ifdef __amigaos__
+                    FixTileElementsByteOrder(tileElements);
+#endif
                     SetTileElements(gameState, std::move(tileElements));
 
                     TileElementIterator it;
