@@ -1,0 +1,127 @@
+OPENRCT2 ON AMIGAOS 3.2 (68K) -- TESTER GUIDE
+=============================================
+
+Build: test2. This is an early, unfinished port. You are testing it -- thank
+you.
+
+OpenRCT2 is the open-source re-implementation of RollerCoaster Tycoon 2. This
+build is a big-endian port of the upstream C++20 engine to 68k AmigaOS, with
+an Intuition/RTG display backend instead of SDL. The game logic is bit-exact
+with the PC version (verified over 5000 simulated ticks); the display and
+input layer is new.
+
+1. What you need
+----------------
+
+OS:        AmigaOS 3.2 (tested on 3.2.3). Other 3.x may work, untested.
+Graphics:  An RTG card with a Picasso96 or CyberGraphX driver offering an
+           8-bit 640x480 mode. AGA/ECS-only machines are not supported.
+CPU:       68040/68060, PiStorm (Emu68) or Vampire/Apollo. Tested on an
+           emulated 68040. A 68020/030 runs it, slowly. No FPU needed.
+RAM:       About 300 MB free Fast RAM (the game uses ~256 MB). 512 MB
+           recommended.
+Disk:      ~80 MB for the game, plus your RCT2 data (~150 MB without music).
+RCT2 data: The original RollerCoaster Tycoon 2 files (GOG, Steam or CD). Not
+           included, not redistributable.
+
+2. Get your RCT2 data onto the Amiga
+------------------------------------
+
+From your RCT2 installation copy these folders to the Amiga, keeping their
+names:
+
+    Data/      ObjData/      Scenarios/      Tracks/
+
+Everything in Data/ is needed except the music (css*.dat files, ~480 MB) --
+there is no sound in this build, so leave those out. Copy over the network, a
+USB stick, or a CF card. Example target: Work:Games/RCT2/.
+
+3. Install the game
+-------------------
+
+ 1. Extract the archive where there is room, e.g. Work:Games/. In a Shell:
+
+        LhA x OpenRCT2-0.5.5-test2-*-amiga68k.lha Work:Games/
+
+    You get a drawer OpenRCT2 with an icon.
+
+ 2. Tell the game where your RCT2 data is with an assign (this is how the
+    launcher finds it):
+
+        Assign RCT2: Work:Games/RCT2
+
+    Put that line into S:User-Startup so it survives a reboot.
+
+ 3. Start it: double-click the OpenRCT2 icon in the drawer, or in a Shell:
+
+        CD Work:Games/OpenRCT2
+        Execute OpenRCT2
+
+    (The launcher also accepts the folder as an argument:
+    Execute OpenRCT2 Work:Games/RCT2/)
+
+4. First start -- be patient
+----------------------------
+
+ * The first start builds an index of all game objects and scenarios into the
+   user drawer. This takes 1-2 minutes on a 68040 and is much faster on every
+   later start.
+ * Loading the title screen takes 40-60 s on an emulated 68040.
+ * Then the title sequence plays (parks fly by) and the main menu appears in
+   the middle: New Game, Load Game, Toolbox. Top-right: Options.
+ * Expect ~25-30 fps at 640x480 on a fast machine.
+
+5. Playing
+----------
+
+ * New Game lists the RollerCoaster Tycoon 1 and 2 scenarios found in your
+   Scenarios folder (and Wacky Worlds / Time Twister if you own them), in tabs
+   on the left. Click a scenario to start it; loading takes about a minute.
+ * Standard OpenRCT2 controls: left-click to select/build, right-drag to
+   scroll the map, mouse wheel or the magnifier icons to zoom, Space/the top-
+   left icon to pause.
+ * The disk icon (third toolbar button) has Save, Load, and Quit. Saving works
+   but has had little testing -- save often and expect surprises.
+ * The user/config.ini file holds settings. window_width/window_height change
+   the screen size; frame rate falls with pixel count (1280x720 runs at ~9 fps
+   on an emulated 68040), so 640x480 is the recommended default. Set show_fps
+   = true to see the frame counter.
+
+6. Known limitations of this build
+----------------------------------
+
+ * No sound or music.
+ * RollerCoaster Tycoon 1 scenarios (.SC4) play and their simulation is bit-
+   exact with the PC build. Rides that only exist in RCT1 use fallback RCT2
+   graphics unless you also own RCT1 and set rct1_path in user/config.ini to
+   its folder; the log line "Park has objects which require RCT1 linked"
+   means exactly that and is not an error.
+ * Only the standard mouse pointer (no custom cursors); no clipboard.
+ * Multiplayer, plugins and the scenario editor are untested.
+ * The park load is CPU-bound (object loading, tile import); a real 68060 or
+   PiStorm will be faster than the emulated 68040 the numbers above come from.
+
+7. Reporting problems
+---------------------
+
+Send: your machine (CPU, RAM, graphics card and driver, OS version), what you
+did, what you expected, what happened, and a screenshot if you can.
+
+For crashes or hangs, switch on the trace log before starting the game:
+
+    SetEnv OPENRCT2_TRACE T:openrct2-trace.txt
+
+Reproduce the problem, then send T:openrct2-trace.txt. Switch it off again
+afterwards (it slows loading down noticeably):
+
+    UnSetEnv OPENRCT2_TRACE
+
+8. Uninstall
+------------
+
+Delete the OpenRCT2 drawer and remove the Assign RCT2: line from S:User-
+Startup. Nothing is written outside the drawer.
+
+------------------------------------------------------------------------------
+OpenRCT2 is GPLv3. This port lives on the amiga branch of the project
+repository.
