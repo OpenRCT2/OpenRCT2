@@ -422,9 +422,17 @@ namespace OpenRCT2::Title
         while (true)
         {
             int32_t c = 0;
-            if (stream->TryRead(&c, 1) != 1)
+            uint8_t byte = 0;
+            if (stream->TryRead(&byte, 1) != 1)
             {
                 c = EOF;
+            }
+            else
+            {
+                // Read into a byte, not directly into a 4-byte int: a 1-byte read lands in the
+                // high byte on a big-endian host, which would make every comparison and stored
+                // character wrong.
+                c = byte;
             }
             if (c == '\n' || c == '\r' || c == EOF)
             {
