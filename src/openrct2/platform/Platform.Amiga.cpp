@@ -274,10 +274,12 @@ namespace OpenRCT2::Platform
         return {};
     }
 
+#ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor&)
     {
         return {};
     }
+#endif
 
     void Sleep(uint32_t ms)
     {

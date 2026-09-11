@@ -365,11 +365,12 @@ else ()
     endif()
 
     # On mingw all code is already PIC, this will avoid compiler error on redefining this option
-    if (NOT MINGW)
+    if (NOT MINGW AND NOT AMIGA)
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif ()
 
-    if (HAIKU OR (APPLE AND NOT USE_MMAP))
+    # AmigaOS hunk binaries are not PIC and bebbo's assembler rejects @GOT references
+    if (HAIKU OR AMIGA OR (APPLE AND NOT USE_MMAP))
         set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
     else ()
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
