@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "ParkFile.h"
+#include "../platform/AmigaTrace.h"
 
 #include "../Cheats.h"
 #include "../Context.h"
@@ -144,7 +145,8 @@ namespace OpenRCT2
             RequiredObjects = {};
             if (!skipObjectCheck)
             {
-                ReadWriteObjectsChunk(*_os);
+                AMIGA_TRACE("park: ReadWriteObjectsChunk(*_os);");
+            ReadWriteObjectsChunk(*_os);
                 ReadWritePackedObjectsChunk(*_os);
             }
         }
@@ -152,9 +154,11 @@ namespace OpenRCT2
         void Import(GameState_t& gameState)
         {
             auto& os = *_os;
+            AMIGA_TRACE("park: ReadWriteTilesChunk(gameState, os);");
             ReadWriteTilesChunk(gameState, os);
             ReadWriteBannersChunk(gameState, os);
             ReadWriteRidesChunk(gameState, os);
+            AMIGA_TRACE("park: ReadWriteEntitiesChunk(gameState, os);");
             ReadWriteEntitiesChunk(gameState, os);
             ReadWriteScenarioChunk(gameState, os);
             ReadWriteGeneralChunk(gameState, os);
@@ -184,11 +188,15 @@ namespace OpenRCT2
             header.targetVersion = kParkFileCurrentVersion;
             header.minVersion = kParkFileMinVersion;
 
+            AMIGA_TRACE("park: ReadWriteAuthoringChunk(os);");
             ReadWriteAuthoringChunk(os);
+            AMIGA_TRACE("park: ReadWriteObjectsChunk(os);");
             ReadWriteObjectsChunk(os);
+            AMIGA_TRACE("park: ReadWriteTilesChunk(gameState, os);");
             ReadWriteTilesChunk(gameState, os);
             ReadWriteBannersChunk(gameState, os);
             ReadWriteRidesChunk(gameState, os);
+            AMIGA_TRACE("park: ReadWriteEntitiesChunk(gameState, os);");
             ReadWriteEntitiesChunk(gameState, os);
             ReadWriteScenarioChunk(gameState, os);
             ReadWriteGeneralChunk(gameState, os);

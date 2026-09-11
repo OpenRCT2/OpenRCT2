@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../platform/AmigaTrace.h"
+#include "String.hpp"
 #include "Endianness.h"
 #include "../core/Compression.h"
 #include "../world/Location.hpp"
@@ -104,11 +106,13 @@ namespace OpenRCT2
             if (mode == Mode::reading)
             {
                 _header = _stream->ReadValue<Header>();
+                AMIGA_TRACE(String::stdFormat("orca: magic=%08x target=%u min=%u chunks=%u unc=%llu comp=%u csize=%llu", _header.magic, _header.targetVersion, _header.minVersion, _header.numChunks, static_cast<unsigned long long>(_header.uncompressedSize), static_cast<unsigned>(_header.compression), static_cast<unsigned long long>(_header.compressedSize)).c_str());
 
                 _chunks.clear();
                 for (uint32_t i = 0; i < _header.numChunks; i++)
                 {
                     auto entry = _stream->ReadValue<ChunkEntry>();
+                    AMIGA_TRACE(String::stdFormat("orca: chunk id=%u off=%llu len=%llu", entry.id, static_cast<unsigned long long>(entry.offset), static_cast<unsigned long long>(entry.length)).c_str());
                     _chunks.push_back(entry);
                 }
 
@@ -140,6 +144,7 @@ namespace OpenRCT2
                     if (_header.uncompressedSize != _header.compressedSize)
                         throw IOException("Compressed and uncompressed sizes don't match!");
                     _buffer.CopyFromStream(*_stream, _header.uncompressedSize);
+                    AMIGA_TRACE("orca: uncompressed copy done");
                 }
 
                 // early in-dev versions used SHA1 instead of FNV1a, so just assume any file

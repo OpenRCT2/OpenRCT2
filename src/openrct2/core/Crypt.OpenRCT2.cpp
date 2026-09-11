@@ -7,6 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Endianness.h"
+
+#include <bit>
 #include "Crypt.h"
 
 #include <cassert>
@@ -22,6 +25,16 @@ private:
     static constexpr uint64_t kPrime = 0x00000100000001B3ULL;
 
     uint64_t _data = kOffset;
+
+    // The hash is defined over the file's little-endian 64-bit words and its
+    // result is stored little-endian; both need a swap on big-endian hosts.
+    static uint64_t ToLittleEndianWord(uint64_t v)
+    {
+        if constexpr (std::endian::native == std::endian::big)
+            return ByteSwapT<8>::SwapBE(v);
+        else
+            return v;
+    }
     uint8_t _rem[8]{};
     size_t _remLen{};
 
@@ -31,7 +44,7 @@ private:
         {
             uint64_t temp{};
             std::memcpy(&temp, _rem, _remLen);
-            _data ^= temp;
+            _data ^= ToLittleEndianWord(temp);
             _data *= kPrime;
             _remLen = 0;
         }
@@ -65,7 +78,7 @@ public:
         // Process every block of 8 bytes
         while (dataLen >= sizeof(uint64_t))
         {
-            auto temp = *src++;
+            auto temp = ToLittleEndianWord(*src++);
             _data ^= temp;
             _data *= kPrime;
             dataLen -= sizeof(uint64_t);
@@ -85,7 +98,8 @@ public:
         ProcessRemainder();
 
         Result res;
-        std::memcpy(res.data(), &_data, sizeof(_data));
+        const uint64_t stored = ToLittleEndianWord(_data);
+        std::memcpy(res.data(), &stored, sizeof(stored));
         return res;
     }
 };
