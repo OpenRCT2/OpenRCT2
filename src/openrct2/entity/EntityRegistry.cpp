@@ -223,7 +223,28 @@ namespace OpenRCT2
         {
             MemoryStream buffer;
             DataSerialiser dumpDs(true, buffer);
-            networkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(dumpDs);
+            // Per-entity offset index, so a byte offset in the stream maps to (type, id, field region).
+            std::string idxPath = std::string(dumpPath) + ".idx";
+            auto* idx = std::fopen(idxPath.c_str(), "w");
+            auto logType = [&](const char* name, auto tag) {
+                using T = decltype(tag);
+                for (auto* ent : EntityList<T>())
+                {
+                    if (idx != nullptr)
+                        std::fprintf(idx, "%s id=%u off=%lu\n", name, ent->id.ToUnderlying(),
+                            static_cast<unsigned long>(buffer.GetLength()));
+                    ent->serialise(dumpDs);
+                }
+            };
+            logType("Guest", Guest{});
+            logType("Staff", Staff{});
+            logType("Vehicle", Vehicle{});
+            logType("Litter", Litter{});
+            if (idx != nullptr)
+            {
+                std::fprintf(idx, "END off=%lu\n", static_cast<unsigned long>(buffer.GetLength()));
+                std::fclose(idx);
+            }
             if (auto* f = std::fopen(dumpPath, "wb"))
             {
                 std::fwrite(buffer.GetData(), 1, static_cast<size_t>(buffer.GetLength()), f);
