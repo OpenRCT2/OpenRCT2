@@ -3,6 +3,7 @@
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
+- Fix: [#27056] [Plugin] Loading water palettes from plugin does not update the palette correctly.
 - Fix: [#27087] The ‘Update available’ widget is offset incorrectly.
 
 0.5.5 (2026-09-06)
@@ -54,7 +55,6 @@
 - Fix: [#26996] Scenario patch for Okinawa Coast doesn’t work for CD versions of Wacky Worlds (meaning landscape ownership fixes do not get applied).
 - Fix: [#27004] Windows are moved off-screen when mouse is released outside of the game window.
 - Fix: [#27023] [Plugin] Transparent plugin sprites do not work correctly in software rendering mode.
-- Fix: [#27056] [Plugin] Loading water palettes from plugin does not update the palette correctly.
 
 0.5.4 (2026-08-02)
 ------------------------------------------------------------------------
