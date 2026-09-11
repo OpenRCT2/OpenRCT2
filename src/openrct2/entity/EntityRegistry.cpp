@@ -200,7 +200,7 @@ namespace OpenRCT2
         }
     }
 
-#ifndef DISABLE_NETWORK
+#if !defined(DISABLE_NETWORK) || defined(__amigaos__) // Amiga: keep the checksum for cross-host verification
     EntitiesChecksum EntityRegistry::getAllEntitiesChecksum()
     {
         EntitiesChecksum checksum{};
