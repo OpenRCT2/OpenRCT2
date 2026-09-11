@@ -11,7 +11,10 @@
     #ifndef WIN32_LEAN_AND_MEAN
         #define WIN32_LEAN_AND_MEAN
     #endif
-    #include <windows.h>
+    #ifdef __amigaos__
+    #include <sys/stat.h>
+#endif
+#include <windows.h>
 #else
     #include <sys/stat.h>
 #endif
@@ -41,7 +44,14 @@ namespace OpenRCT2::File
 
         fs::path file = fs::u8path(path);
         std::error_code ec;
+#ifdef __amigaos__
+        (void)file;
+        (void)ec;
+        struct stat st{};
+        const auto result = stat(std::string(path).c_str(), &st) == 0;
+#else
         const auto result = fs::exists(file, ec);
+#endif
         return result && ec.value() == 0;
     }
 

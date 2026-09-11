@@ -49,10 +49,32 @@ namespace OpenRCT2::Path
 
     bool CreateDirectory(u8string_view path)
     {
+#ifdef __amigaos__
+        // mkdir each component; "Volume:" is the root and needs no creating
+        std::string p(path);
+        size_t start = p.find(':');
+        start = (start == std::string::npos) ? 0 : start + 1;
+        for (size_t i = start; i <= p.size(); i++)
+        {
+            if (i == p.size() || p[i] == '/')
+            {
+                if (i > start)
+                {
+                    std::string sub = p.substr(0, i);
+                    struct stat st{};
+                    if (stat(sub.c_str(), &st) != 0)
+                        mkdir(sub.c_str(), 0777);
+                }
+            }
+        }
+        struct stat st{};
+        return stat(p.c_str(), &st) == 0 && S_ISDIR(st.st_mode);
+#else
         std::error_code ec;
         fs::create_directories(fs::u8path(path), ec);
         // create_directories returns false if the directory already exists, but the error code is zero.
         return ec.value() == 0;
+#endif
     }
 
     bool DirectoryExists(u8string_view path)
@@ -70,7 +92,13 @@ namespace OpenRCT2::Path
         }
 
         std::error_code ec;
+#ifdef __amigaos__
+        (void)ec;
+        struct stat st{};
+        const auto result = stat(std::string(path).c_str(), &st) == 0 && S_ISDIR(st.st_mode);
+#else
         const auto result = fs::is_directory(fs::u8path(path), ec);
+#endif
         return result && ec.value() == 0;
     }
 
@@ -116,8 +144,18 @@ namespace OpenRCT2::Path
 
     u8string GetAbsolute(u8string_view relative)
     {
+#ifdef __amigaos__
+        // "Volume:..." is already absolute; std::filesystem would prepend the cwd to it
+        if (relative.find(':') != std::string_view::npos)
+            return u8string(relative);
+        char cwd[512];
+        if (getcwd(cwd, sizeof(cwd)) == nullptr)
+            return u8string(relative);
+        return Combine(cwd, relative);
+#else
         std::error_code ec;
         return fs::absolute(fs::u8path(relative), ec).u8string();
+#endif
     }
 
     u8string GetRelative(u8string_view path, u8string_view base)
