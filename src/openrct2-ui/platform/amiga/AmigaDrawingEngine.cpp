@@ -72,6 +72,16 @@ public:
     {
         X8DrawingEngine::EndDraw();
         AMIGA_TRACE_ONCE("gfx: first EndDraw");
+        // Present the whole framebuffer each frame. Per-dirty-block blitting left stale regions on
+        // the RTG screen (invalidation gaps show as black rectangles); a full 640x480 chunky blit is
+        // ~1 ms on P96/uaegfx, so just push the complete X8 buffer every frame.
+        auto* window = static_cast<SDL_Window*>(_uiContext.GetWindow());
+        if (_bits != nullptr && window != nullptr)
+        {
+            int32_t w = std::min<int32_t>(static_cast<int32_t>(_width), window->width);
+            int32_t h = std::min<int32_t>(static_cast<int32_t>(_height), window->height);
+            amiga_ui_blit(reinterpret_cast<const uint8_t*>(_bits), static_cast<int>(_pitch), 0, 0, w, h);
+        }
         // Frame-rate probe: report frames and average blit ms every ~100 frames.
         static unsigned frames = 0, t0 = 0;
         if (t0 == 0)
@@ -102,9 +112,8 @@ protected:
         int32_t y1 = std::min<int32_t>(std::min<int32_t>(bottom, static_cast<int32_t>(_height)), window->height);
         if (x1 <= x0 || y1 <= y0)
             return;
-        AMIGA_TRACE_ONCE("gfx: first dirty block blit");
-        const uint8_t* src = reinterpret_cast<const uint8_t*>(_bits) + static_cast<size_t>(y0) * _pitch + x0;
-        amiga_ui_blit(src, static_cast<int>(_pitch), x0, y0, x1 - x0, y1 - y0);
+        // Presented in EndDraw as a full-screen blit; nothing to do per block.
+        (void)x0; (void)y0; (void)x1; (void)y1;
     }
 };
 
