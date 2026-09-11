@@ -90,6 +90,7 @@ namespace OpenRCT2::GameActions
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
         GfxInvalidateScreen();
 
+#ifdef ENABLE_SCRIPTING
         auto& hookEngine = ctx->GetScriptEngine().GetHookEngine();
         if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::mapResize))
         {
@@ -103,6 +104,7 @@ namespace OpenRCT2::GameActions
 
             hookEngine.Call(OpenRCT2::Scripting::HookType::mapResize, obj, true);
         }
+#endif
         return Result();
     }
 
