@@ -21,6 +21,7 @@
     #include "../drawing/Font.h"
     #include "../localisation/Language.h"
     #include "Platform.h"
+    #include "AmigaTrace.h"
 
     #include <cerrno>
     #include <clocale>
@@ -103,11 +104,16 @@ namespace OpenRCT2::Platform
         };
         for (const auto& path : candidates)
         {
+            AMIGA_TRACE("GetInstallPath: candidate");
+            AMIGA_TRACE(path.c_str());
             LOG_VERBOSE("Looking for OpenRCT2 data in %s", path.c_str());
+            AMIGA_TRACE("GetInstallPath: logged");
             if (Path::DirectoryExists(path))
             {
+                AMIGA_TRACE("GetInstallPath: exists");
                 return path;
             }
+            AMIGA_TRACE("GetInstallPath: not there");
         }
         return "PROGDIR:data";
     }

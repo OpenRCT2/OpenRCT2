@@ -16,6 +16,10 @@
 #include <cstdarg>
 #include <cstdio>
 
+#ifdef __amigaos__
+extern "C" void amiga_trace(const char* line);
+#endif
+
 #ifdef __ANDROID__
     #include <android/log.h>
 #endif
@@ -86,6 +90,11 @@ static void DiagnosticPrint(DiagnosticLevel level, const std::string& prefix, co
         Console::WriteLine("%s%s", prefix.c_str(), msg.c_str());
     else
         Console::Error::WriteLine("%s%s", prefix.c_str(), msg.c_str());
+#ifdef __amigaos__
+    // Redirected output on AmigaOS is fully buffered; a hung run must still leave its log behind.
+    std::fflush(stream);
+    amiga_trace((prefix + msg).c_str());
+#endif
 }
 
 void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)

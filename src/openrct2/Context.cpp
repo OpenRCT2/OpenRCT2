@@ -14,6 +14,7 @@
 
 #include "AssetPackManager.h"
 #include "Context.h"
+#include "platform/AmigaTrace.h"
 #include "Diagnostic.h"
 #include "FileClassifier.h"
 #include "Game.h"
@@ -179,6 +180,7 @@ namespace OpenRCT2
 #endif
             , _painter(std::make_unique<Paint::Painter>(*_uiContext))
         {
+            AMIGA_TRACE("Context::Context: body");
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
 
@@ -350,6 +352,7 @@ namespace OpenRCT2
                 throw std::runtime_error("Context already initialised.");
             }
             _initialised = true;
+            AMIGA_TRACE("Context::Initialise: enter");
 
             CrashInit();
 
@@ -1554,7 +1557,13 @@ namespace OpenRCT2
 
     std::unique_ptr<IContext> CreateContext()
     {
-        return CreateContext(CreatePlatformEnvironment(), Audio::CreateDummyAudioContext(), CreateDummyUiContext());
+        AMIGA_TRACE("CreateContext: CreatePlatformEnvironment");
+        auto env = CreatePlatformEnvironment();
+        AMIGA_TRACE("CreateContext: dummy audio/ui");
+        auto audio = Audio::CreateDummyAudioContext();
+        auto ui = CreateDummyUiContext();
+        AMIGA_TRACE("CreateContext: make Context");
+        return CreateContext(std::move(env), std::move(audio), std::move(ui));
     }
 
     std::unique_ptr<IContext> CreateContext(

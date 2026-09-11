@@ -416,7 +416,14 @@ namespace OpenRCT2::String
 #ifndef __clang__
     #pragma GCC diagnostic ignored "-Wformat-truncation"
 #endif
+#ifdef __amigaos__
+        // libnix's vsnprintf cannot measure with a null buffer (it returns garbage);
+        // measure into a real one — the return value is right even when it truncates.
+        char sizing[1024];
+        auto len = vsnprintf(sizing, sizeof(sizing), format, copy);
+#else
         auto len = vsnprintf(nullptr, 0, format, copy);
+#endif
 #pragma GCC diagnostic pop
         va_end(copy);
 

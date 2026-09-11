@@ -3,6 +3,7 @@
 #include <cerrno>
 #include <cstring>
 #include <sys/statvfs.h>
+#include <sys/time.h>
 
 // Prototypes first: the tree builds with -Wmissing-declarations.
 extern "C" int __xpg_strerror_r(int errnum, char* buf, size_t buflen);
@@ -32,5 +33,31 @@ extern "C" size_t strnlen(const char* s, size_t maxlen)
         n++;
     return n;
 }
+
+// libstdc++ was configured without gettimeofday/clock_gettime, so its
+// steady_clock::now() falls back to time() — one-second resolution. That
+// breaks every condition_variable::wait_for/wait_until predicate loop (the
+// "did we time out?" check compares against a clock that has not moved, so the
+// loop spins forever). Replace both clocks with gettimeofday(); defining both
+// keeps chrono.o out of the link so there is no duplicate definition.
+#include <chrono>
+namespace std::chrono
+{
+    system_clock::time_point system_clock::now() noexcept
+    {
+        struct timeval tv;
+        gettimeofday(&tv, nullptr);
+        return time_point(seconds(tv.tv_sec) + microseconds(tv.tv_usec));
+    }
+    namespace _V2
+    {
+        steady_clock::time_point steady_clock::now() noexcept
+        {
+            struct timeval tv;
+            gettimeofday(&tv, nullptr);
+            return time_point(seconds(tv.tv_sec) + microseconds(tv.tv_usec));
+        }
+    } // namespace _V2
+} // namespace std::chrono
 
 #endif

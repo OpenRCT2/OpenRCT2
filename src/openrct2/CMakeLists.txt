@@ -39,7 +39,8 @@ add_library(OpenRCT2::libopenrct2 ALIAS libopenrct2)
 if (AMIGA)
     # amiga_compat.cpp lives in this archive but is only needed by libstdc++, which the
     # linker scans later: force the two symbols in so the member is pulled.
-    target_link_options(libopenrct2 INTERFACE "-Wl,-u,___xpg_strerror_r" "-Wl,-u,__Z7statvfsPKcP7statvfs")
+    target_link_options(libopenrct2 INTERFACE "-Wl,-u,___xpg_strerror_r" "-Wl,-u,__Z7statvfsPKcP7statvfs"
+        "-Wl,-u,__ZNSt6chrono3_V212steady_clock3nowEv" "-Wl,-u,__ZNSt6chrono12system_clock3nowEv")
 endif ()
 
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
