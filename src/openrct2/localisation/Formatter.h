@@ -119,7 +119,16 @@ namespace OpenRCT2
             {
                 convertedValue = reinterpret_cast<uint64_t>(value);
             }
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            // The value's low sizeof(TSpecified) bytes live at the END of the big-endian uint64_t; copy those,
+            // not the leading (high, zero) bytes. Without this, every argument smaller than 8 bytes (StringId,
+            // int32, and 4-byte pointers for {STRING}) stores as zero on a big-endian host.
+            std::memcpy(
+                CurrentBuf, reinterpret_cast<const uint8_t*>(&convertedValue) + (sizeof(uint64_t) - sizeof(TSpecified)),
+                sizeof(TSpecified));
+#else
             std::memcpy(CurrentBuf, &convertedValue, sizeof(TSpecified));
+#endif
             Increment(sizeof(TSpecified));
             return *this;
         }
