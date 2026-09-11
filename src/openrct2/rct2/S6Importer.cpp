@@ -98,14 +98,28 @@ namespace OpenRCT2::RCT2
             for (size_t o : { 0x02, 0x04, 0x06, 0x0A, 0x0C, 0x0E, 0x10, 0x12, 0x16, 0x18, 0x1A, 0x1C })
                 b16(b, o);
         }
-        static void vehicle(uint8_t* b)
+        static void vehicle(uint8_t* b, const S6Data& s6)
         {
             entityBase(b);
             b32(b, 0x24); // RemainingDistance
             b32(b, 0x28); // Velocity
             b32(b, 0x2C); // Acceleration
-            for (size_t o : { 0x34, 0x36, 0x38, 0x3A, 0x3C, 0x3E, 0x40, 0x42, 0x44, 0x46, 0x48, 0x4C, 0x4E })
+            // Offset 0x36 is a union: int16 TrackTypeAndDirection for track vehicles, but two independent
+            // bytes (RCT12xy8 BoatLocation) for a boat-hire vehicle in the water. The importer reads it as
+            // BoatLocation only when the ride is boatHire and the vehicle is travellingBoat and it is not
+            // null; in that case the two bytes must NOT be swapped.
+            bool boat = false;
+            {
+                uint8_t rideIdx = b[0x30];
+                bool bl_null = (b[0x36] == 0xFF && b[0x37] == 0xFF);
+                if (!bl_null && b[0x50] == 7 /* Status::travellingBoat */ && rideIdx < std::size(s6.Rides)
+                    && s6.Rides[rideIdx].mode == 5 /* RideMode::boatHire */)
+                    boat = true;
+            }
+            for (size_t o : { 0x34, 0x38, 0x3A, 0x3C, 0x3E, 0x40, 0x42, 0x44, 0x46, 0x48, 0x4C, 0x4E })
                 b16(b, o);
+            if (!boat)
+                b16(b, 0x36); // TrackTypeAndDirection (int16); left as bytes for boats (BoatLocation)
             b16n(b, 0x52, 32); // Peep[32]
             for (size_t o : { 0xB6, 0xB8, 0xC0 })
                 b16(b, o);
@@ -149,11 +163,11 @@ namespace OpenRCT2::RCT2
         }
 
         // Dispatch one 0x100-byte entity slot on its (still little-endian) identifier/type bytes.
-        static void entitySlot(uint8_t* b)
+        static void entitySlot(uint8_t* b, const S6Data& s6)
         {
             switch (static_cast<RCT12EntityIdentifier>(b[0x00]))
             {
-                case RCT12EntityIdentifier::vehicle: vehicle(b); break;
+                case RCT12EntityIdentifier::vehicle: vehicle(b, s6); break;
                 case RCT12EntityIdentifier::peep: peep(b); break;
                 case RCT12EntityIdentifier::litter: litter(b); break;
                 case RCT12EntityIdentifier::misc:
@@ -298,7 +312,7 @@ namespace OpenRCT2::RCT2
                 S6Swap::b32(b, 12); // checksum @12 (name is char[8] at offset 4)
             }
             for (auto& ent : _s6.Entities)
-                S6Swap::entitySlot(reinterpret_cast<uint8_t*>(&ent));
+                S6Swap::entitySlot(reinterpret_cast<uint8_t*>(&ent), _s6);
 
             // Top-level scalars, sub-struct arrays and the map (generated from the S6Data layout).
             S6Swap::bs(_s6.ElapsedMonths);
@@ -475,6 +489,16 @@ namespace OpenRCT2::RCT2
                 {
                     RCT2StringToUTF8Self(_s6.Info.Name, sizeof(_s6.Info.Name));
                     RCT2StringToUTF8Self(_s6.Info.Details, sizeof(_s6.Info.Details));
+                }
+                // Fast path for the scenario index scan: PopulateIndexEntry only reads the Info chunk, so
+                // stop here instead of loading the whole 5.9 MB park (which is prohibitively slow on 68k
+                // when scanning ~150 scenarios).
+                if (skipObjectCheck)
+                {
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                    S6Swap::swapInfo(_s6.Info);
+#endif
+                    return ParkLoadResult({});
                 }
             }
             else

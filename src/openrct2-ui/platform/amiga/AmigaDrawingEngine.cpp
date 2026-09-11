@@ -27,6 +27,13 @@ class AmigaDrawingEngine final : public X8DrawingEngine
 {
 private:
     IUiContext& _uiContext;
+    // Union of the dirty blocks drawn this frame; only this region is pushed to the RTG screen.
+    int32_t _dbX0 = 0, _dbY0 = 0, _dbX1 = 0, _dbY1 = 0;
+    void resetDirtyBox()
+    {
+        _dbX0 = _dbY0 = 0x7FFFFFFF;
+        _dbX1 = _dbY1 = -0x7FFFFFFF;
+    }
 
 public:
     explicit AmigaDrawingEngine(IUiContext& uiContext)
@@ -65,6 +72,7 @@ public:
     void BeginDraw() override
     {
         AMIGA_TRACE_ONCE("gfx: first BeginDraw");
+        resetDirtyBox();
         X8DrawingEngine::BeginDraw();
     }
 
@@ -72,16 +80,24 @@ public:
     {
         X8DrawingEngine::EndDraw();
         AMIGA_TRACE_ONCE("gfx: first EndDraw");
-        // Present the whole framebuffer each frame. Per-dirty-block blitting left stale regions on
-        // the RTG screen (invalidation gaps show as black rectangles); a full 640x480 chunky blit is
-        // ~1 ms on P96/uaegfx, so just push the complete X8 buffer every frame.
+        // Present the union of this frame's dirty blocks as one contiguous chunky blit. This keeps the
+        // picture whole (unlike per-block blitting, which left invalidation gaps) while only converting the
+        // region that actually changed -- cheap on P96/uaegfx and much cheaper than a full-frame blit on
+        // real Picasso96 hardware, where the chunky->native conversion is the cost.
         auto* window = static_cast<SDL_Window*>(_uiContext.GetWindow());
-        if (_bits != nullptr && window != nullptr)
+        if (_bits != nullptr && window != nullptr && _dbX1 > _dbX0 && _dbY1 > _dbY0)
         {
-            int32_t w = std::min<int32_t>(static_cast<int32_t>(_width), window->width);
-            int32_t h = std::min<int32_t>(static_cast<int32_t>(_height), window->height);
-            amiga_ui_blit(reinterpret_cast<const uint8_t*>(_bits), static_cast<int>(_pitch), 0, 0, w, h);
+            int32_t x0 = std::max<int32_t>(0, _dbX0);
+            int32_t y0 = std::max<int32_t>(0, _dbY0);
+            int32_t x1 = std::min<int32_t>(std::min<int32_t>(_dbX1, static_cast<int32_t>(_width)), window->width);
+            int32_t y1 = std::min<int32_t>(std::min<int32_t>(_dbY1, static_cast<int32_t>(_height)), window->height);
+            if (x1 > x0 && y1 > y0)
+            {
+                const uint8_t* src = reinterpret_cast<const uint8_t*>(_bits) + static_cast<size_t>(y0) * _pitch + x0;
+                amiga_ui_blit(src, static_cast<int>(_pitch), x0, y0, x1 - x0, y1 - y0);
+            }
         }
+        resetDirtyBox();
         // Frame-rate probe: report frames and average blit ms every ~100 frames.
         static unsigned frames = 0, t0 = 0;
         if (t0 == 0)
@@ -112,8 +128,11 @@ protected:
         int32_t y1 = std::min<int32_t>(std::min<int32_t>(bottom, static_cast<int32_t>(_height)), window->height);
         if (x1 <= x0 || y1 <= y0)
             return;
-        // Presented in EndDraw as a full-screen blit; nothing to do per block.
-        (void)x0; (void)y0; (void)x1; (void)y1;
+        // Accumulate into the frame's dirty bounding box; the union is blitted once in EndDraw.
+        _dbX0 = std::min(_dbX0, x0);
+        _dbY0 = std::min(_dbY0, y0);
+        _dbX1 = std::max(_dbX1, x1);
+        _dbY1 = std::max(_dbY1, y1);
     }
 };
 
