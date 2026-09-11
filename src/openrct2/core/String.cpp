@@ -18,7 +18,9 @@
 #include <stdexcept>
 #include <vector>
 
-#ifndef _WIN32
+#if defined(__amigaos__)
+    // No ICU on AmigaOS: minimal UTF-8/UTF-32/CP1252 conversions live below.
+#elif !defined(_WIN32)
     #if defined(__linux__) || defined(__sun)
         #include <alloca.h>
     #endif
@@ -38,6 +40,63 @@
     #define _stricmp(x, y) strcasecmp((x), (y))
 #endif
 
+
+#if defined(__amigaos__)
+namespace
+{
+    // Append one code point as UTF-8.
+    void AppendUtf8(std::string& out, uint32_t cp)
+    {
+        if (cp < 0x80)
+            out.push_back(static_cast<char>(cp));
+        else if (cp < 0x800)
+        {
+            out.push_back(static_cast<char>(0xC0 | (cp >> 6)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        }
+        else if (cp < 0x10000)
+        {
+            out.push_back(static_cast<char>(0xE0 | (cp >> 12)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        }
+        else
+        {
+            out.push_back(static_cast<char>(0xF0 | (cp >> 18)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 12) & 0x3F)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        }
+    }
+
+    // Decode one UTF-8 code point; returns bytes consumed (>= 1).
+    size_t DecodeUtf8(std::string_view s, size_t i, uint32_t& cp)
+    {
+        auto b0 = static_cast<uint8_t>(s[i]);
+        size_t n = 1;
+        if (b0 < 0x80) { cp = b0; }
+        else if ((b0 & 0xE0) == 0xC0) { cp = b0 & 0x1F; n = 2; }
+        else if ((b0 & 0xF0) == 0xE0) { cp = b0 & 0x0F; n = 3; }
+        else if ((b0 & 0xF8) == 0xF0) { cp = b0 & 0x07; n = 4; }
+        else { cp = 0xFFFD; return 1; }
+        if (i + n > s.size()) { cp = 0xFFFD; return 1; }
+        for (size_t k = 1; k < n; k++)
+        {
+            auto b = static_cast<uint8_t>(s[i + k]);
+            if ((b & 0xC0) != 0x80) { cp = 0xFFFD; return 1; }
+            cp = (cp << 6) | (b & 0x3F);
+        }
+        return n;
+    }
+
+    // Windows-1252 0x80..0x9F -> Unicode; 0 marks undefined.
+    const uint16_t kCp1252High[32] = {
+        0x20AC, 0, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021, 0x02C6, 0x2030, 0x0160, 0x2039, 0x0152, 0, 0x017D, 0,
+        0, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014, 0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0, 0x017E, 0x0178,
+    };
+} // namespace
+#endif
+
 namespace OpenRCT2::String
 {
     std::string toStd(const utf8* str)
@@ -55,6 +114,11 @@ namespace OpenRCT2::String
         int sizeReq = WideCharToMultiByte(EnumValue(CodePage::utf8), 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
         auto result = std::string(sizeReq, 0);
         WideCharToMultiByte(EnumValue(CodePage::utf8), 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
+        return result;
+#elif defined(__amigaos__)
+        std::string result;
+        for (wchar_t wc : src)
+            AppendUtf8(result, static_cast<uint32_t>(wc));
         return result;
 #else
     // Which constructor to use depends on the size of wchar_t...
@@ -83,6 +147,15 @@ namespace OpenRCT2::String
         int sizeReq = MultiByteToWideChar(EnumValue(CodePage::utf8), 0, src.data(), srcLen, nullptr, 0);
         auto result = std::wstring(sizeReq, 0);
         MultiByteToWideChar(EnumValue(CodePage::utf8), 0, src.data(), srcLen, result.data(), sizeReq);
+        return result;
+#elif defined(__amigaos__)
+        std::wstring result;
+        for (size_t i = 0; i < src.size();)
+        {
+            uint32_t cp;
+            i += DecodeUtf8(src, i, cp);
+            result.push_back(static_cast<wchar_t>(cp));
+        }
         return result;
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
@@ -610,6 +683,21 @@ namespace OpenRCT2::String
         }
 
         return dst;
+#elif defined(__amigaos__)
+        // CP1252 handled properly; other (CJK) code pages degrade to Latin-1 for now.
+        std::string result;
+        for (unsigned char c : src)
+        {
+            uint32_t cp = c;
+            if (c >= 0x80 && c < 0xA0)
+            {
+                cp = kCp1252High[c - 0x80];
+                if (cp == 0)
+                    cp = 0xFFFD;
+            }
+            AppendUtf8(result, cp);
+        }
+        return result;
 #else
         const char* codepage = getIcuCodePage(srcCodePage);
         icu::UnicodeString convertString(src.data(), codepage);
@@ -647,6 +735,13 @@ namespace OpenRCT2::String
         }
 
         return toUtf8(dstW);
+#elif defined(__amigaos__)
+        // ASCII-only upper-casing; non-ASCII code points pass through unchanged.
+        std::string res(src);
+        for (auto& c : res)
+            if (c >= 'a' && c <= 'z')
+                c = static_cast<char>(c - 'a' + 'A');
+        return res;
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
         str.toUpper();

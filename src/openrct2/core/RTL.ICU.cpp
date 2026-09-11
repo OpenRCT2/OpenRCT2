@@ -7,7 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _WIN32
+#if defined(__amigaos__)
+    #include "RTL.h"
+
+    #include <string>
+
+// No ICU on AmigaOS: right-to-left scripts are not reordered.
+std::string FixRTL(std::string& input)
+{
+    return input;
+}
+#elif !defined(_WIN32)
     #include "RTL.h"
 
     #include <algorithm>
