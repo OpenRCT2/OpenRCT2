@@ -104,8 +104,16 @@ namespace OpenRCT2::SawyerCoding
         {
             dst[i + 1] = Numerics::ror8(dst[i + 1], 3);
 
-            uint32_t* code = reinterpret_cast<uint32_t*>(&dst[i]);
-            *code = Numerics::rol32(*code, 9);
+            // The SC4 obfuscation rotates a 32-bit word that the file stores little-endian. Assemble and
+            // write the word little-endian explicitly so the rotate acts on the same bits on every host;
+            // a reinterpret_cast<uint32_t*> would read big-endian bytes on a 68k and scramble the decode.
+            uint32_t code = static_cast<uint32_t>(dst[i]) | (static_cast<uint32_t>(dst[i + 1]) << 8)
+                | (static_cast<uint32_t>(dst[i + 2]) << 16) | (static_cast<uint32_t>(dst[i + 3]) << 24);
+            code = Numerics::rol32(code, 9);
+            dst[i] = static_cast<uint8_t>(code & 0xFF);
+            dst[i + 1] = static_cast<uint8_t>((code >> 8) & 0xFF);
+            dst[i + 2] = static_cast<uint8_t>((code >> 16) & 0xFF);
+            dst[i + 3] = static_cast<uint8_t>((code >> 24) & 0xFF);
         }
 
         return decodedLength;
@@ -391,7 +399,10 @@ namespace OpenRCT2::SawyerCoding
 
         // Currently can't detect TD4, as the checksum is the same as SC4 (need alternative method)
 
-        uint32_t checksum = *(reinterpret_cast<const uint32_t*>(&src[length - 4]));
+        // The trailing checksum is stored little-endian; assemble it explicitly so classification works on a
+        // big-endian host (a reinterpret_cast<uint32_t*> would read the bytes in the wrong order on 68k).
+        uint32_t checksum = static_cast<uint32_t>(src[length - 4]) | (static_cast<uint32_t>(src[length - 3]) << 8)
+            | (static_cast<uint32_t>(src[length - 2]) << 16) | (static_cast<uint32_t>(src[length - 1]) << 24);
         uint32_t actualChecksum = 0;
         for (size_t i = 0; i < length - 4; i++)
         {

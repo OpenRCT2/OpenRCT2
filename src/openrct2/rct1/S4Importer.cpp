@@ -78,6 +78,7 @@
 #include "Tables.h"
 
 #include <cassert>
+#include <cstring>
 #include <memory>
 #include <vector>
 
@@ -170,6 +171,9 @@ namespace OpenRCT2::RCT1
             IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const u8string& path) override
         {
             _s4 = *ReadAndDecodeS4(stream, isScenario);
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            ByteSwapS4IndexFields(_s4);
+#endif
             _s4Path = path;
             _isScenario = isScenario;
             _gameVersion = DetectRCT1Version(_s4.GameVersion) & FILE_VERSION_MASK;
@@ -307,6 +311,26 @@ namespace OpenRCT2::RCT1
 
             return (oldParkValue * _parkValueConversionFactor) / 10;
         }
+
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        // The RCT1 S4 blob is little-endian on disk. Full RCT1 play import is not yet byte-swapped on a
+        // big-endian host, but the scenario index only reads a handful of scalar fields; swap those so the
+        // New Game window resolves each RCT1 scenario to its correct name/objective instead of collapsing to
+        // scenario slot 0 (Forest Frontiers).
+        static void ByteSwapS4IndexFields(S4& s4)
+        {
+            auto b16 = [](uint16_t& v) { v = static_cast<uint16_t>((v >> 8) | (v << 8)); };
+            auto b32 = [](auto& v) {
+                uint32_t u;
+                std::memcpy(&u, &v, sizeof(u));
+                u = ((u >> 24) & 0xFF) | ((u >> 8) & 0xFF00) | ((u << 8) & 0xFF0000) | ((u << 24) & 0xFF000000);
+                std::memcpy(&v, &u, sizeof(u));
+            };
+            b16(s4.ScenarioSlotIndex);
+            b16(s4.ScenarioObjectiveNumGuests);
+            b32(s4.ScenarioObjectiveCurrency);
+        }
+#endif
 
         std::unique_ptr<S4> ReadAndDecodeS4(IStream* stream, bool isScenario)
         {
