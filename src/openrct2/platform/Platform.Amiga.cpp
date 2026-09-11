@@ -30,6 +30,7 @@
     #include <sys/stat.h>
     #include <sys/time.h>
     #include <unistd.h>
+    #include <vector>
 
 extern "C" {
 void amiga_sleep_ms(unsigned ms);
@@ -267,6 +268,16 @@ namespace OpenRCT2::Platform
     bool HandleSpecialCommandLineArgument(const char*)
     {
         return false;
+    }
+
+    std::vector<std::string> GetSearchablePathsRCT1()
+    {
+        return {};
+    }
+
+    std::vector<std::string> GetSearchablePathsRCT2()
+    {
+        return {};
     }
 
     SteamPaths GetSteamPaths()
