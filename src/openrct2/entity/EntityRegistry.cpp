@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../ride/RideManager.hpp"
 #include <cstdlib>
 #include <cstdio>
 #include "../core/MemoryStream.h"
@@ -227,6 +228,26 @@ namespace OpenRCT2
             {
                 std::fwrite(buffer.GetData(), 1, static_cast<size_t>(buffer.GetLength()), f);
                 std::fclose(f);
+            }
+            // and a text listing of every vehicle's decision-relevant fields, for cross-host diffs
+            std::string txtPath = std::string(dumpPath) + ".txt";
+            if (auto* t = std::fopen(txtPath.c_str(), "w"))
+            {
+                for (auto* v : EntityList<Vehicle>())
+                {
+                    std::fprintf(t, "veh id=%u ride=%u sub=%u status=%d substate=%u vt=%u xyz=%d,%d,%d rem=%d vel=%d acc=%d prog=%u ttd=%u tl=%d,%d,%d st=%u lost=%u flags=%08x mass=%u speed=%u pacc=%u tsp=%u brk=%u peeps=%u/%u next=%u prev=%u nextride=%u bbs=%u\n",
+                        v->id.ToUnderlying(), v->ride.ToUnderlying(), v->ride_subtype, static_cast<int>(v->status), v->sub_state, v->vehicle_type,
+                        v->x, v->y, v->z, v->remaining_distance, v->velocity, v->acceleration, v->track_progress, static_cast<unsigned>(v->GetTrackType()) * 4u + v->GetTrackDirection(),
+                        v->TrackLocation.x, v->TrackLocation.y, v->TrackLocation.z, v->current_station.ToUnderlying(), v->lost_time_out, v->flags.holder, v->mass, v->speed, v->powered_acceleration, static_cast<unsigned>(v->TrackSubposition), v->brake_speed,
+                        v->num_peeps, v->num_seats, v->next_vehicle_on_train.ToUnderlying(), v->prev_vehicle_on_ride.ToUnderlying(), v->next_vehicle_on_ride.ToUnderlying(), v->BlockBrakeSpeed);
+                }
+                for (auto& r : RideManager(getGameState()))
+                {
+                    std::fprintf(t, "ride id=%u type=%u status=%d flags=%08x reason=%d reasonPending=%d rel=%u unrel=%u downtime=%u speed=%u bullwheel=%u mode=%d ops=%u lastIssue=%u inspection=%u mechanic=%u\n",
+                        r.id.ToUnderlying(), r.type, static_cast<int>(r.status), static_cast<unsigned>(r.flags.holder), static_cast<int>(r.breakdownReason), static_cast<int>(r.breakdownReasonPending),
+                        r.reliability, r.unreliabilityFactor, r.downtime, r.speed, r.chairliftBullwheelRotation, static_cast<int>(r.mode), r.operationOption, r.lastIssueTime, static_cast<unsigned>(r.inspectionInterval), r.mechanic.ToUnderlying());
+                }
+                std::fclose(t);
             }
         }
 
