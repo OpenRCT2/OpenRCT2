@@ -52,11 +52,18 @@ struct ResearchItem
     union
     {
         uint32_t rawValue;
+        // rawValue = entryIndex | baseRideType << 16 | type << 24 on every host (news items store it).
         struct
         {
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            OpenRCT2::Research::EntryType type; // 0: scenery entry, 1: ride entry
+            uint8_t baseRideType;
+            OpenRCT2::ObjectEntryIndex entryIndex;
+#else
             OpenRCT2::ObjectEntryIndex entryIndex;
             uint8_t baseRideType;
             OpenRCT2::Research::EntryType type; // 0: scenery entry, 1: ride entry
+#endif
         };
     };
     uint8_t flags;
@@ -80,12 +87,13 @@ struct ResearchItem
     ResearchItem(
         OpenRCT2::Research::EntryType _type, OpenRCT2::ObjectEntryIndex _entryIndex, uint8_t _baseRideType,
         ResearchCategory _category, uint8_t _flags)
-        : entryIndex(_entryIndex)
-        , baseRideType(_baseRideType)
-        , type(_type)
-        , flags(_flags)
+        : flags(_flags)
         , category(_category)
     {
+        // assigned in the body: the byte members' declaration order depends on host byte order
+        entryIndex = _entryIndex;
+        baseRideType = _baseRideType;
+        type = _type;
     }
 
     bool operator==(const ResearchItem& rhs) const;

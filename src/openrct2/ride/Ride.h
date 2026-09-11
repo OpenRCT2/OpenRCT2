@@ -354,10 +354,17 @@ namespace OpenRCT2
         Breakdown breakdownReason{};
         union
         {
+            // The 16-bit view is what the park file stores and what the breakdown logic compares, so the
+            // byte members must sit where the host places the low and high byte.
             struct
             {
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                uint8_t reliabilityPercentage; // Starts at 100 and decreases from there.
+                uint8_t reliabilitySubvalue;   // 0 - 255, acts like the decimals for reliabilityPercentage
+#else
                 uint8_t reliabilitySubvalue;   // 0 - 255, acts like the decimals for reliabilityPercentage
                 uint8_t reliabilityPercentage; // Starts at 100 and decreases from there.
+#endif
             };
             uint16_t reliability{};
         };

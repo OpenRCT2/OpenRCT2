@@ -343,6 +343,26 @@ namespace OpenRCT2
         uint8_t currentTrain;
         union
         {
+            // Serialised through the 16-bit timeToSitdown view; the byte aliases keep their little-endian
+            // positions (first alias = low byte) regardless of host byte order.
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            struct
+            {
+                uint8_t currentSeat;
+                uint8_t currentCar;
+            };
+            uint16_t timeToSitdown;
+            struct
+            {
+                uint8_t standingFlags;
+                uint8_t timeToStand;
+            };
+            struct
+            {
+                uint8_t timesSlidDownPad;
+                uint8_t timesSlidDown;
+            };
+#else
             struct
             {
                 uint8_t currentCar;
@@ -355,6 +375,7 @@ namespace OpenRCT2
                 uint8_t standingFlags;
             };
             uint8_t timesSlidDown;
+#endif
         };
         // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
         uint8_t specialSprite;

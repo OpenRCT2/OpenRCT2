@@ -65,7 +65,15 @@ namespace OpenRCT2::Scenario
         union
         {
             money64 Currency;
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            struct
+            {
+                uint8_t MinimumExcitementPad[sizeof(money64) - sizeof(RideRating_t)];
+                RideRating_t MinimumExcitement; // low 16 bits of Currency on every host (the park file stores Currency)
+            };
+#else
             RideRating_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
+#endif
         };
 
         bool NeedsMoney() const

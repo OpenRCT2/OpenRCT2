@@ -147,10 +147,16 @@ namespace OpenRCT2
         union
         {
             uint16_t track_progress;
+            // Serialised through track_progress; var_34 is its low byte on every host.
             struct
             {
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                uint8_t var_35;
+                int8_t var_34;
+#else
                 int8_t var_34;
                 uint8_t var_35;
+#endif
             };
         };
         uint16_t TrackTypeAndDirection;
@@ -172,10 +178,16 @@ namespace OpenRCT2
         {
             int16_t SwingPosition;
             int16_t current_time;
+            // Serialised through current_time; ferris_wheel_var_0 is its low byte on every host.
             struct
             {
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+                int8_t ferris_wheel_var_1;
+                int8_t ferris_wheel_var_0;
+#else
                 int8_t ferris_wheel_var_0;
                 int8_t ferris_wheel_var_1;
+#endif
             };
             int16_t rider_speed_preference;
         };

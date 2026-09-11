@@ -91,7 +91,15 @@ namespace OpenRCT2
         {
             uint32_t content;
             ImageId image{};
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+            struct
+            {
+                uint16_t textPad;
+                StringId text; // low 16 bits of content on every host
+            };
+#else
             StringId text;
+#endif
             const utf8* string;
         };
         StringId tooltip{ kStringIdNone };
