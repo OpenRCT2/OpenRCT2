@@ -129,6 +129,8 @@ namespace OpenRCT2
         }
 
         void Step(uint64_t value);
+        uint64_t LoadHash() const;
+        void StoreHash(uint64_t hash);
     };
 
 } // namespace OpenRCT2

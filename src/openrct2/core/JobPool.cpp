@@ -19,6 +19,11 @@ JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> 
 
 JobPool::JobPool(size_t maxThreads)
 {
+#ifdef __amigaos__
+    // Worker threads on AmigaOS have small stacks and no memory protection: run every task
+    // synchronously on the caller (see AddTask); no threads are created.
+    maxThreads = 0;
+#endif
     maxThreads = std::min<size_t>(maxThreads, std::max(1u, std::thread::hardware_concurrency()));
     for (size_t n = 0; n < maxThreads; n++)
     {
@@ -43,6 +48,15 @@ JobPool::~JobPool()
 
 void JobPool::AddTask(std::function<void()> workFn, std::function<void()> completionFn)
 {
+#ifdef __amigaos__
+    if (_threads.empty())
+    {
+        workFn();
+        std::lock_guard lock(_mutex);
+        _completed.emplace_back(nullptr, completionFn);
+        return;
+    }
+#endif
     {
         std::lock_guard lock(_mutex);
         _pending.emplace_back(workFn, completionFn);

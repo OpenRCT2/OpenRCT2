@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <bit>
 #include <cstdint>
 #include <cstring>
 #include <type_traits>
@@ -67,6 +68,12 @@ static T ByteSwapBE(const T& value)
 {
     using ByteSwap = ByteSwapT<sizeof(T)>;
     using UIntType = ByteSwap::UIntType;
+    // "To big-endian" is the identity on a big-endian host (m68k). Without this the network
+    // and checksum serialisers would emit little-endian bytes there and never agree with x86/ARM.
+    if constexpr (std::endian::native == std::endian::big)
+    {
+        return value;
+    }
 
     if constexpr (std::is_enum_v<T> || std::is_integral_v<T>)
     {

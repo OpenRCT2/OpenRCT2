@@ -11,12 +11,11 @@
 
 namespace OpenRCT2
 {
-#ifndef DISABLE_NETWORK
+#if !defined(DISABLE_NETWORK) || defined(__amigaos__)
     ChecksumStream::ChecksumStream(std::array<std::byte, 20>& buf)
         : _checksum(buf)
     {
-        uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());
-        *hash = kSeed;
+        StoreHash(kSeed);
     }
 
     void ChecksumStream::Write(const void* buffer, uint64_t length)
@@ -28,16 +27,30 @@ namespace OpenRCT2
             uint64_t value{};
             std::memcpy(&value, reinterpret_cast<const std::byte*>(buffer) + i, maxLen);
 
-            Step(value);
+            Step(IStream::LittleEndianToHost(value)); // words are little-endian by definition
         }
     }
 
     void ChecksumStream::Step(uint64_t value)
     {
-        uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());
+        uint64_t hash = LoadHash();
+        hash ^= value;
+        hash *= kPrime;
+        StoreHash(hash);
+    }
 
-        *hash ^= value;
-        *hash *= kPrime;
+    // The 64-bit hash lives little-endian in the first 8 checksum bytes so it prints the same on every host.
+    uint64_t ChecksumStream::LoadHash() const
+    {
+        uint64_t raw;
+        std::memcpy(&raw, _checksum.data(), sizeof(raw));
+        return IStream::LittleEndianToHost(raw);
+    }
+
+    void ChecksumStream::StoreHash(uint64_t hash)
+    {
+        const uint64_t raw = IStream::LittleEndianToHost(hash);
+        std::memcpy(_checksum.data(), &raw, sizeof(raw));
     }
 
 #endif

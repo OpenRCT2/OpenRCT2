@@ -10,6 +10,9 @@
     #include <dos/dosextens.h>
     #include <string.h>
 
+/* libnix reads this at startup and swaps to a stack of this size; the CLI default is 4 KB. */
+unsigned long __stack = 8UL * 1024UL * 1024UL;
+
 void amiga_sleep_ms(unsigned ms)
 {
     /* Delay() works in 1/50 s ticks; never busy-wait, never pass 0 for a non-zero request. */
