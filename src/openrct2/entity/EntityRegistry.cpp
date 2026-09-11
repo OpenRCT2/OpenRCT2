@@ -262,12 +262,6 @@ namespace OpenRCT2
                         v->TrackLocation.x, v->TrackLocation.y, v->TrackLocation.z, v->current_station.ToUnderlying(), v->lost_time_out, v->flags.holder, v->mass, v->speed, v->powered_acceleration, static_cast<unsigned>(v->TrackSubposition), v->brake_speed,
                         v->num_peeps, v->num_seats, v->next_vehicle_on_train.ToUnderlying(), v->prev_vehicle_on_ride.ToUnderlying(), v->next_vehicle_on_ride.ToUnderlying(), v->BlockBrakeSpeed);
                 }
-                for (auto* g : EntityList<Guest>())
-                {
-                    std::fprintf(t, "guest id=%u peepId=%08x flags=%08x parkEntry=%08x peepDir=%u\n",
-                        g->id.ToUnderlying(), g->peepId, static_cast<unsigned>(g->peepFlags.holder),
-                        static_cast<unsigned>(g->parkEntryTime), static_cast<unsigned>(g->peepDirection));
-                }
                 for (auto& r : RideManager(getGameState()))
                 {
                     std::fprintf(t, "ride id=%u type=%u status=%d flags=%08x reason=%d reasonPending=%d rel=%u unrel=%u downtime=%u speed=%u bullwheel=%u mode=%d ops=%u lastIssue=%u inspection=%u mechanic=%u\n",
