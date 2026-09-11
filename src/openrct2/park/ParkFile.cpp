@@ -1223,7 +1223,11 @@ namespace OpenRCT2
                 sw(5);  // trackType
                 sw(12); // rideIndex
                 sw(14); // rideType
-                // TODO mazeEntry (uint16 at 7) for maze rides
+                // Maze rides store a 16-bit wall bitmap (mazeEntry) in the union at offset 7 instead of the
+                // sequence/colourScheme bytes. Detect a maze from rideType (=20) regardless of the current byte
+                // order — {20,0} in either order — since no real ride type is 0x1400.
+                if ((b[14] == 20 && b[15] == 0) || (b[14] == 0 && b[15] == 20))
+                    sw(7); // mazeEntry
                 break;
             case TileElementType::smallScenery:
                 sw(5); // entryIndex
