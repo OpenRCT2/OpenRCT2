@@ -278,12 +278,12 @@ namespace OpenRCT2::Platform
 
     std::vector<std::string> GetSearchablePathsRCT1()
     {
-        return {};
+        return { "PROGDIR:RCT1", "Work:RCT1", "RCT1:", "Games:RCT1" };
     }
 
     std::vector<std::string> GetSearchablePathsRCT2()
     {
-        return {};
+        return { "PROGDIR:RCT2", "Work:RCT2", "RCT2:", "Games:RCT2" };
     }
 
     SteamPaths GetSteamPaths()

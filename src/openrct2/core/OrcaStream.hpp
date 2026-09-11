@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "Endianness.h"
 #include "../core/Compression.h"
 #include "../world/Location.hpp"
 #include "Crypt.h"
@@ -57,6 +58,17 @@ namespace OpenRCT2
             uint64_t compressedSize{};
             std::array<uint8_t, 8> fnv1a{};
             uint8_t padding[20]{};
+
+            void LittleEndianToHost()
+            {
+                magic = ByteSwapT<4>::SwapBE(magic);
+                targetVersion = ByteSwapT<4>::SwapBE(targetVersion);
+                minVersion = ByteSwapT<4>::SwapBE(minVersion);
+                numChunks = ByteSwapT<4>::SwapBE(numChunks);
+                uncompressedSize = ByteSwapT<8>::SwapBE(uncompressedSize);
+                compression = static_cast<CompressionType>(ByteSwapT<sizeof(CompressionType)>::SwapBE(static_cast<typename ByteSwapT<sizeof(CompressionType)>::UIntType>(compression)));
+                compressedSize = ByteSwapT<8>::SwapBE(compressedSize);
+            }
         };
         static_assert(sizeof(Header) == 64, "Header should be 64 bytes");
 
@@ -65,6 +77,13 @@ namespace OpenRCT2
             uint32_t id{};
             uint64_t offset{};
             uint64_t length{};
+
+            void LittleEndianToHost()
+            {
+                id = ByteSwapT<4>::SwapBE(id);
+                offset = ByteSwapT<8>::SwapBE(offset);
+                length = ByteSwapT<8>::SwapBE(length);
+            }
         };
 #pragma pack(pop)
 
@@ -582,12 +601,14 @@ namespace OpenRCT2
                     {
                         int64_t raw{};
                         read(&raw, sizeof(raw));
+                        raw = IStream::LittleEndianToHost(raw);
                         return static_cast<T>(raw);
                     }
                     else
                     {
                         uint64_t raw{};
                         read(&raw, sizeof(raw));
+                        raw = IStream::LittleEndianToHost(raw);
                         return static_cast<T>(raw);
                     }
                 }
@@ -597,6 +618,7 @@ namespace OpenRCT2
                     {
                         int32_t raw{};
                         read(&raw, sizeof(raw));
+                        raw = IStream::LittleEndianToHost(raw);
                         if (raw < std::numeric_limits<T>::min() || raw > std::numeric_limits<T>::max())
                         {
                             throw std::runtime_error("Value is incompatible with internal type.");
@@ -607,6 +629,7 @@ namespace OpenRCT2
                     {
                         uint32_t raw{};
                         read(&raw, sizeof(raw));
+                        raw = IStream::LittleEndianToHost(raw);
                         if (raw > std::numeric_limits<T>::max())
                         {
                             throw std::runtime_error("Value is incompatible with internal type.");
@@ -623,12 +646,12 @@ namespace OpenRCT2
                 {
                     if constexpr (std::is_signed<T>())
                     {
-                        auto raw = static_cast<int64_t>(value);
+                        auto raw = IStream::LittleEndianToHost(static_cast<int64_t>(value));
                         write(&raw, sizeof(raw));
                     }
                     else
                     {
-                        auto raw = static_cast<uint64_t>(value);
+                        auto raw = IStream::LittleEndianToHost(static_cast<uint64_t>(value));
                         write(&raw, sizeof(raw));
                     }
                 }
@@ -636,12 +659,12 @@ namespace OpenRCT2
                 {
                     if constexpr (std::is_signed<T>())
                     {
-                        auto raw = static_cast<int32_t>(value);
+                        auto raw = IStream::LittleEndianToHost(static_cast<int32_t>(value));
                         write(&raw, sizeof(raw));
                     }
                     else
                     {
-                        auto raw = static_cast<uint32_t>(value);
+                        auto raw = IStream::LittleEndianToHost(static_cast<uint32_t>(value));
                         write(&raw, sizeof(raw));
                     }
                 }
