@@ -1152,11 +1152,19 @@ namespace OpenRCT2::Ui::Windows
             if (isInEditorMode())
                 return;
 
-            const auto mode = Network::GetMode();
-            widgets[WIDX_NETWORK].setHidden(mode == Network::Mode::none);
-            widgets[WIDX_CHAT].setHidden(mode == Network::Mode::none);
-            widgets[WIDX_PAUSE].setHidden(mode == Network::Mode::client);
-            widgets[WIDX_FASTFORWARD].setHidden(mode == Network::Mode::server);
+            switch (Network::GetMode())
+            {
+                case Network::Mode::none:
+                    widgets[WIDX_NETWORK].setHidden(true);
+                    widgets[WIDX_CHAT].setHidden(true);
+                    break;
+                case Network::Mode::client:
+                    widgets[WIDX_PAUSE].setHidden(true);
+                    [[fallthrough]];
+                case Network::Mode::server:
+                    widgets[WIDX_FASTFORWARD].setHidden(true);
+                    break;
+            }
         }
 
         void ApplyZoomState()
