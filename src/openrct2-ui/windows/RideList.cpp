@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -73,9 +74,9 @@ namespace OpenRCT2::Ui::Windows
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {340, 197}, WidgetType::resize,       WindowColour::secondary                                                                        ), // tab page background
         makeWidget({315, 60}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),     STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
-        makeTab   ({  3, 17},                                                                STR_LIST_RIDES_TIP                                                    ), // tab 1
-        makeTab   ({ 34, 17},                                                                STR_LIST_SHOPS_AND_STALLS_TIP                                         ), // tab 2
-        makeTab   ({ 65, 17},                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP                                    ), // tab 3
+        Widgets::Tab({  3, 17}, STR_LIST_RIDES_TIP                ),
+        Widgets::Tab({ 34, 17}, STR_LIST_SHOPS_AND_STALLS_TIP     ),
+        Widgets::Tab({ 65, 17}, STR_LIST_KIOSKS_AND_FACILITIES_TIP),
         makeWidget({  3, 47}, {264,  14}, WidgetType::textBox,      WindowColour::secondary                                                                        ), // search text box
         makeWidget({264, 47}, { 70,  14}, WidgetType::button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                               ), // search clear button
         makeWidget({  3, 62}, {150,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // name header

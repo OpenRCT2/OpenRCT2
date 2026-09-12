@@ -96,7 +96,6 @@ TEST(WidgetStateTest, WithFlagSetsFlagWithoutDisturbingOthers)
 TEST(WidgetStateTest, MakeHoldableWidgetHasHoldableFlag)
 {
     using Ui::makeHoldableWidget;
-    using Ui::WindowColour;
 
     constexpr auto w = makeHoldableWidget({ 0, 0 }, { 10, 10 }, WidgetType::button, WindowColour::primary);
     static_assert(w.flags.has(WidgetFlag::isHoldable));
@@ -108,7 +107,6 @@ TEST(WidgetStateTest, MakeHoldableWidgetHasHoldableFlag)
 TEST(WidgetStateTest, MakeWidgetDefaultHasNoFlags)
 {
     using Ui::makeWidget;
-    using Ui::WindowColour;
 
     constexpr auto w = makeWidget({ 0, 0 }, { 10, 10 }, WidgetType::button, WindowColour::primary);
     static_assert(w.flags.isEmpty());
@@ -118,7 +116,6 @@ TEST(WidgetStateTest, MakeWidgetDefaultHasNoFlags)
 TEST(WidgetStateTest, MakeSpinnerWidgetsHasNoHoldableFlag)
 {
     using Ui::makeSpinnerWidgets;
-    using Ui::WindowColour;
 
     constexpr auto widgets = makeSpinnerWidgets({ 0, 0 }, { 100, 14 }, WidgetType::spinner, WindowColour::primary);
     static_assert(!widgets[0].flags.has(WidgetFlag::isHoldable));
@@ -129,7 +126,6 @@ TEST(WidgetStateTest, MakeSpinnerWidgetsHasNoHoldableFlag)
 TEST(WidgetStateTest, MakeHoldableSpinnerWidgetsHasHoldableOnIncrementButtons)
 {
     using Ui::makeHoldableSpinnerWidgets;
-    using Ui::WindowColour;
 
     constexpr auto widgets = makeHoldableSpinnerWidgets({ 0, 0 }, { 100, 14 }, WidgetType::spinner, WindowColour::primary);
     // Element [0] is the spinner input field; increment/decrement buttons are

@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -68,8 +69,8 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({273, 46}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_MAP),        STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
         makeWidget({297, 46}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_SEARCH),  STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
         makeWidget({321, 46}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_TRACK_PEEP), STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
-        makeTab   ({  3, 17},                                                                                         STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
-        makeTab   ({ 34, 17},                                                                                         STR_SUMMARISED_GUESTS_TIP    ), // tab 2
+        Widgets::Tab({  3, 17},                                                                                       STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
+        Widgets::Tab({ 34, 17},                                                                                       STR_SUMMARISED_GUESTS_TIP    ), // tab 2
         makeWidget({  3, 72}, {344, 255}, WidgetType::scroll,       WindowColour::secondary, SCROLL_BOTH                                           ) // guest list
     );
     // clang-format on
