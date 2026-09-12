@@ -806,7 +806,8 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
 
 std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY& pos)
 {
-    bool selected = gMapSelectFlags.has(MapSelectFlag::enable) && gMapSelectType == MapSelectType::full
+    bool selected = gMapSelectFlags.has(MapSelectFlag::enable)
+        && (gMapSelectType == MapSelectType::full || gMapSelectType == MapSelectType::fullTerrainAndWater)
         && pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
         && pos.y <= gMapSelectPositionB.y;
 
@@ -1131,7 +1132,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType == MapSelectType::fullLandRights)
+            else if (mapSelectionType == MapSelectType::fullTerrainAndWater)
             {
                 auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
