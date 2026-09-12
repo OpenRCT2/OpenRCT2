@@ -220,11 +220,11 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
         case ItemType::ride:
         {
             Ride* ride = GetRide(RideId::FromUnderlying(subject));
-            if (ride == nullptr || ride->overallView.IsNull())
+            if (ride == nullptr || ride->overallView.isNull())
             {
                 break;
             }
-            auto rideViewCentre = ride->overallView.ToTileCentre();
+            auto rideViewCentre = ride->overallView.toTileCentre();
             subjectLoc = CoordsXYZ{ rideViewCentre, TileElementHeight(rideViewCentre) };
             break;
         }
@@ -279,7 +279,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             auto subjectUnsigned = static_cast<uint32_t>(subject);
             auto subjectXY = CoordsXY{ static_cast<int16_t>(subjectUnsigned & 0xFFFF),
                                        static_cast<int16_t>(subjectUnsigned >> 16) };
-            if (!subjectXY.IsNull())
+            if (!subjectXY.isNull())
             {
                 subjectLoc = CoordsXYZ{ subjectXY, TileElementHeight(subjectXY) };
             }

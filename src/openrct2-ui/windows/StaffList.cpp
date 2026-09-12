@@ -26,6 +26,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/RenderTarget.h>
@@ -555,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                 if (staff->state == PeepState::picked)
                 {
                     CoordsXYZ nullLoc{};
-                    nullLoc.SetNull();
+                    nullLoc.setNull();
 
                     GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup, staff->id, nullLoc,
                                                                 Network::GetCurrentPlayerId() };
@@ -652,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t direction{};
             TileElement* tileElement{};
             auto footpathCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
-            if (footpathCoords.IsNull())
+            if (footpathCoords.isNull())
                 return nullptr;
 
             auto isPatrolAreaSet = IsPatrolAreaSetForStaffType(GetSelectedStaffType(), footpathCoords);

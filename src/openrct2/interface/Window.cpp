@@ -15,8 +15,8 @@
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../drawing/Drawing.String.h"
-#include "../drawing/Drawing.h"
 #include "../drawing/RenderTarget.h"
 #include "../entity/EntityRegistry.h"
 #include "../ride/RideAudio.h"
@@ -870,7 +870,7 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         WindowResizeGuiCentredWindows(width, height);
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     /**

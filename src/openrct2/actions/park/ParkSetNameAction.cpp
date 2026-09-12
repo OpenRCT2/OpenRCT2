@@ -10,7 +10,7 @@
 #include "ParkSetNameAction.h"
 
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../world/Park.h"
 #include "../../world/ParkData.h"
 
@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
         {
             park.name = _name;
             Drawing::ScrollingText::invalidate();
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
         return Result();
     }

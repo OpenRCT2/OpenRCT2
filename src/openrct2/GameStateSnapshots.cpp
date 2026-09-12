@@ -61,7 +61,7 @@ struct GameStateSnapshot_t
     {
         uint32_t size = sizeof(T);
         ds << size;
-        if (ds.IsLoading())
+        if (ds.isLoading())
         {
             return size == sizeof(T);
         }

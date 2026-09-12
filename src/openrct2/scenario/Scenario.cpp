@@ -20,7 +20,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Palette.h"
 #include "../drawing/PaletteIndex.h"
 #include "../entity/Duck.h"
 #include "../entity/Staff.h"
@@ -305,9 +305,8 @@ static void ScenarioWeekUpdate()
     RideCheckAllReachable();
     RideUpdateFavouritedStat();
 
-    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
-
-    if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
+    const auto& waterEntry = getActiveWaterEntry();
+    if (month <= MONTH_APRIL && waterEntry.flags & WATER_FLAGS_ALLOW_DUCKS)
     {
         // 100 attempts at finding some water to create a few ducks at
         for (int32_t i = 0; i < 100; i++)
@@ -364,7 +363,7 @@ static void ScenarioUpdateDayNightCycle()
     // Only update palette if day / night cycle has changed
     if (gDayNightCycle != currentDayNightCycle)
     {
-        UpdatePalette(gGamePalette, Drawing::PaletteIndex::pi10, 236);
+        Drawing::UpdatePalette(Drawing::gGamePalette, Drawing::PaletteIndex::pi10, 236);
     }
 }
 

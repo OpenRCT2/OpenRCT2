@@ -153,4 +153,9 @@ namespace OpenRCT2::Drawing::Rectangle
             dc->FilterRect(rt, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
         }
     }
+
+    void filterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
+    {
+        filter(rt, { coords, coords }, palette);
+    }
 } // namespace OpenRCT2::Drawing::Rectangle

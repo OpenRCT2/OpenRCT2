@@ -30,4 +30,6 @@ namespace OpenRCT2
         ImageIndex waterSparklesPalette;
         uint16_t flags;
     };
+
+    const WaterObjectEntry& getActiveWaterEntry();
 } // namespace OpenRCT2

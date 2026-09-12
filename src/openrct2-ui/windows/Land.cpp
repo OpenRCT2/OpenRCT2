@@ -483,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
             // Move to tool bottom left
             mapTile->x -= (tool_size - 1) * 16;
             mapTile->y -= (tool_size - 1) * 16;
-            mapTile = mapTile->ToTileStart();
+            mapTile = mapTile->toTileStart();
 
             if (gMapSelectPositionA.x != mapTile->x)
             {
@@ -772,19 +772,19 @@ namespace OpenRCT2::Ui::Windows
                 case MapSelectType::edge2:
                     // Line
                     mapTile->y -= (tool_size - 1) * 16;
-                    mapTile->y = mapTile->ToTileStart().y;
+                    mapTile->y = mapTile->toTileStart().y;
                     break;
                 case MapSelectType::edge1:
                 case MapSelectType::edge3:
                     // Line
                     mapTile->x -= (tool_size - 1) * 16;
-                    mapTile->x = mapTile->ToTileStart().x;
+                    mapTile->x = mapTile->toTileStart().x;
                     break;
                 default:
                     // Move to tool bottom left
                     mapTile->x -= (tool_size - 1) * 16;
                     mapTile->y -= (tool_size - 1) * 16;
-                    mapTile = mapTile->ToTileStart();
+                    mapTile = mapTile->toTileStart();
                     break;
             }
 

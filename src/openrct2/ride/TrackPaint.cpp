@@ -110,7 +110,7 @@ bool TrackPaintUtilHasFence(
     auto entranceId = trackElement.getStationIndex();
     const auto& station = ride.getStation(entranceId);
 
-    return (entranceLoc != station.Entrance && entranceLoc != station.Exit);
+    return (entranceLoc != station.entrance && entranceLoc != station.exit);
 }
 
 void TrackPaintUtilPaintFloor(

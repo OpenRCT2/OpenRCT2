@@ -12,8 +12,8 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
+#include "../drawing/Palette.h"
 #include "../drawing/Text.h"
 #include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
@@ -38,7 +38,7 @@ namespace OpenRCT2
         _legacyType.waterWavesPalette = _legacyType.mainPalette + 1;
         _legacyType.waterSparklesPalette = _legacyType.mainPalette + 4;
 
-        LoadPalette();
+        Drawing::LoadPalette();
     }
 
     void WaterObject::Unload()

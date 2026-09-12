@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "NewDrawing.h"
-#include "../platform/AmigaTrace.h"
 
 #include "../Context.h"
 #include "../drawing/Drawing.h"
@@ -63,11 +62,9 @@ void DrawingEngineInit()
 void DrawingEngineResize()
 {
     auto context = GetContext();
-    AMIGA_TRACE(context != nullptr ? "DrawingEngineResize: context ok" : "DrawingEngineResize: NO context");
     if (context != nullptr)
     {
         auto drawingEngine = context->GetDrawingEngine();
-        AMIGA_TRACE(drawingEngine != nullptr ? "DrawingEngineResize: engine ok" : "DrawingEngineResize: NO engine");
         if (drawingEngine != nullptr)
         {
             auto& uiContext = context->GetUiContext();
@@ -163,49 +160,6 @@ void GfxClear(RenderTarget& rt, PaletteIndex paletteIndex)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
         dc->Clear(rt, paletteIndex);
-    }
-}
-
-void GfxDrawLine(RenderTarget& rt, const ScreenLine& line, PaletteIndex colour)
-{
-    auto drawingEngine = rt.DrawingEngine;
-    if (drawingEngine != nullptr)
-    {
-        IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawLine(rt, colour, line);
-    }
-}
-
-void GfxDrawDashedLine(
-    RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const PaletteIndex colour)
-{
-    assert(dashedLineSegmentLength > 0);
-
-    const auto drawingEngine = rt.DrawingEngine;
-    if (drawingEngine != nullptr)
-    {
-        constexpr int32_t kPrecisionFactor = 1000;
-
-        const int32_t dashedLineLength = static_cast<int32_t>(std::hypot(
-            static_cast<double>(screenLine.GetX2() - screenLine.GetX1()), static_cast<double>(screenLine.GetY2() - screenLine.GetY1())));
-        const int32_t lineSegmentCount = dashedLineLength / dashedLineSegmentLength / 2;
-        if (lineSegmentCount == 0)
-        {
-            return;
-        }
-
-        const int32_t lineXDist = std::abs(screenLine.GetX2() - screenLine.GetX1());
-        const int32_t lineYDist = std::abs(screenLine.GetY2() - screenLine.GetY1());
-        const int32_t dxPrecise = kPrecisionFactor * lineXDist / lineSegmentCount / 2;
-        const int32_t dyPrecise = kPrecisionFactor * lineYDist / lineSegmentCount / 2;
-        IDrawingContext* dc = drawingEngine->GetDrawingContext();
-
-        for (int32_t i = 0, x, y; i < lineSegmentCount; ++i)
-        {
-            x = screenLine.GetX1() + dxPrecise * i * 2 / kPrecisionFactor;
-            y = screenLine.GetY1() + dyPrecise * i * 2 / kPrecisionFactor;
-            dc->DrawLine(rt, colour, { { x, y }, { x + dxPrecise / kPrecisionFactor, y + dyPrecise / kPrecisionFactor } });
-        }
     }
 }
 

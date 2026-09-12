@@ -1091,12 +1091,12 @@ namespace OpenRCT2::RCT2
 
             if (src->overallView.IsNull())
             {
-                dst->overallView.SetNull();
+                dst->overallView.setNull();
             }
             else
             {
                 auto tileLoc = TileCoordsXY(src->overallView.x, src->overallView.y);
-                dst->overallView = tileLoc.ToCoordsXY();
+                dst->overallView = tileLoc.toCoordsXY();
             }
 
             for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
@@ -1106,37 +1106,37 @@ namespace OpenRCT2::RCT2
 
                 if (src->stationStarts[i].IsNull())
                 {
-                    destStation.Start.SetNull();
+                    destStation.start.setNull();
                 }
                 else
                 {
                     auto tileStartLoc = TileCoordsXY(src->stationStarts[i].x, src->stationStarts[i].y);
-                    destStation.Start = tileStartLoc.ToCoordsXY();
+                    destStation.start = tileStartLoc.toCoordsXY();
                 }
-                destStation.Height = src->stationHeights[i];
-                destStation.Length = src->stationLength[i];
-                destStation.Depart = src->stationDepart[i];
-                destStation.TrainAtStation = src->trainAtStation[i];
+                destStation.height = src->stationHeights[i];
+                destStation.length = src->stationLength[i];
+                destStation.depart = src->stationDepart[i];
+                destStation.trainAtStation = src->trainAtStation[i];
                 // Direction is fixed later.
 
                 if (src->entrances[i].IsNull())
-                    destStation.Entrance.SetNull();
+                    destStation.entrance.setNull();
                 else
-                    destStation.Entrance = { src->entrances[i].x, src->entrances[i].y, src->stationHeights[i], 0 };
+                    destStation.entrance = { src->entrances[i].x, src->entrances[i].y, src->stationHeights[i], 0 };
 
                 if (src->exits[i].IsNull())
-                    destStation.Exit.SetNull();
+                    destStation.exit.setNull();
                 else
-                    destStation.Exit = { src->exits[i].x, src->exits[i].y, src->stationHeights[i], 0 };
+                    destStation.exit = { src->exits[i].x, src->exits[i].y, src->stationHeights[i], 0 };
 
-                destStation.LastPeepInQueue = EntityId::FromUnderlying(src->lastPeepInQueue[i]);
+                destStation.lastPeepInQueue = EntityId::FromUnderlying(src->lastPeepInQueue[i]);
 
-                destStation.SegmentLength = src->length[i];
-                destStation.SegmentTime = src->time[i];
+                destStation.segmentLength = src->length[i];
+                destStation.segmentTime = src->time[i];
 
-                destStation.QueueTime = src->queueTime[i];
+                destStation.queueTime = src->queueTime[i];
 
-                destStation.QueueLength = src->queueLength[i];
+                destStation.queueLength = src->queueLength[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
             for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
@@ -1144,11 +1144,11 @@ namespace OpenRCT2::RCT2
                 StationIndex stationIndex = StationIndex::FromUnderlying(i);
                 auto& destStation = dst->getStation(stationIndex);
 
-                destStation.Start.SetNull();
-                destStation.TrainAtStation = RideStation::kNoTrain;
-                destStation.Entrance.SetNull();
-                destStation.Exit.SetNull();
-                destStation.LastPeepInQueue = EntityId::GetNull();
+                destStation.start.setNull();
+                destStation.trainAtStation = RideStation::kNoTrain;
+                destStation.entrance.setNull();
+                destStation.exit.setNull();
+                destStation.lastPeepInQueue = EntityId::GetNull();
             }
 
             for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
@@ -1200,7 +1200,7 @@ namespace OpenRCT2::RCT2
 
             if (src->curTestTrackLocation.IsNull())
             {
-                dst->curTestTrackLocation.SetNull();
+                dst->curTestTrackLocation.setNull();
             }
             else
             {
@@ -2066,7 +2066,7 @@ namespace OpenRCT2::RCT2
             dst->peepFlags.holder = src->PeepFlags;
             if (isNullLocation(src->PathfindGoal))
             {
-                dst->pathfindGoal.SetNull();
+                dst->pathfindGoal.setNull();
                 dst->pathfindGoal.direction = kInvalidDirection;
             }
             else
@@ -2078,7 +2078,7 @@ namespace OpenRCT2::RCT2
             {
                 if (isNullLocation(src->PathfindHistory[i]))
                 {
-                    dst->pathfindHistory[i].SetNull();
+                    dst->pathfindHistory[i].setNull();
                     dst->pathfindHistory[i].direction = kInvalidDirection;
                 }
                 else
@@ -2341,7 +2341,7 @@ namespace OpenRCT2::RCT2
         if (src->BoatLocation.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::boatHire
             || src->Status != static_cast<uint8_t>(::Vehicle::Status::travellingBoat))
         {
-            dst->BoatLocation.SetNull();
+            dst->BoatLocation.setNull();
             dst->SetTrackDirection(src->GetTrackDirection());
             // Skipping OriginalRideClass::wildMouse - this is handled specifically.
             auto originalClass = IsFlatRide(src->Ride) ? OriginalRideClass::flatRide : OriginalRideClass::regular;
@@ -2368,7 +2368,7 @@ namespace OpenRCT2::RCT2
         }
         else
         {
-            dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.ToCoordsXY();
+            dst->BoatLocation = TileCoordsXY{ src->BoatLocation.x, src->BoatLocation.y }.toCoordsXY();
             dst->SetTrackDirection(0);
             dst->SetTrackType(TrackElemType::flat);
         }

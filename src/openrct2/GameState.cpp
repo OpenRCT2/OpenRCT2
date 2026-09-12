@@ -16,7 +16,7 @@
 #include "ReplayManager.h"
 #include "actions/GameActionRunner.h"
 #include "config/Config.h"
-#include "drawing/Drawing.h"
+#include "drawing/Palette.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
 #include "interface/Screenshot.h"
@@ -84,7 +84,7 @@ namespace OpenRCT2
         auto clipboardIntent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
         ContextBroadcastIntent(&clipboardIntent);
 
-        LoadPalette();
+        Drawing::LoadPalette();
 
         CheatsReset();
         ClearRestrictedScenery();

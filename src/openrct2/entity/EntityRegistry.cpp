@@ -44,7 +44,7 @@ namespace OpenRCT2
 
     static constexpr uint32_t ComputeSpatialIndex(const CoordsXY& loc)
     {
-        if (loc.IsNull())
+        if (loc.isNull())
             return kSpatialIndexNullBucket;
 
         // NOTE: The input coordinate is rotated and can have negative components.

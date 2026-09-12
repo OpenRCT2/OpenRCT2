@@ -19,6 +19,7 @@
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
@@ -330,7 +331,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             MapGenerator::generate(&mapgenSettings);
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
 #pragma region Base page

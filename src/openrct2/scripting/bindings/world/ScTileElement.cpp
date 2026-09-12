@@ -2272,7 +2272,7 @@ namespace OpenRCT2::Scripting
             if (element->getType() != TileElementType::banner)
             {
                 if (value.empty())
-                    banner->rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
+                    banner->rideIndex = BannerGetClosestRideIndex({ banner->position.toCoordsXY(), 16 });
                 else
                     banner->rideIndex = RideId::GetNull();
 
@@ -2314,14 +2314,14 @@ namespace OpenRCT2::Scripting
         const auto& tiles = largeEntry->tiles;
         const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
-            CoordsXY{ initialTile.offset }.Rotate(direction),
+            CoordsXY{ initialTile.offset }.rotate(direction),
             initialTile.offset.z,
         };
 
         const auto firstTile = CoordsXYZ{ loc, largeScenery->getBaseZ() } - rotatedFirstTile;
         for (auto& tile : tiles)
         {
-            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(direction), tile.offset.z };
+            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.rotate(direction), tile.offset.z };
 
             const auto currentTile = firstTile + rotatedCurrentTile;
 

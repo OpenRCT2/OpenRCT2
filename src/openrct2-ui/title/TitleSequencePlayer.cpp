@@ -19,6 +19,7 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Palette.h>
 #include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
@@ -441,7 +442,7 @@ namespace OpenRCT2::Title
             ContextBroadcastIntent(&intent);
             Ui::Windows::WindowScenerySetDefaultPlacementConfiguration();
             News::InitQueue(gameState);
-            LoadPalette();
+            Drawing::LoadPalette();
             gScreenAge = 0;
             gGamePaused = false;
             gGameSpeed = 1;

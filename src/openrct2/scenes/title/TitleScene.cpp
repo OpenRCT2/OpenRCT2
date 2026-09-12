@@ -18,7 +18,8 @@
 #include "../../audio/Audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
+#include "../../drawing/Palette.h"
 #include "../../interface/Screenshot.h"
 #include "../../interface/Window.h"
 #include "../../network/NetworkBase.h"
@@ -153,7 +154,7 @@ void TitleScene::Tick()
         {
             gameStateUpdateLogic();
         }
-        UpdatePaletteEffects();
+        Drawing::UpdatePaletteEffects();
         // update_weather_animation();
     }
 
@@ -310,7 +311,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
                         Config::Get().interface.currentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     return true;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;

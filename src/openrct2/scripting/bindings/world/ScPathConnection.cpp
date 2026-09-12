@@ -52,7 +52,7 @@ namespace OpenRCT2::Scripting
 
     const PathElement* ScPathConnection::findPathElement(const PathConnectionData* data)
     {
-        auto coords = data->position.ToCoordsXY();
+        auto coords = data->position.toCoordsXY();
         auto* el = MapGetNthElementAt(coords, data->elementIndex);
         if (el == nullptr)
             return nullptr;
@@ -68,7 +68,7 @@ namespace OpenRCT2::Scripting
         auto* data = getData(thisVal);
         if (data == nullptr)
             return JS_NULL;
-        return ToJSValue(ctx, data->position.ToCoordsXYZ());
+        return ToJSValue(ctx, data->position.toCoordsXYZ());
     }
 
     JSValue ScPathConnection::getDirection(JSContext* ctx, JSValue thisVal)

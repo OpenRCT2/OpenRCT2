@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
             surfaceHeight = waterHeight;
         }
         auto res = Result();
-        auto centre = _loc.ToTileCentre();
+        auto centre = _loc.toTileCentre();
         res.position.x = centre.x;
         res.position.y = centre.y;
         res.position.z = surfaceHeight;
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
         auto loc2 = _loc;
         if (sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
         {
-            loc2 = loc2.ToTileCentre();
+            loc2 = loc2.toTileCentre();
         }
         else
         {
@@ -299,7 +299,7 @@ namespace OpenRCT2::GameActions
             surfaceHeight = waterHeight;
         }
         auto res = Result();
-        auto centre = _loc.ToTileCentre();
+        auto centre = _loc.toTileCentre();
         res.position.x = centre.x;
         res.position.y = centre.y;
         res.position.z = surfaceHeight;

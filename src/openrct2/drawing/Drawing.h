@@ -11,12 +11,10 @@
 
 #include "../core/CallingConventions.h"
 #include "Colour.h"
-#include "ColourPalette.h"
 #include "ImageId.hpp"
 #include "PaletteMap.h"
 
 #include <optional>
-#include <span>
 
 struct ScreenCoordsXY;
 struct ScreenLine;
@@ -43,10 +41,6 @@ namespace OpenRCT2::Drawing
 
 constexpr uint8_t kPaletteTotalOffsets = 192;
 
-extern OpenRCT2::Drawing::GamePalette gPalette;
-extern OpenRCT2::Drawing::GamePalette gGamePalette;
-extern uint32_t gPaletteEffectFrame;
-
 extern const OpenRCT2::Drawing::TranslucentWindowPalette kTranslucentWindowPalettes[OpenRCT2::Drawing::kColourNumTotal];
 
 extern bool gPaintForceRedraw;
@@ -54,24 +48,9 @@ extern bool gPaintForceRedraw;
 bool ClipRenderTarget(
     OpenRCT2::Drawing::RenderTarget& dst, OpenRCT2::Drawing::RenderTarget& src, const ScreenCoordsXY& coords, int32_t width,
     int32_t height);
-void GfxSetDirtyBlocks(const ScreenRect& rect);
-void GfxInvalidateScreen();
-
-// palette
-void GfxTransposePalette(ImageIndex pal, uint8_t product);
-void LoadPalette();
 
 // other
 void GfxClear(OpenRCT2::Drawing::RenderTarget& rt, OpenRCT2::Drawing::PaletteIndex paletteIndex);
-void GfxFilterPixel(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenCoordsXY& coords, OpenRCT2::Drawing::FilterPaletteID palette);
-
-// line
-void GfxDrawLine(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, OpenRCT2::Drawing::PaletteIndex colour);
-void GfxDrawLineSoftware(OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& line, OpenRCT2::Drawing::PaletteIndex colour);
-void GfxDrawDashedLine(
-    OpenRCT2::Drawing::RenderTarget& rt, const ScreenLine& screenLine, int32_t dashedLineSegmentLength,
-    OpenRCT2::Drawing::PaletteIndex colour);
 
 // sprite (NewDrawing.cpp functions that use the drawing engine)
 void FASTCALL GfxDrawSprite(OpenRCT2::Drawing::RenderTarget& rt, ImageId image_id, const ScreenCoordsXY& coords);
@@ -85,11 +64,5 @@ void FASTCALL GfxDrawSpriteRawMasked(
 
 std::optional<uint32_t> GetPaletteG1Index(OpenRCT2::Drawing::FilterPaletteID paletteId);
 std::optional<OpenRCT2::Drawing::PaletteMap> GetPaletteMapForColour(OpenRCT2::Drawing::FilterPaletteID paletteId);
-void UpdatePalette(
-    std::span<const OpenRCT2::Drawing::BGRAColour> palette, OpenRCT2::Drawing::PaletteIndex startIndex, int32_t numColours);
-void UpdatePaletteEffects();
-
-void RefreshVideo();
-void ToggleWindowedMode();
 
 void DebugRT(OpenRCT2::Drawing::RenderTarget& rt);

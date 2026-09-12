@@ -24,6 +24,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/NewDrawing.h"
+#include "../drawing/Palette.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
@@ -215,9 +216,9 @@ static int32_t GetTallestVisibleTileTop(
     {
         for (int32_t x = startCoords.x; x <= endCoords.x; x++)
         {
-            auto location = TileCoordsXY(x, y).ToCoordsXY();
+            auto location = TileCoordsXY(x, y).toCoordsXY();
             int32_t z = GetHighestBaseClearanceZ(location, useViewClipping);
-            int32_t viewY = Translate3DTo2DWithZ(rotation, CoordsXYZ(location.ToTileCentre(), z)).y;
+            int32_t viewY = Translate3DTo2DWithZ(rotation, CoordsXYZ(location.toTileCentre(), z)).y;
             minViewY = std::min(minViewY, viewY);
         }
     }
@@ -286,10 +287,10 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 
     // Calculate the viewport bounds
     auto corners = cornerCoords[useViewClipping ? 1 : 0];
-    auto screenCoords1 = Translate3DTo2DWithZ(rotation, { corners[0].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords2 = Translate3DTo2DWithZ(rotation, { corners[1].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords3 = Translate3DTo2DWithZ(rotation, { corners[2].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords4 = Translate3DTo2DWithZ(rotation, { corners[3].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords1 = Translate3DTo2DWithZ(rotation, { corners[0].toCoordsXY().toTileCentre(), 0 });
+    auto screenCoords2 = Translate3DTo2DWithZ(rotation, { corners[1].toCoordsXY().toTileCentre(), 0 });
+    auto screenCoords3 = Translate3DTo2DWithZ(rotation, { corners[2].toCoordsXY().toTileCentre(), 0 });
+    auto screenCoords4 = Translate3DTo2DWithZ(rotation, { corners[3].toCoordsXY().toTileCentre(), 0 });
 
     auto left = std::min({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) - 32;
     auto top = GetTallestVisibleTileTop(rotation, corners[0], corners[1], useViewClipping);

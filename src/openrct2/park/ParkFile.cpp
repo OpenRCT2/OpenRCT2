@@ -26,7 +26,7 @@
 #include "../core/OrcaStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
@@ -1545,18 +1545,18 @@ namespace OpenRCT2
                     // Stations
                     cs.readWrite(ride.numStations);
                     cs.readWriteArray(ride.getStations(), [&cs](RideStation& station) {
-                        cs.readWrite(station.Start);
-                        cs.readWrite(station.Height);
-                        cs.readWrite(station.Length);
-                        cs.readWrite(station.Depart);
-                        cs.readWrite(station.TrainAtStation);
-                        cs.readWrite(station.Entrance);
-                        cs.readWrite(station.Exit);
-                        cs.readWrite(station.SegmentLength);
-                        cs.readWrite(station.SegmentTime);
-                        cs.readWrite(station.QueueTime);
-                        cs.readWrite(station.QueueLength);
-                        cs.readWrite(station.LastPeepInQueue);
+                        cs.readWrite(station.start);
+                        cs.readWrite(station.height);
+                        cs.readWrite(station.length);
+                        cs.readWrite(station.depart);
+                        cs.readWrite(station.trainAtStation);
+                        cs.readWrite(station.entrance);
+                        cs.readWrite(station.exit);
+                        cs.readWrite(station.segmentLength);
+                        cs.readWrite(station.segmentTime);
+                        cs.readWrite(station.queueTime);
+                        cs.readWrite(station.queueLength);
+                        cs.readWrite(station.lastPeepInQueue);
                         return true;
                     });
 
@@ -2571,7 +2571,7 @@ namespace OpenRCT2
         std::vector<TileCoordsXY> patrolArea;
         if (cs.getMode() == OrcaStream::Mode::writing && entity.patrolInfo != nullptr)
         {
-            patrolArea = entity.patrolInfo->ToVector();
+            patrolArea = entity.patrolInfo->toVector();
         }
         cs.readWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.readWrite(value); });
         if (cs.getMode() == OrcaStream::Mode::reading)
@@ -2585,8 +2585,8 @@ namespace OpenRCT2
                 if (entity.patrolInfo == nullptr)
                     entity.patrolInfo = new PatrolArea();
                 else
-                    entity.patrolInfo->Clear();
-                entity.patrolInfo->Union(patrolArea);
+                    entity.patrolInfo->clear();
+                entity.patrolInfo->unify(patrolArea);
             }
         }
 
@@ -2865,10 +2865,10 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         Formatter ft;
         ft.Add<const char*>(e.what());
         ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 
     if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
     {

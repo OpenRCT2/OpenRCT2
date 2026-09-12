@@ -57,7 +57,7 @@ namespace OpenRCT2
         {
             dragWidth = range.GetX2() - range.GetX1();
             dragHeight = range.GetY2() - range.GetY1();
-            startPos = dragStart.ToTileStart();
+            startPos = dragStart.toTileStart();
 
             startPos.x = std::clamp(startPos.x, range.GetX1(), range.GetX2());
             startPos.y = std::clamp(startPos.y, range.GetY1(), range.GetY2());

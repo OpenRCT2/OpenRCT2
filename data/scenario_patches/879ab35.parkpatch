@@ -1,0 +1,10 @@
+{
+    "scenario_name": "Sugarloaf Shores",
+    "sha256": "879ab352a9d3d84bd12d0bde185131804f2fffd39c8ad3792608866040e58987",
+    "rides": [
+        {
+            "id": [ 0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 28 ],
+            "operation": "clear_name"
+        }
+    ]
+}

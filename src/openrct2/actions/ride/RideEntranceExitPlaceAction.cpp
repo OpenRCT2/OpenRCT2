@@ -88,11 +88,11 @@ namespace OpenRCT2::GameActions
         }
 
         const auto& station = ride->getStation(_stationNum);
-        const auto location = _isExit ? station.Exit : station.Entrance;
+        const auto location = _isExit ? station.exit : station.entrance;
 
-        if (!location.IsNull())
+        if (!location.isNull())
         {
-            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.toCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = QueryNested(&rideEntranceExitRemove, gameState);
@@ -103,7 +103,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto z = ride->getStation(_stationNum).GetBaseZ();
+        auto z = ride->getStation(_stationNum).getBaseZ();
         if (!LocationValid(_loc))
         {
             return Result(Status::invalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
@@ -138,7 +138,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.position = { _loc.ToTileCentre(), z };
+        res.position = { _loc.toTileCentre(), z };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
         return res;
@@ -164,10 +164,10 @@ namespace OpenRCT2::GameActions
         }
 
         auto& station = ride->getStation(_stationNum);
-        const auto location = _isExit ? station.Exit : station.Entrance;
-        if (!location.IsNull())
+        const auto location = _isExit ? station.exit : station.entrance;
+        if (!location.isNull())
         {
-            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.toCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = ExecuteNested(&rideEntranceExitRemove, gameState);
@@ -178,7 +178,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto z = station.GetBaseZ();
+        auto z = station.getBaseZ();
         if (!GetFlags().has(CommandFlag::allowDuringPaused) && !GetFlags().has(CommandFlag::ghost)
             && !gameState.cheats.disableClearanceChecks)
         {
@@ -196,7 +196,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.position = { _loc.ToTileCentre(), z };
+        res.position = { _loc.toTileCentre(), z };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
 
@@ -212,13 +212,13 @@ namespace OpenRCT2::GameActions
 
         if (_isExit)
         {
-            station.Exit = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
+            station.exit = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
         }
         else
         {
-            station.Entrance = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
-            station.LastPeepInQueue = EntityId::GetNull();
-            station.QueueLength = 0;
+            station.entrance = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
+            station.lastPeepInQueue = EntityId::GetNull();
+            station.queueLength = 0;
 
             MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));
         }
@@ -272,7 +272,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, errorTitle, STR_TOO_HIGH);
         }
         auto res = Result();
-        res.position = { loc.ToTileCentre(), TileElementHeight(loc) };
+        res.position = { loc.toTileCentre(), TileElementHeight(loc) };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
         return res;

@@ -48,6 +48,7 @@
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
+#include "drawing/Palette.h"
 #include "drawing/PickupPeep.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
@@ -1439,7 +1440,7 @@ namespace OpenRCT2
 
             if (GameIsNotPaused())
             {
-                gPaletteEffectFrame += gCurrentDeltaTime;
+                Drawing::gPaletteEffectFrame += gCurrentDeltaTime;
             }
 
             DateUpdateRealTimeOfDay();
@@ -1519,11 +1520,11 @@ namespace OpenRCT2
             LOG_VERBOSE("CopyOriginalUserFilesOver('%s', '%s', '%s')", srcRoot.c_str(), dstRoot.c_str(), pattern.c_str());
 
             auto scanPattern = Path::Combine(srcRoot, pattern);
-            auto scanner = Path::ScanDirectory(scanPattern, true);
-            while (scanner->Next())
+            auto scanner = Path::scanDirectory(scanPattern, true);
+            while (scanner->next())
             {
-                auto src = std::string(scanner->GetPath());
-                auto dst = Path::Combine(dstRoot, scanner->GetPathRelative());
+                auto src = std::string(scanner->getPath());
+                auto dst = Path::Combine(dstRoot, scanner->getPathRelative());
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary

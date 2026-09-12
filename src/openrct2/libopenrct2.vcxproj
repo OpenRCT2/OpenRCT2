@@ -252,8 +252,8 @@
     <ClInclude Include="drawing\BlendColourMap.h" />
     <ClInclude Include="drawing\Colour.h" />
     <ClInclude Include="drawing\ColourMap.h" />
-    <ClInclude Include="drawing\ColourPalette.h" />
     <ClInclude Include="drawing\Drawing.h" />
+    <ClInclude Include="drawing\Drawing.Screen.h" />
     <ClInclude Include="drawing\Drawing.String.h" />
     <ClInclude Include="drawing\FilterPaletteIds.h" />
     <ClInclude Include="drawing\Font.h" />
@@ -265,9 +265,12 @@
     <ClInclude Include="drawing\ImageImporter.h" />
     <ClInclude Include="drawing\InvalidationGrid.h" />
     <ClInclude Include="drawing\LightFX.h" />
+    <ClInclude Include="drawing\Line.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
     <ClInclude Include="drawing\PaletteIndex.h" />
+    <ClInclude Include="drawing\Palette.h" />
     <ClInclude Include="drawing\PaletteMap.h" />
+    <ClInclude Include="drawing\PaletteType.h" />
     <ClInclude Include="drawing\PickupPeep.h" />
     <ClInclude Include="drawing\Rectangle.h" />
     <ClInclude Include="drawing\RenderTarget.h" />
@@ -900,17 +903,20 @@
     <ClCompile Include="drawing\Colour.cpp" />
     <ClCompile Include="drawing\ColourMap.cpp" />
     <ClCompile Include="drawing\Drawing.cpp" />
+    <ClCompile Include="drawing\Drawing.Screen.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.BMP.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.RLE.cpp" />
     <ClCompile Include="drawing\Drawing.String.cpp" />
     <ClCompile Include="drawing\Font.cpp" />
     <ClCompile Include="drawing\Image.cpp" />
+    <ClCompile Include="drawing\ImageId.cpp" />
     <ClCompile Include="drawing\ImageImporter.cpp" />
     <ClCompile Include="drawing\InvalidationGrid.cpp" />
     <ClCompile Include="drawing\LightFX.cpp" />
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
+    <ClCompile Include="drawing\Palette.cpp" />
     <ClCompile Include="drawing\PaletteMap.cpp" />
     <ClCompile Include="drawing\PickupPeep.cpp" />
     <ClCompile Include="drawing\Rectangle.cpp" />
@@ -1012,6 +1018,7 @@
     <ClCompile Include="object\TerrainEdgeObject.cpp" />
     <ClCompile Include="object\TerrainSurfaceObject.cpp" />
     <ClCompile Include="object\WallObject.cpp" />
+    <ClCompile Include="object\WaterEntry.cpp" />
     <ClCompile Include="object\WaterObject.cpp" />
     <ClCompile Include="OpenRCT2.cpp" />
     <ClCompile Include="openrct2_pch.cpp" Condition="'$(UsePCH)'=='true'">

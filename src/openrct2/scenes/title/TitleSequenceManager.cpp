@@ -14,8 +14,6 @@
 #include "../../core/Collections.hpp"
 #include "../../core/File.h"
 #include "../../core/FileScanner.h"
-#include "../../platform/AmigaTrace.h"
-#include "../../core/String.hpp"
 #include "../../core/Path.hpp"
 #include "../../core/String.hpp"
 #include "../../localisation/Language.h"
@@ -193,25 +191,21 @@ namespace OpenRCT2::TitleSequenceManager
         _items.clear();
 
         // Scan data path
-        AMIGA_TRACE(String::stdFormat("titleseq: scan data '%s'", GetDataSequencesPath().c_str()).c_str());
         Scan(GetDataSequencesPath());
 
         // Scan user path
-        AMIGA_TRACE(String::stdFormat("titleseq: scan user '%s'", GetUserSequencesPath().c_str()).c_str());
         Scan(GetUserSequencesPath());
 
         SortSequences();
-        AMIGA_TRACE(String::stdFormat("titleseq: %u sequences found", static_cast<unsigned>(_items.size())).c_str());
     }
 
     static void Scan(const std::string& directory)
     {
         auto pattern = Path::Combine(directory, u8"script.txt;*.parkseq");
-        auto fileScanner = Path::ScanDirectory(pattern, true);
-        while (fileScanner->Next())
+        auto fileScanner = Path::scanDirectory(pattern, true);
+        while (fileScanner->next())
         {
-            AMIGA_TRACE(String::stdFormat("titleseq: found '%s'", fileScanner->GetPath().c_str()).c_str());
-            AddSequence(fileScanner->GetPath());
+            AddSequence(fileScanner->getPath());
         }
     }
 

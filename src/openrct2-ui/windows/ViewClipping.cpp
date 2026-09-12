@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Viewport.h>
@@ -128,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
                     _previousClipSelectionB = gClipSelectionB;
                     gClipSelectionA = { 0, 0 };
                     gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
                 case WIDX_CLIP_CLEAR:
                     if (IsActive())
@@ -138,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     gClipSelectionA = { 0, 0 };
                     gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
                 case WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE:
                 {
@@ -263,7 +264,7 @@ namespace OpenRCT2::Ui::Windows
             gClipSelectionB = gMapSelectPositionB;
             _toolActive = false;
             ToolCancel();
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
         void onPrepareDraw() override

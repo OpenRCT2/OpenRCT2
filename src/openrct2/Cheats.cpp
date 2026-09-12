@@ -71,9 +71,9 @@ void CheatsSerialise(DataSerialiser& ds)
     uint16_t count = 0;
     auto& gameState = getGameState();
 
-    if (ds.IsSaving())
+    if (ds.isSaving())
     {
-        IStream& stream = ds.GetStream();
+        IStream& stream = ds.getStream();
 
         // Temporarily write 0, will be updated after every cheat is written.
         uint64_t countOffset = stream.GetPosition();
