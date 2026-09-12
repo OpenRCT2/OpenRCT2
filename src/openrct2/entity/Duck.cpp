@@ -70,6 +70,10 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         kDuckAnimationFlyAway,     //  DuckState::FlyAway,
     };
 
+    static constexpr size_t kDuckAnimationSize[] = { std::size(kDuckAnimationFlyToWater), std::size(kDuckAnimationSwim),
+                                                     std::size(kDuckAnimationDrink), std::size(kDuckAnimationDoubleDrink),
+                                                     std::size(kDuckAnimationFlyAway) };
+
     template<>
     bool EntityBase::is<Duck>() const
     {
@@ -95,7 +99,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             return;
 
         frame++;
-        if (frame >= std::size(kDuckAnimationFlyToWater))
+        if (frame >= kDuckAnimationSize[EnumValue(state)])
         {
             frame = 0;
         }
@@ -180,6 +184,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
             {
                 state = DuckState::flyAway;
+                frame = std::numeric_limits<uint16_t>::max();
                 updateFlyAway();
             }
             else
@@ -191,6 +196,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
                 if (z < landZ || waterZ == 0)
                 {
                     state = DuckState::flyAway;
+                    frame = std::numeric_limits<uint16_t>::max();
                     updateFlyAway();
                 }
                 else
@@ -254,7 +260,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         if ((getGameState().currentTicks & 3) == 0)
         {
             frame++;
-            if (frame >= std::size(kDuckAnimationFlyAway))
+            if (frame >= kDuckAnimationSize[EnumValue(state)])
             {
                 frame = 0;
             }
@@ -272,6 +278,10 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             {
                 remove();
             }
+        }
+        else
+        {
+            frame = frame == std::numeric_limits<uint16_t>::max() ? frame + 1 : frame;
         }
     }
 
