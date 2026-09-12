@@ -64,8 +64,8 @@ public:
         {
             case WindowClass::about:
                 return AboutOpen();
-            case WindowClass::bottomToolbar:
-                return GameBottomToolbarOpen();
+            case WindowClass::gameStatusBar:
+                return gameStatusBarOpen();
             case WindowClass::changelog:
                 return openView(WindowView::changelog);
             case WindowClass::cheats:
@@ -470,8 +470,8 @@ public:
                 WindowSceneryResetSelectedSceneryItems();
                 break;
 
-            case INTENT_ACTION_INVALIDATE_TICKER_NEWS:
-                WindowGameBottomToolbarInvalidateNewsItem();
+            case INTENT_ACTION_UPDATE_NEWS_TICKER:
+                newsTickerInvalidateNewsItem();
                 break;
 
             case INTENT_ACTION_REFRESH_GUEST_LIST:

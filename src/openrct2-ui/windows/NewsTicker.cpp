@@ -13,7 +13,6 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
-#include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
@@ -22,18 +21,18 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
+#include <openrct2/scenes/SceneManager.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WindowGameBottomToolbarWidgetIdx : WidgetIndex
+    enum NewsTickerWidgetIdx : WidgetIndex
     {
         WIDX_PANEL_OUTSET,
         WIDX_PANEL_INSET,
@@ -42,24 +41,26 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget kGameBottomToolbarWidgets[] =
+    static constexpr Widget kNewsTickerWidgets[] =
     {
-        makeWidget({  0, 0}, {356, 34}, WidgetType::imgBtn,       WindowColour::tertiary                                              ), // Middle outset panel
-        makeWidget({  2, 2}, {352, 30}, WidgetType::hiddenButton, WindowColour::tertiary                                              ), // Middle inset panel
+        makeWidget({  0, 0}, {356, 34}, WidgetType::imgBtn,       WindowColour::primary                                               ), // Middle outset panel
+        makeWidget({  2, 2}, {352, 30}, WidgetType::hiddenButton, WindowColour::primary                                               ), // Middle inset panel
         makeWidget({  5, 5}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary,          0xFFFFFFFF, STR_SHOW_SUBJECT_TIP  ), // Associated news item window
         makeWidget({327, 5}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP)  // Scroll to news item target
     };
     // clang-format on
 
-    class GameBottomToolbar final : public Window
+    class NewsTicker final : public Window
     {
     private:
-        void DrawNewsItem(RenderTarget& rt)
+        void drawNewsItem(RenderTarget& rt)
         {
-            const auto& middleOutsetWidget = widgets[WIDX_PANEL_OUTSET];
-            auto* newsItem = News::GetItem(0);
+            const auto* newsItem = News::GetItem(0);
+            if (newsItem == nullptr)
+                return;
 
             // Current news item
+            const auto& middleOutsetWidget = widgets[WIDX_PANEL_OUTSET];
             Rectangle::fillInset(
                 rt,
 
@@ -71,8 +72,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
             int32_t itemWidth = middleOutsetWidget.width() - 63;
             drawNewsTicker(
-                rt, screenCoords, itemWidth, Drawing::Colour::brightGreen, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->text,
-                newsItem->ticks);
+                rt, screenCoords, itemWidth, Drawing::Colour::brightGreen, STR_NEWS_ITEM_TEXT, newsItem->text, newsItem->ticks);
 
             const auto& newsSubjectWidget = widgets[WIDX_NEWS_SUBJECT];
             screenCoords = windowPos + ScreenCoordsXY{ newsSubjectWidget.left, newsSubjectWidget.top };
@@ -170,90 +170,41 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMiddlePanel(RenderTarget& rt)
-        {
-            Widget* middleOutsetWidget = &widgets[WIDX_PANEL_OUTSET];
-
-            Rectangle::fillInset(
-                rt,
-                { windowPos + ScreenCoordsXY{ middleOutsetWidget->left + 1, middleOutsetWidget->top + 1 },
-                  windowPos + ScreenCoordsXY{ middleOutsetWidget->right - 1, middleOutsetWidget->bottom - 1 } },
-                colours[0], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
-
-            // Figure out how much line height we have to work with.
-            uint32_t line_height = FontGetLineHeight(FontStyle::medium);
-
-            ScreenCoordsXY middleWidgetCoords(
-                windowPos.x + middleOutsetWidget->midX(), windowPos.y + middleOutsetWidget->top + line_height + 1);
-            int32_t panelWidth = middleOutsetWidget->width() - 63;
-
-            // Check if there is a map tooltip to draw
-            StringId stringId;
-            auto ft = GetMapTooltip();
-            std::memcpy(&stringId, ft.Data(), sizeof(StringId));
-            if (stringId == kStringIdNone)
-            {
-                // TODO: this string probably shouldn't be reused for this
-                drawTextWrapped(
-                    rt, middleWidgetCoords, panelWidth, STR_TITLE_SEQUENCE_OPENRCT2, ft, { colours[0], TextAlignment::centre });
-            }
-            else
-            {
-                // Show tooltip in bottom toolbar
-                drawTextWrapped(rt, middleWidgetCoords, panelWidth, STR_STRINGID, ft, { colours[0], TextAlignment::centre });
-            }
-        }
-
     public:
-        GameBottomToolbar()
+        NewsTicker()
         {
-            setWidgets(kGameBottomToolbarWidgets);
+            setWidgets(kNewsTickerWidgets);
 
             currentFrame = 0;
             initScrollWidgets();
-
-            // Reset the middle widget to not show by default.
-            // If it is required to be shown news_update will reshow it.
-            widgets[WIDX_PANEL_OUTSET].setHidden();
         }
 
         void onMouseUp(WidgetIndex widgetIndex) override
         {
-            News::Item* newsItem;
+            const auto* newsItem = News::GetItem(0);
+            if (newsItem == nullptr)
+                return;
 
             switch (widgetIndex)
             {
                 case WIDX_PANEL_INSET:
-                    if (News::IsQueueEmpty())
-                    {
-                        ContextOpenWindow(WindowClass::recentNews);
-                    }
-                    else
-                    {
-                        News::CloseCurrentItem();
-                    }
+                    News::CloseCurrentItem();
                     break;
                 case WIDX_NEWS_SUBJECT:
-                    newsItem = News::GetItem(0);
                     News::OpenSubject(newsItem->type, newsItem->assoc);
                     break;
                 case WIDX_NEWS_LOCATE:
-                    if (News::IsQueueEmpty())
+                {
+                    auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
+                    if (!subjectLoc.has_value())
                         break;
 
-                    {
-                        newsItem = News::GetItem(0);
+                    WindowBase* mainWindow = WindowGetMain();
+                    if (mainWindow != nullptr)
+                        WindowScrollToLocation(*mainWindow, subjectLoc.value());
 
-                        auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
-
-                        if (!subjectLoc.has_value())
-                            break;
-
-                        WindowBase* mainWindow = WindowGetMain();
-                        if (mainWindow != nullptr)
-                            WindowScrollToLocation(*mainWindow, subjectLoc.value());
-                    }
                     break;
+                }
             }
         }
 
@@ -276,74 +227,33 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEWS_LOCATE].right = width - 6;
             widgets[WIDX_NEWS_LOCATE].left = widgets[WIDX_NEWS_LOCATE].right - 24;
 
-            if (News::IsQueueEmpty())
+            auto* newsItem = News::GetItem(0);
+            setWidgetDisabled(WIDX_NEWS_SUBJECT, false);
+            setWidgetDisabled(WIDX_NEWS_LOCATE, false);
+
+            // Find out if the news item is no longer valid
+            auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
+
+            if (!subjectLoc.has_value())
+                setWidgetDisabled(WIDX_NEWS_LOCATE, true);
+
+            if (!(newsItem->typeHasSubject()))
             {
-                bool useFullToolbar = ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR;
-                widgets[WIDX_PANEL_OUTSET].setVisible(useFullToolbar);
-                widgets[WIDX_PANEL_INSET].setVisible(useFullToolbar);
+                setWidgetDisabled(WIDX_NEWS_SUBJECT, true);
                 widgets[WIDX_NEWS_SUBJECT].setHidden();
-                widgets[WIDX_NEWS_LOCATE].setHidden();
-
-                if (useFullToolbar)
-                {
-                    widgets[WIDX_PANEL_OUTSET].colour = 0;
-                    widgets[WIDX_PANEL_INSET].colour = 0;
-                }
             }
-            else
+
+            if (newsItem->hasButton())
             {
-                News::Item* newsItem = News::GetItem(0);
-                widgets[WIDX_PANEL_OUTSET].setVisible();
-                widgets[WIDX_PANEL_INSET].setVisible();
-                widgets[WIDX_NEWS_SUBJECT].setVisible();
-                widgets[WIDX_NEWS_LOCATE].setVisible();
-                widgets[WIDX_PANEL_OUTSET].colour = 2;
-                widgets[WIDX_PANEL_INSET].colour = 2;
-                setWidgetDisabled(WIDX_NEWS_SUBJECT, false);
-                setWidgetDisabled(WIDX_NEWS_LOCATE, false);
-
-                // Find out if the news item is no longer valid
-                auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
-
-                if (!subjectLoc.has_value())
-                    setWidgetDisabled(WIDX_NEWS_LOCATE, true);
-
-                if (!(newsItem->typeHasSubject()))
-                {
-                    setWidgetDisabled(WIDX_NEWS_SUBJECT, true);
-                    widgets[WIDX_NEWS_SUBJECT].setHidden();
-                }
-
-                if (newsItem->hasButton())
-                {
-                    setWidgetDisabled(WIDX_NEWS_SUBJECT, true);
-                    setWidgetDisabled(WIDX_NEWS_LOCATE, true);
-                }
+                setWidgetDisabled(WIDX_NEWS_SUBJECT, true);
+                setWidgetDisabled(WIDX_NEWS_LOCATE, true);
             }
         }
 
         void onDraw(RenderTarget& rt) override
         {
-            const auto& middleWidget = widgets[WIDX_PANEL_OUTSET];
-
-            if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
-            {
-                // Draw grey background
-                auto leftTop = windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
-                auto rightBottom = windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
-                Rectangle::filter(rt, { leftTop, rightBottom }, FilterPaletteID::palette51);
-            }
-
             drawWidgets(rt);
-
-            if (!News::IsQueueEmpty())
-            {
-                DrawNewsItem(rt);
-            }
-            else if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
-            {
-                DrawMiddlePanel(rt);
-            }
+            drawNewsItem(rt);
         }
 
         void onUpdate() override
@@ -351,14 +261,19 @@ namespace OpenRCT2::Ui::Windows
             currentFrame++;
             if (currentFrame >= 24)
                 currentFrame = 0;
+
+            if (News::IsQueueEmpty())
+                close();
         }
     };
 
-    /**
-     * Creates the main game bottom toolbar window.
-     */
-    WindowBase* GameBottomToolbarOpen()
+    WindowBase* newsTickerOpen()
     {
+        // Only show news ticker in-game
+        auto* sceneMgr = GetContext()->GetSceneManager();
+        if (sceneMgr->getActiveScene() != sceneMgr->getGameScene())
+            return nullptr;
+
         // TODO: query ParkInfoPanel, DateInfoPanel
         constexpr auto kPanelWidth = 142;
 
@@ -371,20 +286,21 @@ namespace OpenRCT2::Ui::Windows
         int32_t toolbarHeight = lineHeight * 2 + 12;
 
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->Create<GameBottomToolbar>(
-            WindowClass::bottomToolbar, ScreenCoordsXY(kPanelWidth, ContextGetHeight() - toolbarHeight),
+        auto* window = windowMgr->Create<NewsTicker>(
+            WindowClass::newsTicker, ScreenCoordsXY(kPanelWidth, ContextGetHeight() - toolbarHeight),
             { toolbarWidth, toolbarHeight },
             { WindowFlag::stickToFront, WindowFlag::transparent, WindowFlag::noBackground, WindowFlag::noTitleBar });
 
         return window;
     }
 
-    void WindowGameBottomToolbarInvalidateNewsItem()
+    void newsTickerInvalidateNewsItem()
     {
-        if (gLegacyScene == LegacyScene::playing)
-        {
-            auto* windowMgr = GetWindowManager();
-            windowMgr->InvalidateWidgetByClass(WindowClass::bottomToolbar, WIDX_PANEL_OUTSET);
-        }
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::newsTicker);
+        if (window != nullptr)
+            window->invalidate();
+        else
+            newsTickerOpen();
     }
 } // namespace OpenRCT2::Ui::Windows
