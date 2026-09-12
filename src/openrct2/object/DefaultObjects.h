@@ -10,10 +10,15 @@
 #pragma once
 
 #include <array>
+#include <cstdint>
 #include <string_view>
+
+using ObjectEntryIndex = uint16_t;
 
 namespace OpenRCT2
 {
+    struct IObjectManager;
+
     /**
      * Used by all editor modes: Scenario Editor, Track Designer and Track Designs Manager.
      */
@@ -28,4 +33,6 @@ namespace OpenRCT2
      * Used only by the Scenario Editor.
      */
     extern const std::array<std::string_view, 37> kDefaultScenarioObjects;
+
+    ObjectEntryIndex GetDefaultStationObject(IObjectManager& objectManager);
 } // namespace OpenRCT2
