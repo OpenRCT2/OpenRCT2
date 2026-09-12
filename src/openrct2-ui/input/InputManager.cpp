@@ -217,6 +217,14 @@ void InputManager::handleViewScrolling()
 
     auto mainWindow = WindowGetMain();
 
+#ifdef __APPLE__
+    if (Config::Get().general.nativeMacOSControls)
+    {
+        _analogueScroll.x = 0;
+        _analogueScroll.y = 0;
+    }
+#endif
+
     // Handle gamepad analogue scrolling with cursor-based viewport targeting
     if (_analogueScroll.x != 0 || _analogueScroll.y != 0)
     {
