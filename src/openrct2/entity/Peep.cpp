@@ -1184,7 +1184,7 @@ namespace OpenRCT2
         {
             if (peep->x == kLocationNull)
                 continue;
-            if (viewport->viewPos.x > peep->spriteData.spriteRect.Getright())
+            if (viewport->viewPos.x > peep->spriteData.spriteRect.getRight())
                 continue;
             if (viewport->viewPos.x + viewport->ViewWidth() < peep->spriteData.spriteRect.getLeft())
                 continue;

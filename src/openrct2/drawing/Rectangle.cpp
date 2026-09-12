@@ -27,7 +27,7 @@ namespace OpenRCT2::Drawing::Rectangle
         if (drawingEngine != nullptr)
         {
             IDrawingContext* dc = drawingEngine->GetDrawingContext();
-            dc->FillRect(rt, paletteIndex, rect.getLeft(), rect.getTop(), rect.Getright(), rect.getBottom(), crossHatch);
+            dc->FillRect(rt, paletteIndex, rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom(), crossHatch);
         }
     }
 
@@ -49,8 +49,8 @@ namespace OpenRCT2::Drawing::Rectangle
     {
         const auto leftTop = ScreenCoordsXY{ rect.getLeft(), rect.getTop() };
         const auto leftBottom = ScreenCoordsXY{ rect.getLeft(), rect.getBottom() };
-        const auto rightTop = ScreenCoordsXY{ rect.Getright(), rect.getTop() };
-        const auto rightBottom = ScreenCoordsXY{ rect.Getright(), rect.getBottom() };
+        const auto rightTop = ScreenCoordsXY{ rect.getRight(), rect.getTop() };
+        const auto rightBottom = ScreenCoordsXY{ rect.getRight(), rect.getBottom() };
         if (colour.flags.has(ColourFlag::translucent))
         {
             auto palette = kTranslucentWindowPalettes[EnumValue(colour.colour)];
@@ -150,7 +150,7 @@ namespace OpenRCT2::Drawing::Rectangle
         if (drawingEngine != nullptr)
         {
             IDrawingContext* dc = drawingEngine->GetDrawingContext();
-            dc->FilterRect(rt, palette, rect.getLeft(), rect.getTop(), rect.Getright(), rect.getBottom());
+            dc->FilterRect(rt, palette, rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom());
         }
     }
 

@@ -703,7 +703,7 @@ void OpenGLDrawingContext::FillRect(
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = 0;
@@ -736,7 +736,7 @@ void OpenGLDrawingContext::FilterRect(
 
     DrawRectCommand& command = _commandBuffers.transparent.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = 0;
@@ -966,7 +966,7 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
     {
         DrawRectCommand& command = _commandBuffers.transparent.allocate();
 
-        command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+        command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
         command.texColourAtlas = texture.index;
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = texture.index;
@@ -982,7 +982,7 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
     {
         DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-        command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+        command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
         command.texColourAtlas = texture.index;
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = 0;
@@ -1046,7 +1046,7 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
     command.texColourAtlas = textureColour.index;
     command.texColourBounds = textureColour.coords;
     command.texMaskAtlas = textureMask.index;
@@ -1098,7 +1098,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = texture.index;
@@ -1153,7 +1153,7 @@ void OpenGLDrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int3
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.coords;
     command.texMaskAtlas = 0;
@@ -1218,7 +1218,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         for (auto b : boundsArr)
         {
             DrawRectCommand& command = _commandBuffers.rects.allocate();
-            command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+            command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
             command.texColourAtlas = texture.index;
             command.texColourBounds = texture.coords;
             command.texMaskAtlas = 0;
@@ -1234,7 +1234,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     if (info.colourFlags.has(ColourFlag::inset))
     {
         DrawRectCommand& command = _commandBuffers.rects.allocate();
-        command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+        command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
         command.texColourAtlas = texture.index;
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = 0;
@@ -1248,7 +1248,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     }
     auto& cmdBuf = hintingThreshold > 0 ? _commandBuffers.transparent : _commandBuffers.rects;
     DrawRectCommand& command = cmdBuf.allocate();
-    command.clip = { clip.getLeft(), clip.getTop(), clip.Getright(), clip.getBottom() };
+    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.coords;
     command.texMaskAtlas = 0;

@@ -40,7 +40,7 @@ namespace OpenRCT2::Graph
         void RecalculateLayout(const ScreenRect newBounds, const int32_t newNumYLabels, const int32_t newNumPoints)
         {
             yLabelStepPx = (newBounds.getBottom() - newBounds.getTop()) / (newNumYLabels - 1);
-            xStepPx = (newBounds.Getright() - newBounds.getLeft()) / (newNumPoints - 1);
+            xStepPx = (newBounds.getRight() - newBounds.getLeft()) / (newNumPoints - 1);
             // adjust bounds to be exact multiples of the steps.
             internalBounds = { newBounds.point1,
                                newBounds.point1

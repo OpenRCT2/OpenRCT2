@@ -305,7 +305,7 @@ namespace OpenRCT2
         if (window != nullptr)
         {
             // skip current window and non-intersecting windows
-            if (window == originalWindow || drawRect.Getright() <= window->windowPos.x
+            if (window == originalWindow || drawRect.getRight() <= window->windowPos.x
                 || drawRect.getLeft() >= window->windowPos.x + window->width || drawRect.getBottom() <= window->windowPos.y
                 || drawRect.getTop() >= window->windowPos.y + window->height)
             {
@@ -332,7 +332,7 @@ namespace OpenRCT2
                 ScreenRect rightRect = { { window->windowPos.x, drawRect.getTop() }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
-            else if (drawRect.Getright() > window->windowPos.x + window->width)
+            else if (drawRect.getRight() > window->windowPos.x + window->width)
             {
                 ScreenRect leftRect = { drawRect.point1, { window->windowPos.x + window->width, drawRect.getBottom() } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
@@ -342,7 +342,7 @@ namespace OpenRCT2
             }
             else if (drawRect.getTop() < window->windowPos.y)
             {
-                ScreenRect topRect = { drawRect.point1, { drawRect.Getright(), window->windowPos.y } };
+                ScreenRect topRect = { drawRect.point1, { drawRect.getRight(), window->windowPos.y } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
                 ScreenRect bottomRect = { { drawRect.getLeft(), window->windowPos.y }, drawRect.point2 };
@@ -350,7 +350,7 @@ namespace OpenRCT2
             }
             else if (drawRect.getBottom() > window->windowPos.y + window->height)
             {
-                ScreenRect topRect = { drawRect.point1, { drawRect.Getright(), window->windowPos.y + window->height } };
+                ScreenRect topRect = { drawRect.point1, { drawRect.getRight(), window->windowPos.y + window->height } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
                 ScreenRect bottomRect = { { drawRect.getLeft(), window->windowPos.y + window->height }, drawRect.point2 };
@@ -360,7 +360,7 @@ namespace OpenRCT2
         else
         {
             auto left = drawRect.getLeft();
-            auto right = drawRect.Getright();
+            auto right = drawRect.getRight();
             auto top = drawRect.getTop();
             auto bottom = drawRect.getBottom();
 
@@ -420,7 +420,7 @@ namespace OpenRCT2
             if (w->viewport == window->viewport)
                 continue;
 
-            if (drawRect.Getright() <= w->windowPos.x)
+            if (drawRect.getRight() <= w->windowPos.x)
                 continue;
             if (w->windowPos.x + w->width <= drawRect.getLeft())
                 continue;
@@ -431,7 +431,7 @@ namespace OpenRCT2
                 continue;
 
             const int32_t left = std::max(w->windowPos.x, drawRect.getLeft());
-            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.Getright());
+            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.getRight());
             const int32_t top = std::max(w->windowPos.y, drawRect.getTop());
             const int32_t bottom = std::min(w->windowPos.y + w->height, drawRect.getBottom());
 
@@ -1767,11 +1767,11 @@ namespace OpenRCT2
 
         ScreenRect invalidRect = { { zoom.ApplyInversedTo(screenRect.getLeft() - viewPos.x),
                                      zoom.ApplyInversedTo(screenRect.getTop() - viewPos.y) },
-                                   { zoom.ApplyInversedTo(screenRect.Getright() - viewPos.x),
+                                   { zoom.ApplyInversedTo(screenRect.getRight() - viewPos.x),
                                      zoom.ApplyInversedTo(screenRect.getBottom() - viewPos.y) } };
 
         if (invalidRect.getTop() >= viewport->height || invalidRect.getBottom() <= 0 || invalidRect.getLeft() >= viewport->width
-            || invalidRect.Getright() <= 0)
+            || invalidRect.getRight() <= 0)
         {
             return;
         }

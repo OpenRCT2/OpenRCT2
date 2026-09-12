@@ -149,7 +149,7 @@ void GfxSetDirtyBlocks(const ScreenRect& rect)
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        drawingEngine->Invalidate(rect.getLeft(), rect.getTop(), rect.Getright(), rect.getBottom());
+        drawingEngine->Invalidate(rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom());
     }
 }
 

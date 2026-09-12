@@ -747,7 +747,7 @@ namespace OpenRCT2::Ui
                 screenCoords - ScreenCoordsXY{ peep->spriteData.width, peep->spriteData.heightMin },
                 screenCoords + ScreenCoordsXY{ peep->spriteData.width, peep->spriteData.heightMax });
 
-            auto distance = abs(((spriteRect.getLeft() + spriteRect.Getright()) / 2) - viewportCoords.x)
+            auto distance = abs(((spriteRect.getLeft() + spriteRect.getRight()) / 2) - viewportCoords.x)
                 + abs(((spriteRect.getTop() + spriteRect.getBottom()) / 2) - viewportCoords.y);
             if (distance > maxDistance)
                 continue;

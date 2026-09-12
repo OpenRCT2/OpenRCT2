@@ -114,7 +114,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.getTop())
             || zoom.ApplyInversedTo(spriteRect.getBottom()) <= session.rt.y
             || session.rt.x + session.rt.width <= zoom.ApplyInversedTo(spriteRect.getLeft())
-            || zoom.ApplyInversedTo(spriteRect.Getright()) <= session.rt.x)
+            || zoom.ApplyInversedTo(spriteRect.getRight()) <= session.rt.x)
         {
             continue;
         }

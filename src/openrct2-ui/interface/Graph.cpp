@@ -48,7 +48,7 @@ namespace OpenRCT2::Graph
                 PaletteIndex::pi10);
             // Draw horizontal gridline
             Rectangle::fillInset(
-                rt, { { internalBounds.getLeft(), curScreenPos + 5 }, { internalBounds.Getright(), curScreenPos + 5 } },
+                rt, { { internalBounds.getLeft(), curScreenPos + 5 }, { internalBounds.getRight(), curScreenPos + 5 } },
                 lineCol, Rectangle::BorderStyle::inset);
             curScreenPos += yLabelStepPx;
             curLabel -= yLabelStep;
@@ -92,7 +92,7 @@ namespace OpenRCT2::Graph
         const T valueRange = maxValue - minValue;
 
         const int32_t yPosition = bounds.getBottom() - ((value - minValue) * screenRange) / valueRange;
-        ScreenCoordsXY coords = { bounds.Getright() - hoverIdx * xStep, yPosition };
+        ScreenCoordsXY coords = { bounds.getRight() - hoverIdx * xStep, yPosition };
 
         GfxDrawDashedLine(
             rt,

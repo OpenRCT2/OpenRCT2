@@ -143,7 +143,7 @@ struct RectRange : public CoordsRange<T>
     {
         return CoordsRange<T>::getY1();
     }
-    constexpr int32_t Getright() const
+    constexpr int32_t getRight() const
     {
         return CoordsRange<T>::getX2();
     }
@@ -173,7 +173,7 @@ struct ScreenRect : public RectRange<ScreenCoordsXY>
 
     constexpr int32_t getWidth() const
     {
-        return Getright() - getLeft();
+        return getRight() - getLeft();
     }
     constexpr int32_t getHeight() const
     {
@@ -181,6 +181,6 @@ struct ScreenRect : public RectRange<ScreenCoordsXY>
     }
     constexpr bool contains(const ScreenCoordsXY& coords) const
     {
-        return coords.x >= getLeft() && coords.x <= Getright() && coords.y >= getTop() && coords.y <= getBottom();
+        return coords.x >= getLeft() && coords.x <= getRight() && coords.y >= getTop() && coords.y <= getBottom();
     }
 };
