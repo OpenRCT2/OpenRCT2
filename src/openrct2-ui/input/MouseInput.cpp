@@ -601,6 +601,8 @@ namespace OpenRCT2
                 const bool posY = differentialCoords.y > 0;
                 differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
                 differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+                differentialCoords.x /= Config::Get().general.windowScale;
+                differentialCoords.y /= Config::Get().general.windowScale;
                 differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
                 differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
 
