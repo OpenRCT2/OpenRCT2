@@ -44,6 +44,14 @@ static constexpr std::array _prohibitedCharacters = { '<', '>', '*', '\\', ':', 
 static constexpr std::array _prohibitedCharacters = { '/' };
 #endif
 
+// A lot of countries use a dollar as their currency. Make sure these are mapped to the generic dollar currency
+// instead of defaulting to pounds sterling. The US Dollar, Hong Kong Dollar and New Taiwan Dollar are omitted deliberately
+// as they do exist in OpenRCT2.
+static constexpr std::array kDollarCurrencies = {
+    "AUD", "BBD", "BMD", "BND", "BSD", "BZD", "CAD", "FJD", "GYD", "JMD", "KID",
+    "KYD", "LRD", "NAD", "NZD", "SBD", "SGD", "SRD", "TTD", "TVD", "XCD",
+};
+
 namespace OpenRCT2::Platform
 {
     CurrencyType GetCurrencyValue(const char* currCode)
@@ -59,6 +67,12 @@ namespace OpenRCT2::Platform
             {
                 return static_cast<CurrencyType>(currency);
             }
+        }
+
+        for (const auto* currency : kDollarCurrencies)
+        {
+            if (strncmp(currCode, currency, 3) == 0)
+                return CurrencyType::dollars;
         }
 
         return CurrencyType::pounds;
