@@ -1087,7 +1087,7 @@ namespace OpenRCT2::Ui::Windows
             auto& config = Config::Get().interface;
 
             widgets[WIDX_MUTE].setVisible(config.toolbarShowMute);
-            widgets[WIDX_CHAT].setVisible(config.toolbarShowChat);
+            widgets[WIDX_CHAT].setVisible(config.toolbarShowChat && !isInEditorMode());
             widgets[WIDX_RESEARCH].setVisible(config.toolbarShowResearch);
             widgets[WIDX_CHEATS].setVisible(config.toolbarShowCheats);
             widgets[WIDX_DEBUG].setVisible(Config::Get().general.debuggingTools);

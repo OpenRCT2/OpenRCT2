@@ -14,6 +14,7 @@
 - Fix: [#27087] The ‘Update available’ widget is offset incorrectly.
 - Fix: [#27093] Pause and fast forward buttons are shown in multiplayer.
 - Fix: [#27109] Some rides in RCT1 saves have a wrong number of cars per train. 
+- Fix: [#27113] Chat button is shown in editor mode.
 
 0.5.5 (2026-09-06)
 ------------------------------------------------------------------------
