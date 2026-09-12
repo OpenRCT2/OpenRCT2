@@ -3003,12 +3003,14 @@ namespace OpenRCT2::Ui::Windows
         {
             if (im.isModifierKeyPressed(ModifierKey::ctrl))
             {
-                constexpr auto interactionFlags = EnumsToFlags(
-                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::footpath,
-                    ViewportInteractionItem::pathAddition, ViewportInteractionItem::largeScenery,
-                    ViewportInteractionItem::label, ViewportInteractionItem::banner);
+                constexpr ViewportInteractionItems kInteractionFlags = {
+                    ViewportInteractionItem::terrain,      ViewportInteractionItem::ride,
+                    ViewportInteractionItem::footpath,     ViewportInteractionItem::pathAddition,
+                    ViewportInteractionItem::largeScenery, ViewportInteractionItem::label,
+                    ViewportInteractionItem::banner
+                };
 
-                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, kInteractionFlags);
                 if (info.interactionType != ViewportInteractionItem::none)
                 {
                     _trackPlaceCtrlZ = info.Element->getBaseZ();

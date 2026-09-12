@@ -1474,18 +1474,11 @@ namespace OpenRCT2
     /**
      * Checks if a PaintStruct sprite type is in the filter mask.
      */
-    static bool PSInteractionTypeIsInFilter(PaintStruct* ps, uint16_t filter)
+    static bool PSInteractionTypeIsInFilter(PaintStruct* ps, ViewportInteractionItems filter)
     {
-        if (ps->InteractionItem != ViewportInteractionItem::none && ps->InteractionItem != ViewportInteractionItem::label
-            && ps->InteractionItem <= ViewportInteractionItem::banner)
-        {
-            auto mask = EnumToFlag(ps->InteractionItem);
-            if (filter & mask)
-            {
-                return true;
-            }
-        }
-        return false;
+        return (ps->InteractionItem != ViewportInteractionItem::none && ps->InteractionItem != ViewportInteractionItem::label
+                && ps->InteractionItem <= ViewportInteractionItem::banner)
+            && filter.has(ps->InteractionItem);
     }
 
     /**
@@ -1648,7 +1641,8 @@ namespace OpenRCT2
      *
      *  rct2: 0x0068862C
      */
-    InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32_t viewFlags, uint16_t filter)
+    InteractionInfo SetInteractionInfoFromPaintSession(
+        PaintSession* session, uint32_t viewFlags, ViewportInteractionItems filter)
     {
         PROFILED_FUNCTION();
 
@@ -1705,14 +1699,15 @@ namespace OpenRCT2
      * tileElement: edx
      * viewport: edi
      */
-    InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags)
+    InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags)
     {
         auto* windowMgr = Ui::GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         return GetMapCoordinatesFromPosWindow(window, screenCoords, flags);
     }
 
-    InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags)
+    InteractionInfo GetMapCoordinatesFromPosWindow(
+        WindowBase* window, const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags)
     {
         InteractionInfo info{};
         if (window == nullptr || window->viewport == nullptr)
@@ -1748,7 +1743,7 @@ namespace OpenRCT2
             PaintSession* session = PaintSessionAlloc(rt, viewport->flags, viewport->rotation);
             PaintSessionGenerate(*session);
             PaintSessionArrange(*session);
-            info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags & 0xFFFF);
+            info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags);
             PaintSessionFree(session);
         }
         return info;
@@ -1820,7 +1815,7 @@ namespace OpenRCT2
             return std::nullopt;
         }
         auto myViewport = window->viewport;
-        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
+        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, ViewportInteractionItem::terrain);
         if (info.interactionType == ViewportInteractionItem::none)
         {
             return std::nullopt;

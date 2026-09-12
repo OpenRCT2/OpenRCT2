@@ -278,9 +278,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<CoordsXY> GetBestCoordsFromPos(const ScreenCoordsXY& pos)
         {
             auto info = GetMapCoordinatesFromPos(
-                pos,
-                EnumsToFlags(
-                    ViewportInteractionItem::terrain, ViewportInteractionItem::water, ViewportInteractionItem::footpath));
+                pos, { ViewportInteractionItem::terrain, ViewportInteractionItem::water, ViewportInteractionItem::footpath });
             if (info.interactionType == ViewportInteractionItem::none)
                 return std::nullopt;
 

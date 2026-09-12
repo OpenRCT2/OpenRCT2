@@ -907,11 +907,12 @@ namespace OpenRCT2::Ui::Windows
             // First, store the initial copy/ctrl state
             if (!_footpathPlaceCtrlState && im.isModifierKeyPressed(ModifierKey::ctrl))
             {
-                constexpr auto interactionFlags = EnumsToFlags(
-                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
-                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery);
+                constexpr ViewportInteractionItems kInteractionFlags = {
+                    ViewportInteractionItem::terrain,  ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery
+                };
 
-                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, kInteractionFlags);
                 if (info.interactionType != ViewportInteractionItem::none)
                 {
                     const bool allowInvalidHeights = getGameState().cheats.allowTrackPlaceInvalidHeights;
@@ -972,7 +973,7 @@ namespace OpenRCT2::Ui::Windows
             if (!_footpathPlaceCtrlState)
             {
                 auto info = GetMapCoordinatesFromPos(
-                    screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath));
+                    screenCoords, { ViewportInteractionItem::terrain, ViewportInteractionItem::footpath });
 
                 if (info.interactionType == ViewportInteractionItem::none)
                     return std::nullopt;
@@ -1256,7 +1257,7 @@ namespace OpenRCT2::Ui::Windows
                 return { _footpathPlaceZ, { FootpathSlopeType::flat } };
 
             const auto info = GetMapCoordinatesFromPos(
-                screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath));
+                screenCoords, { ViewportInteractionItem::terrain, ViewportInteractionItem::footpath });
             return FootpathGetPlacementFromInfo(info);
         }
 
