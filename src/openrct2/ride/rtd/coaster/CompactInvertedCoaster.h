@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor kCompactInvertedCoasterRTD =
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::isSuspended, RtdFlag::reverseInclineLaunchAffectsReliability),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle),
+    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 7, 27 },
     .Naming = { STR_RIDE_NAME_COMPACT_INVERTED_COASTER, STR_RIDE_DESCRIPTION_COMPACT_INVERTED_COASTER },

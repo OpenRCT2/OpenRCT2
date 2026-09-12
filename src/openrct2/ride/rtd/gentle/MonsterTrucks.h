@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor kMonsterTrucksRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::showInTrackDesigner,
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = (1uLL << static_cast<uint8_t>(RideMode::continuousCircuit)),
+    .rideModes = { RideMode::continuousCircuit },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_MONSTER_TRUCKS, STR_RIDE_DESCRIPTION_MONSTER_TRUCKS },

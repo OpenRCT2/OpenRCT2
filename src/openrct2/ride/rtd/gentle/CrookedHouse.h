@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor kCrookedHouseRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::crookedHouse),
+    .rideModes = { RideMode::crookedHouse },
     .DefaultMode = RideMode::crookedHouse,
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
     .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },

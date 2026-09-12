@@ -3107,14 +3107,14 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            auto availableModes = ride->getAvailableModes();
+            RideModes availableModes = ride->getAvailableModes();
 
             // Create dropdown list
             auto numAvailableModes = 0;
             auto checkedIndex = -1;
             for (auto i = 0; i < static_cast<uint8_t>(RideMode::count); i++)
             {
-                if (availableModes & (1uLL << i))
+                if (availableModes.has(static_cast<RideMode>(i)))
                 {
                     gDropdown.items[numAvailableModes] = Dropdown::MenuLabel(kRideModeNames[i]);
 
@@ -3376,11 +3376,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MODE_DROPDOWN:
                 {
                     RideMode rideMode = RideMode::nullMode;
-                    auto availableModes = ride->getAvailableModes();
+                    RideModes availableModes = ride->getAvailableModes();
                     auto modeInDropdownIndex = -1;
                     for (RideMode rideModeIndex = RideMode::normal; rideModeIndex < RideMode::count; rideModeIndex++)
                     {
-                        if (availableModes & EnumToFlag(rideModeIndex))
+                        if (availableModes.has(rideModeIndex))
                         {
                             modeInDropdownIndex++;
                             if (modeInDropdownIndex == dropdownIndex)

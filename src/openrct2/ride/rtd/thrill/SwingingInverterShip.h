@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kSwingingInverterShipRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::swing),
+    .rideModes = { RideMode::swing },
     .DefaultMode = RideMode::swing,
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_SWINGING_INVERTER_SHIP, STR_RIDE_DESCRIPTION_SWINGING_INVERTER_SHIP },
@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor kSwingingInverterShipRTD =
         0,
         false,
         {
-            { RatingsModifierType::bonusOperationOption, 0, 11, 22, 22 }, 
+            { RatingsModifierType::bonusOperationOption, 0, 11, 22, 22 },
             { RatingsModifierType::bonusScenery,         0, 11155, 0, 0 },
         },
     },

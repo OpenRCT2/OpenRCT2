@@ -501,7 +501,7 @@ namespace OpenRCT2
         TrackDrawerDescriptor InvertedTrackPaintFunctions{};
         RtdFlags flags{};
         /** rct2: 0x0097C8AC */
-        uint64_t RideModes{};
+        RideModes rideModes{};
         RideMode DefaultMode{};
         /** rct2: 0x0097CF40 */
         RideOperatingSettings OperatingSettings{};
@@ -616,16 +616,43 @@ namespace OpenRCT2
         return kRideComponentNames[EnumValue(type)];
     }
 
-    constexpr uint64_t kAllRideModesAvailable = EnumsToFlags(
-        RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle,
-        RideMode::poweredLaunchPassthrough, RideMode::shuttle, RideMode::normal, RideMode::boatHire, RideMode::upwardLaunch,
-        RideMode::rotatingLift, RideMode::stationToStation, RideMode::singleRidePerAdmission,
-        RideMode::unlimitedRidesPerAdmission, RideMode::maze, RideMode::race, RideMode::dodgems, RideMode::swing,
-        RideMode::shopStall, RideMode::rotation, RideMode::forwardRotation, RideMode::backwardRotation,
-        RideMode::filmAvengingAviators, RideMode::mouseTails3DFilm, RideMode::spaceRings, RideMode::beginners,
-        RideMode::limPoweredLaunch, RideMode::filmThrillRiders, RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm,
-        RideMode::intense, RideMode::berserk, RideMode::hauntedHouse, RideMode::circus, RideMode::downwardLaunch,
-        RideMode::crookedHouse, RideMode::freefallDrop, RideMode::poweredLaunch, RideMode::poweredLaunchBlockSectioned);
+    constexpr RideModes kAllRideModesAvailable = { RideMode::continuousCircuit,
+                                                   RideMode::continuousCircuitBlockSectioned,
+                                                   RideMode::reverseInclineLaunchedShuttle,
+                                                   RideMode::poweredLaunchPassthrough,
+                                                   RideMode::shuttle,
+                                                   RideMode::normal,
+                                                   RideMode::boatHire,
+                                                   RideMode::upwardLaunch,
+                                                   RideMode::rotatingLift,
+                                                   RideMode::stationToStation,
+                                                   RideMode::singleRidePerAdmission,
+                                                   RideMode::unlimitedRidesPerAdmission,
+                                                   RideMode::maze,
+                                                   RideMode::race,
+                                                   RideMode::dodgems,
+                                                   RideMode::swing,
+                                                   RideMode::shopStall,
+                                                   RideMode::rotation,
+                                                   RideMode::forwardRotation,
+                                                   RideMode::backwardRotation,
+                                                   RideMode::filmAvengingAviators,
+                                                   RideMode::mouseTails3DFilm,
+                                                   RideMode::spaceRings,
+                                                   RideMode::beginners,
+                                                   RideMode::limPoweredLaunch,
+                                                   RideMode::filmThrillRiders,
+                                                   RideMode::stormChasers3DFilm,
+                                                   RideMode::spaceRaiders3DFilm,
+                                                   RideMode::intense,
+                                                   RideMode::berserk,
+                                                   RideMode::hauntedHouse,
+                                                   RideMode::circus,
+                                                   RideMode::downwardLaunch,
+                                                   RideMode::crookedHouse,
+                                                   RideMode::freefallDrop,
+                                                   RideMode::poweredLaunch,
+                                                   RideMode::poweredLaunchBlockSectioned };
 
     extern const CarEntry kCableLiftVehicle;
 
@@ -641,7 +668,7 @@ namespace OpenRCT2
         .TrackPaintFunctions = {},
         .InvertedTrackPaintFunctions = {},
         .flags = { RtdFlag::isDummyType },
-        .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+        .rideModes = { RideMode::continuousCircuit },
         .DefaultMode = RideMode::continuousCircuit,
         .OperatingSettings = {},
         .TrackSpeedSettings = {},

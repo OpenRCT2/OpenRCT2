@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor kWaterCoasterRTD =
     .InvertedTrackPaintFunctions = {},
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasCoveredPieces, RtdFlag::checkGForces),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 18 },
     .TrackSpeedSettings = { 30, 15 },

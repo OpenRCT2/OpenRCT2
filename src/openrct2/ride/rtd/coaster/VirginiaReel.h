@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor kVirginiaReelRTD =
     .InvertedTrackPaintFunctions = {},
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
          RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .rideModes = { RideMode::continuousCircuit },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_VIRGINIA_REEL, STR_RIDE_DESCRIPTION_VIRGINIA_REEL },

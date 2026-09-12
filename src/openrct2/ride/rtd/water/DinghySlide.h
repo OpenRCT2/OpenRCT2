@@ -47,7 +47,7 @@ constexpr RideTypeDescriptor kDinghySlideRTD =
                      RtdFlag::checkForStalling, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::hasAirTime,
                      RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .rideModes = { RideMode::continuousCircuit },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_DINGHY_SLIDE, STR_RIDE_DESCRIPTION_DINGHY_SLIDE },

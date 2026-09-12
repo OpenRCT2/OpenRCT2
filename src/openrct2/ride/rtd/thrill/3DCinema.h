@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kCinemaRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::mouseTails3DFilm, RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm),
+    .rideModes = { RideMode::mouseTails3DFilm, RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm },
     .DefaultMode = RideMode::mouseTails3DFilm,
     .Naming = { STR_RIDE_NAME_3D_CINEMA, STR_RIDE_DESCRIPTION_3D_CINEMA },
     .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },

@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor kBoatHireRTD =
     .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::trackMustBeOnWater,
                      RtdFlag::noTestMode, RtdFlag::hasLoadOptions, RtdFlag::hasVehicleColours, RtdFlag::checkForStalling,
                      RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit),
-    .RideModes = EnumsToFlags(RideMode::boatHire),
+    .rideModes = { RideMode::boatHire },
     .DefaultMode = RideMode::boatHire,
     .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },

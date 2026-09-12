@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor kMiniGolfRTD =
     .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::noTestMode, RtdFlag::hasTrack, RtdFlag::hasOneStation,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .rideModes = { RideMode::continuousCircuit },
     .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF },
     .NameConvention = { RideComponentType::player, RideComponentType::course, RideComponentType::station },

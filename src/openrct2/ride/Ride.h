@@ -48,7 +48,6 @@ namespace OpenRCT2
     struct TrackElement;
 
     enum class EntranceType : uint8_t;
-    enum class RideMode : uint8_t;
     enum class RideStatus : uint8_t;
 
     constexpr uint8_t kRideAdjacencyCheckDistance = 5;
@@ -163,6 +162,52 @@ namespace OpenRCT2
             Breakdown::controlFailure,
         });
     constexpr auto kBreakdownCount = kAllBreakdownTypes.size();
+
+    enum class RideMode : uint8_t
+    {
+        normal,
+        continuousCircuit,
+        reverseInclineLaunchedShuttle,
+        poweredLaunchPassthrough, // RCT2 style, pass through station
+        shuttle,
+        boatHire,
+        upwardLaunch,
+        rotatingLift,
+        stationToStation,
+        singleRidePerAdmission,
+        unlimitedRidesPerAdmission = 10,
+        maze,
+        race,
+        dodgems,
+        swing,
+        shopStall,
+        rotation,
+        forwardRotation,
+        backwardRotation,
+        filmAvengingAviators,
+        mouseTails3DFilm = 20,
+        spaceRings,
+        beginners,
+        limPoweredLaunch,
+        filmThrillRiders,
+        stormChasers3DFilm,
+        spaceRaiders3DFilm,
+        intense,
+        berserk,
+        hauntedHouse,
+        circus = 30,
+        downwardLaunch,
+        crookedHouse,
+        freefallDrop,
+        continuousCircuitBlockSectioned,
+        poweredLaunch, // RCT1 style, don't pass through station
+        poweredLaunchBlockSectioned,
+
+        count,
+        nullMode = 255,
+    };
+    RideMode& operator++(RideMode& d, int);
+    using RideModes = FlagHolder<uint8_t, RideMode>;
 
     struct RideStation
     {
@@ -495,7 +540,7 @@ namespace OpenRCT2
 
         [[nodiscard]] std::unique_ptr<TrackDesign> saveToTrackDesign(TrackDesignState& tds) const;
 
-        uint64_t getAvailableModes() const;
+        RideModes getAvailableModes() const;
         const RideTypeDescriptor& getRideTypeDescriptor() const;
         RideNaming getTypeNaming() const;
         TrackElement* getOriginElement(StationIndex stationIndex) const;
@@ -649,52 +694,6 @@ namespace OpenRCT2
         simulating,
         count,
     };
-
-    enum class RideMode : uint8_t
-    {
-        normal,
-        continuousCircuit,
-        reverseInclineLaunchedShuttle,
-        poweredLaunchPassthrough, // RCT2 style, pass through station
-        shuttle,
-        boatHire,
-        upwardLaunch,
-        rotatingLift,
-        stationToStation,
-        singleRidePerAdmission,
-        unlimitedRidesPerAdmission = 10,
-        maze,
-        race,
-        dodgems,
-        swing,
-        shopStall,
-        rotation,
-        forwardRotation,
-        backwardRotation,
-        filmAvengingAviators,
-        mouseTails3DFilm = 20,
-        spaceRings,
-        beginners,
-        limPoweredLaunch,
-        filmThrillRiders,
-        stormChasers3DFilm,
-        spaceRaiders3DFilm,
-        intense,
-        berserk,
-        hauntedHouse,
-        circus = 30,
-        downwardLaunch,
-        crookedHouse,
-        freefallDrop,
-        continuousCircuitBlockSectioned,
-        poweredLaunch, // RCT1 style, don't pass through station
-        poweredLaunchBlockSectioned,
-
-        count,
-        nullMode = 255,
-    };
-
-    RideMode& operator++(RideMode& d, int);
 
     enum class RideCategory : uint8_t
     {

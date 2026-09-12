@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor kLiftRTD =
                      RtdFlag::cannotHaveGaps, RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::hasVehicleColours,
                      RtdFlag::hasTrack, RtdFlag::allowExtraTowerBases, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner),
-    .RideModes = EnumsToFlags(RideMode::shuttle),
+    .rideModes = { RideMode::shuttle },
     .DefaultMode = RideMode::shuttle,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_LIFT, STR_RIDE_DESCRIPTION_LIFT },

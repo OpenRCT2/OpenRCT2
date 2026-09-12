@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor kAlpineCoasterRTD =
                           RtdFlag::allowMusic, RtdFlag::interestingToLookAt, RtdFlag::supportsMultipleColourSchemes,
                           RtdFlag::canSynchroniseWithAdjacentStations, RtdFlag::hasEntranceAndExit,
                           RtdFlag::noTestMode, RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::upInclineRequiresLift),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .rideModes = { RideMode::continuousCircuit },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 18 },
     .TrackSpeedSettings = { 10, 10 },

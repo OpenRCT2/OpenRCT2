@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kMonorailCyclesRTD =
                      RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .rideModes = { RideMode::continuousCircuit },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_MONORAIL_CYCLES, STR_RIDE_DESCRIPTION_MONORAIL_CYCLES },

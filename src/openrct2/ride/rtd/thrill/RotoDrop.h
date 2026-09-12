@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kRotoDropRTD =
                      RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::singleSession, RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::freefallDrop),
+    .rideModes = { RideMode::freefallDrop },
     .DefaultMode = RideMode::freefallDrop,
     .Naming = { STR_RIDE_NAME_ROTO_DROP, STR_RIDE_DESCRIPTION_ROTO_DROP },
     .NameConvention = { RideComponentType::car, RideComponentType::track, RideComponentType::station },

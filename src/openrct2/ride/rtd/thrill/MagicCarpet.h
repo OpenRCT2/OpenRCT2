@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kMagicCarpetRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::swing),
+    .rideModes = { RideMode::swing },
     .DefaultMode = RideMode::swing,
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET },
@@ -64,7 +64,7 @@ constexpr RideTypeDescriptor kMagicCarpetRTD =
         0,
         false,
         {
-            { RatingsModifierType::bonusOperationOption, 0, 10, 20, 20 }, 
+            { RatingsModifierType::bonusOperationOption, 0, 10, 20, 20 },
             { RatingsModifierType::bonusScenery,         0, 11155, 0, 0 },
         },
     },
