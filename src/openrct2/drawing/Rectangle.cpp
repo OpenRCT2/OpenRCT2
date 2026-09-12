@@ -27,7 +27,7 @@ namespace OpenRCT2::Drawing::Rectangle
         if (drawingEngine != nullptr)
         {
             IDrawingContext* dc = drawingEngine->GetDrawingContext();
-            dc->FillRect(rt, paletteIndex, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom(), crossHatch);
+            dc->FillRect(rt, paletteIndex, rect.getLeft(), rect.getTop(), rect.Getright(), rect.getBottom(), crossHatch);
         }
     }
 
@@ -47,10 +47,10 @@ namespace OpenRCT2::Drawing::Rectangle
         RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle, FillBrightness brightness,
         FillMode fillMode)
     {
-        const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
-        const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
-        const auto rightTop = ScreenCoordsXY{ rect.GetRight(), rect.GetTop() };
-        const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
+        const auto leftTop = ScreenCoordsXY{ rect.getLeft(), rect.getTop() };
+        const auto leftBottom = ScreenCoordsXY{ rect.getLeft(), rect.getBottom() };
+        const auto rightTop = ScreenCoordsXY{ rect.Getright(), rect.getTop() };
+        const auto rightBottom = ScreenCoordsXY{ rect.Getright(), rect.getBottom() };
         if (colour.flags.has(ColourFlag::translucent))
         {
             auto palette = kTranslucentWindowPalettes[EnumValue(colour.colour)];
@@ -150,7 +150,7 @@ namespace OpenRCT2::Drawing::Rectangle
         if (drawingEngine != nullptr)
         {
             IDrawingContext* dc = drawingEngine->GetDrawingContext();
-            dc->FilterRect(rt, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
+            dc->FilterRect(rt, palette, rect.getLeft(), rect.getTop(), rect.Getright(), rect.getBottom());
         }
     }
 

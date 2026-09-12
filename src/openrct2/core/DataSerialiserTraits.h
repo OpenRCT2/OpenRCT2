@@ -427,10 +427,10 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const MapRange& v)
         {
-            stream->WriteValue(ByteSwapBE(v.GetX1()));
-            stream->WriteValue(ByteSwapBE(v.GetY1()));
-            stream->WriteValue(ByteSwapBE(v.GetX2()));
-            stream->WriteValue(ByteSwapBE(v.GetY2()));
+            stream->WriteValue(ByteSwapBE(v.getX1()));
+            stream->WriteValue(ByteSwapBE(v.getY1()));
+            stream->WriteValue(ByteSwapBE(v.getX2()));
+            stream->WriteValue(ByteSwapBE(v.getY2()));
         }
         static void decode(IStream* stream, MapRange& v)
         {
@@ -444,8 +444,8 @@ namespace OpenRCT2
         {
             char coords[128] = {};
             snprintf(
-                coords, sizeof(coords), "MapRange(x1 = %d, y1 = %d, x2 = %d, y2 = %d)", v.GetX1(), v.GetY1(), v.GetX2(),
-                v.GetY2());
+                coords, sizeof(coords), "MapRange(x1 = %d, y1 = %d, x2 = %d, y2 = %d)", v.getX1(), v.getY1(), v.getX2(),
+                v.getY2());
 
             stream->Write(coords, strlen(coords));
         }

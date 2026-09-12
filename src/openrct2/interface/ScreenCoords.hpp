@@ -135,21 +135,21 @@ struct RectRange : public CoordsRange<T>
 {
     using CoordsRange<T>::CoordsRange;
 
-    constexpr int32_t GetLeft() const
+    constexpr int32_t getLeft() const
     {
-        return CoordsRange<T>::GetX1();
+        return CoordsRange<T>::getX1();
     }
-    constexpr int32_t GetTop() const
+    constexpr int32_t getTop() const
     {
-        return CoordsRange<T>::GetY1();
+        return CoordsRange<T>::getY1();
     }
-    constexpr int32_t GetRight() const
+    constexpr int32_t Getright() const
     {
-        return CoordsRange<T>::GetX2();
+        return CoordsRange<T>::getX2();
     }
-    constexpr int32_t GetBottom() const
+    constexpr int32_t getBottom() const
     {
-        return CoordsRange<T>::GetY2();
+        return CoordsRange<T>::getY2();
     }
 
     constexpr RectRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
@@ -171,16 +171,16 @@ struct ScreenRect : public RectRange<ScreenCoordsXY>
 {
     using RectRange::RectRange;
 
-    constexpr int32_t GetWidth() const
+    constexpr int32_t getWidth() const
     {
-        return GetRight() - GetLeft();
+        return Getright() - getLeft();
     }
-    constexpr int32_t GetHeight() const
+    constexpr int32_t getHeight() const
     {
-        return GetBottom() - GetTop();
+        return getBottom() - getTop();
     }
-    constexpr bool Contains(const ScreenCoordsXY& coords) const
+    constexpr bool contains(const ScreenCoordsXY& coords) const
     {
-        return coords.x >= GetLeft() && coords.x <= GetRight() && coords.y >= GetTop() && coords.y <= GetBottom();
+        return coords.x >= getLeft() && coords.x <= Getright() && coords.y >= getTop() && coords.y <= getBottom();
     }
 };

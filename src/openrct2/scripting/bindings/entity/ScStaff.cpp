@@ -626,9 +626,9 @@ namespace OpenRCT2::Scripting
             {
                 MapRange mapRange = { JSToCoordXY(ctx, coordsOrRange, "leftTop"),
                                       JSToCoordXY(ctx, coordsOrRange, "rightBottom") };
-                for (int32_t y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+                for (int32_t y = mapRange.getY1(); y <= mapRange.getY2(); y += kCoordsXYStep)
                 {
-                    for (int32_t x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
+                    for (int32_t x = mapRange.getX1(); x <= mapRange.getX2(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
                         staff->setPatrolArea(coord, reset);

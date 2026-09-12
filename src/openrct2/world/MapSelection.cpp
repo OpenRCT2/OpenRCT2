@@ -36,8 +36,8 @@ MapRange getMapSelectRange()
 void setMapSelectRange(const MapRange& range)
 {
     const auto normalised = range.normalise();
-    gMapSelectPositionA = normalised.Point1;
-    gMapSelectPositionB = normalised.Point2;
+    gMapSelectPositionA = normalised.point1;
+    gMapSelectPositionB = normalised.point2;
 }
 
 void setMapSelectRange(const CoordsXY coords)

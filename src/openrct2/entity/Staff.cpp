@@ -281,9 +281,9 @@ namespace OpenRCT2
 
     void Staff::setPatrolArea(const MapRange& range, bool value)
     {
-        for (int32_t yy = range.GetY1(); yy <= range.GetY2(); yy += kCoordsXYStep)
+        for (int32_t yy = range.getY1(); yy <= range.getY2(); yy += kCoordsXYStep)
         {
-            for (int32_t xx = range.GetX1(); xx <= range.GetX2(); xx += kCoordsXYStep)
+            for (int32_t xx = range.getX1(); xx <= range.getX2(); xx += kCoordsXYStep)
             {
                 setPatrolArea({ xx, yy }, value);
             }

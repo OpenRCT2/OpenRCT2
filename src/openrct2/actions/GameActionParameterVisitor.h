@@ -65,10 +65,10 @@ namespace OpenRCT2::GameActions
 
         void Visit(MapRange& param)
         {
-            Visit("x1", param.Point1.x);
-            Visit("y1", param.Point1.y);
-            Visit("x2", param.Point2.x);
-            Visit("y2", param.Point2.y);
+            Visit("x1", param.point1.x);
+            Visit("y1", param.point1.y);
+            Visit("x2", param.point2.x);
+            Visit("y2", param.point2.y);
         }
 
         template<typename T>

@@ -131,7 +131,7 @@ namespace OpenRCT2::Audio
             bottom -= quarter_h;
         }
 
-        if (left >= vehicle.spriteData.spriteRect.GetRight() || bottom >= vehicle.spriteData.spriteRect.GetBottom())
+        if (left >= vehicle.spriteData.spriteRect.Getright() || bottom >= vehicle.spriteData.spriteRect.getBottom())
             return false;
 
         auto right = gMusicTrackingViewport->ViewWidth() + left;
@@ -143,7 +143,7 @@ namespace OpenRCT2::Audio
             top += quarter_h + quarter_h;
         }
 
-        if (right < vehicle.spriteData.spriteRect.GetRight() || top < vehicle.spriteData.spriteRect.GetTop())
+        if (right < vehicle.spriteData.spriteRect.Getright() || top < vehicle.spriteData.spriteRect.getTop())
             return false;
 
         return true;
@@ -173,7 +173,7 @@ namespace OpenRCT2::Audio
     {
         VehicleSoundParams param;
         param.priority = priority;
-        int32_t panX = (vehicle.spriteData.spriteRect.GetLeft() / 2) + (vehicle.spriteData.spriteRect.GetRight() / 2)
+        int32_t panX = (vehicle.spriteData.spriteRect.getLeft() / 2) + (vehicle.spriteData.spriteRect.Getright() / 2)
             - gMusicTrackingViewport->viewPos.x;
         panX = gMusicTrackingViewport->zoom.ApplyInversedTo(panX);
         panX += gMusicTrackingViewport->pos.x;
@@ -185,7 +185,7 @@ namespace OpenRCT2::Audio
         }
         param.panX = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
-        int32_t panY = (vehicle.spriteData.spriteRect.GetTop() / 2) + (vehicle.spriteData.spriteRect.GetBottom() / 2)
+        int32_t panY = (vehicle.spriteData.spriteRect.getTop() / 2) + (vehicle.spriteData.spriteRect.getBottom() / 2)
             - gMusicTrackingViewport->viewPos.y;
         panY = gMusicTrackingViewport->zoom.ApplyInversedTo(panY);
         panY += gMusicTrackingViewport->pos.y;

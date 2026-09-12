@@ -1012,7 +1012,7 @@ namespace OpenRCT2::Ui::Windows
             // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
             const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / kScrollableRowHeight - 1;
             const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
-            if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
+            if (index >= 0 && checkboxColumnRect.contains(screenCoords))
             { // Checkbox was clicked
                 ToggleInvisibility(index);
             }

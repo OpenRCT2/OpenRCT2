@@ -39,11 +39,11 @@ namespace OpenRCT2::Graph
 
         void RecalculateLayout(const ScreenRect newBounds, const int32_t newNumYLabels, const int32_t newNumPoints)
         {
-            yLabelStepPx = (newBounds.GetBottom() - newBounds.GetTop()) / (newNumYLabels - 1);
-            xStepPx = (newBounds.GetRight() - newBounds.GetLeft()) / (newNumPoints - 1);
+            yLabelStepPx = (newBounds.getBottom() - newBounds.getTop()) / (newNumYLabels - 1);
+            xStepPx = (newBounds.Getright() - newBounds.getLeft()) / (newNumPoints - 1);
             // adjust bounds to be exact multiples of the steps.
-            internalBounds = { newBounds.Point1,
-                               newBounds.Point1
+            internalBounds = { newBounds.point1,
+                               newBounds.point1
                                    + ScreenCoordsXY{ xStepPx * (newNumPoints - 1), yLabelStepPx * (newNumYLabels - 1) } };
             numPoints = newNumPoints;
             numYLabels = newNumYLabels;
@@ -54,9 +54,9 @@ namespace OpenRCT2::Graph
             const ScreenCoordsXY cursorPos = ContextGetCursorPositionScaled();
 
             int32_t i = -1;
-            if (internalBounds.Contains(cursorPos))
+            if (internalBounds.contains(cursorPos))
             {
-                i = (numPoints - 1) - (cursorPos.x - internalBounds.GetLeft() + (xStepPx / 2)) / xStepPx;
+                i = (numPoints - 1) - (cursorPos.x - internalBounds.getLeft() + (xStepPx / 2)) / xStepPx;
                 if (i < 0)
                     i = 1;
                 if (i > numPoints - 1)
