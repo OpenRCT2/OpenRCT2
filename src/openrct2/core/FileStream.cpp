@@ -129,13 +129,13 @@ namespace OpenRCT2
         _fileSize = _filelengthi64(_fileno(_file));
 #else
         std::error_code ec;
-#ifdef __amigaos__
+    #ifdef __amigaos__
         // libstdc++'s file_size() is unusable on this target (no S_ISREG at configure); ask stat() directly
         struct stat st{};
         _fileSize = (stat(path, &st) == 0) ? static_cast<uint64_t>(st.st_size) : 0;
-#else
+    #else
         _fileSize = fs::file_size(fs::u8path(path), ec);
-#endif
+    #endif
 #endif
 
         _ownsFilePtr = true;

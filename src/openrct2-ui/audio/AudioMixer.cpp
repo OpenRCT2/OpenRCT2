@@ -10,22 +10,11 @@
 #include "AudioMixer.h"
 
 #include <algorithm>
-#include <cstdio>
 #include <iterator>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 
 using namespace OpenRCT2::Audio;
-
-#ifdef __amigaos__
-extern "C" unsigned amiga_ticks_ms(void);
-extern "C" void amiga_trace(const char*);
-namespace
-{
-    unsigned g_mixCalls = 0, g_tRead = 0, g_tCvt = 0, g_tFx = 0, g_tMix = 0;
-    bool g_mixFmtTraced = false;
-}
-#endif
 
 AudioMixer::~AudioMixer()
 {
@@ -138,19 +127,6 @@ const AudioFormat& AudioMixer::GetFormat() const
 void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
 {
     UpdateAdjustedSound();
-#ifdef __amigaos__
-    {
-        static unsigned chunks = 0;
-        if (chunks == 0 || ++chunks % 100 == 0)
-        {
-            char line[128];
-            std::snprintf(line, sizeof line, "mix: chunk %u, %u channels queued, %u sources", chunks, static_cast<unsigned>(_channels.size()), static_cast<unsigned>(_sources.size()));
-            amiga_trace(line);
-            if (chunks == 0)
-                chunks = 1;
-        }
-    }
-#endif
 
     // Zero the output buffer
     std::fill_n(dst, length, 0);
@@ -228,23 +204,7 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
     int32_t readSamples = numSamples * rate;
     auto readLength = static_cast<size_t>(ceil(readSamples / cvt.len_ratio)) * outputByteRate;
     _channelBuffer.resize(readLength);
-#ifdef __amigaos__
-    unsigned _t0 = amiga_ticks_ms();
-    if (!g_mixFmtTraced)
-    {
-        g_mixFmtTraced = true;
-        char line[160];
-        std::snprintf(line, sizeof line, "mix: first channel fmt=0x%x ch=%d freq=%d -> out fmt=0x%x ch=%d freq=%d rate=%d/1000 convert=%d",
-            streamformat.format, streamformat.channels, streamformat.freq, _outputFormat.format, _outputFormat.channels, _outputFormat.freq,
-            static_cast<int>(rate * 1000), mustConvert ? 1 : 0);
-        amiga_trace(line);
-    }
-#endif
     size_t bytesRead = channel->Read(_channelBuffer.data(), readLength);
-#ifdef __amigaos__
-    unsigned _t1 = amiga_ticks_ms();
-    g_tRead += _t1 - _t0;
-#endif
 
     // Convert data to required format if necessary
     void* buffer = nullptr;
@@ -267,10 +227,6 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
         bufferLen = bytesRead;
     }
 
-#ifdef __amigaos__
-    unsigned _t2 = amiga_ticks_ms();
-    g_tCvt += _t2 - _t1;
-#endif
     // Apply effects
     if (rate != 1)
     {
@@ -290,27 +246,12 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
     ApplyPan(channel, buffer, bufferLen, outputByteRate);
     int32_t mixVolume = ApplyVolume(channel, buffer, bufferLen);
 
-#ifdef __amigaos__
-    unsigned _t3 = amiga_ticks_ms();
-    g_tFx += _t3 - _t2;
-#endif
     // Finally mix on to destination buffer
     size_t dstLength = std::min(length, bufferLen);
     SDL_MixAudioFormat(
         data, static_cast<const uint8_t*>(buffer), _outputFormat.format, static_cast<uint32_t>(dstLength), mixVolume);
 
     channel->UpdateOldVolume();
-#ifdef __amigaos__
-    g_tMix += amiga_ticks_ms() - _t3;
-    if (++g_mixCalls % 100 == 0)
-    {
-        char line[160];
-        std::snprintf(line, sizeof line, "mix: per 100 channel-buffers: read %u ms, convert %u ms, effects %u ms, mix %u ms (rate %d/1000)",
-            g_tRead, g_tCvt, g_tFx, g_tMix, static_cast<int>(rate * 1000));
-        amiga_trace(line);
-        g_tRead = g_tCvt = g_tFx = g_tMix = 0;
-    }
-#endif
 }
 
 /**
@@ -472,8 +413,10 @@ void AudioMixer::EffectPanS16(const IAudioChannel* channel, int16_t* data, int32
         return;
     int32_t volumeL = static_cast<int32_t>(channel->GetOldVolumeL() * 65536.0f);
     int32_t volumeR = static_cast<int32_t>(channel->GetOldVolumeR() * 65536.0f);
-    const int32_t dL = static_cast<int32_t>((channel->GetVolumeL() - channel->GetOldVolumeL()) * 65536.0f) / (length > 0 ? length : 1);
-    const int32_t dR = static_cast<int32_t>((channel->GetVolumeR() - channel->GetOldVolumeR()) * 65536.0f) / (length > 0 ? length : 1);
+    const int32_t dL = static_cast<int32_t>((channel->GetVolumeL() - channel->GetOldVolumeL()) * 65536.0f)
+        / (length > 0 ? length : 1);
+    const int32_t dR = static_cast<int32_t>((channel->GetVolumeR() - channel->GetOldVolumeR()) * 65536.0f)
+        / (length > 0 ? length : 1);
     for (int32_t i = 0; i < n; i += 2)
     {
         data[i + 0] = static_cast<int16_t>((static_cast<int32_t>(data[i + 0]) * (volumeL >> 4)) >> 12);

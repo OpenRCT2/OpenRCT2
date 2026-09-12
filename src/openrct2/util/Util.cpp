@@ -9,9 +9,10 @@
 
 #include "Util.h"
 
+#include "../core/RandomSeed.h"
+
 #include <algorithm>
 #include <random>
-#include "../core/RandomSeed.h"
 
 uint32_t UtilRand()
 {

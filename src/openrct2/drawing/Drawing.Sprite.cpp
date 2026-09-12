@@ -7,10 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../core/Endianness.h"
-
-#include <bit>
-#include <utility>
 #include "Drawing.Sprite.h"
 
 #include "../Context.h"
@@ -19,6 +15,7 @@
 #include "../PlatformEnvironment.h"
 #include "../SpriteIds.h"
 #include "../config/Config.h"
+#include "../core/Endianness.h"
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
@@ -31,9 +28,11 @@
 #include "RenderTarget.h"
 #include "ScrollingText.h"
 
+#include <bit>
 #include <cassert>
 #include <memory>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 
 using namespace OpenRCT2;

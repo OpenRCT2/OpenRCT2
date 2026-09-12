@@ -14,7 +14,6 @@
     #include <openrct2/core/Imaging.h>
     #include <stdexcept>
 
-
 namespace OpenRCT2::Ui
 {
     static Image ReadBitmapUnsupported(std::istream&, ImageFormat)

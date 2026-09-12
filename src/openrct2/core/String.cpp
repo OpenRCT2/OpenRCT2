@@ -19,7 +19,7 @@
 #include <vector>
 
 #if defined(__amigaos__)
-    // No ICU on AmigaOS: minimal UTF-8/UTF-32/CP1252 conversions live below.
+// No ICU on AmigaOS: minimal UTF-8/UTF-32/CP1252 conversions live below.
 #elif !defined(_WIN32)
     #if defined(__linux__) || defined(__sun)
         #include <alloca.h>
@@ -39,7 +39,6 @@
 #if defined(__unix__) || defined(__HAIKU__) || defined(__amigaos__) || (defined(__APPLE__) && defined(__MACH__))
     #define _stricmp(x, y) strcasecmp((x), (y))
 #endif
-
 
 #if defined(__amigaos__)
 namespace
@@ -74,16 +73,43 @@ namespace
     {
         auto b0 = static_cast<uint8_t>(s[i]);
         size_t n = 1;
-        if (b0 < 0x80) { cp = b0; }
-        else if ((b0 & 0xE0) == 0xC0) { cp = b0 & 0x1F; n = 2; }
-        else if ((b0 & 0xF0) == 0xE0) { cp = b0 & 0x0F; n = 3; }
-        else if ((b0 & 0xF8) == 0xF0) { cp = b0 & 0x07; n = 4; }
-        else { cp = 0xFFFD; return 1; }
-        if (i + n > s.size()) { cp = 0xFFFD; return 1; }
+        if (b0 < 0x80)
+        {
+            cp = b0;
+        }
+        else if ((b0 & 0xE0) == 0xC0)
+        {
+            cp = b0 & 0x1F;
+            n = 2;
+        }
+        else if ((b0 & 0xF0) == 0xE0)
+        {
+            cp = b0 & 0x0F;
+            n = 3;
+        }
+        else if ((b0 & 0xF8) == 0xF0)
+        {
+            cp = b0 & 0x07;
+            n = 4;
+        }
+        else
+        {
+            cp = 0xFFFD;
+            return 1;
+        }
+        if (i + n > s.size())
+        {
+            cp = 0xFFFD;
+            return 1;
+        }
         for (size_t k = 1; k < n; k++)
         {
             auto b = static_cast<uint8_t>(s[i + k]);
-            if ((b & 0xC0) != 0x80) { cp = 0xFFFD; return 1; }
+            if ((b & 0xC0) != 0x80)
+            {
+                cp = 0xFFFD;
+                return 1;
+            }
             cp = (cp << 6) | (b & 0x3F);
         }
         return n;
@@ -91,8 +117,9 @@ namespace
 
     // Windows-1252 0x80..0x9F -> Unicode; 0 marks undefined.
     const uint16_t kCp1252High[32] = {
-        0x20AC, 0, 0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021, 0x02C6, 0x2030, 0x0160, 0x2039, 0x0152, 0, 0x017D, 0,
-        0, 0x2018, 0x2019, 0x201C, 0x201D, 0x2022, 0x2013, 0x2014, 0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0, 0x017E, 0x0178,
+        0x20AC, 0,      0x201A, 0x0192, 0x201E, 0x2026, 0x2020, 0x2021, 0x02C6, 0x2030, 0x0160,
+        0x2039, 0x0152, 0,      0x017D, 0,      0,      0x2018, 0x2019, 0x201C, 0x201D, 0x2022,
+        0x2013, 0x2014, 0x02DC, 0x2122, 0x0161, 0x203A, 0x0153, 0,      0x017E, 0x0178,
     };
 } // namespace
 #endif
@@ -640,7 +667,7 @@ namespace OpenRCT2::String
     }
 
 #ifndef _WIN32
-#if !defined(_WIN32) && !defined(__amigaos__)
+    #if !defined(_WIN32) && !defined(__amigaos__)
     static const char* getIcuCodePage(OpenRCT2::CodePage codePage)
     {
         switch (codePage)
@@ -667,7 +694,7 @@ namespace OpenRCT2::String
                 throw std::runtime_error("Unsupported code page: " + std::to_string(EnumValue(codePage)));
         }
     }
-#endif
+    #endif
 #endif
 
     std::string convertToUtf8(std::string_view src, CodePage srcCodePage)

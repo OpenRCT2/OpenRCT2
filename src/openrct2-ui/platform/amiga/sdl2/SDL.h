@@ -461,7 +461,7 @@ typedef union SDL_Event
 #define SDL_BUTTON_LMASK SDL_BUTTON(SDL_BUTTON_LEFT)
 #define SDL_BUTTON_MMASK SDL_BUTTON(SDL_BUTTON_MIDDLE)
 #define SDL_BUTTON_RMASK SDL_BUTTON(SDL_BUTTON_RIGHT)
-#define SDL_TOUCH_MOUSEID ((Uint32)-1)
+#define SDL_TOUCH_MOUSEID ((Uint32) - 1)
 
 #define SDL_HAT_CENTERED 0x00
 #define SDL_HAT_UP 0x01
@@ -586,7 +586,6 @@ struct _SDL_GameController;
 typedef struct _SDL_GameController SDL_GameController;
 struct _SDL_Joystick;
 typedef struct _SDL_Joystick SDL_Joystick;
-
 
 /* ---- audio + rwops (backed by ahi.device, see sdl_shim_audio.cpp) ---- */
 typedef int64_t Sint64;
@@ -757,4 +756,3 @@ int SDL_RWclose(SDL_RWops* context);
 Uint16 SDL_ReadLE16(SDL_RWops* src);
 Uint32 SDL_ReadLE32(SDL_RWops* src);
 }
-

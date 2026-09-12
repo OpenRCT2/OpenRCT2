@@ -11,11 +11,11 @@ extern "C" {
 enum
 {
     AMIGA_UI_EV_NONE = 0,
-    AMIGA_UI_EV_RAWKEY = 1,      /* code: raw key (bit 7 = up), qual: IEQUALIFIER bits, ascii: mapped char or -1 */
-    AMIGA_UI_EV_MOUSEMOVE = 2,   /* x, y */
-    AMIGA_UI_EV_BUTTON = 3,      /* code: 1 left 2 middle 3 right; qual bit 15 = down; x, y */
-    AMIGA_UI_EV_WHEEL = 4,       /* code: +1 up, -1 down */
-    AMIGA_UI_EV_ACTIVE = 5,      /* code: 1 activated, 0 deactivated */
+    AMIGA_UI_EV_RAWKEY = 1,    /* code: raw key (bit 7 = up), qual: IEQUALIFIER bits, ascii: mapped char or -1 */
+    AMIGA_UI_EV_MOUSEMOVE = 2, /* x, y */
+    AMIGA_UI_EV_BUTTON = 3,    /* code: 1 left 2 middle 3 right; qual bit 15 = down; x, y */
+    AMIGA_UI_EV_WHEEL = 4,     /* code: +1 up, -1 down */
+    AMIGA_UI_EV_ACTIVE = 5,    /* code: 1 activated, 0 deactivated */
     AMIGA_UI_EV_CLOSE = 6,
 };
 

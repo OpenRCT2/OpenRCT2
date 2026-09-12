@@ -6,19 +6,19 @@
 
     #include "amiga_ui.h"
 
-    #include <proto/exec.h>
-    #include <proto/dos.h>
-    #include <proto/intuition.h>
-    #include <proto/graphics.h>
-    #include <proto/cybergraphics.h>
-    #include <proto/keymap.h>
-    #include <intuition/intuition.h>
-    #include <intuition/screens.h>
     #include <cybergraphx/cybergraphics.h>
     #include <devices/inputevent.h>
     #include <graphics/displayinfo.h>
-    #include <string.h>
+    #include <intuition/intuition.h>
+    #include <intuition/screens.h>
+    #include <proto/cybergraphics.h>
+    #include <proto/dos.h>
+    #include <proto/exec.h>
+    #include <proto/graphics.h>
+    #include <proto/intuition.h>
+    #include <proto/keymap.h>
     #include <stdio.h>
+    #include <string.h>
 
 extern void amiga_trace(const char* line);
 static void trace(const char* fmt, long a, long b, long c, long d)
@@ -238,13 +238,30 @@ int amiga_ui_poll(amiga_ui_event* ev)
                 int button = 0, down = 0;
                 switch (code)
                 {
-                    case SELECTDOWN: button = 1; down = 1; break;
-                    case SELECTUP: button = 1; break;
-                    case MENUDOWN: button = 3; down = 1; break;
-                    case MENUUP: button = 3; break;
-                    case MIDDLEDOWN: button = 2; down = 1; break;
-                    case MIDDLEUP: button = 2; break;
-                    default: handled = 0; break;
+                    case SELECTDOWN:
+                        button = 1;
+                        down = 1;
+                        break;
+                    case SELECTUP:
+                        button = 1;
+                        break;
+                    case MENUDOWN:
+                        button = 3;
+                        down = 1;
+                        break;
+                    case MENUUP:
+                        button = 3;
+                        break;
+                    case MIDDLEDOWN:
+                        button = 2;
+                        down = 1;
+                        break;
+                    case MIDDLEUP:
+                        button = 2;
+                        break;
+                    default:
+                        handled = 0;
+                        break;
                 }
                 if (handled)
                 {

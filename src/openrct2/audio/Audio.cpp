@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "Audio.h"
-#include "../platform/AmigaTrace.h"
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
@@ -107,7 +106,6 @@ namespace OpenRCT2::Audio
         {
             _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
         }
-        AMIGA_TRACE(baseAudio != nullptr ? "audioobj: base audio object loaded" : "audioobj: base audio object NOT found/loaded");
 
         objManager.LoadObject(AudioObjectIdentifiers::kOpenRCT2Additional);
         _soundsAdditionalAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(

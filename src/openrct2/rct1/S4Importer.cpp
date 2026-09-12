@@ -337,7 +337,10 @@ namespace OpenRCT2::RCT1
                     std::swap(b[i], b[7 - i]);
             }
         }
-        static inline void b16(uint8_t* b, size_t o) { std::swap(b[o], b[o + 1]); }
+        static inline void b16(uint8_t* b, size_t o)
+        {
+            std::swap(b[o], b[o + 1]);
+        }
         static inline void b32(uint8_t* b, size_t o)
         {
             std::swap(b[o], b[o + 3]);
@@ -391,11 +394,11 @@ namespace OpenRCT2::RCT1
                 b16(b, o); // NameStringID, NextX/Y, DestinationX/Y, PaidOnDrink
             for (size_t o : { 0x74, 0x7A })
                 b16(b, o); // NextInQueue/MechanicTimeSinceCall, TimeInQueue
-            b32(b, 0x9C); // ID
-            b32(b, 0xA0); // CashInPocket
-            b32(b, 0xA4); // CashSpent
-            b32(b, 0xA8); // ParkEntryTime
-            b16(b, 0xAE); // PreviousRideTimeOut
+            b32(b, 0x9C);  // ID
+            b32(b, 0xA0);  // CashInPocket
+            b32(b, 0xA4);  // CashSpent
+            b32(b, 0xA8);  // ParkEntryTime
+            b16(b, 0xAE);  // PreviousRideTimeOut
             if (isLL)
                 b32(b, 0xC8);
             else
@@ -405,73 +408,162 @@ namespace OpenRCT2::RCT1
             }
             for (size_t o : { 0xE4, 0xE6, 0xE8, 0xEA })
                 b16(b, o); // PaidToEnter, PaidOnRides, PaidOnFood, PaidOnSouvenirs
-            b32(b, 0xFC); // itemFlagsAALL
+            b32(b, 0xFC);  // itemFlagsAALL
         }
-        static void swapLitter(uint8_t* b) { swapEntityBase(b); b32(b, 0x24); }
-        static void swapBalloon(uint8_t* b) { swapEntityBase(b); b16(b, 0x24); }
-        static void swapDuck(uint8_t* b) { swapEntityBase(b); b16(b, 0x26); b16(b, 0x30); b16(b, 0x32); }
-        static void swapParticle(uint8_t* b) { swapEntityBase(b); b16(b, 0x26); }
-        static void swapSteam(uint8_t* b) { swapEntityBase(b); b16(b, 0x24); b16(b, 0x26); }
-        static void swapFountain(uint8_t* b) { swapEntityBase(b); b16(b, 0x30); b16(b, 0x32); b16(b, 0x46); }
-        static void swapMoney(uint8_t* b) { swapEntityBase(b); b16(b, 0x24); b32(b, 0x28); b16(b, 0x44); b16(b, 0x46); }
+        static void swapLitter(uint8_t* b)
+        {
+            swapEntityBase(b);
+            b32(b, 0x24);
+        }
+        static void swapBalloon(uint8_t* b)
+        {
+            swapEntityBase(b);
+            b16(b, 0x24);
+        }
+        static void swapDuck(uint8_t* b)
+        {
+            swapEntityBase(b);
+            b16(b, 0x26);
+            b16(b, 0x30);
+            b16(b, 0x32);
+        }
+        static void swapParticle(uint8_t* b)
+        {
+            swapEntityBase(b);
+            b16(b, 0x26);
+        }
+        static void swapSteam(uint8_t* b)
+        {
+            swapEntityBase(b);
+            b16(b, 0x24);
+            b16(b, 0x26);
+        }
+        static void swapFountain(uint8_t* b)
+        {
+            swapEntityBase(b);
+            b16(b, 0x30);
+            b16(b, 0x32);
+            b16(b, 0x46);
+        }
+        static void swapMoney(uint8_t* b)
+        {
+            swapEntityBase(b);
+            b16(b, 0x24);
+            b32(b, 0x28);
+            b16(b, 0x44);
+            b16(b, 0x46);
+        }
         static void swapCrashParticle(uint8_t* b)
         {
             swapEntityBase(b);
-            b16(b, 0x24); b16(b, 0x26); b16(b, 0x2E); b16(b, 0x30); b16(b, 0x32); b16(b, 0x34);
-            b32(b, 0x38); b32(b, 0x3C); b32(b, 0x40);
+            b16(b, 0x24);
+            b16(b, 0x26);
+            b16(b, 0x2E);
+            b16(b, 0x30);
+            b16(b, 0x32);
+            b16(b, 0x34);
+            b32(b, 0x38);
+            b32(b, 0x3C);
+            b32(b, 0x40);
         }
         static void swapEntitySlot(uint8_t* b, const S4& s4, bool isLL)
         {
             switch (static_cast<RCT12EntityIdentifier>(b[0x00]))
             {
-                case RCT12EntityIdentifier::vehicle: swapVehicle(b, s4); break;
-                case RCT12EntityIdentifier::peep: swapPeep(b, isLL); break;
-                case RCT12EntityIdentifier::litter: swapLitter(b); break;
+                case RCT12EntityIdentifier::vehicle:
+                    swapVehicle(b, s4);
+                    break;
+                case RCT12EntityIdentifier::peep:
+                    swapPeep(b, isLL);
+                    break;
+                case RCT12EntityIdentifier::litter:
+                    swapLitter(b);
+                    break;
                 case RCT12EntityIdentifier::misc:
                     switch (static_cast<RCT12MiscEntityType>(b[0x01]))
                     {
-                        case RCT12MiscEntityType::steamParticle: swapSteam(b); break;
-                        case RCT12MiscEntityType::moneyEffect: swapMoney(b); break;
-                        case RCT12MiscEntityType::crashedVehicleParticle: swapCrashParticle(b); break;
+                        case RCT12MiscEntityType::steamParticle:
+                            swapSteam(b);
+                            break;
+                        case RCT12MiscEntityType::moneyEffect:
+                            swapMoney(b);
+                            break;
+                        case RCT12MiscEntityType::crashedVehicleParticle:
+                            swapCrashParticle(b);
+                            break;
                         case RCT12MiscEntityType::crashSplash:
                         case RCT12MiscEntityType::explosionCloud:
-                        case RCT12MiscEntityType::explosionFlare: swapParticle(b); break;
+                        case RCT12MiscEntityType::explosionFlare:
+                            swapParticle(b);
+                            break;
                         case RCT12MiscEntityType::jumpingFountainWater:
-                        case RCT12MiscEntityType::jumpingFountainSnow: swapFountain(b); break;
-                        case RCT12MiscEntityType::balloon: swapBalloon(b); break;
-                        case RCT12MiscEntityType::duck: swapDuck(b); break;
-                        default: swapEntityBase(b); break;
+                        case RCT12MiscEntityType::jumpingFountainSnow:
+                            swapFountain(b);
+                            break;
+                        case RCT12MiscEntityType::balloon:
+                            swapBalloon(b);
+                            break;
+                        case RCT12MiscEntityType::duck:
+                            swapDuck(b);
+                            break;
+                        default:
+                            swapEntityBase(b);
+                            break;
                     }
                     break;
-                default: break; // null slot
+                default:
+                    break; // null slot
             }
         }
         static void swapRideRCT1(Ride& r)
         {
             bs(r.flags);
-            bs(r.name); bs(r.nameArgumentRide); bs(r.nameArgumentNumber);
-            for (auto& x : r.lastPeepInQueue) bs(x);
-            for (auto& x : r.vehicles) bs(x);
+            bs(r.name);
+            bs(r.nameArgumentRide);
+            bs(r.nameArgumentNumber);
+            for (auto& x : r.lastPeepInQueue)
+                bs(x);
+            for (auto& x : r.vehicles)
+                bs(x);
             bs(r.unk6);
-            bs(r.maxSpeed); bs(r.averageSpeed);
-            for (auto& x : r.length) bs(x);
-            for (auto& x : r.time) bs(x);
-            bs(r.maxPositiveVerticalG); bs(r.maxNegativeVerticalG); bs(r.maxLateralG);
-            bs(r.previousVerticalG); bs(r.previousLateralG);
+            bs(r.maxSpeed);
+            bs(r.averageSpeed);
+            for (auto& x : r.length)
+                bs(x);
+            for (auto& x : r.time)
+                bs(x);
+            bs(r.maxPositiveVerticalG);
+            bs(r.maxNegativeVerticalG);
+            bs(r.maxLateralG);
+            bs(r.previousVerticalG);
+            bs(r.previousLateralG);
             bs(r.testingFlags);
-            bs(r.turnCountDefault); bs(r.turnCountBanked); bs(r.turnCountSloped);
+            bs(r.turnCountDefault);
+            bs(r.turnCountBanked);
+            bs(r.turnCountSloped);
             bs(r.shelteredLength);
-            bs(r.unkD0); bs(r.unkD2);
-            for (auto& x : r.numCustomers) bs(x);
+            bs(r.unkD0);
+            bs(r.unkD2);
+            for (auto& x : r.numCustomers)
+                bs(x);
             bs(r.price);
-            bs(r.ratings.excitement); bs(r.ratings.intensity); bs(r.ratings.nausea);
-            bs(r.value); bs(r.chairliftBullwheelRotation);
-            bs(r.totalCustomers); bs(r.totalProfit);
+            bs(r.ratings.excitement);
+            bs(r.ratings.intensity);
+            bs(r.ratings.nausea);
+            bs(r.value);
+            bs(r.chairliftBullwheelRotation);
+            bs(r.totalCustomers);
+            bs(r.totalProfit);
             bs(r.slidePeep);
-            bs(r.buildDate); bs(r.upkeepCost); bs(r.raceWinner);
-            bs(r.musicPosition); bs(r.mechanic); bs(r.priceSecondary);
+            bs(r.buildDate);
+            bs(r.upkeepCost);
+            bs(r.raceWinner);
+            bs(r.musicPosition);
+            bs(r.mechanic);
+            bs(r.priceSecondary);
             bs(r.reliability); // read as the uint16
-            bs(r.incomePerHour); bs(r.profit);
+            bs(r.incomePerHour);
+            bs(r.profit);
         }
         // 8-byte RCT12 tile element: only the maze track bitmap and the large-scenery entry index are 16-bit.
         static void swapTileRCT1(RCT12TileElement& e, const S4& s4)
@@ -495,61 +587,152 @@ namespace OpenRCT2::RCT1
             bs(s4.GameVersion);
             const bool isLL = (DetectRCT1Version(s4.GameVersion) & FILE_VERSION_MASK) == FILE_VERSION_RCT1_LL;
 
-            bs(s4.Month); bs(s4.Day); bs(s4.Ticks); bs(s4.RandomA); bs(s4.RandomB);
-            for (auto& e : s4.TileElements) swapTileRCT1(e, s4);
+            bs(s4.Month);
+            bs(s4.Day);
+            bs(s4.Ticks);
+            bs(s4.RandomA);
+            bs(s4.RandomB);
+            for (auto& e : s4.TileElements)
+                swapTileRCT1(e, s4);
             bs(s4.UnkCounter);
-            for (auto& ent : s4.Entities) swapEntitySlot(reinterpret_cast<uint8_t*>(&ent), s4, isLL);
-            bs(s4.NextEntityIndex); bs(s4.FirstVehicleEntityIndex); bs(s4.FirstPeepEntityIndex);
-            bs(s4.FirstDuckEntityIndex); bs(s4.FirstLitterEntityIndex); bs(s4.FirstOversizedRideCarEntityIndex);
-            bs(s4.EntitiesAvailable); bs(s4.NumVehicleEntities); bs(s4.NumPeepEntities); bs(s4.NumDuckEntities);
-            bs(s4.NumLitterEntities); bs(s4.NumOversizedRideCarEntities);
-            bs(s4.ParkNameStringIndex); bs(s4.Unk198830);
-            bs(s4.Cash); bs(s4.Loan); bs(s4.parkFlags); bs(s4.ParkEntranceFee);
-            bs(s4.ParkEntrance.x); bs(s4.ParkEntrance.y); bs(s4.ParkEntrance.z);
-            for (auto& p : s4.PeepSpawn) { bs(p.x); bs(p.y); }
+            for (auto& ent : s4.Entities)
+                swapEntitySlot(reinterpret_cast<uint8_t*>(&ent), s4, isLL);
+            bs(s4.NextEntityIndex);
+            bs(s4.FirstVehicleEntityIndex);
+            bs(s4.FirstPeepEntityIndex);
+            bs(s4.FirstDuckEntityIndex);
+            bs(s4.FirstLitterEntityIndex);
+            bs(s4.FirstOversizedRideCarEntityIndex);
+            bs(s4.EntitiesAvailable);
+            bs(s4.NumVehicleEntities);
+            bs(s4.NumPeepEntities);
+            bs(s4.NumDuckEntities);
+            bs(s4.NumLitterEntities);
+            bs(s4.NumOversizedRideCarEntities);
+            bs(s4.ParkNameStringIndex);
+            bs(s4.Unk198830);
+            bs(s4.Cash);
+            bs(s4.Loan);
+            bs(s4.parkFlags);
+            bs(s4.ParkEntranceFee);
+            bs(s4.ParkEntrance.x);
+            bs(s4.ParkEntrance.y);
+            bs(s4.ParkEntrance.z);
+            for (auto& p : s4.PeepSpawn)
+            {
+                bs(p.x);
+                bs(p.y);
+            }
             bs(s4.Unk198858);
-            for (auto& x : s4.AvailableRides) bs(x);
-            for (auto& x : s4.AvailableVehicles) bs(x);
-            for (auto& x : s4.RideFeature1) bs(x);
-            for (auto& x : s4.RideFeature2) bs(x);
-            bs(s4.GuestsInPark); bs(s4.Unk198C9E);
-            for (auto& row : s4.Expenditure) for (auto& x : row) bs(x);
+            for (auto& x : s4.AvailableRides)
+                bs(x);
+            for (auto& x : s4.AvailableVehicles)
+                bs(x);
+            for (auto& x : s4.RideFeature1)
+                bs(x);
+            for (auto& x : s4.RideFeature2)
+                bs(x);
+            bs(s4.GuestsInPark);
+            bs(s4.Unk198C9E);
+            for (auto& row : s4.Expenditure)
+                for (auto& x : row)
+                    bs(x);
             bs(s4.GuestsInPark2);
             bs(s4.AvailableBanners);
             bs(s4.ParkRating);
             bs(s4.ResearchProgress);
-            bs(s4.ParkSize); bs(s4.GuestGenerationProbability); bs(s4.TotalRideValueForMoney);
-            bs(s4.MaxLoan); bs(s4.GuestInitialCash);
-            bs(s4.Unk199552); bs(s4.ScenarioObjectiveCurrency); bs(s4.ScenarioObjectiveNumGuests);
-            for (auto& x : s4.CashHistory) bs(x);
-            bs(s4.TotalExpenditure); bs(s4.Profit);
-            for (auto& x : s4.WeeklyProfitHistory) bs(x);
+            bs(s4.ParkSize);
+            bs(s4.GuestGenerationProbability);
+            bs(s4.TotalRideValueForMoney);
+            bs(s4.MaxLoan);
+            bs(s4.GuestInitialCash);
+            bs(s4.Unk199552);
+            bs(s4.ScenarioObjectiveCurrency);
+            bs(s4.ScenarioObjectiveNumGuests);
+            for (auto& x : s4.CashHistory)
+                bs(x);
+            bs(s4.TotalExpenditure);
+            bs(s4.Profit);
+            for (auto& x : s4.WeeklyProfitHistory)
+                bs(x);
             bs(s4.ParkValue);
-            for (auto& x : s4.ParkValueHistory) bs(x);
-            bs(s4.CompletedCompanyValue); bs(s4.NumAdmissions); bs(s4.AdmissionTotalIncome); bs(s4.CompanyValue);
-            for (auto& a : s4.Awards) { bs(a.Time); bs(a.Type); }
-            bs(s4.LandPrice); bs(s4.ConstructionRightsPrice); bs(s4.Unk199BCC); bs(s4.Unk199BCE); bs(s4.Unk199BD0);
-            bs(s4.ObjectiveCompletionCompanyValue); bs(s4.FinanceChecksum);
-            bs(s4.NumRides); bs(s4.CheatDetectionNegNumRides); bs(s4.CheatDetectionMaxOwnedTiles);
-            bs(s4.CheatDetectionNegMaxOwnedTiles); bs(s4.FinanceChecksum3); bs(s4.ScenarioSlotIndexChecksum);
+            for (auto& x : s4.ParkValueHistory)
+                bs(x);
+            bs(s4.CompletedCompanyValue);
+            bs(s4.NumAdmissions);
+            bs(s4.AdmissionTotalIncome);
+            bs(s4.CompanyValue);
+            for (auto& a : s4.Awards)
+            {
+                bs(a.Time);
+                bs(a.Type);
+            }
+            bs(s4.LandPrice);
+            bs(s4.ConstructionRightsPrice);
+            bs(s4.Unk199BCC);
+            bs(s4.Unk199BCE);
+            bs(s4.Unk199BD0);
+            bs(s4.ObjectiveCompletionCompanyValue);
+            bs(s4.FinanceChecksum);
+            bs(s4.NumRides);
+            bs(s4.CheatDetectionNegNumRides);
+            bs(s4.CheatDetectionMaxOwnedTiles);
+            bs(s4.CheatDetectionNegMaxOwnedTiles);
+            bs(s4.FinanceChecksum3);
+            bs(s4.ScenarioSlotIndexChecksum);
             bs(s4.FinanceChecksum2);
-            for (auto& x : s4.CheatDetectionSV6SC4) bs(x);
-            bs(s4.Unk199C84); bs(s4.Unk199C86);
-            bs(s4.MapSizeUnits); bs(s4.MapSizeUnkB); bs(s4.MapSize); bs(s4.MapSizeMaxXY);
-            bs(s4.SamePriceThroughout); bs(s4.Unk199C94); bs(s4.Unk199C9A);
-            for (auto& b : s4.Banners) bs(b.StringID);
+            for (auto& x : s4.CheatDetectionSV6SC4)
+                bs(x);
+            bs(s4.Unk199C84);
+            bs(s4.Unk199C86);
+            bs(s4.MapSizeUnits);
+            bs(s4.MapSizeUnkB);
+            bs(s4.MapSize);
+            bs(s4.MapSizeMaxXY);
+            bs(s4.SamePriceThroughout);
+            bs(s4.Unk199C94);
+            bs(s4.Unk199C9A);
+            for (auto& b : s4.Banners)
+                bs(b.StringID);
             bs(s4.GameTimeCounter);
-            for (auto& r : s4.Rides) swapRideRCT1(r);
-            bs(s4.UnkGameTimeCounter); bs(s4.ViewX); bs(s4.ViewY);
-            for (auto& m : s4.MapAnimations) { bs(m.x); bs(m.y); }
+            for (auto& r : s4.Rides)
+                swapRideRCT1(r);
+            bs(s4.UnkGameTimeCounter);
+            bs(s4.ViewX);
+            bs(s4.ViewY);
+            for (auto& m : s4.MapAnimations)
+            {
+                bs(m.x);
+                bs(m.y);
+            }
             bs(s4.NumMapAnimations);
-            bs(s4.ScrollingTextStep); bs(s4.Unk1CADCA); bs(s4.Unk1CADCE);
-            for (auto& m : s4.RideMeasurements) { bs(m.LastUseTick); bs(m.NumItems); bs(m.CurrentItem); }
-            bs(s4.NextGuestIndex); bs(s4.GameCounter5);
+            bs(s4.ScrollingTextStep);
+            bs(s4.Unk1CADCA);
+            bs(s4.Unk1CADCE);
+            for (auto& m : s4.RideMeasurements)
+            {
+                bs(m.LastUseTick);
+                bs(m.NumItems);
+                bs(m.CurrentItem);
+            }
+            bs(s4.NextGuestIndex);
+            bs(s4.GameCounter5);
             bs(s4.WeatherUpdateTimer);
-            for (auto& n : s4.recentMessages) { bs(n.Assoc); bs(n.Ticks); bs(n.MonthYear); }
-            for (auto& n : s4.archivedMessages) { bs(n.Assoc); bs(n.Ticks); bs(n.MonthYear); }
-            bs(s4.ScenarioSlotIndex); bs(s4.ScenarioFlags); bs(s4.ExpansionPackChecksum);
+            for (auto& n : s4.recentMessages)
+            {
+                bs(n.Assoc);
+                bs(n.Ticks);
+                bs(n.MonthYear);
+            }
+            for (auto& n : s4.archivedMessages)
+            {
+                bs(n.Assoc);
+                bs(n.Ticks);
+                bs(n.MonthYear);
+            }
+            bs(s4.ScenarioSlotIndex);
+            bs(s4.ScenarioFlags);
+            bs(s4.ExpansionPackChecksum);
         }
 #endif
 

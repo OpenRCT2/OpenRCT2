@@ -6,6 +6,7 @@
 #ifdef __amigaos__
 
     #include "../../UiContext.h"
+
     #include "amiga_ui.h"
 
     #include <memory>

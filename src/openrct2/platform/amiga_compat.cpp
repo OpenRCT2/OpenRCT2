@@ -1,9 +1,9 @@
 #ifdef __amigaos__
-// Symbols libstdc++ 16 expects from a glibc-shaped libc that libnix lacks.
-#include <cerrno>
-#include <cstring>
-#include <sys/statvfs.h>
-#include <sys/time.h>
+    // Symbols libstdc++ 16 expects from a glibc-shaped libc that libnix lacks.
+    #include <cerrno>
+    #include <cstring>
+    #include <sys/statvfs.h>
+    #include <sys/time.h>
 
 // Prototypes first: the tree builds with -Wmissing-declarations.
 extern "C" int __xpg_strerror_r(int errnum, char* buf, size_t buflen);
@@ -11,9 +11,14 @@ extern "C" int __xpg_strerror_r(int errnum, char* buf, size_t buflen);
 extern "C" int __xpg_strerror_r(int errnum, char* buf, size_t buflen)
 {
     const char* s = std::strerror(errnum);
-    if (!s) { errno = EINVAL; return EINVAL; }
+    if (!s)
+    {
+        errno = EINVAL;
+        return EINVAL;
+    }
     std::strncpy(buf, s, buflen);
-    if (buflen) buf[buflen - 1] = '\0';
+    if (buflen)
+        buf[buflen - 1] = '\0';
     return 0;
 }
 
@@ -37,13 +42,13 @@ extern "C" size_t strnlen(const char* s, size_t maxlen)
     return n;
 }
 
-// libstdc++ was configured without gettimeofday/clock_gettime, so its
-// steady_clock::now() falls back to time() — one-second resolution. That
-// breaks every condition_variable::wait_for/wait_until predicate loop (the
-// "did we time out?" check compares against a clock that has not moved, so the
-// loop spins forever). Replace both clocks with gettimeofday(); defining both
-// keeps chrono.o out of the link so there is no duplicate definition.
-#include <chrono>
+    // libstdc++ was configured without gettimeofday/clock_gettime, so its
+    // steady_clock::now() falls back to time() — one-second resolution. That
+    // breaks every condition_variable::wait_for/wait_until predicate loop (the
+    // "did we time out?" check compares against a clock that has not moved, so the
+    // loop spins forever). Replace both clocks with gettimeofday(); defining both
+    // keeps chrono.o out of the link so there is no duplicate definition.
+    #include <chrono>
 namespace std::chrono
 {
     system_clock::time_point system_clock::now() noexcept
@@ -66,9 +71,9 @@ namespace std::chrono
 #endif
 
 // An uncaught exception must not leave a silent, hung process: say what it was, then exit.
-#include <exception>
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
+#include <exception>
 extern "C" void amiga_trace(const char* line);
 namespace
 {

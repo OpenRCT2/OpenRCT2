@@ -131,6 +131,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Marino Rottier (rinode) - Plugin API & UI
 * Ben Spurlock (BenDaSpur) - Plugin API automation helpers
 * (frozensnowy) - Draggable path slopes, self-intersecting track designs, refactors, bug fixes, misc.
+* Thomas Lübker (thomas-luebker) - AmigaOS (m68k, big-endian) port.
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)

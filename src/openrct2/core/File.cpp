@@ -12,9 +12,9 @@
         #define WIN32_LEAN_AND_MEAN
     #endif
     #ifdef __amigaos__
-    #include <sys/stat.h>
-#endif
-#include <windows.h>
+        #include <sys/stat.h>
+    #endif
+    #include <windows.h>
 #else
     #include <sys/stat.h>
 #endif

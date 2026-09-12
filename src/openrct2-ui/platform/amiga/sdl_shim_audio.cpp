@@ -34,28 +34,15 @@ namespace
     unsigned g_dumpNextMs = 0;
     unsigned g_dumpBuffers = 0;
     unsigned g_dumpReported = 0;
-    unsigned g_fillMs = 0; // ms spent inside the mixer callback since the last report
     std::vector<unsigned char> g_dumpBuf;
-
-    int g_peak = 0; // largest |sample| seen since the last trace line (diagnostic)
 
     void fillFromCallback(void* user, unsigned char* dst, int bytes)
     {
         (void)user;
-        unsigned t0 = SDL_GetTicks();
         if (g_spec.callback != nullptr)
             g_spec.callback(g_spec.userdata, dst, bytes);
         else
             std::memset(dst, 0, static_cast<size_t>(bytes));
-        g_fillMs += SDL_GetTicks() - t0;
-        for (int i = 0; i + 1 < bytes; i += 2)
-        {
-            int v = static_cast<int16_t>((dst[i] << 8) | dst[i + 1]);
-            if (v < 0)
-                v = -v;
-            if (v > g_peak)
-                g_peak = v;
-        }
     }
 
     // ---- sample format helpers -------------------------------------------------------------
@@ -141,8 +128,7 @@ namespace
 extern "C" {
 
 // ---- device ----------------------------------------------------------------------------------
-SDL_AudioDeviceID SDL_OpenAudioDevice(
-    const char*, int iscapture, const SDL_AudioSpec* desired, SDL_AudioSpec* obtained, int)
+SDL_AudioDeviceID SDL_OpenAudioDevice(const char*, int iscapture, const SDL_AudioSpec* desired, SDL_AudioSpec* obtained, int)
 {
     if (iscapture || desired == nullptr)
         return 0;
@@ -223,22 +209,10 @@ const char* SDL_GetAudioDeviceName(int index, int iscapture)
 
 void SDL_amiga_AudioPump(void)
 {
-    static unsigned calls = 0;
-    calls++;
-    static unsigned lastTime = 0;
-    unsigned nowMs = SDL_GetTicks();
-    if (calls == 1 || calls == 100 || nowMs - lastTime >= 10000)
-    {
-        lastTime = nowMs;
-        char line[96];
-        unsigned w, u, rp; int le, inf;
-        amiga_audio_stats(&w, &u); amiga_audio_debug(&rp, &le, &inf);
-        std::snprintf(line, sizeof line, "audio: pump call %u open=%d paused=%d lock=%d | %u written %u reaped %d inflight err %d", calls, g_open ? 1 : 0, g_paused ? 1 : 0, g_lock, w, rp, inf, le);
-        amiga_trace(line);
-    }
     if (!g_open || g_paused || g_lock > 0 || g_inPump)
         return;
     g_inPump = true;
+    const unsigned nowMs = SDL_GetTicks();
     if (g_dump)
     {
         // one buffer per (frames / freq) seconds of wall time, at most 4 per call to catch up after a stall
@@ -255,37 +229,26 @@ void SDL_amiga_AudioPump(void)
         }
         if (nowMs > g_dumpNextMs + 2000)
             g_dumpNextMs = nowMs; // stalled for long (park load): drop the backlog
-        if (g_dumpBuffers - g_dumpReported >= 50)
+        if (g_dumpFile != nullptr && g_dumpBuffers - g_dumpReported >= 50)
         {
-            char line[128];
-            std::snprintf(line, sizeof line, "audio: dump %u buffers, peak %d, %u ms in mixer for the last %u", g_dumpBuffers, g_peak, g_fillMs, g_dumpBuffers - g_dumpReported);
-            amiga_trace(line);
             g_dumpReported = g_dumpBuffers;
-            g_fillMs = 0;
-            g_peak = 0;
-            if (g_dumpFile != nullptr)
-                std::fflush(g_dumpFile);
+            std::fflush(g_dumpFile);
         }
         g_inPump = false;
         return;
     }
     amiga_audio_pump(fillFromCallback, nullptr);
     g_inPump = false;
+    // Trace-gated health line every ~1000 buffers (~90 s): buffers written and underruns (all buffers drained).
     static unsigned lastReport = 0;
-    static unsigned nextMilestone = 3;
-    unsigned written, underruns, reaped;
-    int lastError, inflight;
+    unsigned written, underruns;
     amiga_audio_stats(&written, &underruns);
-    amiga_audio_debug(&reaped, &lastError, &inflight);
-    if (written >= nextMilestone || written - lastReport >= 200)
+    if (written - lastReport >= 1000)
     {
         lastReport = written;
-        while (nextMilestone <= written)
-            nextMilestone *= 4;
-        char line[128];
-        std::snprintf(line, sizeof line, "audio: %u written, %u reaped, %d in flight, err %d, %u underruns, peak %d", written, reaped, inflight, lastError, underruns, g_peak);
+        char line[96];
+        std::snprintf(line, sizeof line, "audio: %u buffers written, %u underruns", written, underruns);
         amiga_trace(line);
-        g_peak = 0;
     }
 }
 
@@ -421,8 +384,10 @@ void SDL_MixAudioFormat(Uint8* dst, const Uint8* src, SDL_AudioFormat format, Ui
             const bool be = format == AUDIO_S16MSB;
             for (Uint32 i = 0; i + 1 < len; i += 2)
             {
-                int d = be ? static_cast<int16_t>((dst[i] << 8) | dst[i + 1]) : static_cast<int16_t>(dst[i] | (dst[i + 1] << 8));
-                int s = be ? static_cast<int16_t>((src[i] << 8) | src[i + 1]) : static_cast<int16_t>(src[i] | (src[i + 1] << 8));
+                int d = be ? static_cast<int16_t>((dst[i] << 8) | dst[i + 1])
+                           : static_cast<int16_t>(dst[i] | (dst[i + 1] << 8));
+                int s = be ? static_cast<int16_t>((src[i] << 8) | src[i + 1])
+                           : static_cast<int16_t>(src[i] | (src[i + 1] << 8));
                 int v = d + ((s * volume) / SDL_MIX_MAXVOLUME);
                 v = std::clamp(v, -32768, 32767);
                 if (be)

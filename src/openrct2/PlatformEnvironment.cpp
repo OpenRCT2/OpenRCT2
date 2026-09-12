@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "PlatformEnvironment.h"
-#include "platform/AmigaTrace.h"
 
 #include "Diagnostic.h"
 #include "OpenRCT2.h"
@@ -254,20 +253,15 @@ static u8string GetOpenRCT2DirectoryName()
 
 std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 {
-    AMIGA_TRACE("env: GetOpenRCT2DirectoryName");
     auto subDirectory = GetOpenRCT2DirectoryName();
-    AMIGA_TRACE("env: GetInstallPath");
 
     // Set default paths
     std::string basePaths[kDirBaseCount];
     basePaths[EnumValue(DirBase::openrct2)] = Platform::GetInstallPath();
-    AMIGA_TRACE("env: GetFolderPath");
     basePaths[EnumValue(DirBase::user)] = Path::Combine(Platform::GetFolderPath(SpecialFolder::userData), subDirectory);
     basePaths[EnumValue(DirBase::config)] = Path::Combine(Platform::GetFolderPath(SpecialFolder::userConfig), subDirectory);
     basePaths[EnumValue(DirBase::cache)] = Path::Combine(Platform::GetFolderPath(SpecialFolder::userCache), subDirectory);
-    AMIGA_TRACE("env: GetDocsPath");
     basePaths[EnumValue(DirBase::documentation)] = Platform::GetDocsPath();
-    AMIGA_TRACE("env: paths done");
 
     // Override paths that have been specified via the command line
     if (!gCustomRCT1DataPath.empty())
@@ -294,21 +288,15 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
         basePaths[EnumValue(DirBase::documentation)] = basePaths[EnumValue(DirBase::openrct2)];
     }
 
-    AMIGA_TRACE("env: CreatePlatformEnvironment(basePaths)");
     auto env = CreatePlatformEnvironment(basePaths);
-    AMIGA_TRACE("env: GetFilePath(config)");
 
     // Now load the config so we can get the RCT1 and RCT2 paths
     auto configPath = env->GetFilePath(PathId::config);
-    AMIGA_TRACE("env: Config::SetDefaults");
     Config::SetDefaults();
-    AMIGA_TRACE("env: Config::OpenFromPath");
     if (!Config::OpenFromPath(configPath))
     {
-        AMIGA_TRACE("env: Config::SaveToPath");
         Config::SaveToPath(configPath);
     }
-    AMIGA_TRACE("env: config loaded");
     if (gCustomRCT1DataPath.empty())
     {
         env->SetBasePath(DirBase::rct1, Config::Get().general.rct1Path);

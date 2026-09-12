@@ -80,7 +80,10 @@ namespace OpenRCT2::RCT2
     // ---------------------------------------------------------------------
     namespace S6Swap
     {
-        static inline void b16(uint8_t* b, size_t o) { std::swap(b[o], b[o + 1]); }
+        static inline void b16(uint8_t* b, size_t o)
+        {
+            std::swap(b[o], b[o + 1]);
+        }
         static inline void b32(uint8_t* b, size_t o)
         {
             std::swap(b[o], b[o + 3]);
@@ -119,12 +122,12 @@ namespace OpenRCT2::RCT2
             for (size_t o : { 0x34, 0x38, 0x3A, 0x3C, 0x3E, 0x40, 0x42, 0x44, 0x46, 0x48, 0x4C, 0x4E })
                 b16(b, o);
             if (!boat)
-                b16(b, 0x36); // TrackTypeAndDirection (int16); left as bytes for boats (BoatLocation)
+                b16(b, 0x36);  // TrackTypeAndDirection (int16); left as bytes for boats (BoatLocation)
             b16n(b, 0x52, 32); // Peep[32]
             for (size_t o : { 0xB6, 0xB8, 0xC0 })
                 b16(b, o);
-            b32(b, 0xC8);  // AnimationState
-            b16(b, 0xD0);  // LostTimeOut
+            b32(b, 0xC8); // AnimationState
+            b16(b, 0xD0); // LostTimeOut
         }
         static void peep(uint8_t* b)
         {
@@ -149,17 +152,56 @@ namespace OpenRCT2::RCT2
             entityBase(b);
             b32(b, 0x24); // CreationTick
         }
-        static void balloon(uint8_t* b) { entityBase(b); b16(b, 0x24); }        // Popped
-        static void duck(uint8_t* b) { entityBase(b); b16(b, 0x26); b16(b, 0x30); b16(b, 0x32); }
-        static void particle(uint8_t* b) { entityBase(b); b16(b, 0x26); }        // Frame (steam/crashsplash/misc)
-        static void steam(uint8_t* b) { entityBase(b); b16(b, 0x24); b16(b, 0x26); }
-        static void fountain(uint8_t* b) { entityBase(b); b16(b, 0x30); b16(b, 0x32); b16(b, 0x46); }
-        static void money(uint8_t* b) { entityBase(b); b16(b, 0x24); b32(b, 0x28); b16(b, 0x44); b16(b, 0x46); }
+        static void balloon(uint8_t* b)
+        {
+            entityBase(b);
+            b16(b, 0x24);
+        } // Popped
+        static void duck(uint8_t* b)
+        {
+            entityBase(b);
+            b16(b, 0x26);
+            b16(b, 0x30);
+            b16(b, 0x32);
+        }
+        static void particle(uint8_t* b)
+        {
+            entityBase(b);
+            b16(b, 0x26);
+        } // Frame (steam/crashsplash/misc)
+        static void steam(uint8_t* b)
+        {
+            entityBase(b);
+            b16(b, 0x24);
+            b16(b, 0x26);
+        }
+        static void fountain(uint8_t* b)
+        {
+            entityBase(b);
+            b16(b, 0x30);
+            b16(b, 0x32);
+            b16(b, 0x46);
+        }
+        static void money(uint8_t* b)
+        {
+            entityBase(b);
+            b16(b, 0x24);
+            b32(b, 0x28);
+            b16(b, 0x44);
+            b16(b, 0x46);
+        }
         static void crashParticle(uint8_t* b)
         {
             entityBase(b);
-            b16(b, 0x24); b16(b, 0x26); b16(b, 0x2E); b16(b, 0x30); b16(b, 0x32); b16(b, 0x34);
-            b32(b, 0x38); b32(b, 0x3C); b32(b, 0x40);
+            b16(b, 0x24);
+            b16(b, 0x26);
+            b16(b, 0x2E);
+            b16(b, 0x30);
+            b16(b, 0x32);
+            b16(b, 0x34);
+            b32(b, 0x38);
+            b32(b, 0x3C);
+            b32(b, 0x40);
         }
 
         // Dispatch one 0x100-byte entity slot on its (still little-endian) identifier/type bytes.
@@ -167,26 +209,49 @@ namespace OpenRCT2::RCT2
         {
             switch (static_cast<RCT12EntityIdentifier>(b[0x00]))
             {
-                case RCT12EntityIdentifier::vehicle: vehicle(b, s6); break;
-                case RCT12EntityIdentifier::peep: peep(b); break;
-                case RCT12EntityIdentifier::litter: litter(b); break;
+                case RCT12EntityIdentifier::vehicle:
+                    vehicle(b, s6);
+                    break;
+                case RCT12EntityIdentifier::peep:
+                    peep(b);
+                    break;
+                case RCT12EntityIdentifier::litter:
+                    litter(b);
+                    break;
                 case RCT12EntityIdentifier::misc:
                     switch (static_cast<RCT12MiscEntityType>(b[0x01]))
                     {
-                        case RCT12MiscEntityType::steamParticle: steam(b); break;
-                        case RCT12MiscEntityType::moneyEffect: money(b); break;
-                        case RCT12MiscEntityType::crashedVehicleParticle: crashParticle(b); break;
+                        case RCT12MiscEntityType::steamParticle:
+                            steam(b);
+                            break;
+                        case RCT12MiscEntityType::moneyEffect:
+                            money(b);
+                            break;
+                        case RCT12MiscEntityType::crashedVehicleParticle:
+                            crashParticle(b);
+                            break;
                         case RCT12MiscEntityType::crashSplash:
                         case RCT12MiscEntityType::explosionCloud:
-                        case RCT12MiscEntityType::explosionFlare: particle(b); break;
+                        case RCT12MiscEntityType::explosionFlare:
+                            particle(b);
+                            break;
                         case RCT12MiscEntityType::jumpingFountainWater:
-                        case RCT12MiscEntityType::jumpingFountainSnow: fountain(b); break;
-                        case RCT12MiscEntityType::balloon: balloon(b); break;
-                        case RCT12MiscEntityType::duck: duck(b); break;
-                        default: entityBase(b); break;
+                        case RCT12MiscEntityType::jumpingFountainSnow:
+                            fountain(b);
+                            break;
+                        case RCT12MiscEntityType::balloon:
+                            balloon(b);
+                            break;
+                        case RCT12MiscEntityType::duck:
+                            duck(b);
+                            break;
+                        default:
+                            entityBase(b);
+                            break;
                     }
                     break;
-                default: break; // null slot
+                default:
+                    break; // null slot
             }
         }
 
@@ -214,31 +279,60 @@ namespace OpenRCT2::RCT2
             bs(r.name);
             bs(r.nameArgumentsTypeName);
             bs(r.nameArgumentsNumber);
-            for (auto& x : r.lastPeepInQueue) bs(x);
-            for (auto& x : r.vehicles) bs(x);
-            bs(r.maxSpeed); bs(r.averageSpeed);
-            for (auto& x : r.length) bs(x);
-            for (auto& x : r.time) bs(x);
-            bs(r.maxPositiveVerticalG); bs(r.maxNegativeVerticalG); bs(r.maxLateralG);
-            bs(r.previousVerticalG); bs(r.previousLateralG);
+            for (auto& x : r.lastPeepInQueue)
+                bs(x);
+            for (auto& x : r.vehicles)
+                bs(x);
+            bs(r.maxSpeed);
+            bs(r.averageSpeed);
+            for (auto& x : r.length)
+                bs(x);
+            for (auto& x : r.time)
+                bs(x);
+            bs(r.maxPositiveVerticalG);
+            bs(r.maxNegativeVerticalG);
+            bs(r.maxLateralG);
+            bs(r.previousVerticalG);
+            bs(r.previousLateralG);
             bs(r.testingFlags);
-            bs(r.turnCountDefault); bs(r.turnCountBanked); bs(r.turnCountSloped);
-            bs(r.shelteredLength); bs(r.var11C);
-            bs(r.curNumCustomers); bs(r.numCustomersTimeout);
-            for (auto& x : r.numCustomers) bs(x);
+            bs(r.turnCountDefault);
+            bs(r.turnCountBanked);
+            bs(r.turnCountSloped);
+            bs(r.shelteredLength);
+            bs(r.var11C);
+            bs(r.curNumCustomers);
+            bs(r.numCustomersTimeout);
+            for (auto& x : r.numCustomers)
+                bs(x);
             bs(r.price);
-            bs(r.ratings.excitement); bs(r.ratings.intensity); bs(r.ratings.nausea);
-            bs(r.value); bs(r.chairliftBullwheelRotation);
-            bs(r.totalCustomers); bs(r.totalProfit);
+            bs(r.ratings.excitement);
+            bs(r.ratings.intensity);
+            bs(r.ratings.nausea);
+            bs(r.value);
+            bs(r.chairliftBullwheelRotation);
+            bs(r.totalCustomers);
+            bs(r.totalProfit);
             bs(r.slidePeep);
-            bs(r.buildDate); bs(r.upkeepCost); bs(r.raceWinner);
-            bs(r.musicPosition); bs(r.mechanic); bs(r.priceSecondary);
+            bs(r.buildDate);
+            bs(r.upkeepCost);
+            bs(r.raceWinner);
+            bs(r.musicPosition);
+            bs(r.mechanic);
+            bs(r.priceSecondary);
             bs(r.reliability);
-            bs(r.numPrimaryItemsSold); bs(r.numSecondaryItemsSold);
-            bs(r.incomePerHour); bs(r.profit);
-            bs(r.vehicleChangeTimeout); bs(r.guestsFavourite); bs(r.flags);
-            bs(r.totalAirTime); bs(r.cableLiftX); bs(r.cableLiftY); bs(r.cableLift);
-            for (auto& x : r.queueLength) bs(x);
+            bs(r.numPrimaryItemsSold);
+            bs(r.numSecondaryItemsSold);
+            bs(r.incomePerHour);
+            bs(r.profit);
+            bs(r.vehicleChangeTimeout);
+            bs(r.guestsFavourite);
+            bs(r.flags);
+            bs(r.totalAirTime);
+            bs(r.cableLiftX);
+            bs(r.cableLiftY);
+            bs(r.cableLift);
+            for (auto& x : r.queueLength)
+                bs(x);
         }
 
         // 8-byte RCT12 tile element. Only two fields are multi-byte: maze track wall bitmap
@@ -259,28 +353,71 @@ namespace OpenRCT2::RCT2
             }
         }
 
-        static void swapResearch(RCT12ResearchItem& ri) { bs(ri.RawValue); }
-        static void swapBanner(RCT12Banner& x) { bs(x.StringID); } // Type is uint8
-        static void swapNews(RCT12NewsItem& x) { bs(x.Assoc); bs(x.Ticks); bs(x.MonthYear); }
-        static void swapAward(RCT12Award& x) { bs(x.Time); bs(x.Type); }
-        static void swapPeepSpawn(RCT12PeepSpawn& x) { bs(x.x); bs(x.y); }
-        static void swapMapAnim(RCT12MapAnimation& x) { bs(x.x); bs(x.y); }
-        static void swapRideMeas(RCT12RideMeasurement& x) { bs(x.LastUseTick); bs(x.NumItems); bs(x.CurrentItem); }
+        static void swapResearch(RCT12ResearchItem& ri)
+        {
+            bs(ri.RawValue);
+        }
+        static void swapBanner(RCT12Banner& x)
+        {
+            bs(x.StringID);
+        } // Type is uint8
+        static void swapNews(RCT12NewsItem& x)
+        {
+            bs(x.Assoc);
+            bs(x.Ticks);
+            bs(x.MonthYear);
+        }
+        static void swapAward(RCT12Award& x)
+        {
+            bs(x.Time);
+            bs(x.Type);
+        }
+        static void swapPeepSpawn(RCT12PeepSpawn& x)
+        {
+            bs(x.x);
+            bs(x.y);
+        }
+        static void swapMapAnim(RCT12MapAnimation& x)
+        {
+            bs(x.x);
+            bs(x.y);
+        }
+        static void swapRideMeas(RCT12RideMeasurement& x)
+        {
+            bs(x.LastUseTick);
+            bs(x.NumItems);
+            bs(x.CurrentItem);
+        }
         static void swapRRC(RideRatingCalculationData& d)
         {
-            bs(d.ProximityX); bs(d.ProximityY); bs(d.ProximityZ);
-            bs(d.ProximityStartX); bs(d.ProximityStartY); bs(d.ProximityStartZ);
+            bs(d.ProximityX);
+            bs(d.ProximityY);
+            bs(d.ProximityZ);
+            bs(d.ProximityStartX);
+            bs(d.ProximityStartY);
+            bs(d.ProximityStartZ);
             bs(d.ProximityTotal);
-            for (auto& x : d.ProximityScores) bs(x);
-            bs(d.NumBrakes); bs(d.NumReversers); bs(d.StationFlags);
+            for (auto& x : d.ProximityScores)
+                bs(x);
+            bs(d.NumBrakes);
+            bs(d.NumReversers);
+            bs(d.StationFlags);
         }
-        static void swapHeader(S6Header& h) { bs(h.NumPackedObjects); bs(h.Version); bs(h.MagicNumber); }
+        static void swapHeader(S6Header& h)
+        {
+            bs(h.NumPackedObjects);
+            bs(h.Version);
+            bs(h.MagicNumber);
+        }
         static void swapInfo(S6Info& i)
         {
-            bs(i.ObjectiveArg2); bs(i.ObjectiveArg3);
+            bs(i.ObjectiveArg2);
+            bs(i.ObjectiveArg3);
             auto* b = reinterpret_cast<uint8_t*>(&i.Entry);
-            std::swap(b[0], b[3]); std::swap(b[1], b[2]);       // flags
-            std::swap(b[12], b[15]); std::swap(b[13], b[14]);   // checksum
+            std::swap(b[0], b[3]);
+            std::swap(b[1], b[2]); // flags
+            std::swap(b[12], b[15]);
+            std::swap(b[13], b[14]); // checksum
         }
 
     } // namespace S6Swap
@@ -320,10 +457,13 @@ namespace OpenRCT2::RCT2
             S6Swap::bs(_s6.ScenarioTicks);
             S6Swap::bs(_s6.ScenarioSrand0);
             S6Swap::bs(_s6.ScenarioSrand1);
-            for (auto& _x : _s6.TileElements) S6Swap::swapTile(_x, _s6);
+            for (auto& _x : _s6.TileElements)
+                S6Swap::swapTile(_x, _s6);
             S6Swap::bs(_s6.NextFreeTileElementPointerIndex);
-            for (auto& _x : _s6.EntityListsHead) S6Swap::bs(_x);
-            for (auto& _x : _s6.EntityListsCount) S6Swap::bs(_x);
+            for (auto& _x : _s6.EntityListsHead)
+                S6Swap::bs(_x);
+            for (auto& _x : _s6.EntityListsCount)
+                S6Swap::bs(_x);
             S6Swap::bs(_s6.ParkName);
             S6Swap::bs(_s6.ParkNameArgs);
             S6Swap::bs(_s6.InitialCash);
@@ -332,16 +472,24 @@ namespace OpenRCT2::RCT2
             S6Swap::bs(_s6.ParkEntranceFee);
             S6Swap::bs(_s6.RCT1ParkEntranceX);
             S6Swap::bs(_s6.RCT1ParkEntranceY);
-            for (auto& _x : _s6.PeepSpawns) S6Swap::swapPeepSpawn(_x);
-            for (auto& _x : _s6.ResearchedRideTypes) S6Swap::bs(_x);
-            for (auto& _x : _s6.ResearchedRideEntries) S6Swap::bs(_x);
-            for (auto& _x : _s6.ResearchedTrackTypesA) S6Swap::bs(_x);
-            for (auto& _x : _s6.ResearchedTrackTypesB) S6Swap::bs(_x);
+            for (auto& _x : _s6.PeepSpawns)
+                S6Swap::swapPeepSpawn(_x);
+            for (auto& _x : _s6.ResearchedRideTypes)
+                S6Swap::bs(_x);
+            for (auto& _x : _s6.ResearchedRideEntries)
+                S6Swap::bs(_x);
+            for (auto& _x : _s6.ResearchedTrackTypesA)
+                S6Swap::bs(_x);
+            for (auto& _x : _s6.ResearchedTrackTypesB)
+                S6Swap::bs(_x);
             S6Swap::bs(_s6.GuestsInPark);
             S6Swap::bs(_s6.GuestsHeadingForPark);
-            for (auto& _x : _s6.ExpenditureTable) for (auto& _y : _x) S6Swap::bs(_y);
+            for (auto& _x : _s6.ExpenditureTable)
+                for (auto& _y : _x)
+                    S6Swap::bs(_y);
             S6Swap::bs(_s6.LastGuestsInPark);
-            for (auto& _x : _s6.ResearchedSceneryItems) S6Swap::bs(_x);
+            for (auto& _x : _s6.ResearchedSceneryItems)
+                S6Swap::bs(_x);
             S6Swap::bs(_s6.ParkRating);
             S6Swap::bs(_s6.LastResearchedItemSubject);
             S6Swap::bs(_s6.NextResearchItem);
@@ -353,19 +501,23 @@ namespace OpenRCT2::RCT2
             S6Swap::bs(_s6.GuestInitialCash);
             S6Swap::bs(_s6.ObjectiveCurrency);
             S6Swap::bs(_s6.ObjectiveGuests);
-            for (auto& _x : _s6.BalanceHistory) S6Swap::bs(_x);
+            for (auto& _x : _s6.BalanceHistory)
+                S6Swap::bs(_x);
             S6Swap::bs(_s6.CurrentExpenditure);
             S6Swap::bs(_s6.CurrentProfit);
             S6Swap::bs(_s6.WeeklyProfitAverageDividend);
             S6Swap::bs(_s6.WeeklyProfitAverageDivisor);
-            for (auto& _x : _s6.WeeklyProfitHistory) S6Swap::bs(_x);
+            for (auto& _x : _s6.WeeklyProfitHistory)
+                S6Swap::bs(_x);
             S6Swap::bs(_s6.ParkValue);
-            for (auto& _x : _s6.ParkValueHistory) S6Swap::bs(_x);
+            for (auto& _x : _s6.ParkValueHistory)
+                S6Swap::bs(_x);
             S6Swap::bs(_s6.CompletedCompanyValue);
             S6Swap::bs(_s6.TotalAdmissions);
             S6Swap::bs(_s6.IncomeFromAdmissions);
             S6Swap::bs(_s6.CompanyValue);
-            for (auto& _x : _s6.Awards) S6Swap::swapAward(_x);
+            for (auto& _x : _s6.Awards)
+                S6Swap::swapAward(_x);
             S6Swap::bs(_s6.LandPrice);
             S6Swap::bs(_s6.ConstructionRightsPrice);
             S6Swap::bs(_s6.Word01358774);
@@ -384,28 +536,39 @@ namespace OpenRCT2::RCT2
             S6Swap::bs(_s6.SamePriceThroughout);
             S6Swap::bs(_s6.SuggestedMaxGuests);
             S6Swap::bs(_s6.ParkRatingWarningDays);
-            for (auto& _x : _s6.ResearchItems) S6Swap::swapResearch(_x);
+            for (auto& _x : _s6.ResearchItems)
+                S6Swap::swapResearch(_x);
             S6Swap::bs(_s6.MapBaseZ);
             S6Swap::bs(_s6.SamePriceThroughoutExtended);
-            for (auto& _x : _s6.ParkEntranceX) S6Swap::bs(_x);
-            for (auto& _x : _s6.ParkEntranceY) S6Swap::bs(_x);
-            for (auto& _x : _s6.ParkEntranceZ) S6Swap::bs(_x);
-            for (auto& _x : _s6.Banners) S6Swap::swapBanner(_x);
+            for (auto& _x : _s6.ParkEntranceX)
+                S6Swap::bs(_x);
+            for (auto& _x : _s6.ParkEntranceY)
+                S6Swap::bs(_x);
+            for (auto& _x : _s6.ParkEntranceZ)
+                S6Swap::bs(_x);
+            for (auto& _x : _s6.Banners)
+                S6Swap::swapBanner(_x);
             S6Swap::bs(_s6.GameTicks1);
-            for (auto& _x : _s6.Rides) S6Swap::swapRide(_x);
+            for (auto& _x : _s6.Rides)
+                S6Swap::swapRide(_x);
             S6Swap::bs(_s6.SavedAge);
             S6Swap::bs(_s6.SavedViewX);
             S6Swap::bs(_s6.SavedViewY);
-            for (auto& _x : _s6.MapAnimations) S6Swap::swapMapAnim(_x);
+            for (auto& _x : _s6.MapAnimations)
+                S6Swap::swapMapAnim(_x);
             S6Swap::bs(_s6.NumMapAnimations);
             S6Swap::swapRRC(_s6.RideRatingsCalcData);
-            for (auto& _x : _s6.RideMeasurements) S6Swap::swapRideMeas(_x);
+            for (auto& _x : _s6.RideMeasurements)
+                S6Swap::swapRideMeas(_x);
             S6Swap::bs(_s6.NextGuestIndex);
             S6Swap::bs(_s6.GrassAndSceneryTilepos);
-            for (auto& _x : _s6.PatrolAreas) S6Swap::bs(_x);
+            for (auto& _x : _s6.PatrolAreas)
+                S6Swap::bs(_x);
             S6Swap::bs(_s6.WeatherUpdateTimer);
-            for (auto& _x : _s6.recentMessages) S6Swap::swapNews(_x);
-            for (auto& _x : _s6.archivedMessages) S6Swap::swapNews(_x);
+            for (auto& _x : _s6.recentMessages)
+                S6Swap::swapNews(_x);
+            for (auto& _x : _s6.archivedMessages)
+                S6Swap::swapNews(_x);
             S6Swap::bs(_s6.RCT1ScenarioSlotIndex);
             S6Swap::bs(_s6.RCT1ScenarioFlags);
             S6Swap::bs(_s6.WidePathTileLoopX);

@@ -27,7 +27,6 @@ void amiga_audio_close(void);
 
 /* Diagnostics: buffers written / underruns (gaps where all buffers had drained). */
 void amiga_audio_stats(unsigned* written, unsigned* underruns);
-void amiga_audio_debug(unsigned* reaped, int* lastError, int* inflight);
 /* dos GetVar wrapper: 1 if the variable exists (value copied to buf). */
 int amiga_audio_getenv(const char* name, char* buf, int len);
 

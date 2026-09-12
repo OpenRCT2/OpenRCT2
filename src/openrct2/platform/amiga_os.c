@@ -3,11 +3,11 @@
  *****************************************************************************/
 #ifdef __amigaos__
 
+    #include <devices/timer.h>
+    #include <dos/dosextens.h>
     #include <proto/dos.h>
     #include <proto/exec.h>
     #include <proto/timer.h>
-    #include <devices/timer.h>
-    #include <dos/dosextens.h>
     #include <string.h>
 
 /* libnix reads this at startup and swaps to a stack of this size; the CLI default is 4 KB. */
@@ -105,14 +105,22 @@ void amiga_trace(const char* line)
         stamp[n++] = '+';
         {
             int r = 0;
-            do { rev[r++] = (char)('0' + ms % 10); ms /= 10; } while (ms != 0);
-            while (r > 0) stamp[n++] = rev[--r];
+            do
+            {
+                rev[r++] = (char)('0' + ms % 10);
+                ms /= 10;
+            } while (ms != 0);
+            while (r > 0)
+                stamp[n++] = rev[--r];
         }
-        stamp[n++] = 'm'; stamp[n++] = 's'; stamp[n++] = ']'; stamp[n++] = ' ';
+        stamp[n++] = 'm';
+        stamp[n++] = 's';
+        stamp[n++] = ']';
+        stamp[n++] = ' ';
         Write(fh, (APTR)stamp, n);
     }
     Write(fh, (APTR)line, strlen(line));
-    Write(fh, (APTR)"\n", 1);
+    Write(fh, (APTR) "\n", 1);
     Close(fh);
 }
 

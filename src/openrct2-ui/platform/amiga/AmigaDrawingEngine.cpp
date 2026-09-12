@@ -12,11 +12,11 @@
 
     #include <memory>
     #include <openrct2/config/Config.h>
+    #include <openrct2/core/String.hpp>
     #include <openrct2/drawing/IDrawingEngine.h>
     #include <openrct2/drawing/X8DrawingEngine.h>
-    #include <openrct2/ui/UiContext.h>
     #include <openrct2/platform/AmigaTrace.h>
-    #include <openrct2/core/String.hpp>
+    #include <openrct2/ui/UiContext.h>
 
 extern "C" unsigned amiga_ticks_ms(void);
 using namespace OpenRCT2;
@@ -106,8 +106,11 @@ public:
         {
             unsigned now = amiga_ticks_ms();
             unsigned dt = now - t0;
-            AMIGA_TRACE(String::stdFormat("gfx: %u frames in %u ms = %u.%02u fps", frames, dt,
-                dt ? frames * 1000u / dt : 0u, dt ? (frames * 100000u / dt) % 100u : 0u).c_str());
+            AMIGA_TRACE(
+                String::stdFormat(
+                    "gfx: %u frames in %u ms = %u.%02u fps", frames, dt, dt ? frames * 1000u / dt : 0u,
+                    dt ? (frames * 100000u / dt) % 100u : 0u)
+                    .c_str());
             frames = 0;
             t0 = now;
         }

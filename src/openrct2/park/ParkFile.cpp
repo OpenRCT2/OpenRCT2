@@ -9,9 +9,6 @@
 
 #include "ParkFile.h"
 
-#include <bit>
-#include "../platform/AmigaTrace.h"
-
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
@@ -64,6 +61,7 @@
 #include "Legacy.h"
 #include "ParkPreview.h"
 
+#include <bit>
 #include <cassert>
 #include <cstdint>
 #include <ctime>
@@ -147,8 +145,7 @@ namespace OpenRCT2
             RequiredObjects = {};
             if (!skipObjectCheck)
             {
-                AMIGA_TRACE("park: ReadWriteObjectsChunk(*_os);");
-            ReadWriteObjectsChunk(*_os);
+                ReadWriteObjectsChunk(*_os);
                 ReadWritePackedObjectsChunk(*_os);
             }
         }
@@ -156,11 +153,9 @@ namespace OpenRCT2
         void Import(GameState_t& gameState)
         {
             auto& os = *_os;
-            AMIGA_TRACE("park: ReadWriteTilesChunk(gameState, os);");
             ReadWriteTilesChunk(gameState, os);
             ReadWriteBannersChunk(gameState, os);
             ReadWriteRidesChunk(gameState, os);
-            AMIGA_TRACE("park: ReadWriteEntitiesChunk(gameState, os);");
             ReadWriteEntitiesChunk(gameState, os);
             ReadWriteScenarioChunk(gameState, os);
             ReadWriteGeneralChunk(gameState, os);
@@ -190,15 +185,11 @@ namespace OpenRCT2
             header.targetVersion = kParkFileCurrentVersion;
             header.minVersion = kParkFileMinVersion;
 
-            AMIGA_TRACE("park: ReadWriteAuthoringChunk(os);");
             ReadWriteAuthoringChunk(os);
-            AMIGA_TRACE("park: ReadWriteObjectsChunk(os);");
             ReadWriteObjectsChunk(os);
-            AMIGA_TRACE("park: ReadWriteTilesChunk(gameState, os);");
             ReadWriteTilesChunk(gameState, os);
             ReadWriteBannersChunk(gameState, os);
             ReadWriteRidesChunk(gameState, os);
-            AMIGA_TRACE("park: ReadWriteEntitiesChunk(gameState, os);");
             ReadWriteEntitiesChunk(gameState, os);
             ReadWriteScenarioChunk(gameState, os);
             ReadWriteGeneralChunk(gameState, os);
@@ -331,12 +322,10 @@ namespace OpenRCT2
                 os.readWriteChunk(
                     ParkFileChunkType::objects, [&requiredObjects, version, &legacyPathMappings](OrcaStream::ChunkStream& cs) {
                         auto numSubLists = cs.read<uint16_t>();
-                        AMIGA_TRACE(String::stdFormat("objchunk: version %u, %u sub-lists", static_cast<unsigned>(version), static_cast<unsigned>(numSubLists)).c_str());
                         for (size_t i = 0; i < numSubLists; i++)
                         {
                             auto objectType = static_cast<ObjectType>(cs.read<uint16_t>());
                             auto subListSize = static_cast<ObjectEntryIndex>(cs.read<uint32_t>());
-                            AMIGA_TRACE(String::stdFormat("objchunk: type %d size %u", static_cast<int>(objectType), static_cast<unsigned>(subListSize)).c_str());
                             for (ObjectEntryIndex j = 0; j < subListSize; j++)
                             {
                                 auto kind = cs.read<uint8_t>();
@@ -350,7 +339,8 @@ namespace OpenRCT2
                                         RCTObjectEntry datEntry;
                                         cs.read(&datEntry, sizeof(datEntry));
                                         if constexpr (std::endian::native == std::endian::big)
-                                            datEntry.LittleEndianToHost(); // raw 16-byte DAT entry: flags/checksum are little-endian
+                                            datEntry.LittleEndianToHost(); // raw 16-byte DAT entry: flags/checksum are
+                                                                           // little-endian
                                         ObjectEntryDescriptor desc(datEntry);
                                         if (version < kFixedObsoleteFootpathsVersion && datEntry.GetType() == ObjectType::paths)
                                         {
@@ -1203,61 +1193,61 @@ namespace OpenRCT2
             }
         }
 
-
 #ifdef __amigaos__
-    // Tile elements are stored raw (16 bytes, little-endian) in the tiles chunk.
-    // Offsets from the element definitions; every other field is one byte.
-    static void SwapTileElementBytes(TileElement& el)
-    {
-        auto* b = reinterpret_cast<uint8_t*>(&el);
-        auto sw = [&](size_t o) { std::swap(b[o], b[o + 1]); };
-        switch (el.getType())
+        // Tile elements are stored raw (16 bytes, little-endian) in the tiles chunk.
+        // Offsets from the element definitions; every other field is one byte.
+        static void SwapTileElementBytes(TileElement& el)
         {
-            case TileElementType::path:
-                sw(5);  // surfaceIndex
-                sw(7);  // railingsIndex
-                if (b[0] & 0x01) // FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE lives in the type byte; only queues carry a 16-bit ride index at 13
-                    sw(13);
-                break;
-            case TileElementType::track:
-                sw(5);  // trackType
-                sw(12); // rideIndex
-                sw(14); // rideType
-                // Maze rides store a 16-bit wall bitmap (mazeEntry) in the union at offset 7 instead of the
-                // sequence/colourScheme bytes. Detect a maze from rideType (=20) regardless of the current byte
-                // order — {20,0} in either order — since no real ride type is 0x1400.
-                if ((b[14] == 20 && b[15] == 0) || (b[14] == 0 && b[15] == 20))
-                    sw(7); // mazeEntry
-                break;
-            case TileElementType::smallScenery:
-                sw(5); // entryIndex
-                break;
-            case TileElementType::largeScenery:
-                sw(5); // entryIndex
-                sw(7); // bannerIndex
-                break;
-            case TileElementType::wall:
-                sw(5);  // entryIndex
-                sw(10); // bannerIndex
-                break;
-            case TileElementType::entrance:
-                sw(8);  // pathType
-                sw(10); // rideIndex
-                sw(13); // entryIndex
-                break;
-            case TileElementType::banner:
-                sw(5); // index
-                break;
-            default:
-                break;
+            auto* b = reinterpret_cast<uint8_t*>(&el);
+            auto sw = [&](size_t o) { std::swap(b[o], b[o + 1]); };
+            switch (el.getType())
+            {
+                case TileElementType::path:
+                    sw(5);           // surfaceIndex
+                    sw(7);           // railingsIndex
+                    if (b[0] & 0x01) // FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE lives in the type byte; only queues carry a 16-bit
+                                     // ride index at 13
+                        sw(13);
+                    break;
+                case TileElementType::track:
+                    sw(5);  // trackType
+                    sw(12); // rideIndex
+                    sw(14); // rideType
+                    // Maze rides store a 16-bit wall bitmap (mazeEntry) in the union at offset 7 instead of the
+                    // sequence/colourScheme bytes. Detect a maze from rideType (=20) regardless of the current byte
+                    // order — {20,0} in either order — since no real ride type is 0x1400.
+                    if ((b[14] == 20 && b[15] == 0) || (b[14] == 0 && b[15] == 20))
+                        sw(7); // mazeEntry
+                    break;
+                case TileElementType::smallScenery:
+                    sw(5); // entryIndex
+                    break;
+                case TileElementType::largeScenery:
+                    sw(5); // entryIndex
+                    sw(7); // bannerIndex
+                    break;
+                case TileElementType::wall:
+                    sw(5);  // entryIndex
+                    sw(10); // bannerIndex
+                    break;
+                case TileElementType::entrance:
+                    sw(8);  // pathType
+                    sw(10); // rideIndex
+                    sw(13); // entryIndex
+                    break;
+                case TileElementType::banner:
+                    sw(5); // index
+                    break;
+                default:
+                    break;
+            }
         }
-    }
 
-    static void FixTileElementsByteOrder(std::vector<TileElement>& elements)
-    {
-        for (auto& el : elements)
-            SwapTileElementBytes(el);
-    }
+        static void FixTileElementsByteOrder(std::vector<TileElement>& elements)
+        {
+            for (auto& el : elements)
+                SwapTileElementBytes(el);
+        }
 #endif
 
         void ReadWriteTilesChunk(GameState_t& gameState, OrcaStream& os)

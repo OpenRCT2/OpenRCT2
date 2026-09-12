@@ -13,6 +13,8 @@
 
 #ifdef __amigaos__
 
+    #include "Platform.h"
+
     #include "../Date.h"
     #include "../Diagnostic.h"
     #include "../OpenRCT2.h"
@@ -20,7 +22,6 @@
     #include "../core/String.hpp"
     #include "../drawing/Font.h"
     #include "../localisation/Language.h"
-    #include "Platform.h"
     #include "AmigaTrace.h"
 
     #include <cerrno>
@@ -291,12 +292,12 @@ namespace OpenRCT2::Platform
         return {};
     }
 
-#ifndef DISABLE_TTF
+    #ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor&)
     {
         return {};
     }
-#endif
+    #endif
 
     void Sleep(uint32_t ms)
     {

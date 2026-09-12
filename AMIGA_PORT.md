@@ -1,34 +1,55 @@
-# OpenRCT2 on 68k AmigaOS 3.2
+# OpenRCT2 on AmigaOS 3.x (68k)
 
-A port of OpenRCT2 (RollerCoaster Tycoon 2 engine, C++20) to big-endian
-68k AmigaOS 3.2, built with bebbo's amiga-gcc **GCC 16.2.0b**. This branch
-(`amiga`) is a fork of OpenRCT2; upstream is https://github.com/OpenRCT2/OpenRCT2
-(GPLv3, which this inherits).
+This branch (`amiga`) ports OpenRCT2 to big-endian 68k AmigaOS 3.x. It is a
+fork of https://github.com/OpenRCT2/OpenRCT2 and inherits its GPLv3 licence.
+Build instructions: `distribution/amiga/BUILDING.md`. Tester notes:
+`distribution/amiga/TESTER-GUIDE.md`.
 
-## What works
-- **Headless simulation is bit-exact with the x86-64/arm64 build** — identical
-  entity checksums through 5000 ticks on multiple parks. The whole little-endian
-  file format is handled by an endian layer (scalar stream swaps, self-converting
-  structs, per-type tile-element and entity byte-order fixes, host-order checksum).
-- **Full graphical UI** on a Picasso96/CyberGraphX 8-bit RTG screen with
-  Intuition mouse/keyboard input, via an SDL2 shim (`src/openrct2-ui/platform/amiga/`).
-  The title sequence, parks and menus render and respond; ~27 fps at 640x480 on a
-  68040 (Amiga emulator).
-- **Native `.park` loading** (bit-exact) and **native SC6/SV6 scenario loading**
-  (big-endian byte-swap of the raw RCT2 struct; scenario index uses a fast
-  Info-only scan).
+## Status
 
-## Not done
-- SC4 (RCT1) loading; audio; mouse cursor shapes; SC6 simulation is
-  non-deterministic even on x86 (an uninitialised import field), so cross-host
-  bit-exact *simulation* verification uses the `.park` path.
+- **Simulation is bit-exact with the x86-64/arm64 build**: identical entity
+  checksums through 5000 ticks on multiple parks, verified on a 68040
+  against a native build of the same tree.
+- **Native loading of `.park`, RCT2 `.sc6`/`.sv6` and RCT1 `.sc4`**, all
+  bit-exact at tick 0 (RCT1 base, Added Attractions and Loopy Landscapes).
+- **Graphical UI** on a Picasso96/CyberGraphX 8-bit RTG screen with Intuition
+  mouse and keyboard input, through a small SDL2 API shim
+  (`src/openrct2-ui/platform/amiga/`), so the upstream UI code is untouched.
+  ~25 fps at 640x480 on an emulated 68040; faster on PiStorm and Vampire.
+- **Sound and music** through `ahi.device` (AHI), using upstream's mixer with
+  integer fixed-point effect loops for the soft-float 68k. Ogg/Vorbis and
+  FLAC are not built, so OpenRCT2's own music packs do not play; the RCT2
+  `css*.dat` files do.
 
-## Building
-Cross-compile with GCC 16.2 for m68k-amigaos. See the sibling project
-`amiopenrtc2` (build scripts under `spike/`, toolchain recipe in AllAmigaTooling)
-for the exact CMake toolchain file, flags and deploy tooling.
+Not done: mouse cursor shapes and clipboard (Intuition pointer only), the
+optional Ogg music packs, networking, scripting, hardware FPU builds.
+Memory: about 256 MB of Fast RAM in use.
 
-## Key commits (this branch)
-Endian layer, GCC 16 build fixes, union byte-order fixes, ChecksumStream
-little-endian definition, P96/Intuition UI backend, title-parser endian fix,
-maze tile swap, native SC6 loader. See `git log`.
+## How the port is structured
+
+- **Byte order.** The RCT file formats are little-endian. Scalars read through
+  `IStream` are swapped (`core/IStream.hpp`, `core/Endianness.h`); on-disk
+  structs convert themselves (`LittleEndianToHost()`); the raw RCT2/RCT1 blobs
+  are swapped in place after decoding (`rct2/S6Importer.cpp`,
+  `rct1/S4Importer.cpp`, `park/ParkFile.cpp` tile elements). Unions that alias
+  a wide integer over byte members are ordered by `__BYTE_ORDER__`
+  (`ride/Ride.h`, `entity/Peep.h`, `entity/Guest.h`, `ride/Vehicle.h`, ...).
+  `core/ChecksumStream` hashes little-endian words so checksums match across
+  hosts. Portable fixes found on the way (Formatter argument storage, SC4
+  decode word rotation, title-script byte read, `ChecksumStream` fast paths)
+  apply to any big-endian host.
+- **Platform.** `platform/Platform.Amiga.cpp`, `platform/amiga_os.c`
+  (timer, sleep, trace), `platform/amiga_compat.cpp` (libnix/libstdc++
+  gaps). No threads: `core/JobPool.cpp` runs jobs inline.
+- **UI backend.** `src/openrct2-ui/platform/amiga/`: `amiga_ui.c` (screen,
+  chunky blits, palette, IDCMP input), `amiga_audio.c` (AHI), `sdl_shim.cpp`
+  and `sdl_shim_audio.cpp` (the SDL2 subset the UI calls), `sdl2/` (the
+  matching headers), `AmigaDrawingEngine.cpp` (X8 rasteriser presented with
+  dirty-rectangle blits), `UiContext.Amiga.cpp`.
+
+## Contributing back
+
+The endian fixes in `core/`, `localisation/`, `sawyer_coding/`, `rct1/`,
+`rct2/` and the union ordering are candidates for upstream on their own;
+the AmigaOS platform and UI backend are self-contained under `platform/`
+and `platform/amiga/` and guarded by `AMIGA`/`__amigaos__`.

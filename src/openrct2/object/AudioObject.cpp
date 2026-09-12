@@ -8,19 +8,18 @@
  *****************************************************************************/
 
 #include "AudioObject.h"
-#include "../platform/AmigaTrace.h"
-#include <string>
 
 #include "../AssetPackManager.h"
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 
+#include <string>
+
 namespace OpenRCT2
 {
     void AudioObject::Load()
     {
-        AMIGA_TRACE((std::string("audioobj: Load ") + std::string(GetIdentifier()) + " samples=" + std::to_string(_sampleTable.GetCount())).c_str());
         // Start with base samples
         _loadedSampleTable.LoadFrom(_sampleTable, 0, _sampleTable.GetCount());
 

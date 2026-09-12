@@ -12,7 +12,8 @@
         #define WIN32_LEAN_AND_MEAN
     #endif
     #include <windows.h>
-#elif defined(__unix__) || defined(__amigaos__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID__)
+#elif defined(__unix__) || defined(__amigaos__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))             \
+    || defined(__ANDROID__)
     #include <dirent.h>
     #include <sys/stat.h>
 #endif

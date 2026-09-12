@@ -8,8 +8,6 @@
  *****************************************************************************/
 
 #include "Ride.h"
-#include "../core/String.hpp"
-#include "../platform/AmigaTrace.h"
 
 #include "../Cheats.h"
 #include "../Context.h"
@@ -263,13 +261,10 @@ namespace OpenRCT2
         auto& objMgr = GetContext()->GetObjectManager();
 
         auto obj = objMgr.GetLoadedObject<RideObject>(index);
-        AMIGA_TRACE_ONCE(String::stdFormat("rideentry: index=%u raw=%p typed=%p", static_cast<unsigned>(index), static_cast<void*>(objMgr.GetLoadedObject(ObjectType::ride, index)), static_cast<void*>(obj)).c_str());
         if (obj == nullptr)
         {
-            AMIGA_TRACE_ONCE("rideentry: typed lookup null");
             return nullptr;
         }
-        AMIGA_TRACE_ONCE(String::stdFormat("rideentry: legacy data=%p", static_cast<void*>(obj->GetLegacyData())).c_str());
 
         return static_cast<RideObjectEntry*>(obj->GetLegacyData());
     }

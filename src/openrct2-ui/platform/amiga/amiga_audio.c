@@ -2,10 +2,10 @@
 #ifdef __amigaos__
     #include "amiga_audio.h"
 
-    #include <proto/exec.h>
-    #include <proto/dos.h>
-    #include <exec/memory.h>
     #include <devices/ahi.h>
+    #include <exec/memory.h>
+    #include <proto/dos.h>
+    #include <proto/exec.h>
     #include <string.h>
 
     #define MAX_BUFFERS 4
@@ -21,28 +21,15 @@ static int g_open = 0;
 static struct AHIRequest* g_last = NULL; /* most recently queued request, for ahir_Link */
 static unsigned g_written = 0, g_underruns = 0;
 
-static unsigned g_reaped = 0;
-static int g_lastError = 0;
 static void reap(int i)
 {
     if (g_inflight[i] && CheckIO((struct IORequest*)g_req[i]))
     {
         WaitIO((struct IORequest*)g_req[i]); /* completed: this just removes the reply */
         g_inflight[i] = 0;
-        g_reaped++;
-        g_lastError = g_req[i]->ahir_Std.io_Error;
         if (g_last == g_req[i])
             g_last = NULL;
     }
-}
-void amiga_audio_debug(unsigned* reaped, int* lastError, int* inflight)
-{
-    int i, n = 0;
-    for (i = 0; i < g_num; i++)
-        n += g_inflight[i];
-    if (reaped) *reaped = g_reaped;
-    if (lastError) *lastError = g_lastError;
-    if (inflight) *inflight = n;
 }
 
 int amiga_audio_available(void)
@@ -147,7 +134,7 @@ int amiga_audio_pump(amiga_audio_fill_fn fill, void* user)
         r->ahir_Std.io_Offset = 0;
         r->ahir_Type = AHIST_S16S;
         r->ahir_Frequency = g_freq;
-        r->ahir_Volume = 0x10000; /* 1.0 */
+        r->ahir_Volume = 0x10000;  /* 1.0 */
         r->ahir_Position = 0x8000; /* centre */
         r->ahir_Link = g_last;     /* gapless: play after the previous request */
         SendIO((struct IORequest*)r);

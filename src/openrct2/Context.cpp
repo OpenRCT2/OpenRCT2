@@ -14,7 +14,6 @@
 
 #include "AssetPackManager.h"
 #include "Context.h"
-#include "platform/AmigaTrace.h"
 #include "Diagnostic.h"
 #include "FileClassifier.h"
 #include "Game.h"
@@ -92,9 +91,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 using OpenRCT2::Audio::IAudioContext;
-#ifdef __amigaos__
-static uint32_t gAmigaFrameStat[8] = {};
-#endif
 
 namespace OpenRCT2
 {
@@ -184,7 +180,6 @@ namespace OpenRCT2
 #endif
             , _painter(std::make_unique<Paint::Painter>(*_uiContext))
         {
-            AMIGA_TRACE("Context::Context: body");
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
 
@@ -356,7 +351,6 @@ namespace OpenRCT2
                 throw std::runtime_error("Context already initialised.");
             }
             _initialised = true;
-            AMIGA_TRACE("Context::Initialise: enter");
 
             CrashInit();
 
@@ -462,9 +456,7 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
-                AMIGA_TRACE("Context::Initialise: CreateWindow");
                 _uiContext->CreateWindow();
-                AMIGA_TRACE("Context::Initialise: window created");
             }
 
             EnsureUserContentDirectoriesExist();
@@ -482,13 +474,11 @@ namespace OpenRCT2
 
             if (!gOpenRCT2NoGraphics)
             {
-                AMIGA_TRACE("Context::Initialise: LoadBaseGraphics");
                 if (!LoadBaseGraphics())
                 {
                     return false;
                 }
                 Drawing::LightFx::Init();
-                AMIGA_TRACE("Context::Initialise: base graphics loaded");
             }
 
             ContextInit();
@@ -549,9 +539,7 @@ namespace OpenRCT2
             auto currentLanguage = _localisationService->GetCurrentLanguage();
 
             OpenProgress(STR_CHECKING_OBJECT_FILES);
-            AMIGA_TRACE("Context::Initialise: object repository");
             _objectRepository->LoadOrConstruct(currentLanguage);
-            AMIGA_TRACE("Context::Initialise: object repository done");
 
             // Asset packs need to be loaded before any of the objects they may override are.
             // This is especially important to keep in mind with intransient objects like Audio objects,
@@ -583,7 +571,6 @@ namespace OpenRCT2
         void InitialiseDrawingEngine() final override
         {
             assert(_drawingEngine == nullptr);
-            AMIGA_TRACE("Context::InitialiseDrawingEngine");
 
             const auto initializeEngine = [&](DrawingEngine engine) -> std::unique_ptr<Drawing::IDrawingEngine> {
                 try
@@ -641,7 +628,6 @@ namespace OpenRCT2
             }
 
             _drawingEngineType = drawingEngineType;
-            AMIGA_TRACE(_drawingEngine != nullptr ? "Context: drawing engine ready" : "Context: NO drawing engine");
 
             Config::Get().general.drawingEngine = drawingEngineType;
             Config::Save();
@@ -659,9 +645,7 @@ namespace OpenRCT2
             auto captionString = _localisationService->GetString(captionStringId);
             auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
             intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
-            AMIGA_TRACE("Context::OpenProgress: ContextOpenIntent");
             ContextOpenIntent(&intent);
-            AMIGA_TRACE("Context::OpenProgress: done");
         }
 
         void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = kStringIdNone) override
@@ -1048,7 +1032,6 @@ namespace OpenRCT2
             }
 
             IScene* nextScene{};
-            AMIGA_TRACE(String::stdFormat("Context: startup action %d", static_cast<int>(gOpenRCT2StartupAction)).c_str());
             switch (gOpenRCT2StartupAction)
             {
                 case StartupAction::intro:
@@ -1324,39 +1307,21 @@ namespace OpenRCT2
         {
             PROFILED_FUNCTION();
 
-#ifdef __amigaos__
-            uint32_t _s0 = Platform::GetTicks();
-#endif
             _uiContext->ProcessMessages();
-#ifdef __amigaos__
-            uint32_t _s1 = Platform::GetTicks();
-            gAmigaFrameStat[0] += _s1 - _s0;
-#endif
 
             if (_ticksAccumulator < kGameUpdateTimeMS)
             {
                 const auto sleepTimeSec = std::min(kNetworkUpdateTimeMS, kGameUpdateTimeMS - _ticksAccumulator);
                 Platform::Sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
-#ifdef __amigaos__
-                gAmigaFrameStat[1] += Platform::GetTicks() - _s1;
-                gAmigaFrameStat[6]++;
-#endif
                 return;
             }
 
             while (_ticksAccumulator >= kGameUpdateTimeMS)
             {
                 Tick();
-#ifdef __amigaos__
-                gAmigaFrameStat[7]++;
-#endif
 
                 _ticksAccumulator -= kGameUpdateTimeMS;
             }
-#ifdef __amigaos__
-            uint32_t _s2 = Platform::GetTicks();
-            gAmigaFrameStat[2] += _s2 - _s1;
-#endif
 
             _backgroundWorker.dispatchCompleted();
 
@@ -1410,24 +1375,10 @@ namespace OpenRCT2
         void Draw()
         {
             PROFILED_FUNCTION();
-#ifdef __amigaos__
-            uint32_t _d0 = Platform::GetTicks();
-#endif
 
             _drawingEngine->BeginDraw();
             _painter->Paint(*_drawingEngine);
             _drawingEngine->EndDraw();
-#ifdef __amigaos__
-            gAmigaFrameStat[3] += Platform::GetTicks() - _d0;
-            if (++gAmigaFrameStat[5] % 20 == 0)
-            {
-                char line[200];
-                std::snprintf(line, sizeof line, "frame: per 20 draws: events %u ms, sleep %u ms (%u times), ticks %u ms (%u ticks), draw %u ms, windows %u ms",
-                    gAmigaFrameStat[0], gAmigaFrameStat[1], gAmigaFrameStat[6], gAmigaFrameStat[2], gAmigaFrameStat[7], gAmigaFrameStat[3], gAmigaFrameStat[4]);
-                amiga_trace(line);
-                for (auto& v : gAmigaFrameStat) v = 0;
-            }
-#endif
         }
 
         void Tick()
@@ -1604,12 +1555,9 @@ namespace OpenRCT2
 
     std::unique_ptr<IContext> CreateContext()
     {
-        AMIGA_TRACE("CreateContext: CreatePlatformEnvironment");
         auto env = CreatePlatformEnvironment();
-        AMIGA_TRACE("CreateContext: dummy audio/ui");
         auto audio = Audio::CreateDummyAudioContext();
         auto ui = CreateDummyUiContext();
-        AMIGA_TRACE("CreateContext: make Context");
         return CreateContext(std::move(env), std::move(audio), std::move(ui));
     }
 

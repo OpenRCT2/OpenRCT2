@@ -12,15 +12,14 @@
 #include "Endianness.h"
 
 #include <bit>
-#include <cstring>
-#include <type_traits>
-
 #include <cstdint>
+#include <cstring>
 #include <istream>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <vector>
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

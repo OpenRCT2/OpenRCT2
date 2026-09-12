@@ -24,7 +24,6 @@
 #include "../platform/Platform.h"
 #include "../scripting/ScriptEngine.h"
 #include "CommandLine.hpp"
-#include "../platform/AmigaTrace.h"
 
 #include <ctime>
 #include <string>
@@ -399,15 +398,10 @@ namespace OpenRCT2
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
 
-        AMIGA_TRACE("scan-objects: CreateContext");
         auto context = CreateContext();
-        AMIGA_TRACE("scan-objects: GetPlatformEnvironment");
         auto& env = context->GetPlatformEnvironment();
-        AMIGA_TRACE("scan-objects: CreateObjectRepository");
         auto objectRepository = CreateObjectRepository(env);
-        AMIGA_TRACE("scan-objects: Construct");
         objectRepository->Construct(Config::Get().general.language);
-        AMIGA_TRACE("scan-objects: done");
         return ExitCode::ok;
     }
 

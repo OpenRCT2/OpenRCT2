@@ -7,10 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../ride/RideManager.hpp"
-#include <cstdlib>
-#include <cstdio>
-#include "../core/MemoryStream.h"
 #include "EntityRegistry.h"
 
 #include "../Diagnostic.h"
@@ -19,12 +15,14 @@
 #include "../core/ChecksumStream.h"
 #include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/String.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../peep/RideUseSystem.h"
 #include "../profiling/Profiling.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
 #include "../world/Map.h"
 #include "Balloon.h"
@@ -35,6 +33,8 @@
 #include "Particle.h"
 
 #include <cassert>
+#include <cstdio>
+#include <cstdlib>
 #include <iterator>
 #include <vector>
 
@@ -204,7 +204,8 @@ namespace OpenRCT2
         }
     }
 
-#if !defined(DISABLE_NETWORK) || defined(__amigaos__) || defined(OPENRCT2_KEEP_CHECKSUM) // Amiga: keep the checksum for cross-host verification
+#if !defined(DISABLE_NETWORK) || defined(__amigaos__)                                                                          \
+    || defined(OPENRCT2_KEEP_CHECKSUM) // Amiga: keep the checksum for cross-host verification
     EntitiesChecksum EntityRegistry::getAllEntitiesChecksum()
     {
         EntitiesChecksum checksum{};
@@ -215,10 +216,10 @@ namespace OpenRCT2
 
         // Port bring-up: dump the exact bytes the checksum saw, so two hosts can be diffed.
         const char* dumpPath = std::getenv("OPENRCT2_ENTITY_DUMP");
-#ifdef __amigaos__
+    #ifdef __amigaos__
         if (dumpPath == nullptr)
             dumpPath = "PROGDIR:entities.bin";
-#endif
+    #endif
         if (dumpPath != nullptr)
         {
             MemoryStream buffer;
@@ -231,7 +232,8 @@ namespace OpenRCT2
                 for (auto* ent : EntityList<T>())
                 {
                     if (idx != nullptr)
-                        std::fprintf(idx, "%s id=%u off=%lu\n", name, ent->id.ToUnderlying(),
+                        std::fprintf(
+                            idx, "%s id=%u off=%lu\n", name, ent->id.ToUnderlying(),
                             static_cast<unsigned long>(buffer.GetLength()));
                     ent->serialise(dumpDs);
                 }
@@ -256,17 +258,31 @@ namespace OpenRCT2
             {
                 for (auto* v : EntityList<Vehicle>())
                 {
-                    std::fprintf(t, "veh id=%u ride=%u sub=%u status=%d substate=%u vt=%u xyz=%d,%d,%d rem=%d vel=%d acc=%d prog=%u ttd=%u tl=%d,%d,%d st=%u lost=%u flags=%08x mass=%u speed=%u pacc=%u tsp=%u brk=%u peeps=%u/%u next=%u prev=%u nextride=%u bbs=%u\n",
-                        v->id.ToUnderlying(), v->ride.ToUnderlying(), v->ride_subtype, static_cast<int>(v->status), v->sub_state, v->vehicle_type,
-                        v->x, v->y, v->z, v->remaining_distance, v->velocity, v->acceleration, v->track_progress, static_cast<unsigned>(v->GetTrackType()) * 4u + v->GetTrackDirection(),
-                        v->TrackLocation.x, v->TrackLocation.y, v->TrackLocation.z, v->current_station.ToUnderlying(), v->lost_time_out, v->flags.holder, v->mass, v->speed, v->powered_acceleration, static_cast<unsigned>(v->TrackSubposition), v->brake_speed,
-                        v->num_peeps, v->num_seats, v->next_vehicle_on_train.ToUnderlying(), v->prev_vehicle_on_ride.ToUnderlying(), v->next_vehicle_on_ride.ToUnderlying(), v->BlockBrakeSpeed);
+                    std::fprintf(
+                        t,
+                        "veh id=%u ride=%u sub=%u status=%d substate=%u vt=%u xyz=%d,%d,%d rem=%d vel=%d acc=%d prog=%u ttd=%u "
+                        "tl=%d,%d,%d st=%u lost=%u flags=%08x mass=%u speed=%u pacc=%u tsp=%u brk=%u peeps=%u/%u next=%u "
+                        "prev=%u nextride=%u bbs=%u\n",
+                        v->id.ToUnderlying(), v->ride.ToUnderlying(), v->ride_subtype, static_cast<int>(v->status),
+                        v->sub_state, v->vehicle_type, v->x, v->y, v->z, v->remaining_distance, v->velocity, v->acceleration,
+                        v->track_progress, static_cast<unsigned>(v->GetTrackType()) * 4u + v->GetTrackDirection(),
+                        v->TrackLocation.x, v->TrackLocation.y, v->TrackLocation.z, v->current_station.ToUnderlying(),
+                        v->lost_time_out, v->flags.holder, v->mass, v->speed, v->powered_acceleration,
+                        static_cast<unsigned>(v->TrackSubposition), v->brake_speed, v->num_peeps, v->num_seats,
+                        v->next_vehicle_on_train.ToUnderlying(), v->prev_vehicle_on_ride.ToUnderlying(),
+                        v->next_vehicle_on_ride.ToUnderlying(), v->BlockBrakeSpeed);
                 }
                 for (auto& r : RideManager(getGameState()))
                 {
-                    std::fprintf(t, "ride id=%u type=%u status=%d flags=%08x reason=%d reasonPending=%d rel=%u unrel=%u downtime=%u speed=%u bullwheel=%u mode=%d ops=%u lastIssue=%u inspection=%u mechanic=%u\n",
-                        r.id.ToUnderlying(), r.type, static_cast<int>(r.status), static_cast<unsigned>(r.flags.holder), static_cast<int>(r.breakdownReason), static_cast<int>(r.breakdownReasonPending),
-                        r.reliability, r.unreliabilityFactor, r.downtime, r.speed, r.chairliftBullwheelRotation, static_cast<int>(r.mode), r.operationOption, r.lastIssueTime, static_cast<unsigned>(r.inspectionInterval), r.mechanic.ToUnderlying());
+                    std::fprintf(
+                        t,
+                        "ride id=%u type=%u status=%d flags=%08x reason=%d reasonPending=%d rel=%u unrel=%u downtime=%u "
+                        "speed=%u bullwheel=%u mode=%d ops=%u lastIssue=%u inspection=%u mechanic=%u\n",
+                        r.id.ToUnderlying(), r.type, static_cast<int>(r.status), static_cast<unsigned>(r.flags.holder),
+                        static_cast<int>(r.breakdownReason), static_cast<int>(r.breakdownReasonPending), r.reliability,
+                        r.unreliabilityFactor, r.downtime, r.speed, r.chairliftBullwheelRotation, static_cast<int>(r.mode),
+                        r.operationOption, r.lastIssueTime, static_cast<unsigned>(r.inspectionInterval),
+                        r.mechanic.ToUnderlying());
                 }
                 std::fclose(t);
             }
