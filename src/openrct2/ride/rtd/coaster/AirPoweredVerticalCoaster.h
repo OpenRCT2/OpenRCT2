@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor kAirPoweredVerticalCoasterRTD =
     }),
     .InvertedTrackPaintFunctions = {},
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | RtdFlags(RtdFlag::checkGForces),
-    .RideModes = EnumsToFlags(RideMode::poweredLaunchPassthrough, RideMode::poweredLaunch),
+    .rideModes = { RideMode::poweredLaunchPassthrough, RideMode::poweredLaunch },
     .DefaultMode = RideMode::poweredLaunchPassthrough,
     .OperatingSettings = { 30, 50 },
     .TrackSpeedSettings = { 60, 60 },

@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kSpiralSlideRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission),
+    .rideModes = { RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission },
     .DefaultMode = RideMode::singleRidePerAdmission,
     .OperatingSettings = { 1, 5 },
     .Naming = { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE },
