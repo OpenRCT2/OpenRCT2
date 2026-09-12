@@ -473,6 +473,45 @@ namespace OpenRCT2::Ui
         return result;
     }
 
+    static void importOldBottomToolbar(UITheme& theme, json_t& jsonObj, uint8_t version)
+    {
+        auto jsonColours = Json::AsArray(jsonObj["colours"]);
+        const auto panelColour = jsonColourObjectToColourWithFlags(jsonColours[0], version);
+        const auto newsTickerButtonsColour = jsonColourObjectToColourWithFlags(jsonColours[1], version);
+        const auto messageBackgroundColour = jsonColourObjectToColourWithFlags(jsonColours[2], version);
+        const auto parkRatingBarColour = jsonColourObjectToColourWithFlags(jsonColours[3], version);
+
+        const auto* parkInfoPanelDesc = GetWindowThemeDescriptor(WindowClass::parkInfoPanel);
+        UIThemeWindowEntry parkInfoPanelEntry{};
+        parkInfoPanelEntry.Class = parkInfoPanelDesc->WindowClass;
+        parkInfoPanelEntry.Theme = parkInfoPanelDesc->windowColours.defaultTheme;
+        parkInfoPanelEntry.Theme.Colours[0] = panelColour;
+        parkInfoPanelEntry.Theme.Colours[1] = parkRatingBarColour;
+        theme.SetEntry(&parkInfoPanelEntry);
+
+        const auto* dateInfoPanelDesc = GetWindowThemeDescriptor(WindowClass::dateInfoPanel);
+        UIThemeWindowEntry dateInfoPanelEntry{};
+        dateInfoPanelEntry.Class = dateInfoPanelDesc->WindowClass;
+        dateInfoPanelEntry.Theme = dateInfoPanelDesc->windowColours.defaultTheme;
+        dateInfoPanelEntry.Theme.Colours[0] = panelColour;
+        theme.SetEntry(&dateInfoPanelEntry);
+
+        const auto* statusBarDesc = GetWindowThemeDescriptor(WindowClass::gameStatusBar);
+        UIThemeWindowEntry statusBarEntry{};
+        statusBarEntry.Class = statusBarDesc->WindowClass;
+        statusBarEntry.Theme = statusBarDesc->windowColours.defaultTheme;
+        statusBarEntry.Theme.Colours[0] = panelColour;
+        theme.SetEntry(&statusBarEntry);
+
+        const auto* newsTickerDesc = GetWindowThemeDescriptor(WindowClass::newsTicker);
+        UIThemeWindowEntry newsTickerEntry{};
+        newsTickerEntry.Class = newsTickerDesc->WindowClass;
+        newsTickerEntry.Theme = newsTickerDesc->windowColours.defaultTheme;
+        newsTickerEntry.Theme.Colours[0] = messageBackgroundColour;
+        newsTickerEntry.Theme.Colours[1] = newsTickerButtonsColour;
+        theme.SetEntry(&newsTickerEntry);
+    }
+
     UITheme* UITheme::FromJson(json_t& jsonObj)
     {
         Guard::Assert(jsonObj.is_object(), "UITheme::FromJson expects parameter jsonObj to be object");
@@ -507,14 +546,23 @@ namespace OpenRCT2::Ui
                 {
                     if (jsonValue.is_object())
                     {
-                        const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(jsonKey.data());
-                        if (wtDesc == nullptr)
+                        const utf8* windowClassName = jsonKey.data();
+                        // May occur in older themes created before the bottom toolbar split
+                        if (strcmp(windowClassName, "WC_BOTTOM_TOOLBAR") == 0)
                         {
-                            continue;
+                            importOldBottomToolbar(*result, jsonValue, version);
                         }
+                        else
+                        {
+                            const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(windowClassName);
+                            if (wtDesc == nullptr)
+                            {
+                                continue;
+                            }
 
-                        UIThemeWindowEntry entry = UIThemeWindowEntry::FromJson(wtDesc, jsonValue, version);
-                        result->SetEntry(&entry);
+                            UIThemeWindowEntry entry = UIThemeWindowEntry::FromJson(wtDesc, jsonValue, version);
+                            result->SetEntry(&entry);
+                        }
                     }
                 }
             }
