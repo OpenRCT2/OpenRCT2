@@ -26,6 +26,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/peep/PeepActionFormat.h>
 #include <openrct2/peep/PeepThoughts.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ui/WindowManager.h>
@@ -194,8 +195,8 @@ namespace OpenRCT2::Ui::Windows
                     if (guestRide != nullptr)
                     {
                         ft.Add<StringId>(
-                            guestRide->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside) ? STR_IN_RIDE
-                                                                                                    : STR_ON_RIDE);
+                            guestRide->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside) ? STR_GUESTS_IN_RIDE
+                                                                                                    : STR_GUESTS_ON_RIDE);
                         guestRide->formatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::guests;
@@ -210,7 +211,7 @@ namespace OpenRCT2::Ui::Windows
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
                     {
-                        ft.Add<StringId>(STR_QUEUING_FOR);
+                        ft.Add<StringId>(STR_GUESTS_QUEUING_FOR);
                         guestRide->formatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::guests;
@@ -677,7 +678,7 @@ namespace OpenRCT2::Ui::Windows
 
                             // Action
                             ft = Formatter();
-                            peep->formatActionTo(ft);
+                            formatPeepActionTo(*peep, ft);
                             drawTextEllipsised(rt, { 133, y }, 314, format, ft);
                             break;
                         case GuestViewType::thoughts:
@@ -867,7 +868,7 @@ namespace OpenRCT2::Ui::Windows
             switch (type)
             {
                 case GuestViewType::actions:
-                    peep.formatActionTo(ft);
+                    formatPeepActionTo(peep, ft, true);
                     break;
                 case GuestViewType::thoughts:
                 {

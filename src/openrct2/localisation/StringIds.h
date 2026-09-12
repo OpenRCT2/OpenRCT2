@@ -1780,6 +1780,21 @@ enum : StringId
 
     STR_CANT_CHANGE_LAND_HEIGHT_HERE = 7043,
 
+    STR_GUESTS_WALKING = 7050,
+    STR_GUESTS_HEADING_FOR = 7051,
+    STR_GUESTS_QUEUING_FOR = 7052,
+    STR_GUESTS_DROWNING = 7053,
+    STR_GUESTS_ON_RIDE = 7054,
+    STR_GUESTS_IN_RIDE = 7055,
+    STR_GUESTS_AT_RIDE = 7056,
+    STR_GUESTS_SITTING = 7057,
+    STR_GUESTS_PICKED_UP = 7058,
+    STR_GUESTS_WATCHING_RIDE = 7059,
+    STR_GUESTS_WATCHING_CONSTRUCTION_OF = 7060,
+    STR_GUESTS_LOOKING_AT_SCENERY = 7061,
+    STR_GUESTS_LEAVING_PARK = 7062,
+    STR_GUESTS_WATCHING_NEW_RIDE_BEING_CONSTRUCTED = 7063,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
