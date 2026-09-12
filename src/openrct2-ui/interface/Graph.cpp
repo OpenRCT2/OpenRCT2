@@ -32,7 +32,7 @@ namespace OpenRCT2::Graph
         const int32_t yLabelStepPx, const ColourWithFlags lineCol, const FmtString& fmt)
     {
         T curLabel = max;
-        int32_t curScreenPos = internalBounds.GetTop() - 5;
+        int32_t curScreenPos = internalBounds.getTop() - 5;
         const T yLabelStep = (max - min) / (numYLabels - 1);
         for (int32_t i = 0; i < numYLabels; i++)
         {
@@ -40,15 +40,15 @@ namespace OpenRCT2::Graph
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), fmt, curLabel);
             drawText(
-                rt, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, buffer,
+                rt, { internalBounds.getLeft() - kYTickMarkPadding, curScreenPos }, buffer,
                 { FontStyle::small, TextAlignment::right });
             // Draw Y label tick mark
             Rectangle::fill(
-                rt, { { internalBounds.GetLeft() - 5, curScreenPos + 5 }, { internalBounds.GetLeft(), curScreenPos + 5 } },
+                rt, { { internalBounds.getLeft() - 5, curScreenPos + 5 }, { internalBounds.getLeft(), curScreenPos + 5 } },
                 PaletteIndex::pi10);
             // Draw horizontal gridline
             Rectangle::fillInset(
-                rt, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
+                rt, { { internalBounds.getLeft(), curScreenPos + 5 }, { internalBounds.getRight(), curScreenPos + 5 } },
                 lineCol, Rectangle::BorderStyle::inset);
             curScreenPos += yLabelStepPx;
             curLabel -= yLabelStep;
@@ -62,7 +62,7 @@ namespace OpenRCT2::Graph
         int32_t currentMonth = date.GetMonth();
         int32_t currentDay = date.GetMonthTicks();
         int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-        auto screenCoords = bounds.Point1;
+        auto screenCoords = bounds.point1;
         for (int32_t i = count - 1; i >= 0; i--)
         {
             if (series[i] != TkNoValue && yearOver32 % 4 == 0)
@@ -88,20 +88,20 @@ namespace OpenRCT2::Graph
         RenderTarget& rt, const T value, const int32_t hoverIdx, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue, const_utf8string text, ColourWithFlags textCol)
     {
-        const T screenRange = bounds.GetHeight();
+        const T screenRange = bounds.getHeight();
         const T valueRange = maxValue - minValue;
 
-        const int32_t yPosition = bounds.GetBottom() - ((value - minValue) * screenRange) / valueRange;
-        ScreenCoordsXY coords = { bounds.GetRight() - hoverIdx * xStep, yPosition };
+        const int32_t yPosition = bounds.getBottom() - ((value - minValue) * screenRange) / valueRange;
+        ScreenCoordsXY coords = { bounds.getRight() - hoverIdx * xStep, yPosition };
 
         GfxDrawDashedLine(
             rt,
             {
-                { coords.x, bounds.GetTop() },
-                { coords.x, bounds.GetBottom() },
+                { coords.x, bounds.getTop() },
+                { coords.x, bounds.getBottom() },
             },
             kDashLength, PaletteIndex::pi10);
-        GfxDrawDashedLine(rt, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PaletteIndex::pi10);
+        GfxDrawDashedLine(rt, { { bounds.getLeft(), coords.y }, coords }, kDashLength, PaletteIndex::pi10);
 
         drawText(rt, coords - ScreenCoordsXY{ 0, 16 }, text, { textCol, TextAlignment::centre });
 
@@ -114,18 +114,18 @@ namespace OpenRCT2::Graph
         RenderTarget& rt, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep, const T minValue,
         const T maxValue)
     {
-        const T screenRange = bounds.GetHeight();
+        const T screenRange = bounds.getHeight();
         const T valueRange = maxValue - minValue;
 
         ScreenCoordsXY lastCoords;
         bool lastCoordsValid = false;
-        ScreenCoordsXY coords = bounds.Point1;
+        ScreenCoordsXY coords = bounds.point1;
         for (int32_t i = count - 1; i >= 0; i--)
         {
             auto value = series[i];
             if (value != TkNoValue)
             {
-                coords.y = bounds.GetBottom() - ((value - minValue) * screenRange) / valueRange;
+                coords.y = bounds.getBottom() - ((value - minValue) * screenRange) / valueRange;
 
                 if constexpr (TbackgroundLine)
                 {

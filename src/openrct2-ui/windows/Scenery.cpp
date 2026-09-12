@@ -3175,9 +3175,9 @@ namespace OpenRCT2::Ui::Windows
             _lastProvisionalError = {};
 
             auto mapRange = getMapSelectRange();
-            for (auto y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+            for (auto y = mapRange.getY1(); y <= mapRange.getY2(); y += kCoordsXYStep)
             {
-                for (auto x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
+                for (auto x = mapRange.getX1(); x <= mapRange.getX2(); x += kCoordsXYStep)
                 {
                     auto wallPlaceAction = GameActions::WallPlaceAction(
                         tabSelection.EntryIndex, { x, y, gSceneryPlaceZ }, _startEdge, _sceneryPrimaryColour,
@@ -3246,7 +3246,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto mapRange = getMapSelectRange();
-            CoordsXYZ lastLocation = { mapRange.Point2, gSceneryPlaceZ };
+            CoordsXYZ lastLocation = { mapRange.point2, gSceneryPlaceZ };
             auto& gameState = getGameState();
 
             // First query all tiles to get total cost and check for errors

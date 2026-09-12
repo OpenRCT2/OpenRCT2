@@ -1131,9 +1131,9 @@ namespace OpenRCT2::Ui::Windows
         static std::vector<ProvisionalTile> buildTileVector(MapRange range, int32_t baseZ)
         {
             std::vector<ProvisionalTile> tiles{};
-            for (auto y = range.GetY1(); y <= range.GetY2(); y += kCoordsXYStep)
+            for (auto y = range.getY1(); y <= range.getY2(); y += kCoordsXYStep)
             {
-                for (auto x = range.GetX1(); x <= range.GetX2(); x += kCoordsXYStep)
+                for (auto x = range.getX1(); x <= range.getX2(); x += kCoordsXYStep)
                 {
                     FootpathPlacementResult placement = { baseZ, {} };
                     if (baseZ == 0)
@@ -1169,13 +1169,13 @@ namespace OpenRCT2::Ui::Windows
         {
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
-            int32_t rangeXTiles = (range.GetX2() - range.GetX1()) / kCoordsXYStep + 1;
-            int32_t rangeYTiles = (range.GetY2() - range.GetY1()) / kCoordsXYStep + 1;
+            int32_t rangeXTiles = (range.getX2() - range.getX1()) / kCoordsXYStep + 1;
+            int32_t rangeYTiles = (range.getY2() - range.getY1()) / kCoordsXYStep + 1;
             size_t expectedTileCount = static_cast<size_t>(rangeXTiles * rangeYTiles);
 
             bool currentlyUsingModifiers = _footpathPlaceShiftState || _footpathPlaceCtrlState;
-            if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && range.Point1 == _provisionalFootpath.positionA
-                && range.Point2 == _provisionalFootpath.positionB && baseZ == _provisionalFootpath.startZ
+            if (_provisionalFootpath.flags.has(ProvisionalPathFlag::placed) && range.point1 == _provisionalFootpath.positionA
+                && range.point2 == _provisionalFootpath.positionB && baseZ == _provisionalFootpath.startZ
                 && _provisionalFootpath.tiles.size() == expectedTileCount
                 && _provisionalFootpath.usingModifiers == currentlyUsingModifiers)
             {
@@ -1188,7 +1188,7 @@ namespace OpenRCT2::Ui::Windows
             FootpathUpdateProvisional();
 
             std::vector<ProvisionalTile> tiles;
-            bool isSingleTile = (range.Point1 == range.Point2);
+            bool isSingleTile = (range.point1 == range.point2);
 
             if (baseZ == 0 && !currentlyUsingModifiers && !isSingleTile)
             {
@@ -1202,7 +1202,7 @@ namespace OpenRCT2::Ui::Windows
             auto pathType = gFootpathSelection.getSelectedSurface();
             auto constructFlags = FootpathCreateConstructFlags(pathType);
             const auto footpathCost = FootpathProvisionalSet(
-                pathType, gFootpathSelection.railings, range.Point1, range.Point2, baseZ, tiles, constructFlags);
+                pathType, gFootpathSelection.railings, range.point1, range.point2, baseZ, tiles, constructFlags);
             _provisionalFootpath.usingModifiers = currentlyUsingModifiers;
 
             if (_windowFootpathCost != footpathCost)

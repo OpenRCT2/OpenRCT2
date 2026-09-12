@@ -305,9 +305,9 @@ namespace OpenRCT2
         if (window != nullptr)
         {
             // skip current window and non-intersecting windows
-            if (window == originalWindow || drawRect.GetRight() <= window->windowPos.x
-                || drawRect.GetLeft() >= window->windowPos.x + window->width || drawRect.GetBottom() <= window->windowPos.y
-                || drawRect.GetTop() >= window->windowPos.y + window->height)
+            if (window == originalWindow || drawRect.getRight() <= window->windowPos.x
+                || drawRect.getLeft() >= window->windowPos.x + window->width || drawRect.getBottom() <= window->windowPos.y
+                || drawRect.getTop() >= window->windowPos.y + window->height)
             {
                 auto itWindowPos = WindowGetIterator(window);
                 // Get next valid window after.
@@ -324,52 +324,52 @@ namespace OpenRCT2
                 return;
             }
 
-            if (drawRect.GetLeft() < window->windowPos.x)
+            if (drawRect.getLeft() < window->windowPos.x)
             {
-                ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x, drawRect.GetBottom() } };
+                ScreenRect leftRect = { drawRect.point1, { window->windowPos.x, drawRect.getBottom() } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
 
-                ScreenRect rightRect = { { window->windowPos.x, drawRect.GetTop() }, drawRect.Point2 };
+                ScreenRect rightRect = { { window->windowPos.x, drawRect.getTop() }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
-            else if (drawRect.GetRight() > window->windowPos.x + window->width)
+            else if (drawRect.getRight() > window->windowPos.x + window->width)
             {
-                ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x + window->width, drawRect.GetBottom() } };
+                ScreenRect leftRect = { drawRect.point1, { window->windowPos.x + window->width, drawRect.getBottom() } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
 
-                ScreenRect rightRect = { { window->windowPos.x + window->width, drawRect.GetTop() }, drawRect.Point2 };
+                ScreenRect rightRect = { { window->windowPos.x + window->width, drawRect.getTop() }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
-            else if (drawRect.GetTop() < window->windowPos.y)
+            else if (drawRect.getTop() < window->windowPos.y)
             {
-                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y } };
+                ScreenRect topRect = { drawRect.point1, { drawRect.getRight(), window->windowPos.y } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
-                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y }, drawRect.Point2 };
+                ScreenRect bottomRect = { { drawRect.getLeft(), window->windowPos.y }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, bottomRect);
             }
-            else if (drawRect.GetBottom() > window->windowPos.y + window->height)
+            else if (drawRect.getBottom() > window->windowPos.y + window->height)
             {
-                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y + window->height } };
+                ScreenRect topRect = { drawRect.point1, { drawRect.getRight(), window->windowPos.y + window->height } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
-                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y + window->height }, drawRect.Point2 };
+                ScreenRect bottomRect = { { drawRect.getLeft(), window->windowPos.y + window->height }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, bottomRect);
             }
         }
         else
         {
-            auto left = drawRect.GetLeft();
-            auto right = drawRect.GetRight();
-            auto top = drawRect.GetTop();
-            auto bottom = drawRect.GetBottom();
+            auto left = drawRect.getLeft();
+            auto right = drawRect.getRight();
+            auto top = drawRect.getTop();
+            auto bottom = drawRect.getBottom();
 
             // if moved more than the draw rectangle size
-            if (abs(shift.x) < drawRect.GetWidth() && abs(shift.y) < drawRect.GetHeight())
+            if (abs(shift.x) < drawRect.getWidth() && abs(shift.y) < drawRect.getHeight())
             {
                 // update whole block ?
                 DrawingEngineCopyRect(
-                    drawRect.GetLeft(), drawRect.GetTop(), drawRect.GetWidth(), drawRect.GetHeight(), shift.x, shift.y);
+                    drawRect.getLeft(), drawRect.getTop(), drawRect.getWidth(), drawRect.getHeight(), shift.x, shift.y);
 
                 if (shift.x > 0)
                 {
@@ -420,20 +420,20 @@ namespace OpenRCT2
             if (w->viewport == window->viewport)
                 continue;
 
-            if (drawRect.GetRight() <= w->windowPos.x)
+            if (drawRect.getRight() <= w->windowPos.x)
                 continue;
-            if (w->windowPos.x + w->width <= drawRect.GetLeft())
-                continue;
-
-            if (drawRect.GetBottom() <= w->windowPos.y)
-                continue;
-            if (w->windowPos.y + w->height <= drawRect.GetTop())
+            if (w->windowPos.x + w->width <= drawRect.getLeft())
                 continue;
 
-            const int32_t left = std::max(w->windowPos.x, drawRect.GetLeft());
-            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.GetRight());
-            const int32_t top = std::max(w->windowPos.y, drawRect.GetTop());
-            const int32_t bottom = std::min(w->windowPos.y + w->height, drawRect.GetBottom());
+            if (drawRect.getBottom() <= w->windowPos.y)
+                continue;
+            if (w->windowPos.y + w->height <= drawRect.getTop())
+                continue;
+
+            const int32_t left = std::max(w->windowPos.x, drawRect.getLeft());
+            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.getRight());
+            const int32_t top = std::max(w->windowPos.y, drawRect.getTop());
+            const int32_t bottom = std::min(w->windowPos.y + w->height, drawRect.getBottom());
 
             if (left >= right || top >= bottom)
                 continue;
@@ -1765,18 +1765,18 @@ namespace OpenRCT2
         auto viewPos = viewport->viewPos;
         auto viewportScreenPos = viewport->pos;
 
-        ScreenRect invalidRect = { { zoom.ApplyInversedTo(screenRect.GetLeft() - viewPos.x),
-                                     zoom.ApplyInversedTo(screenRect.GetTop() - viewPos.y) },
-                                   { zoom.ApplyInversedTo(screenRect.GetRight() - viewPos.x),
-                                     zoom.ApplyInversedTo(screenRect.GetBottom() - viewPos.y) } };
+        ScreenRect invalidRect = { { zoom.ApplyInversedTo(screenRect.getLeft() - viewPos.x),
+                                     zoom.ApplyInversedTo(screenRect.getTop() - viewPos.y) },
+                                   { zoom.ApplyInversedTo(screenRect.getRight() - viewPos.x),
+                                     zoom.ApplyInversedTo(screenRect.getBottom() - viewPos.y) } };
 
-        if (invalidRect.GetTop() >= viewport->height || invalidRect.GetBottom() <= 0 || invalidRect.GetLeft() >= viewport->width
-            || invalidRect.GetRight() <= 0)
+        if (invalidRect.getTop() >= viewport->height || invalidRect.getBottom() <= 0 || invalidRect.getLeft() >= viewport->width
+            || invalidRect.getRight() <= 0)
         {
             return;
         }
-        invalidRect.Point1 += viewportScreenPos;
-        invalidRect.Point2 += viewportScreenPos;
+        invalidRect.point1 += viewportScreenPos;
+        invalidRect.point2 += viewportScreenPos;
         GfxSetDirtyBlocks(invalidRect);
     }
 

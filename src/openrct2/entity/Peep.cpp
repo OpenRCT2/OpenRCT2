@@ -1184,13 +1184,13 @@ namespace OpenRCT2
         {
             if (peep->x == kLocationNull)
                 continue;
-            if (viewport->viewPos.x > peep->spriteData.spriteRect.GetRight())
+            if (viewport->viewPos.x > peep->spriteData.spriteRect.getRight())
                 continue;
-            if (viewport->viewPos.x + viewport->ViewWidth() < peep->spriteData.spriteRect.GetLeft())
+            if (viewport->viewPos.x + viewport->ViewWidth() < peep->spriteData.spriteRect.getLeft())
                 continue;
-            if (viewport->viewPos.y > peep->spriteData.spriteRect.GetBottom())
+            if (viewport->viewPos.y > peep->spriteData.spriteRect.getBottom())
                 continue;
-            if (viewport->viewPos.y + viewport->ViewHeight() < peep->spriteData.spriteRect.GetTop())
+            if (viewport->viewPos.y + viewport->ViewHeight() < peep->spriteData.spriteRect.getTop())
                 continue;
 
             visiblePeeps += peep->state == PeepState::queuing ? 1 : 2;

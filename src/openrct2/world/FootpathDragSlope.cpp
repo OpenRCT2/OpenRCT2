@@ -55,51 +55,51 @@ namespace OpenRCT2
     public:
         ConnectedPathSlopes(MapRange range, CoordsXY dragStart)
         {
-            dragWidth = range.GetX2() - range.GetX1();
-            dragHeight = range.GetY2() - range.GetY1();
+            dragWidth = range.getX2() - range.getX1();
+            dragHeight = range.getY2() - range.getY1();
             startPos = dragStart.toTileStart();
 
-            startPos.x = std::clamp(startPos.x, range.GetX1(), range.GetX2());
-            startPos.y = std::clamp(startPos.y, range.GetY1(), range.GetY2());
+            startPos.x = std::clamp(startPos.x, range.getX1(), range.getX2());
+            startPos.y = std::clamp(startPos.y, range.getY1(), range.getY2());
 
             primaryIsX = dragWidth >= dragHeight;
 
             if (primaryIsX)
             {
-                secondaryStart = range.GetY1();
-                secondaryEnd = range.GetY2();
+                secondaryStart = range.getY1();
+                secondaryEnd = range.getY2();
 
-                if (startPos.x <= (range.GetX1() + range.GetX2()) / 2)
+                if (startPos.x <= (range.getX1() + range.getX2()) / 2)
                 {
-                    primaryStart = range.GetX1();
-                    primaryEnd = range.GetX2();
+                    primaryStart = range.getX1();
+                    primaryEnd = range.getX2();
                     primaryStep = kCoordsXYStep;
                     slopeDirection = TILE_ELEMENT_DIRECTION_EAST;
                 }
                 else
                 {
-                    primaryStart = range.GetX2();
-                    primaryEnd = range.GetX1();
+                    primaryStart = range.getX2();
+                    primaryEnd = range.getX1();
                     primaryStep = -kCoordsXYStep;
                     slopeDirection = TILE_ELEMENT_DIRECTION_WEST;
                 }
             }
             else
             {
-                secondaryStart = range.GetX1();
-                secondaryEnd = range.GetX2();
+                secondaryStart = range.getX1();
+                secondaryEnd = range.getX2();
 
-                if (startPos.y <= (range.GetY1() + range.GetY2()) / 2)
+                if (startPos.y <= (range.getY1() + range.getY2()) / 2)
                 {
-                    primaryStart = range.GetY1();
-                    primaryEnd = range.GetY2();
+                    primaryStart = range.getY1();
+                    primaryEnd = range.getY2();
                     primaryStep = kCoordsXYStep;
                     slopeDirection = TILE_ELEMENT_DIRECTION_NORTH;
                 }
                 else
                 {
-                    primaryStart = range.GetY2();
-                    primaryEnd = range.GetY1();
+                    primaryStart = range.getY2();
+                    primaryEnd = range.getY1();
                     primaryStep = -kCoordsXYStep;
                     slopeDirection = TILE_ELEMENT_DIRECTION_SOUTH;
                 }

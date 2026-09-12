@@ -1047,10 +1047,10 @@ namespace OpenRCT2
     {
         uint32_t rotation = GetCurrentRotation();
         const std::array corners{
-            CoordsXY{ _range.GetX1(), _range.GetY1() },
-            CoordsXY{ _range.GetX2(), _range.GetY1() },
-            CoordsXY{ _range.GetX2(), _range.GetY2() },
-            CoordsXY{ _range.GetX1(), _range.GetY2() },
+            CoordsXY{ _range.getX1(), _range.getY1() },
+            CoordsXY{ _range.getX2(), _range.getY1() },
+            CoordsXY{ _range.getX2(), _range.getY2() },
+            CoordsXY{ _range.getX1(), _range.getY2() },
         };
 
         *left = std::numeric_limits<int32_t>::max();
@@ -2117,10 +2117,10 @@ namespace OpenRCT2
     MapRange ClampRangeWithinMap(const MapRange& range)
     {
         auto mapSizeMax = GetMapSizeMaxXY();
-        auto aX = std::max<decltype(range.GetX1())>(kCoordsXYStep, range.GetX1());
-        auto bX = std::min<decltype(range.GetX2())>(mapSizeMax.x, range.GetX2());
-        auto aY = std::max<decltype(range.GetY1())>(kCoordsXYStep, range.GetY1());
-        auto bY = std::min<decltype(range.GetY2())>(mapSizeMax.y, range.GetY2());
+        auto aX = std::max<decltype(range.getX1())>(kCoordsXYStep, range.getX1());
+        auto bX = std::min<decltype(range.getX2())>(mapSizeMax.x, range.getX2());
+        auto aY = std::max<decltype(range.getY1())>(kCoordsXYStep, range.getY1());
+        auto bY = std::min<decltype(range.getY2())>(mapSizeMax.y, range.getY2());
         MapRange validRange = MapRange{ aX, aY, bX, bY };
         return validRange;
     }

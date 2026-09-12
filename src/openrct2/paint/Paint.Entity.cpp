@@ -111,10 +111,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
 
         const ZoomLevel zoom = session.rt.zoom_level;
-        if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.GetTop())
-            || zoom.ApplyInversedTo(spriteRect.GetBottom()) <= session.rt.y
-            || session.rt.x + session.rt.width <= zoom.ApplyInversedTo(spriteRect.GetLeft())
-            || zoom.ApplyInversedTo(spriteRect.GetRight()) <= session.rt.x)
+        if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.getTop())
+            || zoom.ApplyInversedTo(spriteRect.getBottom()) <= session.rt.y
+            || session.rt.x + session.rt.width <= zoom.ApplyInversedTo(spriteRect.getLeft())
+            || zoom.ApplyInversedTo(spriteRect.getRight()) <= session.rt.x)
         {
             continue;
         }

@@ -777,7 +777,7 @@ namespace OpenRCT2::Ui::Windows
         {
             Formatter ft;
             ft.Add<money64>(currentValue);
-            drawText(rt, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
+            drawText(rt, _graphBounds.point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
             Rectangle::fillInset(
@@ -787,7 +787,7 @@ namespace OpenRCT2::Ui::Windows
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rectangle::fillInset(
-                rt, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1], Rectangle::BorderStyle::none,
+                rt, { _graphBounds.point2 - bigOffset, _graphBounds.point2 - offset }, colours[1], Rectangle::BorderStyle::none,
                 Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawFinanceGraph(rt, _graphProps);
@@ -825,7 +825,7 @@ namespace OpenRCT2::Ui::Windows
             _graphBounds = { windowPos + ScreenCoordsXY{ graphPageWidget->left + 4, graphPageWidget->top + 15 },
                              windowPos + ScreenCoordsXY{ graphPageWidget->right - 4, graphPageWidget->bottom - 4 } };
             _graphProps.RecalculateLayout(
-                { _graphBounds.Point1 + dynamicPadding, _graphBounds.Point2 - kGraphBottomRightPadding }, kGraphNumYLabels,
+                { _graphBounds.point1 + dynamicPadding, _graphBounds.point2 - kGraphBottomRightPadding }, kGraphNumYLabels,
                 kGraphNumPoints);
             _graphProps.lineCol = colours[2];
         }
