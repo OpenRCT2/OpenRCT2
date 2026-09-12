@@ -177,6 +177,7 @@ namespace OpenRCT2
     extern const std::array<CoordsXY, kNumOrthogonalDirections * 2> BenchUseOffsets;
 
     PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
+    PathElement* MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope);
     void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
     void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
     void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, GameActions::CommandFlags flags);
