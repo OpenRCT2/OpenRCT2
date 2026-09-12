@@ -1,4 +1,4 @@
-OpenRCT2 for AmigaOS 3.2 (68k) -- tester build 2
+OpenRCT2 for AmigaOS 3.2 (68k) -- tester build 3
 ================================================
 
 This is an early test build of OpenRCT2, the open-source re-implementation of
@@ -19,8 +19,9 @@ WHAT YOU NEED
  * The data files of the ORIGINAL RollerCoaster Tycoon 2 (GOG, Steam or CD).
    They are not included and cannot be. You need the folders
       Data   ObjData   Scenarios   Tracks
-   copied to the Amiga (the music in Data/*.dat can be left out, it is ~480 MB
-   and there is no sound yet).
+   copied to the Amiga. Sound effects come from Data/css1.dat (5 MB) and the
+   title music from Data/css17.dat; the other css*.dat files are the ride
+   music (~480 MB together) -- copy the ones you want, or all of them.
 
 INSTALL
 -------
@@ -47,7 +48,11 @@ scenario to start it.
 
 KNOWN LIMITATIONS OF THIS BUILD
 -------------------------------
- * No sound or music.
+ * Sound and music play through AHI (ahi.device unit 0). Install AHI and set
+   up unit 0 in Prefs/AHI (Paula on a plain Amiga; the Vampire/PiStorm drivers
+   where available). Without AHI the game runs silently. Sound was verified by capturing the mixed stream on an emulator; real-hardware AHI playback is what this build needs testers for -- please report whether you hear the title music and clicks. Music needs the
+   css*.dat files from your RCT2 Data folder; the optional OpenRCT2 music packs
+   (OGG) are not supported yet.
  * RollerCoaster Tycoon 1 scenarios (.SC4) load and play (their simulation is
    bit-exact with the PC build). Rides that exist only in RCT1 use fallback
    RCT2 graphics unless you also own RCT1 and set  rct1_path  in

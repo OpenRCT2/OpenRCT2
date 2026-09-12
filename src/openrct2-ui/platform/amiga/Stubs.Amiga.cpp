@@ -14,13 +14,6 @@
     #include <openrct2/core/Imaging.h>
     #include <stdexcept>
 
-namespace OpenRCT2::Audio
-{
-    std::unique_ptr<IAudioContext> CreateAudioContext()
-    {
-        throw OpenRCT2::Ui::SDLException("no audio backend on AmigaOS yet");
-    }
-} // namespace OpenRCT2::Audio
 
 namespace OpenRCT2::Ui
 {

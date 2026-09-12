@@ -91,6 +91,9 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 using OpenRCT2::Audio::IAudioContext;
+#ifdef __amigaos__
+static uint32_t gAmigaFrameStat[8] = {};
+#endif
 
 namespace OpenRCT2
 {
@@ -1320,21 +1323,39 @@ namespace OpenRCT2
         {
             PROFILED_FUNCTION();
 
+#ifdef __amigaos__
+            uint32_t _s0 = Platform::GetTicks();
+#endif
             _uiContext->ProcessMessages();
+#ifdef __amigaos__
+            uint32_t _s1 = Platform::GetTicks();
+            gAmigaFrameStat[0] += _s1 - _s0;
+#endif
 
             if (_ticksAccumulator < kGameUpdateTimeMS)
             {
                 const auto sleepTimeSec = std::min(kNetworkUpdateTimeMS, kGameUpdateTimeMS - _ticksAccumulator);
                 Platform::Sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
+#ifdef __amigaos__
+                gAmigaFrameStat[1] += Platform::GetTicks() - _s1;
+                gAmigaFrameStat[6]++;
+#endif
                 return;
             }
 
             while (_ticksAccumulator >= kGameUpdateTimeMS)
             {
                 Tick();
+#ifdef __amigaos__
+                gAmigaFrameStat[7]++;
+#endif
 
                 _ticksAccumulator -= kGameUpdateTimeMS;
             }
+#ifdef __amigaos__
+            uint32_t _s2 = Platform::GetTicks();
+            gAmigaFrameStat[2] += _s2 - _s1;
+#endif
 
             _backgroundWorker.dispatchCompleted();
 
@@ -1388,10 +1409,24 @@ namespace OpenRCT2
         void Draw()
         {
             PROFILED_FUNCTION();
+#ifdef __amigaos__
+            uint32_t _d0 = Platform::GetTicks();
+#endif
 
             _drawingEngine->BeginDraw();
             _painter->Paint(*_drawingEngine);
             _drawingEngine->EndDraw();
+#ifdef __amigaos__
+            gAmigaFrameStat[3] += Platform::GetTicks() - _d0;
+            if (++gAmigaFrameStat[5] % 20 == 0)
+            {
+                char line[200];
+                std::snprintf(line, sizeof line, "frame: per 20 draws: events %u ms, sleep %u ms (%u times), ticks %u ms (%u ticks), draw %u ms, windows %u ms",
+                    gAmigaFrameStat[0], gAmigaFrameStat[1], gAmigaFrameStat[6], gAmigaFrameStat[2], gAmigaFrameStat[7], gAmigaFrameStat[3], gAmigaFrameStat[4]);
+                amiga_trace(line);
+                for (auto& v : gAmigaFrameStat) v = 0;
+            }
+#endif
         }
 
         void Tick()

@@ -144,8 +144,17 @@ namespace OpenRCT2::Path
 
     bool IsAbsolute(u8string_view path)
     {
+#ifdef __amigaos__
+        // AmigaOS: "Volume:dir/file" and "Assign:file" are absolute (a colon before any '/'); std::filesystem
+        // only knows POSIX and would call them relative, which made ObjectAsset prepend the object directory
+        // to every "$RCT2:DATA/..." sample path (no sound: the CSS1.DAT samples never opened).
+        auto slash = path.find('/');
+        auto colon = path.find(':');
+        return colon != u8string_view::npos && (slash == u8string_view::npos || colon < slash);
+#else
         auto p = fs::u8path(path);
         return p.is_absolute();
+#endif
     }
 
     u8string GetAbsolute(u8string_view relative)

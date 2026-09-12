@@ -587,6 +587,83 @@ typedef struct _SDL_GameController SDL_GameController;
 struct _SDL_Joystick;
 typedef struct _SDL_Joystick SDL_Joystick;
 
+
+/* ---- audio + rwops (backed by ahi.device, see sdl_shim_audio.cpp) ---- */
+typedef int64_t Sint64;
+typedef uint64_t Uint64;
+typedef Uint16 SDL_AudioFormat;
+#define AUDIO_U8 0x0008
+#define AUDIO_S8 0x8008
+#define AUDIO_U16LSB 0x0010
+#define AUDIO_S16LSB 0x8010
+#define AUDIO_U16MSB 0x1010
+#define AUDIO_S16MSB 0x9010
+#define AUDIO_S16 AUDIO_S16LSB
+/* 68k is big-endian: the native 16-bit format is MSB first. */
+#define AUDIO_S16SYS AUDIO_S16MSB
+#define SDL_AUDIO_MASK_BITSIZE 0xFF
+#define SDL_AUDIO_BITSIZE(x) ((x) & SDL_AUDIO_MASK_BITSIZE)
+#define SDL_AUDIO_ISBIGENDIAN(x) ((x) & 0x1000)
+#define SDL_AUDIO_ISSIGNED(x) ((x) & 0x8000)
+#define SDL_MIX_MAXVOLUME 128
+#define SDL_AUDIO_ALLOW_FREQUENCY_CHANGE 0x00000001
+#define SDL_AUDIO_ALLOW_FORMAT_CHANGE 0x00000002
+#define SDL_AUDIO_ALLOW_CHANNELS_CHANGE 0x00000004
+#define SDL_AUDIO_ALLOW_SAMPLES_CHANGE 0x00000008
+typedef Uint32 SDL_AudioDeviceID;
+typedef void (*SDL_AudioCallback)(void* userdata, Uint8* stream, int len);
+typedef struct SDL_AudioSpec
+{
+    int freq;
+    SDL_AudioFormat format;
+    Uint8 channels;
+    Uint8 silence;
+    Uint16 samples;
+    Uint16 padding;
+    Uint32 size;
+    SDL_AudioCallback callback;
+    void* userdata;
+} SDL_AudioSpec;
+typedef struct SDL_AudioCVT
+{
+    int needed;
+    SDL_AudioFormat src_format;
+    SDL_AudioFormat dst_format;
+    double rate_incr;
+    Uint8* buf;
+    int len;
+    int len_cvt;
+    int len_mult;
+    double len_ratio;
+    /* shim-private: the full source/destination description */
+    int src_channels;
+    int dst_channels;
+    int src_rate;
+    int dst_rate;
+} SDL_AudioCVT;
+
+#define RW_SEEK_SET 0
+#define RW_SEEK_CUR 1
+#define RW_SEEK_END 2
+#define SDL_RWOPS_UNKNOWN 0U
+typedef struct SDL_RWops
+{
+    Sint64 (*size)(struct SDL_RWops* context);
+    Sint64 (*seek)(struct SDL_RWops* context, Sint64 offset, int whence);
+    size_t (*read)(struct SDL_RWops* context, void* ptr, size_t size, size_t maxnum);
+    size_t (*write)(struct SDL_RWops* context, const void* ptr, size_t size, size_t num);
+    int (*close)(struct SDL_RWops* context);
+    Uint32 type;
+    union
+    {
+        struct
+        {
+            void* data1;
+            void* data2;
+        } unknown;
+    } hidden;
+} SDL_RWops;
+
 extern "C" {
 int SDL_Init(Uint32 flags);
 void SDL_Quit(void);
@@ -651,4 +728,33 @@ Sint16 SDL_GameControllerGetAxis(SDL_GameController* gamecontroller, SDL_GameCon
 Uint8 SDL_JoystickGetButton(SDL_Joystick* joystick, int button);
 int SDL_JoystickNumHats(SDL_Joystick* joystick);
 Uint8 SDL_JoystickGetHat(SDL_Joystick* joystick, int hat);
+/* audio (sdl_shim_audio.cpp) */
+SDL_AudioDeviceID SDL_OpenAudioDevice(
+    const char* device, int iscapture, const SDL_AudioSpec* desired, SDL_AudioSpec* obtained, int allowed_changes);
+void SDL_PauseAudioDevice(SDL_AudioDeviceID dev, int pause_on);
+void SDL_LockAudioDevice(SDL_AudioDeviceID dev);
+void SDL_UnlockAudioDevice(SDL_AudioDeviceID dev);
+void SDL_CloseAudioDevice(SDL_AudioDeviceID dev);
+int SDL_GetNumAudioDevices(int iscapture);
+const char* SDL_GetAudioDeviceName(int index, int iscapture);
+int SDL_BuildAudioCVT(
+    SDL_AudioCVT* cvt, SDL_AudioFormat src_format, Uint8 src_channels, int src_rate, SDL_AudioFormat dst_format,
+    Uint8 dst_channels, int dst_rate);
+int SDL_ConvertAudio(SDL_AudioCVT* cvt);
+void SDL_MixAudioFormat(Uint8* dst, const Uint8* src, SDL_AudioFormat format, Uint32 len, int volume);
+/* Amiga-only: refill the AHI buffers from the main loop (called by SDL_PollEvent). */
+void SDL_amiga_AudioPump(void);
+/* rwops */
+void* SDL_malloc(size_t size);
+SDL_RWops* SDL_AllocRW(void);
+void SDL_FreeRW(SDL_RWops* area);
+Sint64 SDL_RWsize(SDL_RWops* context);
+Sint64 SDL_RWseek(SDL_RWops* context, Sint64 offset, int whence);
+Sint64 SDL_RWtell(SDL_RWops* context);
+size_t SDL_RWread(SDL_RWops* context, void* ptr, size_t size, size_t maxnum);
+size_t SDL_RWwrite(SDL_RWops* context, const void* ptr, size_t size, size_t num);
+int SDL_RWclose(SDL_RWops* context);
+Uint16 SDL_ReadLE16(SDL_RWops* src);
+Uint32 SDL_ReadLE32(SDL_RWops* src);
 }
+

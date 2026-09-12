@@ -19,6 +19,12 @@
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/core/String.hpp>
+#ifdef __amigaos__
+extern "C" void amiga_trace(const char*);
+    #define ATRACE(x) amiga_trace(x)
+#else
+    #define ATRACE(x) ((void)0)
+#endif
 
 namespace OpenRCT2::Audio
 {
@@ -62,6 +68,7 @@ namespace OpenRCT2::Audio
 
         void SetOutputDevice(const std::string& deviceName) override
         {
+            ATRACE("src: SetOutputDevice -> mixer Init");
             const char* szDeviceName = nullptr;
             if (!deviceName.empty())
             {
@@ -72,6 +79,7 @@ namespace OpenRCT2::Audio
 
         IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) override
         {
+            ATRACE("src: CreateStreamFromCSS");
             auto* rw = StreamToSDL2(std::move(stream));
             if (rw == nullptr)
             {
@@ -86,14 +94,17 @@ namespace OpenRCT2::Audio
             catch (const std::exception& e)
             {
                 LOG_VERBOSE("Unable to create audio source: %s", e.what());
+                ATRACE((std::string("src: CSS exception: ") + e.what()).c_str());
             }
 
             SDL_RWclose(rw);
 
             if (source == nullptr)
             {
+                ATRACE("src: CSS sample returned null (index out of range?)");
                 return nullptr;
             }
+            ATRACE("src: CSS sample created");
 
             // Stream will already be in memory, so convert to target format
             auto& targetFormat = _audioMixer->GetFormat();
@@ -104,6 +115,7 @@ namespace OpenRCT2::Audio
 
         IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
         {
+            ATRACE("src: CreateStreamFromWAV");
             auto* rw = StreamToSDL2(std::move(stream));
             if (rw == nullptr)
             {
@@ -121,6 +133,7 @@ namespace OpenRCT2::Audio
                     auto& targetFormat = _audioMixer->GetFormat();
                     source = source->ToMemory(targetFormat);
                 }
+                ATRACE((std::string("src: WAV created, ") + std::to_string(static_cast<unsigned long>(dataLength)) + " bytes").c_str());
 
                 return AddSource(std::move(source));
             }
@@ -128,6 +141,7 @@ namespace OpenRCT2::Audio
             {
                 SDL_RWclose(rw);
                 LOG_VERBOSE("Unable to create audio source: %s", e.what());
+                ATRACE((std::string("src: WAV exception: ") + e.what()).c_str());
                 return nullptr;
             }
         }

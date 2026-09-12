@@ -20,6 +20,9 @@ extern "C" int __xpg_strerror_r(int errnum, char* buf, size_t buflen)
 // libstdc++'s fs_ops.o references this with C++ linkage because the
 // sys-include header carries no extern "C". Stub until a dos.library Info()
 // based version is written; std::filesystem::space() reports ENOSYS.
+// libstdc++'s fs_ops.o (std::filesystem::space) was built against a header without a C-linkage
+// prototype, so it references the C++-mangled name; alias it to the C definition below.
+asm(".globl __Z7statvfsPKcP7statvfs\n\t.set __Z7statvfsPKcP7statvfs, _statvfs");
 int statvfs(const char*, struct statvfs*)
 {
     errno = ENOSYS;

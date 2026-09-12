@@ -6,6 +6,7 @@
 
     #include "AmigaWindow.h"
     #include "amiga_ui.h"
+#include "amiga_audio.h"
     #include "sdl2/SDL.h"
 
     #include <cctype>
@@ -298,8 +299,19 @@ namespace
 
 extern "C" {
 
-int SDL_Init(Uint32)
+int SDL_Init(Uint32 flags)
 {
+    char noAudio[8];
+    if ((flags & SDL_INIT_AUDIO) && amiga_audio_getenv("OPENRCT2_NO_AUDIO", noAudio, sizeof noAudio))
+    {
+        std::snprintf(g_error, sizeof g_error, "audio disabled by OPENRCT2_NO_AUDIO");
+        return -1;
+    }
+    if ((flags & SDL_INIT_AUDIO) && !amiga_audio_available())
+    {
+        std::snprintf(g_error, sizeof g_error, "ahi.device unit 0 could not be opened (is AHI installed and configured?)");
+        return -1;
+    }
     return 0;
 }
 void SDL_Quit(void)
@@ -469,6 +481,7 @@ void SDL_EnableScreenSaver(void)
 
 int SDL_PollEvent(SDL_Event* event)
 {
+    SDL_amiga_AudioPump(); // refill the AHI buffers from the main loop (no audio thread on AmigaOS)
     PumpOS();
     if (g_queue.empty())
         return 0;

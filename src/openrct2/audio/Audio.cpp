@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "Audio.h"
+#include "../platform/AmigaTrace.h"
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
@@ -106,6 +107,7 @@ namespace OpenRCT2::Audio
         {
             _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
         }
+        AMIGA_TRACE(baseAudio != nullptr ? "audioobj: base audio object loaded" : "audioobj: base audio object NOT found/loaded");
 
         objManager.LoadObject(AudioObjectIdentifiers::kOpenRCT2Additional);
         _soundsAdditionalAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(
@@ -261,7 +263,12 @@ namespace OpenRCT2::Audio
     static std::map<TitleMusicKind, std::string_view> GetAvailableMusicMap()
     {
         auto musicMap = std::map<TitleMusicKind, std::string_view>{
+#ifndef __amigaos__
             { TitleMusicKind::OpenRCT2, AudioObjectIdentifiers::kOpenRCT2Title },
+#else
+            // No Ogg/Vorbis decoder in the AmigaOS build: OpenRCT2's own theme cannot play, use RCT2's.
+            { TitleMusicKind::OpenRCT2, AudioObjectIdentifiers::kRCT2Title },
+#endif
             { TitleMusicKind::RCT2, AudioObjectIdentifiers::kRCT2Title },
         };
 

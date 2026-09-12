@@ -54,12 +54,19 @@ endif ()
 if (AMIGA)
     # Drop the SDL-only parts: audio, OpenGL, the SDL_Renderer presenter, the SDL_LoadBMP reader and the
     # other platforms' dialog contexts. platform/amiga supplies their replacements.
-    list(FILTER OPENRCT2_UI_SOURCES EXCLUDE REGEX "/audio/")
+    # Audio: OpenRCT2's own mixer and WAV/CSS sources are kept; they run on the SDL audio subset that
+    # platform/amiga/sdl_shim_audio.cpp implements over ahi.device. The Ogg/FLAC decoders need libvorbis/
+    # libFLAC, which are not cross-built (yet), so those sources compile as their DISABLE_* stubs.
+    set(DISABLE_FLAC ON)
+    set(DISABLE_VORBIS ON)
+    # soft-float 68k: the mixer's per-sample resample/pan/fade loops use integer fixed point
+    add_compile_definitions(OPENRCT2_AUDIO_FIXED_POINT)
     list(FILTER OPENRCT2_UI_SOURCES EXCLUDE REGEX "/drawing/engines/opengl/")
     list(FILTER OPENRCT2_UI_SOURCES EXCLUDE REGEX "/drawing/engines/HardwareDisplayDrawingEngine\\.cpp$")
     list(FILTER OPENRCT2_UI_SOURCES EXCLUDE REGEX "/drawing/BitmapReader\\.cpp$")
     list(FILTER OPENRCT2_UI_SOURCES EXCLUDE REGEX "/UiContext\\.(Linux|Win32|Android)\\.cpp$")
     list(APPEND OPENRCT2_UI_SOURCES "${CMAKE_CURRENT_LIST_DIR}/platform/amiga/amiga_ui.c")
+    list(APPEND OPENRCT2_UI_SOURCES "${CMAKE_CURRENT_LIST_DIR}/platform/amiga/amiga_audio.c")
 endif ()
 add_executable(openrct2 ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 add_executable(OpenRCT2::openrct2 ALIAS openrct2)
