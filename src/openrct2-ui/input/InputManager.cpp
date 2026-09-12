@@ -451,8 +451,7 @@ void InputManager::processChat(const InputEvent& e)
 
 void InputManager::processHoldEvents()
 {
-    _viewScroll.x = 0;
-    _viewScroll.y = 0;
+    _viewScroll = { 0, 0 };
 
     if (!ContextHasFocus())
         return;
