@@ -1,5 +1,6 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
+- Fix: [#16409] The scatter tool cannot be used in multiplayer, even when the group permission is enabled.
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
