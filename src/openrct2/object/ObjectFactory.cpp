@@ -538,6 +538,13 @@ namespace OpenRCT2::ObjectFactory
 
         std::unique_ptr<Object> result;
 
+        if (!jRoot["objectType"].is_string())
+        {
+            LOG_VERBOSE("Ignoring JSON file (%.*s): objectType is not a string",
+                static_cast<int>(path.length()), path.data());
+            return nullptr;
+        }
+
         auto lookup = kObjectTypeMap.find(Json::GetString(jRoot["objectType"]));
         if (lookup != kObjectTypeMap.end())
         {
