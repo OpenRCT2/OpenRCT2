@@ -207,7 +207,7 @@ namespace OpenRCT2
         nullMode = 255,
     };
     RideMode& operator++(RideMode& d, int);
-    using RideModes = FlagHolder<uint8_t, RideMode>;
+    using RideModes = FlagHolder<uint64_t, RideMode>;
 
     struct RideStation
     {
