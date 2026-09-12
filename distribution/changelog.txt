@@ -5,6 +5,7 @@
 - Change: [#27100] Negative G-forces no longer turn red in the stats window and graph when below -2.50.
 - Fix: [#1514] Wrong capitalisation for strings in the Guest List window.
 - Fix: [#21320] RCT1 allows more cars per train on some rides than OpenRCT2.
+- Fix: [#21576] RCT1 Wooden wild mouse track designs with 2-car trains are not imported correctly.
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
