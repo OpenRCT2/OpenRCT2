@@ -263,14 +263,14 @@ namespace OpenRCT2::Scripting
             JSValue filter = JS_GetPropertyStr(ctx, value, "filter");
             if (JS_IsArray(filter))
             {
-                customTool.Filter = 0;
+                customTool.Filter.clearAll();
                 int64_t len = -1;
                 JS_GetLength(ctx, filter, &len);
                 for (int64_t i = 0; i < len; i++)
                 {
                     JSValue curFilter = JS_GetPropertyInt64(ctx, filter, i);
                     auto elem = FilterJSValToEnum(ctx, curFilter);
-                    customTool.Filter |= static_cast<uint32_t>(EnumToFlag(elem));
+                    customTool.Filter.set(elem);
                     JS_FreeValue(ctx, curFilter);
                 }
             }

@@ -45,12 +45,12 @@ namespace OpenRCT2::Ui
             return position;
         }
         auto viewport = window->viewport;
-        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::footpath));
+        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, { ViewportInteractionItem::footpath });
         if (info.interactionType != ViewportInteractionItem::footpath
             || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
         {
             info = GetMapCoordinatesFromPosWindow(
-                window, screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath));
+                window, screenCoords, { ViewportInteractionItem::terrain, ViewportInteractionItem::footpath });
             if (info.interactionType == ViewportInteractionItem::none)
             {
                 auto position = info.Loc;
@@ -144,7 +144,7 @@ namespace OpenRCT2::Ui
             return ret;
         }
         auto viewport = window->viewport;
-        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::ride));
+        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, ViewportInteractionItem::ride);
         *tileElement = info.Element;
         if (info.interactionType == ViewportInteractionItem::ride
             && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui
 
         info = GetMapCoordinatesFromPosWindow(
             window, screenCoords,
-            EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::footpath, ViewportInteractionItem::ride));
+            { ViewportInteractionItem::terrain, ViewportInteractionItem::footpath, ViewportInteractionItem::ride });
         if (info.interactionType == ViewportInteractionItem::ride && (*tileElement)->getType() == TileElementType::entrance)
         {
             uint32_t directions = (*tileElement)->asEntrance()->getDirections();

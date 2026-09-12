@@ -463,10 +463,11 @@ namespace OpenRCT2::Ui::Windows
         MakeGroupboxSettings(kBannerDetailsHeight, kBannerPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO),
     };
 
-    static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
-        ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+    static constexpr ViewportInteractionItems kViewportInteractionFlags{
+        ViewportInteractionItem::terrain,  ViewportInteractionItem::ride,         ViewportInteractionItem::scenery,
         ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition, ViewportInteractionItem::parkEntrance,
-        ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery, ViewportInteractionItem::banner);
+        ViewportInteractionItem::wall,     ViewportInteractionItem::largeScenery, ViewportInteractionItem::banner
+    };
 
     static constexpr WidgetIndex kDisabledWidgetsDefault[] = {
         WIDX_BUTTON_MOVE_UP, WIDX_BUTTON_MOVE_DOWN, WIDX_BUTTON_REMOVE, WIDX_BUTTON_ROTATE, WIDX_BUTTON_COPY,
@@ -964,7 +965,7 @@ namespace OpenRCT2::Ui::Windows
             bool mouseOnViewport = false;
             if (GetInputManager().isModifierKeyPressed(ModifierKey::ctrl))
             {
-                auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionFlags);
                 clickedElement = info.Element;
                 mapCoords = info.Loc;
             }
@@ -1801,7 +1802,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement* clickedElement = nullptr;
             if (ctrlIsHeldDown)
             {
-                auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionFlags);
                 clickedElement = info.Element;
                 mapCoords = info.Loc;
             }
