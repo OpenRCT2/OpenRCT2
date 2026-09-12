@@ -57,4 +57,9 @@ namespace OpenRCT2::RCT1
     const std::vector<const char*> GetSceneryObjects(uint8_t sceneryType);
 
     bool VehicleTypeIsReversed(VehicleType vehicleType);
+    /**
+     * For some vehicles, OpenRCT2 has added zero cars in order to make them work with scenery doors.
+     * When setting the number of cars per train, this has to be taken into account.
+     */
+    uint8_t getAdditionalZeroCars(VehicleType vehicleType);
 } // namespace OpenRCT2::RCT1
