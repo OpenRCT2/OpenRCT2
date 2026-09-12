@@ -488,12 +488,13 @@ static StringId window_cheats_page_titles[] = {
             // Set title
             widgets[WIDX_TITLE].text = window_cheats_page_titles[page];
 
+            const bool isInEditor = isInEditorMode();
             auto& gameState = getGameState();
             switch (page)
             {
                 case WINDOW_CHEATS_PAGE_MONEY:
                 {
-                    setWidgetDisabled(WIDX_NO_MONEY, isInEditorMode());
+                    setWidgetDisabled(WIDX_NO_MONEY, isInEditor);
 
                     auto moneyDisabled = gameState.park.flags.has(ParkFlag::noMoney);
                     setCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
@@ -515,18 +516,18 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
-                    setWidgetDisabled(WIDX_GENERAL_GROUP, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_OWN_ALL_LAND, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_REMOVE_PARK_FENCES, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_OPEN_CLOSE_PARK, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_OBJECTIVE_GROUP, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_NEVERENDING_MARKETING, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_FORCE_PARK_RATING, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_PARK_RATING_SPINNER, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_INCREASE_PARK_RATING, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_DECREASE_PARK_RATING, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_WIN_SCENARIO, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_HAVE_FUN, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_GENERAL_GROUP, isInEditor);
+                    setWidgetDisabled(WIDX_OWN_ALL_LAND, isInEditor);
+                    setWidgetDisabled(WIDX_REMOVE_PARK_FENCES, isInEditor);
+                    setWidgetDisabled(WIDX_OPEN_CLOSE_PARK, isInEditor);
+                    setWidgetDisabled(WIDX_OBJECTIVE_GROUP, isInEditor);
+                    setWidgetDisabled(WIDX_NEVERENDING_MARKETING, isInEditor);
+                    setWidgetDisabled(WIDX_FORCE_PARK_RATING, isInEditor);
+                    setWidgetDisabled(WIDX_PARK_RATING_SPINNER, isInEditor);
+                    setWidgetDisabled(WIDX_INCREASE_PARK_RATING, isInEditor);
+                    setWidgetDisabled(WIDX_DECREASE_PARK_RATING, isInEditor);
+                    setWidgetDisabled(WIDX_WIN_SCENARIO, isInEditor);
+                    setWidgetDisabled(WIDX_HAVE_FUN, isInEditor);
 
                     widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
                     if (gameState.park.flags.has(ParkFlag::parkOpen))
@@ -539,15 +540,15 @@ static StringId window_cheats_page_titles[] = {
                     setCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.cheats.allowSpecialColourSchemes);
                     break;
                 case WINDOW_CHEATS_PAGE_RIDES:
-                    setWidgetDisabled(WIDX_FIX_ALL, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_RENEW_RIDES, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_RESET_CRASH_STATUS, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_10_MINUTE_INSPECTIONS, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_MAKE_DESTRUCTIBLE, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_DISABLE_BRAKES_FAILURE, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_DISABLE_ALL_BREAKDOWNS, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_DISABLE_RIDE_VALUE_AGING, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_IGNORE_RESEARCH_STATUS, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_FIX_ALL, isInEditor);
+                    setWidgetDisabled(WIDX_RENEW_RIDES, isInEditor);
+                    setWidgetDisabled(WIDX_RESET_CRASH_STATUS, isInEditor);
+                    setWidgetDisabled(WIDX_10_MINUTE_INSPECTIONS, isInEditor);
+                    setWidgetDisabled(WIDX_MAKE_DESTRUCTIBLE, isInEditor);
+                    setWidgetDisabled(WIDX_DISABLE_BRAKES_FAILURE, isInEditor);
+                    setWidgetDisabled(WIDX_DISABLE_ALL_BREAKDOWNS, isInEditor);
+                    setWidgetDisabled(WIDX_DISABLE_RIDE_VALUE_AGING, isInEditor);
+                    setWidgetDisabled(WIDX_IGNORE_RESEARCH_STATUS, isInEditor);
 
                     setCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.cheats.unlockOperatingLimits);
                     setCheckboxValue(WIDX_DISABLE_BRAKES_FAILURE, gameState.cheats.disableBrakesFailure);
@@ -569,10 +570,10 @@ static StringId window_cheats_page_titles[] = {
                     setCheckboxValue(WIDX_DISABLE_GRASS_GROWING, gameState.cheats.disableGrassGrowing);
                     break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
-                    setWidgetDisabled(WIDX_FREEZE_WEATHER, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_FAUNA_GROUP, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_CREATE_DUCKS, isInTrackDesignerOrManager());
-                    setWidgetDisabled(WIDX_REMOVE_DUCKS, isInTrackDesignerOrManager());
+                    setWidgetDisabled(WIDX_FREEZE_WEATHER, isInEditor);
+                    setWidgetDisabled(WIDX_FAUNA_GROUP, isInEditor);
+                    setWidgetDisabled(WIDX_CREATE_DUCKS, isInEditor);
+                    setWidgetDisabled(WIDX_REMOVE_DUCKS, isInEditor);
 
                     setCheckboxValue(WIDX_FREEZE_WEATHER, gameState.cheats.freezeWeather);
                     break;
@@ -592,10 +593,10 @@ static StringId window_cheats_page_titles[] = {
                 widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gameState.cheats.selectedStaffSpeed)];
             }
 
-            setWidgetDisabled(WIDX_TAB_2, isInEditorMode());
-            setWidgetDisabled(WIDX_TAB_3, isInEditorMode());
-            setWidgetDisabled(WIDX_TAB_4, isInTrackDesignerOrManager());
-            if (isInEditorMode())
+            setWidgetDisabled(WIDX_TAB_2, isInEditor);
+            setWidgetDisabled(WIDX_TAB_3, isInEditor);
+            setWidgetDisabled(WIDX_TAB_4, isInEditor);
+            if (isInEditor)
             {
                 UpdateTabPositions();
             }
