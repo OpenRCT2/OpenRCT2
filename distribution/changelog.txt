@@ -1,5 +1,6 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
+- Fix: [#23297] Entities disappear briefly when quitting the game.
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
