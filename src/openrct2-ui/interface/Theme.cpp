@@ -339,6 +339,22 @@ namespace OpenRCT2::Ui
         return colourSettingsEntry;
     }
 
+    static ColourWithFlags jsonColourObjectToColourWithFlags(json_t input, uint8_t version)
+    {
+        if (version == 0)
+        {
+            auto number = Json::GetNumber<uint8_t>(input);
+            return ColourWithFlags::fromLegacy(number);
+        }
+
+        auto colourObject = Json::AsObject(input);
+        auto colour = colourFromString(Json::GetString(colourObject["colour"]), Drawing::Colour::black);
+        auto isTranslucent = Json::GetBoolean(colourObject["translucent"], false);
+        ColourFlags flags{};
+        flags.set(ColourFlag::translucent, isTranslucent);
+        return ColourWithFlags{ colour, flags };
+    }
+
     UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc* wtDesc, json_t& jsonData, uint8_t version)
     {
         Guard::Assert(jsonData.is_object(), "UIThemeWindowEntry::FromJson expects parameter jsonData to be object");
@@ -359,21 +375,7 @@ namespace OpenRCT2::Ui
 
         for (size_t i = 0; i < colourCount; i++)
         {
-            if (version == 0)
-            {
-                auto number = Json::GetNumber<uint8_t>(jsonColours[i]);
-                result.Theme.Colours[i] = ColourWithFlags::fromLegacy(number);
-            }
-            else
-            {
-                auto colourObject = Json::AsObject(jsonColours[i]);
-                auto colour = colourFromString(Json::GetString(colourObject["colour"]), Drawing::Colour::black);
-                auto isTranslucent = Json::GetBoolean(colourObject["translucent"], false);
-                ColourFlags flags{};
-                flags.set(ColourFlag::translucent, isTranslucent);
-
-                result.Theme.Colours[i] = { colour, flags };
-            }
+            result.Theme.Colours[i] = jsonColourObjectToColourWithFlags(jsonColours[i], version);
         }
 
         return result;
