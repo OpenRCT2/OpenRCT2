@@ -616,43 +616,18 @@ namespace OpenRCT2
         return kRideComponentNames[EnumValue(type)];
     }
 
-    constexpr RideModes kAllRideModesAvailable = { RideMode::continuousCircuit,
-                                                   RideMode::continuousCircuitBlockSectioned,
-                                                   RideMode::reverseInclineLaunchedShuttle,
-                                                   RideMode::poweredLaunchPassthrough,
-                                                   RideMode::shuttle,
-                                                   RideMode::normal,
-                                                   RideMode::boatHire,
-                                                   RideMode::upwardLaunch,
-                                                   RideMode::rotatingLift,
-                                                   RideMode::stationToStation,
-                                                   RideMode::singleRidePerAdmission,
-                                                   RideMode::unlimitedRidesPerAdmission,
-                                                   RideMode::maze,
-                                                   RideMode::race,
-                                                   RideMode::dodgems,
-                                                   RideMode::swing,
-                                                   RideMode::shopStall,
-                                                   RideMode::rotation,
-                                                   RideMode::forwardRotation,
-                                                   RideMode::backwardRotation,
-                                                   RideMode::filmAvengingAviators,
-                                                   RideMode::mouseTails3DFilm,
-                                                   RideMode::spaceRings,
-                                                   RideMode::beginners,
-                                                   RideMode::limPoweredLaunch,
-                                                   RideMode::filmThrillRiders,
-                                                   RideMode::stormChasers3DFilm,
-                                                   RideMode::spaceRaiders3DFilm,
-                                                   RideMode::intense,
-                                                   RideMode::berserk,
-                                                   RideMode::hauntedHouse,
-                                                   RideMode::circus,
-                                                   RideMode::downwardLaunch,
-                                                   RideMode::crookedHouse,
-                                                   RideMode::freefallDrop,
-                                                   RideMode::poweredLaunch,
-                                                   RideMode::poweredLaunchBlockSectioned };
+    // clang-format off
+    constexpr RideModes kAllRideModesAvailable = {
+            RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle,
+            RideMode::poweredLaunchPassthrough, RideMode::shuttle, RideMode::normal, RideMode::boatHire, RideMode::upwardLaunch,
+            RideMode::rotatingLift, RideMode::stationToStation, RideMode::singleRidePerAdmission,
+            RideMode::unlimitedRidesPerAdmission, RideMode::maze, RideMode::race, RideMode::dodgems, RideMode::swing,
+            RideMode::shopStall, RideMode::rotation, RideMode::forwardRotation, RideMode::backwardRotation,
+            RideMode::filmAvengingAviators, RideMode::mouseTails3DFilm, RideMode::spaceRings, RideMode::beginners,
+            RideMode::limPoweredLaunch, RideMode::filmThrillRiders, RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm,
+            RideMode::intense, RideMode::berserk, RideMode::hauntedHouse, RideMode::circus, RideMode::downwardLaunch,
+            RideMode::crookedHouse, RideMode::freefallDrop, RideMode::poweredLaunch, RideMode::poweredLaunchBlockSectioned };
+    // clang-format on
 
     extern const CarEntry kCableLiftVehicle;
 
