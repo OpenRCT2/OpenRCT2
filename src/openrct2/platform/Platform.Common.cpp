@@ -69,11 +69,8 @@ namespace OpenRCT2::Platform
             }
         }
 
-        for (const auto* currency : kDollarCurrencies)
-        {
-            if (strncmp(currCode, currency, 3) == 0)
-                return CurrencyType::dollars;
-        }
+        if (std::ranges::find(kDollarCurrencies, u8string_view(currCode, 3)) != kDollarCurrencies.end())
+            return CurrencyType::dollars;
 
         return CurrencyType::pounds;
     }
