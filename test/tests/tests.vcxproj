@@ -105,6 +105,7 @@
     <ClCompile Include="SawyerCodingTest.cpp" />
     <ClCompile Include="ScenarioPatcherTests.cpp" />
     <ClCompile Include="ScriptingTests.cpp" />
+    <ClCompile Include="SimplexHeightMapOperatorBoundaryTests.cpp" />
     <ClCompile Include="TestData.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />
