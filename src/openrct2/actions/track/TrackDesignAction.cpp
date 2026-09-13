@@ -18,6 +18,7 @@
 #include "../../ride/RideConstruction.h"
 #include "../../ride/TrackDesign.h"
 #include "../../scenario/Scenario.h"
+#include "../../util/Util.h"
 #include "../GameActionRunner.h"
 #include "../ride/RideCreateAction.h"
 #include "../ride/RideDemolishAction.h"
