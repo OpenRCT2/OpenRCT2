@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class SmallSceneryRemoveAction final : public GameActionBase<GameCommand::removeScenery>
+    class SmallSceneryRemoveAction final : public GameActionBase<GameCommand::RemoveScenery>
     {
     private:
         CoordsXYZ _loc;

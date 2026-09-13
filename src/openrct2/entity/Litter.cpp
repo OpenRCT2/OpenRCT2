@@ -1,12 +1,15 @@
 #include "Litter.h"
 
 #include "../Cheats.h"
+#include "../Game.h"
 #include "../GameState.h"
+#include "../SpriteIds.h"
 #include "../core/DataSerialiser.h"
 #include "../localisation/StringIds.h"
+#include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
-#include "../world/tile_element/PathElement.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
@@ -30,15 +33,14 @@ namespace OpenRCT2
             return false;
         do
         {
-            if (tileElement->getType() != TileElementType::path)
+            if (tileElement->getType() != TileElementType::Path)
                 continue;
 
-            int32_t pathBaseZ = tileElement->getBaseZ();
-            int32_t pathTopZ = pathBaseZ + (tileElement->asPath()->isSloped() ? kPathHeightStep : 0);
-            if (!(pathBaseZ <= mapPos.z && pathTopZ >= mapPos.z))
+            int32_t pathZ = tileElement->getBaseZ();
+            if (pathZ < mapPos.z || pathZ >= mapPos.z + kPathClearance)
                 continue;
 
-            return !tileElementIsUnderground(tileElement);
+            return !TileElementIsUnderground(tileElement);
         } while (!(tileElement++)->isLastForTile());
         return false;
     }
@@ -47,7 +49,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x0067375D
      */
-    void Litter::create(const CoordsXYZD& litterPos, Type type)
+    void Litter::Create(const CoordsXYZD& litterPos, Type type)
     {
         auto& gameState = getGameState();
         if (gameState.cheats.disableLittering)
@@ -60,7 +62,7 @@ namespace OpenRCT2
         if (!IsLocationLitterable(offsetLitterPos))
             return;
 
-        if (gameState.entities.getEntityListCount(EntityType::litter) >= 500)
+        if (gameState.entities.GetEntityListCount(EntityType::litter) >= 500)
         {
             Litter* newestLitter = nullptr;
             uint32_t newestLitterCreationTick = 0;
@@ -76,11 +78,11 @@ namespace OpenRCT2
             if (newestLitter != nullptr)
             {
                 newestLitter->invalidate();
-                gameState.entities.entityRemove(newestLitter);
+                gameState.entities.EntityRemove(newestLitter);
             }
         }
 
-        Litter* litter = gameState.entities.createEntity<Litter>();
+        Litter* litter = gameState.entities.CreateEntity<Litter>();
         if (litter == nullptr)
             return;
 
@@ -97,7 +99,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x006738E1
      */
-    void Litter::removeAt(const CoordsXYZ& litterPos)
+    void Litter::RemoveAt(const CoordsXYZ& litterPos)
     {
         // There can be a lot of litter entities on the same tile, avoid heap allocations
         // by having the first 512 stored in a small_vector which is on the stack.
@@ -115,7 +117,7 @@ namespace OpenRCT2
         for (auto* litter : removals)
         {
             litter->invalidate();
-            getGameState().entities.entityRemove(litter);
+            getGameState().entities.EntityRemove(litter);
         }
     }
 

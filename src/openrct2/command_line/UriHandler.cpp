@@ -12,21 +12,18 @@
 #include "../core/String.hpp"
 #include "../network/Network.h"
 #include "CommandLine.hpp"
-#include "ExitCode.h"
-
-using namespace OpenRCT2::CommandLine;
 
 namespace OpenRCT2
 {
-    static ExitCode HandleUri(const std::string& uri);
+    static exitcode_t HandleUri(const std::string& uri);
 
 #ifndef DISABLE_NETWORK
-    static ExitCode HandleUriJoin(const std::vector<std::string_view>& args);
+    static exitcode_t HandleUriJoin(const std::vector<std::string_view>& args);
     static bool TryParseHostnamePort(
         std::string_view hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
 #endif
 
-    ExitCode CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)
+    exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)
     {
         const utf8* uri;
         if (enumerator->TryPopString(&uri))
@@ -39,12 +36,12 @@ namespace OpenRCT2
         }
 
         Console::Error::WriteLine("Invalid URI");
-        return ExitCode::fail;
+        return EXITCODE_FAIL;
     }
 
-    static ExitCode HandleUri(const std::string& uri)
+    static exitcode_t HandleUri(const std::string& uri)
     {
-        ExitCode result = ExitCode::launch;
+        exitcode_t result = EXITCODE_CONTINUE;
         auto args = String::split(uri, "/");
         if (!args.empty())
         {
@@ -61,7 +58,7 @@ namespace OpenRCT2
 
 #ifndef DISABLE_NETWORK
 
-    static ExitCode HandleUriJoin(const std::vector<std::string_view>& args)
+    static exitcode_t HandleUriJoin(const std::vector<std::string_view>& args)
     {
         std::string hostname;
         int32_t port;
@@ -71,11 +68,11 @@ namespace OpenRCT2
             gNetworkStart = Network::Mode::client;
             gNetworkStartHost = std::move(hostname);
             gNetworkStartPort = port;
-            return ExitCode::launch;
+            return EXITCODE_CONTINUE;
         }
 
         Console::Error::WriteLine("Expected hostname:port after join");
-        return ExitCode::fail;
+        return EXITCODE_FAIL;
     }
 
     static bool TryParseHostnamePort(

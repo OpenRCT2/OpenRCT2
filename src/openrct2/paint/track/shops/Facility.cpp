@@ -7,19 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
+#include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
 static void PaintFacility(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -42,7 +45,7 @@ static void PaintFacility(
                                                               : BoundBoxXYZ{ { 2, 2, height }, { 28, 8, lengthZ } };
 
     auto imageTemplate = session.TrackColours;
-    auto imageIndex = firstCarEntry->baseImageId + ((direction + 2) & 3);
+    auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)
     {
@@ -71,7 +74,7 @@ static void PaintFacility(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 }
 
 /* 0x00762D44 */

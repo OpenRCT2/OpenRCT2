@@ -13,15 +13,15 @@
 
 namespace OpenRCT2::GameActions
 {
-    class GuestSetFlagsAction final : public GameActionBase<GameCommand::guestSetFlags>
+    class GuestSetFlagsAction final : public GameActionBase<GameCommand::GuestSetFlags>
     {
     private:
         EntityId _peepId{ EntityId::GetNull() };
-        PeepFlags _newFlags{};
+        uint32_t _newFlags{};
 
     public:
         GuestSetFlagsAction() = default;
-        GuestSetFlagsAction(EntityId peepId, PeepFlags flags);
+        GuestSetFlagsAction(EntityId peepId, uint32_t flags);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

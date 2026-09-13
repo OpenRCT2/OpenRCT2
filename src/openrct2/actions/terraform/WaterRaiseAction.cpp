@@ -57,8 +57,8 @@ namespace OpenRCT2::GameActions
         auto res = Result();
 
         auto validRange = ClampRangeWithinMap(_range);
-        res.position.x = ((validRange.getX1() + validRange.getX2()) / 2) + 16;
-        res.position.y = ((validRange.getY1() + validRange.getY2()) / 2) + 16;
+        res.position.x = ((validRange.GetX1() + validRange.GetX2()) / 2) + 16;
+        res.position.y = ((validRange.GetY1() + validRange.GetY2()) / 2) + 16;
         int32_t z = TileElementHeight(res.position);
         int16_t waterHeight = TileElementWaterHeight(res.position);
         if (waterHeight != 0)
@@ -71,9 +71,9 @@ namespace OpenRCT2::GameActions
         auto maxHeight = GetHighestHeight(gameState, validRange) / kCoordsZStep;
         bool hasChanged = false;
         bool withinOwnership = false;
-        for (int32_t y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
+        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
+            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;
@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
                 }
                 withinOwnership = true;
 
-                uint8_t height = surfaceElement->getWaterHeight() / kCoordsZStep;
+                uint8_t height = surfaceElement->GetWaterHeight() / kCoordsZStep;
 
                 if (surfaceElement->baseHeight > maxHeight)
                     continue;
@@ -149,9 +149,9 @@ namespace OpenRCT2::GameActions
     {
         // The highest height to raise the water to is the lowest water level in the selection
         uint16_t maxHeight = 255 * kCoordsZStep;
-        for (int32_t y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
+        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
+            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
             {
                 if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
                 {
@@ -166,9 +166,9 @@ namespace OpenRCT2::GameActions
                     continue;
 
                 auto height = surfaceElement->getBaseZ();
-                if (surfaceElement->getWaterHeight() > 0)
+                if (surfaceElement->GetWaterHeight() > 0)
                 {
-                    height = surfaceElement->getWaterHeight();
+                    height = surfaceElement->GetWaterHeight();
                 }
 
                 if (maxHeight > height)

@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class StaffSetNameAction final : public GameActionBase<GameCommand::setStaffName>
+    class StaffSetNameAction final : public GameActionBase<GameCommand::SetStaffName>
     {
     private:
         EntityId _spriteIndex{ EntityId::GetNull() };

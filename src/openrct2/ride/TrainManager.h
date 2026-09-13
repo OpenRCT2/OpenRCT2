@@ -10,12 +10,10 @@
 
 #include "../Identifiers.h"
 
+#include <cstdint>
 #include <list>
 
-namespace OpenRCT2
-{
-    struct Vehicle;
-}
+struct Vehicle;
 
 namespace OpenRCT2::TrainManager
 {

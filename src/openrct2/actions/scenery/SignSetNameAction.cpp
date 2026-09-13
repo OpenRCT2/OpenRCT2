@@ -9,10 +9,12 @@
 
 #include "SignSetNameAction.h"
 
+#include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../localisation/StringIds.h"
+#include "../../ride/Ride.h"
 #include "../../world/Banner.h"
 #include "../../world/Map.h"
 
@@ -60,7 +62,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        CoordsXYZ loc = { banner->position.toCoordsXY(), tileElement->getBaseZ() };
+        CoordsXYZ loc = { banner->position.ToCoordsXY(), tileElement->getBaseZ() };
 
         if (!LocationValid(loc))
         {
@@ -92,7 +94,7 @@ namespace OpenRCT2::GameActions
         else
         {
             // If empty name take closest ride name.
-            RideId rideIndex = BannerGetClosestRideIndex({ banner->position.toCoordsXY(), 16 });
+            RideId rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
             if (rideIndex.IsNull())
             {
                 banner->flags.unset(BannerFlag::linkedToRide);
@@ -108,7 +110,7 @@ namespace OpenRCT2::GameActions
         }
 
         Drawing::ScrollingText::invalidate();
-        Drawing::GfxInvalidateScreen();
+        GfxInvalidateScreen();
         return Result();
     }
 } // namespace OpenRCT2::GameActions

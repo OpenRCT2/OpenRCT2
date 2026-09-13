@@ -11,15 +11,14 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/ColourMap.h>
-#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
@@ -205,9 +204,9 @@ namespace OpenRCT2::Ui::Windows
 
     enum class ResizeDirection
     {
-        both,
-        x,
-        y,
+        Both,
+        X,
+        Y,
     };
 
     static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path);
@@ -215,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
     class MapGenWindow final : public Window
     {
     private:
-        ResizeDirection _resizeDirection{ ResizeDirection::both };
+        ResizeDirection _resizeDirection{ ResizeDirection::Both };
         bool _mapWidthAndHeightLinked{ true };
         MapGenerator::Settings _settings{};
         bool _randomTerrain = true;
@@ -272,15 +271,15 @@ namespace OpenRCT2::Ui::Windows
         void ChangeMapSize(int32_t sizeOffset)
         {
             if (_mapWidthAndHeightLinked)
-                _resizeDirection = ResizeDirection::both;
+                _resizeDirection = ResizeDirection::Both;
 
-            if (_resizeDirection != ResizeDirection::x)
+            if (_resizeDirection != ResizeDirection::X)
             {
                 _settings.mapSize.y = std::clamp<int32_t>(
                     _settings.mapSize.y + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
             }
 
-            if (_resizeDirection != ResizeDirection::y)
+            if (_resizeDirection != ResizeDirection::Y)
             {
                 _settings.mapSize.x = std::clamp<int32_t>(
                     _settings.mapSize.x + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
@@ -331,7 +330,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             MapGenerator::generate(&mapgenSettings);
-            Drawing::GfxInvalidateScreen();
+            GfxInvalidateScreen();
         }
 
 #pragma region Base page
@@ -348,11 +347,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_MAP_SIZE_Y:
-                    _resizeDirection = ResizeDirection::y;
+                    _resizeDirection = ResizeDirection::Y;
                     InputMapSize(WIDX_MAP_SIZE_Y, _settings.mapSize.y);
                     break;
                 case WIDX_MAP_SIZE_X:
-                    _resizeDirection = ResizeDirection::x;
+                    _resizeDirection = ResizeDirection::X;
                     InputMapSize(WIDX_MAP_SIZE_X, _settings.mapSize.x);
                     break;
                 case WIDX_MAP_SIZE_LINK:
@@ -372,22 +371,22 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_MAP_SIZE_Y_UP:
-                    _resizeDirection = ResizeDirection::y;
+                    _resizeDirection = ResizeDirection::Y;
                     ChangeMapSize(+1);
                     invalidate();
                     break;
                 case WIDX_MAP_SIZE_Y_DOWN:
-                    _resizeDirection = ResizeDirection::y;
+                    _resizeDirection = ResizeDirection::Y;
                     ChangeMapSize(-1);
                     invalidate();
                     break;
                 case WIDX_MAP_SIZE_X_UP:
-                    _resizeDirection = ResizeDirection::x;
+                    _resizeDirection = ResizeDirection::X;
                     ChangeMapSize(+1);
                     invalidate();
                     break;
                 case WIDX_MAP_SIZE_X_DOWN:
-                    _resizeDirection = ResizeDirection::x;
+                    _resizeDirection = ResizeDirection::X;
                     ChangeMapSize(-1);
                     invalidate();
                     break;
@@ -405,8 +404,8 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0, {},
-                        std::size(items), ddWidget->width() - 3);
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
+                        Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
 
                     gDropdown.items[EnumValue(_settings.algorithm)].setChecked(true);
                     break;
@@ -449,9 +448,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_SIZE_X:
                     // The practical size is 2 lower than the technical size
                     auto technicalSize = std::clamp<uint16_t>(value + 2, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
-                    if (_resizeDirection == ResizeDirection::y || _mapWidthAndHeightLinked)
+                    if (_resizeDirection == ResizeDirection::Y || _mapWidthAndHeightLinked)
                         _settings.mapSize.y = technicalSize;
-                    if (_resizeDirection == ResizeDirection::x || _mapWidthAndHeightLinked)
+                    if (_resizeDirection == ResizeDirection::X || _mapWidthAndHeightLinked)
                         _settings.mapSize.x = technicalSize;
                     break;
             }
@@ -513,24 +512,28 @@ namespace OpenRCT2::Ui::Windows
 
         void ToggleSimplexWidgets(bool state)
         {
-            widgets[WIDX_SIMPLEX_GROUP].setVisible(state);
-            widgets[WIDX_SIMPLEX_BASE_FREQ].setVisible(state);
-            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].setVisible(state);
-            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].setVisible(state);
-            widgets[WIDX_SIMPLEX_OCTAVES].setVisible(state);
-            widgets[WIDX_SIMPLEX_OCTAVES_UP].setVisible(state);
-            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].setVisible(state);
+            // clang-format off
+            widgets[WIDX_SIMPLEX_GROUP].type          = state ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WidgetType::spinner  : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WidgetType::spinner  : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WidgetType::button   : WidgetType::empty;
+            // clang-format on
         }
 
         void ToggleHeightmapWidgets(bool state)
         {
-            widgets[WIDX_HEIGHTMAP_GROUP].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_BROWSE].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_NORMALIZE].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_STRENGTH].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].setVisible(state);
-            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].setVisible(state);
+            // clang-format off
+            widgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_BROWSE].type           = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WidgetType::checkbox : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WidgetType::checkbox : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WidgetType::spinner  : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].type      = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].type    = state ? WidgetType::button   : WidgetType::empty;
+            // clang-format on
         }
 
         void BaseDraw(RenderTarget& rt)

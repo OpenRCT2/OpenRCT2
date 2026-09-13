@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <openrct2/localisation/StringIdType.h>
 
 namespace OpenRCT2

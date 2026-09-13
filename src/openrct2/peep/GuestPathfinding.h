@@ -9,15 +9,16 @@
 
 #pragma once
 
-#include "../Identifiers.h"
+#include "../ride/RideTypes.h"
+#include "../world/Location.hpp"
 
-using Direction = uint8_t;
-struct TileCoordsXYZ;
+#include <memory>
 
 namespace OpenRCT2
 {
     struct Guest;
     struct Peep;
+    struct TileElement;
 } // namespace OpenRCT2
 
 namespace OpenRCT2::PathFinding

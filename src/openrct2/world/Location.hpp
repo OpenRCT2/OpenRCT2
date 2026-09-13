@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../core/CoordsRange.hpp"
 #include "../core/Numerics.hpp"
 #include "../world/MapLimits.h"
 
@@ -19,6 +18,111 @@ constexpr int16_t kLocationNull = -32768;
 constexpr int32_t kCoordsNull = 0xFFFF8000;
 
 constexpr auto kNumOrthogonalDirections = 4;
+
+constexpr int32_t kScreenCoordsTileWidth = 64;
+constexpr int32_t kScreenCoordsTileWidthHalf = kScreenCoordsTileWidth / 2;
+constexpr int32_t kScreenCoordsTileHeight = 32;
+constexpr int32_t kScreenCoordsTileHeightHalf = kScreenCoordsTileHeight / 2;
+
+struct ScreenSize
+{
+    int32_t width{};
+    int32_t height{};
+
+    constexpr ScreenSize() = default;
+    constexpr ScreenSize(int32_t _width, int32_t _height)
+        : width(_width)
+        , height(_height)
+    {
+    }
+
+    constexpr bool operator==(const ScreenSize& other) const
+    {
+        return width == other.width && height == other.height;
+    }
+
+    constexpr bool operator!=(const ScreenSize& other) const
+    {
+        return !(*this == other);
+    }
+
+    constexpr ScreenSize operator*(int32_t scalar) const
+    {
+        return ScreenSize{ width * scalar, height * scalar };
+    }
+
+    constexpr ScreenSize operator/(int32_t scalar) const
+    {
+        return ScreenSize{ width / scalar, height / scalar };
+    }
+
+    constexpr ScreenSize operator+(const ScreenSize& other) const
+    {
+        return ScreenSize{ width + other.width, height + other.height };
+    }
+
+    constexpr ScreenSize operator-(const ScreenSize& other) const
+    {
+        return ScreenSize{ width - other.width, height - other.height };
+    }
+};
+
+struct ScreenCoordsXY
+{
+    int32_t x{};
+    int32_t y{};
+
+    constexpr ScreenCoordsXY() = default;
+    constexpr ScreenCoordsXY(int32_t _x, int32_t _y)
+        : x(_x)
+        , y(_y)
+    {
+    }
+
+    constexpr ScreenCoordsXY operator-(const ScreenCoordsXY& rhs) const
+    {
+        return { x - rhs.x, y - rhs.y };
+    }
+
+    constexpr ScreenCoordsXY& operator+=(const ScreenCoordsXY& rhs)
+    {
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+    }
+
+    constexpr ScreenCoordsXY& operator-=(const ScreenCoordsXY& rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+
+    constexpr ScreenCoordsXY operator+(const ScreenCoordsXY& rhs) const
+    {
+        return { x + rhs.x, y + rhs.y };
+    }
+
+    constexpr ScreenCoordsXY operator+(const ScreenSize& rhs) const
+    {
+        return { x + rhs.width, y + rhs.height };
+    }
+
+    constexpr ScreenCoordsXY operator-(const ScreenSize& rhs) const
+    {
+        return { x - rhs.width, y - rhs.height };
+    }
+
+    constexpr bool operator==(const ScreenCoordsXY& other) const
+    {
+        return x == other.x && y == other.y;
+    }
+
+    constexpr bool operator!=(const ScreenCoordsXY& other) const
+    {
+        return !(*this == other);
+    }
+};
 
 /**
  * Tile coordinates use 1 x/y increment per tile and 1 z increment per step.
@@ -94,7 +198,7 @@ struct CoordsXY
         return { x / rhs, y / rhs };
     }
 
-    constexpr CoordsXY rotate(int32_t direction) const
+    constexpr CoordsXY Rotate(int32_t direction) const
     {
         CoordsXY rotatedCoords;
         switch (direction & 3)
@@ -131,24 +235,24 @@ struct CoordsXY
         return !(*this == other);
     }
 
-    constexpr CoordsXY toTileCentre() const
+    constexpr CoordsXY ToTileCentre() const
     {
-        return toTileStart() + CoordsXY{ kCoordsXYHalfTile, kCoordsXYHalfTile };
+        return ToTileStart() + CoordsXY{ kCoordsXYHalfTile, kCoordsXYHalfTile };
     }
 
-    constexpr CoordsXY toTileStart() const
+    constexpr CoordsXY ToTileStart() const
     {
         using namespace OpenRCT2::Numerics;
 
         return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep) };
     }
 
-    constexpr bool isNull() const
+    constexpr bool IsNull() const
     {
         return x == kCoordsNull;
     }
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
         x = kCoordsNull;
         y = 0;
@@ -187,21 +291,21 @@ struct CoordsXYZ : public CoordsXY
         return x == other.x && y == other.y && z == other.z;
     }
 
-    constexpr CoordsXYZ toTileStart() const
+    constexpr CoordsXYZ ToTileStart() const
     {
         using namespace OpenRCT2::Numerics;
 
         return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep), z };
     }
 
-    constexpr CoordsXYZ toTileCentre() const
+    constexpr CoordsXYZ ToTileCentre() const
     {
-        return toTileStart() + CoordsXYZ{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0 };
+        return ToTileStart() + CoordsXYZ{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0 };
     }
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
-        CoordsXY::setNull();
+        CoordsXY::SetNull();
         z = 0;
     }
 };
@@ -293,19 +397,19 @@ struct TileCoordsXY
         return *this;
     }
 
-    constexpr CoordsXY toCoordsXY() const
+    constexpr CoordsXY ToCoordsXY() const
     {
-        if (isNull())
+        if (IsNull())
         {
             CoordsXY ret{};
-            ret.setNull();
+            ret.SetNull();
             return ret;
         }
 
         return { x * kCoordsXYStep, y * kCoordsXYStep };
     }
 
-    constexpr TileCoordsXY rotate(int32_t direction) const
+    constexpr TileCoordsXY Rotate(int32_t direction) const
     {
         TileCoordsXY rotatedCoords;
         switch (direction & 3)
@@ -342,12 +446,12 @@ struct TileCoordsXY
         return !(*this == other);
     }
 
-    constexpr bool isNull() const
+    constexpr bool IsNull() const
     {
         return x == kCoordsNull;
     }
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
         x = kCoordsNull;
         y = 0;
@@ -407,20 +511,20 @@ struct TileCoordsXYZ : public TileCoordsXY
         return !(*this == other);
     }
 
-    constexpr CoordsXYZ toCoordsXYZ() const
+    constexpr CoordsXYZ ToCoordsXYZ() const
     {
-        if (isNull())
+        if (IsNull())
         {
             CoordsXYZ ret{};
-            ret.setNull();
+            ret.SetNull();
             return ret;
         }
         return { x * kCoordsXYStep, y * kCoordsXYStep, z * kCoordsZStep };
     }
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
-        TileCoordsXY::setNull();
+        TileCoordsXY::SetNull();
         z = 0;
     }
 };
@@ -596,16 +700,16 @@ struct CoordsXYZD : public CoordsXYZ
         return { x - rhs.x, y - rhs.y, z - rhs.z, direction };
     }
 
-    constexpr CoordsXYZD toTileStart() const
+    constexpr CoordsXYZD ToTileStart() const
     {
         using namespace OpenRCT2::Numerics;
 
         return { floor2(x, kCoordsXYStep), floor2(y, kCoordsXYStep), z, direction };
     }
 
-    constexpr CoordsXYZD toTileCentre() const
+    constexpr CoordsXYZD ToTileCentre() const
     {
-        return toTileStart() + CoordsXYZD{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0, 0 };
+        return ToTileStart() + CoordsXYZD{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0, 0 };
     }
 };
 
@@ -650,21 +754,93 @@ struct TileCoordsXYZD : public TileCoordsXYZ
     {
     }
 
-    constexpr CoordsXYZD toCoordsXYZD() const
+    constexpr CoordsXYZD ToCoordsXYZD() const
     {
-        if (isNull())
+        if (IsNull())
         {
             CoordsXYZD ret{};
-            ret.setNull();
+            ret.SetNull();
             return ret;
         }
         return { x * kCoordsXYStep, y * kCoordsXYStep, z * kCoordsZStep, direction };
     }
 
-    constexpr void setNull()
+    constexpr void SetNull()
     {
-        TileCoordsXYZ::setNull();
+        TileCoordsXYZ::SetNull();
         direction = kInvalidDirection;
+    }
+};
+
+/**
+ * Represents a range of the map using regular coordinates.
+ */
+template<class T>
+struct CoordsRange
+{
+    T Point1{ 0, 0 };
+    T Point2{ 0, 0 };
+
+    constexpr int32_t GetX1() const
+    {
+        return Point1.x;
+    }
+    constexpr int32_t GetY1() const
+    {
+        return Point1.y;
+    }
+    constexpr int32_t GetX2() const
+    {
+        return Point2.x;
+    }
+    constexpr int32_t GetY2() const
+    {
+        return Point2.y;
+    }
+
+    constexpr CoordsRange() = default;
+    constexpr CoordsRange(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
+        : CoordsRange({ x1, y1 }, { x2, y2 })
+    {
+    }
+
+    constexpr CoordsRange(const T& pointOne, const T& pointTwo)
+        : Point1(pointOne)
+        , Point2(pointTwo)
+    {
+    }
+};
+
+template<class T>
+struct RectRange : public CoordsRange<T>
+{
+    using CoordsRange<T>::CoordsRange;
+
+    constexpr int32_t GetLeft() const
+    {
+        return CoordsRange<T>::GetX1();
+    }
+    constexpr int32_t GetTop() const
+    {
+        return CoordsRange<T>::GetY1();
+    }
+    constexpr int32_t GetRight() const
+    {
+        return CoordsRange<T>::GetX2();
+    }
+    constexpr int32_t GetBottom() const
+    {
+        return CoordsRange<T>::GetY2();
+    }
+
+    constexpr RectRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
+        : RectRange({ left, top }, { right, bottom })
+    {
+    }
+
+    constexpr RectRange(const T& leftTop, const T& rightBottom)
+        : CoordsRange<T>(leftTop, rightBottom)
+    {
     }
 };
 
@@ -676,17 +852,51 @@ struct MapRange : public CoordsRange<CoordsXY>
 {
     using CoordsRange::CoordsRange;
 
-    constexpr MapRange normalise() const
+    constexpr MapRange Normalise() const
     {
         // Don't use std::min/max, as they require <algorithm>, one of C++'s heaviest
         // in this very common header.
         auto result = MapRange(
-            getX1() < getX2() ? getX1() : getX2(), // min
-            getY1() < getY2() ? getY1() : getY2(), // min
-            getX1() > getX2() ? getX1() : getX2(), // max
-            getY1() > getY2() ? getY1() : getY2()  // max
+            GetX1() < GetX2() ? GetX1() : GetX2(), // min
+            GetY1() < GetY2() ? GetY1() : GetY2(), // min
+            GetX1() > GetX2() ? GetX1() : GetX2(), // max
+            GetY1() > GetY2() ? GetY1() : GetY2()  // max
         );
         return result;
+    }
+};
+
+/**
+ * Represents a line on the screen
+ */
+
+struct ScreenLine : public CoordsRange<ScreenCoordsXY>
+{
+    constexpr ScreenLine(const ScreenCoordsXY& leftTop, const ScreenCoordsXY& rightBottom)
+        : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
+    {
+    }
+};
+
+/**
+ * Represents a rectangular range on the screen
+ */
+
+struct ScreenRect : public RectRange<ScreenCoordsXY>
+{
+    using RectRange::RectRange;
+
+    constexpr int32_t GetWidth() const
+    {
+        return GetRight() - GetLeft();
+    }
+    constexpr int32_t GetHeight() const
+    {
+        return GetBottom() - GetTop();
+    }
+    constexpr bool Contains(const ScreenCoordsXY& coords) const
+    {
+        return coords.x >= GetLeft() && coords.x <= GetRight() && coords.y >= GetTop() && coords.y <= GetBottom();
     }
 };
 

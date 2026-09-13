@@ -14,7 +14,7 @@
 #include <stdexcept>
 
 #ifndef DISABLE_VORBIS
-    #include <SDL_audio.h>
+    #include <SDL.h>
     #include <optional>
     #include <vector>
     #include <vorbis/vorbisfile.h>

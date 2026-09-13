@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class SurfaceSetStyleAction final : public GameActionBase<GameCommand::changeSurfaceStyle>
+    class SurfaceSetStyleAction final : public GameActionBase<GameCommand::ChangeSurfaceStyle>
     {
     private:
         MapRange _range;

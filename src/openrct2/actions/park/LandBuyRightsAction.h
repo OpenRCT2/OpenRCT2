@@ -20,7 +20,7 @@ namespace OpenRCT2::GameActions
         count
     };
 
-    class LandBuyRightsAction final : public GameActionBase<GameCommand::buyLandRights>
+    class LandBuyRightsAction final : public GameActionBase<GameCommand::BuyLandRights>
     {
     private:
         MapRange _range;

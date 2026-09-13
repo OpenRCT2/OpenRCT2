@@ -17,6 +17,7 @@ struct SDL_Window;
 
 namespace OpenRCT2
 {
+    struct IContext;
     struct IPlatformEnvironment;
 } // namespace OpenRCT2
 

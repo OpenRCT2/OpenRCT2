@@ -13,7 +13,6 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../object/PathAdditionEntry.h"
-#include "../../paint/Paint.h"
 #include "../../profiling/Profiling.h"
 #include "../../world/tile_element/PathElement.h"
 #include "Paint.TileElement.h"
@@ -71,10 +70,10 @@ static void PathAdditionLightsPaint(
     PaintSession& session, const PathAdditionEntry& pathAdditionEntry, const PathElement& pathElement, int32_t height,
     uint8_t edges, ImageId imageTemplate)
 {
-    if (pathElement.isSloped())
+    if (pathElement.IsSloped())
         height += 8;
 
-    auto isBroken = pathElement.isBroken();
+    auto isBroken = pathElement.IsBroken();
     if (edges & EDGE_NE)
     {
         auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_NE, isBroken);
@@ -106,13 +105,13 @@ static bool IsBinFull(PaintSession& session, const PathElement& pathElement, edg
     switch (edge)
     {
         case EDGE_NE:
-            return !(pathElement.getAdditionStatus() & Numerics::ror8(0x03, (2 * session.CurrentRotation)));
+            return !(pathElement.GetAdditionStatus() & Numerics::ror8(0x03, (2 * session.CurrentRotation)));
         case EDGE_SE:
-            return !(pathElement.getAdditionStatus() & Numerics::ror8(0x0C, (2 * session.CurrentRotation)));
+            return !(pathElement.GetAdditionStatus() & Numerics::ror8(0x0C, (2 * session.CurrentRotation)));
         case EDGE_SW:
-            return !(pathElement.getAdditionStatus() & Numerics::ror8(0x30, (2 * session.CurrentRotation)));
+            return !(pathElement.GetAdditionStatus() & Numerics::ror8(0x30, (2 * session.CurrentRotation)));
         case EDGE_NW:
-            return !(pathElement.getAdditionStatus() & Numerics::ror8(0xC0, (2 * session.CurrentRotation)));
+            return !(pathElement.GetAdditionStatus() & Numerics::ror8(0xC0, (2 * session.CurrentRotation)));
         default:
             return false;
     }
@@ -123,10 +122,10 @@ static void PathAdditionBinsPaint(
     PaintSession& session, const PathAdditionEntry& pathAdditionEntry, const PathElement& pathElement, int32_t height,
     uint8_t edges, ImageId imageTemplate)
 {
-    if (pathElement.isSloped())
+    if (pathElement.IsSloped())
         height += 8;
 
-    bool binsAreVandalised = pathElement.isBroken();
+    bool binsAreVandalised = pathElement.IsBroken();
     auto highlightPathIssues = (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) != 0;
 
     if (edges & EDGE_NE)
@@ -168,7 +167,7 @@ static void PathAdditionBenchesPaint(
     PaintSession& session, const PathAdditionEntry& pathAdditionEntry, const PathElement& pathElement, int32_t height,
     uint8_t edges, ImageId imageTemplate)
 {
-    auto isBroken = pathElement.isBroken();
+    auto isBroken = pathElement.IsBroken();
     if (edges & EDGE_NE)
     {
         auto imageIndex = GetFootpathBenchImage(pathAdditionEntry, EDGE_NE, isBroken);
@@ -228,7 +227,7 @@ inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathAdditionEntry& p
 void paintPathAddition(PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate)
 {
     // Path additions get drawn on edges that are not connected, so we need to flip them.
-    const auto edges = pathElement.getEdges() ^ 0b1111;
+    const auto edges = pathElement.GetEdges() ^ 0b1111;
     const auto rotatedEdges = ((edges << session.CurrentRotation) & 0xF) | (((edges) << session.CurrentRotation) >> 4);
 
     session.InteractionType = ViewportInteractionItem::pathAddition;
@@ -237,9 +236,9 @@ void paintPathAddition(PaintSession& session, const PathElement& pathElement, ui
         session.InteractionType = ViewportInteractionItem::none;
     }
 
-    auto* pathAddEntry = pathElement.getAdditionEntry();
+    auto* pathAddEntry = pathElement.GetAdditionEntry();
     // Can be null if the object is not loaded.
-    if (pathAddEntry == nullptr || !PathAdditionIsVisible(session.ViewFlags, *pathAddEntry, pathElement.isBroken()))
+    if (pathAddEntry == nullptr || !PathAdditionIsVisible(session.ViewFlags, *pathAddEntry, pathElement.IsBroken()))
     {
         return;
     }
@@ -275,24 +274,24 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
 
     if (LightFx::IsAvailable())
     {
-        if (pathEl.hasAddition() && !(pathEl.isBroken()))
+        if (pathEl.HasAddition() && !(pathEl.IsBroken()))
         {
-            auto* pathAddEntry = pathEl.getAdditionEntry();
+            auto* pathAddEntry = pathEl.GetAdditionEntry();
             if (pathAddEntry != nullptr && pathAddEntry->flags & PATH_ADDITION_FLAG_LAMP)
             {
-                if (!(pathEl.getEdges() & EDGE_NE))
+                if (!(pathEl.GetEdges() & EDGE_NE))
                 {
                     LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 23, LightType::lantern3);
                 }
-                if (!(pathEl.getEdges() & EDGE_SE))
+                if (!(pathEl.GetEdges() & EDGE_SE))
                 {
                     LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 23, LightType::lantern3);
                 }
-                if (!(pathEl.getEdges() & EDGE_SW))
+                if (!(pathEl.GetEdges() & EDGE_SW))
                 {
                     LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 23, LightType::lantern3);
                 }
-                if (!(pathEl.getEdges() & EDGE_NW))
+                if (!(pathEl.GetEdges() & EDGE_NW))
                 {
                     LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 23, LightType::lantern3);
                 }

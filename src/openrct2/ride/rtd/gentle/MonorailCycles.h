@@ -12,13 +12,12 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kMonorailCyclesRTD =
+constexpr RideTypeDescriptor MonorailCyclesRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::endStation,
@@ -34,11 +33,11 @@ constexpr RideTypeDescriptor kMonorailCyclesRTD =
                      RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
-    .rideModes = { RideMode::continuousCircuit },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_MONORAIL_CYCLES, STR_RIDE_DESCRIPTION_MONORAIL_CYCLES },
-    .NameConvention = { RideComponentType::car, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::vehicleMalfunction },
     .Heights = { 5, 24, 8, 7, },
     .MaxMass = 2,
@@ -55,28 +54,28 @@ constexpr RideTypeDescriptor kMonorailCyclesRTD =
         { Drawing::Colour::grey, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_CYCLES_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "monorail_cycles",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 40), RideRating::make(0, 20), RideRating::make(0, 00) },
         4,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 15), RideRating::make(0, 00), 0 },
-            { RatingsModifierType::bonusTrainLength,      0,                187245, 0, 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,                44281, 88562, 35424 },
-            { RatingsModifierType::bonusAverageSpeed,     0,                291271, 436906, 0 },
-            { RatingsModifierType::bonusDuration,         150,              26214, 0, 0 },
-            { RatingsModifierType::bonusTurns,            0,                14860, 0, 4574 },
-            { RatingsModifierType::bonusDrops,            0,                8738, 0, 0 },
-            { RatingsModifierType::bonusSheltered,        0,                5140, 6553, 2340 },
-            { RatingsModifierType::bonusProximity,        0,                8946, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,                11155, 0, 0 },
-            { RatingsModifierType::requirementLength,     0x8C0000,         2, 2, 2 },
+            { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 15), RideRating::make(0, 00), 0 },
+            { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
+            { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
+            { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
+            { RatingsModifierType::BonusTurns,            0,                14860, 0, 4574 },
+            { RatingsModifierType::BonusDrops,            0,                8738, 0, 0 },
+            { RatingsModifierType::BonusSheltered,        0,                5140, 6553, 2340 },
+            { RatingsModifierType::BonusProximity,        0,                8946, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
+            { RatingsModifierType::RequirementLength,     0x8C0000,         2, 2, 2 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

@@ -9,13 +9,17 @@
 
 #include "RideSetNameAction.h"
 
+#include "../../Cheats.h"
+#include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../core/MemoryStream.h"
+#include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../localisation/StringIds.h"
 #include "../../ride/Ride.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -79,7 +83,7 @@ namespace OpenRCT2::GameActions
         }
 
         Drawing::ScrollingText::invalidate();
-        Drawing::GfxInvalidateScreen();
+        GfxInvalidateScreen();
 
         // Refresh windows that display ride name
         auto windowManager = Ui::GetWindowManager();
@@ -88,7 +92,7 @@ namespace OpenRCT2::GameActions
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
         auto res = Result();
-        auto location = ride->overallView.toTileCentre();
+        auto location = ride->overallView.ToTileCentre();
         res.position = { location, TileElementHeight(location) };
 
         return res;

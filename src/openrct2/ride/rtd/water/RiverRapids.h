@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kRiverRapidsRTD =
+constexpr RideTypeDescriptor RiverRapidsRTD =
 {
     .Category = RideCategory::water,
     .StartTrackPiece = TrackElemType::endStation,
@@ -35,11 +34,11 @@ constexpr RideTypeDescriptor kRiverRapidsRTD =
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::hasAirTime, RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .rideModes = { RideMode::continuousCircuit },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_RIVER_RAPIDS, STR_RIDE_DESCRIPTION_RIVER_RAPIDS },
-    .NameConvention = { RideComponentType::boat, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::brakesFailure },
     .Heights = { 9, 32, 14, 15, },
     .MaxMass = 255,
@@ -55,33 +54,33 @@ constexpr RideTypeDescriptor kRiverRapidsRTD =
         { Drawing::Colour::white, Drawing::Colour::black, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_TRACK, SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "river_rapids",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 20), RideRating::make(0, 70), RideRating::make(0, 50) },
         16,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           2000,             6225, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 30), RideRating::make(0, 05), 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,                115130, 159411, 106274 },
-            { RatingsModifierType::bonusDuration,         500,              13107, 0, 0 },
-            { RatingsModifierType::bonusTurns,            0,                29721, 22598, 5718 },
-            { RatingsModifierType::bonusDrops,            0,                40777, 46811, 49152 },
-            { RatingsModifierType::bonusSheltered,        0,                16705, 30583, 35108 },
-            { RatingsModifierType::bonusProximity,        0,                31314, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,                13943, 0, 0 },
-            { RatingsModifierType::requirementDropHeight, 2,                2, 2, 2 },
-            { RatingsModifierType::requirementLength,     0xC80000,         2, 2, 2 },
+            { RatingsModifierType::BonusLength,           2000,             6225, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 30), RideRating::make(0, 05), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                115130, 159411, 106274 },
+            { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
+            { RatingsModifierType::BonusTurns,            0,                29721, 22598, 5718 },
+            { RatingsModifierType::BonusDrops,            0,                40777, 46811, 49152 },
+            { RatingsModifierType::BonusSheltered,        0,                16705, 30583, 35108 },
+            { RatingsModifierType::BonusProximity,        0,                31314, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                13943, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 2,                2, 2, 2 },
+            { RatingsModifierType::RequirementLength,     0xC80000,         2, 2, 2 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,

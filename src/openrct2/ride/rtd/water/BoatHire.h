@@ -12,13 +12,12 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kBoatHireRTD =
+constexpr RideTypeDescriptor BoatHireRTD =
 {
     .Category = RideCategory::water,
     .StartTrackPiece = TrackElemType::endStation,
@@ -31,11 +30,11 @@ constexpr RideTypeDescriptor kBoatHireRTD =
     .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::trackMustBeOnWater,
                      RtdFlag::noTestMode, RtdFlag::hasLoadOptions, RtdFlag::hasVehicleColours, RtdFlag::checkForStalling,
                      RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit),
-    .rideModes = { RideMode::boatHire },
+    .RideModes = EnumsToFlags(RideMode::boatHire),
     .DefaultMode = RideMode::boatHire,
     .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE },
-    .NameConvention = { RideComponentType::boat, RideComponentType::dockingPlatform, RideComponentType::dockingPlatform },
+    .NameConvention = { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform },
     .availableBreakdowns = { Breakdown::vehicleMalfunction },
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,
@@ -60,19 +59,19 @@ constexpr RideTypeDescriptor kBoatHireRTD =
         { Drawing::Colour::darkWater, Drawing::Colour::darkWater, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "boat_hire",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 90), RideRating::make(0, 80), RideRating::make(0, 90) },
         7,
         0,
         false,
         {
-            { RatingsModifierType::bonusBoatHireNoCircuit, 0, RideRating::make(0, 20), 0, 0 },
-            { RatingsModifierType::bonusProximity,         0, 11183, 0, 0 },
-            { RatingsModifierType::bonusScenery,           0, 22310, 0, 0 },
+            { RatingsModifierType::BonusBoatHireNoCircuit, 0, RideRating::make(0, 20), 0, 0 },
+            { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,           0, 22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

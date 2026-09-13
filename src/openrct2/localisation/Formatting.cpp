@@ -14,7 +14,6 @@
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../core/UnitConversion.h"
-#include "../drawing/Font.h"
 #include "../object/ObjectManager.h"
 #include "../object/PeepNamesObject.h"
 #include "Currency.h"
@@ -25,6 +24,7 @@
 #include "StringIds.h"
 
 #include <cmath>
+#include <cstdint>
 
 namespace OpenRCT2
 {

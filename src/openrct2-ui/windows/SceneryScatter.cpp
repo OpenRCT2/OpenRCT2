@@ -10,10 +10,10 @@
 #include <algorithm>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
@@ -70,7 +70,7 @@ namespace OpenRCT2::Ui::Windows
 
             gWindowSceneryScatterEnabled = true;
             gWindowSceneryScatterSize = 16;
-            gWindowSceneryScatterDensity = ScatterToolDensity::mediumDensity;
+            gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
         }
 
         void onClose() override
@@ -108,15 +108,15 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_DENSITY_LOW:
-                    gWindowSceneryScatterDensity = ScatterToolDensity::lowDensity;
+                    gWindowSceneryScatterDensity = ScatterToolDensity::LowDensity;
                     break;
 
                 case WIDX_DENSITY_MEDIUM:
-                    gWindowSceneryScatterDensity = ScatterToolDensity::mediumDensity;
+                    gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
                     break;
 
                 case WIDX_DENSITY_HIGH:
-                    gWindowSceneryScatterDensity = ScatterToolDensity::highDensity;
+                    gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
                     break;
             }
         }
@@ -165,13 +165,13 @@ namespace OpenRCT2::Ui::Windows
             WidgetIndex pressedDensity = WIDX_DENSITY_HIGH;
             switch (gWindowSceneryScatterDensity)
             {
-                case ScatterToolDensity::lowDensity:
+                case ScatterToolDensity::LowDensity:
                     pressedDensity = WIDX_DENSITY_LOW;
                     break;
-                case ScatterToolDensity::mediumDensity:
+                case ScatterToolDensity::MediumDensity:
                     pressedDensity = WIDX_DENSITY_MEDIUM;
                     break;
-                case ScatterToolDensity::highDensity:
+                case ScatterToolDensity::HighDensity:
                     pressedDensity = WIDX_DENSITY_HIGH;
                     break;
             }

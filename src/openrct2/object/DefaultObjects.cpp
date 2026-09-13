@@ -9,6 +9,8 @@
 
 #include "DefaultObjects.h"
 
+#include "Object.h"
+
 namespace OpenRCT2
 {
     constexpr std::array<std::string_view, 3> kMinimumRequiredObjects = {

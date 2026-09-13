@@ -38,9 +38,9 @@ namespace OpenRCT2
 
     enum class MusicNiceFactor : int8_t
     {
-        overbearing = -1, // Drowns out other music
-        neutral = 0,
-        nice = 1,
+        Overbearing = -1, // Drowns out other music
+        Neutral = 0,
+        Nice = 1,
     };
 
     class MusicObject final : public Object

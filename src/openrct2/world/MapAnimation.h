@@ -9,10 +9,7 @@
 
 #pragma once
 
-#include <cstdint>
-
-struct CoordsXYZ;
-struct TileCoordsXY;
+#include "Location.hpp"
 
 namespace OpenRCT2::MapAnimations
 {

@@ -11,8 +11,10 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../Game.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
@@ -25,10 +27,14 @@
 #include "../platform/Crash.h"
 #include "../platform/Platform.h"
 #include "../rct12/CSStringConverter.h"
+#include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
+#include "Scenario.h"
 #include "ScenarioCategory.h"
 #include "ScenarioSources.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -107,7 +113,7 @@ static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA
             }
             return entryA.SourceIndex - entryB.SourceIndex;
 
-        case ScenarioSource::real:
+        case ScenarioSource::Real:
             return ScenarioIndexEntryCompareByCategory(entryA, entryB);
     }
 }
@@ -152,7 +158,7 @@ protected:
     void Serialise(DataSerialiser& ds, const ScenarioIndexEntry& item) const override
     {
         ds << item.Path;
-        if (ds.isLoading())
+        if (ds.IsLoading())
         {
             // Field used to be fixed size length, remove the 0 padding.
             const auto pos = item.Path.find('\0');
@@ -341,7 +347,7 @@ public:
         {
             const ScenarioIndexEntry* scenario = &_scenarios[i];
 
-            if (scenario->SourceGame == ScenarioSource::other && scenario->ScenarioId == SC_UNIDENTIFIED)
+            if (scenario->SourceGame == ScenarioSource::Other && scenario->ScenarioId == SC_UNIDENTIFIED)
                 continue;
 
             // Note: this is always case insensitive search for cross platform consistency

@@ -10,9 +10,9 @@
 #include "FootpathRailingsObject.h"
 
 #include "../core/Guard.hpp"
+#include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../interface/ScreenCoords.hpp"
 
 namespace OpenRCT2
 {

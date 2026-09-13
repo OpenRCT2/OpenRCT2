@@ -10,13 +10,12 @@
 #pragma once
 
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kCashMachineRTD =
+constexpr RideTypeDescriptor CashMachineRTD =
 {
     .Category = RideCategory::shop,
     .StartTrackPiece = TrackElemType::flatTrack1x1A,
@@ -29,10 +28,10 @@ constexpr RideTypeDescriptor kCashMachineRTD =
     .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::shopStall },
+    .RideModes = EnumsToFlags(RideMode::shopStall),
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_CASH_MACHINE, STR_RIDE_DESCRIPTION_CASH_MACHINE },
-    .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .availableBreakdowns = {},
     .Heights = { 12, kDefaultCashMachineHeight, 0, 0, },
     .MaxMass = 255,
@@ -46,21 +45,21 @@ constexpr RideTypeDescriptor kCashMachineRTD =
     .BonusValue = 5,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::cashMachine,
+    .ColourKey = RideColourKey::CashMachine,
     .Name = "cash_machine",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::stall,
+        RatingsCalculationType::Stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,
         false,
-        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::kioskOrFacility,
     .specialType = RtdSpecialType::cashMachine,

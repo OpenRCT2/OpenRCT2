@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class ParkSetResearchFundingAction final : public GameActionBase<GameCommand::setResearchFunding>
+    class ParkSetResearchFundingAction final : public GameActionBase<GameCommand::SetResearchFunding>
     {
     private:
         // TODO change to std::optional when C++17

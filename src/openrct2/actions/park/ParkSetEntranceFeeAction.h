@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::setParkEntranceFee>
+    class ParkSetEntranceFeeAction final : public GameActionBase<GameCommand::SetParkEntranceFee>
     {
     private:
         money64 _fee{ kMoney64Undefined };

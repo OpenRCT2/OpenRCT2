@@ -9,23 +9,24 @@
 
 #pragma once
 
-#include "../interface/WindowClasses.h"
-#include "../interface/WindowFlags.h"
-#include "../interface/ZoomLevel.h"
 #include "../localisation/StringWithArgs.h"
-#include "../world/Location.hpp"
 #include "ColourWithFlags.h"
-#include "Cursors.h"
 #include "ScrollArea.h"
-#include "Widget.h"
 #include "Window.h"
 
+#include <list>
 #include <memory>
 #include <span>
 #include <variant>
 #include <vector>
 
 enum class TileInspectorPage : int16_t;
+
+struct ResearchItem;
+namespace OpenRCT2
+{
+    struct RCTObjectEntry;
+}
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic push
@@ -48,9 +49,9 @@ namespace OpenRCT2
 
         template<typename T>
         constexpr explicit Focus(T newValue, ZoomLevel newZoom = {})
-            : zoom(newZoom)
-            , data(newValue)
         {
+            data = newValue;
+            zoom = newZoom;
         }
 
         CoordsXYZ GetPos() const;

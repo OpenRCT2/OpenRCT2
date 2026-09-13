@@ -19,7 +19,7 @@ namespace OpenRCT2::GameActions
         renew,
     };
 
-    class RideDemolishAction final : public GameActionBase<GameCommand::demolishRide>
+    class RideDemolishAction final : public GameActionBase<GameCommand::DemolishRide>
     {
     private:
         RideId _rideIndex{ RideId::GetNull() };

@@ -11,7 +11,9 @@
 
     #include "ScRideStation.hpp"
 
+    #include "../../../Context.h"
     #include "../../../ride/Ride.h"
+    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -22,7 +24,6 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("length", ScRideStation::length_get, ScRideStation::length_set),
             JS_CGETSET_DEF("entrance", ScRideStation::entrance_get, ScRideStation::entrance_set),
             JS_CGETSET_DEF("exit", ScRideStation::exit_get, ScRideStation::exit_set),
-            JS_CGETSET_DEF("queueTime", ScRideStation::queueTime_get, nullptr),
         };
         RegisterBase(ctx, "RideStation", Finalize, funcs);
     }
@@ -47,7 +48,7 @@ namespace OpenRCT2::Scripting
     RideStation* ScRideStation::GetRideStation(JSValue thisVal)
     {
         RideStationData* data = GetRideStationData(thisVal);
-        auto ride = OpenRCT2::GetRide(data->_rideId);
+        auto ride = ::GetRide(data->_rideId);
         if (ride != nullptr)
         {
             if (data->_stationIndex.ToUnderlying() < std::size(ride->getStations()))
@@ -63,7 +64,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            auto start = CoordsXYZ(station->start, station->getBaseZ());
+            auto start = CoordsXYZ(station->Start, station->GetBaseZ());
             return ToJSValue(ctx, start);
         }
         return JS_NULL;
@@ -76,9 +77,9 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            auto start = JStoCoordsXYZ(ctx, value);
-            station->start = { start.x, start.y };
-            station->setBaseZ(start.z);
+            auto start = JSToCoordsXYZ(ctx, value);
+            station->Start = { start.x, start.y };
+            station->SetBaseZ(start.z);
         }
         return JS_UNDEFINED;
     }
@@ -86,7 +87,7 @@ namespace OpenRCT2::Scripting
     JSValue ScRideStation::length_get(JSContext* ctx, JSValue thisVal)
     {
         auto station = GetRideStation(thisVal);
-        return JS_NewInt32(ctx, station != nullptr ? station->length : 0);
+        return JS_NewInt32(ctx, station != nullptr ? station->Length : 0);
     }
 
     JSValue ScRideStation::length_set(JSContext* ctx, JSValue thisVal, JSValue value)
@@ -97,7 +98,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            station->length = valueInt;
+            station->Length = valueInt;
         }
         return JS_UNDEFINED;
     }
@@ -107,7 +108,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            return ToJSValue(ctx, station->entrance.toCoordsXYZD());
+            return ToJSValue(ctx, station->Entrance.ToCoordsXYZD());
         }
         return JS_NULL;
     }
@@ -119,7 +120,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            station->entrance = JStoCoordsXYZD(ctx, value);
+            station->Entrance = JSToCoordsXYZD(ctx, value);
         }
         return JS_UNDEFINED;
     }
@@ -129,7 +130,7 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            return ToJSValue(ctx, station->exit.toCoordsXYZD());
+            return ToJSValue(ctx, station->Exit.ToCoordsXYZD());
         }
         return JS_NULL;
     }
@@ -141,15 +142,9 @@ namespace OpenRCT2::Scripting
         auto station = GetRideStation(thisVal);
         if (station != nullptr)
         {
-            station->exit = JStoCoordsXYZD(ctx, value);
+            station->Exit = JSToCoordsXYZD(ctx, value);
         }
         return JS_UNDEFINED;
-    }
-
-    JSValue ScRideStation::queueTime_get(JSContext* ctx, JSValue thisVal)
-    {
-        auto station = GetRideStation(thisVal);
-        return JS_NewUint32(ctx, station != nullptr ? station->queueTime : 0);
     }
 
 } // namespace OpenRCT2::Scripting

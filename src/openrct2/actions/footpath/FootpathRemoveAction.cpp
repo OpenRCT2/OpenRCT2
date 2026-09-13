@@ -12,11 +12,13 @@
 #include "../../Cheats.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/tile_element/BannerElement.h"
 #include "../../world/tile_element/PathElement.h"
@@ -108,7 +110,7 @@ namespace OpenRCT2::GameActions
                     gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
                     [this](const CoordsXYZ& spawn) {
                         {
-                            return spawn.toTileStart() == _loc.toTileStart();
+                            return spawn.ToTileStart() == _loc.ToTileStart();
                         }
                     }),
                 gameState.peepSpawns.end());
@@ -157,14 +159,14 @@ namespace OpenRCT2::GameActions
         auto result = Result();
         while (!(tileElement++)->isLastForTile())
         {
-            if (tileElement->getType() == TileElementType::path)
+            if (tileElement->getType() == TileElementType::Path)
                 return result;
 
-            if (tileElement->getType() != TileElementType::banner)
+            if (tileElement->getType() != TileElementType::Banner)
                 continue;
 
             auto bannerRemoveAction = BannerRemoveAction(
-                { loc, tileElement->getBaseZ(), tileElement->asBanner()->getPosition() });
+                { loc, tileElement->getBaseZ(), tileElement->asBanner()->GetPosition() });
             bool isGhost = tileElement->isGhost();
             auto bannerFlags = GetFlags();
             if (isGhost)

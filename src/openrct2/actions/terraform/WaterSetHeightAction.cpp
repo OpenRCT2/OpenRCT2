@@ -16,6 +16,7 @@
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/SurfaceElement.h"
@@ -53,7 +54,7 @@ namespace OpenRCT2::GameActions
         res.position = { _coords, _height * kCoordsZStep };
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-            && park.flags.has(ParkFlag::forbidLandscapeChanges))
+            && park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
         {
             return Result(Status::disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
@@ -86,9 +87,9 @@ namespace OpenRCT2::GameActions
 
         int32_t zHigh = surfaceElement->getBaseZ();
         int32_t zLow = _height * kCoordsZStep;
-        if (surfaceElement->getWaterHeight() > 0)
+        if (surfaceElement->GetWaterHeight() > 0)
         {
-            zHigh = surfaceElement->getWaterHeight();
+            zHigh = surfaceElement->GetWaterHeight();
         }
         if (zLow > zHigh)
         {
@@ -101,7 +102,7 @@ namespace OpenRCT2::GameActions
         {
             return res2;
         }
-        if (surfaceElement->hasTrackThatNeedsWater() && !gameState.cheats.disableClearanceChecks)
+        if (surfaceElement->HasTrackThatNeedsWater())
         {
             return Result(Status::disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER);
         }
@@ -131,11 +132,11 @@ namespace OpenRCT2::GameActions
 
         if (_height > surfaceElement->baseHeight)
         {
-            surfaceElement->setWaterHeight(_height * kCoordsZStep);
+            surfaceElement->SetWaterHeight(_height * kCoordsZStep);
         }
         else
         {
-            surfaceElement->setWaterHeight(0);
+            surfaceElement->SetWaterHeight(0);
         }
         MapInvalidateTileFull(_coords);
 

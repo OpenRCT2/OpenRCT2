@@ -13,11 +13,11 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../core/Guard.hpp"
-#include "../../drawing/TextColour.h"
 #include "../../management/Finance.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectLimits.h"
+#include "../../ride/Ride.h"
 #include "../../ride/RideConstruction.h"
 #include "../../world/Banner.h"
 #include "../../world/ConstructionClearance.h"
@@ -128,7 +128,7 @@ namespace OpenRCT2::GameActions
 
         for (auto& tile : sceneryEntry->tiles)
         {
-            auto curTile = CoordsXY{ tile.offset }.rotate(_loc.direction);
+            auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -139,7 +139,8 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), { .isTree = isTree });
+                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                CreateCrossingMode::none, isTree);
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -259,7 +260,7 @@ namespace OpenRCT2::GameActions
 
         for (auto& tile : sceneryEntry->tiles)
         {
-            auto curTile = CoordsXY{ tile.offset }.rotate(_loc.direction);
+            auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -270,7 +271,8 @@ namespace OpenRCT2::GameActions
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
             auto canBuild = MapCanConstructWithClearAt(
-                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), { .isTree = isTree });
+                { curTile, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                CreateCrossingMode::none, isTree);
             if (canBuild.error != Status::ok)
             {
                 if (banner != nullptr)
@@ -303,7 +305,7 @@ namespace OpenRCT2::GameActions
             SetNewLargeSceneryElement(*newSceneryElement, tile.index);
             if (banner != nullptr)
             {
-                newSceneryElement->setBannerIndex(banner->id);
+                newSceneryElement->SetBannerIndex(banner->id);
             }
 
             MapAnimations::MarkTileForInvalidation(TileCoordsXY(curTile));
@@ -328,7 +330,7 @@ namespace OpenRCT2::GameActions
     {
         for (auto& tile : tiles)
         {
-            auto curTile = CoordsXY{ tile.offset }.rotate(_loc.direction);
+            auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -345,7 +347,7 @@ namespace OpenRCT2::GameActions
         int16_t maxHeight = -1;
         for (auto& tile : tiles)
         {
-            auto curTile = CoordsXY{ tile.offset }.rotate(_loc.direction);
+            auto curTile = CoordsXY{ tile.offset }.Rotate(_loc.direction);
 
             curTile.x += _loc.x;
             curTile.y += _loc.y;
@@ -360,7 +362,7 @@ namespace OpenRCT2::GameActions
                 continue;
 
             int32_t baseZ = surfaceElement->getBaseZ();
-            int32_t slope = surfaceElement->getSlope();
+            int32_t slope = surfaceElement->GetSlope();
 
             if ((slope & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
             {
@@ -382,11 +384,11 @@ namespace OpenRCT2::GameActions
     void LargeSceneryPlaceAction::SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const
     {
         sceneryElement.setDirection(_loc.direction);
-        sceneryElement.setEntryIndex(_sceneryType);
-        sceneryElement.setSequenceIndex(tileNum);
-        sceneryElement.setPrimaryColour(_primaryColour);
-        sceneryElement.setSecondaryColour(_secondaryColour);
-        sceneryElement.setTertiaryColour(_tertiaryColour);
+        sceneryElement.SetEntryIndex(_sceneryType);
+        sceneryElement.SetSequenceIndex(tileNum);
+        sceneryElement.SetPrimaryColour(_primaryColour);
+        sceneryElement.SetSecondaryColour(_secondaryColour);
+        sceneryElement.SetTertiaryColour(_tertiaryColour);
 
         if (GetFlags().has(CommandFlag::ghost))
         {

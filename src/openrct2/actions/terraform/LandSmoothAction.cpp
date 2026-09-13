@@ -9,12 +9,18 @@
 
 #include "LandSmoothAction.h"
 
+#include "../../Context.h"
 #include "../../Diagnostic.h"
+#include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
+#include "../../ride/RideData.h"
+#include "../../windows/Intent.h"
 #include "../../world/Map.h"
 #include "../../world/MapSelection.h"
+#include "../../world/Park.h"
+#include "../../world/Scenery.h"
 #include "../../world/SurfaceData.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
@@ -69,7 +75,7 @@ namespace OpenRCT2::GameActions
         GameState_t& gameState, int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
     {
         int32_t targetBaseZ = surfaceElement->baseHeight;
-        int32_t slope = surfaceElement->getSlope();
+        int32_t slope = surfaceElement->GetSlope();
         if (_isLowering)
         {
             slope = LowerSurfaceCornerFlags(direction, slope);
@@ -181,7 +187,7 @@ namespace OpenRCT2::GameActions
 
             // change land of current tile
             int32_t targetBaseZ = surfaceElement->baseHeight;
-            int32_t slope = surfaceElement->getSlope();
+            int32_t slope = surfaceElement->GetSlope();
             int32_t oldSlope = slope;
             if (_isLowering)
             {
@@ -335,12 +341,12 @@ namespace OpenRCT2::GameActions
         const auto selectionType = _selectionType;
         const int32_t heightOffset = raiseLand ? 2 : -2;
 
-        auto normRange = _range.normalise();
+        auto normRange = _range.Normalise();
         // Cap bounds to map
-        auto l = std::max(normRange.getX1(), 32);
-        auto t = std::max(normRange.getY1(), 32);
-        auto r = std::clamp(normRange.getX2(), 0, kMaximumTileStartXY);
-        auto b = std::clamp(normRange.getY2(), 0, kMaximumTileStartXY);
+        auto l = std::max(normRange.GetX1(), 32);
+        auto t = std::max(normRange.GetY1(), 32);
+        auto r = std::clamp(normRange.GetX2(), 0, kMaximumTileStartXY);
+        auto b = std::clamp(normRange.GetY2(), 0, kMaximumTileStartXY);
         auto validRange = MapRange{ l, t, r, b };
 
         int32_t centreZ = TileElementHeight(_coords);
@@ -360,51 +366,51 @@ namespace OpenRCT2::GameActions
 
                 // Smooth the 4 corners
                 { // top-left
-                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.getX1(), validRange.getY1() });
+                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX1(), validRange.GetY1() });
                     if (surfaceElement != nullptr)
                     {
                         int32_t z = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 2)), minHeight, maxHeight);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, -32, 0, 2);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, -32, 0, 2);
                     }
                 }
                 { // bottom-left
-                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.getX1(), validRange.getY2() });
+                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX1(), validRange.GetY2() });
                     if (surfaceElement != nullptr)
                     {
                         int32_t z = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 3)), minHeight, maxHeight);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY2() }, z, -32, 32, 1, 3);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY2() }, z, -32, 32, 1, 3);
                     }
                 }
                 { // bottom-right
-                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.getX2(), validRange.getY2() });
+                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX2(), validRange.GetY2() });
                     if (surfaceElement != nullptr)
                     {
                         int32_t z = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 0)), minHeight, maxHeight);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX2(), validRange.getY2() }, z, 32, 32, 2, 0);
+                            gameState, isExecuting, { validRange.GetX2(), validRange.GetY2() }, z, 32, 32, 2, 0);
                     }
                 }
                 { // top-right
-                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.getX2(), validRange.getY1() });
+                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX2(), validRange.GetY1() });
                     if (surfaceElement != nullptr)
                     {
                         int32_t z = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 1)), minHeight, maxHeight);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX2(), validRange.getY1() }, z, 32, -32, 3, 1);
+                            gameState, isExecuting, { validRange.GetX2(), validRange.GetY1() }, z, 32, -32, 3, 1);
                     }
                 }
 
                 // Smooth the edges
                 int32_t z1, z2;
-                for (int32_t y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
+                for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
                 {
-                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.getX1(), y });
+                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX1(), y });
                     if (surfaceElement != nullptr)
                     {
                         z1 = std::clamp(
@@ -412,10 +418,10 @@ namespace OpenRCT2::GameActions
                         z2 = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 2)), minHeight, maxHeight);
                         res.cost += SmoothLandRowByEdge(
-                            gameState, isExecuting, { validRange.getX1(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
+                            gameState, isExecuting, { validRange.GetX1(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
                     }
 
-                    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.getX2(), y });
+                    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX2(), y });
                     if (surfaceElement != nullptr)
                     {
                         z1 = std::clamp(
@@ -423,13 +429,13 @@ namespace OpenRCT2::GameActions
                         z2 = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 0)), minHeight, maxHeight);
                         res.cost += SmoothLandRowByEdge(
-                            gameState, isExecuting, { validRange.getX2(), y }, z1, z2, 32, 0, 2, 3, 1, 0);
+                            gameState, isExecuting, { validRange.GetX2(), y }, z1, z2, 32, 0, 2, 3, 1, 0);
                     }
                 }
 
-                for (int32_t x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
+                for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
                 {
-                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.getY1() });
+                    auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.GetY1() });
                     if (surfaceElement != nullptr)
                     {
                         z1 = std::clamp(
@@ -437,10 +443,10 @@ namespace OpenRCT2::GameActions
                         z2 = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 2)), minHeight, maxHeight);
                         res.cost += SmoothLandRowByEdge(
-                            gameState, isExecuting, { x, validRange.getY1() }, z1, z2, 0, -32, 0, 3, 1, 2);
+                            gameState, isExecuting, { x, validRange.GetY1() }, z1, z2, 0, -32, 0, 3, 1, 2);
                     }
 
-                    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.getY2() });
+                    surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.GetY2() });
                     if (surfaceElement != nullptr)
                     {
                         z1 = std::clamp(
@@ -448,7 +454,7 @@ namespace OpenRCT2::GameActions
                         z2 = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 3)), minHeight, maxHeight);
                         res.cost += SmoothLandRowByEdge(
-                            gameState, isExecuting, { x, validRange.getY2() }, z1, z2, 0, 32, 1, 2, 0, 3);
+                            gameState, isExecuting, { x, validRange.GetY2() }, z1, z2, 0, 32, 1, 2, 0, 3);
                     }
                 }
                 break;
@@ -458,11 +464,11 @@ namespace OpenRCT2::GameActions
             case MapSelectType::corner2:
             case MapSelectType::corner3:
             {
-                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.getX1(), validRange.getY1() });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX1(), validRange.GetY1() });
                 if (surfaceElement == nullptr)
                     break;
                 uint8_t newBaseZ = surfaceElement->baseHeight;
-                uint8_t newSlope = surfaceElement->getSlope();
+                uint8_t newSlope = surfaceElement->GetSlope();
                 auto direction = static_cast<Direction>(selectionType);
 
                 if (raiseLand)
@@ -483,16 +489,16 @@ namespace OpenRCT2::GameActions
                 // Smooth the corners
                 int32_t z = MapGetCornerHeight(newBaseZ, newSlope, 2);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, -32, 0, 2);
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, -32, 0, 2);
                 z = MapGetCornerHeight(newBaseZ, newSlope, 0);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 32, 32, 2, 0);
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 32, 32, 2, 0);
                 z = MapGetCornerHeight(newBaseZ, newSlope, 3);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, 32, 1, 3);
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, 32, 1, 3);
                 z = MapGetCornerHeight(newBaseZ, newSlope, 1);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 32, -32, 3, 1);
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 32, -32, 3, 1);
 
                 // Smooth the edges
                 switch (selectionType)
@@ -500,54 +506,54 @@ namespace OpenRCT2::GameActions
                     case MapSelectType::corner0:
                         z = MapGetCornerHeight(newBaseZ, newSlope, 0);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 32, 0, 3, 0);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 32, 0, 3, 0);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 0, 32, 1, 0);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 0, 32, 1, 0);
                         z = MapGetCornerHeight(newBaseZ, newSlope, 3);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, 0, 0, 3);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, 0, 0, 3);
                         z = MapGetCornerHeight(newBaseZ, newSlope, 1);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 0, -32, 0, 1);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 0, -32, 0, 1);
                         break;
                     case MapSelectType::corner1:
                         z = MapGetCornerHeight(newBaseZ, newSlope, 1);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 32, 0, 2, 1);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 32, 0, 2, 1);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 0, -32, 0, 1);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 0, -32, 0, 1);
                         z = MapGetCornerHeight(newBaseZ, newSlope, 2);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, 0, 1, 2);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, 0, 1, 2);
                         z = MapGetCornerHeight(newBaseZ, newSlope, 0);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 0, 32, 1, 0);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 0, 32, 1, 0);
                         break;
                     case MapSelectType::corner2:
                         z = MapGetCornerHeight(newBaseZ, newSlope, 2);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, 0, 1, 2);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, 0, 1, 2);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 0, -32, 3, 2);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 0, -32, 3, 2);
                         z = MapGetCornerHeight(newBaseZ, newSlope, 1);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 32, 0, 2, 1);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 32, 0, 2, 1);
                         z = MapGetCornerHeight(newBaseZ, newSlope, 3);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 0, 32, 2, 3);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 0, 32, 2, 3);
                         break;
                     case MapSelectType::corner3:
                         z = MapGetCornerHeight(newBaseZ, newSlope, 3);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, 0, 0, 3);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, 0, 0, 3);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 0, 32, 2, 3);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 0, 32, 2, 3);
                         z = MapGetCornerHeight(newBaseZ, newSlope, 0);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 32, 0, 3, 0);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 32, 0, 3, 0);
                         z = MapGetCornerHeight(newBaseZ, newSlope, 2);
                         res.cost += SmoothLandRowByCorner(
-                            gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 0, -32, 3, 2);
+                            gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 0, -32, 3, 2);
                         break;
                     default:
                         break;
@@ -561,11 +567,11 @@ namespace OpenRCT2::GameActions
             {
                 // TODO: Handle smoothing by edge
                 // Get the two corners to raise
-                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.getX1(), validRange.getY1() });
+                auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetX1(), validRange.GetY1() });
                 if (surfaceElement == nullptr)
                     break;
                 uint8_t newBaseZ = surfaceElement->baseHeight;
-                uint8_t oldSlope = surfaceElement->getSlope();
+                uint8_t oldSlope = surfaceElement->GetSlope();
                 int32_t rowIndex = EnumValue(selectionType)
                     - (EnumValue(MapSelectType::edge0) - EnumValue(MapSelectType::full) - 1);
                 uint8_t newSlope = raiseLand ? RaiseSurfaceCornerFlags(rowIndex, oldSlope)
@@ -607,32 +613,32 @@ namespace OpenRCT2::GameActions
                 uint8_t z4 = MapGetCornerHeight(newBaseZ, newSlope, c4);
                 // Smooth the edge at the top of the new slope
                 res.cost += SmoothLandRowByEdge(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z1, z2, stepOffsets[edge].x,
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z1, z2, stepOffsets[edge].x,
                     stepOffsets[edge].y, c3, c4, c1, c2);
                 // Smooth the edge at the bottom of the new slope
                 res.cost += SmoothLandRowByEdge(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z3, z4, -stepOffsets[edge].x,
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z3, z4, -stepOffsets[edge].x,
                     -stepOffsets[edge].y, c1, c2, c3, c4);
 
                 // Smooth corners
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z1, -stepOffsets[edge].y,
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z1, -stepOffsets[edge].y,
                     stepOffsets[edge].x, c2, c1);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z2, stepOffsets[edge].y,
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z2, stepOffsets[edge].y,
                     -stepOffsets[edge].x, c1, c2);
                 int32_t z = MapGetCornerHeight(newBaseZ, newSlope, 2);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, -32, 0, 2);
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, -32, 0, 2);
                 z = MapGetCornerHeight(newBaseZ, newSlope, 0);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 32, 32, 2, 0);
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 32, 32, 2, 0);
                 z = MapGetCornerHeight(newBaseZ, newSlope, 3);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, -32, 32, 1, 3);
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, -32, 32, 1, 3);
                 z = MapGetCornerHeight(newBaseZ, newSlope, 1);
                 res.cost += SmoothLandRowByCorner(
-                    gameState, isExecuting, { validRange.getX1(), validRange.getY1() }, z, 32, -32, 3, 1);
+                    gameState, isExecuting, { validRange.GetX1(), validRange.GetY1() }, z, 32, -32, 3, 1);
                 break;
             }
             default:

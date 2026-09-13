@@ -24,7 +24,7 @@
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Drawing.Screen.h"
+#include "../drawing/Drawing.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
 #include "../localisation/Formatter.h"
@@ -32,6 +32,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../park/ParkFile.h"
 #include "../platform/Platform.h"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
@@ -64,7 +65,9 @@ static constexpr uint32_t kChunkSize = 1024 * 63;
 // This limit is per connection, the current value was determined by tests with fuzzing.
 static constexpr uint32_t kMaxPacketsPerTick = 100;
 
+    #include "../Cheats.h"
     #include "../ParkImporter.h"
+    #include "../Version.h"
     #include "../actions/GameAction.hpp"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
@@ -74,9 +77,10 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
     #include "../interface/Chat.h"
+    #include "../localisation/Localisation.Date.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
-    #include "../scenario/Scenario.h"
+    #include "../world/Park.h"
     #include "NetworkAction.h"
     #include "NetworkConnection.h"
     #include "NetworkGroup.h"
@@ -88,11 +92,14 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "Socket.h"
 
     #include <array>
+    #include <cerrno>
+    #include <cmath>
     #include <fstream>
     #include <functional>
     #include <list>
     #include <map>
     #include <memory>
+    #include <set>
     #include <string>
     #include <vector>
 
@@ -204,7 +211,7 @@ namespace OpenRCT2::Network
             scriptEngine.RemoveNetworkPlugins();
     #endif
 
-            Drawing::GfxInvalidateScreen();
+            GfxInvalidateScreen();
 
             _requireClose = false;
         }
@@ -856,8 +863,8 @@ namespace OpenRCT2::Network
 
         if (!storedTick.spriteHash.empty())
         {
-            EntitiesChecksum checksum = getGameState().entities.getAllEntitiesChecksum();
-            std::string clientSpriteHash = checksum.toString();
+            EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
+            std::string clientSpriteHash = checksum.ToString();
             if (clientSpriteHash != storedTick.spriteHash)
             {
                 LOG_INFO(
@@ -1321,7 +1328,7 @@ namespace OpenRCT2::Network
         {
             std::string name(object.GetName());
             LOG_VERBOSE("client requests object %s", name.c_str());
-            if (object.Generation == ObjectGeneration::dat)
+            if (object.Generation == ObjectGeneration::DAT)
             {
                 packet << static_cast<uint8_t>(0);
                 packet.write(&object.Entry, sizeof(RCTObjectEntry));
@@ -1601,8 +1608,8 @@ namespace OpenRCT2::Network
         packet << flags;
         if (flags & TickFlags::kChecksums)
         {
-            EntitiesChecksum checksum = getGameState().entities.getAllEntitiesChecksum();
-            packet.writeString(checksum.toString());
+            EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
+            packet.writeString(checksum.ToString());
         }
 
         SendPacketToClients(packet);
@@ -1971,13 +1978,6 @@ namespace OpenRCT2::Network
             {
                 _playerListInvalidated = false;
                 ServerSendPlayerList();
-
-                if (!gOpenRCT2Headless)
-                {
-                    // Update player list window
-                    auto intent = Intent(INTENT_ACTION_REFRESH_PLAYER_LIST);
-                    ContextBroadcastIntent(&intent);
-                }
             }
         }
         else
@@ -1985,82 +1985,74 @@ namespace OpenRCT2::Network
             // As client we have to keep things in order so the update is tick bound.
             // Commands/Actions reference players and so this list needs to be in sync with those.
             auto itPending = _pendingPlayerLists.begin();
-            if (itPending != _pendingPlayerLists.end())
+            while (itPending != _pendingPlayerLists.end())
             {
-                while (itPending != _pendingPlayerLists.end())
+                if (itPending->first > getGameState().currentTicks)
+                    break;
+
+                // List of active players found in the list.
+                std::vector<uint8_t> activePlayerIds;
+                std::vector<uint8_t> newPlayers;
+                std::vector<uint8_t> removedPlayers;
+
+                for (const auto& pendingPlayer : itPending->second.players)
                 {
-                    if (itPending->first > getGameState().currentTicks)
-                        break;
+                    activePlayerIds.push_back(pendingPlayer.id);
 
-                    // List of active players found in the list.
-                    std::vector<uint8_t> activePlayerIds;
-                    std::vector<uint8_t> newPlayers;
-                    std::vector<uint8_t> removedPlayers;
-
-                    for (const auto& pendingPlayer : itPending->second.players)
+                    auto* player = GetPlayerByID(pendingPlayer.id);
+                    if (player == nullptr)
                     {
-                        activePlayerIds.push_back(pendingPlayer.id);
-
-                        auto* player = GetPlayerByID(pendingPlayer.id);
-                        if (player == nullptr)
+                        // Add new player.
+                        player = AddPlayer("", "");
+                        if (player != nullptr)
                         {
-                            // Add new player.
-                            player = AddPlayer("", "");
-                            if (player != nullptr)
-                            {
-                                *player = pendingPlayer;
-                                if (player->flags & PlayerFlags::kIsServer)
-                                {
-                                    _serverConnection->player = player;
-                                }
-                                newPlayers.push_back(player->id);
-                            }
-                        }
-                        else
-                        {
-                            // Update.
                             *player = pendingPlayer;
+                            if (player->flags & PlayerFlags::kIsServer)
+                            {
+                                _serverConnection->player = player;
+                            }
+                            newPlayers.push_back(player->id);
                         }
                     }
-
-                    // Remove any players that are not in newly received list
-                    for (const auto& player : player_list)
+                    else
                     {
-                        if (std::find(activePlayerIds.begin(), activePlayerIds.end(), player->id) == activePlayerIds.end())
-                        {
-                            removedPlayers.push_back(player->id);
-                        }
+                        // Update.
+                        *player = pendingPlayer;
                     }
-
-                    // Run player removed hooks (must be before players removed from list)
-                    for (auto playerId : removedPlayers)
-                    {
-                        ProcessPlayerLeftPluginHooks(playerId);
-                    }
-
-                    // Run player joined hooks (must be after players added to list)
-                    for (auto playerId : newPlayers)
-                    {
-                        ProcessPlayerJoinedPluginHooks(playerId);
-                    }
-
-                    // Now actually remove removed players from player list
-                    player_list.erase(
-                        std::remove_if(
-                            player_list.begin(), player_list.end(),
-                            [&removedPlayers](const std::unique_ptr<Player>& player) {
-                                return std::find(removedPlayers.begin(), removedPlayers.end(), player->id)
-                                    != removedPlayers.end();
-                            }),
-                        player_list.end());
-
-                    _pendingPlayerLists.erase(itPending);
-                    itPending = _pendingPlayerLists.begin();
                 }
 
-                // Update player list window
-                auto intent = Intent(INTENT_ACTION_REFRESH_PLAYER_LIST);
-                ContextBroadcastIntent(&intent);
+                // Remove any players that are not in newly received list
+                for (const auto& player : player_list)
+                {
+                    if (std::find(activePlayerIds.begin(), activePlayerIds.end(), player->id) == activePlayerIds.end())
+                    {
+                        removedPlayers.push_back(player->id);
+                    }
+                }
+
+                // Run player removed hooks (must be before players removed from list)
+                for (auto playerId : removedPlayers)
+                {
+                    ProcessPlayerLeftPluginHooks(playerId);
+                }
+
+                // Run player joined hooks (must be after players added to list)
+                for (auto playerId : newPlayers)
+                {
+                    ProcessPlayerJoinedPluginHooks(playerId);
+                }
+
+                // Now actually remove removed players from player list
+                player_list.erase(
+                    std::remove_if(
+                        player_list.begin(), player_list.end(),
+                        [&removedPlayers](const std::unique_ptr<Player>& player) {
+                            return std::find(removedPlayers.begin(), removedPlayers.end(), player->id) != removedPlayers.end();
+                        }),
+                    player_list.end());
+
+                _pendingPlayerLists.erase(itPending);
+                itPending = _pendingPlayerLists.begin();
             }
         }
     }
@@ -2633,7 +2625,7 @@ namespace OpenRCT2::Network
 
             std::string objectName;
             const ObjectRepositoryItem* item{};
-            if (generation == static_cast<uint8_t>(ObjectGeneration::dat))
+            if (generation == static_cast<uint8_t>(ObjectGeneration::DAT))
             {
                 const auto* entry = reinterpret_cast<const RCTObjectEntry*>(packet.read(sizeof(RCTObjectEntry)));
                 if (entry == nullptr)
@@ -2832,7 +2824,7 @@ namespace OpenRCT2::Network
         auto ms = MemoryStream(packet.data.data(), packet.data.size());
         if (LoadMap(&ms))
         {
-            GameLoadInit(); // NB: calls `setActiveScene`
+            GameLoadInit();
             GameLoadScripts();
             GameNotifyMapChanged();
 
@@ -2881,7 +2873,7 @@ namespace OpenRCT2::Network
             auto& gameState = getGameState();
             importer->Import(gameState);
 
-            EntityTweener::get().reset();
+            EntityTweener::Get().Reset();
             MapAnimations::MarkAllTiles();
 
             gLastAutoSaveUpdate = kAutosavePause;
@@ -3039,12 +3031,12 @@ namespace OpenRCT2::Network
         packet >> tick >> actionType;
 
         // Don't let clients send pause or quit
-        if (actionType == GameCommand::togglePause || actionType == GameCommand::loadOrQuit)
+        if (actionType == GameCommand::TogglePause || actionType == GameCommand::LoadOrQuit)
         {
             return;
         }
 
-        if (actionType != GameCommand::custom)
+        if (actionType != GameCommand::Custom)
         {
             // Check if player's group permission allows command to run
             NetworkGroup* group = GetGroupByID(connection.player->group);
@@ -3087,8 +3079,8 @@ namespace OpenRCT2::Network
 
         DataSerialiser stream(false);
         const size_t size = packet.header.size - packet.bytesRead;
-        stream.getStream().WriteArray(packet.read(size), size);
-        stream.getStream().SetPosition(0);
+        stream.GetStream().WriteArray(packet.read(size), size);
+        stream.GetStream().SetPosition(0);
 
         ga->Serialise(stream);
         // Set player to sender, should be 0 if sent from client.

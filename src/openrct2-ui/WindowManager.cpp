@@ -13,6 +13,7 @@
 #include "interface/Theme.h"
 #include "interface/Window.h"
 #include "ride/VehicleSounds.h"
+#include "windows/Windows.h"
 
 #include <openrct2-ui/ProvisionalElements.h>
 #include <openrct2-ui/UiContext.h>
@@ -22,15 +23,18 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
+#include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
-#include <openrct2/drawing/NewDrawing.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
+#include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
@@ -64,8 +68,8 @@ public:
         {
             case WindowClass::about:
                 return AboutOpen();
-            case WindowClass::gameStatusBar:
-                return gameStatusBarOpen();
+            case WindowClass::bottomToolbar:
+                return GameBottomToolbarOpen();
             case WindowClass::changelog:
                 return openView(WindowView::changelog);
             case WindowClass::cheats:
@@ -74,8 +78,6 @@ public:
                 return ClearSceneryOpen();
             case WindowClass::customCurrencyConfig:
                 return CustomCurrencyOpen();
-            case WindowClass::dateInfoPanel:
-                return dateInfoPanelOpen();
             case WindowClass::debugPaint:
                 return DebugPaintOpen();
             case WindowClass::editorInventionList:
@@ -106,8 +108,6 @@ public:
                 return NewRideOpen();
             case WindowClass::parkInformation:
                 return ParkEntranceOpen();
-            case WindowClass::parkInfoPanel:
-                return parkInfoPanelOpen();
             case WindowClass::recentNews:
                 return NewsOpen();
             case WindowClass::rideConstruction:
@@ -162,10 +162,6 @@ public:
                 return AssetPacksOpen();
             case WindowClass::editorParkEntrance:
                 return EditorParkEntranceOpen();
-            case WindowClass::editorStepController:
-                return editorStepControllerOpen();
-            case WindowClass::editorStatusLine:
-                return editorStatusLineOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -196,6 +192,8 @@ public:
                 return MazeConstructionOpen();
             case WindowView::networkPassword:
                 return NetworkStatusOpenPassword();
+            case WindowView::editorBottomToolbar:
+                return EditorBottomToolbarOpen();
             case WindowView::changelog:
                 return ChangelogOpen(WindowView::changelog);
             case WindowView::newVersionInfo:
@@ -470,8 +468,8 @@ public:
                 WindowSceneryResetSelectedSceneryItems();
                 break;
 
-            case INTENT_ACTION_UPDATE_NEWS_TICKER:
-                newsTickerInvalidateNewsItem();
+            case INTENT_ACTION_INVALIDATE_TICKER_NEWS:
+                WindowGameBottomToolbarInvalidateNewsItem();
                 break;
 
             case INTENT_ACTION_REFRESH_GUEST_LIST:
@@ -506,29 +504,29 @@ public:
             }
 
             case INTENT_ACTION_UPDATE_CLIMATE:
-                InvalidateByClass(WindowClass::dateInfoPanel);
+                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
                 InvalidateByClass(WindowClass::guestList);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
+                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
                 InvalidateByClass(WindowClass::guestList);
                 InvalidateByClass(WindowClass::parkInformation);
-                InvalidateByClass(WindowClass::parkInfoPanel);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
+                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
                 InvalidateByClass(WindowClass::parkInformation);
-                InvalidateByClass(WindowClass::parkInfoPanel);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
-                InvalidateByClass(WindowClass::dateInfoPanel);
+                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
                 InvalidateByClass(WindowClass::finances);
-                InvalidateByClass(WindowClass::parkInfoPanel);
+                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
                 break;
 
             case INTENT_ACTION_UPDATE_BANNER:
@@ -578,9 +576,6 @@ public:
                 break;
             case INTENT_ACTION_REMOVE_PROVISIONAL_TRACK_PIECE:
                 RideRemoveProvisionalTrackPiece();
-                break;
-            case INTENT_ACTION_REFRESH_PLAYER_LIST:
-                MultiplayerRefreshList();
                 break;
             default:
                 break;
@@ -1055,7 +1050,7 @@ public:
 
         if (gLegacyScene == LegacyScene::scenarioEditor)
         {
-            if (getGameState().editorStep != Editor::Step::landscapeEditor)
+            if (getGameState().editorStep != EditorStep::landscapeEditor)
                 return;
         }
 
@@ -1211,14 +1206,13 @@ public:
         {
             const auto& widget = w.widgets[i];
 
-            // Group boxes may overlay previous widgets when shared. Given their appearance, we consider them empty overlays.
-            if (widget.type == WidgetType::empty || widget.type == WidgetType::groupbox || !widget.isVisible())
-                continue;
-
-            if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
-                && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
+            if (widget.type != WidgetType::empty && widget.isVisible())
             {
-                widget_index = i;
+                if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
+                    && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
+                {
+                    widget_index = i;
+                }
             }
         }
 

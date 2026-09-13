@@ -31,7 +31,7 @@ namespace OpenRCT2::GameActions
         count
     };
 
-    class NetworkModifyGroupAction final : public GameActionBase<GameCommand::modifyGroups>
+    class NetworkModifyGroupAction final : public GameActionBase<GameCommand::ModifyGroups>
     {
     private:
         ModifyGroupType _type{ ModifyGroupType::count };

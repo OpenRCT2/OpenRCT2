@@ -9,6 +9,8 @@
 
 #include "PeepNamesObject.h"
 
+#include "../Context.h"
+#include "../PlatformEnvironment.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 

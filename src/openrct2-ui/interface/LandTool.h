@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/object/ObjectTypes.h>
 
 constexpr uint16_t kLandToolMinimumSize = 1;
@@ -19,12 +20,6 @@ constexpr uint16_t kLandToolMaximumSizeWithSprite = 7;
 extern uint16_t gLandToolSize;
 extern OpenRCT2::ObjectEntryIndex gLandToolTerrainSurface;
 extern OpenRCT2::ObjectEntryIndex gLandToolTerrainEdge;
-
-namespace OpenRCT2
-{
-    struct WindowBase;
-    struct Widget;
-} // namespace OpenRCT2
 
 namespace OpenRCT2::LandTool
 {

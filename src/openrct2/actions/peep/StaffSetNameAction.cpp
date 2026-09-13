@@ -9,14 +9,17 @@
 
 #include "StaffSetNameAction.h"
 
+#include "../../Cheats.h"
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../core/MemoryStream.h"
+#include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Staff.h"
 #include "../../localisation/StringIds.h"
 #include "../../windows/Intent.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -52,7 +55,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteIndex);
+        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
@@ -64,25 +67,25 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetNameAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteIndex);
+        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
             return Result(Status::invalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_ERR_STAFF_NOT_FOUND);
         }
 
-        auto curName = staff->getName();
+        auto curName = staff->GetName();
         if (curName == _name)
         {
             return Result();
         }
 
-        if (!staff->setName(_name))
+        if (!staff->SetName(_name))
         {
             return Result(Status::unknown, STR_CANT_NAME_GUEST, kStringIdNone);
         }
 
-        Drawing::GfxInvalidateScreen();
+        GfxInvalidateScreen();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
         ContextBroadcastIntent(&intent);

@@ -12,6 +12,8 @@
 #include "StreamBuffer.hpp"
 #include "String.hpp"
 
+#include <vector>
+
 namespace OpenRCT2
 {
     constexpr size_t kIStreamCopyBufferLength = 16 * 1024;

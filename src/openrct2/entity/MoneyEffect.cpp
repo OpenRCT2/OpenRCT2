@@ -14,9 +14,9 @@
 #include "../OpenRCT2.h"
 #include "../core/DataSerialiser.h"
 #include "../drawing/Drawing.String.h"
-#include "../drawing/Font.h"
+#include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
-#include "../interface/WindowTypes.h"
+#include "../interface/Window.h"
 #include "../localisation/Formatting.h"
 #include "../network/Network.h"
 #include "../world/Map.h"
@@ -41,28 +41,28 @@ namespace OpenRCT2
      *
      *  rct2: 0x0067351F
      */
-    void MoneyEffect::createAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase)
+    void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase)
     {
         if (value == 0.00_GBP)
             return;
 
-        MoneyEffect* moneyEffect = getGameState().entities.createEntity<MoneyEffect>();
+        MoneyEffect* moneyEffect = getGameState().entities.CreateEntity<MoneyEffect>();
         if (moneyEffect == nullptr)
             return;
 
         moneyEffect->guestPurchase = (guestPurchase ? 1 : 0);
         moneyEffect->moveTo(effectPos);
-        moneyEffect->setValue(value);
+        moneyEffect->SetValue(value);
     }
 
     /**
      *
      *  rct2: 0x0069C5D0
      */
-    void MoneyEffect::create(money64 value, const CoordsXYZ& loc)
+    void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
     {
         auto offsetLoc = loc;
-        if (loc.isNull())
+        if (loc.IsNull())
         {
             // If game actions return no valid location of the action we can not use the screen
             // coordinates as every client will have different ones.
@@ -85,13 +85,13 @@ namespace OpenRCT2
             offsetLoc = { mapPositionXY.value(), TileElementHeight(*mapPositionXY) };
         }
         offsetLoc.z += 10;
-        createAt(-value, offsetLoc, false);
+        CreateAt(-value, offsetLoc, false);
     }
 
     /**
      * Set the value of the money effect
      */
-    void MoneyEffect::setValue(money64 newValue)
+    void MoneyEffect::SetValue(money64 newValue)
     {
         value = newValue;
         spriteData.width = 64;
@@ -103,7 +103,7 @@ namespace OpenRCT2
         int16_t newOffsetX = 0;
         if (!gOpenRCT2NoGraphics)
         {
-            auto [stringId, pairValue] = getStringId();
+            auto [stringId, pairValue] = GetStringId();
             char buffer[128];
             FormatStringLegacy(buffer, 128, stringId, &pairValue);
             newOffsetX = -(Drawing::getStringWidth(buffer, FontStyle::medium) / 2);
@@ -116,7 +116,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x00673232
      */
-    void MoneyEffect::update()
+    void MoneyEffect::Update()
     {
         wiggle++;
         if (wiggle >= 22)
@@ -150,10 +150,10 @@ namespace OpenRCT2
             return;
         }
 
-        getGameState().entities.entityRemove(this);
+        getGameState().entities.EntityRemove(this);
     }
 
-    std::pair<StringId, money64> MoneyEffect::getStringId() const
+    std::pair<StringId, money64> MoneyEffect::GetStringId() const
     {
         StringId spentStringId = guestPurchase ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
         StringId receiveStringId = guestPurchase ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;

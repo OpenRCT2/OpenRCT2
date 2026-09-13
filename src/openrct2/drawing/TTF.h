@@ -15,6 +15,7 @@
 
 bool TTFInitialise();
 void TTFDispose();
+struct TTFSurface;
 
 #ifndef DISABLE_TTF
 

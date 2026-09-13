@@ -114,7 +114,7 @@ STR_0530    :Pojazdy są podwieszone na stalowej linie i poruszają się nieprze
 STR_0531    :Zwarta przestrzennie kolejka ze stalowymi torami, w której wagoniki pokonują korkociągi i pętle
 STR_0532    :Goście wędrują po labiryncie zbudowanym z dwumetrowych żywopłotów lub ścian
 STR_0533    :Drewniany budynek ze schodami w środku oraz zjeżdżalnią na zewnątrz do zjeżdżania na matach
-STR_0534    :Gokarty zasilane benzyną, sterowane indywidualnie przez gości
+STR_0534    :Go karty zasilane benzyną, sterowane indywidualnie przez gości
 STR_0535    :Łódki w kształcie pni płyną wodnym kanałem, spadając z pluskiem ze stromych spadków, aby zamoczyć pasażerów
 STR_0536    :Okrągłe łódki pokonujące szeroki kanał wodny, spadające z wodospadów i przepływające przez spienione bystrzyny
 STR_0537    :Elektryczne samochodziki do zderzania, sterowane indywidualnie przez gości
@@ -129,16 +129,16 @@ STR_0548    :Budynek toalety
 STR_0549    :Obracające się wielkie koło z krzesełkami
 STR_0550    :Pasażerowie oglądają film, siedząc w specjalnej kabinie, poruszanej i wstrząsanej przez siłowniki hydrauliczne
 STR_0551    :Kino 3D z projekcją filmów wewnątrz sferycznego budynku
-STR_0552    :Pasażerowie jeżdżą w gondoli podczepionej pod wielkie obrotowe ramię, kręcąc się do przodu i w tył
+STR_0552    :Pasażerowi jeżdżą w gondoli podczepionej pod wielkie obrotowe ramię, kręcąc się do przodu i w tył
 STR_0553    :Obrotowe okręgi pozwalające gościom na swobodne kręcenie się we wszystkie możliwe kierunki
-STR_0554    :Wagonik jest wystrzeliwany ze stacji za pomocą silnika liniowego i wjeżdża po pionowym torze, po czym wykonuje pionowy zjazd w dół, z powrotem do stacji
-STR_0555    :Pasażerowie jeżdżą w górę lub w dół windą w wieży, aby przejść z jednego poziomu na drugi
-STR_0556    :Bardzo szerokie wagoniki zjeżdżają po całkowicie pionowym torze, zapewniając pasażerom jedyne w swoim rodzaju wrażenie swobodnego spadania
+STR_0554    :Wagonik jest wystrzeliwany ze stacji za pomocą silnika liniowego i wjeżdza po pionowym torze, po czym wykonuje pionowy zjazd w dół, z powrotem do stacji
+STR_0555    :Pasażerowie jeżdzą w górę lub w dół windą w wieży, aby przejść z jednego poziomu na drugi
+STR_0556    :Bardzo szerokie wagoniki zjeżdzają po całkowicie pionowym torze, zapewniając pasażerom jedyne w swoim rodzaju wrażenie swobodnego spadania
 STR_0557    :Bankomat dla gości którym zabrakło gotówki
 STR_0558    :Pasażerowie jeżdżą parami w siedzeniach znajdujących się na końcach trzech obracających się ramion
 STR_0559    :Wielki stylizowany budynek zawierający straszne korytarze i upiorne pokoje
 STR_0560    :Miejsce dla chorych gości, gdzie mogą szybciej dojść do siebie
-STR_0561    :Pokaz zwierząt cyrkowych wewnątrz wielkiego namiotu
+STR_0561    :Pokaz zwierzą cyrkowych wewnątrz wielkiego namiotu
 STR_0562    :Napędzane wagoniki jadą po wielopoziomowym torze wśród przerażających dekoracji i efektów specjalnych
 STR_0563    :Pasażerowie jadą w wygodnych wagonikach z zabezpieczeniami obejmującymi w pasie, pokonując wielkie gładkie zjazdy i skomplikowane zakręty, a także liczne „wzloty” nad wzniesieniami
 STR_0564    :Szybka, ostra i hałaśliwa kolejka jadąca po drewnianym torze, zapewniająca pasażerom niezapomniane wrażenia i dużo swobodnego spadku
@@ -147,22 +147,22 @@ STR_0566    :Pojedyncze wagoniki mkną po torze z ostrymi zakrętami i gwałtown
 STR_0567    :Pasażerowie jadą w siedzeniach zawieszonych po obu stronach toru, a podczas pokonywania stromych zjazdów i ostrych nawrotów są obracani do góry nogami
 STR_0569    :Pasażerowie zasiadają w wygodnych fotelach zawieszonych pod torem i jadą zawiłą trasą, czując się, jakby potrafili latać
 STR_0571    :Okrągłe wagoniki wirują, jadąc po zygzakowatym, drewnianym torze
-STR_0572    :Pojemne łodzie płynące szerokim kanałem, wciągane po nachyleniu przez pasy napędowe, zjeżdżające ze wzniesień i w wielkim plusku moczące pasażerów
+STR_0572    :Pojemne łodzie płynące szerokim kanałem, wciągane po nachyleniu przez pasy napędowe, zjeżdzające ze wzniesień i w wielkim plusku moczące pasażerów
 STR_0573    :Zasilane pojazdy w kształcie helikopterów jadące po stalowym torze, sterowane przez pedałujących pasażerów
 STR_0574    :Pasażerowie trzymani są przez specjalne uprzęże w pozycji leżącej, podróżując przez zakręcony tor albo na plecach, albo twarzą ku ziemi
 STR_0575    :Zasilane pociągi zawieszone na pojedynczej szynie służą jako środek transportu ludzi w parku
-STR_0577    :Wózki kopalniane jeżdżące po drewnianych torach, zawracające na specjalnych obrotowych sekcjach
+STR_0577    :Wózki kopalniane jeżdzące po drewnianych torach, zawracające na specjalnych obrotowych sekcjach
 STR_0578    :Wagoniki jadą po torze otoczonym okrągłymi obręczami, pokonując strome zjazdy i zabójcze obroty
 STR_0579    :Spokojna gra w miniaturowego golfa
 STR_0580    :Wielka stalowa kolejka górska jeżdżąca po łagodnych spadkach i wzniesieniach o wysokości ponad 100 metrów
 STR_0581    :Pierścień z zamocowanymi fotelami jest wciągany na szczyt wysokiej wieży, obracając się powoli, po czym spada swobodnie, wyhamowując delikatnie u dołu przy użyciu hamulców magnetycznych
 STR_0582    :Poduszkowce sterowane przez pasażerów
-STR_0583    :Budynek zawierający krzywe ściany i korytarze, wywołujący uczucie zaburzenia błędnika
+STR_0583    :Budynek zawierający krzywe ściany i korytarze, aby wywoływać uczucie zaburzenia błędnika
 STR_0584    :Specjalne rowery na stalowej pojedynczej szynie, napędzane siłą mięśni gości
 STR_0585    :Pasażerowie podróżują parami w fotelach podwieszonych pod torem, pokonując pętle i ostre zakręty
 STR_0586    :Wagoniki w kształcie łodzi jadą po torze z ostrymi zakrętami i stromymi zjazdami, a także pokonują odcinki spokojnie płynącej rzeki
-STR_0587    :Po ekscytującym starcie z wyrzutni pneumatycznej, wagoniki wjeżdżają po pionowym torze, po czym wykonują pionowy zjazd w dół, z powrotem do stacji
-STR_0588    :Pojedyncze wagoniki jeżdżą podwieszone pod torem z ostrymi zakrętami i gwałtownymi spadkami
+STR_0587    :Po ekscytującym starcie z wyrzutni pneumatycznej, wagoniki wjeżdzają po pionowym torze, po czym wykonują pionowy zjazd w dół, z powrotem do stacji
+STR_0588    :Pojedyncze wagoniki jeżdzą podwieszone pod torem z ostrymi zakrętami i gwałtownymi spadkami
 STR_0589    :Wielkie pojazdy stylizowane na latające dywany, które poruszają się cyklicznie w górę i w dół na końcach 4 ramion
 STR_0590    :Pasażerowie usadowieni w łodzi podwodnej podróżują podwodnym torem
 STR_0591    :Tratwy manewrujące zręcznie po wodnym torze
@@ -230,6 +230,7 @@ STR_0820    :Lis
 STR_0821    :Gru
 STR_0822    :Nie można otworzyć pliku danych grafiki
 STR_0823    :Plik danych grafiki nie istnieje lub jest niedostępny
+STR_0824    :{BLACK}❌
 STR_0825    :Wybrana nazwa jest już w użyciu
 STR_0826    :Zdefiniowano za dużo nazw
 STR_0827    :Za mało pieniędzy - potrzeba {CURRENCY2DP}
@@ -269,7 +270,7 @@ STR_0892    :Zrzut ekranu zapisany jako „{STRINGID}”
 STR_0893    :Zrzut ekranu nieudany!
 STR_0894    :Obszar danych krajobrazu jest pełny!
 STR_0895    :Nie można wybudować częściowo nad i pod ziemią
-STR_0896    :{STRING} Budowanie
+STR_0896    :{STRINGID} Budowanie
 STR_0897    :Kierunek
 STR_0898    :Zakręt w lewo
 STR_0899    :Zakręt w prawo
@@ -388,7 +389,7 @@ STR_1012    :Otwórz wszystkie
 STR_1013    :Zamknij park
 STR_1014    :Otwórz park
 STR_1015    :Nie można używać tego trybu przy więcej niż jednej stacji
-STR_1016    :Nie można używać tego trybu przy mniej niż dwóch stacjach
+STR_1016    :Nie można używać tego trybu przy mniej niz dwóch stacjach
 STR_1017    :Nie można zmienić trybu…
 STR_1018    :Zmiana niemożliwa…
 STR_1019    :Zmiana niemożliwa…
@@ -574,10 +575,10 @@ STR_1203    :{COMMA16} - liczba osób w kolejce
 STR_1204    :{COMMA16} min. w kolejce
 STR_1205    :{COMMA16} min. w kolejce
 STR_1206    :{WINDOW_COLOUR_2}Czekaj na:
-STR_1207    :{WINDOW_COLOUR_2}Wyrusz, gdy inna kolejka trafi na tę samą stację
-STR_1208    :{WINDOW_COLOUR_2}Wyrusz, gdy inna łódka trafi na tę samą stację
+STR_1207    :{WINDOW_COLOUR_2}Wyrusz, gdy inna kolejka trafi na tą samą stację
+STR_1208    :{WINDOW_COLOUR_2}Wyrusz, gdy inna łódka trafi na tą samą stację
 STR_1209    :Ustal, czy pojazdy powinny czekać na pasażerów przed wyruszeniem ze stacji
-STR_1210    :Ustal, czy pojazdy powinny wyruszać ze stacji, gdy tylko inny pojazd dotrze do tej samej stacji
+STR_1210    :Ustal, czy pojazdy powinny wyruszać ze stacji gdy tylko inny pojazd dotrze do tej samej stacji
 STR_1211    :{WINDOW_COLOUR_2}Min. czas oczekiwania:
 STR_1212    :{WINDOW_COLOUR_2}Maks. czas oczekiwania:
 STR_1213    :Wybierz minimalny czas oczekiwania na stacji przed wyruszeniem
@@ -732,7 +733,7 @@ STR_1362    :Nie można zmienić prędkości startowej…
 STR_1363    :Za wysoko na wsporniki!
 STR_1364    :Wsporniki nie mogą być już bardziej wydłużone!
 STR_1365    :Beczka (lewa)
-STR_1366    :Beczka (prawa)
+STR_1366    :Beczka (Prawa)
 STR_1367    :Mała półpętla
 STR_1368    :Korkociąg (lewy)
 STR_1369    :Korkociąg (prawy)
@@ -779,7 +780,7 @@ STR_1409    :Platforma wejścia/wyjścia
 STR_1410    :Wieża pionowa
 STR_1411    :{STRINGID} blokuje
 STR_1412    :{WINDOW_COLOUR_3}Zbieranie danych nie jest dostępne dla tego typu atrakcji
-STR_1413    :{WINDOW_COLOUR_3}Zbieranie danych rozpocznie się, gdy następne {STRINGID} opuści {STRINGID}
+STR_1413    :{WINDOW_COLOUR_3}Zbieranie danych rozpocznie się gdy następne {STRINGID} opuści {STRINGID}
 STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Prędkość
 STR_1416    :{WINDOW_COLOUR_2}Wysokość
@@ -829,10 +830,10 @@ STR_1460    :Otwarta trasa typu „U”
 STR_1461    :Zamknięta trasa typu „O”
 STR_1462    :Zbyt stromy podjazd na wyciągarkę
 STR_1463    :Goście
-STR_1464    :Półspirala w górę (mała)
-STR_1465    :Półspirala w górę (duża)
-STR_1466    :Półspirala w dół (mała)
-STR_1467    :Półspirala w dół (duża)
+STR_1464    :Spirala w górę (mała)
+STR_1465    :Spirala w górę (duża)
+STR_1466    :Spirala w dół (mała)
+STR_1467    :Spirala w dół (duża)
 STR_1468    :Personel
 STR_1469    :Atrakcja musi się zaczynać i kończyć stacją
 STR_1470    :Stacja jest za krótka
@@ -916,7 +917,7 @@ STR_1547    :
 STR_1548    :
 STR_1549    :
 STR_1550    :„Świetnie!”
-STR_1551    :„Mam dziwne uczucie, jakby mnie ktoś podglądał”
+STR_1551    :„Mam dziwne uczucie jakby mnie ktoś podglądał”
 STR_1552    :„Nie zapłacę tyle za balona z {STRINGID}”
 STR_1553    :„Nie zapłacę tyle za przytulankę z {STRINGID}”
 STR_1554    :„Nie zapłacę tyle za mapę parku z {STRINGID}”
@@ -959,7 +960,7 @@ STR_1590    :„Te faworki z {STRINGID} naprawdę się opłacają”
 STR_1591    :„Te okulary przeciwsłoneczne z {STRINGID} naprawdę się opłacają”
 STR_1592    :„Ten makaron z wołowiną z {STRINGID} naprawdę się opłaca”
 STR_1593    :„Ten smażony makaron z {STRINGID} naprawdę się opłaca”
-STR_1594    :„Ta zupa wonton z {STRINGID} naprawdę się opłaca”
+STR_1594    :„Ta zupa wonton z {STRINGID}naprawdę się opłaca”
 STR_1595    :„Ta zupa z klopsikami z {STRINGID} naprawdę się opłaca”
 STR_1596    :„Ten sok owocowy z {STRINGID} naprawdę się opłaca”
 STR_1597    :„To mleko sojowe z {STRINGID} naprawdę się opłaca”
@@ -1001,7 +1002,7 @@ STR_1632    :„Nie zapłacę tyle za ciasteczko z {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :„Nie zapłacę tyle za pieczoną kiełbaskę z {STRINGID}”
+STR_1636    :„Nie zapłacę tyle za pieczoną kiełbaskę z {RINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1041,10 +1042,10 @@ STR_1674    :Prędkość hamowania
 STR_1676    :Ustaw limit prędkości hamowania
 STR_1677    :{WINDOW_COLOUR_2}Popularność: {BLACK}Nieznana
 STR_1678    :{WINDOW_COLOUR_2}Popularność: {BLACK}{COMMA16}%
-STR_1679    :Ćwierćspirala w górę (lewo)
-STR_1680    :Ćwierćspirala w górę (prawo)
-STR_1681    :Ćwierćspirala w dół (lewo)
-STR_1682    :Ćwierćspirala w dół (prawo)
+STR_1679    :Spirala w górę (lewo)
+STR_1680    :Spirala w górę (prawo)
+STR_1681    :Spirala w dół (lewo)
+STR_1682    :Spirala w dół (prawo)
 STR_1683    :Wymiary bazowe 2 × 2
 STR_1684    :Wymiary bazowe 4 × 4
 STR_1685    :Wymiary bazowe 2 × 4
@@ -1347,7 +1348,7 @@ STR_2015    :pustej butelki
 STR_2016    :balony
 STR_2017    :przytulanki
 STR_2018    :plany parku
-STR_2019    :zdjęcia z przejażdżek
+STR_2019    :zdjęcia z przejażdzek
 STR_2020    :parasole
 STR_2021    :napoje
 STR_2022    :hamburgery
@@ -1488,7 +1489,7 @@ STR_2165    :puste miski
 STR_2169    :precla
 STR_2170    :gorącą czekoladę
 STR_2171    :herbatę
-STR_2172    :makaronik
+STR_2172    :marakonik
 STR_2173    :okulary
 STR_2174    :makaron z wołowiną
 STR_2175    :smażony makaron ryżowy
@@ -1541,7 +1542,7 @@ STR_2224    :{WINDOW_COLOUR_2}Gotówka: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Gotówka: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Wartość parku: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}Wartość spółki: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}Zeszłomiesięczny przychód ze sprzedaży jedzenia/napojów {NEWLINE} i towarów wyniósł: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}Zeszło miesięczny przychód ze sprzedaży jedzenia/napojów {NEWLINE} i towarów wyniósł: {BLACK}{CURRENCY}
 STR_2229    :Zmień nachylenie na pionowe
 STR_2230    :Pionowa trasa
 STR_2231    :Hamowanie podczas opadania
@@ -1615,7 +1616,7 @@ STR_2299    :{BLACK}Wydał {CURRENCY2DP}{WINDOW_COLOUR_2} na {BLACK}{COMMA16} po
 STR_2300    :{BLACK}Wydał {CURRENCY2DP}{WINDOW_COLOUR_2} na {BLACK}{COMMA16} posiłki
 STR_2301    :{BLACK}Wydał {CURRENCY2DP}{WINDOW_COLOUR_2} na {BLACK}{COMMA16} napój
 STR_2302    :{BLACK}Wydał {CURRENCY2DP}{WINDOW_COLOUR_2} na {BLACK}{COMMA16} napoje
-STR_2303    :{BLACK}Wydał {CURRENCY2DP}{WINDOW_COLOUR_2} na {BLACK}{COMMA16} pamiątkę
+STR_2303    :{BLACK}Wydał {CURRENCY2DP}{WINDOW_COLOUR_2} na {BLACK}{COMMA16} pamiatkę
 STR_2304    :{BLACK}Wydał {CURRENCY2DP}{WINDOW_COLOUR_2} na {BLACK}{COMMA16} pamiątki
 STR_2305    :Plik z projektami tras
 STR_2306    :Zapisz projekt trasy
@@ -1665,7 +1666,7 @@ STR_2354    :{WINDOW_COLOUR_2}Opróżnione kosze: {BLACK}{COMMA32}
 STR_2355    :{WINDOW_COLOUR_2}Naprawione atrakcje: {BLACK}{COMMA32}
 STR_2356    :{WINDOW_COLOUR_2}Skontrolowane atrakcje: {BLACK}{COMMA32}
 STR_2358    :Jednostki
-STR_2359    :Rzeczywiste wartości
+STR_2359    :Prawdziwe wartości
 STR_2360    :Rozdzielczość:
 STR_2361    :Wygładzanie terenu
 STR_2362    :Włącza wyświetlanie krawędzi elementów terenu
@@ -1799,7 +1800,7 @@ STR_2502    :Usuń grunt podstawowy
 STR_2503    :Usuń grunt pionowy
 STR_2504    :Przezroczyste atrakcje
 STR_2505    :Przezroczysta sceneria
-STR_2506    :Niewidzialne wsporniki
+STR_2506    :Niewidzialne sporniki
 STR_2507    :Niewidzialni goście
 STR_2508    :Znaczniki wysokości na gruncie
 STR_2509    :Znaczniki wysokości na torach
@@ -1955,9 +1956,9 @@ STR_2802    :Plan parku
 STR_2803    :Podświetl tych gości na mapie
 STR_2804    :Podświetl tych pracowników na mapie
 STR_2805    :Pokaż plan parku
-STR_2806    :{RED}Goście skarżą się na fatalny stan ścieżek w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi dozorcy i rozważ lepszą organizację ich pracy
+STR_2806    :{RED}Goście skarżą się na fatalny stan ścieżek w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi dozorcy i rozważ lepszą organizacje ich pracy
 STR_2807    :{RED}Goście skarżą się na śmieci leżące na ziemi w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi dozorcy i rozważ lepszą organizację ich pracy
-STR_2808    :{RED}Goście skarżą się na wandalizm w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi strażnicy i rozważ poprawę organizacji ich pracy
+STR_2808    :{RED}Goście skarzą się na wandalizm w twoim parku{NEWLINE}Sprawdź gdzie znajdują się twoi strażnicy i rozważ poprawę organizacji ich pracy
 STR_2809    :{RED}Goście są głodni i nie mogą znaleźć miejsca gdzie mogliby kupić coś do jedzenia
 STR_2810    :{RED}Goście są spragnieni i nie mogą znaleźć miejsca gdzie mogliby kupić jakieś napoje
 STR_2811    :{RED}Goście się skarżą, że w twoim parku bardzo ciężko jest znaleźć toaletę
@@ -2305,7 +2306,7 @@ STR_3357    :{WINDOW_COLOUR_2}Jesteś pewien, że chcesz usunąć {STRING} ?
 STR_3358    :Nie można usunąć projektu trasy…
 STR_3359    :{BLACK}Brak projektów trasy tego typu
 STR_3360    :Ostrzeżenie!
-STR_3361    :Za dużo projektów tras tego typu - część nie będzie wyświetlona.
+STR_3361    :Za dużo projektów tras tego typu - Część nie będzie wyświetlona.
 STR_3364    :Zaawansowane
 STR_3365    :Zezwól na wybór indywidualnych elementów scenerii jako dodatek do grup
 STR_3366    :{BLACK}= Atrakcja
@@ -2674,7 +2675,7 @@ STR_5573    :Usuń z ulubionych
 STR_5574    :Nazwa:
 STR_5575    :Limit graczy:
 STR_5576    :Port:
-STR_5577    :Won południowokoreański (₩)
+STR_5577    :Won południowokoreański (W)
 STR_5578    :Rosyjski rubel (₽)
 STR_5579    :Współczynnik skali okna:
 STR_5580    :Korona czeska (Kč)
@@ -2865,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Liczba atrakcji: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Liczba sklepów i kiosków: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Liczba kiosków informacyjnych i innych obiektów: {BLACK}{COMMA16}
 STR_5810    :Wyłącz limit pojazdów
-STR_5811    :Umożliwia ustawienie do 255 wagoników na pociąg i 255 pociągów na atrakcję
+STR_5811    :Umożliwia ustawienie do 255 wagoników na pociąg i 31 pociągów na atrakcję
 STR_5812    :Pokaż okienko gry sieciowej
 STR_5813    :„{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}”
@@ -3076,7 +3077,7 @@ STR_6026    :Konstrukcja - Poprzedni element
 STR_6027    :Konstrukcja - Następny element
 STR_6028    :Konstrukcja - Wybuduj bieżący
 STR_6029    :Konstrukcja - Usuń bieżący
-STR_6030    :Przechwytywacz scenerii. Wybierz dowolny element scenerii na mapie, aby wybrać taki sam do konstrukcji.
+STR_6030    :Przechwytywacz scenerii. Wybierz dowolny element scenerii na mapie aby wybrać taki sam do konstrukcji.
 STR_6031    :Opis serwera:
 STR_6032    :Wiadomość powitalna:
 STR_6033    :Ścieżka do katalogu RCT1:
@@ -3120,7 +3121,7 @@ STR_6071    :{STRING} stworzył nową grupę graczy „{STRING}”.
 STR_6072    :{STRING} usunął grupę graczy „{STRING}”.
 STR_6073    :{STRING} zmienił uprawnienia dla grupy graczy „{STRING}”.
 STR_6074    :{STRING} zmienił nazwę grupy graczy z „{STRING}” na „{STRING}”.
-STR_6075    :{STRING} zmienił domyślną grupę graczy na „{STRING}”.
+STR_6075    :{STRING} zmienił domyślna grupę graczy na „{STRING}”.
 STR_6076    :{STRING} pokaż/schowaj kody „{STRING}”.
 STR_6077    :Dodaj pieniądze
 STR_6078    :{STRING} stworzył atrakcję „{STRING}”.
@@ -3199,6 +3200,7 @@ STR_6160    :{WINDOW_COLOUR_2}Dostępne pojazdy: {BLACK}{STRING}
 STR_6161    :Przełącz widok siatki
 STR_6162    :Wirująca szalona mysz
 STR_6163    :Wagoniki w kształcie myszy pokonujące ostre zakręty i krótkie zjazdy, wirujące łagodnie w celu zdezorientowania pasażerów
+STR_6164    :{WHITE}❌
 STR_6165    :Synchronizacja pionowa
 STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością odświeżania monitora, zapobiegając rozrywaniu ekranu
 STR_6167    :Zaawansowane
@@ -3273,13 +3275,13 @@ STR_6265    :Po włączeniu tej opcji, przeglądarka plików Twojego systemu ope
 STR_6266    :Otwórz folder ze spersonalizowaną zawartością
 STR_6267    :Otwórz inspektor kafelków
 STR_6268    :Tick do przodu
-STR_6269    :Nieprawidłowy identyfikator klimatu
+STR_6269    :Nieprawidłowy indentyfikator klimatu
 STR_6270    :Powierzchnie terenu
 STR_6271    :Krawędzie terenu
 STR_6272    :Stacje
 STR_6273    :Muzyka
 STR_6274    :Nie można ustawić schematu kolorów…
-STR_6275    :Styl stacji
+STR_6275    :{WINDOW_COLOUR_2}Styl stacji:
 STR_6276    :Na {RED}{STRINGID} utykają goście, prawdopodobnie z powodu nieprawidłowego typu atrakcji albo trybu operowania.
 STR_6277    :Numer stacji: {BLACK}{STRINGID}
 STR_6278    :Liczba autozapisów:
@@ -3809,12 +3811,3 @@ STR_7014    :Posiadam grę na platformie Steam, ale jej jeszcze nie zainstalowa�
 STR_7015    :Zamknij aplikację Steam, jeśli jest uruchomiona i kliknij ‘OK’.
 STR_7016    :OpenRCT2 próbował zainicjować pobieranie w aplikacji Steam. Otwórz aplikację Steam i manualnie rozpocznij pobieranie gry. Kiedy Steam zakończy pobieranie, kliknij ‘OK’.
 STR_7017    :Wyjdź
-STR_7023    :Ukryj
-STR_7024    :Sprawia, że cała kolejka staje się niewidoczna
-STR_7025    :Pokaż
-STR_7026    :Sprawia, że cała kolejka staje się widoczna
-STR_7028    :Ćwierćspirala do góry
-STR_7029    :Ćwierćspirala w dół
-STR_7030    :{WINDOW_COLOUR_2}Zadowolonych gości: {BLACK}{COMMA32}
-STR_7031    :Wyłącz wzrost trawy
-STR_7032    :Wyłącza wzrost trawy, aby nie odrastała.

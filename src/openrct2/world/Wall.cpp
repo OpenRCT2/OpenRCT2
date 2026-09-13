@@ -23,7 +23,7 @@ void WallRemoveAt(const CoordsXYRangedZ& wallPos)
 {
     for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr; wallElement = MapGetWallElementAt(wallPos))
     {
-        reinterpret_cast<TileElement*>(wallElement)->removeBannerEntry();
+        reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
         MapInvalidateTileZoom1({ wallPos, wallElement->getBaseZ(), wallElement->getBaseZ() + 72 });
         TileElementRemove(reinterpret_cast<TileElement*>(wallElement));
     }
@@ -49,7 +49,7 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
         return;
     do
     {
-        if (tileElement->getType() != TileElementType::wall)
+        if (tileElement->getType() != TileElementType::Wall)
             continue;
 
         if (tileElement->getClearanceZ() <= wallPos.baseZ || tileElement->getBaseZ() >= wallPos.clearanceZ)
@@ -58,7 +58,7 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
         if (direction != tileElement->getDirection())
             continue;
 
-        tileElement->removeBannerEntry();
+        tileElement->RemoveBannerEntry();
         MapInvalidateTileZoom1({ wallPos, tileElement->getBaseZ(), tileElement->getBaseZ() + 72 });
         TileElementRemove(tileElement);
         tileElement--;
@@ -128,7 +128,7 @@ bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
         return false;
     do
     {
-        if (tileElement->getType() != TileElementType::wall)
+        if (tileElement->getType() != TileElementType::Wall)
             continue;
         if (tileElement->isGhost())
             continue;

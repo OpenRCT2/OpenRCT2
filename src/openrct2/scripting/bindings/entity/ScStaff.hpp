@@ -13,6 +13,8 @@
 
     #include "ScPeep.hpp"
 
+    #include <memory>
+
 namespace OpenRCT2
 {
     enum class PeepAnimationType : uint8_t;

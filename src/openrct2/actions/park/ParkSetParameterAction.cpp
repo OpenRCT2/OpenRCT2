@@ -10,9 +10,11 @@
 #include "ParkSetParameterAction.h"
 
 #include "../../Diagnostic.h"
+#include "../../GameState.h"
 #include "../../core/EnumUtils.hpp"
+#include "../../ride/ShopItem.h"
 #include "../../ui/WindowManager.h"
-#include "../../world/ParkData.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -59,16 +61,16 @@ namespace OpenRCT2::GameActions
         switch (_parameter)
         {
             case ParkParameter::close:
-                if (park.flags.has(ParkFlag::parkOpen))
+                if (park.flags & PARK_FLAGS_PARK_OPEN)
                 {
-                    park.flags.unset(ParkFlag::parkOpen);
+                    park.flags &= ~PARK_FLAGS_PARK_OPEN;
                     windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;
             case ParkParameter::open:
-                if (!park.flags.has(ParkFlag::parkOpen))
+                if (!(park.flags & PARK_FLAGS_PARK_OPEN))
                 {
-                    park.flags.set(ParkFlag::parkOpen);
+                    park.flags |= PARK_FLAGS_PARK_OPEN;
                     windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;

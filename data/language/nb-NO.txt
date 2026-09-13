@@ -224,6 +224,7 @@ STR_0820    :Nov
 STR_0821    :Des
 STR_0822    :Klarer ikke åpne grafikk-datafilen
 STR_0823    :Manglende eller utilgjengelig datafil
+STR_0824    :{BLACK}❌
 STR_0825    :Navnet er allerede i bruk
 STR_0826    :For mange navn definert
 STR_0827    :Ikke nok penger - {CURRENCY2DP} trengs
@@ -263,7 +264,7 @@ STR_0892    :Skjermbilde lagret som ‘{STRINGID}’
 STR_0893    :Skjermbilde mislyktes !
 STR_0894    :Landskapets dataområde er fullt !
 STR_0895    :Kan ikke bygge delvis under bakken
-STR_0896    :{STRING} Konstruksjon
+STR_0896    :{STRINGID} Konstruksjon
 STR_0897    :Retning
 STR_0898    :Venstrekurve
 STR_0899    :Høyrekurve
@@ -2668,7 +2669,7 @@ STR_5573    :Fjern Fra Favoritter
 STR_5574    :Server Name:
 STR_5575    :Maks Spillere:
 STR_5576    :Port:
-STR_5577    :Sør-Koreanske Won (₩)
+STR_5577    :Sør-Koreanske Won (W)
 STR_5578    :Russiske Rubler (₽)
 STR_5579    :Vinduskaleringsfaktor:
 STR_5580    :Tsjekkiske koruna (Kč)
@@ -2859,7 +2860,7 @@ STR_5807    :{WINDOW_COLOUR_2}Antall attraksjoner: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antall butikker og boder: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antall informasjonkiosker og andre fasiliteter: {BLACK}{COMMA16}
 STR_5810    :Skru av vognbegrensninger
-STR_5811    :Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 255{NEWLINE}tog per attraksjon
+STR_5811    :Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 31{NEWLINE}tog per attraksjon
 STR_5812    :Vis flerspillervindu
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -3193,6 +3194,7 @@ STR_6160    :{WINDOW_COLOUR_2}Tilgjengelige kjøretøy: {BLACK}{STRING}
 STR_6161    :Vis/skjul rutemønster i landskap
 STR_6162    :Spinnende ville mus
 STR_6163    :Museformede vogner suser gjennom skarpe svinger og små fall mens de sakte spinner for å desorientere passasjerene
+STR_6164    :{WHITE}❌
 STR_6165    :Bruk Vertical Sync
 STR_6166    :Synkroniserer visning av bilder med skjermens oppdateringsfrekvens; forhindrer “screen tearing”.
 STR_6167    :Avansert
@@ -3273,7 +3275,7 @@ STR_6271    :Terrengkanter
 STR_6272    :Stasjoner
 STR_6273    :Musikk
 STR_6274    :Kan ikke angi fargeplan…
-STR_6275    :Stasjon-stil
+STR_6275    :{WINDOW_COLOUR_2}Stasjon-stil:
 STR_6276    :{RED}Gjester sitter fast i {STRINGID}, mulig grunnet ugyldig attraksjonstype eller driftsmodus.
 STR_6277    :Stasjonsindeks: {BLACK}{STRINGID}
 STR_6278    :Antall autolagringer

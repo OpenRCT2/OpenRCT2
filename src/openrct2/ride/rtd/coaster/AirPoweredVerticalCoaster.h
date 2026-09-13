@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kAirPoweredVerticalCoasterRTD =
+constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = TrackElemType::endStation,
@@ -29,14 +28,14 @@ constexpr RideTypeDescriptor kAirPoweredVerticalCoasterRTD =
     }),
     .InvertedTrackPaintFunctions = {},
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | RtdFlags(RtdFlag::checkGForces),
-    .rideModes = { RideMode::poweredLaunchPassthrough, RideMode::poweredLaunch },
-    .DefaultMode = RideMode::poweredLaunchPassthrough,
+    .RideModes = EnumsToFlags(RideMode::poweredLaunchPasstrough, RideMode::poweredLaunch),
+    .DefaultMode = RideMode::poweredLaunchPasstrough,
     .OperatingSettings = { 30, 50 },
     .TrackSpeedSettings = { 60, 60 },
     .BoosterSettings = { 40, 40, 13 },
     .LegacyBoosterSettings = { 40, 40 },
     .Naming = { STR_RIDE_NAME_AIR_POWERED_VERTICAL_COASTER, STR_RIDE_DESCRIPTION_AIR_POWERED_VERTICAL_COASTER },
-    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction },
     .Heights = { 255, 32, 4, 7, },
     .MaxMass = 255,
@@ -54,25 +53,25 @@ constexpr RideTypeDescriptor kAirPoweredVerticalCoasterRTD =
         { Drawing::Colour::lightOrange, Drawing::Colour::brightRed, Drawing::Colour::brightYellow },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "air_powered_vertical_rc",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(4, 13), RideRating::make(2, 50), RideRating::make(2, 80) },
         28,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           6000,             327, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 60), RideRating::make(0, 05), 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,                509724, 364088, 320398 },
-            { RatingsModifierType::bonusGForces,          0,                24576, 35746, 59578 },
-            { RatingsModifierType::bonusSheltered,        0,                15420, 21845, 11702 },
-            { RatingsModifierType::bonusProximity,        0,                17893, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,                11155, 0, 0 },
-            { RatingsModifierType::requirementDropHeight, 34,               4, 1, 1 },
-            { RatingsModifierType::penaltyLateralGs,      0,                24576, 35746, 59578 },
+            { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 60), RideRating::make(0, 05), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                509724, 364088, 320398 },
+            { RatingsModifierType::BonusGForces,          0,                24576, 35746, 59578 },
+            { RatingsModifierType::BonusSheltered,        0,                15420, 21845, 11702 },
+            { RatingsModifierType::BonusProximity,        0,                17893, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 34,               4, 1, 1 },
+            { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 59578 },
         },
     },
 };

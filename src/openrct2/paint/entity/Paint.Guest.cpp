@@ -13,6 +13,7 @@
 #include "../../entity/Guest.h"
 #include "../../peep/PeepSpriteIds.h"
 #include "../../profiling/Profiling.h"
+#include "../../profiling/ProfilingMacros.hpp"
 #include "../Paint.h"
 #include "Paint.Peep.h"
 
@@ -30,7 +31,7 @@ void PaintGuest(PaintSession& session, const Guest& guest, int32_t orientation)
     Direction direction = (orientation >> 3);
 
     auto baseImageData = PaintPeepGetBaseImageAndOffset(guest, direction);
-    auto imageId = ImageId(baseImageData.baseImageId, guest.tShirtColour, guest.trousersColour);
+    auto imageId = ImageId(baseImageData.baseImageId, guest.TshirtColour, guest.TrousersColour);
 
     // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     // bound_box_offset_z to make sure peeps are drawn on top of railways
@@ -44,8 +45,8 @@ void PaintGuestAccesories(
     PaintSession& session, const Guest& guest, uint8_t imageOffset, PeepAnimationType actionAnimationGroup, Direction direction)
 {
     // Can't display any accessories whilst drowning, clapping, or throwing up
-    if (guest.action == PeepActionType::drowning || guest.action == PeepActionType::clap
-        || guest.action == PeepActionType::throwUp)
+    if (guest.Action == PeepActionType::drowning || guest.Action == PeepActionType::clap
+        || guest.Action == PeepActionType::throwUp)
         return;
 
     // There are only 6 walking frames available for each item,
@@ -56,19 +57,19 @@ void PaintGuestAccesories(
     else if (actionAnimationGroup == PeepAnimationType::sittingIdle)
         itemFrame = 7;
 
-    if (guest.animationGroup == PeepAnimationGroup::hat)
+    if (guest.AnimationGroup == PeepAnimationGroup::hat)
     {
         auto itemOffset = kPeepSpriteHatItemStart;
         auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.hatColour);
         PaintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
     }
-    else if (guest.animationGroup == PeepAnimationGroup::balloon)
+    else if (guest.AnimationGroup == PeepAnimationGroup::balloon)
     {
         auto itemOffset = kPeepSpriteBalloonItemStart;
         auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.balloonColour);
         PaintAddImageAsChild(session, imageId, kPaintPeepOffset(guest.z), kPaintPeepBoundBox(guest.z));
     }
-    else if (guest.animationGroup == PeepAnimationGroup::umbrella)
+    else if (guest.AnimationGroup == PeepAnimationGroup::umbrella)
     {
         auto itemOffset = kPeepSpriteUmbrellaItemStart;
         auto imageId = ImageId(itemOffset + direction + itemFrame * 4, guest.umbrellaColour);

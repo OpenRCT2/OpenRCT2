@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../../ScriptEngine.h"
+    #include "quickjs.h"
 
 namespace OpenRCT2::Scripting
 {

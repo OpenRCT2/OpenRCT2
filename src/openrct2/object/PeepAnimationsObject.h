@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/IStream.hpp"
 #include "../peep/PeepAnimations.h"
 #include "Object.h"
 

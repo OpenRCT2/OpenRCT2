@@ -11,15 +11,16 @@
 
 #include "Cheats.h"
 #include "Date.h"
+#include "Editor.h"
 #include "Limits.h"
 #include "core/Random.hpp"
 #include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
+#include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
 #include "scenario/ScenarioOptions.h"
-#include "scenes/editor/EditorStep.h"
 #include "world/Banner.h"
 #include "world/Location.hpp"
 #include "world/ParkData.h"
@@ -55,7 +56,7 @@ namespace OpenRCT2
 
         TileCoordsXY mapSize;
 
-        Editor::Step editorStep;
+        EditorStep editorStep;
 
         std::string scenarioCompletedBy;
         std::string scenarioFileName;

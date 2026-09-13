@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class ParkEntranceRemoveAction final : public GameActionBase<GameCommand::removeParkEntrance>
+    class ParkEntranceRemoveAction final : public GameActionBase<GameCommand::RemoveParkEntrance>
     {
     private:
         CoordsXYZ _loc;

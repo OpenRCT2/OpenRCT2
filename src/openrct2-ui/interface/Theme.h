@@ -9,16 +9,12 @@
 
 #pragma once
 
-#include <openrct2/core/StringTypes.h>
-#include <openrct2/localisation/StringIdType.h>
+#include <openrct2/interface/Window.h>
 
 namespace OpenRCT2
 {
     struct ColourWithFlags;
-    struct WindowBase;
-
-    enum class WindowClass : uint8_t;
-} // namespace OpenRCT2
+}
 
 namespace OpenRCT2::Ui
 {
@@ -28,7 +24,7 @@ namespace OpenRCT2::Ui
         UITHEME_FLAG_USE_LIGHTS_RIDE = 1 << 1,
         UITHEME_FLAG_USE_LIGHTS_PARK = 1 << 2,
         UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT = 1 << 3,
-        UITHEME_FLAG_USE_GAME_STATUS_BAR = 1 << 4,
+        UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR = 1 << 4,
         UITHEME_FLAG_USE_3D_IMAGE_BUTTONS = 1 << 5,
     };
 

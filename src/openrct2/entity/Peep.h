@@ -10,10 +10,10 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../core/FlagHolder.hpp"
 #include "../entity/EntityBase.h"
 #include "../localisation/StringIdType.h"
-#include "../object/ObjectTypes.h"
+#include "../ride/RideTypes.h"
+#include "../ride/Station.h"
 #include "../world/Location.hpp"
 
 #include <array>
@@ -34,6 +34,7 @@ namespace OpenRCT2::Drawing
 
 namespace OpenRCT2
 {
+    class DataSerialiser;
     class Formatter;
     struct TileElement;
 
@@ -201,44 +202,43 @@ namespace OpenRCT2
         invalid = 255
     };
 
-    enum class PeepFlag : uint32_t
+    enum PeepFlags : uint32_t
     {
-        leavingPark = 0,
-        slowWalk = 1,
-        debugPathfinding = 2, // Enables debug logging for path finding
-        tracking = 3,
-        waving = 4,              // Makes the peep wave
-        hasPaidForParkEntry = 5, // Set on paying to enter park
-        photo = 6,               // Makes the peep take a picture
-        painting = 7,
-        wow = 8,        // Makes a peep WOW2
-        litter = 9,     // Makes the peep throw litter
-        lost = 10,      // Makes the peep feel lost (animation triggered)
-        hunger = 11,    // Makes the peep become hungry quicker
-        toilet = 12,    // Makes the peep want to go to the toilet
-        crowded = 13,   // The peep will start feeling crowded
-        happiness = 14, // The peep will start increasing happiness
-        nausea = 15,    // Makes the peep feel sick (e.g. after an extreme ride)
-        purple = 16,    // Makes surrounding peeps purple
-        pizza = 17,     // Gives passing peeps pizza
-        explode = 18,
-        rideShouldBeMarkedAsFavourite = 19,
-        parkEntranceChosen = 20, // Set when the nearest park entrance has been chosen
-        unknown21 = 21,
-        contagious = 22, // Makes any peeps in surrounding tiles sick
-        joy = 23,        // Makes the peep jump in joy
-        angry = 24,
-        iceCream = 25,           // Gives passing peeps ice cream and they wave back
-        niceRideDeprecated = 26, // Used to make the peep think "Nice ride! But not as good as the
-                                 // Phoenix..." on exiting a ride
-        intaminDeprecated = 27,  // Used to make the peep think "I'm so excited - It's an Intamin ride!" while
-                                 // riding on a Intamin ride.
-        hereWeAre = 28,          // Makes the peep think  "...and here we are on X!" while riding a ride
-        positionFrozen = 29,     // Prevents the peep from moving around, thus keeping them in place
-        animationFrozen = 30,    // Prevents the peep sprite from updating
-        twitchDeprecated = 31,   // Formerly used for twitch integration
+        PEEP_FLAGS_LEAVING_PARK = (1 << 0),
+        PEEP_FLAGS_SLOW_WALK = (1 << 1),
+        PEEP_FLAGS_DEBUG_PATHFINDING = (1 << 2), // Enables debug logging for path finding
+        PEEP_FLAGS_TRACKING = (1 << 3),
+        PEEP_FLAGS_WAVING = (1 << 4),                  // Makes the peep wave
+        PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY = (1 << 5), // Set on paying to enter park
+        PEEP_FLAGS_PHOTO = (1 << 6),                   // Makes the peep take a picture
+        PEEP_FLAGS_PAINTING = (1 << 7),
+        PEEP_FLAGS_WOW = (1 << 8),        // Makes a peep WOW2
+        PEEP_FLAGS_LITTER = (1 << 9),     // Makes the peep throw litter
+        PEEP_FLAGS_LOST = (1 << 10),      // Makes the peep feel lost (animation triggered)
+        PEEP_FLAGS_HUNGER = (1 << 11),    // Makes the peep become hungry quicker
+        PEEP_FLAGS_TOILET = (1 << 12),    // Makes the peep want to go to the toilet
+        PEEP_FLAGS_CROWDED = (1 << 13),   // The peep will start feeling crowded
+        PEEP_FLAGS_HAPPINESS = (1 << 14), // The peep will start increasing happiness
+        PEEP_FLAGS_NAUSEA = (1 << 15),    // Makes the peep feel sick (e.g. after an extreme ride)
+        PEEP_FLAGS_PURPLE = (1 << 16),    // Makes surrounding peeps purple
+        PEEP_FLAGS_PIZZA = (1 << 17),     // Gives passing peeps pizza
+        PEEP_FLAGS_EXPLODE = (1 << 18),
+        PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE = (1 << 19),
+        PEEP_FLAGS_PARK_ENTRANCE_CHOSEN = (1 << 20), // Set when the nearest park entrance has been chosen
+        PEEP_FLAGS_21 = (1 << 21),
+        PEEP_FLAGS_CONTAGIOUS = (1 << 22), // Makes any peeps in surrounding tiles sick
+        PEEP_FLAGS_JOY = (1 << 23),        // Makes the peep jump in joy
+        PEEP_FLAGS_ANGRY = (1 << 24),
+        PEEP_FLAGS_ICE_CREAM = (1 << 25),            // Gives passing peeps ice cream and they wave back
+        PEEP_FLAGS_NICE_RIDE_DEPRECATED = (1 << 26), // Used to make the peep think "Nice ride! But not as good as the
+                                                     // Phoenix..." on exiting a ride
+        PEEP_FLAGS_INTAMIN_DEPRECATED = (1 << 27), // Used to make the peep think "I'm so excited - It's an Intamin ride!" while
+                                                   // riding on a Intamin ride.
+        PEEP_FLAGS_HERE_WE_ARE = (1 << 28),        // Makes the peep think  "...and here we are on X!" while riding a ride
+        PEEP_FLAGS_POSITION_FROZEN = (1 << 29),    // Prevents the peep from moving around, thus keeping them in place
+        PEEP_FLAGS_ANIMATION_FROZEN = (1 << 30),   // Prevents the peep sprite from updating
+        PEEP_FLAGS_TWITCH_DEPRECATED = (1u << 31), // Formerly used for twitch integration
     };
-    using PeepFlags = FlagHolder<uint32_t, PeepFlag>;
 
     enum PeepNextFlags
     {
@@ -303,175 +303,140 @@ namespace OpenRCT2
         PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when guestHeadingToRideId is changed
     };
 
-    enum class PeepActionDescriptionType : uint8_t
-    {
-        walking,
-        sitting,
-        watchingScenery,
-        drowning,
-        pickedUp,
-        headingFor,
-        watchingRide,
-        watchingRideConstruction,
-        watchingRideConstructionUnspecific,
-        queuingFor,
-        onRide,
-        inRide,
-        atShop,
-        leavingPark,
-        sweepingFootpath,
-        emptyingBin,
-        wateringGardens,
-        mowingGrass,
-        headingToInspectRide,
-        inspectingRide,
-        fixingRide,
-        answeringRadioCall,
-        respondingToBreakdownCall,
-
-        count,
-    };
-    constexpr size_t kNumPeepActionDescriptionTypes = static_cast<size_t>(PeepActionDescriptionType::count);
-
-    struct PeepActionDescription
-    {
-        PeepActionDescriptionType type;
-        RideId rideId = RideId::GetNull();
-    };
-
     struct Guest;
+    struct Staff;
 
     struct Peep : EntityBase
     {
-        char* name;
-        CoordsXYZ nextLoc;
-        uint8_t nextFlags;
-        PeepState state;
+        char* Name;
+        CoordsXYZ NextLoc;
+        uint8_t NextFlags;
+        PeepState State;
         union
         {
-            uint8_t subState;
-            PeepSittingSubState sittingSubState;
-            PeepRideSubState rideSubState;
-            PeepUsingBinSubState usingBinSubState;
+            uint8_t SubState;
+            PeepSittingSubState SittingSubState;
+            PeepRideSubState RideSubState;
+            PeepUsingBinSubState UsingBinSubState;
         };
-        ObjectEntryIndex animationObjectIndex;
-        PeepAnimationGroup animationGroup;
-        Drawing::Colour tShirtColour;
-        Drawing::Colour trousersColour;
+        ObjectEntryIndex AnimationObjectIndex;
+        PeepAnimationGroup AnimationGroup;
+        Drawing::Colour TshirtColour;
+        Drawing::Colour TrousersColour;
         union
         {
-            uint16_t destinationX;
+            uint16_t DestinationX;
             PeepSpiralSlideSubState spiralSlideSubstate;
         };
         union
         {
-            uint16_t destinationY;
+            uint16_t DestinationY;
             uint16_t spiralSlideGoingUpTimer;
         };
-        uint8_t destinationTolerance; // How close to destination before next action/state 0 = exact
-        uint8_t var37;
-        uint8_t energy;
-        uint8_t energyTarget;
-        uint8_t mass;
-        uint8_t windowInvalidateFlags;
-        RideId currentRide;
-        StationIndex currentRideStation;
-        uint8_t currentTrain;
+        uint8_t DestinationTolerance; // How close to destination before next action/state 0 = exact
+        uint8_t Var37;
+        uint8_t Energy;
+        uint8_t EnergyTarget;
+        uint8_t Mass;
+        uint8_t WindowInvalidateFlags;
+        RideId CurrentRide;
+        StationIndex CurrentRideStation;
+        uint8_t CurrentTrain;
         union
         {
             struct
             {
-                uint8_t currentCar;
-                uint8_t currentSeat;
+                uint8_t CurrentCar;
+                uint8_t CurrentSeat;
             };
-            uint16_t timeToSitdown;
+            uint16_t TimeToSitdown;
             struct
             {
-                uint8_t timeToStand;
-                uint8_t standingFlags;
+                uint8_t TimeToStand;
+                uint8_t StandingFlags;
             };
             uint8_t timesSlidDown;
         };
         // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-        uint8_t specialSprite;
-        PeepAnimationType animationType;
+        uint8_t SpecialSprite;
+        PeepAnimationType AnimationType;
         // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which
         // reads this again
-        PeepAnimationType nextAnimationType;
-        uint8_t animationImageIdOffset;
-        PeepActionType action;
-        uint8_t animationFrameNum;
-        uint8_t stepProgress;
+        PeepAnimationType NextAnimationType;
+        uint8_t AnimationImageIdOffset;
+        PeepActionType Action;
+        uint8_t AnimationFrameNum;
+        uint8_t StepProgress;
         union
         {
-            uint8_t mazeLastEdge;
-            ::Direction peepDirection; // Direction ?
+            uint8_t MazeLastEdge;
+            ::Direction PeepDirection; // Direction ?
         };
-        RideId interactionRideIndex;
-        uint32_t peepId;
-        uint8_t pathCheckOptimisation; // see peep.checkForPath
-        TileCoordsXYZD pathfindGoal;
-        std::array<TileCoordsXYZD, 4> pathfindHistory;
-        uint8_t walkingAnimationFrameNum;
-        PeepFlags peepFlags;
+        RideId InteractionRideIndex;
+        uint32_t PeepId;
+        uint8_t PathCheckOptimisation; // see peep.checkForPath
+        TileCoordsXYZD PathfindGoal;
+        std::array<TileCoordsXYZD, 4> PathfindHistory;
+        uint8_t WalkingAnimationFrameNum;
+        uint32_t PeepFlags;
 
     public: // Peep
-        std::optional<CoordsXY> updateAction(int16_t& xy_distance);
-        std::optional<CoordsXY> updateAction();
-        bool updateActionAnimation();
-        std::optional<CoordsXY> updateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance);
-        void updateWalkingAnimation();
-        void setState(PeepState new_state);
-        void remove();
-        void updateCurrentAnimationType();
-        void updateSpriteBoundingBox();
-        void switchToSpecialSprite(uint8_t special_sprite_id);
-        void stateReset();
-        [[nodiscard]] uint8_t getNextDirection() const;
-        bool getNextIsSloped() const;
-        bool getNextIsSurface() const;
-        void setNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
-        bool canBePickedUp() const;
-        void pickup();
-        void pickupAbort(int32_t old_x);
-        [[nodiscard]] GameActions::Result place(const TileCoordsXYZ& location, bool apply);
-        void removeFromRide();
-        PeepActionDescription getActionDescription() const;
-        void formatNameTo(Formatter&) const;
-        [[nodiscard]] std::string getName() const;
-        bool setName(std::string_view value);
-        bool isActionWalking() const;
-        bool isActionIdle() const;
-        bool isActionInterruptable() const;
-        bool isActionInterruptableSafely() const;
+        std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
+        std::optional<CoordsXY> UpdateAction();
+        bool UpdateActionAnimation();
+        std::optional<CoordsXY> UpdateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance);
+        void UpdateWalkingAnimation();
+        void SetState(PeepState new_state);
+        void Remove();
+        void UpdateCurrentAnimationType();
+        void UpdateSpriteBoundingBox();
+        void SwitchToSpecialSprite(uint8_t special_sprite_id);
+        void StateReset();
+        [[nodiscard]] uint8_t GetNextDirection() const;
+        bool GetNextIsSloped() const;
+        bool GetNextIsSurface() const;
+        void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
+        bool CanBePickedUp() const;
+        void Pickup();
+        void PickupAbort(int32_t old_x);
+        [[nodiscard]] GameActions::Result Place(const TileCoordsXYZ& location, bool apply);
+        void RemoveFromRide();
+        void FormatActionTo(Formatter&) const;
+        void FormatNameTo(Formatter&) const;
+        [[nodiscard]] std::string GetName() const;
+        bool SetName(std::string_view value);
+        bool IsActionWalking() const;
+        bool IsActionIdle() const;
+        bool IsActionInterruptable() const;
+        bool IsActionInterruptableSafely() const;
 
         // Reset the peep's stored goal, which means they will forget any stored pathfinding history
         // on the next GuestPathfinding::ChooseDirection call.
-        void resetPathfindGoal();
+        void ResetPathfindGoal();
 
-        void setDestination(const CoordsXY& coords);
-        void setDestination(const CoordsXY& coords, int32_t tolerance);
-        [[nodiscard]] CoordsXY getDestination() const;
+        void SetDestination(const CoordsXY& coords);
+        void SetDestination(const CoordsXY& coords, int32_t tolerance);
+        [[nodiscard]] CoordsXY GetDestination() const;
 
         void serialise(class DataSerialiser& stream);
 
         // TODO: Make these private again when done refactoring
     public: // Peep
-        [[nodiscard]] bool checkForPath();
-        std::pair<uint8_t, TileElement*> performNextAction();
-        [[nodiscard]] int32_t getZOnSlope(int32_t tile_x, int32_t tile_y);
-        void switchNextAnimationType();
-        [[nodiscard]] PeepAnimationType getAnimationType();
+        [[nodiscard]] bool CheckForPath();
+        std::pair<uint8_t, TileElement*> PerformNextAction();
+        [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
+        void SwitchNextAnimationType();
+        [[nodiscard]] PeepAnimationType GetAnimationType();
 
     protected:
-        bool shouldWaitForLevelCrossing() const;
-        bool isOnLevelCrossing() const;
-        bool isOnPathBlockedByVehicle() const;
-        void updateWaitingAtCrossing();
-        void updateFalling();
-        void update1();
-        void updatePicked();
-        uint32_t getStepsToTake() const;
+        bool ShouldWaitForLevelCrossing() const;
+        bool IsOnLevelCrossing() const;
+        bool IsOnPathBlockedByVehicle() const;
+        void UpdateWaitingAtCrossing();
+        void UpdateFalling();
+        void Update1();
+        void UpdatePicked();
+        uint32_t GetStepsToTake() const;
     };
 
     enum

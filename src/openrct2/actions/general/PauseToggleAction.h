@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class PauseToggleAction final : public GameActionBase<GameCommand::togglePause>
+    class PauseToggleAction final : public GameActionBase<GameCommand::TogglePause>
     {
     public:
         PauseToggleAction() = default;

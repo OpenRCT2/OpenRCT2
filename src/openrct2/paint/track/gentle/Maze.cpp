@@ -7,15 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../core/Numerics.hpp"
 #include "../../../ride/Ride.h"
+#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Paint.Surface.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
@@ -52,7 +54,7 @@ static void MazePaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    uint16_t mazeEntry = trackElement.getMazeEntry();
+    uint16_t mazeEntry = trackElement.GetMazeEntry();
     mazeEntry = Numerics::rol16(mazeEntry, direction * 4);
 
     uint32_t rotation = session.CurrentRotation;

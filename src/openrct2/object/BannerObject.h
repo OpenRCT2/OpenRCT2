@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/IStream.hpp"
 #include "BannerSceneryEntry.h"
 #include "SceneryObject.h"
 

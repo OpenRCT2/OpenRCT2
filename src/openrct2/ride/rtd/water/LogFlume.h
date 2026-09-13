@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kLogFlumeRTD =
+constexpr RideTypeDescriptor LogFlumeRTD =
 {
     .Category = RideCategory::water,
     .StartTrackPiece = TrackElemType::endStation,
@@ -34,11 +33,11 @@ constexpr RideTypeDescriptor kLogFlumeRTD =
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::hasAirTime, RtdFlag::showInTrackDesigner,
                      RtdFlag::interestingToLookAt),
-    .rideModes = { RideMode::continuousCircuit },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_LOG_FLUME, STR_RIDE_DESCRIPTION_LOG_FLUME },
-    .NameConvention = { RideComponentType::boat, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::brakesFailure },
     .Heights = { 10, 24, 7, 9, },
     .MaxMass = 255,
@@ -55,36 +54,36 @@ constexpr RideTypeDescriptor kLogFlumeRTD =
         { Drawing::Colour::oliveGreen, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "log_flume",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 50), RideRating::make(0, 55), RideRating::make(0, 30) },
         15,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           2000,             7208, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,                531372, 655360, 301111 },
-            { RatingsModifierType::bonusDuration,         300,              13107, 0, 0 },
-            { RatingsModifierType::bonusTurns,            0,                22291, 20860, 4574 },
-            { RatingsModifierType::bonusDrops,            0,                69905, 62415, 49152 },
-            { RatingsModifierType::bonusSheltered,        0,                16705, 30583, 35108 },
-            { RatingsModifierType::bonusProximity,        0,                22367, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,                11155, 0, 0 },
-            { RatingsModifierType::requirementDropHeight, 6,                2, 2, 2 },
+            { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                531372, 655360, 301111 },
+            { RatingsModifierType::BonusDuration,         300,              13107, 0, 0 },
+            { RatingsModifierType::BonusTurns,            0,                22291, 20860, 4574 },
+            { RatingsModifierType::BonusDrops,            0,                69905, 62415, 49152 },
+            { RatingsModifierType::BonusSheltered,        0,                16705, 30583, 35108 },
+            { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 6,                2, 2, 2 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_LogFlume,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_LogFlume,
 };
 } // namespace OpenRCT2
 // clang-format on

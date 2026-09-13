@@ -17,6 +17,7 @@
 #include "../../core/Numerics.hpp"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
+#include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
 #include "../../object/TerrainEdgeObject.h"
@@ -49,30 +50,30 @@ static constexpr uint8_t Byte97B444[] = {
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
-static constexpr CoordsXY kNeighbouringTileCoordOffsets[4][kNumOrthogonalDirections] = {
+static constexpr CoordsXY viewport_surface_paint_data[][4] = {
     {
         { 32, 0 },
-        { 0, 32 },
-        { -32, 0 },
-        { 0, -32 },
+        { -32, 32 },
+        { -64, -32 },
+        { 0, -64 },
     },
     {
         { 0, 32 },
-        { -32, 0 },
-        { 0, -32 },
-        { 32, 0 },
+        { -64, 0 },
+        { -32, -64 },
+        { 32, -32 },
     },
     {
         { 0, -32 },
-        { 32, 0 },
-        { 0, 32 },
+        { 0, 0 },
         { -32, 0 },
+        { -32, -32 },
     },
     {
         { -32, 0 },
+        { -32, -32 },
         { 0, -32 },
-        { 32, 0 },
-        { 0, 32 },
+        { 0, 0 },
     },
 };
 
@@ -112,22 +113,22 @@ struct TunnelDescriptor
     uint8_t imageOffset;
 };
 static constexpr TunnelDescriptor kTunnels[] = {
-    { 2, 2, 0,   15, TunnelType::standardFlat,                    36 }, // TunnelType::StandardFlat
-    { 3, 3, 0,   15, TunnelType::standardFlat,                    40 }, // TunnelType::StandardSlopeStart
-    { 3, 5, -32,  4, TunnelType::standardFlat,                    44 }, // TunnelType::StandardSlopeEnd
-    { 3, 3, 0,   15, TunnelType::invertedFlat,                    48 }, // TunnelType::InvertedFlat
-    { 4, 4, 0,   15, TunnelType::invertedFlat,                    52 }, // TunnelType::InvertedSlopeStart
-    { 4, 7, -48,  4, TunnelType::invertedFlat,                    56 }, // TunnelType::InvertedSlopeEnd
-    { 2, 2, 0,   15, TunnelType::squareFlat,                      60 }, // TunnelType::SquareFlat
-    { 3, 3, 0,   15, TunnelType::squareFlat,                      64 }, // TunnelType::SquareSlopeStart
-    { 3, 5, -32,  4, TunnelType::squareFlat,                      68 }, // TunnelType::SquareSlopeEnd
-    { 3, 3, 0,   15, TunnelType::squareFlat,                      72 }, // TunnelType::InvertedSquare
-    { 2, 3, -16, 15, TunnelType::pathAndMiniGolf,                 76 }, // TunnelType::PathAndMiniGolf
-    { 2, 3, -16, 15, TunnelType::path11,                          80 }, // TunnelType::Path11
-    { 2, 3, -16,  4, TunnelType::standardFlatTo25Deg,             36 }, // TunnelType::StandardFlatTo25Deg
-    { 3, 4, -16,  4, TunnelType::invertedFlatTo25Deg,             48 }, // TunnelType::InvertedFlatTo25Deg
-    { 2, 3, -16,  4, TunnelType::squareFlatTo25Deg,               60 }, // TunnelType::SquareFlatTo25Deg
-    { 3, 4, -16,  4, TunnelType::squareFlatTo25Deg,               72 }, // TunnelType::InvertedSquareFlatTo25Deg
+    { 2, 2, 0,   15, TunnelType::StandardFlat,                    36 }, // TunnelType::StandardFlat
+    { 3, 3, 0,   15, TunnelType::StandardFlat,                    40 }, // TunnelType::StandardSlopeStart
+    { 3, 5, -32,  4, TunnelType::StandardFlat,                    44 }, // TunnelType::StandardSlopeEnd
+    { 3, 3, 0,   15, TunnelType::InvertedFlat,                    48 }, // TunnelType::InvertedFlat
+    { 4, 4, 0,   15, TunnelType::InvertedFlat,                    52 }, // TunnelType::InvertedSlopeStart
+    { 4, 7, -48,  4, TunnelType::InvertedFlat,                    56 }, // TunnelType::InvertedSlopeEnd
+    { 2, 2, 0,   15, TunnelType::SquareFlat,                      60 }, // TunnelType::SquareFlat
+    { 3, 3, 0,   15, TunnelType::SquareFlat,                      64 }, // TunnelType::SquareSlopeStart
+    { 3, 5, -32,  4, TunnelType::SquareFlat,                      68 }, // TunnelType::SquareSlopeEnd
+    { 3, 3, 0,   15, TunnelType::SquareFlat,                      72 }, // TunnelType::InvertedSquare
+    { 2, 3, -16, 15, TunnelType::PathAndMiniGolf,                 76 }, // TunnelType::PathAndMiniGolf
+    { 2, 3, -16, 15, TunnelType::Path11,                          80 }, // TunnelType::Path11
+    { 2, 3, -16,  4, TunnelType::StandardFlatTo25Deg,             36 }, // TunnelType::StandardFlatTo25Deg
+    { 3, 4, -16,  4, TunnelType::InvertedFlatTo25Deg,             48 }, // TunnelType::InvertedFlatTo25Deg
+    { 2, 3, -16,  4, TunnelType::SquareFlatTo25Deg,               60 }, // TunnelType::SquareFlatTo25Deg
+    { 3, 4, -16,  4, TunnelType::SquareFlatTo25Deg,               72 }, // TunnelType::InvertedSquareFlatTo25Deg
     { 2, 2, 0,   15, TunnelType::doorClosed,                      84 }, // TunnelType::doorClosed
     { 2, 2, 0,   15, TunnelType::doorOpeningOutward,              88 }, // TunnelType::doorOpeningOutward
     { 2, 2, 0,   15, TunnelType::doorOpenOutward,                 92 }, // TunnelType::doorOpenOutward
@@ -301,7 +302,7 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType ty
     }
 
     if (!hasDoors && EnumValue(type) >= kRegularTunnelTypeCount)
-        type = TunnelType::standardFlat;
+        type = TunnelType::StandardFlat;
 
     ImageId result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset)
                          .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
@@ -311,7 +312,7 @@ static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType ty
 
 static uint8_t ViewportSurfacePaintSetupGetRelativeSlope(const SurfaceElement& surfaceElement, int32_t rotation)
 {
-    const uint8_t slope = surfaceElement.getSlope();
+    const uint8_t slope = surfaceElement.GetSlope();
     const uint8_t slopeHeight = slope & kTileSlopeDiagonalFlag;
     uint16_t slopeCorners = (slope & kTileSlopeRaisedCornersMask) << rotation;
     slopeCorners = ((slopeCorners >> 4) | slopeCorners) & 0x0F;
@@ -330,7 +331,7 @@ static void ViewportSurfaceSmoothenEdge(
         return;
 
     // The edge row consists of invisible grass tiles. Do not attempt to smooth with them.
-    if (MapIsEdge(self.tile_coords.toCoordsXY()) || MapIsEdge(neighbour.tile_coords.toCoordsXY()))
+    if (MapIsEdge(self.tile_coords.ToCoordsXY()) || MapIsEdge(neighbour.tile_coords.ToCoordsXY()))
         return;
 
     uint32_t maskImageBase = 0;
@@ -436,7 +437,7 @@ static bool TileIsInsideClipView(const TileDescriptor& tile)
     if (tile.tile_element->getBaseZ() > gClipHeight * kCoordsZStep)
         return false;
 
-    auto coords = tile.tile_coords.toCoordsXY();
+    auto coords = tile.tile_coords.ToCoordsXY();
     if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
         return false;
     if (coords.y < gClipSelectionA.y || coords.y > gClipSelectionB.y)
@@ -503,7 +504,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
     if (isWater && neighbour.tile_element != nullptr)
     {
-        auto waterHeight = neighbour.tile_element->asSurface()->getWaterHeight() / (kCoordsZStep * 2);
+        auto waterHeight = neighbour.tile_element->asSurface()->GetWaterHeight() / (kCoordsZStep * 2);
         if (waterHeight == height && !neighbourIsClippedAway)
         {
             // Don't draw the edge when the neighbour's water level is the same
@@ -689,7 +690,7 @@ static void ViewportSurfaceDrawTileSideTop(
     {
         if (isWater)
         {
-            auto waterHeight = neighbour.tile_element->asSurface()->getWaterHeight() / (kCoordsZStep * 2);
+            auto waterHeight = neighbour.tile_element->asSurface()->GetWaterHeight() / (kCoordsZStep * 2);
             if (height == waterHeight)
             {
                 return;
@@ -782,9 +783,9 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
     int32_t localSurfaceShape = surfaceShape;
     int32_t localHeight = height;
 
-    if (surfaceElement.getWaterHeight() > 0)
+    if (surfaceElement.GetWaterHeight() > 0)
     {
-        int32_t waterHeight = surfaceElement.getWaterHeight();
+        int32_t waterHeight = surfaceElement.GetWaterHeight();
         if (waterHeight > height)
         {
             localHeight += kLandHeightStep;
@@ -806,8 +807,7 @@ static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
 
 std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY& pos)
 {
-    bool selected = gMapSelectFlags.has(MapSelectFlag::enable)
-        && (gMapSelectType == MapSelectType::full || gMapSelectType == MapSelectType::fullTerrainAndWater)
+    bool selected = gMapSelectFlags.has(MapSelectFlag::enable) && gMapSelectType == MapSelectType::full
         && pos.x >= gMapSelectPositionA.x && pos.x <= gMapSelectPositionB.x && pos.y >= gMapSelectPositionA.y
         && pos.y <= gMapSelectPositionB.y;
 
@@ -822,7 +822,7 @@ std::optional<OpenRCT2::Drawing::Colour> GetPatrolAreaTileColour(const CoordsXY&
     else
     {
         auto& staffId = std::get<EntityId>(patrolAreaToRender);
-        auto* staff = getGameState().entities.getEntity<Staff>(staffId);
+        auto* staff = getGameState().entities.GetEntity<Staff>(staffId);
         if (staff != nullptr)
         {
             if (staff->isPatrolAreaSet(pos))
@@ -860,7 +860,7 @@ static void PaintSurfaceLandOwnership(
     auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
     // Loc660E9A:
-    if (tileElement.hasOwnership(OwnershipFlag::landOwned))
+    if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
     {
         assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
@@ -878,7 +878,7 @@ static void PaintSurfaceLandOwnership(
             session.LastPS = backup;
         }
     }
-    else if (tileElement.hasOwnership(OwnershipFlag::landForSale))
+    else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
@@ -894,7 +894,7 @@ static void PaintSurfaceConstructionRights(
 {
     auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-    if (tileElement.hasOwnership(OwnershipFlag::constructionRightsOwned))
+    if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
     {
         assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
         assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
@@ -912,7 +912,7 @@ static void PaintSurfaceConstructionRights(
             session.LastPS = backup;
         }
     }
-    else if (tileElement.hasOwnership(OwnershipFlag::constructionRightsForSale))
+    else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
         const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
@@ -937,12 +937,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const auto zoomLevel = session.rt.zoom_level;
     const uint8_t rotation = session.CurrentRotation;
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
-    const CoordsXY& base = session.MapPosition;
+    const CoordsXY& base = session.SpritePosition;
     const auto cornerHeights = GetSlopeRelativeCornerHeights(surfaceShape);
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
-    const auto* surfaceObject = tileElement.getSurfaceObject();
-    const auto* edgeObject = tileElement.getEdgeObject();
+    const auto* surfaceObject = tileElement.GetSurfaceObject();
+    const auto* edgeObject = tileElement.GetEdgeObject();
 
     const auto selfDescriptor = TileDescriptor{
         TileCoordsXY(base),
@@ -959,9 +959,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     TileDescriptor tileDescriptors[4];
 
-    for (std::size_t i = 0; i < std::size(kNeighbouringTileCoordOffsets); i++)
+    for (std::size_t i = 0; i < std::size(viewport_surface_paint_data); i++)
     {
-        const CoordsXY& offset = kNeighbouringTileCoordOffsets[i][rotation];
+        const CoordsXY& offset = viewport_surface_paint_data[i][rotation];
         const CoordsXY position = base + offset;
 
         TileDescriptor& descriptor = tileDescriptors[i];
@@ -984,7 +984,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         descriptor.tile_coords = TileCoordsXY{ position };
         descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);
-        descriptor.surfaceObject = surfaceElement->getSurfaceObject();
+        descriptor.surfaceObject = surfaceElement->GetSurfaceObject();
         descriptor.slope = surfaceSlope;
         descriptor.corner_heights.top = baseHeight + ch.top;
         descriptor.corner_heights.right = baseHeight + ch.right;
@@ -1036,7 +1036,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             {
                 if ((session.ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
                 {
-                    grassLength = tileElement.getGrassLength() & 0x7;
+                    grassLength = tileElement.GetGrassLength() & 0x7;
                 }
             }
             imageId = surfaceObject->GetImageId(session.MapPosition, grassLength, rotation, image_offset, showGridlines, false);
@@ -1081,7 +1081,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         PaintSurfaceLandOwnership(session, tileElement, height, surfaceShape);
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.hasOwnership(OwnershipFlag::landOwned)))
+    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.GetOwnership() & OWNERSHIP_OWNED))
     {
         PaintSurfaceConstructionRights(session, tileElement, height, surfaceShape);
     }
@@ -1132,7 +1132,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
-            else if (mapSelectionType == MapSelectType::fullTerrainAndWater)
+            else if (mapSelectionType == MapSelectType::fullLandRights)
             {
                 auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
@@ -1227,7 +1227,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1], false);
     }
 
-    const uint16_t waterHeight = tileElement.getWaterHeight();
+    const uint16_t waterHeight = tileElement.GetWaterHeight();
     const bool waterGetsClipped = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
     const bool waterIsTransparent = Config::Get().general.transparentWater
         || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
@@ -1267,12 +1267,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    if ((tileElement.getParkFences()) && !gTrackDesignSaveMode)
+    if ((tileElement.GetParkFences()) && !gTrackDesignSaveMode)
     {
         // Owned land boundary fences
         session.InteractionType = ViewportInteractionItem::parkEntrance;
 
-        uint8_t rotatedFences = Numerics::rol4(tileElement.getParkFences(), rotation);
+        uint8_t rotatedFences = Numerics::rol4(tileElement.GetParkFences(), rotation);
 
         for (const auto& fenceData : _tileSurfaceBoundaries)
         {

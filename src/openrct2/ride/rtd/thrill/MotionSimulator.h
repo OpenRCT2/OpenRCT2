@@ -10,13 +10,12 @@
 #pragma once
 
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kMotionSimulatorRTD =
+constexpr RideTypeDescriptor MotionSimulatorRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::flatTrack2x2,
@@ -31,10 +30,10 @@ constexpr RideTypeDescriptor kMotionSimulatorRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::filmAvengingAviators, RideMode::filmThrillRiders },
+    .RideModes = EnumsToFlags(RideMode::filmAvengingAviators, RideMode::filmThrillRiders),
     .DefaultMode = RideMode::filmAvengingAviators,
     .Naming = { STR_RIDE_NAME_MOTION_SIMULATOR, STR_RIDE_DESCRIPTION_MOTION_SIMULATOR },
-    .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
@@ -48,29 +47,29 @@ constexpr RideTypeDescriptor kMotionSimulatorRTD =
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "motion_simulator",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::flatRide,
+        RatingsCalculationType::FlatRide,
         { 1, 1, 1 },
         21,
         7,
         false,
         {
-            { RatingsModifierType::bonusMotionSimulatorMode, 0, 0, 0, 0 },
+            { RatingsModifierType::BonusMotionSimulatorMode, 0, 0, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::standard,
+    .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = nullptr,
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default,
     .MusicTrackOffsetLength = RideAudio::RideMusicGetTrackOffsetLength_Default,

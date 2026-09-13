@@ -12,7 +12,14 @@
 #include "GameState.h"
 #include "actions/GameActionRunner.h"
 #include "actions/cheats/CheatSetAction.h"
+#include "actions/park/ParkSetLoanAction.h"
 #include "core/DataSerialiser.h"
+#include "network/Network.h"
+#include "ride/Ride.h"
+#include "world/Footpath.h"
+#include "world/Park.h"
+#include "world/Scenery.h"
+#include "world/Weather.h"
 
 using namespace OpenRCT2;
 
@@ -40,7 +47,6 @@ void CheatsReset()
     gameState.cheats.neverendingMarketing = false;
     gameState.cheats.freezeWeather = false;
     gameState.cheats.disablePlantAging = false;
-    gameState.cheats.disableGrassGrowing = false;
     gameState.cheats.allowArbitraryRideTypeChanges = false;
     gameState.cheats.disableRideValueAging = false;
     gameState.cheats.ignoreResearchStatus = false;
@@ -71,9 +77,9 @@ void CheatsSerialise(DataSerialiser& ds)
     uint16_t count = 0;
     auto& gameState = getGameState();
 
-    if (ds.isSaving())
+    if (ds.IsSaving())
     {
-        IStream& stream = ds.getStream();
+        IStream& stream = ds.GetStream();
 
         // Temporarily write 0, will be updated after every cheat is written.
         uint64_t countOffset = stream.GetPosition();
@@ -96,7 +102,6 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::freezeWeather, gameState.cheats.freezeWeather, count);
         CheatEntrySerialise(ds, CheatType::disableTrainLengthLimit, gameState.cheats.disableTrainLengthLimit, count);
         CheatEntrySerialise(ds, CheatType::disablePlantAging, gameState.cheats.disablePlantAging, count);
-        CheatEntrySerialise(ds, CheatType::disableGrassGrowing, gameState.cheats.disableGrassGrowing, count);
         CheatEntrySerialise(ds, CheatType::enableChainLiftOnAllTrack, gameState.cheats.enableChainLiftOnAllTrack, count);
         CheatEntrySerialise(
             ds, CheatType::allowArbitraryRideTypeChanges, gameState.cheats.allowArbitraryRideTypeChanges, count);
@@ -184,9 +189,6 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::disablePlantAging:
                     ds << gameState.cheats.disablePlantAging;
-                    break;
-                case CheatType::disableGrassGrowing:
-                    ds << gameState.cheats.disableGrassGrowing;
                     break;
                 case CheatType::enableChainLiftOnAllTrack:
                     ds << gameState.cheats.enableChainLiftOnAllTrack;
@@ -289,8 +291,6 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_REMOVE_LITTER);
         case CheatType::disablePlantAging:
             return LanguageGetString(STR_CHEAT_DISABLE_PLANT_AGING);
-        case CheatType::disableGrassGrowing:
-            return LanguageGetString(STR_CHEAT_DISABLE_GRASS_GROWING);
         case CheatType::setStaffSpeed:
             return LanguageGetString(STR_CHEAT_STAFF_SPEED);
         case CheatType::renewRides:

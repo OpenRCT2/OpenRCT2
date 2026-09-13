@@ -11,12 +11,11 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2 {
-constexpr RideTypeDescriptor kMiniGolfRTD =
+constexpr RideTypeDescriptor MiniGolfRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::endStation,
@@ -30,10 +29,10 @@ constexpr RideTypeDescriptor kMiniGolfRTD =
     .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::noTestMode, RtdFlag::hasTrack, RtdFlag::hasOneStation,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
-    .rideModes = { RideMode::continuousCircuit },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF },
-    .NameConvention = { RideComponentType::player, RideComponentType::course, RideComponentType::station },
+    .NameConvention = { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station },
     .availableBreakdowns = {},
     .Heights = { 7, 32, 2, 2, },
     .MaxMass = 255,
@@ -50,37 +49,37 @@ constexpr RideTypeDescriptor kMiniGolfRTD =
         { Drawing::Colour::mossGreen, Drawing::Colour::bordeauxRed, Drawing::Colour::darkBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "mini_golf",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 50), RideRating::make(0, 90), RideRating::make(0, 00) },
         0,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,      6000, 873, 0, 0 },
-            { RatingsModifierType::bonusTurns,       0,    14860, 0, 0 },
+            { RatingsModifierType::BonusLength,      6000, 873, 0, 0 },
+            { RatingsModifierType::BonusTurns,       0,    14860, 0, 0 },
             // The first six holes used to benefit from bonuses intended for inversions.
-            { RatingsModifierType::bonusHoles,       6,    6, 0, 0 },
-            { RatingsModifierType::bonusSheltered,   0,    5140, 6553, 4681 },
-            { RatingsModifierType::bonusProximity,   0,    15657, 0, 0 },
-            { RatingsModifierType::bonusScenery,     0,    27887, 0, 0 },
-            { RatingsModifierType::bonusHoles,       31,   5, 0, 0 },
-            { RatingsModifierType::requirementHoles, 1,    8, 2, 2 },
+            { RatingsModifierType::BonusHoles,       6,    6, 0, 0 },
+            { RatingsModifierType::BonusSheltered,   0,    5140, 6553, 4681 },
+            { RatingsModifierType::BonusProximity,   0,    15657, 0, 0 },
+            { RatingsModifierType::BonusScenery,     0,    27887, 0, 0 },
+            { RatingsModifierType::BonusHoles,       31,   5, 0, 0 },
+            { RatingsModifierType::RequirementHoles, 1,    8, 2, 2 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::standard,
+    .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = nullptr,
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_MiniGolf,
     .specialType = RtdSpecialType::miniGolf,

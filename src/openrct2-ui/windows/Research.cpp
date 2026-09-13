@@ -10,8 +10,8 @@
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
@@ -25,6 +25,8 @@
 #include <openrct2/management/Research.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/world/Scenery.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -323,16 +325,16 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex)
     {
+        const auto& gameState = getGameState();
         // Offset the widget index to allow reuse from other windows
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
-        w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].setHidden();
+        w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WidgetType::empty;
 
         // Display button to link to the last development, if there is one
-        const auto& gameState = getGameState();
         if (gameState.researchLastItem.has_value())
         {
             auto type = gameState.researchLastItem->type;
-            w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].setVisible();
+            w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].type = WidgetType::flatBtn;
             const auto image = type == Research::EntryType::ride ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
             w->widgets[WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset].image = ImageId(image);
         }
@@ -481,7 +483,7 @@ namespace OpenRCT2::Ui::Windows
         }
         WindowDropdownShowTextCustomWidth(
             { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-            w->colours[1], 0, {}, 4, dropdownWidget->width() - 4);
+            w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 4);
 
         int32_t currentResearchLevel = gameState.researchFundingLevel;
         gDropdown.items[currentResearchLevel].setChecked(true);
@@ -529,15 +531,15 @@ namespace OpenRCT2::Ui::Windows
         const auto& gameState = getGameState();
         auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-        if (gameState.park.flags.has(ParkFlag::noMoney) || gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+        if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) || gameState.researchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
         {
-            w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].setHidden();
-            w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].setHidden();
+            w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WidgetType::empty;
+            w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WidgetType::empty;
         }
         else
         {
-            w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].setVisible();
-            w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].setVisible();
+            w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WidgetType::dropdownMenu;
+            w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WidgetType::button;
         }
 
         // Current funding
@@ -560,7 +562,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowResearchFundingDraw(WindowBase* w, Drawing::RenderTarget& rt)
     {
         const auto& gameState = getGameState();
-        if (gameState.park.flags.has(ParkFlag::noMoney))
+        if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
             return;
 
         int32_t currentResearchLevel = gameState.researchFundingLevel;

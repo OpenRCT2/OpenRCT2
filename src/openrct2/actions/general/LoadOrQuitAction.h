@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../interface/WindowTypes.h"
+#include "../../interface/Window.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
@@ -20,7 +20,7 @@ namespace OpenRCT2::GameActions
         closeSavePrompt
     };
 
-    class LoadOrQuitAction final : public GameActionBase<GameCommand::loadOrQuit>
+    class LoadOrQuitAction final : public GameActionBase<GameCommand::LoadOrQuit>
     {
     private:
         LoadOrQuitModes _mode{};

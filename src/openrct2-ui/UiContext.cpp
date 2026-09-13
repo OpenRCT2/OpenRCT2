@@ -12,15 +12,18 @@
 #include "CursorRepository.h"
 #include "SDLException.h"
 #include "TextComposition.h"
+#include "UiStringIds.h"
 #include "WindowManager.h"
 #include "drawing/engines/DrawingEngineFactory.hpp"
 #include "input/ShortcutManager.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
+#include "interface/Viewport.h"
 #include "scripting/UiExtensions.h"
 #include "title/TitleSequencePlayer.h"
 
 #include <SDL.h>
+#include <chrono>
 #include <cmath>
 #include <cstdlib>
 #include <memory>
@@ -35,17 +38,15 @@
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/drawing/NewDrawing.h>
-#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/ScreenCoords.hpp>
-#include <openrct2/interface/Viewport.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/Location.hpp>
 #include <vector>
 
 #ifdef __EMSCRIPTEN__
@@ -233,11 +234,6 @@ public:
     {
         uint32_t windowFlags = GetWindowFlags();
         return (windowFlags & SDL_WINDOW_INPUT_FOCUS) != 0;
-    }
-
-    void requestUserAttention() override
-    {
-        SDL_FlashWindow(_window, SDL_FLASH_UNTIL_FOCUSED);
     }
 
     bool IsMinimised() override
@@ -812,7 +808,7 @@ private:
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
         uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
-        if (Config::Get().general.drawingEngine == DrawingEngine::openGL)
+        if (Config::Get().general.drawingEngine == DrawingEngine::OpenGL)
         {
             flags |= SDL_WINDOW_OPENGL;
         }

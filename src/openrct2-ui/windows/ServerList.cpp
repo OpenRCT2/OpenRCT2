@@ -13,22 +13,23 @@
     #include <chrono>
     #include <openrct2-ui/interface/Dropdown.h>
     #include <openrct2-ui/interface/Widget.h>
-    #include <openrct2-ui/interface/Window.h>
     #include <openrct2-ui/windows/Windows.h>
     #include <openrct2/Context.h>
     #include <openrct2/Diagnostic.h>
     #include <openrct2/SpriteIds.h>
     #include <openrct2/config/Config.h>
+    #include <openrct2/core/Json.hpp>
     #include <openrct2/drawing/ColourMap.h>
     #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Rectangle.h>
-    #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/drawing/Text.h>
     #include <openrct2/localisation/Formatter.h>
     #include <openrct2/network/Network.h>
     #include <openrct2/network/ServerList.h>
+    #include <openrct2/platform/Platform.h>
     #include <openrct2/ui/WindowManager.h>
+    #include <tuple>
 
 using namespace OpenRCT2::Drawing;
 
@@ -233,7 +234,7 @@ namespace OpenRCT2::Ui::Windows
                     windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].contentOffsetX,
                     windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].contentOffsetY
                 };
-                WindowDropdownShowText(dropdownPos, 0, { Drawing::Colour::grey }, { Dropdown::Flag::autoClose }, dropdownItems);
+                WindowDropdownShowText(dropdownPos, 0, { Drawing::Colour::grey }, 0, dropdownItems);
             }
         }
 

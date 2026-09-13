@@ -9,12 +9,16 @@
 
 #include "RideSetAppearanceAction.h"
 
+#include "../../Cheats.h"
+#include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../core/MemoryStream.h"
+#include "../../drawing/Drawing.h"
 #include "../../localisation/StringIds.h"
 #include "../../ride/Ride.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -100,15 +104,15 @@ namespace OpenRCT2::GameActions
         {
             case RideSetAppearanceType::trackColourMain:
                 ride->trackColours[_index].main = static_cast<Drawing::Colour>(_value);
-                Drawing::GfxInvalidateScreen();
+                GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::trackColourAdditional:
                 ride->trackColours[_index].additional = static_cast<Drawing::Colour>(_value);
-                Drawing::GfxInvalidateScreen();
+                GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::trackColourSupports:
                 ride->trackColours[_index].supports = static_cast<Drawing::Colour>(_value);
-                Drawing::GfxInvalidateScreen();
+                GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::vehicleColourBody:
                 ride->vehicleColours[_index].Body = static_cast<Drawing::Colour>(_value);
@@ -132,7 +136,7 @@ namespace OpenRCT2::GameActions
                 break;
             case RideSetAppearanceType::entranceStyle:
                 ride->entranceStyle = _value;
-                Drawing::GfxInvalidateScreen();
+                GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::sellingItemColourIsRandom:
                 ride->flags.set(RideFlag::randomShopColours, static_cast<bool>(_value));
@@ -143,9 +147,9 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByNumber(WindowClass::ride, _rideIndex.ToUnderlying());
 
         auto res = Result();
-        if (!ride->overallView.isNull())
+        if (!ride->overallView.IsNull())
         {
-            auto location = ride->overallView.toTileCentre();
+            auto location = ride->overallView.ToTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
 

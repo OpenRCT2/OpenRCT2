@@ -9,15 +9,20 @@
 
 #include "LandSetRightsAction.h"
 
+#include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../actions/terraform/LandSetHeightAction.h"
 #include "../../audio/Audio.h"
 #include "../../core/Numerics.hpp"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
+#include "../../ride/RideData.h"
+#include "../../windows/Intent.h"
 #include "../../world/Map.h"
 #include "../../world/Park.h"
+#include "../../world/Scenery.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/tile_element/EntranceElement.h"
 #include "../../world/tile_element/SurfaceElement.h"
@@ -26,14 +31,14 @@ namespace OpenRCT2::GameActions
 {
     using namespace OpenRCT2::Numerics;
 
-    LandSetRightsAction::LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, OwnershipFlags ownership)
+    LandSetRightsAction::LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership)
         : _range(range)
         , _setting(setting)
         , _ownership(ownership)
     {
     }
 
-    LandSetRightsAction::LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, OwnershipFlags ownership)
+    LandSetRightsAction::LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership)
         : _range(coord.x, coord.y, coord.x, coord.y)
         , _setting(setting)
         , _ownership(ownership)
@@ -44,7 +49,7 @@ namespace OpenRCT2::GameActions
     {
         visitor.Visit(_range);
         visitor.Visit("setting", _setting);
-        visitor.Visit("ownership", _ownership.holder);
+        visitor.Visit("ownership", _ownership);
     }
 
     uint16_t LandSetRightsAction::GetActionFlags() const
@@ -56,7 +61,7 @@ namespace OpenRCT2::GameActions
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_range) << DS_TAG(_setting) << DS_TAG(_ownership.holder);
+        stream << DS_TAG(_range) << DS_TAG(_setting) << DS_TAG(_ownership);
     }
 
     Result LandSetRightsAction::Query(GameState_t& gameState, Park::ParkData& park) const
@@ -73,9 +78,9 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        auto validRange = ClampRangeWithinMap(_range.normalise());
-        CoordsXYZ centre{ (validRange.getX1() + validRange.getX2()) / 2 + 16,
-                          (validRange.getY1() + validRange.getY2()) / 2 + 16, 0 };
+        auto validRange = ClampRangeWithinMap(_range.Normalise());
+        CoordsXYZ centre{ (validRange.GetX1() + validRange.GetX2()) / 2 + 16,
+                          (validRange.GetY1() + validRange.GetY2()) / 2 + 16, 0 };
         centre.z = TileElementHeight(centre);
 
         res.position = centre;
@@ -87,9 +92,9 @@ namespace OpenRCT2::GameActions
         }
 
         // Game command modified to accept selection size
-        for (auto y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
+        for (auto y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
         {
-            for (auto x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
+            for (auto x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;
@@ -124,16 +129,15 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::unownLand:
                 if (isExecuting)
                 {
-                    surfaceElement->setOwnership(surfaceElement->getOwnership().without(
-                        OwnershipFlag::landOwned, OwnershipFlag::constructionRightsOwned));
+                    surfaceElement->SetOwnership(
+                        surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
                     Park::UpdateFencesAroundTile(loc);
                 }
                 return res;
             case LandSetRightSetting::unownConstructionRights:
                 if (isExecuting)
                 {
-                    surfaceElement->setOwnership(
-                        surfaceElement->getOwnership().without(OwnershipFlag::constructionRightsOwned));
+                    surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -141,7 +145,7 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::setForSale:
                 if (isExecuting)
                 {
-                    surfaceElement->setOwnership(surfaceElement->getOwnership().with(OwnershipFlag::landForSale));
+                    surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
@@ -149,31 +153,31 @@ namespace OpenRCT2::GameActions
             case LandSetRightSetting::setConstructionRightsForSale:
                 if (isExecuting)
                 {
-                    surfaceElement->setOwnership(surfaceElement->getOwnership().with(OwnershipFlag::constructionRightsForSale));
+                    surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }
                 return res;
             case LandSetRightSetting::setOwnershipWithChecks:
             {
-                if (_ownership == surfaceElement->getOwnership())
+                if (_ownership == surfaceElement->GetOwnership())
                 {
                     return res;
                 }
 
                 for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
                 {
-                    if (entranceElement->getEntranceType() != EntranceType::parkEntrance)
+                    if (entranceElement->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                         continue;
 
                     // Do not allow ownership of park entrance.
-                    if (_ownership == OwnershipFlag::landOwned || _ownership == OwnershipFlag::landForSale)
+                    if (_ownership == OWNERSHIP_OWNED || _ownership == OWNERSHIP_AVAILABLE)
                         return res;
 
                     // Allow construction rights available / for sale on park entrances on surface.
                     // There is no need to check the height if _ownership is 0 (unowned and no rights available).
-                    if (_ownership == OwnershipFlag::constructionRightsOwned
-                        || _ownership == OwnershipFlag::constructionRightsForSale)
+                    if (_ownership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED
+                        || _ownership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
                     {
                         if (entranceElement->baseHeight - 3 > surfaceElement->baseHeight
                             || entranceElement->baseHeight < surfaceElement->baseHeight)
@@ -183,35 +187,35 @@ namespace OpenRCT2::GameActions
                     }
                 }
 
-                const auto currentOwnership = surfaceElement->getOwnership();
+                const uint8_t currentOwnership = surfaceElement->GetOwnership();
 
                 // Are land rights or construction rights currently owned?
-                if (!currentOwnership.hasAny(OwnershipFlag::landOwned, OwnershipFlag::constructionRightsOwned))
+                if (!(currentOwnership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)))
                 {
                     // Buying land
-                    if (!(currentOwnership.has(OwnershipFlag::landOwned) && _ownership.has(OwnershipFlag::landOwned)))
+                    if (!(currentOwnership & OWNERSHIP_OWNED) && (_ownership & OWNERSHIP_OWNED))
                         res.cost = gameState.scenarioOptions.landPrice;
 
                     // Buying construction rights
-                    if (!(currentOwnership.has(OwnershipFlag::constructionRightsOwned))
-                        && _ownership.has(OwnershipFlag::constructionRightsOwned))
+                    if (!(currentOwnership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+                        && (_ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED))
                         res.cost = gameState.scenarioOptions.constructionRightsPrice;
                 }
                 else
                 {
                     // Selling land
-                    if ((currentOwnership.has(OwnershipFlag::landOwned)) && !(_ownership.has(OwnershipFlag::landOwned)))
+                    if ((currentOwnership & OWNERSHIP_OWNED) && !(_ownership & OWNERSHIP_OWNED))
                         res.cost = -gameState.scenarioOptions.landPrice;
 
                     // Selling construction rights
-                    if ((currentOwnership.has(OwnershipFlag::constructionRightsOwned))
-                        && !(_ownership.has(OwnershipFlag::constructionRightsOwned)))
+                    if ((currentOwnership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+                        && !(_ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED))
                         res.cost = -gameState.scenarioOptions.constructionRightsPrice;
                 }
 
                 if (isExecuting)
                 {
-                    if (_ownership != kUnowned)
+                    if (_ownership != OWNERSHIP_UNOWNED)
                     {
                         gameState.peepSpawns.erase(
                             std::remove_if(
@@ -221,7 +225,7 @@ namespace OpenRCT2::GameActions
                                 }),
                             gameState.peepSpawns.end());
                     }
-                    surfaceElement->setOwnership(_ownership);
+                    surfaceElement->SetOwnership(_ownership);
                     Park::UpdateFencesAroundTile(loc);
                     gMapLandRightsUpdateSuccess = true;
                 }

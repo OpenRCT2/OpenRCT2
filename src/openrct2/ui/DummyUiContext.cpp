@@ -71,9 +71,6 @@ namespace OpenRCT2::Ui
         {
             return false;
         }
-        void requestUserAttention() override
-        {
-        }
         bool IsMinimised() override
         {
             return false;
@@ -128,7 +125,7 @@ namespace OpenRCT2::Ui
         }
         CursorID GetCursor() override
         {
-            return CursorID::arrow;
+            return CursorID::Arrow;
         }
         void SetCursor(CursorID /*cursor*/) override
         {

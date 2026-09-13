@@ -43,7 +43,7 @@ namespace OpenRCT2
 namespace OpenRCT2::Scripting
 {
     // Grepped from CI (.github/workflows/publish-plugin-types.yml); keep the format `kPluginApiVersion = N`.
-    static constexpr int32_t kPluginApiVersion = 122;
+    static constexpr int32_t kPluginApiVersion = 113;
 
     // Versions marking breaking changes.
     static constexpr int32_t kApiVersionPeepDeprecation = 33;
@@ -211,7 +211,7 @@ namespace OpenRCT2::Scripting
             for (const auto& plugin : _plugins)
             {
                 const auto& metadata = plugin->GetMetadata();
-                if (metadata.Type == PluginType::remote)
+                if (metadata.Type == PluginType::Remote)
                 {
                     res.push_back(plugin);
                 }

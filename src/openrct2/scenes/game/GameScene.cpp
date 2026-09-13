@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2026 OpenRCT2 developers
+ * Copyright (c) 2014-2019 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../../Context.h"
 #include "../../Diagnostic.h"
+#include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"

@@ -11,7 +11,6 @@
 
     #include "SwapFramebuffer.h"
 
-    #include "ApplyTransparencyShader.h"
     #include "OpenGLFramebuffer.h"
 
 using namespace OpenRCT2::Ui;

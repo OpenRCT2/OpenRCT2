@@ -11,13 +11,9 @@
 
 #include <openrct2/Context.h>
 #include <openrct2/core/Money.hpp>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/interface/ColourWithFlags.h>
-#include <openrct2/interface/ScreenCoords.hpp>
-
-namespace OpenRCT2::Drawing
-{
-    struct RenderTarget;
-}
+#include <openrct2/world/Location.hpp>
 
 namespace OpenRCT2::Graph
 {
@@ -39,11 +35,11 @@ namespace OpenRCT2::Graph
 
         void RecalculateLayout(const ScreenRect newBounds, const int32_t newNumYLabels, const int32_t newNumPoints)
         {
-            yLabelStepPx = (newBounds.getBottom() - newBounds.getTop()) / (newNumYLabels - 1);
-            xStepPx = (newBounds.getRight() - newBounds.getLeft()) / (newNumPoints - 1);
+            yLabelStepPx = (newBounds.GetBottom() - newBounds.GetTop()) / (newNumYLabels - 1);
+            xStepPx = (newBounds.GetRight() - newBounds.GetLeft()) / (newNumPoints - 1);
             // adjust bounds to be exact multiples of the steps.
-            internalBounds = { newBounds.point1,
-                               newBounds.point1
+            internalBounds = { newBounds.Point1,
+                               newBounds.Point1
                                    + ScreenCoordsXY{ xStepPx * (newNumPoints - 1), yLabelStepPx * (newNumYLabels - 1) } };
             numPoints = newNumPoints;
             numYLabels = newNumYLabels;
@@ -54,9 +50,9 @@ namespace OpenRCT2::Graph
             const ScreenCoordsXY cursorPos = ContextGetCursorPositionScaled();
 
             int32_t i = -1;
-            if (internalBounds.contains(cursorPos))
+            if (internalBounds.Contains(cursorPos))
             {
-                i = (numPoints - 1) - (cursorPos.x - internalBounds.getLeft() + (xStepPx / 2)) / xStepPx;
+                i = (numPoints - 1) - (cursorPos.x - internalBounds.GetLeft() + (xStepPx / 2)) / xStepPx;
                 if (i < 0)
                     i = 1;
                 if (i > numPoints - 1)

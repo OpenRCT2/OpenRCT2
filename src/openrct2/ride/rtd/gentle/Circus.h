@@ -9,14 +9,14 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kCircusRTD =
+constexpr RideTypeDescriptor CircusRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack3x3,
@@ -31,10 +31,10 @@ constexpr RideTypeDescriptor kCircusRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::hasVehicleColours,
                      RtdFlag::hasMusicByDefault, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::circus },
+    .RideModes = EnumsToFlags(RideMode::circus),
     .DefaultMode = RideMode::circus,
     .Naming = { STR_RIDE_NAME_CIRCUS, STR_RIDE_DESCRIPTION_CIRCUS },
-    .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },
+    .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 128, 3, 2, },
     .MaxMass = 255,
@@ -48,27 +48,27 @@ constexpr RideTypeDescriptor kCircusRTD =
     .BonusValue = 39,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "circus",
     .RatingsData =
     {
-        RatingsCalculationType::flatRide,
+        RatingsCalculationType::FlatRide,
         { RideRating::make(2, 10), RideRating::make(0, 30), RideRating::make(0, 0) },
         9,
         7,
         false,
-        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::CircusStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = CircusMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::standard,
+    .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = nullptr,
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default,
     .MusicTrackOffsetLength = RideAudio::RideMusicGetTrackOffsetLength_Circus,

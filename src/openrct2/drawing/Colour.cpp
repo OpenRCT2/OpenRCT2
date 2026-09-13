@@ -10,8 +10,6 @@
 #include "Colour.h"
 
 #include "../core/EnumMap.hpp"
-#include "../scenario/Scenario.h"
-#include "../util/Util.h"
 
 namespace OpenRCT2::Drawing
 {
@@ -87,20 +85,5 @@ namespace OpenRCT2::Drawing
             return u8string(result->first);
 
         return "black";
-    }
-
-    Colour getRandomColour()
-    {
-        return static_cast<Colour>(UtilRand() % kColourNumNormal);
-    }
-
-    Colour getRandomColourNetworkSafe()
-    {
-        return static_cast<Colour>(ScenarioRandMax(kColourNumNormal));
-    }
-
-    Colour getCycleColour(uint32_t ticks)
-    {
-        return Colour((ticks / 32) % kColourNumNormal);
     }
 } // namespace OpenRCT2::Drawing

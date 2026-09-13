@@ -13,6 +13,7 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../object/ObjectEntryManager.h"
@@ -20,6 +21,8 @@
 #include "../../world/Footpath.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
+#include "../../world/Scenery.h"
 #include "../../world/tile_element/PathElement.h"
 
 namespace OpenRCT2::GameActions
@@ -81,15 +84,15 @@ namespace OpenRCT2::GameActions
         }
 
         auto pathElement = tileElement->asPath();
-        if (pathElement->isLevelCrossing(_loc))
+        if (pathElement->IsLevelCrossing(_loc))
         {
             return Result(
                 Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS);
         }
 
         // No change
-        if (!GetFlags().has(CommandFlag::ghost) && pathElement->getAdditionEntryIndex() == _entryIndex
-            && !(pathElement->isBroken()))
+        if (!GetFlags().has(CommandFlag::ghost) && pathElement->GetAdditionEntryIndex() == _entryIndex
+            && !(pathElement->IsBroken()))
         {
             return res;
         }
@@ -102,23 +105,23 @@ namespace OpenRCT2::GameActions
         }
         uint16_t sceneryFlags = pathAdditionEntry->flags;
 
-        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->isSloped())
+        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
         }
 
-        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->isQueue())
+        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
         }
 
         if (!(sceneryFlags & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
-            && (pathElement->getEdges()) == 0x0F)
+            && (pathElement->GetEdges()) == 0x0F)
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_PLACED_ON_PATH_EDGES);
         }
 
-        if ((sceneryFlags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->isQueue())
+        if ((sceneryFlags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
         }
@@ -129,7 +132,7 @@ namespace OpenRCT2::GameActions
         if (GetFlags().has(CommandFlag::ghost))
         {
             // Check if there is something on the path already
-            if (pathElement->hasAddition())
+            if (pathElement->HasAddition())
             {
                 return Result(Status::itemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, kStringIdNone);
             }
@@ -153,8 +156,8 @@ namespace OpenRCT2::GameActions
         }
 
         // No change
-        if (!GetFlags().has(CommandFlag::ghost) && pathElement->getAdditionEntryIndex() == _entryIndex
-            && !(pathElement->isBroken()) && !pathElement->additionIsGhost())
+        if (!GetFlags().has(CommandFlag::ghost) && pathElement->GetAdditionEntryIndex() == _entryIndex
+            && !(pathElement->IsBroken()) && !pathElement->AdditionIsGhost())
         {
             return res;
         }
@@ -170,19 +173,19 @@ namespace OpenRCT2::GameActions
 
         if (GetFlags().has(CommandFlag::ghost))
         {
-            pathElement->setAdditionIsGhost(true);
+            pathElement->SetAdditionIsGhost(true);
         }
         else
         {
             FootpathInterruptPeeps(_loc);
-            pathElement->setAdditionIsGhost(false);
+            pathElement->SetAdditionIsGhost(false);
         }
 
-        pathElement->setAdditionEntryIndex(_entryIndex);
-        pathElement->setIsBroken(false);
+        pathElement->SetAdditionEntryIndex(_entryIndex);
+        pathElement->SetIsBroken(false);
         if (pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
         {
-            pathElement->setAdditionStatus(255);
+            pathElement->SetAdditionStatus(255);
         }
         MapInvalidateTileFull(_loc);
         return res;

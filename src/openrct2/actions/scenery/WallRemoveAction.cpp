@@ -12,6 +12,7 @@
 #include "../../Cheats.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../world/Location.hpp"
@@ -84,7 +85,7 @@ namespace OpenRCT2::GameActions
         res.position.y = _loc.y + 16;
         res.position.z = _loc.z;
 
-        wallElement->removeBannerEntry();
+        wallElement->RemoveBannerEntry();
         MapInvalidateTileZoom1({ _loc, wallElement->getBaseZ(), (wallElement->getBaseZ()) + 72 });
         TileElementRemove(wallElement);
 

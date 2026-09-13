@@ -13,8 +13,12 @@
 
     #include "../Context.h"
     #include "../Diagnostic.h"
+    #include "../OpenRCT2.h"
     #include "../core/File.h"
     #include "ScriptEngine.h"
+
+    #include <fstream>
+    #include <memory>
 
 using namespace OpenRCT2::Scripting;
 
@@ -212,11 +216,11 @@ void Plugin::SetMetadata(const JSValue obj)
 PluginType Plugin::ParsePluginType(std::string_view type)
 {
     if (type == "local")
-        return PluginType::local;
+        return PluginType::Local;
     if (type == "remote")
-        return PluginType::remote;
+        return PluginType::Remote;
     if (type == "intransient")
-        return PluginType::intransient;
+        return PluginType::Intransient;
     throw std::invalid_argument("Unknown plugin type.");
 }
 
@@ -231,7 +235,7 @@ int32_t Plugin::GetTargetAPIVersion() const
 
 bool Plugin::IsTransient() const
 {
-    return _metadata.Type != PluginType::intransient;
+    return _metadata.Type != PluginType::Intransient;
 }
 
 #endif

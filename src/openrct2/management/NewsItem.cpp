@@ -116,7 +116,7 @@ void News::InitQueue(GameState_t& gameState)
         warningThrottle = 0;
     }
 
-    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
+    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
     ContextBroadcastIntent(&intent);
 }
 
@@ -163,7 +163,7 @@ void News::UpdateCurrentItem()
     if (gameState.newsItems.isEmpty())
         return;
 
-    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
+    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
     ContextBroadcastIntent(&intent);
 
     // Update the current news item
@@ -199,7 +199,7 @@ void News::ItemQueues::archiveCurrent()
     _recent.pop_front();
 
     // Invalidate current news item bar
-    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
+    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
     ContextBroadcastIntent(&intent);
 }
 
@@ -220,17 +220,17 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
         case ItemType::ride:
         {
             Ride* ride = GetRide(RideId::FromUnderlying(subject));
-            if (ride == nullptr || ride->overallView.isNull())
+            if (ride == nullptr || ride->overallView.IsNull())
             {
                 break;
             }
-            auto rideViewCentre = ride->overallView.toTileCentre();
+            auto rideViewCentre = ride->overallView.ToTileCentre();
             subjectLoc = CoordsXYZ{ rideViewCentre, TileElementHeight(rideViewCentre) };
             break;
         }
         case ItemType::peepOnRide:
         {
-            auto peep = gameState.entities.tryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep == nullptr)
                 break;
 
@@ -238,14 +238,14 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             if (subjectLoc->x != kLocationNull)
                 break;
 
-            if (peep->state != PeepState::onRide && peep->state != PeepState::enteringRide)
+            if (peep->State != PeepState::onRide && peep->State != PeepState::enteringRide)
             {
                 subjectLoc = std::nullopt;
                 break;
             }
 
             // Find which ride peep is on
-            Ride* ride = GetRide(peep->currentRide);
+            Ride* ride = GetRide(peep->CurrentRide);
             if (ride == nullptr || !ride->flags.has(RideFlag::onTrack))
             {
                 subjectLoc = std::nullopt;
@@ -253,11 +253,11 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             }
 
             // Find the first car of the train peep is on
-            auto sprite = gameState.entities.tryGetEntity<Vehicle>(ride->vehicles[peep->currentTrain]);
+            auto sprite = gameState.entities.TryGetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
             // Find the actual car peep is on
-            for (int32_t i = 0; i < peep->currentCar && sprite != nullptr; i++)
+            for (int32_t i = 0; i < peep->CurrentCar && sprite != nullptr; i++)
             {
-                sprite = gameState.entities.tryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
+                sprite = gameState.entities.TryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
             }
             if (sprite != nullptr)
             {
@@ -267,7 +267,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
         }
         case ItemType::peep:
         {
-            auto peep = gameState.entities.tryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = gameState.entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
                 subjectLoc = peep->getLocation();
@@ -279,7 +279,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             auto subjectUnsigned = static_cast<uint32_t>(subject);
             auto subjectXY = CoordsXY{ static_cast<int16_t>(subjectUnsigned & 0xFFFF),
                                        static_cast<int16_t>(subjectUnsigned >> 16) };
-            if (!subjectXY.isNull())
+            if (!subjectXY.IsNull())
             {
                 subjectLoc = CoordsXYZ{ subjectXY, TileElementHeight(subjectXY) };
             }
@@ -380,7 +380,7 @@ void News::OpenSubject(ItemType type, int32_t subject)
         case ItemType::peepOnRide:
         case ItemType::peep:
         {
-            auto peep = getGameState().entities.tryGetEntity<Peep>(EntityId::FromUnderlying(subject));
+            auto peep = getGameState().entities.TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
                 auto intent = Intent(WindowClass::peep);
@@ -447,7 +447,7 @@ void News::DisableNewsItems(ItemType type, uint32_t assoc)
             newsItem.setFlags(ItemFlags::hasButton);
             if (&newsItem == &gameState.newsItems.current())
             {
-                auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
+                auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
                 ContextBroadcastIntent(&intent);
             }
         }

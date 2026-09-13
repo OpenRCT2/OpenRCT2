@@ -11,9 +11,10 @@
 
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
+#include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../world/Map.h"
 
@@ -57,12 +58,12 @@ namespace OpenRCT2::GameActions
 
     static void InvalidatePatrolTiles(const MapRange& range)
     {
-        MapInvalidateRegion(range.point1, range.point2);
+        MapInvalidateRegion(range.Point1, range.Point2);
     }
 
     Result StaffSetPatrolAreaAction::QueryExecute(GameState_t& gameState, bool executing) const
     {
-        auto staff = gameState.entities.tryGetEntity<Staff>(_spriteId);
+        auto staff = gameState.entities.TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteID %u", _spriteId.ToUnderlying());
@@ -70,9 +71,9 @@ namespace OpenRCT2::GameActions
         }
 
         auto validRange = ClampRangeWithinMap(_range);
-        for (int32_t y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
+        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
+            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                 {
@@ -99,7 +100,7 @@ namespace OpenRCT2::GameActions
                     break;
                 case StaffSetPatrolAreaMode::clearAll:
                     staff->clearPatrolArea();
-                    Drawing::GfxInvalidateScreen();
+                    GfxInvalidateScreen();
                     break;
             }
             UpdateConsolidatedPatrolAreas();

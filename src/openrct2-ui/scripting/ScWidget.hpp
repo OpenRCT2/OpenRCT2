@@ -19,7 +19,6 @@
 
     #include <memory>
     #include <openrct2/Context.h>
-    #include <openrct2/Input.h>
     #include <openrct2/scripting/IconNames.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <openrct2/ui/WindowManager.h>
@@ -558,11 +557,6 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        static bool isImageButton(WidgetType type)
-        {
-            return type == WidgetType::flatBtn || type == WidgetType::imgBtn || type == WidgetType::hiddenButton;
-        }
-
         static JSValue border_get(JSContext* ctx, JSValue thisVal)
         {
             auto widget = GetWidget(thisVal);
@@ -577,10 +571,12 @@ namespace OpenRCT2::Scripting
             JS_UNPACK_BOOL(valueBool, ctx, value);
 
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && isImageButton(widget->type))
+            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
             {
-                // hiddenButton rather than flatBtn, so that themes do not draw a border anyway.
-                widget->type = valueBool ? WidgetType::imgBtn : WidgetType::hiddenButton;
+                if (valueBool)
+                    widget->type = WidgetType::imgBtn;
+                else
+                    widget->type = WidgetType::flatBtn;
                 Invalidate(thisVal);
             }
             return JS_UNDEFINED;
@@ -614,7 +610,7 @@ namespace OpenRCT2::Scripting
         static JSValue image_get(JSContext* ctx, JSValue thisVal)
         {
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && isImageButton(widget->type))
+            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
             {
                 if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
                 {
@@ -628,7 +624,7 @@ namespace OpenRCT2::Scripting
         static JSValue image_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && isImageButton(widget->type))
+            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
             {
                 widget->image = ImageId(ImageFromJSValue(ctx, value));
                 Invalidate(thisVal);
@@ -877,7 +873,6 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->CanSelect = valueBool;
-                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
@@ -900,14 +895,13 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->IsStriped = valueBool;
-                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
 
         static JSValue scrollbars_get(JSContext* ctx, JSValue thisVal)
         {
-            auto scrollType = ScrollbarType::none;
+            auto scrollType = ScrollbarType::None;
             auto listView = GetListView(thisVal);
             if (listView != nullptr)
             {
@@ -944,8 +938,6 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->ShowColumnHeaders = valueBool;
-                WindowUpdateScrollWidgets(*GetWindow(thisVal));
-                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
@@ -976,7 +968,6 @@ namespace OpenRCT2::Scripting
             if (listView != nullptr)
             {
                 listView->SelectedCell = RowColumnFromJS(ctx, value);
-                Invalidate(thisVal);
             }
             return JS_UNDEFINED;
         }
@@ -1067,7 +1058,6 @@ namespace OpenRCT2::Scripting
         {
             static constexpr JSCFunctionListEntry funcs[] = {
                 JS_CGETSET_DEF("maxLength", ScTextBoxWidget::maxLength_get, ScTextBoxWidget::maxLength_set),
-                JS_CGETSET_DEF("caret", ScTextBoxWidget::caret_get, ScTextBoxWidget::caret_set),
                 JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set), JS_CFUNC_DEF("focus", 0, ScTextBoxWidget::focus)
             };
             JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
@@ -1098,32 +1088,6 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
-        static JSValue caret_get(JSContext* ctx, JSValue thisVal)
-        {
-            WidgetData data = GetWidgetData(thisVal);
-            auto w = GetWindow(data._class, data._number);
-            if (IsCustomWindow(w) && IsActive(w, data._widgetIndex))
-            {
-                auto* session = GetTextboxSession();
-                return JS_NewInt64(ctx, session->SelectionStart);
-            }
-            return JS_NewInt64(ctx, 0);
-        }
-
-        static JSValue caret_set(JSContext* ctx, JSValue thisVal, JSValue value)
-        {
-            JS_UNPACK_INT64(valueInt, ctx, value);
-
-            WidgetData data = GetWidgetData(thisVal);
-            auto w = GetWindow(data._class, data._number);
-            if (IsCustomWindow(w) && IsActive(w, data._widgetIndex))
-            {
-                SetTextboxCaret(valueInt);
-                Invalidate(thisVal);
-            }
-            return JS_UNDEFINED;
-        }
-
         static JSValue focus(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             WidgetData data = GetWidgetData(thisVal);
@@ -1135,14 +1099,6 @@ namespace OpenRCT2::Scripting
                     *w, data._widgetIndex, wPtr->string, Ui::Windows::GetWidgetMaxLength(w, data._widgetIndex));
             }
             return JS_UNDEFINED;
-        }
-
-        static bool IsActive(WindowBase* window, WidgetIndex widgetIndex)
-        {
-            auto currentTextBox = GetCurrentTextBox();
-            return (
-                currentTextBox.window.classification == window->classification && currentTextBox.window.number == window->number
-                && currentTextBox.widgetIndex == widgetIndex);
         }
     };
 
@@ -1184,7 +1140,6 @@ namespace OpenRCT2::Scripting
             case WidgetType::button:
             case WidgetType::flatBtn:
             case WidgetType::imgBtn:
-            case WidgetType::hiddenButton:
                 ScButtonWidget::AddFuncs(ctx, newObj);
                 break;
             case WidgetType::checkbox:

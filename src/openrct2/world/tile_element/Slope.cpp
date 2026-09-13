@@ -9,7 +9,7 @@
 
 #include "Slope.h"
 
-#include "../../world/Location.hpp"
+#include "../../world/MapLimits.h"
 
 #include <array>
 

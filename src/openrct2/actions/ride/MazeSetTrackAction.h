@@ -20,7 +20,7 @@ namespace OpenRCT2::GameActions
         fill,
     };
 
-    class MazeSetTrackAction final : public GameActionBase<GameCommand::setMazeTrack>
+    class MazeSetTrackAction final : public GameActionBase<GameCommand::SetMazeTrack>
     {
     private:
         CoordsXYZD _loc;

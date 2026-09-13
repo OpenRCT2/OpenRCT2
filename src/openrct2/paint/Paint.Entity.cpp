@@ -9,14 +9,22 @@
 
 #include "Paint.Entity.h"
 
+#include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
+#include "../entity/Duck.h"
 #include "../entity/EntityList.h"
+#include "../entity/JumpingFountain.h"
+#include "../entity/MoneyEffect.h"
+#include "../entity/Particle.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../profiling/Profiling.h"
+#include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
+#include "../ride/Vehicle.h"
 #include "../world/Map.h"
-#include "Paint.h"
+#include "../world/Park.h"
+#include "../world/Weather.h"
 #include "entity/Paint.Balloon.h"
 #include "entity/Paint.CrashSplashParticle.h"
 #include "entity/Paint.Duck.h"
@@ -30,6 +38,7 @@
 #include "entity/Paint.SteamParticle.h"
 #include "entity/Paint.Vehicle.h"
 #include "entity/Paint.VehicleCrashParticle.h"
+#include "vehicle/VehiclePaint.h"
 
 #include <cassert>
 
@@ -111,10 +120,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
 
         const ZoomLevel zoom = session.rt.zoom_level;
-        if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.getTop())
-            || zoom.ApplyInversedTo(spriteRect.getBottom()) <= session.rt.y
-            || session.rt.x + session.rt.width <= zoom.ApplyInversedTo(spriteRect.getLeft())
-            || zoom.ApplyInversedTo(spriteRect.getRight()) <= session.rt.x)
+        if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.GetTop())
+            || zoom.ApplyInversedTo(spriteRect.GetBottom()) <= session.rt.y
+            || session.rt.x + session.rt.width <= zoom.ApplyInversedTo(spriteRect.GetLeft())
+            || zoom.ApplyInversedTo(spriteRect.GetRight()) <= session.rt.x)
         {
             continue;
         }

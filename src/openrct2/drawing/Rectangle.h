@@ -11,7 +11,6 @@
 
 #include <cstdint>
 
-struct ScreenCoordsXY;
 struct ScreenRect;
 
 namespace OpenRCT2
@@ -23,7 +22,6 @@ namespace OpenRCT2::Drawing
 {
     enum class FilterPaletteID : int32_t;
     enum class PaletteIndex : uint8_t;
-
     struct RenderTarget;
 } // namespace OpenRCT2::Drawing
 
@@ -52,5 +50,4 @@ namespace OpenRCT2::Drawing::Rectangle
         RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle = BorderStyle::outset,
         FillBrightness brightness = FillBrightness::light, FillMode fillMode = FillMode::standard);
     void filter(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
-    void filterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette);
 } // namespace OpenRCT2::Drawing::Rectangle

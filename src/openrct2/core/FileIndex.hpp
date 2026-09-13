@@ -151,16 +151,16 @@ private:
             LOG_VERBOSE("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
 
             auto pattern = OpenRCT2::Path::Combine(absoluteDirectory, _pattern);
-            auto scanner = OpenRCT2::Path::scanDirectory(pattern, true);
-            while (scanner->next())
+            auto scanner = OpenRCT2::Path::ScanDirectory(pattern, true);
+            while (scanner->Next())
             {
-                const auto& fileInfo = scanner->getFileInfo();
-                auto path = scanner->getPath();
+                const auto& fileInfo = scanner->GetFileInfo();
+                auto path = scanner->GetPath();
 
                 stats.TotalFiles++;
-                stats.TotalFileSize += fileInfo.size;
-                stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo.lastModified >> 32)
-                    ^ static_cast<uint32_t>(fileInfo.lastModified & 0xFFFFFFFF);
+                stats.TotalFileSize += fileInfo.Size;
+                stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo.LastModified >> 32)
+                    ^ static_cast<uint32_t>(fileInfo.LastModified & 0xFFFFFFFF);
                 stats.FileDateModifiedChecksum = OpenRCT2::Numerics::ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
 

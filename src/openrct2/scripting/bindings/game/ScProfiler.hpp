@@ -13,7 +13,6 @@
 
     #include "../../../profiling/Profiling.h"
     #include "../../ScriptEngine.h"
-
 namespace OpenRCT2::Scripting
 {
     class ScProfiler;

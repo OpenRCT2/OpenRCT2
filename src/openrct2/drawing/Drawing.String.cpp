@@ -7,10 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Drawing.String.h"
+#include "../drawing/Drawing.String.h"
 
+#include "../Context.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/CodepointView.hpp"
+#include "../core/String.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"
 #include "../drawing/ColourMap.h"
@@ -19,20 +22,15 @@
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
 #include "../interface/ColourWithFlags.h"
-#include "../interface/WindowTypes.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform.h"
-#include "Drawing.Sprite.h"
-#include "RenderTarget.h"
 #include "TTF.h"
 
 namespace OpenRCT2::Drawing
 {
     static TextColours _savedTextPalette{};
-
-    Drawing::Colour gCurrentWindowColours[3];
-
     /**
      *
      *  rct2: 0x006C23B1
@@ -588,7 +586,7 @@ namespace OpenRCT2::Drawing
     }
 
 #ifndef DISABLE_TTF
-    static bool shouldUseSpriteForCodepoint(UnicodeChar codepoint)
+    static bool shouldUseSpriteForCodepoint(char32_t codepoint)
     {
         switch (codepoint)
         {
@@ -596,19 +594,18 @@ namespace OpenRCT2::Drawing
             case UnicodeChar::down:
             case UnicodeChar::leftguillemet:
             case UnicodeChar::tick:
-            case UnicodeChar::dingbatMultiply:
             case UnicodeChar::cross:
             case UnicodeChar::right:
             case UnicodeChar::rightguillemet:
-            case UnicodeChar::smallUp:
-            case UnicodeChar::smallDown:
+            case UnicodeChar::small_up:
+            case UnicodeChar::small_down:
             case UnicodeChar::left:
-            case UnicodeChar::quoteOpen:
-            case UnicodeChar::quoteClose:
-            case UnicodeChar::germanQuoteOpen:
+            case UnicodeChar::quote_open:
+            case UnicodeChar::quote_close:
+            case UnicodeChar::german_quote_open:
             case UnicodeChar::plus:
             case UnicodeChar::minus:
-            case UnicodeChar::variationSelector:
+            case UnicodeChar::variation_selector:
             case UnicodeChar::eye:
             case UnicodeChar::road:
             case UnicodeChar::railway:
@@ -639,7 +636,7 @@ namespace OpenRCT2::Drawing
             for (auto it = codepoints.begin(); it != codepoints.end(); it++)
             {
                 auto codepoint = *it;
-                if (shouldUseSpriteForCodepoint(static_cast<UnicodeChar>(codepoint)))
+                if (shouldUseSpriteForCodepoint(codepoint))
                 {
                     if (ttfRunIndex.has_value())
                     {

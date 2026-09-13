@@ -13,13 +13,14 @@
 #include "../../core/Guard.hpp"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectList.h"
+#include "../../object/ObjectManager.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../util/Util.h"
 #include "../Map.h"
 #include "../tile_element/SmallSceneryElement.h"
 #include "../tile_element/SurfaceElement.h"
-#include "../tile_element/TileElementBase.h"
+#include "../tile_element/TileElement.h"
 #include "MapGen.h"
 #include "SimplexNoise.h"
 
@@ -69,16 +70,16 @@ namespace OpenRCT2::World::MapGenerator
             return;
         }
 
-        int32_t surfaceZ = TileElementHeight(loc.toTileCentre());
+        int32_t surfaceZ = TileElementHeight(loc.ToTileCentre());
 
         auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
         Guard::Assert(sceneryElement != nullptr);
 
         sceneryElement->setClearanceZ(surfaceZ + sceneryEntry->height);
         sceneryElement->setDirection(UtilRand() & 3);
-        sceneryElement->setEntryIndex(type);
-        sceneryElement->setAge(0);
-        sceneryElement->setPrimaryColour(Drawing::Colour::yellow);
+        sceneryElement->SetEntryIndex(type);
+        sceneryElement->SetAge(0);
+        sceneryElement->SetPrimaryColour(Drawing::Colour::yellow);
     }
 
     static bool surfaceTakesGrassTrees(const TerrainSurfaceObject& surface)
@@ -160,7 +161,7 @@ namespace OpenRCT2::World::MapGenerator
                     continue;
 
                 // Don't place on water
-                if (surfaceElement->getWaterHeight() > 0)
+                if (surfaceElement->GetWaterHeight() > 0)
                     continue;
 
                 if (settings->minTreeAltitude > surfaceElement->baseHeight
@@ -171,7 +172,7 @@ namespace OpenRCT2::World::MapGenerator
                 // vegetation
                 float oasisScore = 0.0f;
                 ObjectEntryIndex treeObjectEntryIndex = kObjectEntryIndexNull;
-                const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->getSurfaceObjectIndex());
+                const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceObjectIndex());
                 if (surfaceTakesSandTrees(surfaceStyleObject))
                 {
                     oasisScore = -0.5f;
@@ -189,7 +190,7 @@ namespace OpenRCT2::World::MapGenerator
                                 neighbourPos.y, kCoordsXYStep, kCoordsXYStep * (gameState.mapSize.y - 1));
 
                             const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
-                            if (neighboutSurface != nullptr && neighboutSurface->getWaterHeight() > 0)
+                            if (neighboutSurface != nullptr && neighboutSurface->GetWaterHeight() > 0)
                             {
                                 float distance = std::sqrt(offsetX * offsetX + offsetY * offsetY);
                                 oasisScore += 0.5f / (maxOasisDistance * distance);

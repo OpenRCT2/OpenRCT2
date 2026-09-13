@@ -24,17 +24,16 @@ namespace OpenRCT2
 
     struct Balloon : EntityBase
     {
-        static constexpr auto kEntityType = EntityType::balloon;
+        static constexpr auto cEntityType = EntityType::balloon;
         uint16_t frame;
         uint16_t popped;
-        uint8_t timeToMove;
+        uint8_t time_to_move;
         Drawing::Colour colour;
-
-        static void create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped);
-        void update();
-        void pop(bool playSound);
-        void press();
+        static void Create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped);
+        void Update();
+        void Pop(bool playSound);
+        void Press();
         void serialise(DataSerialiser& stream);
-        bool collides() const;
+        bool Collides() const;
     };
 } // namespace OpenRCT2

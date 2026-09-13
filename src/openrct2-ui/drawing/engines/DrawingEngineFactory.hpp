@@ -29,10 +29,10 @@ namespace OpenRCT2::Ui
         {
             switch (type)
             {
-                case DrawingEngine::softwareWithHardwareDisplay:
+                case DrawingEngine::SoftwareWithHardwareDisplay:
                     return CreateHardwareDisplayDrawingEngine(uiContext);
 #ifndef DISABLE_OPENGL
-                case DrawingEngine::openGL:
+                case DrawingEngine::OpenGL:
                     return CreateOpenGLDrawingEngine(uiContext);
 #endif
                 default:

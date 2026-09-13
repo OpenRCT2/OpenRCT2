@@ -13,6 +13,7 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../core/Guard.hpp"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../ride/RideConstruction.h"
@@ -20,6 +21,8 @@
 #include "../../world/Footpath.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/MapLimits.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/tile_element/EntranceElement.h"
 #include "../../world/tile_element/PathElement.h"
@@ -69,7 +72,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         res.cost = 0;
         res.expenditure = ExpenditureType::landscaping;
-        res.position = _loc.toTileCentre();
+        res.position = _loc.ToTileCentre();
 
         gFootpathGroundFlags = 0;
 
@@ -101,7 +104,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         res.cost = 0;
         res.expenditure = ExpenditureType::landscaping;
-        res.position = _loc.toTileCentre();
+        res.position = _loc.ToTileCentre();
 
         if (!GetFlags().has(CommandFlag::ghost))
         {
@@ -138,7 +141,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
-        if (entranceElement != nullptr && (entranceElement->getSequenceIndex()) == ParkEntranceSequence::centre)
+        // Make sure the entrance part is the middle
+        if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
             entrancePath = true;
             // Make the price the same as replacing a path
@@ -153,7 +157,7 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), { .crossingMode = crossingMode });
+            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -206,7 +210,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
-        if (entranceElement != nullptr && (entranceElement->getSequenceIndex()) == ParkEntranceSequence::centre)
+        // Make sure the entrance part is the middle
+        if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
             entrancePath = true;
             // Make the price the same as replacing a path
@@ -222,7 +227,7 @@ namespace OpenRCT2::GameActions
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
-            { .crossingMode = crossingMode });
+            kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -248,11 +253,11 @@ namespace OpenRCT2::GameActions
             {
                 if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
                 {
-                    entranceElement->setLegacyPathEntryIndex(_type);
+                    entranceElement->SetLegacyPathEntryIndex(_type);
                 }
                 else
                 {
-                    entranceElement->setSurfaceEntryIndex(_type);
+                    entranceElement->SetSurfaceEntryIndex(_type);
                 }
                 MapInvalidateTileFull(_loc);
             }
@@ -265,22 +270,22 @@ namespace OpenRCT2::GameActions
             pathElement->setClearanceZ(zHigh);
             if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
             {
-                pathElement->setLegacyPathEntryIndex(_type);
+                pathElement->SetLegacyPathEntryIndex(_type);
             }
             else
             {
-                pathElement->setSurfaceEntryIndex(_type);
-                pathElement->setRailingsEntryIndex(_railingsType);
+                pathElement->SetSurfaceEntryIndex(_type);
+                pathElement->SetRailingsEntryIndex(_railingsType);
             }
-            pathElement->setSlopeDirection(_slope.direction);
-            pathElement->setSloped(_slope.type == FootpathSlopeType::sloped);
-            pathElement->setIsQueue(isQueue);
-            pathElement->setAddition(0);
-            pathElement->setRideIndex(RideId::GetNull());
-            pathElement->setAdditionStatus(255);
-            pathElement->setIsBroken(false);
-            pathElement->setEdges(_edges);
-            pathElement->setCorners(0);
+            pathElement->SetSlopeDirection(_slope.direction);
+            pathElement->SetSloped(_slope.type == FootpathSlopeType::sloped);
+            pathElement->SetIsQueue(isQueue);
+            pathElement->SetAddition(0);
+            pathElement->SetRideIndex(RideId::GetNull());
+            pathElement->SetAdditionStatus(255);
+            pathElement->SetIsBroken(false);
+            pathElement->SetEdges(_edges);
+            pathElement->SetCorners(0);
             pathElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             MapInvalidateTileFull(_loc);
@@ -295,11 +300,11 @@ namespace OpenRCT2::GameActions
 
     bool FootpathLayoutPlaceAction::IsSameAsEntranceElement(const EntranceElement& entranceElement) const
     {
-        if (entranceElement.hasLegacyPathEntry())
+        if (entranceElement.HasLegacyPathEntry())
         {
             if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
             {
-                return entranceElement.getLegacyPathEntryIndex() == _type;
+                return entranceElement.GetLegacyPathEntryIndex() == _type;
             }
 
             return false;
@@ -310,6 +315,6 @@ namespace OpenRCT2::GameActions
             return false;
         }
 
-        return entranceElement.getSurfaceEntryIndex() == _type;
+        return entranceElement.GetSurfaceEntryIndex() == _type;
     }
 } // namespace OpenRCT2::GameActions

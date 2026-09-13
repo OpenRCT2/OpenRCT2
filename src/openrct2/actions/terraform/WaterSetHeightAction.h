@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class WaterSetHeightAction final : public GameActionBase<GameCommand::setWaterHeight>
+    class WaterSetHeightAction final : public GameActionBase<GameCommand::SetWaterHeight>
     {
     private:
         CoordsXY _coords;

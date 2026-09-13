@@ -9,7 +9,6 @@
 
 #include "../../ride/Vehicle.h"
 
-#include "../../ride/CarEntry.h"
 #include "../Boundbox.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
@@ -56,7 +55,7 @@ namespace OpenRCT2
         auto bb = BoundBoxXYZ{ { vehicleBb.offset_x, vehicleBb.offset_y, vehicleBb.offset_z + z },
                                { vehicleBb.length_x, vehicleBb.length_y, vehicleBb.length_z } };
 
-        baseImage_id += carEntry->baseImageId;
+        baseImage_id += carEntry->base_image_id;
         auto image_id = ImageId(baseImage_id, vehicle->colours.Body, vehicle->colours.Trim);
         if (vehicle->isGhost())
         {
@@ -83,6 +82,6 @@ namespace OpenRCT2
             }
         }
 
-        assert(carEntry->effectVisual == EffectVisual::unknown1);
+        assert(carEntry->effect_visual == 1);
     }
 } // namespace OpenRCT2

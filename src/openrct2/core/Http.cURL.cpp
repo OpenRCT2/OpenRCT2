@@ -12,10 +12,12 @@
     #include "Http.h"
 
     #include "../Version.h"
+    #include "../core/Console.hpp"
 
     #include <cstring>
     #include <memory>
     #include <stdexcept>
+    #include <thread>
 
     #if defined(_WIN32) && !defined(WIN32_LEAN_AND_MEAN)
         // cURL includes windows.h, but we don't need all of it.
@@ -93,7 +95,7 @@ namespace OpenRCT2::Http
             Response res;
             WriteThis wt;
 
-            if (req.method == Method::post || req.method == Method::put)
+            if (req.method == Method::POST || req.method == Method::PUT)
             {
                 wt.readptr = req.body.c_str();
                 wt.sizeleft = req.body.size();
@@ -106,10 +108,10 @@ namespace OpenRCT2::Http
             if (req.forceIPv4)
                 curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
-            if (req.method == Method::post)
+            if (req.method == Method::POST)
                 curl_easy_setopt(curl, CURLOPT_POST, 1L);
 
-            if (req.method == Method::put)
+            if (req.method == Method::PUT)
                 curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
             curl_easy_setopt(curl, CURLOPT_URL, req.url.c_str());
@@ -163,7 +165,7 @@ namespace OpenRCT2::Http
         catch (const std::exception& e)
         {
             Response response;
-            response.status = Status::error;
+            response.status = Status::Error;
             response.error = e.what();
             return response;
         }

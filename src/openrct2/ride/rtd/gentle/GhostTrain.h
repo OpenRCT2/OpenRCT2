@@ -12,13 +12,12 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kGhostTrainRTD =
+constexpr RideTypeDescriptor GhostTrainRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::endStation,
@@ -36,11 +35,11 @@ constexpr RideTypeDescriptor kGhostTrainRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::hasAirTime, RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt,
                      RtdFlag::hasLandscapeDoors),
-    .rideModes = { RideMode::continuousCircuit },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 18 },
     .Naming = { STR_RIDE_NAME_GHOST_TRAIN, STR_RIDE_DESCRIPTION_GHOST_TRAIN },
-    .NameConvention = { RideComponentType::car, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::vehicleMalfunction },
     .Heights = { 8, 24, 6, 7, },
     .MaxMass = 2,
@@ -59,37 +58,37 @@ constexpr RideTypeDescriptor kGhostTrainRTD =
         { Drawing::Colour::bordeauxRed, Drawing::Colour::yellow, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_TRACK, SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "ghost_train",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(2, 00), RideRating::make(0, 20), RideRating::make(0, 03) },
         12,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 15), RideRating::make(0, 00), 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,                44281, 88562, 35424 },
-            { RatingsModifierType::bonusAverageSpeed,     0,                291271, 436906, 0 },
-            { RatingsModifierType::bonusDuration,         150,              26214, 0, 0 },
-            { RatingsModifierType::bonusTurns,            0,                14860, 0, 11437 },
-            { RatingsModifierType::bonusDrops,            0,                8738, 0, 0 },
-            { RatingsModifierType::bonusSheltered,        0,                25700, 6553, 4681 },
-            { RatingsModifierType::bonusProximity,        0,                11183, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,                8366, 0, 0 },
-            { RatingsModifierType::requirementLength,     0xB40000,         2, 2, 2 },
+            { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 15), RideRating::make(0, 00), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
+            { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
+            { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
+            { RatingsModifierType::BonusTurns,            0,                14860, 0, 11437 },
+            { RatingsModifierType::BonusDrops,            0,                8738, 0, 0 },
+            { RatingsModifierType::BonusSheltered,        0,                25700, 6553, 4681 },
+            { RatingsModifierType::BonusProximity,        0,                11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                8366, 0, 0 },
+            { RatingsModifierType::RequirementLength,     0xB40000,         2, 2, 2 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_MineTrainCoaster,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_GhostTrain,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_GhostTrain,
 };
 } // namespace OpenRCT2
 // clang-format on

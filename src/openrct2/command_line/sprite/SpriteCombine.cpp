@@ -8,18 +8,19 @@
  *****************************************************************************/
 
 #include "../../core/FileStream.h"
+#include "../../drawing/Drawing.h"
 #include "SpriteCommands.h"
 
 #include <cstdint>
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    ExitCode combine(const char** argv, int32_t argc)
+    int32_t combine(const char** argv, int32_t argc)
     {
         if (argc < 4)
         {
             fprintf(stdout, "usage: sprite combine <index file> <image file> <output>\n");
-            return ExitCode::fail;
+            return -1;
         }
 
         const utf8* indexFile = argv[1];
@@ -57,6 +58,6 @@ namespace OpenRCT2::CommandLine::Sprite
         fileData.Read(data.data(), fileDataSize);
         outputStream.Write(data.data(), fileDataSize);
 
-        return ExitCode::ok;
+        return 0;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

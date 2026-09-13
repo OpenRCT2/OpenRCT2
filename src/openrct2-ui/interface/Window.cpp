@@ -10,9 +10,10 @@
 #include "Window.h"
 
 #include "../UiStringIds.h"
+#include "Theme.h"
 #include "Widget.h"
 
-#include <SDL_video.h>
+#include <SDL.h>
 #include <algorithm>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
@@ -20,9 +21,11 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/RenderTarget.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/ui/WindowManager.h>
@@ -89,10 +92,10 @@ namespace OpenRCT2::Ui
         Widget* widget = WindowGetScrollWidget(w, scrollIndex);
         WidgetIndex widgetIndex = WindowGetWidgetIndex(w, widget);
 
-        if (scroll.flags.has(ScrollFlag::vScrollbarVisible))
+        if (scroll.flags & VSCROLLBAR_VISIBLE)
         {
             int32_t size = widget->height() - 2;
-            if (scroll.flags.has(ScrollFlag::hScrollbarVisible))
+            if (scroll.flags & HSCROLLBAR_VISIBLE)
                 size -= 11;
             size = std::max(0, scroll.contentHeight - size);
             scroll.contentOffsetY = std::min(std::max(0, scroll.contentOffsetY + wheel), size);
@@ -100,7 +103,7 @@ namespace OpenRCT2::Ui
         else
         {
             int32_t size = widget->width() - 2;
-            if (scroll.flags.has(ScrollFlag::vScrollbarVisible))
+            if (scroll.flags & VSCROLLBAR_VISIBLE)
                 size -= 11;
             size = std::max(0, scroll.contentWidth - size);
             scroll.contentOffsetX = std::min(std::max(0, scroll.contentOffsetX + wheel), size);
@@ -127,7 +130,7 @@ namespace OpenRCT2::Ui
 
             // Originally always checked first scroll view, bug maybe?
             const auto& scroll = w.scrolls[scrollIndex];
-            if (scroll.flags.hasAny(ScrollFlag::hScrollbarVisible, ScrollFlag::vScrollbarVisible))
+            if (scroll.flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
             {
                 WindowScrollWheelInput(w, scrollIndex, wheel);
                 return 1;
@@ -290,7 +293,7 @@ namespace OpenRCT2::Ui
                     {
                         int32_t scrollIndex = WindowGetScrollIndex(*w, widgetIndex);
                         const auto& scroll = w->scrolls[scrollIndex];
-                        if (scroll.flags.hasAny(ScrollFlag::hScrollbarVisible, ScrollFlag::vScrollbarVisible))
+                        if (scroll.flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
                         {
                             WindowScrollWheelInput(*w, WindowGetScrollIndex(*w, widgetIndex), pixel_scroll);
                             return;
@@ -457,15 +460,14 @@ namespace OpenRCT2::Ui
         widgets[widgetIndex].right = right;
         widgets[widgetIndex].bottom = bottom;
 
-        auto buttonHeight = size.height - 2;
-        widgets[widgetIndex + 1].left = right - buttonHeight; // subtract height to maintain aspect ratio
+        widgets[widgetIndex + 1].left = right - size.height; // subtract height to maintain aspect ratio
         widgets[widgetIndex + 1].top = origin.y + 1;
         widgets[widgetIndex + 1].right = right - 1;
         widgets[widgetIndex + 1].bottom = bottom - 1;
 
-        widgets[widgetIndex + 2].left = right - buttonHeight * 2;
+        widgets[widgetIndex + 2].left = right - size.height * 2;
         widgets[widgetIndex + 2].top = origin.y + 1;
-        widgets[widgetIndex + 2].right = right - buttonHeight - 1;
+        widgets[widgetIndex + 2].right = right - size.height - 1;
         widgets[widgetIndex + 2].bottom = bottom - 1;
     }
 
@@ -478,8 +480,7 @@ namespace OpenRCT2::Ui
         widgets[widgetIndex].right = right;
         widgets[widgetIndex].bottom = bottom;
 
-        auto buttonHeight = size.height - 2;
-        widgets[widgetIndex + 1].left = right - buttonHeight + 1; // subtract height to maintain aspect ratio
+        widgets[widgetIndex + 1].left = right - size.height + 1; // subtract height to maintain aspect ratio
         widgets[widgetIndex + 1].top = origin.y + 1;
         widgets[widgetIndex + 1].right = right - 1;
         widgets[widgetIndex + 1].bottom = bottom - 1;
@@ -516,7 +517,7 @@ namespace OpenRCT2::Ui
 
     ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
     {
-        const uint8_t buttonOffset = (Config::Get().interface.windowButtonsOnTheLeft) ? kCloseButtonSize.width + 2 : 0;
+        const uint8_t buttonOffset = (Config::Get().interface.windowButtonsOnTheLeft) ? kCloseButtonSize + 2 : 0;
         return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
     }
 } // namespace OpenRCT2::Ui
@@ -616,14 +617,6 @@ namespace OpenRCT2::Ui::Windows
     void SetTexboxSession(TextInputSession* session)
     {
         _textInput = session;
-    }
-    void SetTextboxCaret(size_t position)
-    {
-        if (_textInput != nullptr)
-        {
-            _textInput->SelectionStart = std::clamp<size_t>(position, 0, _textInput->Length);
-            _textInput->SelectionSize = 0;
-        }
     }
     bool IsUsingWidgetTextBox()
     {
@@ -735,7 +728,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& scroll = w.scrolls[scroll_index];
-            scroll.flags.clearAll();
+            scroll.flags = 0;
             ScreenSize scrollSize = w.onScrollGetSize(scroll_index);
             scroll.contentOffsetX = 0;
             scroll.contentWidth = scrollSize.width + 1;
@@ -743,9 +736,9 @@ namespace OpenRCT2::Ui::Windows
             scroll.contentHeight = scrollSize.height + 1;
 
             if (widget.content & SCROLL_HORIZONTAL)
-                scroll.flags.set(ScrollFlag::hScrollbarVisible);
+                scroll.flags |= HSCROLLBAR_VISIBLE;
             if (widget.content & SCROLL_VERTICAL)
-                scroll.flags.set(ScrollFlag::vScrollbarVisible);
+                scroll.flags |= VSCROLLBAR_VISIBLE;
 
             widgetScrollUpdateThumbs(w, widgetIndex);
             scroll_index++;
@@ -1091,7 +1084,7 @@ namespace OpenRCT2::Ui::Windows
         if (gLegacyScene == LegacyScene::titleSequence)
             return;
 
-        if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
+        if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
             return;
 
         if (gLegacyScene == LegacyScene::trackDesignsManager)

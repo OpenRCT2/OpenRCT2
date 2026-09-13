@@ -10,12 +10,11 @@
 #include "Rectangle.h"
 
 #include "../interface/ColourWithFlags.h"
-#include "../interface/ScreenCoords.hpp"
+#include "../world/Location.hpp"
 #include "ColourMap.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
-#include "RenderTarget.h"
 
 using OpenRCT2::Drawing::IDrawingContext;
 
@@ -27,7 +26,7 @@ namespace OpenRCT2::Drawing::Rectangle
         if (drawingEngine != nullptr)
         {
             IDrawingContext* dc = drawingEngine->GetDrawingContext();
-            dc->FillRect(rt, paletteIndex, rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom(), crossHatch);
+            dc->FillRect(rt, paletteIndex, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom(), crossHatch);
         }
     }
 
@@ -47,10 +46,10 @@ namespace OpenRCT2::Drawing::Rectangle
         RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, BorderStyle borderStyle, FillBrightness brightness,
         FillMode fillMode)
     {
-        const auto leftTop = ScreenCoordsXY{ rect.getLeft(), rect.getTop() };
-        const auto leftBottom = ScreenCoordsXY{ rect.getLeft(), rect.getBottom() };
-        const auto rightTop = ScreenCoordsXY{ rect.getRight(), rect.getTop() };
-        const auto rightBottom = ScreenCoordsXY{ rect.getRight(), rect.getBottom() };
+        const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
+        const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
+        const auto rightTop = ScreenCoordsXY{ rect.GetRight(), rect.GetTop() };
+        const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
         if (colour.flags.has(ColourFlag::translucent))
         {
             auto palette = kTranslucentWindowPalettes[EnumValue(colour.colour)];
@@ -150,12 +149,7 @@ namespace OpenRCT2::Drawing::Rectangle
         if (drawingEngine != nullptr)
         {
             IDrawingContext* dc = drawingEngine->GetDrawingContext();
-            dc->FilterRect(rt, palette, rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom());
+            dc->FilterRect(rt, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
         }
-    }
-
-    void filterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
-    {
-        filter(rt, { coords, coords }, palette);
     }
 } // namespace OpenRCT2::Drawing::Rectangle

@@ -19,6 +19,7 @@
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/tile_element/SurfaceElement.h"
 
 namespace OpenRCT2::GameActions
@@ -50,7 +51,7 @@ namespace OpenRCT2::GameActions
         res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
         res.expenditure = ExpenditureType::landscaping;
 
-        auto validRange = ClampRangeWithinMap(_range.normalise());
+        auto validRange = ClampRangeWithinMap(_range.Normalise());
         auto& objManager = GetContext()->GetObjectManager();
         if (_surfaceStyle != kObjectEntryIndexNull)
         {
@@ -74,8 +75,8 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto xMid = (validRange.getX1() + validRange.getX2()) / 2 + 16;
-        auto yMid = (validRange.getY1() + validRange.getY2()) / 2 + 16;
+        auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
+        auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
         res.position.x = xMid;
@@ -84,17 +85,17 @@ namespace OpenRCT2::GameActions
 
         // Do nothing if not in editor, sandbox mode or landscaping is forbidden
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-            && park.flags.has(ParkFlag::forbidLandscapeChanges))
+            && (park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
         {
             return Result(Status::disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
-        for (CoordsXY coords = { validRange.getX1(), validRange.getY1() }; coords.x <= validRange.getX2();
+        for (CoordsXY coords = { validRange.GetX1(), validRange.GetY1() }; coords.x <= validRange.GetX2();
              coords.x += kCoordsXYStep)
         {
-            for (coords.y = validRange.getY1(); coords.y <= validRange.getY2(); coords.y += kCoordsXYStep)
+            for (coords.y = validRange.GetY1(); coords.y <= validRange.GetY2(); coords.y += kCoordsXYStep)
             {
                 if (!LocationValid(coords))
                     continue;
@@ -113,7 +114,7 @@ namespace OpenRCT2::GameActions
 
                 if (_surfaceStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
+                    uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
 
                     if (_surfaceStyle != curSurfaceStyle)
                     {
@@ -127,7 +128,7 @@ namespace OpenRCT2::GameActions
 
                 if (_edgeStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curEdgeStyle = surfaceElement->getEdgeObjectIndex();
+                    uint8_t curEdgeStyle = surfaceElement->GetEdgeObjectIndex();
 
                     if (_edgeStyle != curEdgeStyle)
                     {
@@ -147,9 +148,9 @@ namespace OpenRCT2::GameActions
         res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
         res.expenditure = ExpenditureType::landscaping;
 
-        auto validRange = ClampRangeWithinMap(_range.normalise());
-        auto xMid = (validRange.getX1() + validRange.getX2()) / 2 + 16;
-        auto yMid = (validRange.getY1() + validRange.getY2()) / 2 + 16;
+        auto validRange = ClampRangeWithinMap(_range.Normalise());
+        auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
+        auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
         res.position.x = xMid;
@@ -158,10 +159,10 @@ namespace OpenRCT2::GameActions
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
-        for (CoordsXY coords = { validRange.getX1(), validRange.getY1() }; coords.x <= validRange.getX2();
+        for (CoordsXY coords = { validRange.GetX1(), validRange.GetY1() }; coords.x <= validRange.GetX2();
              coords.x += kCoordsXYStep)
         {
-            for (coords.y = validRange.getY1(); coords.y <= validRange.getY2(); coords.y += kCoordsXYStep)
+            for (coords.y = validRange.GetY1(); coords.y <= validRange.GetY2(); coords.y += kCoordsXYStep)
             {
                 if (!LocationValid(coords))
                     continue;
@@ -180,7 +181,7 @@ namespace OpenRCT2::GameActions
 
                 if (_surfaceStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
+                    uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
 
                     if (_surfaceStyle != curSurfaceStyle)
                     {
@@ -190,7 +191,7 @@ namespace OpenRCT2::GameActions
                         {
                             surfaceCost += surfaceObject->Price;
 
-                            surfaceElement->setSurfaceObjectIndex(_surfaceStyle);
+                            surfaceElement->SetSurfaceObjectIndex(_surfaceStyle);
 
                             MapInvalidateTileFull(coords);
                             FootpathRemoveLitter({ coords, TileElementHeight(coords) });
@@ -200,20 +201,20 @@ namespace OpenRCT2::GameActions
 
                 if (_edgeStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curEdgeStyle = surfaceElement->getEdgeObjectIndex();
+                    uint8_t curEdgeStyle = surfaceElement->GetEdgeObjectIndex();
 
                     if (_edgeStyle != curEdgeStyle)
                     {
                         edgeCost += 100;
 
-                        surfaceElement->setEdgeObjectIndex(_edgeStyle);
+                        surfaceElement->SetEdgeObjectIndex(_edgeStyle);
                         MapInvalidateTileFull(coords);
                     }
                 }
 
-                if (surfaceElement->canGrassGrow() && (surfaceElement->getGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
+                if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
                 {
-                    surfaceElement->setGrassLength(GRASS_LENGTH_CLEAR_0);
+                    surfaceElement->SetGrassLength(GRASS_LENGTH_CLEAR_0);
                     MapInvalidateTileFull(coords);
                 }
             }

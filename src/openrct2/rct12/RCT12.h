@@ -11,16 +11,16 @@
 
 // Structures shared between both RCT1 and RCT2.
 
+#include "../core/EnumUtils.hpp"
 #include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
-#include "../drawing/Colour.h"
 #include "../entity/JumpingFountain.h"
 #include "../management/Research.h"
-#include "../world/MapOwnership.h"
+#include "../object/Object.h"
+#include "../ride/RideTypes.h"
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 
-#include <optional>
 #include <span>
 #include <stdexcept>
 #include <string>
@@ -30,8 +30,6 @@
 namespace OpenRCT2
 {
     class ObjectList;
-    enum class ParkEntranceSequence : uint8_t;
-    enum class EntranceType : uint8_t;
     enum class TrackElemType : uint16_t;
 } // namespace OpenRCT2
 
@@ -719,7 +717,7 @@ public:
     uint32_t GetSurfaceStyle() const;
     uint32_t GetEdgeStyle() const;
     uint8_t GetGrassLength() const;
-    OpenRCT2::OwnershipFlags GetOwnership() const;
+    uint8_t GetOwnership() const;
     uint32_t GetWaterHeight() const;
     uint8_t GetParkFences() const;
     bool HasTrackThatNeedsWater() const;
@@ -865,15 +863,15 @@ static_assert(sizeof(RCT12WallElement) == 8);
 struct RCT12EntranceElement : RCT12TileElementBase
 {
 private:
-    OpenRCT2::EntranceType EntranceType; // 4
-    uint8_t Index;                       // 5. 0bUSSS????, S = station index.
-    uint8_t PathType;                    // 6
-    uint8_t RideIndex;                   // 7
+    uint8_t EntranceType; // 4
+    uint8_t Index;        // 5. 0bUSSS????, S = station index.
+    uint8_t PathType;     // 6
+    uint8_t RideIndex;    // 7
 public:
-    OpenRCT2::EntranceType GetEntranceType() const;
+    uint8_t GetEntranceType() const;
     uint8_t GetRideIndex() const;
     uint8_t GetStationIndex() const;
-    OpenRCT2::ParkEntranceSequence GetSequenceIndex() const;
+    uint8_t GetSequenceIndex() const;
     uint8_t GetPathType() const;
 };
 static_assert(sizeof(RCT12EntranceElement) == 8);

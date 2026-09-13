@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../../Identifiers.h"
-#include "../../core/FlagHolder.hpp"
+#include "../../object/FootpathObject.h"
+#include "../../object/FootpathRailingsObject.h"
+#include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectTypes.h"
 #include "TileElementBase.h"
 
@@ -18,75 +20,71 @@
 
 namespace OpenRCT2
 {
-    class FootpathObject;
-    class FootpathSurfaceObject;
-    struct PathSurfaceDescriptor;
-
-    enum class EntranceType : uint8_t
+    enum
     {
-        rideEntrance,
-        rideExit,
-        parkEntrance
+        ENTRANCE_TYPE_RIDE_ENTRANCE,
+        ENTRANCE_TYPE_RIDE_EXIT,
+        ENTRANCE_TYPE_PARK_ENTRANCE
     };
 
-    enum class EntranceElementFlag : uint8_t
+    enum
     {
-        isLegacyPathEntry,
+        ENTRANCE_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 0),
     };
-    using EntranceElementFlags = FlagHolder<uint8_t, EntranceElementFlag>;
 
-    enum class ParkEntranceSequence : uint8_t
+    namespace EntranceSequence
     {
-        centre = 0,
-        left = 1,
-        right = 2,
-    };
+        constexpr uint8_t Centre = 0;
+        constexpr uint8_t Left = 1;
+        constexpr uint8_t Right = 2;
+    } // namespace EntranceSequence
 
 #pragma pack(push, 1)
+    struct EntranceElement;
 
     struct EntranceElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::entrance;
+        static constexpr TileElementType kElementType = TileElementType::Entrance;
 
     private:
-        EntranceType entranceType;   // 5
-        uint8_t sequenceIndex;       // 6. Only uses the lower nibble.
+        uint8_t entranceType;        // 5
+        uint8_t SequenceIndex;       // 6. Only uses the lower nibble.
         StationIndex stationIndex;   // 7
-        ObjectEntryIndex pathType;   // 8
+        ObjectEntryIndex PathType;   // 8
         RideId rideIndex;            // A
-        EntranceElementFlags flags2; // C
+        uint8_t flags2;              // C
         ObjectEntryIndex entryIndex; // D
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t pad0F[1];
+        uint8_t Pad0F[1];
 #pragma clang diagnostic pop
 
     public:
-        EntranceType getEntranceType() const;
-        void setEntranceType(EntranceType newType);
+        uint8_t GetEntranceType() const;
+        void SetEntranceType(uint8_t newType);
 
-        RideId getRideIndex() const;
-        void setRideIndex(RideId newRideIndex);
+        RideId GetRideIndex() const;
+        void SetRideIndex(RideId newRideIndex);
 
-        StationIndex getStationIndex() const;
-        void setStationIndex(StationIndex newStationIndex);
+        StationIndex GetStationIndex() const;
+        void SetStationIndex(StationIndex newStationIndex);
 
-        ParkEntranceSequence getSequenceIndex() const;
-        void setSequenceIndex(ParkEntranceSequence newSequenceIndex);
+        uint8_t GetSequenceIndex() const;
+        void SetSequenceIndex(uint8_t newSequenceIndex);
 
-        bool hasLegacyPathEntry() const;
+        bool HasLegacyPathEntry() const;
 
-        ObjectEntryIndex getLegacyPathEntryIndex() const;
-        const FootpathObject* getLegacyPathEntry() const;
-        void setLegacyPathEntryIndex(ObjectEntryIndex newPathType);
+        ObjectEntryIndex GetLegacyPathEntryIndex() const;
+        const FootpathObject* GetLegacyPathEntry() const;
+        void SetLegacyPathEntryIndex(ObjectEntryIndex newPathType);
 
-        ObjectEntryIndex getSurfaceEntryIndex() const;
-        const FootpathSurfaceObject* getSurfaceEntry() const;
-        void setSurfaceEntryIndex(ObjectEntryIndex newIndex);
+        ObjectEntryIndex GetSurfaceEntryIndex() const;
+        const FootpathSurfaceObject* GetSurfaceEntry() const;
+        void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
 
-        const PathSurfaceDescriptor* getPathSurfaceDescriptor() const;
+        const PathSurfaceDescriptor* GetPathSurfaceDescriptor() const;
 
-        int32_t getDirections() const;
+        int32_t GetDirections() const;
 
         ObjectEntryIndex getEntryIndex() const;
         void setEntryIndex(ObjectEntryIndex newIndex);

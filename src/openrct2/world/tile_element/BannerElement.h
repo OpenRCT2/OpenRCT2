@@ -19,29 +19,29 @@ namespace OpenRCT2
 #pragma pack(push, 1)
     struct BannerElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::banner;
+        static constexpr TileElementType kElementType = TileElementType::Banner;
 
     private:
         BannerIndex index;    // 5
         uint8_t position;     // 7
-        uint8_t allowedEdges; // 8
+        uint8_t AllowedEdges; // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t pad09[7];
+        uint8_t Pad09[7];
 #pragma clang diagnostic pop
     public:
-        Banner* getBanner() const;
-        const BannerSceneryEntry* getEntry() const;
+        Banner* GetBanner() const;
+        const BannerSceneryEntry* GetEntry() const;
 
-        BannerIndex getIndex() const;
-        void setIndex(BannerIndex newIndex);
+        BannerIndex GetIndex() const;
+        void SetIndex(BannerIndex newIndex);
 
-        uint8_t getPosition() const;
-        void setPosition(uint8_t newPosition);
+        uint8_t GetPosition() const;
+        void SetPosition(uint8_t newPosition);
 
-        uint8_t getAllowedEdges() const;
-        void setAllowedEdges(uint8_t newEdges);
-        void resetAllowedEdges();
+        uint8_t GetAllowedEdges() const;
+        void SetAllowedEdges(uint8_t newEdges);
+        void ResetAllowedEdges();
     };
     static_assert(sizeof(BannerElement) == kTileElementSize);
 #pragma pack(pop)

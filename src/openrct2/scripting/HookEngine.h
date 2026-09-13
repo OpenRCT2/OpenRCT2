@@ -13,6 +13,7 @@
 
     #include "ScriptUtil.hpp"
 
+    #include <any>
     #include <memory>
     #include <string>
     #include <variant>
@@ -21,6 +22,7 @@
 namespace OpenRCT2::Scripting
 {
     class ScriptEngine;
+    class ScriptExecutionInfo;
     class Plugin;
 
     enum class HookType
@@ -39,14 +41,13 @@ namespace OpenRCT2::Scripting
         vehicleCrash,
         mapChange,
         mapChanged,
-        mapResize,
         mapSave,
         parkCalculateGuestCap,
         rideBreakDown,
         count,
         notDefined = -1,
     };
-    constexpr size_t kHookTypeCount = static_cast<size_t>(HookType::count);
+    constexpr size_t NUM_HookTypeS = static_cast<size_t>(HookType::count);
     HookType GetHookType(const std::string& name);
 
     using HookValue = std::variant<int32_t, int16_t, uint16_t, std::string>;

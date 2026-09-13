@@ -9,18 +9,17 @@
 
 #pragma once
 
-#include "../core/FlagHolder.hpp"
-#include "../interface/ScreenCoords.hpp"
-#include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
 #include "Window.h"
 
-#include <list>
+#include <limits>
 #include <optional>
 #include <sfl/static_vector.hpp>
+#include <vector>
 
 struct PaintSession;
 struct PaintStruct;
+struct PaintEntry;
 
 namespace OpenRCT2::Drawing
 {
@@ -31,6 +30,7 @@ namespace OpenRCT2
 {
     struct EntityBase;
     struct Guest;
+    struct Staff;
     struct TileElement;
     struct WindowBase;
 
@@ -149,7 +149,6 @@ enum class ViewportInteractionItem : uint8_t
     label,
     banner
 };
-using ViewportInteractionItems = FlagHolder<uint16_t, ViewportInteractionItem>;
 
 enum class ViewportVisibility : uint8_t
 {
@@ -163,12 +162,7 @@ enum class ViewportVisibility : uint8_t
 
 namespace OpenRCT2
 {
-    constexpr ViewportInteractionItems kViewportInteractionItemAll{
-        ViewportInteractionItem::terrain,      ViewportInteractionItem::entity,       ViewportInteractionItem::ride,
-        ViewportInteractionItem::water,        ViewportInteractionItem::scenery,      ViewportInteractionItem::footpath,
-        ViewportInteractionItem::pathAddition, ViewportInteractionItem::parkEntrance, ViewportInteractionItem::wall,
-        ViewportInteractionItem::largeScenery, ViewportInteractionItem::label,        ViewportInteractionItem::banner
-    };
+    constexpr uint16_t kViewportInteractionItemAll = std::numeric_limits<uint16_t>::max();
 
     struct InteractionInfo
     {
@@ -221,12 +215,10 @@ namespace OpenRCT2
     void HideConstructionRights();
     void ViewportSetVisibility(ViewportVisibility mode);
 
-    InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags);
-    InteractionInfo GetMapCoordinatesFromPosWindow(
-        WindowBase* window, const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags);
+    InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags);
+    InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
-    InteractionInfo SetInteractionInfoFromPaintSession(
-        PaintSession* session, uint32_t viewFlags, ViewportInteractionItems filter);
+    InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32_t viewFlags, uint16_t filter);
 
     std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport);
     std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, int32_t z);

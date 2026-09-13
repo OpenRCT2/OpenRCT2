@@ -14,6 +14,7 @@
     #include "../../ScriptEngine.h"
 
     #include <cstdint>
+    #include <string>
 
 namespace OpenRCT2::TrackMetadata
 {

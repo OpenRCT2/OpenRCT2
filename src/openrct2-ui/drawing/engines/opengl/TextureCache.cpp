@@ -12,13 +12,11 @@
     #include "TextureCache.h"
 
     #include <algorithm>
+    #include <openrct2/Diagnostic.h>
     #include <openrct2/core/EnumUtils.hpp>
     #include <openrct2/drawing/BlendColourMap.h>
-    #include <openrct2/drawing/Drawing.Sprite.h>
     #include <openrct2/drawing/Drawing.h>
-    #include <openrct2/drawing/FilterPaletteIds.h>
-    #include <openrct2/drawing/RenderTarget.h>
-    #include <openrct2/interface/ScreenCoords.hpp>
+    #include <openrct2/world/Location.hpp>
     #include <stdexcept>
     #include <vector>
 
@@ -343,7 +341,7 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     auto atlasIndex = static_cast<int32_t>(_atlases.size());
     int32_t atlasSize = powf(2, static_cast<float>(Atlas::CalculateImageSizeOrder(imageWidth, imageHeight)));
 
-    #if DEBUG > 0
+    #ifdef DEBUG
     LOG_VERBOSE("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
     #endif
 

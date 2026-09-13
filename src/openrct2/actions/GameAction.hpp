@@ -10,8 +10,10 @@
 #pragma once
 
 #include "../core/DataSerialiser.h"
+#include "../core/Identifier.hpp"
 #include "GameActionParameterVisitor.h"
 #include "GameActionResult.h"
+#include "GameCommand.h"
 
 #include <functional>
 #include <memory>

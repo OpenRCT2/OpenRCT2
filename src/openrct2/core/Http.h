@@ -20,17 +20,17 @@ namespace OpenRCT2::Http
 {
     enum class Status
     {
-        invalid = 0,
-        error = 1,
-        ok = 200,
-        notFound = 404
+        Invalid = 0,
+        Error = 1,
+        Ok = 200,
+        NotFound = 404
     };
 
     enum class Method
     {
-        get,
-        post,
-        put
+        GET,
+        POST,
+        PUT
     };
 
     struct Response
@@ -46,14 +46,14 @@ namespace OpenRCT2::Http
     {
         std::string url;
         std::map<std::string, std::string> header;
-        Method method = Method::get;
+        Method method = Method::GET;
         std::string body;
         bool forceIPv4{};
     };
 
     Response Do(const Request& req);
 
-    [[nodiscard]] inline auto DoAsync(const Request& req, std::function<void(Response& res)> fn)
+    inline auto DoAsync(const Request& req, std::function<void(Response& res)> fn)
     {
         return std::async(std::launch::async, [=]() {
             Response res{};

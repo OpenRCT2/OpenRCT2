@@ -12,13 +12,12 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kGoKartsRTD =
+constexpr RideTypeDescriptor GoKartsRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::endStation,
@@ -32,11 +31,11 @@ constexpr RideTypeDescriptor kGoKartsRTD =
     .flags = RtdFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::noTestMode, RtdFlag::hasOneStation,
                      RtdFlag::noWallsAroundTrack, RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt),
-    .rideModes = { RideMode::race, RideMode::continuousCircuit },
+    .RideModes = EnumsToFlags(RideMode::race, RideMode::continuousCircuit),
     .DefaultMode = RideMode::race,
     .OperatingSettings = { 1, 10 },
     .Naming = { STR_RIDE_NAME_GO_KARTS, STR_RIDE_DESCRIPTION_GO_KARTS },
-    .NameConvention = { RideComponentType::car, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::vehicleMalfunction },
     .Heights = { 8, 24, 2, 1, },
     .MaxMass = 255,
@@ -55,24 +54,24 @@ constexpr RideTypeDescriptor kGoKartsRTD =
         { Drawing::Colour::darkBrown, Drawing::Colour::darkBrown, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_GO_KARTS_TRACK, SPR_RIDE_DESIGN_PREVIEW_GO_KARTS_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "go_karts",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 42), RideRating::make(1, 73), RideRating::make(0, 40) },
         16,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,            700, 32768, 0, 0 },
-            { RatingsModifierType::bonusGoKartRace,        4,   RideRating::make(1, 40), RideRating::make(0, 50), 0 },
-            { RatingsModifierType::bonusTurns,             0,   4458, 3476, 5718 },
-            { RatingsModifierType::bonusDrops,             0,   8738, 5461, 6553 },
-            { RatingsModifierType::bonusSheltered,         0,   2570, 8738, 2340 },
-            { RatingsModifierType::bonusProximity,         0,   11183, 0, 0 },
-            { RatingsModifierType::bonusScenery,           0,   16732, 0, 0 },
-            { RatingsModifierType::requirementUnsheltered, 6,   2, 1, 1 },
+            { RatingsModifierType::BonusLength,            700, 32768, 0, 0 },
+            { RatingsModifierType::BonusGoKartRace,        4,   RideRating::make(1, 40), RideRating::make(0, 50), 0 },
+            { RatingsModifierType::BonusTurns,             0,   4458, 3476, 5718 },
+            { RatingsModifierType::BonusDrops,             0,   8738, 5461, 6553 },
+            { RatingsModifierType::BonusSheltered,         0,   2570, 8738, 2340 },
+            { RatingsModifierType::BonusProximity,         0,   11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,           0,   16732, 0, 0 },
+            { RatingsModifierType::RequirementUnsheltered, 6,   2, 1, 1 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

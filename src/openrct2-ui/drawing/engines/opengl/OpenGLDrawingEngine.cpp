@@ -11,7 +11,6 @@
 
     #include "../DrawingEngineFactory.hpp"
     #include "ApplyPaletteShader.h"
-    #include "ApplyTransparencyShader.h"
     #include "CopyRectShader.h"
     #include "DrawCommands.h"
     #include "DrawLineShader.h"
@@ -23,23 +22,21 @@
     #include "TextureCache.h"
     #include "TransparencyDepth.h"
 
-    #include <SDL_video.h>
+    #include <SDL.h>
     #include <algorithm>
     #include <cassert>
     #include <cmath>
+    #include <openrct2-ui/interface/Window.h>
     #include <openrct2/config/Config.h>
-    #include <openrct2/drawing/Drawing.Sprite.h>
+    #include <openrct2/core/Console.hpp>
     #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/IDrawingContext.h>
     #include <openrct2/drawing/IDrawingEngine.h>
     #include <openrct2/drawing/InvalidationGrid.h>
     #include <openrct2/drawing/LightFX.h>
-    #include <openrct2/drawing/RenderTarget.h>
-    #include <openrct2/drawing/TTF.h>
     #include <openrct2/drawing/WeatherDrawer.h>
     #include <openrct2/interface/Screenshot.h>
-    #include <openrct2/interface/Window.h>
     #include <openrct2/ui/UiContext.h>
     #include <openrct2/world/Weather.h>
 
@@ -696,14 +693,14 @@ void OpenGLDrawingContext::FillRect(
 
     const ScreenRect clip = CalculateClipping(rt);
 
-    left += clip.getLeft() - rt.x;
-    top += clip.getTop() - rt.y;
-    right += clip.getLeft() - rt.x;
-    bottom += clip.getTop() - rt.y;
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+    command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = 0;
@@ -729,14 +726,14 @@ void OpenGLDrawingContext::FilterRect(
 
     const ScreenRect clip = CalculateClipping(rt);
 
-    left += clip.getLeft() - rt.x;
-    top += clip.getTop() - rt.y;
-    right += clip.getLeft() - rt.x;
-    bottom += clip.getTop() - rt.y;
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     DrawRectCommand& command = _commandBuffers.transparent.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+    command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = 0;
@@ -773,8 +770,8 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const Rende
 {
     ScreenCoordsXY topLeft = { rt.x, rt.y };
     ScreenCoordsXY bottomRight = { rt.x + rt.width - 1, rt.y + rt.height - 1 };
-    uint8_t outcode1 = ComputeOutCode(line.point1, topLeft, bottomRight);
-    uint8_t outcode2 = ComputeOutCode(line.point2, topLeft, bottomRight);
+    uint8_t outcode1 = ComputeOutCode(line.Point1, topLeft, bottomRight);
+    uint8_t outcode2 = ComputeOutCode(line.Point2, topLeft, bottomRight);
 
     while (true)
     {
@@ -796,39 +793,39 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const Rende
         // clang-format off
         if (outcodeOut & kCSBottom)
         {
-            clipped.x = line.point1.x + (line.point2.x - line.point1.x) *
-                (bottomRight.y - line.point1.y) / (line.point2.y - line.point1.y);
+            clipped.x = line.Point1.x + (line.Point2.x - line.Point1.x) *
+                (bottomRight.y - line.Point1.y) / (line.Point2.y - line.Point1.y);
             clipped.y = bottomRight.y;
         }
         else if (outcodeOut & kCSTop)
         {
-            clipped.x = line.point1.x + (line.point2.x - line.point1.x) *
-                (topLeft.y - line.point1.y) / (line.point2.y - line.point1.y);
+            clipped.x = line.Point1.x + (line.Point2.x - line.Point1.x) *
+                (topLeft.y - line.Point1.y) / (line.Point2.y - line.Point1.y);
             clipped.y = topLeft.y;
         }
         else if (outcodeOut & kCSRight)
         {
-            clipped.y = line.point1.y + (line.point2.y - line.point1.y) *
-                (bottomRight.x - line.point1.x) / (line.point2.x - line.point1.x);
+            clipped.y = line.Point1.y + (line.Point2.y - line.Point1.y) *
+                (bottomRight.x - line.Point1.x) / (line.Point2.x - line.Point1.x);
             clipped.x = bottomRight.x;
         }
         else if (outcodeOut & kCSLeft)
         {
-            clipped.y = line.point1.y + (line.point2.y - line.point1.y) *
-                (topLeft.x - line.point1.x) / (line.point2.x - line.point1.x);
+            clipped.y = line.Point1.y + (line.Point2.y - line.Point1.y) *
+                (topLeft.x - line.Point1.x) / (line.Point2.x - line.Point1.x);
             clipped.x = topLeft.x;
         }
         // clang-format on
 
         if (outcodeOut == outcode1)
         {
-            line.point1 = clipped;
-            outcode1 = ComputeOutCode(line.point1, topLeft, bottomRight);
+            line.Point1 = clipped;
+            outcode1 = ComputeOutCode(line.Point1, topLeft, bottomRight);
         }
         else
         {
-            line.point2 = clipped;
-            outcode2 = ComputeOutCode(line.point2, topLeft, bottomRight);
+            line.Point2 = clipped;
+            outcode2 = ComputeOutCode(line.Point2, topLeft, bottomRight);
         }
     }
 }
@@ -838,18 +835,18 @@ void OpenGLDrawingContext::DrawLine(RenderTarget& rt, PaletteIndex colour, const
     Guard::Assert(_inDraw == true);
 
     const ZoomLevel zoom = rt.zoom_level;
-    ScreenLine trimmedLine = { { zoom.ApplyInversedTo(line.getX1()), zoom.ApplyInversedTo(line.getY1()) },
-                               { zoom.ApplyInversedTo(line.getX2()), zoom.ApplyInversedTo(line.getY2()) } };
+    ScreenLine trimmedLine = { { zoom.ApplyInversedTo(line.GetX1()), zoom.ApplyInversedTo(line.GetY1()) },
+                               { zoom.ApplyInversedTo(line.GetX2()), zoom.ApplyInversedTo(line.GetY2()) } };
     if (!CohenSutherlandLineClip(trimmedLine, rt))
         return;
 
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
     const ScreenRect clip = CalculateClipping(rt);
-    const int32_t x1 = trimmedLine.getX1() - rt.x + clip.getLeft();
-    const int32_t y1 = trimmedLine.getY1() - rt.y + clip.getTop();
-    const int32_t x2 = trimmedLine.getX2() - rt.x + clip.getLeft();
-    const int32_t y2 = trimmedLine.getY2() - rt.y + clip.getTop();
+    const int32_t x1 = trimmedLine.GetX1() - rt.x + clip.GetLeft();
+    const int32_t y1 = trimmedLine.GetY1() - rt.y + clip.GetTop();
+    const int32_t x2 = trimmedLine.GetX2() - rt.x + clip.GetLeft();
+    const int32_t y2 = trimmedLine.GetY2() - rt.y + clip.GetTop();
 
     command.bounds = { x1, y1, x2, y2 };
     command.colour = static_cast<GLuint>(colour);
@@ -922,10 +919,10 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
     int32_t bottom = top + rt.zoom_level.ApplyInversedTo(g1Element->height + yModifier);
 
     const ScreenRect clip = CalculateClipping(rt);
-    left += clip.getLeft() - rt.x;
-    top += clip.getTop() - rt.y;
-    right += clip.getLeft() - rt.x;
-    bottom += clip.getTop() - rt.y;
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     const float zoom = rt.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(rt.zoom_level.ApplyTo(1))
                                                        : 1.0f / static_cast<float>(rt.zoom_level.ApplyInversedTo(1));
@@ -966,7 +963,7 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
     {
         DrawRectCommand& command = _commandBuffers.transparent.allocate();
 
-        command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+        command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
         command.texColourAtlas = texture.index;
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = texture.index;
@@ -982,7 +979,7 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
     {
         DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-        command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+        command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
         command.texColourAtlas = texture.index;
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = 0;
@@ -1036,17 +1033,17 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     bottom = rt.zoom_level.ApplyInversedTo(bottom);
 
     const ScreenRect clip = CalculateClipping(rt);
-    left += clip.getLeft() - rt.x;
-    top += clip.getTop() - rt.y;
-    right += clip.getLeft() - rt.x;
-    bottom += clip.getTop() - rt.y;
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     const float zoom = rt.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(rt.zoom_level.ApplyTo(1))
                                                        : 1.0f / static_cast<float>(rt.zoom_level.ApplyInversedTo(1));
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+    command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = textureColour.index;
     command.texColourBounds = textureColour.coords;
     command.texMaskAtlas = textureMask.index;
@@ -1091,14 +1088,14 @@ void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image
     }
 
     const ScreenRect clip = CalculateClipping(rt);
-    left += clip.getLeft() - rt.x;
-    top += clip.getTop() - rt.y;
-    right += clip.getLeft() - rt.x;
-    bottom += clip.getTop() - rt.y;
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+    command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = texture.index;
@@ -1143,17 +1140,17 @@ void OpenGLDrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int3
     bottom = rt.zoom_level.ApplyInversedTo(bottom);
 
     const ScreenRect clip = CalculateClipping(rt);
-    left += clip.getLeft() - rt.x;
-    top += clip.getTop() - rt.y;
-    right += clip.getLeft() - rt.x;
-    bottom += clip.getTop() - rt.y;
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     const float zoom = rt.zoom_level >= ZoomLevel{ 0 } ? static_cast<float>(rt.zoom_level.ApplyTo(1))
                                                        : 1.0f / static_cast<float>(rt.zoom_level.ApplyInversedTo(1));
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+    command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.coords;
     command.texMaskAtlas = 0;
@@ -1202,10 +1199,10 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     }
 
     const ScreenRect clip = CalculateClipping(rt);
-    left += clip.getLeft() - rt.x;
-    top += clip.getTop() - rt.y;
-    right += clip.getLeft() - rt.x;
-    bottom += clip.getTop() - rt.y;
+    left += clip.GetLeft() - rt.x;
+    top += clip.GetTop() - rt.y;
+    right += clip.GetLeft() - rt.x;
+    bottom += clip.GetTop() - rt.y;
 
     if (info.colourFlags.has(ColourFlag::withOutline))
     {
@@ -1218,7 +1215,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         for (auto b : boundsArr)
         {
             DrawRectCommand& command = _commandBuffers.rects.allocate();
-            command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+            command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
             command.texColourAtlas = texture.index;
             command.texColourBounds = texture.coords;
             command.texMaskAtlas = 0;
@@ -1234,7 +1231,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     if (info.colourFlags.has(ColourFlag::inset))
     {
         DrawRectCommand& command = _commandBuffers.rects.allocate();
-        command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+        command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
         command.texColourAtlas = texture.index;
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = 0;
@@ -1248,7 +1245,7 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     }
     auto& cmdBuf = hintingThreshold > 0 ? _commandBuffers.transparent : _commandBuffers.rects;
     DrawRectCommand& command = cmdBuf.allocate();
-    command.clip = { clip.getLeft(), clip.getTop(), clip.getRight(), clip.getBottom() };
+    command.clip = { clip.GetLeft(), clip.GetTop(), clip.GetRight(), clip.GetBottom() };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.coords;
     command.texMaskAtlas = 0;

@@ -11,14 +11,16 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../Context.h"
+    #include "../../../management/Award.h"
     #include "../../ScriptEngine.h"
 
-struct Award;
-enum class AwardType : uint16_t;
+    #include <quickjs.h>
+    #include <string>
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr const char* kAwardTypes[] = {
+    static constexpr const char* AwardTypes[] = {
         "mostUntidy",
         "mostTidy",
         "bestRollerCoasters",
@@ -41,19 +43,19 @@ namespace OpenRCT2::Scripting
     inline std::optional<std::string> AwardTypeToString(AwardType awardType)
     {
         auto index = static_cast<size_t>(awardType);
-        if (index < std::size(kAwardTypes))
+        if (index < std::size(AwardTypes))
         {
-            return kAwardTypes[index];
+            return AwardTypes[index];
         }
         return std::nullopt;
     }
 
     inline std::optional<AwardType> StringToAwardType(std::string_view awardType)
     {
-        auto it = std::find(std::begin(kAwardTypes), std::end(kAwardTypes), awardType);
-        if (it != std::end(kAwardTypes))
+        auto it = std::find(std::begin(AwardTypes), std::end(AwardTypes), awardType);
+        if (it != std::end(AwardTypes))
         {
-            return std::optional(static_cast<AwardType>(std::distance(std::begin(kAwardTypes), it)));
+            return std::optional(static_cast<AwardType>(std::distance(std::begin(AwardTypes), it)));
         }
         return std::nullopt;
     }

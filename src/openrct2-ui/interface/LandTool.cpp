@@ -9,9 +9,12 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/interface/WindowBase.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
@@ -75,8 +78,8 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
     uint32_t surfaceCount = itemIndex;
 
     WindowDropdownShowImage(
-        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2],
-        { Dropdown::Flag::autoClose }, surfaceCount, 47, 36, DropdownGetAppropriateImageDropdownItemsPerRow(surfaceCount));
+        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2], 0, surfaceCount, 47,
+        36, DropdownGetAppropriateImageDropdownItemsPerRow(surfaceCount));
 
     gDropdown.hasTooltips = true;
     gDropdown.defaultIndex = defaultIndex;
@@ -85,7 +88,7 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
 ObjectEntryIndex LandTool::GetSurfaceStyleFromDropdownIndex(size_t index)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    auto itemIndex = 0u;
+    auto itemIndex = 0U;
     for (size_t i = 0; i < kMaxTerrainSurfaceObjects; i++)
     {
         const auto surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(i);
@@ -126,8 +129,8 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
     auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(edgeCount);
 
     WindowDropdownShowImage(
-        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2],
-        { Dropdown::Flag::autoClose }, edgeCount, 47, 36, itemsPerRow);
+        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2], 0, edgeCount, 47, 36,
+        itemsPerRow);
 
     gDropdown.hasTooltips = true;
     gDropdown.defaultIndex = defaultIndex;
@@ -136,7 +139,7 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
 ObjectEntryIndex LandTool::GetEdgeStyleFromDropdownIndex(size_t index)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    auto itemIndex = 0u;
+    auto itemIndex = 0U;
     for (size_t i = 0; i < kMaxTerrainEdgeObjects; i++)
     {
         const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(i);

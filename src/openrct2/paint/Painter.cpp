@@ -13,15 +13,12 @@
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
-#include "../drawing/NewDrawing.h"
-#include "../drawing/Palette.h"
-#include "../drawing/PickupPeep.h"
 #include "../drawing/Text.h"
 #include "../interface/Viewport.h"
-#include "../interface/Widget.h"
 #include "../localisation/Formatting.h"
 #include "../paint/Paint.h"
 #include "../paint/VirtualFloor.h"
@@ -62,8 +59,8 @@ void Painter::Paint(IDrawingEngine& de)
         UpdatePaletteEffects();
         _uiContext.Draw(*rt);
 
-        pickupPeepDraw(*rt);
-        pickupPeepInvalidate();
+        GfxDrawPickedUpPeep(*rt);
+        GfxInvalidatePickedUpPeep();
 
         de.PaintWeather();
     }

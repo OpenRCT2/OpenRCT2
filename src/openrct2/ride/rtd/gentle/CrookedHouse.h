@@ -9,13 +9,14 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
+#include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kCrookedHouseRTD =
+constexpr RideTypeDescriptor CrookedHouseRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack3x3,
@@ -28,12 +29,12 @@ constexpr RideTypeDescriptor kCrookedHouseRTD =
     .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::allowMusic,
-                     RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
+                     RtdFlag::hasEntranceAndExit, RtdFlag::singleSession, 
                      RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::crookedHouse },
+    .RideModes = EnumsToFlags(RideMode::crookedHouse),
     .DefaultMode = RideMode::crookedHouse,
     .Naming = { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE },
-    .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },
+    .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
     .availableBreakdowns = {},
     .Heights = { 16, 96, 3, 2, },
     .MaxMass = 255,
@@ -49,16 +50,16 @@ constexpr RideTypeDescriptor kCrookedHouseRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "crooked_house",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::flatRide,
+        RatingsCalculationType::FlatRide,
         { RideRating::make(2, 15), RideRating::make(0, 62), RideRating::make(0, 34) },
         5,
         7,
         false,
-        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },
 };
 } // namespace OpenRCT2

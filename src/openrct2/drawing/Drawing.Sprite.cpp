@@ -19,12 +19,10 @@
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
-#include "../interface/ZoomLevel.h"
 #include "../platform/Platform.h"
 #include "../rct1/Csg.h"
 #include "../ui/UiContext.h"
 #include "Drawing.h"
-#include "RenderTarget.h"
 #include "ScrollingText.h"
 
 #include <cassert>
@@ -311,34 +309,6 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
             element.xOffset -= 1; // Steeplechase leftEighthToDiag angle 2
             break;
     }
-}
-
-static auto GetMaskFunction()
-{
-    if (Platform::AVX2Available())
-    {
-        LOG_VERBOSE("registering AVX2 mask function");
-        return MaskAvx2;
-    }
-    else if (Platform::SSE41Available())
-    {
-        LOG_VERBOSE("registering SSE4.1 mask function");
-        return MaskSse4_1;
-    }
-    else
-    {
-        LOG_VERBOSE("registering scalar mask function");
-        return MaskScalar;
-    }
-}
-
-static const auto MaskFunc = GetMaskFunction();
-
-void MaskFn(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
-{
-    MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
 static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1Element* elements)
@@ -1014,8 +984,8 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
         return;
     }
 
-    // Masking only works with non-RLE images. Fall back to regular drawing for RLE images.
-    if (imgMask->flags.has(G1Flag::hasRLECompression) || imgColour->flags.has(G1Flag::hasRLECompression))
+    // Must have transparency in order to pass check
+    if (!imgMask->flags.has(G1Flag::hasTransparency) || !imgColour->flags.has(G1Flag::hasTransparency))
     {
         GfxDrawSpriteSoftware(rt, colourImage, scrCoords);
         return;
@@ -1179,7 +1149,7 @@ void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
     bool isValid = (imageId >= SPR_IMAGE_LIST_BEGIN && imageId < SPR_IMAGE_LIST_END)
         || (imageId >= SPR_SCROLLING_TEXT_START && imageId < SPR_SCROLLING_TEXT_END);
 
-#if DEBUG > 0
+#ifdef DEBUG
     Guard::Assert(!gOpenRCT2NoGraphics, "GfxSetG1Element called on headless instance");
     Guard::Assert(isValid || isTemp, "GfxSetG1Element called with unexpected image id");
     Guard::Assert(g1 != nullptr, "g1 was nullptr");

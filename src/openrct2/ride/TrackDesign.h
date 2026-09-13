@@ -12,6 +12,7 @@
 #include "../Limits.h"
 #include "../actions/CommandFlag.h"
 #include "../actions/GameActionResult.h"
+#include "../core/EnumUtils.hpp"
 #include "../drawing/Colour.h"
 #include "../object/Object.h"
 #include "../rct12/TD46.h"
@@ -26,14 +27,7 @@ namespace OpenRCT2::RCT12
 {
     enum class TD46Version : uint8_t;
 }
-
-namespace OpenRCT2
-{
-    struct Ride;
-
-    enum class RideMode : uint8_t;
-} // namespace OpenRCT2
-
+struct Ride;
 struct ResultWithMessage;
 enum class ViewportInteractionItem : uint8_t;
 
@@ -133,11 +127,13 @@ struct TrackDesignMazeElement
     uint16_t mazeEntry{};
 };
 
+enum class RideMode : uint8_t;
+
 enum class TrackDesignGameStateFlag
 {
-    sceneryUnavailable,
-    hasScenery,
-    vehicleUnavailable,
+    SceneryUnavailable,
+    HasScenery,
+    VehicleUnavailable,
 };
 
 struct TrackDesignTrackAndVehicleSettings
@@ -150,7 +146,7 @@ struct TrackDesignTrackAndVehicleSettings
 
 struct TrackDesignOperatingSettings
 {
-    OpenRCT2::RideMode rideMode{};
+    RideMode rideMode{};
     uint8_t liftHillSpeed{};
     uint8_t numCircuits{};
     uint8_t operationSetting{};
@@ -221,15 +217,15 @@ struct TrackDesign
     OpenRCT2::RCT12::TD46Version version = OpenRCT2::RCT12::TD46Version::td6;
 
 public:
-    ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const OpenRCT2::Ride& ride);
+    ResultWithMessage CreateTrackDesign(TrackDesignState& tds, const Ride& ride);
     ResultWithMessage CreateTrackDesignScenery(TrackDesignState& tds);
     void Serialise(OpenRCT2::DataSerialiser& stream);
 
 private:
     uint8_t _saveDirection;
-    ResultWithMessage CreateTrackDesignTrack(TrackDesignState& tds, const OpenRCT2::Ride& ride);
-    ResultWithMessage CreateTrackDesignMaze(TrackDesignState& tds, const OpenRCT2::Ride& ride);
-    CoordsXYE MazeGetFirstElement(const OpenRCT2::Ride& ride);
+    ResultWithMessage CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride);
+    ResultWithMessage CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride);
+    CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 
 extern bool gTrackDesignSceneryToggle;
@@ -245,12 +241,11 @@ extern RideId gTrackDesignSaveRideIndex;
 void TrackDesignMirror(TrackDesign& td);
 
 OpenRCT2::GameActions::Result TrackDesignPlace(
-    const TrackDesign& td, OpenRCT2::GameActions::CommandFlags flags, bool placeScenery, OpenRCT2::Ride& ride,
-    const CoordsXYZD& coords);
-void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, OpenRCT2::Ride& ride, const CoordsXYZD& coords);
+    const TrackDesign& td, OpenRCT2::GameActions::CommandFlags flags, bool placeScenery, Ride& ride, const CoordsXYZD& coords);
+void TrackDesignPreviewRemoveGhosts(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
 void TrackDesignPreviewDrawOutlines(
-    TrackDesignState& tds, const TrackDesign& td, OpenRCT2::Ride& ride, const CoordsXYZD& coords, bool placeScenery);
-int32_t TrackDesignGetZPlacement(const TrackDesign& td, OpenRCT2::Ride& ride, const CoordsXYZD& coords);
+    TrackDesignState& tds, const TrackDesign& td, Ride& ride, const CoordsXYZD& coords, bool placeScenery);
+int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const CoordsXYZD& coords);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design preview

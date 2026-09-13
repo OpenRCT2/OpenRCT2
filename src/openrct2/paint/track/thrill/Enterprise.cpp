@@ -19,6 +19,7 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Numerics;
@@ -32,7 +33,7 @@ static void PaintEnterpriseRiders(
     if (imageOffset >= 12)
         return;
 
-    auto baseImageIndex = rideEntry.Cars[0].baseImageId;
+    auto baseImageIndex = rideEntry.Cars[0].base_image_id;
     for (int32_t i = 0; i < 15; i++)
     {
         if (vehicle.num_peeps <= i)
@@ -56,7 +57,7 @@ static void PaintEnterpriseStructure(
     Vehicle* vehicle = nullptr;
     if (ride.flags.has(RideFlag::onTrack))
     {
-        vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::entity;
@@ -79,7 +80,7 @@ static void PaintEnterpriseStructure(
     {
         imageTemplate = imageFlags;
     }
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].baseImageId + imageOffset);
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bb);
 
     if (vehicle != nullptr)

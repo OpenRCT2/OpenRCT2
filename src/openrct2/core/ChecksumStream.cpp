@@ -9,6 +9,8 @@
 
 #include "ChecksumStream.h"
 
+#include "Endianness.h"
+
 namespace OpenRCT2
 {
 #ifndef DISABLE_NETWORK

@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../../Identifiers.h"
-#include "../../core/FlagHolder.hpp"
 #include "TileElementBase.h"
 
 namespace OpenRCT2
@@ -39,110 +38,109 @@ namespace OpenRCT2
         FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
     };
 
-    enum class FootpathElementFlag : uint8_t
+    enum
     {
-        isSloped,
-        hasQueueBanner,
-        additionIsGhost,
-        blockedByVehicle,
-        additionIsBroken,
-        isLegacyPathEntry,
-        hasJunctionRailings,
+        FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED = 1 << 0,
+        FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER = (1 << 1),
+        FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST = (1 << 2),
+        FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE = (1 << 3),
+        FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN = (1 << 4),
+        FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 5),
+        FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS = (1 << 6),
     };
-    using FootpathElementFlags = FlagHolder<uint8_t, FootpathElementFlag>;
 
 #pragma pack(push, 1)
     struct PathElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::path;
+        static constexpr TileElementType kElementType = TileElementType::Path;
 
     private:
-        ObjectEntryIndex surfaceIndex;  // 5
-        ObjectEntryIndex railingsIndex; // 7
-        uint8_t additions;              // 9 (0 means no addition)
-        uint8_t edgesAndCorners;        // 10 (edges in lower 4 bits, corners in upper 4)
-        FootpathElementFlags flags2;    // 11
-        uint8_t slopeDirection;         // 12
+        ObjectEntryIndex SurfaceIndex;  // 5
+        ObjectEntryIndex RailingsIndex; // 7
+        uint8_t Additions;              // 9 (0 means no addition)
+        uint8_t EdgesAndCorners;        // 10 (edges in lower 4 bits, corners in upper 4)
+        uint8_t Flags2;                 // 11
+        uint8_t SlopeDirection;         // 12
         union
         {
-            uint8_t additionStatus; // 13, only used for litter bins
+            uint8_t AdditionStatus; // 13, only used for litter bins
             RideId rideIndex;       // 13
         };
-        ::StationIndex stationIndex; // 15
+        ::StationIndex StationIndex; // 15
 
     public:
-        ObjectEntryIndex getLegacyPathEntryIndex() const;
-        const FootpathObject* getLegacyPathEntry() const;
-        void setLegacyPathEntryIndex(ObjectEntryIndex newIndex);
-        bool hasLegacyPathEntry() const;
+        ObjectEntryIndex GetLegacyPathEntryIndex() const;
+        const FootpathObject* GetLegacyPathEntry() const;
+        void SetLegacyPathEntryIndex(ObjectEntryIndex newIndex);
+        bool HasLegacyPathEntry() const;
 
-        ObjectEntryIndex getSurfaceEntryIndex() const;
-        const FootpathSurfaceObject* getSurfaceEntry() const;
-        void setSurfaceEntryIndex(ObjectEntryIndex newIndex);
+        ObjectEntryIndex GetSurfaceEntryIndex() const;
+        const FootpathSurfaceObject* GetSurfaceEntry() const;
+        void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
 
-        ObjectEntryIndex getRailingsEntryIndex() const;
-        const FootpathRailingsObject* getRailingsEntry() const;
-        void setRailingsEntryIndex(ObjectEntryIndex newIndex);
+        ObjectEntryIndex GetRailingsEntryIndex() const;
+        const FootpathRailingsObject* GetRailingsEntry() const;
+        void SetRailingsEntryIndex(ObjectEntryIndex newIndex);
 
-        const PathSurfaceDescriptor* getSurfaceDescriptor() const;
-        const PathRailingsDescriptor* getRailingsDescriptor() const;
+        const PathSurfaceDescriptor& GetSurfaceDescriptor() const;
+        const PathRailingsDescriptor& GetRailingsDescriptor() const;
 
-        uint8_t getQueueBannerDirection() const;
-        void setQueueBannerDirection(uint8_t direction);
+        uint8_t GetQueueBannerDirection() const;
+        void SetQueueBannerDirection(uint8_t direction);
 
-        bool isSloped() const;
-        void setSloped(bool isSloped);
+        bool IsSloped() const;
+        void SetSloped(bool isSloped);
 
-        bool hasJunctionRailings() const;
-        void setJunctionRailings(bool hasJunctionRailings);
+        bool HasJunctionRailings() const;
+        void SetJunctionRailings(bool hasJunctionRailings);
 
-        Direction getSlopeDirection() const;
-        void setSlopeDirection(Direction newSlope);
+        Direction GetSlopeDirection() const;
+        void SetSlopeDirection(Direction newSlope);
 
-        RideId getRideIndex() const;
-        void setRideIndex(RideId newRideIndex);
+        RideId GetRideIndex() const;
+        void SetRideIndex(RideId newRideIndex);
 
-        ::StationIndex getStationIndex() const;
-        void setStationIndex(::StationIndex newStationIndex);
+        ::StationIndex GetStationIndex() const;
+        void SetStationIndex(::StationIndex newStationIndex);
 
-        bool isWide() const;
-        void setWide(bool isWide);
+        bool IsWide() const;
+        void SetWide(bool isWide);
 
-        bool isQueue() const;
-        void setIsQueue(bool isQueue);
-        bool hasQueueBanner() const;
-        void setHasQueueBanner(bool hasQueueBanner);
+        bool IsQueue() const;
+        void SetIsQueue(bool isQueue);
+        bool HasQueueBanner() const;
+        void SetHasQueueBanner(bool hasQueueBanner);
 
-        bool isBroken() const;
-        void setIsBroken(bool isBroken);
+        bool IsBroken() const;
+        void SetIsBroken(bool isBroken);
 
-        bool isBlockedByVehicle() const;
-        void setIsBlockedByVehicle(bool isBlocked);
+        bool IsBlockedByVehicle() const;
+        void SetIsBlockedByVehicle(bool isBlocked);
 
-        uint8_t getEdges() const;
-        void setEdges(uint8_t newEdges);
-        uint8_t getCorners() const;
-        void setCorners(uint8_t newCorners);
-        uint8_t getEdgesAndCorners() const;
-        void setEdgesAndCorners(uint8_t newEdgesAndCorners);
+        uint8_t GetEdges() const;
+        void SetEdges(uint8_t newEdges);
+        uint8_t GetCorners() const;
+        void SetCorners(uint8_t newCorners);
+        uint8_t GetEdgesAndCorners() const;
+        void SetEdgesAndCorners(uint8_t newEdgesAndCorners);
 
-        bool hasAddition() const;
-        uint8_t getAddition() const;
-        ObjectEntryIndex getAdditionEntryIndex() const;
-        const PathAdditionEntry* getAdditionEntry() const;
-        void setAddition(uint8_t newAddition);
-        void setAdditionEntryIndex(ObjectEntryIndex entryIndex);
+        bool HasAddition() const;
+        uint8_t GetAddition() const;
+        ObjectEntryIndex GetAdditionEntryIndex() const;
+        const PathAdditionEntry* GetAdditionEntry() const;
+        void SetAddition(uint8_t newAddition);
+        void SetAdditionEntryIndex(ObjectEntryIndex entryIndex);
 
-        bool additionIsGhost() const;
-        void setAdditionIsGhost(bool isGhost);
+        bool AdditionIsGhost() const;
+        void SetAdditionIsGhost(bool isGhost);
 
-        uint8_t getAdditionStatus() const;
-        void setAdditionStatus(uint8_t newStatus);
+        uint8_t GetAdditionStatus() const;
+        void SetAdditionStatus(uint8_t newStatus);
 
-        bool shouldDrawPathOverSupports() const;
-        void setShouldDrawPathOverSupports(bool on);
+        bool ShouldDrawPathOverSupports() const;
+        void SetShouldDrawPathOverSupports(bool on);
 
-        bool isLevelCrossing(const CoordsXY& coords) const;
+        bool IsLevelCrossing(const CoordsXY& coords) const;
     };
     static_assert(sizeof(PathElement) == kTileElementSize);
 #pragma pack(pop)

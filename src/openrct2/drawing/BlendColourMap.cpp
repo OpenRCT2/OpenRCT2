@@ -9,14 +9,11 @@
 
 #include "BlendColourMap.h"
 
-#include "PaletteIndex.h"
-
 #ifndef DISABLE_TTF
 
     #include "../core/EnumUtils.hpp"
+    #include "ColourPalette.h"
     #include "Drawing.h"
-    #include "Palette.h"
-    #include "PaletteType.h"
 
     #include <cmath>
 

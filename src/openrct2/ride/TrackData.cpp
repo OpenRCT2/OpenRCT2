@@ -11,6 +11,7 @@
 
 #include "../core/EnumUtils.hpp"
 #include "../localisation/StringIds.h"
+#include "TrackPaint.h"
 #include "ted/TED.Corkscrew.h"
 #include "ted/TED.DiveLoop.h"
 #include "ted/TED.FlatRide.h"
@@ -1614,9 +1615,9 @@ namespace OpenRCT2::TrackMetadata
             SequenceTunnel{
                 .direction = 0,
                 .tunnelInfo = {
-                    SequenceTunnelInfo{ 0, TunnelSubType::flat }, // upright
-                    SequenceTunnelInfo{ 0, TunnelSubType::flat }, // inverted
-                    SequenceTunnelInfo{ 0, TunnelSubType::tall }, // invertedFlying
+                    SequenceTunnelInfo{ 0, TunnelSubType::Flat }, // upright
+                    SequenceTunnelInfo{ 0, TunnelSubType::Flat }, // inverted
+                    SequenceTunnelInfo{ 0, TunnelSubType::Tall }, // invertedFlying
                 },
             },
         },
@@ -1694,9 +1695,9 @@ namespace OpenRCT2::TrackMetadata
             SequenceTunnel{
                 .direction = 3,
                 .tunnelInfo = {
-                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::flatTo25Deg }, // upright
-                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::flat },        // inverted
-                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::tall },        // invertedFlying
+                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::FlatTo25Deg }, // upright
+                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::Flat },        // inverted
+                    SequenceTunnelInfo{ kLandHeightStep, TunnelSubType::Tall },        // invertedFlying
                 },
             },
         },

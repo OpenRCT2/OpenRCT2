@@ -7,20 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ScVehicle.hpp"
+
+#include "../../../core/EnumMap.hpp"
+#include "../../../ride/Track.h"
+#include "../../../ride/TrackData.h"
+#include "../../../ride/ted/TrackElementDescriptor.h"
+#include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
+#include "../ride/ScRide.hpp"
+
 #ifdef ENABLE_SCRIPTING
-
-    #include "ScVehicle.hpp"
-
-    #include "../../../GameState.h"
-    #include "../../../core/EnumMap.hpp"
-    #include "../../../entity/EntityTweener.h"
-    #include "../../../ride/Track.h"
-    #include "../../../ride/TrackData.h"
-    #include "../../../ride/Vehicle.h"
-    #include "../../../ride/ted/TrackElementDescriptor.h"
-    #include "../../../world/Map.h"
-    #include "../../../world/tile_element/TrackElement.h"
-    #include "../ride/ScRide.hpp"
 
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetadata;
@@ -93,7 +90,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("trackLocation", &ScVehicle::trackLocation_get, nullptr),
             JS_CGETSET_DEF("trackProgress", &ScVehicle::trackProgress_get, nullptr),
             JS_CGETSET_DEF("remainingDistance", &ScVehicle::remainingDistance_get, nullptr),
-            JS_CGETSET_DEF("subposition", &ScVehicle::subposition_get, &ScVehicle::subposition_set),
+            JS_CGETSET_DEF("subposition", &ScVehicle::subposition_get, nullptr),
             JS_CGETSET_DEF("poweredAcceleration", &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set),
             JS_CGETSET_DEF("poweredMaxSpeed", &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set),
             JS_CGETSET_DEF("status", &ScVehicle::status_get, &ScVehicle::status_set),
@@ -110,7 +107,7 @@ namespace OpenRCT2::Scripting
     Vehicle* ScVehicle::GetVehicle(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.getEntity<Vehicle>(id);
+        return getGameState().entities.GetEntity<Vehicle>(id);
     }
 
     JSValue ScVehicle::rideObject_get(JSContext* ctx, JSValue thisVal)
@@ -464,27 +461,6 @@ namespace OpenRCT2::Scripting
         return JS_NewUint32(ctx, vehicle != nullptr ? static_cast<uint8_t>(vehicle->TrackSubposition) : 0);
     }
 
-    JSValue ScVehicle::subposition_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
-    {
-        JS_UNPACK_UINT32(value, ctx, jsValue);
-        JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-
-        if (value >= static_cast<uint32_t>(VehicleTrackSubposition::count))
-        {
-            return JS_ThrowRangeError(ctx, "Invalid vehicle subposition");
-        }
-
-        auto vehicle = GetVehicle(thisVal);
-        if (vehicle != nullptr)
-        {
-            vehicle->TrackSubposition = static_cast<VehicleTrackSubposition>(value);
-            vehicle->UpdateTrackChange();
-            EntityTweener::get().removeEntity(vehicle);
-        }
-
-        return JS_UNDEFINED;
-    }
-
     JSValue ScVehicle::poweredAcceleration_get(JSContext* ctx, JSValue thisVal)
     {
         auto vehicle = GetVehicle(thisVal);
@@ -606,7 +582,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->MoveRelativeDistance(value);
-            EntityTweener::get().removeEntity(vehicle);
+            EntityTweener::Get().RemoveEntity(vehicle);
         }
         return JS_UNDEFINED;
     }
@@ -621,7 +597,7 @@ namespace OpenRCT2::Scripting
         if (vehicle == nullptr)
             return JS_UNDEFINED;
 
-        CoordsXY coords = TileCoordsXY(x, y).toCoordsXY();
+        CoordsXY coords = TileCoordsXY(x, y).ToCoordsXY();
         auto el = MapGetNthElementAt(coords, elementIndex);
         if (el == nullptr)
             return JS_UNDEFINED;
@@ -630,7 +606,7 @@ namespace OpenRCT2::Scripting
         if (!origin)
             return JS_UNDEFINED;
 
-        const auto& trackType = el->asTrack()->getTrackType();
+        const auto& trackType = el->asTrack()->GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
         const auto& seq0 = ted.sequenceData.sequences[0].clearance;
         const auto trackLoc = CoordsXYZ(origin->x + seq0.x, origin->y + seq0.y, origin->z + seq0.z);
@@ -647,7 +623,7 @@ namespace OpenRCT2::Scripting
             vehicle->track_progress = trackTotalProgress - 1;
 
         vehicle->UpdateTrackChange();
-        EntityTweener::get().removeEntity(vehicle);
+        EntityTweener::Get().RemoveEntity(vehicle);
         return JS_UNDEFINED;
     }
 } // namespace OpenRCT2::Scripting

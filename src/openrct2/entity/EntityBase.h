@@ -1,12 +1,11 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../interface/ScreenCoords.hpp"
-
-struct CoordsXYZ;
+#include "../world/Location.hpp"
 
 namespace OpenRCT2
 {
+    class DataSerialiser;
 
     enum class EntityType : uint8_t
     {

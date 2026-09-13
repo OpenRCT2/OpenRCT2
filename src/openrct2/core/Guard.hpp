@@ -13,6 +13,7 @@
 #include <optional>
 #include <source_location>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <string>
 
 enum class AssertBehaviour

@@ -12,10 +12,12 @@
 #include "../../Cheats.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/tile_element/SurfaceElement.h"
 
 namespace OpenRCT2::GameActions
@@ -73,7 +75,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
-        if (surfaceMapElement->getOwnership() != kUnowned)
+        if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
         {
             return Result(
                 Status::invalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
@@ -89,7 +91,7 @@ namespace OpenRCT2::GameActions
         res.position = _location;
 
         // Shift the spawn point to the edge of the tile
-        auto spawnPos = CoordsXY{ _location.toTileCentre() }
+        auto spawnPos = CoordsXY{ _location.ToTileCentre() }
             + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
 
         PeepSpawn spawn;
@@ -106,7 +108,7 @@ namespace OpenRCT2::GameActions
             auto foundSpawn = std::find_if(
                 gameState.peepSpawns.begin(), gameState.peepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
                     {
-                        return existingSpawn.toTileStart() == spawn.toTileStart();
+                        return existingSpawn.ToTileStart() == spawn.ToTileStart();
                     }
                 });
 

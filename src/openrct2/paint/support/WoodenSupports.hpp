@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../drawing/ImageId.hpp"
 #include "../../ride/TrackData.h"
 #include "../../ride/ted/TrackElementDescriptor.h"
 

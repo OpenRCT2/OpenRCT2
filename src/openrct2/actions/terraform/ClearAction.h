@@ -9,22 +9,22 @@
 
 #pragma once
 
-#include "../../core/FlagHolder.hpp"
+#include "../../OpenRCT2.h"
+#include "../../management/Finance.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {
-    enum class ClearableItem : uint8_t
-    {
-        smallScenery,
-        largeScenery,
-        footpaths,
-        walls,
-        pathAdditions,
-    };
-    using ClearableItems = FlagHolder<uint8_t, ClearableItem>;
+    using ClearableItems = uint8_t;
 
-    class ClearAction final : public GameActionBase<GameCommand::clearScenery>
+    namespace CLEARABLE_ITEMS
+    {
+        constexpr ClearableItems kScenerySmall = 1 << 0;
+        constexpr ClearableItems kSceneryLarge = 1 << 1;
+        constexpr ClearableItems kSceneryFootpath = 1 << 2;
+    } // namespace CLEARABLE_ITEMS
+
+    class ClearAction final : public GameActionBase<GameCommand::ClearScenery>
     {
     private:
         MapRange _range;

@@ -11,8 +11,6 @@
 
 #include "../audio/Audio.h"
 #include "../core/EnumUtils.hpp"
-#include "../object/TerrainEdgeObject.h"
-#include "../object/WallSceneryEntry.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/tile_element/SurfaceElement.h"
@@ -48,11 +46,11 @@ static_assert(std::size(kDoorCloseSoundIds) == kDoorSoundTypeCount);
  */
 static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
-    auto* wallEntry = tileElement->getEntry();
+    auto* wallEntry = tileElement->GetEntry();
     if (wallEntry == nullptr)
         return;
 
-    const auto doorSoundType = wallEntry->doorSound;
+    auto doorSoundType = wallEntry->getDoorSoundType();
     if (doorSoundType == DoorSoundType::none)
         return;
 
@@ -66,11 +64,11 @@ static void play_scenery_door_open_sound(const CoordsXYZ& loc, WallElement* tile
  */
 static void play_scenery_door_close_sound(const CoordsXYZ& loc, WallElement* tileElement)
 {
-    auto* wallEntry = tileElement->getEntry();
+    auto* wallEntry = tileElement->GetEntry();
     if (wallEntry == nullptr)
         return;
 
-    const auto doorSoundType = wallEntry->doorSound;
+    auto doorSoundType = wallEntry->getDoorSoundType();
     if (doorSoundType == DoorSoundType::none)
         return;
 
@@ -87,11 +85,11 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         return;
     }
 
-    if (!isLastVehicle && (door->getAnimationFrame() == 0))
+    if (!isLastVehicle && (door->GetAnimationFrame() == 0))
     {
-        door->setAnimationIsBackwards(isBackwards);
-        door->setAnimationFrame(1);
-        door->setIsAnimating(true);
+        door->SetAnimationIsBackwards(isBackwards);
+        door->SetAnimationFrame(1);
+        door->SetIsAnimating(true);
         play_scenery_door_open_sound(trackLocation, door);
 
         MapAnimations::MarkTileForUpdate(TileCoordsXY(doorLocation));
@@ -99,9 +97,9 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
 
     if (isLastVehicle)
     {
-        door->setAnimationIsBackwards(isBackwards);
-        door->setAnimationFrame(6);
-        door->setIsAnimating(true);
+        door->SetAnimationIsBackwards(isBackwards);
+        door->SetAnimationFrame(6);
+        door->SetIsAnimating(true);
         play_scenery_door_close_sound(trackLocation, door);
 
         MapAnimations::MarkTileForUpdate(TileCoordsXY(doorLocation));
@@ -118,7 +116,7 @@ void Vehicle::UpdateSceneryDoor() const
     const auto& ted = GetTrackElementDescriptor(trackType);
     const auto& trackBlock = ted.sequenceData.sequences[ted.sequenceData.numSequences - 1].clearance;
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
-    auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock.z + trackCoordinates->zEnd }.toTileStart();
+    auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock.z + trackCoordinates->zEnd }.ToTileStart();
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotationEnd) & 3;
 
     AnimateSceneryDoor<false>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
@@ -129,13 +127,13 @@ static void AnimateLandscapeDoor(
     const CoordsXYZ& doorLocation, TrackElement& trackElement, const bool isLastVehicle, const DoorSoundType doorSound,
     const CoordsXYZ& soundLocation)
 {
-    const auto doorState = isBackwards ? trackElement.getDoorAState() : trackElement.getDoorBState();
+    const auto doorState = isBackwards ? trackElement.GetDoorAState() : trackElement.GetDoorBState();
     if (!isLastVehicle && doorState == kLandEdgeDoorFrameClosed)
     {
         if (isBackwards)
-            trackElement.setDoorAState(kLandEdgeDoorFrameOpening);
+            trackElement.SetDoorAState(kLandEdgeDoorFrameOpening);
         else
-            trackElement.setDoorBState(kLandEdgeDoorFrameOpening);
+            trackElement.SetDoorBState(kLandEdgeDoorFrameOpening);
 
         MapAnimations::CreateTemporary(doorLocation, MapAnimations::TemporaryType::landEdgeDoor);
         Play3D(kDoorOpenSoundIds[EnumValue(doorSound)], soundLocation);
@@ -144,9 +142,9 @@ static void AnimateLandscapeDoor(
     if (isLastVehicle)
     {
         if (isBackwards)
-            trackElement.setDoorAState(kLandEdgeDoorFrameClosing);
+            trackElement.SetDoorAState(kLandEdgeDoorFrameClosing);
         else
-            trackElement.setDoorBState(kLandEdgeDoorFrameClosing);
+            trackElement.SetDoorBState(kLandEdgeDoorFrameClosing);
 
         MapAnimations::CreateTemporary(doorLocation, MapAnimations::TemporaryType::landEdgeDoor);
         Play3D(kDoorCloseSoundIds[EnumValue(doorSound)], soundLocation);
@@ -155,7 +153,7 @@ static void AnimateLandscapeDoor(
 
 static const SurfaceElement* GetSurfaceElementAfterElement(const TileElement* tileElement)
 {
-    while (tileElement->getType() != TileElementType::surface)
+    while (tileElement->getType() != TileElementType::Surface)
     {
         if (tileElement->isLastForTile())
             return nullptr;
@@ -172,7 +170,7 @@ void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
         return;
     }
 
-    const CoordsXYZ previousTrackLocation = CoordsXYZ(x, y, previousTrackHeight).toTileStart();
+    const CoordsXYZ previousTrackLocation = CoordsXYZ(x, y, previousTrackHeight).ToTileStart();
     auto* const previousTrackElement = MapGetTrackElementAtBeforeSurfaceFromRide(previousTrackLocation, ride);
     auto* const currentTrackElement = MapGetTrackElementAtBeforeSurfaceFromRide(TrackLocation, ride);
     if (previousTrackElement != nullptr && currentTrackElement == nullptr)
@@ -180,7 +178,7 @@ void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
         const auto* const surfaceElement = GetSurfaceElementAfterElement(previousTrackElement);
         if (surfaceElement != nullptr && surfaceElement->getBaseZ() > previousTrackLocation.z)
         {
-            const auto* const edgeObject = surfaceElement->getEdgeObject();
+            const auto* const edgeObject = surfaceElement->GetEdgeObject();
             if (edgeObject != nullptr && edgeObject->HasDoors)
             {
                 AnimateLandscapeDoor<false>(
@@ -194,7 +192,7 @@ void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
         const auto* const surfaceElement = GetSurfaceElementAfterElement(currentTrackElement);
         if (surfaceElement != nullptr && surfaceElement->getBaseZ() > TrackLocation.z)
         {
-            const auto* const edgeObject = surfaceElement->getEdgeObject();
+            const auto* const edgeObject = surfaceElement->GetEdgeObject();
             if (edgeObject != nullptr && edgeObject->HasDoors)
             {
                 AnimateLandscapeDoor<true>(

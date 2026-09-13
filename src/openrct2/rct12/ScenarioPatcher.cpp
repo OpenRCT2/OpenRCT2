@@ -10,11 +10,10 @@
 #include "ScenarioPatcher.h"
 
 #include "../Context.h"
-#include "../Diagnostic.h"
+#include "../Game.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/GameActionResult.h"
 #include "../actions/footpath/FootpathPlaceAction.h"
-#include "../actions/ride/RideSetStatusAction.h"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
@@ -28,10 +27,11 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
-#include "../world/Park.h"
-#include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TileElementType.h"
 #include "../world/tile_element/TrackElement.h"
 
@@ -40,6 +40,8 @@
 #else
     #include "../core/Crypt.h"
 #endif
+
+#include <iostream>
 
 using namespace OpenRCT2;
 using OpenRCT2::GameActions::CommandFlag;
@@ -77,7 +79,6 @@ static const std::string _element_index = "element_index";
 static const std::string _ridesKey = "rides";
 static const std::string _rideIdKey = "id";
 static const std::string _operationKey = "operation";
-static const std::string _nameKey = "name";
 
 // Path fix keys
 static const std::string _pathsKey = "paths";
@@ -86,19 +87,21 @@ static const std::string _surfaceKey = "surface";
 static const std::string _directionKey = "slope_direction";
 static const std::string _isQueue = "queue";
 
-static u8string ToOwnershipJsonKey(OwnershipFlags ownershipType)
+static u8string ToOwnershipJsonKey(int ownershipType)
 {
-    if (ownershipType == kUnowned)
-        return "unowned";
-    if (ownershipType.has(OwnershipFlag::constructionRightsOwned))
-        return "construction_rights_owned";
-    if (ownershipType.has(OwnershipFlag::landOwned))
-        return "owned";
-    if (ownershipType.has(OwnershipFlag::constructionRightsForSale))
-        return "construction_rights_available";
-    if (ownershipType.has(OwnershipFlag::landForSale))
-        return "available";
-
+    switch (ownershipType)
+    {
+        case OWNERSHIP_UNOWNED:
+            return "unowned";
+        case OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED:
+            return "construction_rights_owned";
+        case OWNERSHIP_OWNED:
+            return "owned";
+        case OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE:
+            return "construction_rights_available";
+        case OWNERSHIP_AVAILABLE:
+            return "available";
+    }
     Guard::Assert(false, "Unrecognized ownership type flag");
     return {};
 }
@@ -204,20 +207,7 @@ static bool IsQueue(const json_t& parameters)
     }
 }
 
-static void FixLandOwnershipTilesWithOwnership(const std::span<const TileCoordsXY> tiles, OwnershipFlags ownership)
-{
-    for (const auto& tile : tiles)
-    {
-        auto surfaceElement = MapGetSurfaceElementAt(tile);
-        if (surfaceElement != nullptr)
-        {
-            surfaceElement->setOwnership(ownership);
-            Park::UpdateFencesAroundTile(tile.toCoordsXY());
-        }
-    }
-}
-
-static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, OwnershipFlags ownershipType)
+static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int ownershipType)
 {
     auto ownershipTypeKey = ToOwnershipJsonKey(ownershipType);
     if (!landOwnershipFixes.contains(ownershipTypeKey))
@@ -242,14 +232,8 @@ static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
     }
 
     auto landOwnershipFixes = scenarioPatch[_landOwnershipKey];
-    constexpr auto kTypesToCheck = std::to_array<OwnershipFlags>({
-        kUnowned,
-        { OwnershipFlag::constructionRightsOwned },
-        { OwnershipFlag::landOwned },
-        { OwnershipFlag::constructionRightsForSale },
-        { OwnershipFlag::landForSale },
-    });
-    for (const OwnershipFlags& ownershipType : kTypesToCheck)
+    for (const auto& ownershipType : { OWNERSHIP_UNOWNED, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, OWNERSHIP_OWNED,
+                                       OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE, OWNERSHIP_AVAILABLE })
     {
         ApplyLandOwnershipFixes(landOwnershipFixes, ownershipType);
     }
@@ -292,7 +276,7 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
         for (const auto& tile : coordinatesVector)
         {
             auto surfaceElement = MapGetSurfaceElementAt(tile);
-            surfaceElement->setWaterHeight(waterHeight);
+            surfaceElement->SetWaterHeight(waterHeight);
         }
     }
 }
@@ -356,13 +340,21 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 
         for (const auto& tile : coordinatesVector)
         {
-            for (auto* trackElement : TileElementsView<TrackElement>(tile))
+            auto* tileElement = MapGetFirstElementAt(tile);
+            if (tileElement == nullptr)
+                continue;
+
+            do
             {
-                if (trackElement->getTrackType() != fromTrackType)
+                if (tileElement->getType() != TileElementType::Track)
                     continue;
 
-                trackElement->setTrackType(destinationTrackType);
-            }
+                auto* trackElement = tileElement->asTrack();
+                if (trackElement->GetTrackType() != fromTrackType)
+                    continue;
+
+                trackElement->SetTrackType(destinationTrackType);
+            } while (!(tileElement++)->isLastForTile());
         }
     }
 }
@@ -370,11 +362,11 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 static TileElementType toTileElementType(const u8string_view tileTypeString)
 {
     if (tileTypeString == "track")
-        return TileElementType::track;
+        return TileElementType::Track;
     else
     {
         Guard::Assert(false, "Unsupported tile type conversion");
-        return TileElementType::track;
+        return TileElementType::Track;
     }
 }
 
@@ -393,7 +385,7 @@ static void ApplyTileFixes(const json_t& scenarioPatch)
     else
     {
         auto tileType = toTileElementType(Json::GetString(tilesFixes[_typeKey]));
-        if (tileType == TileElementType::track)
+        if (tileType == TileElementType::Track)
         {
             ApplyTrackTypeFixes(tilesFixes);
         }
@@ -446,7 +438,7 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
         for (const auto& tile : coordinatesVector)
         {
             auto surfaceElement = MapGetSurfaceElementAt(tile);
-            surfaceElement->setSurfaceObjectIndex(surfaceObjIndex);
+            surfaceElement->SetSurfaceObjectIndex(surfaceObjIndex);
         }
     }
 }
@@ -487,7 +479,7 @@ static void RemoveTileElements(const json_t& scenarioPatch)
 
         for (const auto& tile : coordinatesVector)
         {
-            auto tileElement = MapGetNthElementAt(tile.toCoordsXY(), elementIndex);
+            auto tileElement = MapGetNthElementAt(tile.ToCoordsXY(), elementIndex);
             if (tileElement == nullptr)
             {
                 Guard::Assert(false, "Invalid Nth element at tile");
@@ -495,7 +487,7 @@ static void RemoveTileElements(const json_t& scenarioPatch)
             }
             else
             {
-                ClearElementAt(tile.toCoordsXY(), &tileElement);
+                ClearElementAt(tile.ToCoordsXY(), &tileElement);
             }
         }
     }
@@ -513,10 +505,10 @@ static void SwapRideEntranceAndExit(RideId rideId)
     // First, make the queuing peep exit
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->state == PeepState::queuingFront && peep->currentRide == rideId)
+        if (peep->State == PeepState::queuingFront && peep->CurrentRide == rideId)
         {
             peep->removeFromQueue();
-            peep->setState(PeepState::falling);
+            peep->SetState(PeepState::falling);
             break;
         }
     }
@@ -525,65 +517,23 @@ static void SwapRideEntranceAndExit(RideId rideId)
     if (ride != nullptr)
     {
         auto& station = ride->getStation();
-        auto entranceCoords = station.exit;
-        auto exitCoords = station.entrance;
-        station.entrance = entranceCoords;
-        station.exit = exitCoords;
+        auto entranceCoords = station.Exit;
+        auto exitCoords = station.Entrance;
+        station.Entrance = entranceCoords;
+        station.Exit = exitCoords;
 
-        auto entranceElement = MapGetRideExitElementAt(entranceCoords.toCoordsXYZD(), false);
-        entranceElement->setEntranceType(EntranceType::rideEntrance);
-        auto exitElement = MapGetRideEntranceElementAt(exitCoords.toCoordsXYZD(), false);
-        exitElement->setEntranceType(EntranceType::rideExit);
+        auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
+        entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
+        auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
+        exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
 
         // Trigger footpath update
         FootpathQueueChainReset();
         FootpathConnectEdges(
-            entranceCoords.toCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
+            entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
             { CommandFlag::apply, CommandFlag::allowDuringPaused });
         FootpathUpdateQueueChains();
     }
-}
-
-static void OpenRide(RideId rideId)
-{
-    auto ride = GetRide(rideId);
-    if (ride == nullptr)
-    {
-        Guard::Assert(false, "Invalid Ride Id for OpenRide");
-        return;
-    }
-
-    auto rideOpenAction = GameActions::RideSetStatusAction(ride->id, RideStatus::open);
-    auto& gameState = getGameState();
-    auto result = rideOpenAction.Execute(gameState, gameState.park);
-    if (result.error != GameActions::Status::ok)
-    {
-        Guard::Assert(false, "Could not open ride %s", ride->getName().c_str());
-    }
-}
-
-static void renameRide(RideId rideId, u8string_view newName)
-{
-    auto* ride = GetRide(rideId);
-    if (ride == nullptr)
-    {
-        Guard::Assert(false, "Invalid Ride Id for renameRide");
-        return;
-    }
-
-    ride->customName = newName;
-}
-
-static void clearRideName(RideId rideId)
-{
-    auto* ride = GetRide(rideId);
-    if (ride == nullptr)
-    {
-        Guard::Assert(false, "Invalid Ride Id for clearRideName");
-        return;
-    }
-
-    ride->customName.clear();
 }
 
 static void ApplyRideFixes(const json_t& scenarioPatch)
@@ -620,18 +570,7 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
             return;
         }
 
-        std::vector<RideId> rideIds{};
-        if (rideFixes[i][_rideIdKey].is_array())
-        {
-            for (size_t j = 0; j < rideFixes[i][_rideIdKey].size(); j++)
-            {
-                rideIds.push_back(RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey][j])));
-            }
-        }
-        else
-        {
-            rideIds.push_back(RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey])));
-        }
+        RideId rideId = RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey]));
         auto operation = Json::GetString(rideFixes[i][_operationKey]);
 
         if (_dryRun)
@@ -639,32 +578,13 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
             continue;
         }
 
-        for (auto rideId : rideIds)
+        if (operation == "swap_entrance_exit")
         {
-            if (operation == "swap_entrance_exit")
-            {
-                SwapRideEntranceAndExit(rideId);
-            }
-            else if (operation == "open_ride")
-            {
-                OpenRide(rideId);
-            }
-            else if (operation == "set_name")
-            {
-                auto newName = Json::GetString(rideFixes[i][_nameKey]);
-                if (newName.empty())
-                    Guard::Assert(false, "Need to specify a new name for ride id %d", rideId);
-                else
-                    renameRide(rideId, newName);
-            }
-            else if (operation == "clear_name")
-            {
-                clearRideName(rideId);
-            }
-            else
-            {
-                Guard::Assert(false, "Unsupported ride fix operation");
-            }
+            SwapRideEntranceAndExit(rideId);
+        }
+        else
+        {
+            Guard::Assert(false, "Unsupported ride fix operation");
         }
     }
 }
@@ -739,7 +659,7 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
             if (direction != kInvalidDirection)
                 slope = { FootpathSlopeType::sloped, direction };
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
-                coordinate.toCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
+                coordinate.ToCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
             auto& gameState = getGameState();
             auto result = footpathPlaceAction.Execute(gameState, gameState.park);
             if (result.error != GameActions::Status::ok)

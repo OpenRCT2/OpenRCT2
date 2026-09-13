@@ -9,9 +9,9 @@
 
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
@@ -23,16 +23,13 @@
 #include <openrct2/actions/track/TrackDesignAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
@@ -41,6 +38,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/world/tile_element/Slope.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <vector>
 
@@ -122,7 +121,7 @@ namespace OpenRCT2::Ui::Windows
             ShowGridlines();
             _miniPreview.resize(kTrackMiniPreviewSize.width * kTrackMiniPreviewSize.height);
             _placementCost = kMoney64Undefined;
-            _placementLoc.setNull();
+            _placementLoc.SetNull();
             _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
         }
 
@@ -149,14 +148,14 @@ namespace OpenRCT2::Ui::Windows
                     clearProvisional();
                     _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
                     invalidate();
-                    _placementLoc.setNull();
+                    _placementLoc.SetNull();
                     DrawMiniPreview(*_trackDesign);
                     break;
                 case WIDX_MIRROR:
                     TrackDesignMirror(*_trackDesign);
                     _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
                     invalidate();
-                    _placementLoc.setNull();
+                    _placementLoc.SetNull();
                     DrawMiniPreview(*_trackDesign);
                     break;
                 case WIDX_SELECT_DIFFERENT_DESIGN:
@@ -196,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Get the tool map position
             CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
-            if (mapCoords.isNull())
+            if (mapCoords.IsNull())
             {
                 clearProvisional();
                 return;
@@ -276,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Get the tool map position
             CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(targetScreenCoords);
-            if (mapCoords.isNull())
+            if (mapCoords.IsNull())
             {
                 clearProvisional();
                 return;
@@ -386,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Price
-            if (_placementCost != kMoney64Undefined && !getGameState().park.flags.has(ParkFlag::noMoney))
+            if (_placementCost != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_placementCost);
@@ -490,19 +489,18 @@ namespace OpenRCT2::Ui::Windows
 
             if (!_trackPlaceCtrlState && im.isModifierKeyPressed(ModifierKey::ctrl))
             {
-                constexpr ViewportInteractionItems kInteractionFlags = {
-                    ViewportInteractionItem::terrain,  ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
-                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery
-                };
+                constexpr auto interactionFlags = EnumsToFlags(
+                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery);
 
-                auto info = GetMapCoordinatesFromPos(screenCoords, kInteractionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
                 if (info.interactionType == ViewportInteractionItem::terrain)
                 {
                     _trackPlaceCtrlZ = floor2(surfaceElement->getBaseZ(), kCoordsZStep);
 
                     // Increase Z above water
-                    if (surfaceElement->getWaterHeight() > 0)
-                        _trackPlaceCtrlZ = std::max(_trackPlaceCtrlZ, surfaceElement->getWaterHeight());
+                    if (surfaceElement->GetWaterHeight() > 0)
+                        _trackPlaceCtrlZ = std::max(_trackPlaceCtrlZ, surfaceElement->GetWaterHeight());
                 }
                 else
                 {
@@ -552,8 +550,8 @@ namespace OpenRCT2::Ui::Windows
                 _trackPlaceZ = floor2(surfaceElement->getBaseZ(), kCoordsZStep);
 
                 // Increase Z above water
-                if (surfaceElement->getWaterHeight() > 0)
-                    _trackPlaceZ = std::max(_trackPlaceZ, surfaceElement->getWaterHeight());
+                if (surfaceElement->GetWaterHeight() > 0)
+                    _trackPlaceZ = std::max(_trackPlaceZ, surfaceElement->GetWaterHeight());
 
                 if (_trackPlaceShiftState)
                 {
@@ -604,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
         {
             for (const auto& entrance : td.entranceElements)
             {
-                auto rotatedAndOffsetEntrance = origin + entrance.location.toCoordsXY().rotate(rotation);
+                auto rotatedAndOffsetEntrance = origin + entrance.location.ToCoordsXY().Rotate(rotation);
 
                 if (pass == 0)
                 {
@@ -646,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     const auto& trackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
                     auto rotatedAndOffsetTrackBlock = curTrackStart
-                        + CoordsXY{ trackBlock.x, trackBlock.y }.rotate(curTrackRotation);
+                        + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(curTrackRotation);
 
                     if (pass == 0)
                     {
@@ -689,7 +687,7 @@ namespace OpenRCT2::Ui::Windows
 
                 const TrackCoordinates* track_coordinate = &ted.coordinates;
 
-                curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.rotate(curTrackRotation);
+                curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
                 curTrackRotation += track_coordinate->rotationEnd - track_coordinate->rotationBegin;
                 curTrackRotation &= 3;
                 if (track_coordinate->rotationEnd & 4)
@@ -710,7 +708,7 @@ namespace OpenRCT2::Ui::Windows
             uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
             for (const auto& mazeElement : td.mazeElements)
             {
-                auto rotatedMazeCoords = origin + mazeElement.location.toCoordsXY().rotate(rotation);
+                auto rotatedMazeCoords = origin + mazeElement.location.ToCoordsXY().Rotate(rotation);
 
                 if (pass == 0)
                 {

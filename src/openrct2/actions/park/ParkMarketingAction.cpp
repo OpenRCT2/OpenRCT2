@@ -9,12 +9,15 @@
 
 #include "ParkMarketingAction.h"
 
+#include "../../Context.h"
+#include "../../GameState.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../management/Marketing.h"
 #include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"
-#include "../../world/ParkData.h"
+#include "../../world/Park.h"
 
 #include <iterator>
 
@@ -47,11 +50,11 @@ namespace OpenRCT2::GameActions
 
     Result ParkMarketingAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks <= 0 || _numWeeks >= 256)
+        if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
             return Result(Status::invalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
         }
-        if (park.flags.has(ParkFlag::forbidMarketingCampaigns))
+        if (park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
         {
             return Result(
                 Status::disallowed, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);

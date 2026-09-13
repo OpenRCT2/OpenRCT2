@@ -7,9 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../ride/Ride.h"
+#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/ted/TrackElemType.h"
+#include "../../../ride/Vehicle.h"
 #include "../../../world/tile_element/Slope.h"
 #include "../../../world/tile_element/SurfaceElement.h"
 #include "../../../world/tile_element/TrackElement.h"
@@ -18,11 +18,14 @@
 #include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 #include "../../track/Support.h"
+
+#include <iterator>
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
 
 enum
 {
@@ -478,7 +481,7 @@ static bool MiniGolfPaintUtilShouldDrawFence(PaintSession& session, const TrackE
         return true;
     }
 
-    if (surfaceElement->getSlope() != kTileSlopeFlat)
+    if (surfaceElement->GetSlope() != kTileSlopeFlat)
     {
         return true;
     }
@@ -497,13 +500,13 @@ static void PaintMiniGolfTrackFlat(
     {
         imageId = session.TrackColours.WithIndex(SprMiniGolfFlatNwSe);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-        PaintUtilPushTunnelRight(session, height, TunnelType::pathAndMiniGolf);
+        PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
     }
     else
     {
         imageId = session.TrackColours.WithIndex(SprMiniGolfFlatSwNe);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-        PaintUtilPushTunnelLeft(session, height, TunnelType::pathAndMiniGolf);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
     }
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
@@ -562,16 +565,16 @@ static void PaintMiniGolfTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             break;
     }
 
@@ -604,16 +607,16 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
             break;
     }
 
@@ -646,16 +649,16 @@ static void PaintMiniGolfTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelRight(session, height + 8, TunnelType::PathAndMiniGolf);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelLeft(session, height + 8, TunnelType::PathAndMiniGolf);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
             break;
     }
 
@@ -770,7 +773,7 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
             if (!shouldDrawFence)
                 break;
 
@@ -788,7 +791,7 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
             break;
 
         case 2:
-            PaintUtilPushTunnelRight(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
             if (!shouldDrawFence)
                 break;
 
@@ -797,8 +800,8 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
             break;
 
         case 3:
-            PaintUtilPushTunnelLeft(session, height, TunnelType::pathAndMiniGolf);
-            PaintUtilPushTunnelRight(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
+            PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
             if (!shouldDrawFence)
                 break;
 
@@ -853,11 +856,11 @@ static void PaintMiniGolfHoleAb(
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1))
     {
-        PaintUtilPushTunnelLeft(session, height, TunnelType::pathAndMiniGolf);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
     }
     else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1))
     {
-        PaintUtilPushTunnelRight(session, height, TunnelType::pathAndMiniGolf);
+        PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
     }
 
     if (direction & 1)
@@ -926,11 +929,11 @@ static void PaintMiniGolfHoleC(
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1))
     {
-        PaintUtilPushTunnelLeft(session, height, TunnelType::pathAndMiniGolf);
+        PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
     }
     else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1))
     {
-        PaintUtilPushTunnelRight(session, height, TunnelType::pathAndMiniGolf);
+        PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
     }
 
     if (direction & 1)
@@ -1018,12 +1021,12 @@ static void PaintMiniGolfHoleD(
     {
         case 0x00:
         case 0x12:
-            PaintUtilPushTunnelLeft(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
             break;
 
         case 0x02:
         case 0x30:
-            PaintUtilPushTunnelRight(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
             break;
     }
 }
@@ -1068,12 +1071,12 @@ static void PaintMiniGolfHoleE(
     {
         case (0 << 4 | 0):
         case (3 << 4 | 2):
-            PaintUtilPushTunnelLeft(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelLeft(session, height, TunnelType::PathAndMiniGolf);
             break;
 
         case (2 << 4 | 2):
         case (3 << 4 | 0):
-            PaintUtilPushTunnelRight(session, height, TunnelType::pathAndMiniGolf);
+            PaintUtilPushTunnelRight(session, height, TunnelType::PathAndMiniGolf);
             break;
     }
 }

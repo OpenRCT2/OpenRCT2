@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class ParkSetLoanAction final : public GameActionBase<GameCommand::setCurrentLoan>
+    class ParkSetLoanAction final : public GameActionBase<GameCommand::SetCurrentLoan>
     {
     private:
         money64 _value{ kMoney64Undefined };

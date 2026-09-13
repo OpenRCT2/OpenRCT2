@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kHeartlineTwisterCoasterRTD =
+constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = TrackElemType::endStation,
@@ -31,13 +30,13 @@ constexpr RideTypeDescriptor kHeartlineTwisterCoasterRTD =
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
                  RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                               RtdFlag::allowReversedTrains),
-    .rideModes = { RideMode::continuousCircuit },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },
     .Naming = { STR_RIDE_NAME_HEARTLINE_TWISTER_COASTER, STR_RIDE_DESCRIPTION_HEARTLINE_TWISTER_COASTER },
-    .NameConvention = { RideComponentType::car, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction },
     .Heights = { 22, 24, 15, 9, },
     .MaxMass = 18,
@@ -55,31 +54,31 @@ constexpr RideTypeDescriptor kHeartlineTwisterCoasterRTD =
         { Drawing::Colour::darkPurple, Drawing::Colour::white, Drawing::Colour::darkGreen },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_HEARTLINE_TWISTER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HEARTLINE_TWISTER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "heartline_twister_rc",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(3, 00), RideRating::make(1, 70), RideRating::make(1, 65) },
         18,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           6000, 764, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,    RideRating::make(0, 20), RideRating::make(0, 04), 0 },
-            { RatingsModifierType::bonusTrainLength,      0,    187245, 0, 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,    97418, 123987, 70849 },
-            { RatingsModifierType::bonusAverageSpeed,     0,    291271, 436906, 0 },
-            { RatingsModifierType::bonusDuration,         150,  26214, 0, 0 },
-            { RatingsModifierType::bonusGForces,          0,    24576, 44683, 89367 },
-            { RatingsModifierType::bonusTurns,            0,    26749, 52150, 57186 },
-            { RatingsModifierType::bonusDrops,            0,    29127, 53052, 55705 },
-            { RatingsModifierType::bonusSheltered,        0,    15420, 34952, 35108 },
-            { RatingsModifierType::bonusProximity,        0,    9841, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,    3904, 0, 0 },
-            { RatingsModifierType::requirementInversions, 1,    4, 1, 1 },
-            { RatingsModifierType::requirementNumDrops,   1,    4, 1, 1 },
-            { RatingsModifierType::penaltyLateralGs,      0,    24576, 44683, 89367 },
+            { RatingsModifierType::BonusLength,           6000, 764, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,    RideRating::make(0, 20), RideRating::make(0, 04), 0 },
+            { RatingsModifierType::BonusTrainLength,      0,    187245, 0, 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,    97418, 123987, 70849 },
+            { RatingsModifierType::BonusAverageSpeed,     0,    291271, 436906, 0 },
+            { RatingsModifierType::BonusDuration,         150,  26214, 0, 0 },
+            { RatingsModifierType::BonusGForces,          0,    24576, 44683, 89367 },
+            { RatingsModifierType::BonusTurns,            0,    26749, 52150, 57186 },
+            { RatingsModifierType::BonusDrops,            0,    29127, 53052, 55705 },
+            { RatingsModifierType::BonusSheltered,        0,    15420, 34952, 35108 },
+            { RatingsModifierType::BonusProximity,        0,    9841, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,    3904, 0, 0 },
+            { RatingsModifierType::RequirementInversions, 1,    4, 1, 1 },
+            { RatingsModifierType::RequirementNumDrops,   1,    4, 1, 1 },
+            { RatingsModifierType::PenaltyLateralGs,      0,    24576, 44683, 89367 },
         },
     },
 };

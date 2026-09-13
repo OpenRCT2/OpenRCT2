@@ -12,9 +12,9 @@
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
@@ -28,6 +28,8 @@
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/Localisation.Date.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
@@ -154,7 +156,6 @@ enum WindowCheatsWidgetIdx : WidgetIndex
     WIDX_MOWED_GRASS,
     WIDX_WATER_PLANTS,
     WIDX_DISABLE_PLANT_AGING,
-    WIDX_DISABLE_GRASS_GROWING,
 
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OWN_ALL_LAND,
@@ -292,14 +293,13 @@ static constexpr auto window_cheats_staff_widgets = makeWidgets(
     makeWidget                ({126, 371-309}, {111,  14},       WidgetType::dropdownMenu, WindowColour::secondary                                                                  ), // Staff speed
     makeWidget                ({225, 372-309}, { 11,  12},       WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ), // Staff speed
 
-    makeWidget                ({  5, 257-168}, {238,  116},      WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_MAINTENANCE_GROUP                                     ), // Maintenance group
+    makeWidget                ({  5, 257-168}, {238,  99},       WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_MAINTENANCE_GROUP                                     ), // Maintenance group
     makeWidget                ({ 11, 271-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_REMOVE_LITTER                                         ), // Remove litter
     makeWidget                ({127, 271-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_FIX_VANDALISM                                         ), // Fix vandalism
     makeWidget                ({ 11, 292-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_CLEAR_GRASS                                           ), // Clear grass
     makeWidget                ({127, 292-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_MOWED_GRASS                                           ), // Mowed grass
     makeWidget                ({ 11, 313-168}, kCheatButtonSize, WidgetType::button,       WindowColour::secondary, STR_CHEAT_WATER_PLANTS                                          ), // Water plants
-    makeWidget                ({ 11, 334-164}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_DISABLE_PLANT_AGING, STR_CHEAT_DISABLE_PLANT_AGING_TIP),  // Disable plant ageing
-    makeWidget                ({ 11, 351-164}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_DISABLE_GRASS_GROWING, STR_CHEAT_DISABLE_GRASS_GROWING_TIP)  // Disable grass growing
+    makeWidget                ({ 11, 334-164}, kCheatCheckSize,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_DISABLE_PLANT_AGING, STR_CHEAT_DISABLE_PLANT_AGING_TIP)  // Disable plant ageing
 );
 
 static constexpr auto window_cheats_park_widgets = makeWidgets(
@@ -495,7 +495,7 @@ static StringId window_cheats_page_titles[] = {
                 {
                     setWidgetDisabled(WIDX_NO_MONEY, isInEditorMode());
 
-                    auto moneyDisabled = gameState.park.flags.has(ParkFlag::noMoney);
+                    auto moneyDisabled = (gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0;
                     setCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                     setWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
                     setWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
@@ -516,7 +516,7 @@ static StringId window_cheats_page_titles[] = {
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
                     widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
-                    if (gameState.park.flags.has(ParkFlag::parkOpen))
+                    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
 
                     setCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
@@ -543,7 +543,6 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WINDOW_CHEATS_PAGE_STAFF:
                     setCheckboxValue(WIDX_DISABLE_PLANT_AGING, gameState.cheats.disablePlantAging);
-                    setCheckboxValue(WIDX_DISABLE_GRASS_GROWING, gameState.cheats.disableGrassGrowing);
                     break;
                 case WINDOW_CHEATS_PAGE_WEATHER:
                     setCheckboxValue(WIDX_FREEZE_WEATHER, gameState.cheats.freezeWeather);
@@ -591,7 +590,7 @@ static StringId window_cheats_page_titles[] = {
                 }
 
                 auto& widget = widgets[WIDX_MONEY_SPINNER];
-                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_CURRENCY2DP, ft, { colour });
+                drawText(rt, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
             }
             else if (page == WINDOW_CHEATS_PAGE_DATE)
             {
@@ -889,14 +888,14 @@ static StringId window_cheats_page_titles[] = {
                     auto setDateAction = GameActions::ParkSetDateAction(
                         _yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                     GameActions::Execute(&setDateAction, gameState);
-                    windowMgr->InvalidateByClass(WindowClass::dateInfoPanel);
+                    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
                     break;
                 }
                 case WIDX_DATE_RESET:
                 {
                     auto setDateAction = GameActions::ParkSetDateAction(0, 0, 0);
                     GameActions::Execute(&setDateAction, gameState);
-                    windowMgr->InvalidateByClass(WindowClass::dateInfoPanel);
+                    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
                     invalidateWidget(WIDX_YEAR_BOX);
                     invalidateWidget(WIDX_MONTH_BOX);
                     invalidateWidget(WIDX_DAY_BOX);
@@ -910,7 +909,7 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_NO_MONEY:
-                    CheatsSet(CheatType::noMoney, getGameState().park.flags.has(ParkFlag::noMoney) ? 0 : 1);
+                    CheatsSet(CheatType::noMoney, getGameState().park.flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
                     MoneyToString(_moneySpinnerValue, _moneySpinnerText, kMoneyStringMaxlength, false);
@@ -971,7 +970,7 @@ static StringId window_cheats_page_titles[] = {
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                        colours[1], 0, {}, 3, dropdownWidget->width() - 4);
+                        colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 4);
                     gDropdown.items[EnumValue(gameState.cheats.selectedStaffSpeed)].setChecked(true);
                 }
             }
@@ -1013,7 +1012,7 @@ static StringId window_cheats_page_titles[] = {
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.bottom }, 0, colours[1], itemHeight,
-                        { Dropdown::Flag::customHeight }, std::size(kWeatherTypes), itemWidth);
+                        Dropdown::Flag::CustomHeight | Dropdown::Flag::StayOpen, std::size(kWeatherTypes), itemWidth);
                 }
             }
         }
@@ -1085,9 +1084,6 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_DISABLE_PLANT_AGING:
                     CheatsSet(CheatType::disablePlantAging, !gameState.cheats.disablePlantAging);
-                    break;
-                case WIDX_DISABLE_GRASS_GROWING:
-                    CheatsSet(CheatType::disableGrassGrowing, !gameState.cheats.disableGrassGrowing);
                     break;
             }
         }

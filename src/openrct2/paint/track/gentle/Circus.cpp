@@ -17,6 +17,7 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
@@ -28,7 +29,7 @@ static void PaintCircusTent(
     if (rideEntry == nullptr)
         return;
 
-    auto vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
+    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::entity;
@@ -40,7 +41,7 @@ static void PaintCircusTent(
     {
         imageTemplate = stationColour;
     }
-    auto imageIndex = rideEntry->Cars[0].baseImageId + direction;
+    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
 
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { al, cl, height + 3 },

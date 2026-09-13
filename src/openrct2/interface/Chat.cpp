@@ -15,15 +15,15 @@
 #include "../audio/AudioMixer.h"
 #include "../core/UTF8.h"
 #include "../drawing/Drawing.String.h"
-#include "../drawing/FilterPaletteIds.h"
-#include "../drawing/NewDrawing.h"
+#include "../drawing/Drawing.h"
 #include "../drawing/Rectangle.h"
 #include "../drawing/Text.h"
 #include "../interface/ColourWithFlags.h"
-#include "../interface/ScreenCoords.hpp"
+#include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../network/Network.h"
 #include "../platform/Platform.h"
+#include "../world/Location.hpp"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;

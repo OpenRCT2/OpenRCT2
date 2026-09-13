@@ -10,8 +10,7 @@
 #include "PeepAnimations.h"
 
 #include "../Context.h"
-#include "../drawing/Drawing.Sprite.h"
-#include "../drawing/RenderTarget.h"
+#include "../drawing/Drawing.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../object/ObjectLimits.h"

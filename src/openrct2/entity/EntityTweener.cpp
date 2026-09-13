@@ -11,9 +11,10 @@
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../interface/WindowTypes.h"
+#include "../interface/Window.h"
 #include "../ride/Vehicle.h"
 #include "EntityList.h"
+#include "EntityRegistry.h"
 
 #include <algorithm>
 #include <cmath>
@@ -60,18 +61,18 @@ namespace OpenRCT2
         return false;
     }
 
-    void EntityTweener::addEntity(const ViewportList& vpList, EntityBase* entity)
+    void EntityTweener::AddEntity(const ViewportList& vpList, EntityBase* entity)
     {
         if (!IsEntityVisible(vpList, entity))
         {
             return;
         }
 
-        entities.push_back(entity);
-        prePos.emplace_back(entity->getLocation());
+        Entities.push_back(entity);
+        PrePos.emplace_back(entity->getLocation());
     }
 
-    void EntityTweener::populateEntities()
+    void EntityTweener::PopulateEntities()
     {
         const auto vpList = GetUnzoomedViewports();
         if (vpList.empty())
@@ -82,37 +83,37 @@ namespace OpenRCT2
 
         for (auto ent : EntityList<Guest>())
         {
-            addEntity(vpList, ent);
+            AddEntity(vpList, ent);
         }
         for (auto ent : EntityList<Staff>())
         {
-            addEntity(vpList, ent);
+            AddEntity(vpList, ent);
         }
         for (auto ent : EntityList<Vehicle>())
         {
-            addEntity(vpList, ent);
+            AddEntity(vpList, ent);
         }
     }
 
-    void EntityTweener::preTick()
+    void EntityTweener::PreTick()
     {
-        restore();
-        reset();
-        populateEntities();
+        Restore();
+        Reset();
+        PopulateEntities();
     }
 
-    void EntityTweener::postTick()
+    void EntityTweener::PostTick()
     {
-        for (auto* ent : entities)
+        for (auto* ent : Entities)
         {
             if (ent == nullptr)
             {
                 // Sprite was removed, add a dummy position to keep the index aligned.
-                postPos.emplace_back(0, 0, 0);
+                PostPos.emplace_back(0, 0, 0);
             }
             else
             {
-                postPos.emplace_back(ent->getLocation());
+                PostPos.emplace_back(ent->getLocation());
             }
         }
     }
@@ -124,7 +125,7 @@ namespace OpenRCT2
         return false;
     }
 
-    void EntityTweener::removeEntity(EntityBase* entity)
+    void EntityTweener::RemoveEntity(EntityBase* entity)
     {
         if (!CanTweenEntity(entity))
         {
@@ -132,22 +133,22 @@ namespace OpenRCT2
             return;
         }
 
-        auto it = std::find(entities.begin(), entities.end(), entity);
-        if (it != entities.end())
+        auto it = std::find(Entities.begin(), Entities.end(), entity);
+        if (it != Entities.end())
             *it = nullptr;
     }
 
-    void EntityTweener::tween(float alpha)
+    void EntityTweener::Tween(float alpha)
     {
         const float inv = (1.0f - alpha);
-        for (size_t i = 0; i < entities.size(); ++i)
+        for (size_t i = 0; i < Entities.size(); ++i)
         {
-            auto* ent = entities[i];
+            auto* ent = Entities[i];
             if (ent == nullptr)
                 continue;
 
-            auto& posA = prePos[i];
-            auto& posB = postPos[i];
+            auto& posA = PrePos[i];
+            auto& posB = PostPos[i];
 
             if (posA == posB)
                 continue;
@@ -159,28 +160,28 @@ namespace OpenRCT2
         }
     }
 
-    void EntityTweener::restore()
+    void EntityTweener::Restore()
     {
-        for (size_t i = 0; i < entities.size(); ++i)
+        for (size_t i = 0; i < Entities.size(); ++i)
         {
-            auto* ent = entities[i];
-            if (ent == nullptr || prePos[i] == postPos[i])
+            auto* ent = Entities[i];
+            if (ent == nullptr || PrePos[i] == PostPos[i])
                 continue;
 
-            ent->moveTo(postPos[i]);
+            ent->moveTo(PostPos[i]);
         }
     }
 
-    void EntityTweener::reset()
+    void EntityTweener::Reset()
     {
-        entities.clear();
-        prePos.clear();
-        postPos.clear();
+        Entities.clear();
+        PrePos.clear();
+        PostPos.clear();
     }
 
     static EntityTweener tweener;
 
-    EntityTweener& EntityTweener::get()
+    EntityTweener& EntityTweener::Get()
     {
         return tweener;
     }

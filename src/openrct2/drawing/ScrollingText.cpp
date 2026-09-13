@@ -15,14 +15,13 @@
 #include "../core/CodepointView.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../core/String.hpp"
+#include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
-#include "../localisation/StringIds.h"
 #include "../paint/Paint.h"
 #include "BlendColourMap.h"
-#include "Drawing.Sprite.h"
 #include "Drawing.String.h"
-#include "NewDrawing.h"
+#include "Drawing.h"
 #include "TTF.h"
 
 #include <cassert>

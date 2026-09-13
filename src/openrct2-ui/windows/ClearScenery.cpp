@@ -7,9 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/Viewport.h"
+
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -17,11 +18,13 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/terraform/ClearAction.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/MapSelection.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/world/Scenery.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -35,27 +38,23 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INCREMENT,
         WIDX_SMALL_SCENERY,
         WIDX_LARGE_SCENERY,
-        WIDX_FOOTPATH,
-        WIDX_WALLS,
-        WIDX_FOOTPATH_ADDITIONS,
+        WIDX_FOOTPATH
     };
 
     static constexpr StringId kWindowTitle = STR_CLEAR_SCENERY;
-    static constexpr ScreenSize kWindowSize = { 98, 124 };
+    static constexpr ScreenSize kWindowSize = { 98, 94 };
 
     static constexpr ScreenSize kClearSceneryButtonSize = { 24, 24 };
 
     // clang-format off
     static constexpr auto window_clear_scenery_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget     ({ 27, 17 }, { 44, 32 },              WidgetType::imgBtn,  WindowColour::primary,   SPR_LAND_TOOL_SIZE_0,         kStringIdNone                                  ), // preview box
-        makeRemapWidget({ 28, 18 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,       STR_ADJUST_SMALLER_LAND_TIP                    ), // decrement size
-        makeRemapWidget({ 54, 32 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,       STR_ADJUST_LARGER_LAND_TIP                     ), // increment size
-        makeRemapWidget({  7, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_TREES,          STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP     ), // small scenery
-        makeRemapWidget({ 37, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_LARGE_SCENERY,  STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP     ), // large scenery
-        makeRemapWidget({ 22, 83 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_FOOTPATH,       STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP         ), // footpaths
-        makeRemapWidget({ 67, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_WALLS,          STR_CLEAR_SCENERY_REMOVE_WALLS_TIP             ), // walls
-        makeRemapWidget({ 52, 83 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_PATH_ADDITIONS, STR_CLEAR_SCENERY_REMOVE_FOOTPATH_ADDITIONS_TIP)  // footpath additions
+        makeWidget     ({ 27, 17 }, { 44, 32 },              WidgetType::imgBtn,  WindowColour::primary,   SPR_LAND_TOOL_SIZE_0,        kStringIdNone                             ), // preview box
+        makeRemapWidget({ 28, 18 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP               ), // decrement size
+        makeRemapWidget({ 54, 32 }, { 16, 16 },              WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP                ), // increment size
+        makeRemapWidget({  7, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
+        makeRemapWidget({ 37, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
+        makeRemapWidget({ 67, 53 }, kClearSceneryButtonSize, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP    )  // footpaths
     );
     // clang-format on
 
@@ -65,8 +64,6 @@ namespace OpenRCT2::Ui::Windows
         bool _clearSmallScenery = true;
         bool _clearLargeScenery = false;
         bool _clearFootpath = false;
-        bool _clearWalls = true;
-        bool _clearFootpathAdditions = false;
         money64 _clearSceneryCost = kMoney64Undefined;
 
     public:
@@ -79,8 +76,6 @@ namespace OpenRCT2::Ui::Windows
             widgetSetPressed(*this, WIDX_SMALL_SCENERY, _clearSmallScenery);
             widgetSetPressed(*this, WIDX_LARGE_SCENERY, _clearLargeScenery);
             widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
-            widgetSetPressed(*this, WIDX_WALLS, _clearWalls);
-            widgetSetPressed(*this, WIDX_FOOTPATH_ADDITIONS, _clearFootpathAdditions);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -125,16 +120,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FOOTPATH:
                     _clearFootpath ^= 1;
                     widgetSetPressed(*this, WIDX_FOOTPATH, _clearFootpath);
-                    invalidate();
-                    break;
-                case WIDX_WALLS:
-                    _clearWalls ^= 1;
-                    widgetSetPressed(*this, WIDX_WALLS, _clearWalls);
-                    invalidate();
-                    break;
-                case WIDX_FOOTPATH_ADDITIONS:
-                    _clearFootpathAdditions ^= 1;
-                    widgetSetPressed(*this, WIDX_FOOTPATH_ADDITIONS, _clearFootpathAdditions);
                     invalidate();
                     break;
             }
@@ -209,12 +194,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw cost amount
             if (_clearSceneryCost != kMoney64Undefined && _clearSceneryCost != 0
-                && !getGameState().park.flags.has(ParkFlag::noMoney))
+                && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_clearSceneryCost);
                 screenCoords.x = widgets[WIDX_PREVIEW].midX() + windowPos.x;
-                screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 57;
+                screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
                 drawText(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::centre });
             }
         }
@@ -223,18 +208,14 @@ namespace OpenRCT2::Ui::Windows
         {
             auto range = MapRange(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y);
 
-            GameActions::ClearableItems itemsToClear{};
+            GameActions::ClearableItems itemsToClear = 0;
 
             if (_clearSmallScenery)
-                itemsToClear.set(GameActions::ClearableItem::smallScenery);
+                itemsToClear |= GameActions::CLEARABLE_ITEMS::kScenerySmall;
             if (_clearLargeScenery)
-                itemsToClear.set(GameActions::ClearableItem::largeScenery);
+                itemsToClear |= GameActions::CLEARABLE_ITEMS::kSceneryLarge;
             if (_clearFootpath)
-                itemsToClear.set(GameActions::ClearableItem::footpaths);
-            if (_clearWalls)
-                itemsToClear.set(GameActions::ClearableItem::walls);
-            if (_clearFootpathAdditions)
-                itemsToClear.set(GameActions::ClearableItem::pathAdditions);
+                itemsToClear |= GameActions::CLEARABLE_ITEMS::kSceneryFootpath;
 
             return GameActions::ClearAction(range, itemsToClear);
         }
@@ -270,7 +251,7 @@ namespace OpenRCT2::Ui::Windows
             // Move to tool bottom left
             mapTile->x -= (tool_size - 1) * 16;
             mapTile->y -= (tool_size - 1) * 16;
-            mapTile = mapTile->toTileStart();
+            mapTile = mapTile->ToTileStart();
 
             if (gMapSelectPositionA.x != mapTile->x)
             {

@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class ParkSetNameAction final : public GameActionBase<GameCommand::setParkName>
+    class ParkSetNameAction final : public GameActionBase<GameCommand::SetParkName>
     {
     private:
         std::string _name;

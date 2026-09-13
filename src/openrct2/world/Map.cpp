@@ -12,35 +12,50 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../Game.h"
 #include "../GameState.h"
+#include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/GameActionRunner.h"
 #include "../actions/park/ParkEntranceRemoveAction.h"
 #include "../actions/scenery/BannerRemoveAction.h"
 #include "../actions/scenery/LargeSceneryRemoveAction.h"
 #include "../actions/scenery/WallRemoveAction.h"
+#include "../audio/Audio.h"
 #include "../core/EnumUtils.hpp"
+#include "../core/Guard.hpp"
 #include "../entity/Duck.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityTweener.h"
 #include "../entity/JumpingFountain.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
 #include "../interface/Viewport.h"
+#include "../management/Finance.h"
+#include "../network/Network.h"
 #include "../object/LargeSceneryEntry.h"
+#include "../object/ObjectManager.h"
 #include "../object/SmallSceneryEntry.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../profiling/Profiling.h"
+#include "../ride/RideConstruction.h"
+#include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
-#include "../ride/Vehicle.h"
+#include "../ride/TrackData.h"
+#include "../ride/TrackDesign.h"
 #include "../windows/Intent.h"
 #include "../world/MapRangeView.hpp"
 #include "../world/TilePointerIndex.hpp"
 #include "Banner.h"
+#include "Entrance.h"
 #include "Footpath.h"
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
 #include "TileElementsView.h"
+#include "TileInspector.h"
+#include "Weather.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/LargeSceneryElement.h"
@@ -49,6 +64,9 @@
 #include "tile_element/SmallSceneryElement.h"
 #include "tile_element/SurfaceElement.h"
 #include "tile_element/TrackElement.h"
+
+#include <iterator>
+#include <memory>
 
 namespace OpenRCT2
 {
@@ -72,7 +90,7 @@ namespace OpenRCT2
         { -1, 0 }, { 0, +1 }, { +1, 0 }, { 0, -1 }, { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 },
     };
 
-    static constexpr size_t kMinTileElements = 1024;
+    constexpr size_t MIN_TILE_ELEMENTS = 1024;
 
     uint32_t gLandRemainingOwnershipSales;
     uint32_t gLandRemainingConstructionSales;
@@ -136,24 +154,24 @@ namespace OpenRCT2
     static TileElement GetDefaultSurfaceElement()
     {
         TileElement el;
-        el.clearAs(TileElementType::surface);
+        el.ClearAs(TileElementType::Surface);
         el.setLastForTile(true);
         el.baseHeight = 14;
         el.clearanceHeight = 14;
-        el.asSurface()->setWaterHeight(0);
-        el.asSurface()->setSlope(kTileSlopeFlat);
-        el.asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
-        el.asSurface()->setOwnership(kUnowned);
-        el.asSurface()->setParkFences(0);
-        el.asSurface()->setSurfaceObjectIndex(0);
-        el.asSurface()->setEdgeObjectIndex(0);
+        el.asSurface()->SetWaterHeight(0);
+        el.asSurface()->SetSlope(kTileSlopeFlat);
+        el.asSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+        el.asSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+        el.asSurface()->SetParkFences(0);
+        el.asSurface()->SetSurfaceObjectIndex(0);
+        el.asSurface()->SetEdgeObjectIndex(0);
         return el;
     }
 
     std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
     {
         std::vector<TileElement> newElements;
-        newElements.reserve(std::max(kMinTileElements, getGameState().tileElements.size()));
+        newElements.reserve(std::max(MIN_TILE_ELEMENTS, getGameState().tileElements.size()));
         for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
         {
             for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
@@ -190,10 +208,10 @@ namespace OpenRCT2
 
     static void ReorganiseTileElements(GameState_t& gameState, size_t capacity)
     {
-        ContextSetCurrentCursor(CursorID::zzz);
+        ContextSetCurrentCursor(CursorID::ZZZ);
 
         std::vector<TileElement> newElements;
-        newElements.reserve(std::max(kMinTileElements, capacity));
+        newElements.reserve(std::max(MIN_TILE_ELEMENTS, capacity));
         for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
         {
             for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
@@ -384,7 +402,7 @@ namespace OpenRCT2
 
     void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements)
     {
-        if (!MapIsLocationValid(tilePos.toCoordsXY()))
+        if (!MapIsLocationValid(tilePos.ToCoordsXY()))
         {
             LOG_ERROR("Trying to access element outside of range");
             return;
@@ -406,7 +424,7 @@ namespace OpenRCT2
 
     PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc)
     {
-        for (auto* element : TileElementsView<PathElement>(loc.toCoordsXY()))
+        for (auto* element : TileElementsView<PathElement>(loc.ToCoordsXY()))
         {
             if (element->isGhost())
                 continue;
@@ -424,7 +442,7 @@ namespace OpenRCT2
         {
             if (element->baseHeight != bannerTilePos.z)
                 continue;
-            if (element->getPosition() != position)
+            if (element->GetPosition() != position)
                 continue;
             return element;
         }
@@ -474,19 +492,18 @@ namespace OpenRCT2
                     continue;
                 }
 
-                auto flags = surfaceElement->getOwnership();
+                uint8_t flags = surfaceElement->GetOwnership();
 
-                // Do not combine this condition with (flags & OwnershipFlag::forSale)
+                // Do not combine this condition with (flags & OWNERSHIP_AVAILABLE)
                 // As some RCT1 parks have owned tiles with the 'construction rights available' flag also set
-                if (!flags.has(OwnershipFlag::landOwned))
+                if (!(flags & OWNERSHIP_OWNED))
                 {
-                    if (flags.has(OwnershipFlag::landForSale))
+                    if (flags & OWNERSHIP_AVAILABLE)
                     {
                         gLandRemainingOwnershipSales++;
                     }
                     else if (
-                        flags.has(OwnershipFlag::constructionRightsForSale)
-                        && !flags.has(OwnershipFlag::constructionRightsOwned))
+                        (flags & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) && (flags & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) == 0)
                     {
                         gLandRemainingConstructionSales++;
                     }
@@ -536,7 +553,7 @@ namespace OpenRCT2
         }
 
         auto height = surfaceElement->getBaseZ();
-        auto slope = surfaceElement->getSlope();
+        auto slope = surfaceElement->GetSlope();
 
         return TileElementHeight(CoordsXYZ{ loc, height }, slope);
     }
@@ -680,7 +697,7 @@ namespace OpenRCT2
             return 0;
         }
 
-        return surfaceElement->getWaterHeight();
+        return surfaceElement->GetWaterHeight();
     }
 
     /**
@@ -696,12 +713,12 @@ namespace OpenRCT2
 
         do
         {
-            if (tileElement->getType() != TileElementType::path)
+            if (tileElement->getType() != TileElementType::Path)
                 continue;
 
-            uint8_t slopeDirection = tileElement->asPath()->getSlopeDirection();
+            uint8_t slopeDirection = tileElement->asPath()->GetSlopeDirection();
 
-            if (tileElement->asPath()->isSloped())
+            if (tileElement->asPath()->IsSloped())
             {
                 if (slopeDirection == faceDirection)
                 {
@@ -715,7 +732,7 @@ namespace OpenRCT2
             }
             else
             {
-                if (loc.z == tileElement->baseHeight && (tileElement->asPath()->getEdges() & (1 << faceDirection)))
+                if (loc.z == tileElement->baseHeight && (tileElement->asPath()->GetEdges() & (1 << faceDirection)))
                     return true;
             }
         } while (!(tileElement++)->isLastForTile());
@@ -820,10 +837,10 @@ namespace OpenRCT2
             auto* surfaceElement = MapGetSurfaceElementAt(loc);
             if (surfaceElement != nullptr)
             {
-                if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
+                if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                     return true;
 
-                if (surfaceElement->hasOwnership(OwnershipFlag::constructionRightsOwned))
+                if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                 {
                     if (loc.z < surfaceElement->getBaseZ()
                         || loc.z >= surfaceElement->getBaseZ() + kConstructionRightsClearanceBig)
@@ -845,7 +862,7 @@ namespace OpenRCT2
             auto surfaceElement = MapGetSurfaceElementAt(coords);
             if (surfaceElement == nullptr)
                 return false;
-            if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
+            if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                 return true;
         }
         return false;
@@ -860,21 +877,12 @@ namespace OpenRCT2
             {
                 return false;
             }
-            if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
+            if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
                 return true;
-            if (surfaceElement->hasOwnership(OwnershipFlag::constructionRightsOwned))
+            if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                 return true;
         }
         return false;
-    }
-
-    bool MapIsLocationUnderground(const CoordsXYZ& loc)
-    {
-        const auto* surfaceElement = MapGetSurfaceElementAt(loc);
-        if (surfaceElement == nullptr)
-            return false;
-
-        return surfaceElement->getClearanceZ() > loc.z;
     }
 
     int32_t MapGetCornerHeight(int32_t z, int32_t slope, int32_t direction)
@@ -928,7 +936,7 @@ namespace OpenRCT2
     int32_t TileElementGetCornerHeight(const SurfaceElement* surfaceElement, int32_t direction)
     {
         int32_t z = surfaceElement->baseHeight;
-        int32_t slope = surfaceElement->getSlope();
+        int32_t slope = surfaceElement->GetSlope();
         return MapGetCornerHeight(z, slope, direction);
     }
 
@@ -943,7 +951,7 @@ namespace OpenRCT2
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
-                if (!MapIsLocationInPark(tileCoords.toCoordsXY()))
+                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
                     continue;
             }
 
@@ -963,14 +971,14 @@ namespace OpenRCT2
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
-                if (!MapIsLocationInPark(tileCoords.toCoordsXY()))
+                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
                     continue;
             }
 
             uint8_t height = surfaceElement->baseHeight;
-            if (surfaceElement->getSlope() & kTileSlopeRaisedCornersMask)
+            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
                 height += 2;
-            if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
+            if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                 height += 2;
 
             if (maxHeight < height)
@@ -1020,20 +1028,20 @@ namespace OpenRCT2
         {
             switch (it.element->getType())
             {
-                case TileElementType::path:
-                    if (it.element->asPath()->isQueue())
+                case TileElementType::Path:
+                    if (it.element->asPath()->IsQueue())
                     {
-                        it.element->asPath()->setHasQueueBanner(false);
-                        it.element->asPath()->setRideIndex(RideId::GetNull());
+                        it.element->asPath()->SetHasQueueBanner(false);
+                        it.element->asPath()->SetRideIndex(RideId::GetNull());
                     }
                     break;
-                case TileElementType::entrance:
-                    if (it.element->asEntrance()->getEntranceType() == EntranceType::parkEntrance)
+                case TileElementType::Entrance:
+                    if (it.element->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                         break;
                     [[fallthrough]];
-                case TileElementType::track:
+                case TileElementType::Track:
                     FootpathQueueChainReset();
-                    FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.toCoordsXY(), it.element);
+                    FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
                     TileElementRemove(it.element);
                     TileElementIteratorRestartForTile(&it);
                     break;
@@ -1047,10 +1055,10 @@ namespace OpenRCT2
     {
         uint32_t rotation = GetCurrentRotation();
         const std::array corners{
-            CoordsXY{ _range.getX1(), _range.getY1() },
-            CoordsXY{ _range.getX2(), _range.getY1() },
-            CoordsXY{ _range.getX2(), _range.getY2() },
-            CoordsXY{ _range.getX1(), _range.getY2() },
+            CoordsXY{ _range.GetX1(), _range.GetY1() },
+            CoordsXY{ _range.GetX2(), _range.GetY1() },
+            CoordsXY{ _range.GetX2(), _range.GetY2() },
+            CoordsXY{ _range.GetX1(), _range.GetY2() },
         };
 
         *left = std::numeric_limits<int32_t>::max();
@@ -1153,8 +1161,8 @@ namespace OpenRCT2
         newTileElement->setOccupiedQuadrants(occupiedQuadrants);
         newTileElement->setClearanceZ(loc.z);
         newTileElement->owner = 0;
-        std::memset(&newTileElement->pad05, 0, sizeof(newTileElement->pad05));
-        std::memset(&newTileElement->pad08, 0, sizeof(newTileElement->pad08));
+        std::memset(&newTileElement->Pad05, 0, sizeof(newTileElement->Pad05));
+        std::memset(&newTileElement->Pad08, 0, sizeof(newTileElement->Pad08));
         newTileElement++;
 
         // Insert rest of map elements above insert height
@@ -1207,14 +1215,14 @@ namespace OpenRCT2
             {
                 for (int32_t blockX = 0; blockX < gameState.mapSize.x; blockX += 256)
                 {
-                    auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.toCoordsXY();
+                    auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
                     if (MapIsEdge(mapPos))
                         continue;
 
                     auto* surfaceElement = MapGetSurfaceElementAt(mapPos);
                     if (surfaceElement != nullptr)
                     {
-                        surfaceElement->updateGrassLength(mapPos);
+                        surfaceElement->UpdateGrassLength(mapPos);
                         SceneryUpdateTile(mapPos);
                     }
                 }
@@ -1251,7 +1259,7 @@ namespace OpenRCT2
                     auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
                     if (surfaceElement != nullptr)
                     {
-                        surfaceElement->setOwnership(kUnowned);
+                        surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
                         Park::UpdateFencesAroundTile({ x, y });
                     }
                     ClearElementsAt({ x, y });
@@ -1266,15 +1274,15 @@ namespace OpenRCT2
     static void MapExtendBoundarySurfaceExtendTile(
         const SurfaceElement& sourceTile, SurfaceElement& destTile, const Direction direction)
     {
-        destTile.setSurfaceObjectIndex(sourceTile.getSurfaceObjectIndex());
-        destTile.setEdgeObjectIndex(sourceTile.getEdgeObjectIndex());
-        destTile.setGrassLength(sourceTile.getGrassLength());
-        destTile.setOwnership(kUnowned);
-        destTile.setWaterHeight(sourceTile.getWaterHeight());
+        destTile.SetSurfaceObjectIndex(sourceTile.GetSurfaceObjectIndex());
+        destTile.SetEdgeObjectIndex(sourceTile.GetEdgeObjectIndex());
+        destTile.SetGrassLength(sourceTile.GetGrassLength());
+        destTile.SetOwnership(OWNERSHIP_UNOWNED);
+        destTile.SetWaterHeight(sourceTile.GetWaterHeight());
 
         auto z = sourceTile.baseHeight;
-        const auto originalSlope = Numerics::rol4(sourceTile.getSlope(), direction)
-            | (sourceTile.getSlope() & kTileSlopeDiagonalFlag);
+        const auto originalSlope = Numerics::rol4(sourceTile.GetSlope(), direction)
+            | (sourceTile.GetSlope() & kTileSlopeDiagonalFlag);
         auto slope = originalSlope & kTileSlopeNWSideUp;
         if (slope == kTileSlopeNWSideUp)
         {
@@ -1298,7 +1306,7 @@ namespace OpenRCT2
         if (slope & kTileSlopeWCornerUp)
             slope |= kTileSlopeSCornerUp;
 
-        destTile.setSlope(Numerics::ror4(slope, direction));
+        destTile.SetSlope(Numerics::ror4(slope, direction));
         destTile.baseHeight = z;
         destTile.clearanceHeight = z;
     }
@@ -1353,7 +1361,7 @@ namespace OpenRCT2
                 {
                     MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 1);
                 }
-                Park::UpdateFences(TileCoordsXY{ x, y }.toCoordsXY());
+                Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
             }
         }
     }
@@ -1370,7 +1378,7 @@ namespace OpenRCT2
                 {
                     MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 2);
                 }
-                Park::UpdateFences(TileCoordsXY{ x, y }.toCoordsXY());
+                Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
             }
         }
     }
@@ -1386,34 +1394,32 @@ namespace OpenRCT2
         TileElement* element = *elementPtr;
         switch (element->getType())
         {
-            case TileElementType::surface:
+            case TileElementType::Surface:
                 element->baseHeight = kMinimumLandHeight;
                 element->clearanceHeight = kMinimumLandHeight;
                 element->owner = 0;
-                element->asSurface()->setSlope(kTileSlopeFlat);
-                element->asSurface()->setSurfaceObjectIndex(0);
-                element->asSurface()->setEdgeObjectIndex(0);
-                element->asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
-                element->asSurface()->setOwnership(kUnowned);
-                element->asSurface()->setParkFences(0);
-                element->asSurface()->setWaterHeight(0);
+                element->asSurface()->SetSlope(kTileSlopeFlat);
+                element->asSurface()->SetSurfaceObjectIndex(0);
+                element->asSurface()->SetEdgeObjectIndex(0);
+                element->asSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+                element->asSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+                element->asSurface()->SetParkFences(0);
+                element->asSurface()->SetWaterHeight(0);
                 // Because this element is not completely removed, the pointer must be updated manually
                 // The rest of the elements are removed from the array, so the pointer doesn't need to be updated.
                 (*elementPtr)++;
                 break;
-            case TileElementType::entrance:
+            case TileElementType::Entrance:
             {
                 int32_t rotation = element->getDirectionWithOffset(1);
                 auto seqLoc = loc;
-                switch (element->asEntrance()->getSequenceIndex())
+                switch (element->asEntrance()->GetSequenceIndex())
                 {
-                    case ParkEntranceSequence::left:
+                    case 1:
                         seqLoc += CoordsDirectionDelta[rotation];
                         break;
-                    case ParkEntranceSequence::right:
+                    case 2:
                         seqLoc -= CoordsDirectionDelta[rotation];
-                        break;
-                    default:
                         break;
                 }
                 auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->getBaseZ() });
@@ -1425,7 +1431,7 @@ namespace OpenRCT2
                 }
                 break;
             }
-            case TileElementType::wall:
+            case TileElementType::Wall:
             {
                 CoordsXYZD wallLocation = { loc.x, loc.y, element->getBaseZ(), element->getDirection() };
                 auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
@@ -1437,11 +1443,11 @@ namespace OpenRCT2
                 }
             }
             break;
-            case TileElementType::largeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
                     { loc.x, loc.y, element->getBaseZ(), element->getDirection() },
-                    element->asLargeScenery()->getSequenceIndex());
+                    element->asLargeScenery()->GetSequenceIndex());
                 auto result = GameActions::ExecuteNested(&removeSceneryAction, gameState);
                 // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
                 if (result.error != GameActions::Status::ok)
@@ -1450,10 +1456,10 @@ namespace OpenRCT2
                 }
             }
             break;
-            case TileElementType::banner:
+            case TileElementType::Banner:
             {
                 auto bannerRemoveAction = GameActions::BannerRemoveAction(
-                    { loc.x, loc.y, element->getBaseZ(), element->asBanner()->getPosition() });
+                    { loc.x, loc.y, element->getBaseZ(), element->asBanner()->GetPosition() });
                 auto result = GameActions::ExecuteNested(&bannerRemoveAction, gameState);
                 // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
                 if (result.error != GameActions::Status::ok)
@@ -1479,7 +1485,7 @@ namespace OpenRCT2
         gameState.peepSpawns.erase(
             std::remove_if(
                 gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
-                [loc](const CoordsXY& spawn) { return spawn.toTileStart() == loc.toTileStart(); }),
+                [loc](const CoordsXY& spawn) { return spawn.ToTileStart() == loc.ToTileStart(); }),
             gameState.peepSpawns.end());
 
         TileElement* tileElement = MapGetFirstElementAt(loc);
@@ -1503,12 +1509,12 @@ namespace OpenRCT2
         auto z = surfaceElement->getBaseZ();
 
         // Raise z so that is above highest point of land and water on tile
-        if ((surfaceElement->getSlope() & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
+        if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
             z += kLandHeightStep;
-        if ((surfaceElement->getSlope() & kTileSlopeDiagonalFlag) != 0)
+        if ((surfaceElement->GetSlope() & kTileSlopeDiagonalFlag) != 0)
             z += kLandHeightStep;
 
-        z = std::max(z, surfaceElement->getWaterHeight());
+        z = std::max(z, surfaceElement->GetWaterHeight());
         return z;
     }
 
@@ -1522,11 +1528,11 @@ namespace OpenRCT2
         auto sceneryTilePos = TileCoordsXYZ{ sceneryPos };
         do
         {
-            if (tileElement->getType() != TileElementType::largeScenery)
+            if (tileElement->getType() != TileElementType::LargeScenery)
                 continue;
             if (tileElement->baseHeight != sceneryTilePos.z)
                 continue;
-            if (tileElement->asLargeScenery()->getSequenceIndex() != sequence)
+            if (tileElement->asLargeScenery()->GetSequenceIndex() != sequence)
                 continue;
             if ((tileElement->getDirection()) != sceneryPos.direction)
                 continue;
@@ -1544,13 +1550,13 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() != TileElementType::entrance)
+                if (tileElement->getType() != TileElementType::Entrance)
                     continue;
 
                 if (tileElement->baseHeight != entranceTileCoords.z)
                     continue;
 
-                if (tileElement->asEntrance()->getEntranceType() != EntranceType::parkEntrance)
+                if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 
                 if (!ghost && tileElement->isGhost())
@@ -1570,13 +1576,13 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() != TileElementType::entrance)
+                if (tileElement->getType() != TileElementType::Entrance)
                     continue;
 
                 if (tileElement->baseHeight != entranceTileCoords.z)
                     continue;
 
-                if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideEntrance)
+                if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                     continue;
 
                 if (!ghost && tileElement->isGhost())
@@ -1596,13 +1602,13 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() != TileElementType::entrance)
+                if (tileElement->getType() != TileElementType::Entrance)
                     continue;
 
                 if (tileElement->baseHeight != exitTileCoords.z)
                     continue;
 
-                if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideExit)
+                if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                     continue;
 
                 if (!ghost && tileElement->isGhost())
@@ -1622,13 +1628,13 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() != TileElementType::smallScenery)
+                if (tileElement->getType() != TileElementType::SmallScenery)
                     continue;
-                if (tileElement->asSmallScenery()->getSceneryQuadrant() != quadrant)
+                if (tileElement->asSmallScenery()->GetSceneryQuadrant() != quadrant)
                     continue;
                 if (tileElement->baseHeight != sceneryTileCoords.z)
                     continue;
-                if (tileElement->asSmallScenery()->getEntryIndex() != type)
+                if (tileElement->asSmallScenery()->GetEntryIndex() != type)
                     continue;
 
                 return tileElement->asSmallScenery();
@@ -1644,11 +1650,11 @@ namespace OpenRCT2
         if (tileElement == nullptr)
             return std::nullopt;
 
-        auto* sceneryEntry = tileElement->getEntry();
+        auto* sceneryEntry = tileElement->GetEntry();
         auto& tile = sceneryEntry->tiles[sequence];
 
         CoordsXY offsetPos{ tile.offset };
-        auto rotatedOffsetPos = offsetPos.rotate(sceneryPos.direction);
+        auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
 
         auto origin = CoordsXYZ{ sceneryPos.x - rotatedOffsetPos.x, sceneryPos.y - rotatedOffsetPos.y,
                                  sceneryPos.z - tile.offset.z };
@@ -1672,21 +1678,21 @@ namespace OpenRCT2
             return false;
         }
 
-        auto* sceneryEntry = tileElement->getEntry();
+        auto* sceneryEntry = tileElement->GetEntry();
 
         // Iterate through each tile of the large scenery element
         for (auto& tile : sceneryEntry->tiles)
         {
             CoordsXY offsetPos{ tile.offset };
-            auto rotatedOffsetPos = offsetPos.rotate(signPos.direction);
+            auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);
 
             auto tmpSignPos = CoordsXYZD{ sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                           sceneryOrigin->z + tile.offset.z, signPos.direction };
             tileElement = MapGetLargeScenerySegment(tmpSignPos, tile.index);
             if (tileElement != nullptr)
             {
-                tileElement->setPrimaryColour(mainColour);
-                tileElement->setSecondaryColour(textColour);
+                tileElement->SetPrimaryColour(mainColour);
+                tileElement->SetSecondaryColour(textColour);
 
                 MapInvalidateTile({ tmpSignPos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
             }
@@ -1792,12 +1798,12 @@ namespace OpenRCT2
             return true;
         }
 
-        if (surfaceElement->getWaterHeight() > surfaceElement->getBaseZ())
+        if (surfaceElement->GetWaterHeight() > surfaceElement->getBaseZ())
             return true;
 
         int16_t base_z = surfaceElement->baseHeight;
         int16_t clear_z = surfaceElement->baseHeight + 2;
-        if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
+        if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
             clear_z += 2;
 
         auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -1809,13 +1815,13 @@ namespace OpenRCT2
             if (base_z < tileElement->baseHeight)
                 continue;
 
-            if (tileElement->getType() == TileElementType::path || tileElement->getType() == TileElementType::wall)
+            if (tileElement->getType() == TileElementType::Path || tileElement->getType() == TileElementType::Wall)
                 continue;
 
-            if (tileElement->getType() != TileElementType::smallScenery)
+            if (tileElement->getType() != TileElementType::SmallScenery)
                 return true;
 
-            auto* sceneryEntry = tileElement->asSmallScenery()->getEntry();
+            auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
             if (sceneryEntry == nullptr)
             {
                 return false;
@@ -1851,7 +1857,7 @@ namespace OpenRCT2
             return nullptr;
         do
         {
-            if (tileElement->getType() != TileElementType::track)
+            if (tileElement->getType() != TileElementType::Track)
                 continue;
             if (tileElement->getBaseZ() != trackPos.z)
                 continue;
@@ -1876,11 +1882,11 @@ namespace OpenRCT2
         auto trackTilePos = TileCoordsXYZ{ trackPos };
         do
         {
-            if (tileElement->getType() != TileElementType::track)
+            if (tileElement->getType() != TileElementType::Track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
-            if (tileElement->asTrack()->getTrackType() != trackType)
+            if (tileElement->asTrack()->GetTrackType() != trackType)
                 continue;
 
             return tileElement;
@@ -1903,13 +1909,13 @@ namespace OpenRCT2
         {
             if (tileElement == nullptr)
                 break;
-            if (tileElement->getType() != TileElementType::track)
+            if (tileElement->getType() != TileElementType::Track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
-            if (tileElement->asTrack()->getTrackType() != trackType)
+            if (tileElement->asTrack()->GetTrackType() != trackType)
                 continue;
-            if (tileElement->asTrack()->getSequenceIndex() != sequence)
+            if (tileElement->asTrack()->GetSequenceIndex() != sequence)
                 continue;
 
             return tileElement;
@@ -1932,7 +1938,7 @@ namespace OpenRCT2
                         continue;
                     if (trackElement->getDirection() != location.direction)
                         continue;
-                    if (trackElement->getTrackType() != trackType)
+                    if (trackElement->GetTrackType() != trackType)
                         continue;
                     return trackElement;
                 }
@@ -1955,9 +1961,9 @@ namespace OpenRCT2
                         continue;
                     if (trackElement->getDirection() != location.direction)
                         continue;
-                    if (trackElement->getTrackType() != trackType)
+                    if (trackElement->GetTrackType() != trackType)
                         continue;
-                    if (trackElement->getSequenceIndex() != sequence)
+                    if (trackElement->GetSequenceIndex() != sequence)
                         continue;
                     return trackElement;
                 }
@@ -1980,13 +1986,13 @@ namespace OpenRCT2
         auto trackTilePos = TileCoordsXYZ{ trackPos };
         do
         {
-            if (tileElement->getType() != TileElementType::track)
+            if (tileElement->getType() != TileElementType::Track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
-            if (tileElement->asTrack()->getRideIndex() != rideIndex)
+            if (tileElement->asTrack()->GetRideIndex() != rideIndex)
                 continue;
-            if (tileElement->asTrack()->getTrackType() != trackType)
+            if (tileElement->asTrack()->GetTrackType() != trackType)
                 continue;
 
             return tileElement;
@@ -2009,11 +2015,11 @@ namespace OpenRCT2
         auto trackTilePos = TileCoordsXYZ{ trackPos };
         do
         {
-            if (tileElement->getType() != TileElementType::track)
+            if (tileElement->getType() != TileElementType::Track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
-            if (tileElement->asTrack()->getRideIndex() != rideIndex)
+            if (tileElement->asTrack()->GetRideIndex() != rideIndex)
                 continue;
 
             return tileElement;
@@ -2030,13 +2036,13 @@ namespace OpenRCT2
 
         do
         {
-            if (tileElement->getType() == TileElementType::surface)
+            if (tileElement->getType() == TileElementType::Surface)
             {
                 return nullptr;
             }
 
-            if (tileElement->getType() == TileElementType::track && tileElement->getBaseZ() == trackPos.z
-                && tileElement->asTrack()->getRideIndex() == rideIndex)
+            if (tileElement->getType() == TileElementType::Track && tileElement->getBaseZ() == trackPos.z
+                && tileElement->asTrack()->GetRideIndex() == rideIndex)
             {
                 return tileElement;
             }
@@ -2060,11 +2066,11 @@ namespace OpenRCT2
         auto trackTilePos = TileCoordsXYZ{ trackPos };
         do
         {
-            if (tileElement->getType() != TileElementType::track)
+            if (tileElement->getType() != TileElementType::Track)
                 continue;
             if (tileElement->baseHeight != trackTilePos.z)
                 continue;
-            if (tileElement->asTrack()->getRideIndex() != rideIndex)
+            if (tileElement->asTrack()->GetRideIndex() != rideIndex)
                 continue;
             if (tileElement->getDirection() != trackPos.direction)
                 continue;
@@ -2083,7 +2089,7 @@ namespace OpenRCT2
         {
             do
             {
-                if (tileElement->getType() == TileElementType::wall && coords.baseZ < tileElement->getClearanceZ()
+                if (tileElement->getType() == TileElementType::Wall && coords.baseZ < tileElement->getClearanceZ()
                     && coords.clearanceZ > tileElement->getBaseZ())
                 {
                     return tileElement->asWall();
@@ -2102,7 +2108,7 @@ namespace OpenRCT2
             return nullptr;
         do
         {
-            if (tileElement->getType() != TileElementType::wall)
+            if (tileElement->getType() != TileElementType::Wall)
                 continue;
             if (tileElement->baseHeight != tileWallCoords.z)
                 continue;
@@ -2114,26 +2120,72 @@ namespace OpenRCT2
         return nullptr;
     }
 
+    uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
+    {
+        TileElement* tileElement = MapGetFirstElementAt(tileMapPos);
+        uint16_t destOwnership = OWNERSHIP_OWNED;
+
+        // Sometimes done deliberately.
+        if (tileElement == nullptr)
+        {
+            return OWNERSHIP_OWNED;
+        }
+
+        auto tilePos = TileCoordsXYZ{ tileMapPos };
+        do
+        {
+            auto type = tileElement->getType();
+            if (type == TileElementType::Path
+                || (type == TileElementType::Entrance
+                    && tileElement->asEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE))
+            {
+                destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                // Do not own construction rights if too high/below surface
+                if (tileElement->baseHeight - kConstructionRightsClearanceSmall > tilePos.z
+                    || tileElement->baseHeight < tilePos.z)
+                {
+                    destOwnership = OWNERSHIP_UNOWNED;
+                    break;
+                }
+            }
+        } while (!(tileElement++)->isLastForTile());
+
+        return destOwnership;
+    }
+
+    void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership)
+    {
+        for (const auto& tile : tiles)
+        {
+            auto surfaceElement = MapGetSurfaceElementAt(tile);
+            if (surfaceElement != nullptr)
+            {
+                surfaceElement->SetOwnership(ownership);
+                Park::UpdateFencesAroundTile(tile.ToCoordsXY());
+            }
+        }
+    }
+
     MapRange ClampRangeWithinMap(const MapRange& range)
     {
         auto mapSizeMax = GetMapSizeMaxXY();
-        auto aX = std::max<decltype(range.getX1())>(kCoordsXYStep, range.getX1());
-        auto bX = std::min<decltype(range.getX2())>(mapSizeMax.x, range.getX2());
-        auto aY = std::max<decltype(range.getY1())>(kCoordsXYStep, range.getY1());
-        auto bY = std::min<decltype(range.getY2())>(mapSizeMax.y, range.getY2());
+        auto aX = std::max<decltype(range.GetX1())>(kCoordsXYStep, range.GetX1());
+        auto bX = std::min<decltype(range.GetX2())>(mapSizeMax.x, range.GetX2());
+        auto aY = std::max<decltype(range.GetY1())>(kCoordsXYStep, range.GetY1());
+        auto bY = std::min<decltype(range.GetY2())>(mapSizeMax.y, range.GetY2());
         MapRange validRange = MapRange{ aX, aY, bX, bY };
         return validRange;
     }
 
     static inline void shiftIfNotNull(TileCoordsXY& coords, const TileCoordsXY& amount)
     {
-        if (!coords.isNull())
+        if (!coords.IsNull())
             coords += amount;
     }
 
     static inline void shiftIfNotNull(CoordsXY& coords, const CoordsXY& amount)
     {
-        if (!coords.isNull())
+        if (!coords.IsNull())
             coords += amount;
     }
 
@@ -2142,7 +2194,7 @@ namespace OpenRCT2
         if (amount.x == 0 && amount.y == 0)
             return;
 
-        auto amountToMove = amount.toCoordsXY();
+        auto amountToMove = amount.ToCoordsXY();
         auto& gameState = getGameState();
 
         // Tile elements
@@ -2167,8 +2219,8 @@ namespace OpenRCT2
                     auto surface = GetDefaultSurfaceElement();
                     surface.setBaseZ(kMinimumLandZ);
                     surface.setClearanceZ(kMinimumLandZ);
-                    surface.asSurface()->setSlope(0);
-                    surface.asSurface()->setWaterHeight(0);
+                    surface.asSurface()->SetSlope(0);
+                    surface.asSurface()->SetWaterHeight(0);
                     newElements.push_back(surface);
                 }
                 else
@@ -2191,17 +2243,17 @@ namespace OpenRCT2
             shiftIfNotNull(entrance, amountToMove);
 
         // Entities
-        auto& entityTweener = EntityTweener::get();
+        auto& entityTweener = EntityTweener::Get();
         for (auto i = 0; i < EnumValue(EntityType::count); i++)
         {
             auto entityType = static_cast<EntityType>(i);
-            auto& list = getGameState().entities.getEntityList(entityType);
+            auto& list = getGameState().entities.GetEntityList(entityType);
             for (const auto& entityId : list)
             {
-                auto entity = getGameState().entities.getEntity(entityId);
+                auto entity = getGameState().entities.GetEntity(entityId);
 
                 // Do not tween the entity
-                entityTweener.removeEntity(entity);
+                entityTweener.RemoveEntity(entity);
 
                 auto location = entity->getLocation();
                 shiftIfNotNull(location, amountToMove);
@@ -2215,11 +2267,11 @@ namespace OpenRCT2
                         auto peep = entity->as<Peep>();
                         if (peep != nullptr)
                         {
-                            shiftIfNotNull(peep->nextLoc, amountToMove);
-                            peep->destinationX += amountToMove.x;
-                            peep->destinationY += amountToMove.y;
-                            shiftIfNotNull(peep->pathfindGoal, amount);
-                            for (auto& h : peep->pathfindHistory)
+                            shiftIfNotNull(peep->NextLoc, amountToMove);
+                            peep->DestinationX += amountToMove.x;
+                            peep->DestinationY += amountToMove.y;
+                            shiftIfNotNull(peep->PathfindGoal, amount);
+                            for (auto& h : peep->PathfindHistory)
                                 shiftIfNotNull(h, amount);
                         }
                         break;
@@ -2239,8 +2291,8 @@ namespace OpenRCT2
                         auto duck = entity->as<Duck>();
                         if (duck != nullptr)
                         {
-                            duck->targetX += amountToMove.x;
-                            duck->targetY += amountToMove.y;
+                            duck->target_x += amountToMove.x;
+                            duck->target_y += amountToMove.y;
                         }
                         break;
                     }
@@ -2249,8 +2301,8 @@ namespace OpenRCT2
                         auto fountain = entity->as<JumpingFountain>();
                         if (fountain != nullptr)
                         {
-                            fountain->targetX += amountToMove.x;
-                            fountain->targetY += amountToMove.y;
+                            fountain->TargetX += amountToMove.x;
+                            fountain->TargetY += amountToMove.y;
                         }
                         break;
                     }
@@ -2265,11 +2317,11 @@ namespace OpenRCT2
                         auto patrol = staff->patrolInfo;
                         if (patrol != nullptr)
                         {
-                            auto positions = patrol->toVector();
+                            auto positions = patrol->ToVector();
                             for (auto& p : positions)
                                 shiftIfNotNull(p, amount);
-                            patrol->clear();
-                            patrol->unify(positions);
+                            patrol->Clear();
+                            patrol->Union(positions);
                         }
                     }
                 }
@@ -2283,9 +2335,9 @@ namespace OpenRCT2
             auto stations = ride.getStations();
             for (auto& station : stations)
             {
-                shiftIfNotNull(station.start, amountToMove);
-                shiftIfNotNull(station.entrance, amount);
-                shiftIfNotNull(station.exit, amount);
+                shiftIfNotNull(station.Start, amountToMove);
+                shiftIfNotNull(station.Entrance, amount);
+                shiftIfNotNull(station.Exit, amount);
             }
 
             shiftIfNotNull(ride.overallView, amountToMove);

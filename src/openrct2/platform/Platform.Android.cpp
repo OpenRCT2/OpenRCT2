@@ -16,15 +16,15 @@
     #include "../core/Guard.hpp"
     #include "../core/IStream.hpp"
     #include "../core/String.hpp"
-    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
 
-    #include <SDL_system.h>
+    #include <SDL.h>
     #include <algorithm>
     #include <android/asset_manager.h>
     #include <android/asset_manager_jni.h>
     #include <jni.h>
     #include <memory>
+    #include <mutex>
     #include <sys/stat.h>
 
 AndroidClassLoader::~AndroidClassLoader()
@@ -471,12 +471,12 @@ namespace OpenRCT2::Platform
         return _assetList;
     }
 
-    std::vector<std::string> GetSearchablePathsRCT1()
+    std::vector<std::string_view> GetSearchablePathsRCT1()
     {
         return { "/sdcard/rct1" };
     }
 
-    std::vector<std::string> GetSearchablePathsRCT2()
+    std::vector<std::string_view> GetSearchablePathsRCT2()
     {
         return { "/sdcard/rct2" };
     }

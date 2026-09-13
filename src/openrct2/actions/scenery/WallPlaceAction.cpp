@@ -12,7 +12,6 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
-#include "../../drawing/TextColour.h"
 #include "../../management/Finance.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
@@ -26,7 +25,7 @@
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
-#include "../../world/TileElementsView.h"
+#include "../../world/Scenery.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../../world/tile_element/PathElement.h"
@@ -85,6 +84,11 @@ namespace OpenRCT2::GameActions
         res.position.x += 16;
         res.position.y += 16;
 
+        if (_loc.z == 0)
+        {
+            res.position.z = TileElementHeight(res.position);
+        }
+
         if (!LocationValid(_loc))
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
@@ -129,7 +133,7 @@ namespace OpenRCT2::GameActions
             }
             targetHeight = surfaceElement->getBaseZ();
 
-            uint8_t slope = surfaceElement->getSlope();
+            uint8_t slope = surfaceElement->GetSlope();
             edgeSlope = GetWallSlopeFromEdgeSlope(slope, _edge & 3);
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
@@ -137,7 +141,6 @@ namespace OpenRCT2::GameActions
                 edgeSlope &= ~EDGE_SLOPE_ELEVATED;
             }
         }
-        res.position.z = targetHeight;
 
         auto* surfaceElement = MapGetSurfaceElementAt(_loc);
         if (surfaceElement == nullptr)
@@ -146,9 +149,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
 
-        if (surfaceElement->getWaterHeight() > 0)
+        if (surfaceElement->GetWaterHeight() > 0)
         {
-            uint16_t waterHeight = surfaceElement->getWaterHeight();
+            uint16_t waterHeight = surfaceElement->GetWaterHeight();
 
             if (targetHeight < waterHeight && !gameState.cheats.disableClearanceChecks)
             {
@@ -166,21 +169,21 @@ namespace OpenRCT2::GameActions
             uint8_t newEdge = (_edge + 2) & 3;
             uint8_t newBaseHeight = surfaceElement->baseHeight;
             newBaseHeight += 2;
-            if (surfaceElement->getSlope() & (1 << newEdge))
+            if (surfaceElement->GetSlope() & (1 << newEdge))
             {
                 if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                 {
                     return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
-                if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                 {
                     newEdge = (newEdge - 1) & 3;
 
-                    if (surfaceElement->getSlope() & (1 << newEdge))
+                    if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newEdge = (newEdge + 2) & 3;
-                        if (surfaceElement->getSlope() & (1 << newEdge))
+                        if (surfaceElement->GetSlope() & (1 << newEdge))
                         {
                             newBaseHeight += 2;
                             if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
@@ -195,21 +198,21 @@ namespace OpenRCT2::GameActions
             }
 
             newEdge = (_edge + 3) & 3;
-            if (surfaceElement->getSlope() & (1 << newEdge))
+            if (surfaceElement->GetSlope() & (1 << newEdge))
             {
                 if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                 {
                     return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
                 }
 
-                if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
+                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
                 {
                     newEdge = (newEdge - 1) & 3;
 
-                    if (surfaceElement->getSlope() & (1 << newEdge))
+                    if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newEdge = (newEdge + 2) & 3;
-                        if (surfaceElement->getSlope() & (1 << newEdge))
+                        if (surfaceElement->GetSlope() & (1 << newEdge))
                         {
                             newBaseHeight += 2;
                             if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
@@ -243,7 +246,7 @@ namespace OpenRCT2::GameActions
         uint8_t clearanceHeight = targetHeight / 8;
         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
         {
-            if (wallEntry->flags.has(WallSceneryFlag::cannotBuildOnSlope))
+            if (wallEntry->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
             {
                 return Result(Status::disallowed, STR_CANT_BUILD_THIS_HERE, STR_ERR_UNABLE_TO_BUILD_THIS_ON_SLOPE);
             }
@@ -283,6 +286,11 @@ namespace OpenRCT2::GameActions
         res.position.x += 16;
         res.position.y += 16;
 
+        if (res.position.z == 0)
+        {
+            res.position.z = TileElementHeight(res.position);
+        }
+
         uint8_t edgeSlope = 0;
         auto targetHeight = _loc.z;
         if (targetHeight == 0)
@@ -295,7 +303,7 @@ namespace OpenRCT2::GameActions
             }
             targetHeight = surfaceElement->getBaseZ();
 
-            uint8_t slope = surfaceElement->getSlope();
+            uint8_t slope = surfaceElement->GetSlope();
             edgeSlope = GetWallSlopeFromEdgeSlope(slope, _edge & 3);
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
@@ -303,7 +311,6 @@ namespace OpenRCT2::GameActions
                 edgeSlope &= ~EDGE_SLOPE_ELEVATED;
             }
         }
-        res.position.z = targetHeight;
         auto targetLoc = CoordsXYZ(_loc, targetHeight);
 
         auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(_wallType);
@@ -364,18 +371,18 @@ namespace OpenRCT2::GameActions
 
         wallElement->clearanceHeight = clearanceHeight;
         wallElement->setDirection(_edge);
-        wallElement->setSlope(edgeSlope);
+        wallElement->SetSlope(edgeSlope);
 
-        wallElement->setPrimaryColour(_primaryColour);
-        wallElement->setSecondaryColour(_secondaryColour);
-        wallElement->setAcrossTrack(wallAcrossTrack);
+        wallElement->SetPrimaryColour(_primaryColour);
+        wallElement->SetSecondaryColour(_secondaryColour);
+        wallElement->SetAcrossTrack(wallAcrossTrack);
 
-        wallElement->setEntryIndex(_wallType);
-        wallElement->setBannerIndex(banner != nullptr ? banner->id : BannerIndex::GetNull());
+        wallElement->SetEntryIndex(_wallType);
+        wallElement->SetBannerIndex(banner != nullptr ? banner->id : BannerIndex::GetNull());
 
-        if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
+        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
         {
-            wallElement->setTertiaryColour(_tertiaryColour);
+            wallElement->SetTertiaryColour(_tertiaryColour);
         }
 
         wallElement->setGhost(GetFlags().has(CommandFlag::ghost));
@@ -398,13 +405,13 @@ namespace OpenRCT2::GameActions
     bool WallPlaceAction::WallCheckObstructionWithTrack(
         const WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
     {
-        TrackElemType trackType = trackElement->getTrackType();
+        TrackElemType trackType = trackElement->GetTrackType();
 
         using namespace OpenRCT2::TrackMetadata;
         const auto& ted = GetTrackElementDescriptor(trackType);
-        int32_t sequence = trackElement->getSequenceIndex();
+        int32_t sequence = trackElement->GetSequenceIndex();
         int32_t direction = (_edge - trackElement->getDirection()) & kTileElementDirectionMask;
-        auto ride = GetRide(trackElement->getRideIndex());
+        auto ride = GetRide(trackElement->GetRideIndex());
         if (ride == nullptr)
         {
             return false;
@@ -415,7 +422,7 @@ namespace OpenRCT2::GameActions
             return true;
         }
 
-        if (!(wall->flags.has(WallSceneryFlag::isDoor)))
+        if (!(wall->flags & WALL_SCENERY_IS_DOOR))
         {
             return false;
         }
@@ -498,12 +505,13 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        for (auto* tileElement : TileElementsView(_loc))
+        TileElement* tileElement = MapGetFirstElementAt(_loc);
+        do
         {
             if (tileElement == nullptr)
                 break;
             auto elementType = tileElement->getType();
-            if (elementType == TileElementType::surface)
+            if (elementType == TileElementType::Surface)
                 continue;
             if (tileElement->isGhost())
                 continue;
@@ -511,7 +519,7 @@ namespace OpenRCT2::GameActions
                 continue;
             if (z1 <= tileElement->baseHeight)
                 continue;
-            if (elementType == TileElementType::wall)
+            if (elementType == TileElementType::Wall)
             {
                 int32_t direction = tileElement->getDirection();
                 if (_edge == direction)
@@ -527,26 +535,26 @@ namespace OpenRCT2::GameActions
             auto res = Result(Status::noClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
             switch (elementType)
             {
-                case TileElementType::entrance:
+                case TileElementType::Entrance:
                     MapGetObstructionErrorText(tileElement, res);
                     return res;
-                case TileElementType::path:
-                    if (tileElement->asPath()->getEdges() & (1 << _edge))
+                case TileElementType::Path:
+                    if (tileElement->asPath()->GetEdges() & (1 << _edge))
                     {
                         MapGetObstructionErrorText(tileElement, res);
                         return res;
                     }
                     break;
-                case TileElementType::largeScenery:
+                case TileElementType::LargeScenery:
                 {
                     const auto* largeSceneryElement = tileElement->asLargeScenery();
-                    const auto* sceneryEntry = largeSceneryElement->getEntry();
+                    const auto* sceneryEntry = largeSceneryElement->GetEntry();
 
                     // If there is no entry, assume the object is not in the way.
                     if (sceneryEntry == nullptr)
                         break;
 
-                    auto sequence = largeSceneryElement->getSequenceIndex();
+                    auto sequence = largeSceneryElement->GetSequenceIndex();
                     const LargeSceneryTile& tile = sceneryEntry->tiles[sequence];
 
                     int32_t direction = ((_edge - tileElement->getDirection()) & kTileElementDirectionMask);
@@ -557,9 +565,9 @@ namespace OpenRCT2::GameActions
                     }
                     break;
                 }
-                case TileElementType::smallScenery:
+                case TileElementType::SmallScenery:
                 {
-                    auto sceneryEntry = tileElement->asSmallScenery()->getEntry();
+                    auto sceneryEntry = tileElement->asSmallScenery()->GetEntry();
                     if (sceneryEntry != nullptr && sceneryEntry->flags.has(SmallSceneryFlag::prohibitWalls))
                     {
                         MapGetObstructionErrorText(tileElement, res);
@@ -567,7 +575,7 @@ namespace OpenRCT2::GameActions
                     }
                     break;
                 }
-                case TileElementType::track:
+                case TileElementType::Track:
                     if (!WallCheckObstructionWithTrack(wall, z0, tileElement->asTrack(), wallAcrossTrack))
                     {
                         MapGetObstructionErrorText(tileElement, res);
@@ -577,7 +585,7 @@ namespace OpenRCT2::GameActions
                 default:
                     break;
             }
-        }
+        } while (!(tileElement++)->isLastForTile());
 
         return Result();
     }

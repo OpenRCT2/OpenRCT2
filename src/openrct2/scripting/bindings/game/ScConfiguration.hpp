@@ -23,9 +23,9 @@ namespace OpenRCT2::Scripting
 
     enum class ScConfigurationKind
     {
-        user,
-        shared,
-        park
+        User,
+        Shared,
+        Park
     };
 
     class ScConfiguration final : public ScBase
@@ -58,16 +58,16 @@ namespace OpenRCT2::Scripting
         {
             switch (data->_kind)
             {
-                case ScConfigurationKind::park:
+                case ScConfigurationKind::Park:
                 {
                     return GetParkStorageForPlugin(ctx, data->_pluginName);
                 }
-                case ScConfigurationKind::shared:
+                case ScConfigurationKind::Shared:
                 {
                     auto& scriptEngine = GetContext()->GetScriptEngine();
                     return JS_DupValue(ctx, scriptEngine.GetSharedStorage());
                 }
-                case ScConfigurationKind::user:
+                case ScConfigurationKind::User:
                 default:
                     Guard::Fail("Invalid ScConfigurationKind");
                     return JS_UNDEFINED;
@@ -151,7 +151,7 @@ namespace OpenRCT2::Scripting
                 return false;
             }
 
-            if (kind != ScConfigurationKind::park)
+            if (kind != ScConfigurationKind::Park)
             {
                 if (ns.empty())
                 {
@@ -192,7 +192,7 @@ namespace OpenRCT2::Scripting
 
             if (IsValidNamespace(ns, data->_kind))
             {
-                if (data->_kind == ScConfigurationKind::user)
+                if (data->_kind == ScConfigurationKind::User)
                 {
                     JSValue obj = JS_NewObject(ctx);
                     if (ns == "general")
@@ -228,7 +228,7 @@ namespace OpenRCT2::Scripting
             JSValue defaultValue = argv[1];
             ConfigurationData* data = gScConfiguration.GetOpaque<ConfigurationData*>(thisVal);
 
-            if (data->_kind == ScConfigurationKind::user)
+            if (data->_kind == ScConfigurationKind::User)
             {
                 if (key == "general.language")
                 {
@@ -281,7 +281,7 @@ namespace OpenRCT2::Scripting
             JSValue value = argv[1];
             ConfigurationData* data = gScConfiguration.GetOpaque<ConfigurationData*>(thisVal);
 
-            if (data->_kind == ScConfigurationKind::user)
+            if (data->_kind == ScConfigurationKind::User)
             {
                 if (key == "general.showFps")
                 {
@@ -345,7 +345,7 @@ namespace OpenRCT2::Scripting
         // context.configuration
         JSValue New(JSContext* ctx)
         {
-            return MakeWithOpaque(ctx, new ConfigurationData{ ScConfigurationKind::user, {} });
+            return MakeWithOpaque(ctx, new ConfigurationData{ ScConfigurationKind::User, {} });
         }
 
         // context.sharedStorage / context.getParkStorage

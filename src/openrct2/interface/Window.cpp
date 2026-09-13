@@ -10,38 +10,41 @@
 #include "Window.h"
 
 #include "../Context.h"
+#include "../Diagnostic.h"
+#include "../Editor.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
-#include "../drawing/Drawing.Screen.h"
-#include "../drawing/Drawing.String.h"
-#include "../drawing/RenderTarget.h"
-#include "../entity/EntityRegistry.h"
+#include "../drawing/Drawing.h"
+#include "../interface/Cursors.h"
 #include "../ride/RideAudio.h"
-#include "../scenes/SceneManager.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"
 #include "../world/MapSelection.h"
 #include "Viewport.h"
 #include "Widget.h"
-#include "WidgetIndexGlobals.h"
 #include "WindowBase.h"
 
 #include <cassert>
+#include <cmath>
 #include <functional>
 #include <iterator>
+#include <list>
 
 namespace OpenRCT2
 {
+
     std::vector<std::unique_ptr<WindowBase>> gWindowList;
     WindowBase* gWindowAudioExclusive;
 
     WindowCloseModifier gLastCloseModifier = { { WindowClass::null, 0 }, CloseWindowModifier::none };
 
     uint32_t gWindowUpdateTicks;
+    Drawing::Colour gCurrentWindowColours[3];
 
     Tool gCurrentToolId;
     WidgetRef gCurrentToolWidget;
@@ -364,8 +367,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
         int32_t i = 0;
-        auto sceneManager = GetContext()->GetSceneManager();
-        if (sceneManager->getActiveScene() != sceneManager->getTitleScene())
+        if (gLegacyScene != LegacyScene::titleSequence)
         {
             bool found = false;
             while (!found)
@@ -628,9 +630,9 @@ static constexpr float kWindowScrollLocations[][2] = {
         w.onPrepareDraw();
 
         // Text colouring
-        Drawing::gCurrentWindowColours[0] = w.colours[0].colour;
-        Drawing::gCurrentWindowColours[1] = w.colours[1].colour;
-        Drawing::gCurrentWindowColours[2] = w.colours[2].colour;
+        gCurrentWindowColours[0] = w.colours[0].colour;
+        gCurrentWindowColours[1] = w.colours[1].colour;
+        gCurrentWindowColours[2] = w.colours[2].colour;
 
         w.onDraw(copy);
     }
@@ -723,73 +725,14 @@ static constexpr float kWindowScrollLocations[][2] = {
     }
 
     /**
-     * rct2: 0x0066F0DD
+     * rct2: 0x0066B905
      */
-    static void WindowResizeGuiMainToolbars(const int32_t width, const int32_t height)
+    void WindowResizeGui(int32_t width, int32_t height)
     {
-        auto* mainWind = WindowGetMain();
-        if (mainWind != nullptr)
-        {
-            Viewport* viewport = mainWind->viewport;
-            mainWind->width = width;
-            mainWind->height = height;
-            viewport->width = width;
-            viewport->height = height;
-            if (!mainWind->widgets.empty() && mainWind->widgets[WC_MAIN_WINDOW__0].type == WidgetType::viewport)
-            {
-                mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
-                mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;
-            }
-        }
+        WindowResizeGuiScenarioEditor(width, height);
+        if (isInEditorMode())
+            return;
 
-        auto* windowMgr = Ui::GetWindowManager();
-
-        WindowBase* topWind = windowMgr->FindByClass(WindowClass::topToolbar);
-        if (topWind != nullptr)
-        {
-            topWind->width = std::max(640, width);
-        }
-
-        WindowBase* parkInfoPanel = windowMgr->FindByClass(WindowClass::parkInfoPanel);
-        if (parkInfoPanel != nullptr)
-        {
-            parkInfoPanel->windowPos.y = height - 32;
-        }
-
-        WindowBase* dateInfoPanel = windowMgr->FindByClass(WindowClass::dateInfoPanel);
-        if (dateInfoPanel != nullptr)
-        {
-            dateInfoPanel->windowPos.x = width - dateInfoPanel->width;
-            dateInfoPanel->windowPos.y = height - 32;
-        }
-
-        auto bottomWidth = std::max(640, width);
-        auto bottomOffset = 0;
-        if (parkInfoPanel != nullptr && dateInfoPanel != nullptr)
-        {
-            bottomWidth -= parkInfoPanel->width + dateInfoPanel->width;
-            bottomOffset = parkInfoPanel->width;
-        }
-
-        WindowBase* statusBar = windowMgr->FindByClass(WindowClass::gameStatusBar);
-        if (statusBar != nullptr)
-        {
-            statusBar->width = bottomWidth;
-            statusBar->windowPos.x = bottomOffset;
-            statusBar->windowPos.y = height - 32;
-        }
-
-        WindowBase* newsTicker = windowMgr->FindByClass(WindowClass::newsTicker);
-        if (newsTicker != nullptr)
-        {
-            newsTicker->width = bottomWidth;
-            newsTicker->windowPos.x = bottomOffset;
-            newsTicker->windowPos.y = height - 32;
-        }
-    }
-
-    static void WindowResizeGuiTitleScreen(const int32_t width, const int32_t height)
-    {
         auto* windowMgr = Ui::GetWindowManager();
         WindowBase* titleWind = windowMgr->FindByClass(WindowClass::titleMenu);
         if (titleWind != nullptr)
@@ -814,73 +757,60 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             optionsWind->windowPos.x = width - 80;
         }
-    }
-
-    static void WindowResizeGuiCentredWindows(const int32_t width, const int32_t height)
-    {
-        auto* windowMgr = Ui::GetWindowManager();
 
         // Keep options window centred after a resize
         WindowBase* optionsWindow = windowMgr->FindByClass(WindowClass::options);
         if (optionsWindow != nullptr)
         {
-            optionsWindow->windowPos.x = (width - optionsWindow->width) / 2;
-            optionsWindow->windowPos.y = (height - optionsWindow->height) / 2;
+            optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
+            optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
         }
 
         // Keep progress bar window centred after a resize
         WindowBase* ProgressWindow = windowMgr->FindByClass(WindowClass::progressWindow);
         if (ProgressWindow != nullptr)
         {
-            ProgressWindow->windowPos.x = (width - ProgressWindow->width) / 2;
-            ProgressWindow->windowPos.y = (height - ProgressWindow->height) / 2;
+            ProgressWindow->windowPos.x = (ContextGetWidth() - ProgressWindow->width) / 2;
+            ProgressWindow->windowPos.y = (ContextGetHeight() - ProgressWindow->height) / 2;
         }
+
+        GfxInvalidateScreen();
     }
 
-    static void WindowResizeEditorController(const int32_t width, const int32_t height)
+    /**
+     * rct2: 0x0066F0DD
+     */
+    void WindowResizeGuiScenarioEditor(int32_t width, int32_t height)
     {
+        auto* mainWind = WindowGetMain();
+        if (mainWind != nullptr)
+        {
+            Viewport* viewport = mainWind->viewport;
+            mainWind->width = width;
+            mainWind->height = height;
+            viewport->width = width;
+            viewport->height = height;
+            if (!mainWind->widgets.empty() && mainWind->widgets[WC_MAIN_WINDOW__0].type == WidgetType::viewport)
+            {
+                mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
+                mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;
+            }
+        }
+
         auto* windowMgr = Ui::GetWindowManager();
 
-        auto* prevStep = windowMgr->FindByNumber(WindowClass::editorStepController, 0);
-        if (prevStep != nullptr)
+        WindowBase* topWind = windowMgr->FindByClass(WindowClass::topToolbar);
+        if (topWind != nullptr)
         {
-            prevStep->windowPos.x = 0;
-            prevStep->windowPos.y = height - prevStep->height;
+            topWind->width = std::max(640, width);
         }
 
-        auto* statusLine = windowMgr->FindByClass(WindowClass::editorStatusLine);
-        if (statusLine != nullptr)
+        WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::bottomToolbar);
+        if (bottomWind != nullptr)
         {
-            statusLine->windowPos.x = (width - statusLine->width) / 2;
-            statusLine->windowPos.y = height - statusLine->height;
+            bottomWind->windowPos.y = height - 32;
+            bottomWind->width = std::max(640, width);
         }
-
-        auto* nextStep = windowMgr->FindByNumber(WindowClass::editorStepController, 1);
-        if (nextStep != nullptr)
-        {
-            nextStep->windowPos.x = width - nextStep->width;
-            nextStep->windowPos.y = height - nextStep->height;
-        }
-    }
-
-    void WindowResizeGui(const int32_t width, const int32_t height)
-    {
-        WindowResizeGuiMainToolbars(width, height);
-
-        auto sceneManager = GetContext()->GetSceneManager();
-        if (sceneManager->getActiveScene() == sceneManager->getTitleScene())
-        {
-            return WindowResizeGuiTitleScreen(width, height);
-        }
-
-        if (isInEditorMode() || isInTrackDesignerOrManager())
-        {
-            WindowResizeEditorController(width, height);
-        }
-
-        WindowResizeGuiCentredWindows(width, height);
-
-        Drawing::GfxInvalidateScreen();
     }
 
     /**

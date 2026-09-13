@@ -10,12 +10,15 @@
 #include <array>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
+#include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Theme.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/park/ParkSetEntranceFeeAction.h>
@@ -26,11 +29,11 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Award.h>
 #include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
@@ -393,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
         void SetDisabledTabs()
         {
             // Disable price tab if money is disabled
-            setWidgetDisabled(WIDX_TAB_4, getGameState().park.flags.has(ParkFlag::noMoney));
+            setWidgetDisabled(WIDX_TAB_4, (getGameState().park.flags & PARK_FLAGS_NO_MONEY) != 0);
         }
 
         void PrepareWindowTitleText()
@@ -443,8 +446,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[0] = Dropdown::MenuLabel(STR_CLOSE_PARK);
                 gDropdown.items[1] = Dropdown::MenuLabel(STR_OPEN_PARK);
                 WindowDropdownShowText(
-                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1],
-                    { Dropdown::Flag::autoClose }, 2);
+                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
 
                 if (Park::IsOpen(getGameState().park))
                 {
@@ -517,7 +519,10 @@ namespace OpenRCT2::Ui::Windows
             setWidgetDisabled(WIDX_OPEN_LIGHT, disableOpenClose);
 
             // only allow purchase of land when there is money
-            widgets[WIDX_BUY_LAND_RIGHTS].setHidden(_parkData.flags.has(ParkFlag::noMoney));
+            if (_parkData.flags & PARK_FLAGS_NO_MONEY)
+                widgets[WIDX_BUY_LAND_RIGHTS].type = WidgetType::empty;
+            else
+                widgets[WIDX_BUY_LAND_RIGHTS].type = WidgetType::flatBtn;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
 
@@ -531,20 +536,24 @@ namespace OpenRCT2::Ui::Windows
             auto y = 0;
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
             {
-                widgets[WIDX_OPEN_OR_CLOSE].setHidden();
-                widgets[WIDX_CLOSE_LIGHT].setVisible();
-                widgets[WIDX_OPEN_LIGHT].setVisible();
+                widgets[WIDX_OPEN_OR_CLOSE].type = WidgetType::empty;
+                if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating)
+                {
+                    widgets[WIDX_CLOSE_LIGHT].type = WidgetType::flatBtn;
+                    widgets[WIDX_OPEN_LIGHT].type = WidgetType::flatBtn;
+                }
+                else
+                {
+                    widgets[WIDX_CLOSE_LIGHT].type = WidgetType::imgBtn;
+                    widgets[WIDX_OPEN_LIGHT].type = WidgetType::imgBtn;
+                }
                 y = widgets[WIDX_OPEN_LIGHT].bottom + 5;
-
-                const bool forcedOpen = gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating;
-                widgets[WIDX_CLOSE_LIGHT].type = forcedOpen ? WidgetType::flatBtn : WidgetType::imgBtn;
-                widgets[WIDX_OPEN_LIGHT].type = forcedOpen ? WidgetType::flatBtn : WidgetType::imgBtn;
             }
             else
             {
-                widgets[WIDX_OPEN_OR_CLOSE].setVisible();
-                widgets[WIDX_CLOSE_LIGHT].setHidden();
-                widgets[WIDX_OPEN_LIGHT].setHidden();
+                widgets[WIDX_OPEN_OR_CLOSE].type = WidgetType::flatBtn;
+                widgets[WIDX_CLOSE_LIGHT].type = WidgetType::empty;
+                widgets[WIDX_OPEN_LIGHT].type = WidgetType::empty;
                 y = widgets[WIDX_PAGE_BACKGROUND].top + 6;
             }
 
@@ -555,7 +564,7 @@ namespace OpenRCT2::Ui::Windows
             }
             for (int32_t i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++)
             {
-                if (widgets[i].isHidden())
+                if (widgets[i].type == WidgetType::empty)
                     continue;
 
                 widgets[i].left = width - 25;
@@ -675,7 +684,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _ratingProps.RecalculateLayout(
-                { _ratingGraphBounds.point1 + dynamicPadding, _ratingGraphBounds.point2 - kGraphBottomRightPadding },
+                { _ratingGraphBounds.Point1 + dynamicPadding, _ratingGraphBounds.Point2 - kGraphBottomRightPadding },
                 kGraphNumYLabels, kParkRatingHistorySize);
         }
 
@@ -699,7 +708,7 @@ namespace OpenRCT2::Ui::Windows
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rectangle::fillInset(
-                rt, { _ratingGraphBounds.point2 - bigOffset, _ratingGraphBounds.point2 - offset }, colours[1],
+                rt, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
                 Rectangle::BorderStyle::none, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawRatingGraph(rt, _ratingProps);
@@ -755,7 +764,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _guestProps.RecalculateLayout(
-                { _guestGraphBounds.point1 + dynamicPadding, _guestGraphBounds.point2 - kGraphBottomRightPadding },
+                { _guestGraphBounds.Point1 + dynamicPadding, _guestGraphBounds.Point2 - kGraphBottomRightPadding },
                 kGraphNumYLabels, kGuestsInParkHistorySize);
         }
 
@@ -779,7 +788,7 @@ namespace OpenRCT2::Ui::Windows
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rectangle::fillInset(
-                rt, { _guestGraphBounds.point2 - bigOffset, _guestGraphBounds.point2 - offset }, colours[1],
+                rt, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
                 Rectangle::BorderStyle::none, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawGuestGraph(rt, _guestProps);
@@ -848,17 +857,17 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-            if (park.flags.has(ParkFlag::noMoney) || !Park::EntranceFeeUnlocked(park))
+            if ((park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked(park))
             {
                 widgets[WIDX_PRICE].type = WidgetType::labelCentred;
-                widgets[WIDX_INCREASE_PRICE].setHidden();
-                widgets[WIDX_DECREASE_PRICE].setHidden();
+                widgets[WIDX_INCREASE_PRICE].type = WidgetType::empty;
+                widgets[WIDX_DECREASE_PRICE].type = WidgetType::empty;
             }
             else
             {
                 widgets[WIDX_PRICE].type = WidgetType::spinner;
-                widgets[WIDX_INCREASE_PRICE].setVisible();
-                widgets[WIDX_DECREASE_PRICE].setVisible();
+                widgets[WIDX_INCREASE_PRICE].type = WidgetType::button;
+                widgets[WIDX_DECREASE_PRICE].type = WidgetType::button;
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
@@ -881,7 +890,7 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<money64>(parkEntranceFee);
 
-            StringId stringId = STR_CURRENCY2DP;
+            StringId stringId = STR_BOTTOM_TOOLBAR_CASH;
             if (parkEntranceFee == 0)
                 stringId = STR_FREE;
 
@@ -1039,14 +1048,14 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             // Show name input button on scenario completion.
-            if (getGameState().park.flags.has(ParkFlag::scenarioCompleteNameInput))
+            if (getGameState().park.flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
             {
-                widgets[WIDX_ENTER_NAME].setVisible();
+                widgets[WIDX_ENTER_NAME].type = WidgetType::button;
                 widgets[WIDX_ENTER_NAME].top = height - 19;
                 widgets[WIDX_ENTER_NAME].bottom = height - 6;
             }
             else
-                widgets[WIDX_ENTER_NAME].setHidden();
+                widgets[WIDX_ENTER_NAME].type = WidgetType::empty;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }

@@ -8,11 +8,7 @@
  *****************************************************************************/
 
 #pragma once
-
-#include <cstdint>
-
-struct CoordsXY;
-struct ScreenCoordsXY;
+#include <openrct2/world/Location.hpp>
 
 namespace OpenRCT2
 {

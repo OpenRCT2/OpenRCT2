@@ -10,7 +10,6 @@
 #include "SurfaceElement.h"
 
 #include "../../Context.h"
-#include "../../GameState.h"
 #include "../../object/ObjectManager.h"
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
@@ -21,51 +20,53 @@
 
 namespace OpenRCT2
 {
-    ObjectEntryIndex SurfaceElement::getSurfaceObjectIndex() const
+    ObjectEntryIndex SurfaceElement::GetSurfaceObjectIndex() const
     {
-        return surfaceStyle;
+        return SurfaceStyle;
     }
 
-    TerrainSurfaceObject* SurfaceElement::getSurfaceObject() const
+    TerrainSurfaceObject* SurfaceElement::GetSurfaceObject() const
     {
         auto& objManager = GetContext()->GetObjectManager();
-        return objManager.GetLoadedObject<TerrainSurfaceObject>(getSurfaceObjectIndex());
+        return objManager.GetLoadedObject<TerrainSurfaceObject>(GetSurfaceObjectIndex());
     }
 
-    ObjectEntryIndex SurfaceElement::getEdgeObjectIndex() const
+    ObjectEntryIndex SurfaceElement::GetEdgeObjectIndex() const
     {
-        return edgeObjectIndex;
+        return EdgeObjectIndex;
     }
 
-    TerrainEdgeObject* SurfaceElement::getEdgeObject() const
+    TerrainEdgeObject* SurfaceElement::GetEdgeObject() const
     {
         auto& objManager = GetContext()->GetObjectManager();
-        return objManager.GetLoadedObject<TerrainEdgeObject>(getEdgeObjectIndex());
+        return objManager.GetLoadedObject<TerrainEdgeObject>(GetEdgeObjectIndex());
     }
 
-    void SurfaceElement::setSurfaceObjectIndex(ObjectEntryIndex newStyle)
+    void SurfaceElement::SetSurfaceObjectIndex(ObjectEntryIndex newStyle)
     {
-        surfaceStyle = static_cast<ObjectEntryIndex>(newStyle);
+        SurfaceStyle = static_cast<ObjectEntryIndex>(newStyle);
     }
 
-    void SurfaceElement::setEdgeObjectIndex(ObjectEntryIndex newIndex)
+    void SurfaceElement::SetEdgeObjectIndex(ObjectEntryIndex newIndex)
     {
-        edgeObjectIndex = static_cast<ObjectEntryIndex>(newIndex);
+        EdgeObjectIndex = static_cast<ObjectEntryIndex>(newIndex);
     }
 
-    int32_t SurfaceElement::getWaterHeight() const
+    int32_t SurfaceElement::GetWaterHeight() const
     {
-        return waterHeight * kWaterHeightStep;
+        return WaterHeight * kWaterHeightStep;
     }
 
-    void SurfaceElement::setWaterHeight(int32_t newWaterHeight)
+    void SurfaceElement::SetWaterHeight(int32_t newWaterHeight)
     {
-        waterHeight = newWaterHeight / kWaterHeightStep;
+        WaterHeight = newWaterHeight / kWaterHeightStep;
     }
 
-    bool SurfaceElement::canGrassGrow() const
+    bool SurfaceElement::CanGrassGrow() const
     {
-        const auto* surfaceObject = getSurfaceObject();
+        auto surfaceStyle = GetSurfaceObjectIndex();
+        auto& objMgr = GetContext()->GetObjectManager();
+        const auto* surfaceObject = objMgr.GetLoadedObject<TerrainSurfaceObject>(surfaceStyle);
         if (surfaceObject != nullptr)
         {
             if (surfaceObject->Flags.has(TerrainSurfaceFlag::canGrow))
@@ -76,22 +77,22 @@ namespace OpenRCT2
         return false;
     }
 
-    uint8_t SurfaceElement::getGrassLength() const
+    uint8_t SurfaceElement::GetGrassLength() const
     {
-        return grassLength;
+        return GrassLength;
     }
 
-    void SurfaceElement::setGrassLength(uint8_t newLength)
+    void SurfaceElement::SetGrassLength(uint8_t newLength)
     {
-        grassLength = newLength;
+        GrassLength = newLength;
     }
 
-    void SurfaceElement::setGrassLengthAndInvalidate(uint8_t length, const CoordsXY& coords)
+    void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, const CoordsXY& coords)
     {
-        uint8_t oldLength = grassLength & 0x7;
+        uint8_t oldLength = GrassLength & 0x7;
         uint8_t newLength = length & 0x7;
 
-        grassLength = length;
+        GrassLength = length;
 
         if (newLength == oldLength)
         {
@@ -114,19 +115,19 @@ namespace OpenRCT2
      *
      *  rct2: 0x006647A1
      */
-    void SurfaceElement::updateGrassLength(const CoordsXY& coords)
+    void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
     {
-        // Check if tile is grass and if it's allowed to grow
-        if (!canGrassGrow() || getGameState().cheats.disableGrassGrowing)
+        // Check if tile is grass
+        if (!CanGrassGrow())
             return;
 
-        uint8_t grassLengthTmp = grassLength & 7;
+        uint8_t grassLengthTmp = GrassLength & 7;
 
         // Check if grass is underwater or outside park
-        if (getWaterHeight() > getBaseZ() || !MapIsLocationInPark(coords))
+        if (GetWaterHeight() > getBaseZ() || !MapIsLocationInPark(coords))
         {
             if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
-                setGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);
+                SetGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);
 
             return;
         }
@@ -136,7 +137,7 @@ namespace OpenRCT2
 
         int32_t baseZ = getBaseZ();
         int32_t clearZ = getBaseZ() + kLandHeightStep;
-        if (slope & kTileSlopeDiagonalFlag)
+        if (Slope & kTileSlopeDiagonalFlag)
             clearZ += kLandHeightStep;
 
         // Check objects above grass
@@ -148,33 +149,33 @@ namespace OpenRCT2
                 // Grow grass
 
                 // Check interim grass lengths
-                uint8_t lengthNibble = (getGrassLength() & 0xF0) >> 4;
+                uint8_t lengthNibble = (GetGrassLength() & 0xF0) >> 4;
                 if (lengthNibble < 0xF)
                 {
-                    grassLength += 0x10;
+                    GrassLength += 0x10;
                 }
                 else
                 {
                     // Zeros the length nibble
-                    grassLength += 0x10;
-                    grassLength ^= 8;
-                    if (grassLength & 8)
+                    GrassLength += 0x10;
+                    GrassLength ^= 8;
+                    if (GrassLength & 8)
                     {
                         // Random growth rate (length nibble)
-                        grassLength |= ScenarioRand() & 0x70;
+                        GrassLength |= ScenarioRand() & 0x70;
                     }
                     else
                     {
                         // Increase length if not at max length
                         if (grassLengthTmp != GRASS_LENGTH_CLUMPS_2)
-                            setGrassLengthAndInvalidate(grassLengthTmp + 1, coords);
+                            SetGrassLengthAndInvalidate(grassLengthTmp + 1, coords);
                     }
                 }
             }
             else
             {
                 tileElementAbove++;
-                if (tileElementAbove->getType() == TileElementType::wall)
+                if (tileElementAbove->getType() == TileElementType::Wall)
                     continue;
                 // Grass should not be affected by ghost elements.
                 if (tileElementAbove->isGhost())
@@ -185,57 +186,50 @@ namespace OpenRCT2
                     continue;
 
                 if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
-                    setGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);
+                    SetGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);
             }
             break;
         }
     }
 
-    OwnershipFlags SurfaceElement::getOwnership() const
+    uint8_t SurfaceElement::GetOwnership() const
     {
-        OwnershipFlags ret;
-        ret.holder = (ownership & kTileElementSurfaceOwnershipMask) >> 4;
-        return ret;
+        return (Ownership & kTileElementSurfaceOwnershipMask);
     }
 
-    void SurfaceElement::setOwnership(OwnershipFlags newOwnership)
+    void SurfaceElement::SetOwnership(uint8_t newOwnership)
     {
-        ownership &= ~kTileElementSurfaceOwnershipMask;
-        ownership |= (((newOwnership.holder) << 4) & kTileElementSurfaceOwnershipMask);
+        Ownership &= ~kTileElementSurfaceOwnershipMask;
+        Ownership |= (newOwnership & kTileElementSurfaceOwnershipMask);
     }
 
-    bool SurfaceElement::hasOwnership(OwnershipFlag flag) const
+    uint8_t SurfaceElement::GetParkFences() const
     {
-        return getOwnership().has(flag);
+        return (Ownership & kTileElementSurfaceParkFenceMask);
     }
 
-    uint8_t SurfaceElement::getParkFences() const
+    void SurfaceElement::SetParkFences(uint8_t newParkFences)
     {
-        return (ownership & kTileElementSurfaceParkFenceMask);
+        Ownership &= ~kTileElementSurfaceParkFenceMask;
+        Ownership |= (newParkFences & kTileElementSurfaceParkFenceMask);
     }
 
-    void SurfaceElement::setParkFences(uint8_t newParkFences)
+    uint8_t SurfaceElement::GetSlope() const
     {
-        ownership &= ~kTileElementSurfaceParkFenceMask;
-        ownership |= (newParkFences & kTileElementSurfaceParkFenceMask);
+        return Slope;
     }
 
-    uint8_t SurfaceElement::getSlope() const
+    void SurfaceElement::SetSlope(uint8_t newSlope)
     {
-        return slope;
+        Slope = newSlope;
     }
 
-    void SurfaceElement::setSlope(uint8_t newSlope)
-    {
-        slope = newSlope;
-    }
-
-    bool SurfaceElement::hasTrackThatNeedsWater() const
+    bool SurfaceElement::HasTrackThatNeedsWater() const
     {
         return (type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
     }
 
-    void SurfaceElement::setHasTrackThatNeedsWater(bool on)
+    void SurfaceElement::SetHasTrackThatNeedsWater(bool on)
     {
         type &= ~SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
         if (on)

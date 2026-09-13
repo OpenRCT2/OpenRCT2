@@ -11,7 +11,8 @@
 
 #include "../Identifiers.h"
 #include "../core/FlagHolder.hpp"
-#include "../object/ObjectTypes.h"
+#include "../drawing/TextColour.h"
+#include "../ride/RideTypes.h"
 #include "Location.hpp"
 
 #include <string>
@@ -27,8 +28,7 @@ namespace OpenRCT2
 namespace OpenRCT2::Drawing
 {
     enum class Colour : uint8_t;
-    enum class TextColour : uint8_t;
-} // namespace OpenRCT2::Drawing
+}
 
 constexpr OpenRCT2::ObjectEntryIndex kBannerNull = OpenRCT2::kObjectEntryIndexNull;
 constexpr size_t kMaxBanners = 8192;

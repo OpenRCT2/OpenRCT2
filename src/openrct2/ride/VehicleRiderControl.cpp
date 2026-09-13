@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../GameState.h"
+#include "../core/Speed.hpp"
 #include "../entity/EntityRegistry.h"
 #include "Vehicle.h"
 
@@ -137,10 +138,10 @@ int32_t Vehicle::CalculateRiderBraking() const
     RiderControlSettings riderSettings = riderTable[peep[0].ToUnderlying() & 0xFF];
 
     // Brake if close to the vehicle in front
-    Vehicle* prevVehicle = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
-    if (prevVehicle != nullptr && this != prevVehicle && _vehicleVelocity > minFollowVelocity)
+    Vehicle* prevVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+    if (prevVehicle != nullptr && this != prevVehicle && _vehicleVelocityF64E08 > minFollowVelocity)
     {
-        int32_t followDistance = std::max(minFollowDistance, (riderSettings.followDistance * _vehicleVelocity) >> 15);
+        int32_t followDistance = std::max(minFollowDistance, (riderSettings.followDistance * _vehicleVelocityF64E08) >> 15);
         int32_t distance = std::max(abs(x - prevVehicle->x), abs(y - prevVehicle->y));
         int32_t relativeVelocity = velocity - prevVehicle->velocity;
         int32_t z_diff = abs(z - prevVehicle->z);
@@ -219,11 +220,11 @@ int32_t Vehicle::CalculateRiderBraking() const
     }
 
     // Brake if car exceeds rider's preferred max speed
-    if (_vehicleVelocity > targetSpeed + brakeThreshold)
+    if (_vehicleVelocityF64E08 > targetSpeed + brakeThreshold)
     {
         return -maxBrake;
     }
-    else if (_vehicleVelocity > targetSpeed)
+    else if (_vehicleVelocityF64E08 > targetSpeed)
     {
         return -minBrake;
     }

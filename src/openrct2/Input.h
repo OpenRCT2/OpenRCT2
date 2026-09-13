@@ -11,16 +11,16 @@
 
 #include "core/FlagHolder.hpp"
 #include "core/StringTypes.h"
-#include "interface/ScreenCoords.hpp"
+#include "interface/Window.h"
 
 namespace OpenRCT2
 {
     enum class InputFlag : uint8_t
     {
         widgetPressed,
-        // The dropdown autocloses if the mouse is released, set on flag Dropdown::Flag::autoClose.
-        dropdownAutoclose,
-        // The mouse has been released and the dropdown is still open.
+        // The dropdown can stay open if the mouse is released, set on flag Dropdown::Flag::StayOpen.
+        dropdownStayOpen,
+        // The mouse has been released and the dropdown is still open. dropdownStayOpen is already set if this happens.
         dropdownMouseUp,
         toolActive,
         // Left click on a viewport
@@ -74,8 +74,6 @@ namespace OpenRCT2
         CURSOR_RELEASED = CURSOR_UP | CURSOR_CHANGED,
         CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
     };
-
-    struct WidgetRef;
 
     extern WidgetRef gHoverWidget;
     extern WidgetRef gPressedWidget;

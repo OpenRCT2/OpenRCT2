@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../../object/ObjectTypes.h"
-#include "../MapOwnership.h"
+#include "../../object/TerrainEdgeObject.h"
+#include "../../object/TerrainSurfaceObject.h"
 #include "TileElementBase.h"
 
 namespace OpenRCT2
@@ -31,59 +31,64 @@ namespace OpenRCT2
         GRASS_LENGTH_CLUMPS_2,
     };
 
+    enum
+    {
+        OWNERSHIP_UNOWNED = 0,
+        OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
+        OWNERSHIP_OWNED = (1 << 5),
+        OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE = (1 << 6),
+        OWNERSHIP_AVAILABLE = (1 << 7)
+    };
+
     constexpr uint8_t kTileElementSurfaceOwnershipMask = 0xF0;
     constexpr uint8_t kTileElementSurfaceParkFenceMask = 0x0F;
-
-    class TerrainEdgeObject;
-    class TerrainSurfaceObject;
 
 #pragma pack(push, 1)
     struct SurfaceElement : TileElementBase
     {
-        static constexpr TileElementType kElementType = TileElementType::surface;
+        static constexpr TileElementType kElementType = TileElementType::Surface;
 
     private:
-        uint8_t slope;
-        uint8_t waterHeight;
-        uint8_t grassLength;
-        uint8_t ownership;
-        uint8_t surfaceStyle;
-        uint8_t edgeObjectIndex;
+        uint8_t Slope;
+        uint8_t WaterHeight;
+        uint8_t GrassLength;
+        uint8_t Ownership;
+        uint8_t SurfaceStyle;
+        uint8_t EdgeObjectIndex;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t pad0B[5];
+        uint8_t Pad0B[5];
 #pragma clang diagnostic pop
 
     public:
-        uint8_t getSlope() const;
-        void setSlope(uint8_t newSlope);
+        uint8_t GetSlope() const;
+        void SetSlope(uint8_t newSlope);
 
-        ObjectEntryIndex getSurfaceObjectIndex() const;
-        TerrainSurfaceObject* getSurfaceObject() const;
-        void setSurfaceObjectIndex(ObjectEntryIndex newStyle);
+        ObjectEntryIndex GetSurfaceObjectIndex() const;
+        TerrainSurfaceObject* GetSurfaceObject() const;
+        void SetSurfaceObjectIndex(ObjectEntryIndex newStyle);
 
-        ObjectEntryIndex getEdgeObjectIndex() const;
-        TerrainEdgeObject* getEdgeObject() const;
-        void setEdgeObjectIndex(ObjectEntryIndex newIndex);
+        ObjectEntryIndex GetEdgeObjectIndex() const;
+        TerrainEdgeObject* GetEdgeObject() const;
+        void SetEdgeObjectIndex(ObjectEntryIndex newIndex);
 
-        bool canGrassGrow() const;
-        uint8_t getGrassLength() const;
-        void setGrassLength(uint8_t newLength);
-        void setGrassLengthAndInvalidate(uint8_t newLength, const CoordsXY& coords);
-        void updateGrassLength(const CoordsXY& coords);
+        bool CanGrassGrow() const;
+        uint8_t GetGrassLength() const;
+        void SetGrassLength(uint8_t newLength);
+        void SetGrassLengthAndInvalidate(uint8_t newLength, const CoordsXY& coords);
+        void UpdateGrassLength(const CoordsXY& coords);
 
-        OwnershipFlags getOwnership() const;
-        void setOwnership(OwnershipFlags newOwnership);
-        bool hasOwnership(OwnershipFlag flag) const;
+        uint8_t GetOwnership() const;
+        void SetOwnership(uint8_t newOwnership);
 
-        int32_t getWaterHeight() const;
-        void setWaterHeight(int32_t newWaterHeight);
+        int32_t GetWaterHeight() const;
+        void SetWaterHeight(int32_t newWaterHeight);
 
-        uint8_t getParkFences() const;
-        void setParkFences(uint8_t newParkFences);
+        uint8_t GetParkFences() const;
+        void SetParkFences(uint8_t newParkFences);
 
-        bool hasTrackThatNeedsWater() const;
-        void setHasTrackThatNeedsWater(bool on);
+        bool HasTrackThatNeedsWater() const;
+        void SetHasTrackThatNeedsWater(bool on);
     };
     static_assert(sizeof(SurfaceElement) == kTileElementSize);
 #pragma pack(pop)

@@ -9,48 +9,58 @@
 
 #include "SmallSceneryElement.h"
 
-#include "../../drawing/Colour.h"
+#include "../../Cheats.h"
+#include "../../Context.h"
+#include "../../Game.h"
+#include "../../OpenRCT2.h"
+#include "../../management/Finance.h"
+#include "../../network/Network.h"
 #include "../../object/ObjectEntryManager.h"
+#include "../../object/ObjectManager.h"
 #include "../../object/SmallSceneryEntry.h"
+#include "../../ride/TrackDesign.h"
+#include "../Footpath.h"
 #include "../Map.h"
+#include "../MapAnimation.h"
+#include "../Park.h"
 #include "../Scenery.h"
 
 #include <cassert>
 
 namespace OpenRCT2
 {
-    uint8_t SmallSceneryElement::getSceneryQuadrant() const
+    uint8_t SmallSceneryElement::GetSceneryQuadrant() const
     {
         return (this->type & kTileElementQuadrantMask) >> 6;
     }
 
-    void SmallSceneryElement::setSceneryQuadrant(uint8_t newQuadrant)
+    void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
     {
         type &= ~kTileElementQuadrantMask;
         type |= (newQuadrant << 6);
     }
 
-    uint16_t SmallSceneryElement::getEntryIndex() const
+    uint16_t SmallSceneryElement::GetEntryIndex() const
     {
         return this->entryIndex;
     }
 
-    void SmallSceneryElement::setEntryIndex(uint16_t newIndex)
+    void SmallSceneryElement::SetEntryIndex(uint16_t newIndex)
     {
         this->entryIndex = newIndex;
     }
 
-    uint8_t SmallSceneryElement::getAge() const
+    uint8_t SmallSceneryElement::GetAge() const
     {
         return this->age;
     }
 
-    void SmallSceneryElement::setAge(uint8_t newAge)
+    void SmallSceneryElement::SetAge(uint8_t newAge)
     {
         this->age = newAge;
     }
 
-    void SmallSceneryElement::increaseAge(const CoordsXY& sceneryPos)
+    void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
     {
         if (isGhost())
             return;
@@ -62,7 +72,7 @@ namespace OpenRCT2
             // Only invalidate tiles when scenery crosses the withering thresholds, and can be withered.
             if (newAge == kSceneryWitherAgeThreshold1 || newAge == kSceneryWitherAgeThreshold2)
             {
-                auto* sceneryEntry = getEntry();
+                auto* sceneryEntry = GetEntry();
 
                 if (sceneryEntry->flags.has(SmallSceneryFlag::canWither))
                 {
@@ -72,50 +82,50 @@ namespace OpenRCT2
         }
     }
 
-    Drawing::Colour SmallSceneryElement::getPrimaryColour() const
+    Drawing::Colour SmallSceneryElement::GetPrimaryColour() const
     {
-        return colour[0];
+        return Colour[0];
     }
 
-    Drawing::Colour SmallSceneryElement::getSecondaryColour() const
+    Drawing::Colour SmallSceneryElement::GetSecondaryColour() const
     {
-        return colour[1];
+        return Colour[1];
     }
 
-    Drawing::Colour SmallSceneryElement::getTertiaryColour() const
+    Drawing::Colour SmallSceneryElement::GetTertiaryColour() const
     {
-        return colour[2];
+        return Colour[2];
     }
 
-    void SmallSceneryElement::setPrimaryColour(Drawing::Colour newColour)
-    {
-        assert(Drawing::colourIsValid(newColour));
-        colour[0] = newColour;
-    }
-
-    void SmallSceneryElement::setSecondaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::SetPrimaryColour(Drawing::Colour newColour)
     {
         assert(Drawing::colourIsValid(newColour));
-        colour[1] = newColour;
+        Colour[0] = newColour;
     }
 
-    void SmallSceneryElement::setTertiaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::SetSecondaryColour(Drawing::Colour newColour)
     {
         assert(Drawing::colourIsValid(newColour));
-        colour[2] = newColour;
+        Colour[1] = newColour;
     }
 
-    bool SmallSceneryElement::needsSupports() const
+    void SmallSceneryElement::SetTertiaryColour(Drawing::Colour newColour)
     {
-        return flags2.has(SmallSceneryElementFlag::needsSupports);
+        assert(Drawing::colourIsValid(newColour));
+        Colour[2] = newColour;
     }
 
-    void SmallSceneryElement::setNeedsSupports()
+    bool SmallSceneryElement::NeedsSupports() const
     {
-        return flags2.set(SmallSceneryElementFlag::needsSupports);
+        return static_cast<bool>(Flags2 & MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS);
     }
 
-    const SmallSceneryEntry* SmallSceneryElement::getEntry() const
+    void SmallSceneryElement::SetNeedsSupports()
+    {
+        Flags2 |= MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS;
+    }
+
+    const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
     {
         return ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
     }

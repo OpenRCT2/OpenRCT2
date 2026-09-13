@@ -9,9 +9,11 @@
 
 #pragma once
 
+#include "core/BackgroundWorker.hpp"
 #include "core/StringTypes.h"
 #include "interface/WindowClasses.h"
 #include "localisation/StringIdType.h"
+#include "world/Location.hpp"
 
 #include <memory>
 
@@ -21,7 +23,7 @@ struct IGameStateSnapshots;
 struct IScenarioRepository;
 struct ITrackDesignRepository;
 struct NewVersionInfo;
-struct ScreenCoordsXY;
+struct TTFFontDescriptor;
 
 namespace OpenRCT2
 {
@@ -29,15 +31,14 @@ namespace OpenRCT2
     enum class WindowView : uint8_t;
 
     class AssetPackManager;
-    class BackgroundWorker;
+    class Formatter;
     class Intent;
-    class ISceneManager;
-
     struct CursorState;
     struct IObjectManager;
     struct IObjectRepository;
     struct IPlatformEnvironment;
     struct IReplayManager;
+    struct IScene;
     struct IStream;
     struct TextInputSession;
     struct WindowBase;
@@ -97,7 +98,6 @@ namespace OpenRCT2
         virtual ITrackDesignRepository* GetTrackDesignRepository() = 0;
         virtual IScenarioRepository* GetScenarioRepository() = 0;
         virtual IReplayManager* GetReplayManager() = 0;
-        virtual ISceneManager* GetSceneManager() = 0;
         virtual AssetPackManager* GetAssetPackManager() = 0;
         virtual IGameStateSnapshots* GetGameStateSnapshots() = 0;
         virtual DrawingEngine GetDrawingEngineType() = 0;
@@ -106,6 +106,15 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         virtual Network::NetworkBase& GetNetwork() = 0;
 #endif
+
+        virtual IScene* GetPreloaderScene() = 0;
+        virtual IScene* GetIntroScene() = 0;
+        virtual IScene* GetTitleScene() = 0;
+        virtual IScene* GetGameScene() = 0;
+        virtual IScene* GetEditorScene() = 0;
+
+        virtual IScene* GetActiveScene() = 0;
+        virtual void SetActiveScene(IScene* screen) = 0;
 
         virtual int32_t RunOpenRCT2(int argc, const char** argv) = 0;
 

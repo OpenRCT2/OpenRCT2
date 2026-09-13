@@ -11,13 +11,14 @@
 
 #include "../Context.h"
 #include "../drawing/Drawing.h"
-#include "../interface/ScreenCoords.hpp"
 #include "../interface/Screenshot.h"
+#include "../localisation/StringIds.h"
+#include "../paint/Painter.h"
 #include "../platform/Platform.h"
 #include "../ui/UiContext.h"
+#include "../world/Location.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
-#include "RenderTarget.h"
 
 #include <cassert>
 #include <cmath>
@@ -46,7 +47,7 @@ static IDrawingEngine* GetDrawingEngine()
 
 bool DrawingEngineRequiresNewWindow(DrawingEngine srcEngine, DrawingEngine dstEngine)
 {
-    bool openGL = srcEngine == DrawingEngine::openGL || dstEngine == DrawingEngine::openGL;
+    bool openGL = srcEngine == DrawingEngine::OpenGL || dstEngine == DrawingEngine::OpenGL;
     return Platform::RequireNewWindow(openGL);
 }
 
@@ -149,7 +150,7 @@ void GfxSetDirtyBlocks(const ScreenRect& rect)
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        drawingEngine->Invalidate(rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom());
+        drawingEngine->Invalidate(rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }
 
@@ -160,6 +161,49 @@ void GfxClear(RenderTarget& rt, PaletteIndex paletteIndex)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
         dc->Clear(rt, paletteIndex);
+    }
+}
+
+void GfxDrawLine(RenderTarget& rt, const ScreenLine& line, PaletteIndex colour)
+{
+    auto drawingEngine = rt.DrawingEngine;
+    if (drawingEngine != nullptr)
+    {
+        IDrawingContext* dc = drawingEngine->GetDrawingContext();
+        dc->DrawLine(rt, colour, line);
+    }
+}
+
+void GfxDrawDashedLine(
+    RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const PaletteIndex colour)
+{
+    assert(dashedLineSegmentLength > 0);
+
+    const auto drawingEngine = rt.DrawingEngine;
+    if (drawingEngine != nullptr)
+    {
+        constexpr int32_t kPrecisionFactor = 1000;
+
+        const int32_t dashedLineLength = std::hypot(
+            screenLine.GetX2() - screenLine.GetX1(), screenLine.GetY2() - screenLine.GetY1());
+        const int32_t lineSegmentCount = dashedLineLength / dashedLineSegmentLength / 2;
+        if (lineSegmentCount == 0)
+        {
+            return;
+        }
+
+        const int32_t lineXDist = std::abs(screenLine.GetX2() - screenLine.GetX1());
+        const int32_t lineYDist = std::abs(screenLine.GetY2() - screenLine.GetY1());
+        const int32_t dxPrecise = kPrecisionFactor * lineXDist / lineSegmentCount / 2;
+        const int32_t dyPrecise = kPrecisionFactor * lineYDist / lineSegmentCount / 2;
+        IDrawingContext* dc = drawingEngine->GetDrawingContext();
+
+        for (int32_t i = 0, x, y; i < lineSegmentCount; ++i)
+        {
+            x = screenLine.GetX1() + dxPrecise * i * 2 / kPrecisionFactor;
+            y = screenLine.GetY1() + dyPrecise * i * 2 / kPrecisionFactor;
+            dc->DrawLine(rt, colour, { { x, y }, { x + dxPrecise / kPrecisionFactor, y + dyPrecise / kPrecisionFactor } });
+        }
     }
 }
 

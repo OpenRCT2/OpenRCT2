@@ -9,7 +9,9 @@
 
 #include "RideSetPriceAction.h"
 
+#include "../../Cheats.h"
 #include "../../Diagnostic.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../ride/Ride.h"
@@ -18,6 +20,7 @@
 #include "../../ride/ShopItem.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -97,9 +100,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
         }
 
-        if (!ride->overallView.isNull())
+        if (!ride->overallView.IsNull())
         {
-            auto location = ride->overallView.toTileCentre();
+            auto location = ride->overallView.ToTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
 

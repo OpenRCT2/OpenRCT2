@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include <cstdint>
+#include "../../world/Location.hpp"
 
-struct TileCornersZ;
+#include <cstdint>
 
 namespace OpenRCT2
 {

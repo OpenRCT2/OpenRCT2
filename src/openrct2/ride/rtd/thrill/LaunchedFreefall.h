@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kLaunchedFreefallRTD =
+constexpr RideTypeDescriptor LaunchedFreefallRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::towerBase,
@@ -31,11 +30,11 @@ constexpr RideTypeDescriptor kLaunchedFreefallRTD =
                      RtdFlag::hasDataLogging, RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::guestsWillRideAgain,
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .rideModes = { RideMode::upwardLaunch, RideMode::downwardLaunch },
+    .RideModes = EnumsToFlags(RideMode::upwardLaunch, RideMode::downwardLaunch),
     .DefaultMode = RideMode::upwardLaunch,
     .OperatingSettings = { 10, 40 },
     .Naming = { STR_RIDE_NAME_LAUNCHED_FREEFALL, STR_RIDE_DESCRIPTION_LAUNCHED_FREEFALL },
-    .NameConvention = { RideComponentType::car, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction },
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
@@ -52,20 +51,20 @@ constexpr RideTypeDescriptor kLaunchedFreefallRTD =
         { Drawing::Colour::darkGreen, Drawing::Colour::yellow, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "launched_freefall",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(2, 70), RideRating::make(3, 00), RideRating::make(3, 50) },
         16,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusDownwardLaunch,          0, RideRating::make(0, 30), RideRating::make(0, 65), RideRating::make(0, 45) },
-            { RatingsModifierType::bonusLaunchedFreefallSpecial, 0, 0, 1355917, 451972 },
-            { RatingsModifierType::bonusProximity,               0, 20130, 0, 0 },
-            { RatingsModifierType::bonusScenery,                 0, 25098, 0, 0 },
+            { RatingsModifierType::BonusDownwardLaunch,          0, RideRating::make(0, 30), RideRating::make(0, 65), RideRating::make(0, 45) },
+            { RatingsModifierType::BonusLaunchedFreefallSpecial, 0, 0, 1355917, 451972 },
+            { RatingsModifierType::BonusProximity,               0, 20130, 0, 0 },
+            { RatingsModifierType::BonusScenery,                 0, 25098, 0, 0 },
         },
     },
 };

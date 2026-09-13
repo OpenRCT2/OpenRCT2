@@ -71,8 +71,8 @@ namespace OpenRCT2
 
         enum class FileDialogType : uint8_t
         {
-            open,
-            save
+            Open,
+            Save
         };
 
         struct FileDialogDesc
@@ -89,7 +89,7 @@ namespace OpenRCT2
                 }
             };
 
-            FileDialogType Type = FileDialogType::open;
+            FileDialogType Type = FileDialogType::Open;
             u8string Title;
             u8string InitialDirectory;
             u8string DefaultFilename;
@@ -118,7 +118,6 @@ namespace OpenRCT2
             virtual void SetFullscreenMode(FullscreenMode mode) = 0;
             virtual const std::vector<Resolution>& GetFullscreenResolutions() = 0;
             virtual bool HasFocus() = 0;
-            virtual void requestUserAttention() = 0;
             virtual bool IsMinimised() = 0;
             virtual bool IsSteamOverlayActive() = 0;
             virtual void ProcessMessages() = 0;

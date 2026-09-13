@@ -9,9 +9,7 @@
 
 #include "DrawingEngineFactory.hpp"
 
-#include <SDL_hints.h>
-#include <SDL_render.h>
-#include <SDL_version.h>
+#include <SDL.h>
 #include <cmath>
 #include <memory>
 #include <openrct2/Diagnostic.h>

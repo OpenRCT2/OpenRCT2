@@ -15,29 +15,29 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../actions/cheats/CheatSetAction.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
+#include "../core/Console.hpp"
 #include "../core/EnumUtils.hpp"
 #include "../core/File.h"
 #include "../core/Imaging.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/NewDrawing.h"
-#include "../drawing/Palette.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
-#include "../localisation/StringIds.h"
-#include "../paint/Paint.h"
+#include "../paint/Painter.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../platform/Platform.h"
 #include "../world/Map.h"
-#include "../world/TileElementsView.h"
+#include "../world/Park.h"
 #include "../world/Weather.h"
 #include "../world/tile_element/SurfaceElement.h"
-#include "../world/tile_element/TileElement.h"
 #include "Viewport.h"
 
+#include <cctype>
+#include <chrono>
 #include <cstdlib>
 #include <memory>
 #include <optional>
@@ -194,17 +194,19 @@ std::string ScreenshotDumpPNG(RenderTarget& rt)
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;
-
-    for (const auto* tileElement : TileElementsView(location))
+    auto element = MapGetFirstElementAt(location);
+    if (element != nullptr)
     {
-        if (useViewClipping && (tileElement->getBaseZ() > gClipHeight * kCoordsZStep))
+        do
         {
-            continue;
-        }
-        z = std::max<int32_t>(z, tileElement->getBaseZ());
-        z = std::max<int32_t>(z, tileElement->getClearanceZ());
+            if (useViewClipping && (element->getBaseZ() > gClipHeight * kCoordsZStep))
+            {
+                continue;
+            }
+            z = std::max<int32_t>(z, element->getBaseZ());
+            z = std::max<int32_t>(z, element->getClearanceZ());
+        } while (!(element++)->isLastForTile());
     }
-
     return z;
 }
 
@@ -216,9 +218,9 @@ static int32_t GetTallestVisibleTileTop(
     {
         for (int32_t x = startCoords.x; x <= endCoords.x; x++)
         {
-            auto location = TileCoordsXY(x, y).toCoordsXY();
+            auto location = TileCoordsXY(x, y).ToCoordsXY();
             int32_t z = GetHighestBaseClearanceZ(location, useViewClipping);
-            int32_t viewY = Translate3DTo2DWithZ(rotation, CoordsXYZ(location.toTileCentre(), z)).y;
+            int32_t viewY = Translate3DTo2DWithZ(rotation, CoordsXYZ(location.ToTileCentre(), z)).y;
             minViewY = std::min(minViewY, viewY);
         }
     }
@@ -287,10 +289,10 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 
     // Calculate the viewport bounds
     auto corners = cornerCoords[useViewClipping ? 1 : 0];
-    auto screenCoords1 = Translate3DTo2DWithZ(rotation, { corners[0].toCoordsXY().toTileCentre(), 0 });
-    auto screenCoords2 = Translate3DTo2DWithZ(rotation, { corners[1].toCoordsXY().toTileCentre(), 0 });
-    auto screenCoords3 = Translate3DTo2DWithZ(rotation, { corners[2].toCoordsXY().toTileCentre(), 0 });
-    auto screenCoords4 = Translate3DTo2DWithZ(rotation, { corners[3].toCoordsXY().toTileCentre(), 0 });
+    auto screenCoords1 = Translate3DTo2DWithZ(rotation, { corners[0].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords2 = Translate3DTo2DWithZ(rotation, { corners[1].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords3 = Translate3DTo2DWithZ(rotation, { corners[2].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords4 = Translate3DTo2DWithZ(rotation, { corners[3].ToCoordsXY().ToTileCentre(), 0 });
 
     auto left = std::min({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) - 32;
     auto top = GetTallestVisibleTileTop(rotation, corners[0], corners[1], useViewClipping);
@@ -380,7 +382,7 @@ void ScreenshotGiant()
 
 static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 {
-    if (options->weather != Weather::Type::sunny && options->weather != Weather::Type::count)
+    if (options->weather != Weather::Type::Sunny && options->weather != Weather::Type::Count)
     {
         Weather::forceWeather(Weather::Type{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
     }

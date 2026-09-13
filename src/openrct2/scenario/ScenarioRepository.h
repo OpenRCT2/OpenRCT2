@@ -12,14 +12,19 @@
 #include "../core/DateTime.h"
 #include "../core/Money.hpp"
 #include "../core/StringTypes.h"
+#include "ScenarioObjective.h"
 
 #include <memory>
+
+namespace OpenRCT2
+{
+    struct RCTObjectEntry;
+}
 
 namespace OpenRCT2::Scenario
 {
     enum class Category : uint8_t;
-    enum class ObjectiveType : uint8_t;
-} // namespace OpenRCT2::Scenario
+}
 
 struct ScenarioHighscoreEntry
 {
@@ -31,16 +36,16 @@ struct ScenarioHighscoreEntry
 
 enum class ScenarioSource : uint8_t
 {
-    rct1,
-    rct1AA,
-    rct1LL,
-    rct2,
-    rct2WW,
-    rct2TT,
-    uces,
-    real,
-    extras,
-    other
+    RCT1,
+    RCT1_AA,
+    RCT1_LL,
+    RCT2,
+    RCT2_WW,
+    RCT2_TT,
+    UCES,
+    Real,
+    Extras,
+    Other
 };
 
 struct ScenarioIndexEntry

@@ -8,11 +8,12 @@
  *****************************************************************************/
 
 #include "../Diagnostic.h"
-#include "EnumUtils.hpp"
+#include "../core/Guard.hpp"
 
 #include <cassert>
 #include <cctype>
 #include <cstring>
+#include <cwctype>
 #include <iomanip>
 #include <sstream>
 #include <stdexcept>
@@ -21,7 +22,10 @@
 #ifndef _WIN32
     #if defined(__linux__) || defined(__sun)
         #include <alloca.h>
+    #else
+        #include <stdlib.h>
     #endif
+    #include <unicode/ucnv.h>
     #include <unicode/unistr.h>
     #include <unicode/utypes.h>
 #else
@@ -32,9 +36,11 @@
 #endif
 
 #include "String.hpp"
+#include "StringBuilder.h"
 #include "UTF8.h"
 
 #if defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
+    #include <strings.h>
     #define _stricmp(x, y) strcasecmp((x), (y))
 #endif
 
@@ -52,9 +58,9 @@ namespace OpenRCT2::String
     {
 #ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
-        int sizeReq = WideCharToMultiByte(EnumValue(CodePage::utf8), 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
+        int sizeReq = WideCharToMultiByte(CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
         auto result = std::string(sizeReq, 0);
-        WideCharToMultiByte(EnumValue(CodePage::utf8), 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
+        WideCharToMultiByte(CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         return result;
 #else
     // Which constructor to use depends on the size of wchar_t...
@@ -80,9 +86,9 @@ namespace OpenRCT2::String
     {
 #ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
-        int sizeReq = MultiByteToWideChar(EnumValue(CodePage::utf8), 0, src.data(), srcLen, nullptr, 0);
+        int sizeReq = MultiByteToWideChar(CodePage::UTF8, 0, src.data(), srcLen, nullptr, 0);
         auto result = std::wstring(sizeReq, 0);
-        MultiByteToWideChar(EnumValue(CodePage::utf8), 0, src.data(), srcLen, result.data(), sizeReq);
+        MultiByteToWideChar(CodePage::UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
         return result;
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
@@ -486,7 +492,7 @@ namespace OpenRCT2::String
             // current character.
             size_t newStringSize = (nextCh - 1) - firstNonWhitespace;
 
-#if DEBUG > 0
+#ifdef DEBUG
             size_t currentStringSize = sizeOf(str);
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
 #endif
@@ -560,53 +566,53 @@ namespace OpenRCT2::String
     }
 
 #ifndef _WIN32
-    static const char* getIcuCodePage(OpenRCT2::CodePage codePage)
+    static const char* getIcuCodePage(int32_t codePage)
     {
         switch (codePage)
         {
-            case OpenRCT2::CodePage::cp932:
+            case OpenRCT2::CodePage::CP_932:
                 return "windows-932";
 
-            case OpenRCT2::CodePage::cp936:
+            case OpenRCT2::CodePage::CP_936:
                 return "GB2312";
 
-            case OpenRCT2::CodePage::cp949:
+            case OpenRCT2::CodePage::CP_949:
                 return "windows-949";
 
-            case OpenRCT2::CodePage::cp950:
+            case OpenRCT2::CodePage::CP_950:
                 return "big5";
 
-            case OpenRCT2::CodePage::cp1252:
+            case OpenRCT2::CodePage::CP_1252:
                 return "windows-1252";
 
-            case OpenRCT2::CodePage::utf8:
+            case OpenRCT2::CodePage::UTF8:
                 return "utf-8";
 
             default:
-                throw std::runtime_error("Unsupported code page: " + std::to_string(EnumValue(codePage)));
+                throw std::runtime_error("Unsupported code page: " + std::to_string(codePage));
         }
     }
 #endif
 
-    std::string convertToUtf8(std::string_view src, CodePage srcCodePage)
+    std::string convertToUtf8(std::string_view src, int32_t srcCodePage)
     {
 #ifdef _WIN32
         // Convert from source code page to UTF-16
         std::wstring u16;
         {
             int srcLen = static_cast<int>(src.size());
-            int sizeReq = MultiByteToWideChar(EnumValue(srcCodePage), 0, src.data(), srcLen, nullptr, 0);
+            int sizeReq = MultiByteToWideChar(srcCodePage, 0, src.data(), srcLen, nullptr, 0);
             u16 = std::wstring(sizeReq, 0);
-            MultiByteToWideChar(EnumValue(srcCodePage), 0, src.data(), srcLen, u16.data(), sizeReq);
+            MultiByteToWideChar(srcCodePage, 0, src.data(), srcLen, u16.data(), sizeReq);
         }
 
         // Convert from UTF-16 to destination code page
         std::string dst;
         {
             int srcLen = static_cast<int>(u16.size());
-            int sizeReq = WideCharToMultiByte(EnumValue(CodePage::utf8), 0, u16.data(), srcLen, nullptr, 0, nullptr, nullptr);
+            int sizeReq = WideCharToMultiByte(CodePage::UTF8, 0, u16.data(), srcLen, nullptr, 0, nullptr, nullptr);
             dst = std::string(sizeReq, 0);
-            WideCharToMultiByte(EnumValue(CodePage::utf8), 0, u16.data(), srcLen, dst.data(), sizeReq, nullptr, nullptr);
+            WideCharToMultiByte(CodePage::UTF8, 0, u16.data(), srcLen, dst.data(), sizeReq, nullptr, nullptr);
         }
 
         return dst;

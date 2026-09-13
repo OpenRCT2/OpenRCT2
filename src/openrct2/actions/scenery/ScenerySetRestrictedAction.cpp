@@ -9,6 +9,7 @@
 
 #include "ScenerySetRestrictedAction.h"
 
+#include "../../object/SceneryGroupObject.h"
 #include "../../world/Scenery.h"
 
 namespace OpenRCT2::GameActions

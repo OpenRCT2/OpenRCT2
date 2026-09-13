@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../core/FileStream.h"
 #include "../../core/StringTypes.h"
+#include "../../drawing/Drawing.h"
 #include "SpriteCommands.h"
 #include "SpriteFile.h"
 
@@ -15,12 +17,12 @@
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    ExitCode exportSingle(const char** argv, int32_t argc)
+    int32_t exportSingle(const char** argv, int32_t argc)
     {
         if (argc < 4)
         {
             fprintf(stdout, "usage: sprite export <spritefile> <idx> <output>\n");
-            return ExitCode::fail;
+            return -1;
         }
 
         const utf8* spriteFilePath = argv[1];
@@ -30,22 +32,22 @@ namespace OpenRCT2::CommandLine::Sprite
         if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
-            return ExitCode::fail;
+            return -1;
         }
 
         if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.numEntries))
         {
             fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
-            return ExitCode::fail;
+            return -1;
         }
 
         const auto& spriteHeader = spriteFile->Entries[spriteIndex];
         if (!SpriteImageExport(spriteHeader, outputPath))
         {
             fprintf(stderr, "Could not export\n");
-            return ExitCode::fail;
+            return -1;
         }
         fprintf(stdout, "{ \"x\": %d, \"y\": %d }\n", spriteHeader.xOffset, spriteHeader.yOffset);
-        return ExitCode::ok;
+        return 0;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kRiverRaftsRTD =
+constexpr RideTypeDescriptor RiverRaftsRTD =
 {
     .Category = RideCategory::water,
     .StartTrackPiece = TrackElemType::endStation,
@@ -34,11 +33,11 @@ constexpr RideTypeDescriptor kRiverRaftsRTD =
                      RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
-    .rideModes = { RideMode::continuousCircuit },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_RIVER_RAFTS, STR_RIDE_DESCRIPTION_RIVER_RAFTS },
-    .NameConvention = { RideComponentType::boat, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 12, 24, 7, 11, },
     .MaxMass = 255,
@@ -54,24 +53,24 @@ constexpr RideTypeDescriptor kRiverRaftsRTD =
         { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::saturatedBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_RIVER_RAFTS_TRACK, SPR_RIDE_DESIGN_PREVIEW_RIVER_RAFTS_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "river_rafts",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 45), RideRating::make(0, 25), RideRating::make(0, 34) },
         12,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           2000,             7208, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,                531372, 655360, 301111 },
-            { RatingsModifierType::bonusDuration,         500,              13107, 0, 0 },
-            { RatingsModifierType::bonusTurns,            0,                22291, 20860, 4574 },
-            { RatingsModifierType::bonusDrops,            0,                78643, 93622, 62259 },
-            { RatingsModifierType::bonusProximity,        0,                13420, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,                11155, 0, 0 },
+            { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                531372, 655360, 301111 },
+            { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
+            { RatingsModifierType::BonusTurns,            0,                22291, 20860, 4574 },
+            { RatingsModifierType::BonusDrops,            0,                78643, 93622, 62259 },
+            { RatingsModifierType::BonusProximity,        0,                13420, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
         },
     },
 };

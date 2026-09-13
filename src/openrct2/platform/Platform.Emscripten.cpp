@@ -11,7 +11,14 @@
 
     #include "Platform.h"
 
+    #include "../Diagnostic.h"
+    #include "../GameState.h"
+    #include "../core/Compression.h"
+    #include "../core/File.h"
+    #include "../core/Guard.hpp"
+    #include "../core/MemoryStream.h"
     #include "../localisation/Language.h"
+    #include "../park/ParkFile.h"
 
     #include <emscripten.h>
 
@@ -102,12 +109,12 @@ namespace OpenRCT2::Platform
     }
     #endif
 
-    std::vector<std::string> GetSearchablePathsRCT1()
+    std::vector<std::string_view> GetSearchablePathsRCT1()
     {
         return { "/RCT" };
     }
 
-    std::vector<std::string> GetSearchablePathsRCT2()
+    std::vector<std::string_view> GetSearchablePathsRCT2()
     {
         return { "/RCT" };
     }

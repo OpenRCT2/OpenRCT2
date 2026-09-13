@@ -14,7 +14,10 @@
 #include "../../OpenRCT2.h"
 #include "../../management/Finance.h"
 #include "../../object/WallSceneryEntry.h"
+#include "../../ride/TrackData.h"
+#include "../../world/Banner.h"
 #include "../../world/Map.h"
+#include "../../world/Scenery.h"
 #include "../../world/tile_element/WallElement.h"
 
 namespace OpenRCT2::GameActions
@@ -82,7 +85,7 @@ namespace OpenRCT2::GameActions
             return res;
         }
 
-        auto* wallEntry = wallElement->getEntry();
+        auto* wallEntry = wallElement->GetEntry();
         if (wallEntry == nullptr)
         {
             LOG_ERROR(
@@ -101,7 +104,7 @@ namespace OpenRCT2::GameActions
             LOG_ERROR("Secondary colour invalid: colour = %d", _secondaryColour);
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
         }
-        if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
+        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
         {
             if (!Drawing::colourIsValid(_tertiaryColour))
             {
@@ -135,7 +138,7 @@ namespace OpenRCT2::GameActions
             return res;
         }
 
-        auto* wallEntry = wallElement->getEntry();
+        auto* wallEntry = wallElement->GetEntry();
         if (wallEntry == nullptr)
         {
             LOG_ERROR(
@@ -144,12 +147,12 @@ namespace OpenRCT2::GameActions
             return Result(Status::unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
-        wallElement->setPrimaryColour(_primaryColour);
-        wallElement->setSecondaryColour(_secondaryColour);
+        wallElement->SetPrimaryColour(_primaryColour);
+        wallElement->SetSecondaryColour(_secondaryColour);
 
-        if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
+        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
         {
-            wallElement->setTertiaryColour(_tertiaryColour);
+            wallElement->SetTertiaryColour(_tertiaryColour);
         }
         MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 72 });
 

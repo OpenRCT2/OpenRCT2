@@ -9,13 +9,27 @@
 
 #include "Entrance.h"
 
+#include "../Cheats.h"
+#include "../Context.h"
+#include "../Game.h"
 #include "../GameState.h"
+#include "../OpenRCT2.h"
 #include "../actions/GameActionRunner.h"
 #include "../actions/park/ParkEntranceRemoveAction.h"
 #include "../actions/ride/RideEntranceExitPlaceAction.h"
 #include "../actions/ride/RideEntranceExitRemoveAction.h"
+#include "../localisation/StringIds.h"
+#include "../management/Finance.h"
+#include "../network/Network.h"
+#include "../object/FootpathObject.h"
+#include "../object/FootpathSurfaceObject.h"
+#include "../object/ObjectManager.h"
 #include "../ride/RideConstruction.h"
+#include "../ride/Station.h"
+#include "Footpath.h"
 #include "Map.h"
+#include "MapAnimation.h"
+#include "Park.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/TrackElement.h"
 
@@ -29,10 +43,10 @@ CoordsXYZD gRideEntranceExitGhostPosition;
 StationIndex gRideEntranceExitGhostStationIndex;
 
 static money64 RideEntranceExitPlaceGhost(
-    RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, EntranceType placeType, StationIndex stationNum)
+    RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
 {
     auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
-        entranceExitCoords, direction, rideIndex, stationNum, placeType == EntranceType::rideExit);
+        entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
     rideEntranceExitPlaceAction.SetFlags({ CommandFlag::allowDuringPaused, CommandFlag::ghost });
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction, getGameState());
 
@@ -73,7 +87,7 @@ void ParkEntranceReset()
     getGameState().park.entrances.clear();
 }
 
-void OpenRCT2::RideEntranceExitPlaceProvisionalGhost()
+void RideEntranceExitPlaceProvisionalGhost()
 {
     if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
@@ -83,13 +97,13 @@ void OpenRCT2::RideEntranceExitPlaceProvisionalGhost()
     }
 }
 
-void OpenRCT2::RideEntranceExitRemoveGhost()
+void RideEntranceExitRemoveGhost()
 {
     if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
         auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
             gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
-            gRideEntranceExitPlaceType == EntranceType::rideExit);
+            gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitRemove.SetFlags({ CommandFlag::ghost, CommandFlag::allowDuringPaused });
         GameActions::Execute(&rideEntranceExitRemove, getGameState());
@@ -100,8 +114,8 @@ void OpenRCT2::RideEntranceExitRemoveGhost()
  *
  *  rct2: 0x006CA28C
  */
-money64 OpenRCT2::RideEntranceExitPlaceGhost(
-    const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, EntranceType placeType, StationIndex stationNum)
+money64 RideEntranceExitPlaceGhost(
+    const Ride& ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
     RideConstructionRemoveGhosts();
     money64 result = RideEntranceExitPlaceGhost(ride.id, entranceExitCoords, direction, placeType, stationNum);
@@ -126,28 +140,28 @@ void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
     int32_t direction = entrance.element->getDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->getBaseZ();
-    RideId rideIndex = entrance.element->asEntrance()->getRideIndex();
+    RideId rideIndex = entrance.element->asEntrance()->GetRideIndex();
 
     auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
         return;
     do
     {
-        if (tileElement->getType() != TileElementType::track)
+        if (tileElement->getType() != TileElementType::Track)
             continue;
-        if (tileElement->asTrack()->getRideIndex() != rideIndex)
+        if (tileElement->asTrack()->GetRideIndex() != rideIndex)
             continue;
         if (tileElement->getBaseZ() != z)
             continue;
-        if (tileElement->asTrack()->getTrackType() != TrackElemType::maze)
+        if (tileElement->asTrack()->GetTrackType() != TrackElemType::maze)
             continue;
 
         // Each maze element is split into 4 sections with 4 different walls
         uint8_t mazeSection = direction * 4;
         // Add the top outer wall
-        tileElement->asTrack()->mazeEntryAdd(1 << ((mazeSection + 9) & 0x0F));
+        tileElement->asTrack()->MazeEntryAdd(1 << ((mazeSection + 9) & 0x0F));
         // Add the bottom outer wall
-        tileElement->asTrack()->mazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
+        tileElement->asTrack()->MazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
 
         MapInvalidateTile({ hedgePos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
         return;
@@ -163,34 +177,34 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
     int32_t direction = entrance.element->getDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->getBaseZ();
-    RideId rideIndex = entrance.element->asEntrance()->getRideIndex();
+    RideId rideIndex = entrance.element->asEntrance()->GetRideIndex();
 
     auto tileElement = MapGetFirstElementAt(hedgePos);
     if (tileElement == nullptr)
         return;
     do
     {
-        if (tileElement->getType() != TileElementType::track)
+        if (tileElement->getType() != TileElementType::Track)
             continue;
-        if (tileElement->asTrack()->getRideIndex() != rideIndex)
+        if (tileElement->asTrack()->GetRideIndex() != rideIndex)
             continue;
         if (tileElement->getBaseZ() != z)
             continue;
-        if (tileElement->asTrack()->getTrackType() != TrackElemType::maze)
+        if (tileElement->asTrack()->GetTrackType() != TrackElemType::maze)
             continue;
 
         // Each maze element is split into 4 sections with 4 different walls
         uint8_t mazeSection = direction * 4;
         // Remove the top outer wall
-        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 9) & 0x0F));
+        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 9) & 0x0F));
         // Remove the bottom outer wall
-        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 12) & 0x0F));
+        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 12) & 0x0F));
         // Remove the intersecting wall
-        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 10) & 0x0F));
+        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 10) & 0x0F));
         // Remove the top hedge section
-        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 11) & 0x0F));
+        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 11) & 0x0F));
         // Remove the bottom hedge section
-        tileElement->asTrack()->mazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
+        tileElement->asTrack()->MazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
 
         MapInvalidateTile({ hedgePos, tileElement->getBaseZ(), tileElement->getClearanceZ() });
         return;
@@ -217,10 +231,10 @@ void ParkEntranceUpdateLocations()
     while (TileElementIteratorNext(&it))
     {
         auto entranceElement = it.element->asEntrance();
-        if (entranceElement != nullptr && entranceElement->getEntranceType() == EntranceType::parkEntrance
-            && entranceElement->getSequenceIndex() == ParkEntranceSequence::centre && !entranceElement->isGhost())
+        if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
+            && entranceElement->GetSequenceIndex() == 0 && !entranceElement->isGhost())
         {
-            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->baseHeight, it.element->getDirection()).toCoordsXYZD();
+            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->baseHeight, it.element->getDirection()).ToCoordsXYZD();
             park.entrances.push_back(entrance);
         }
     }

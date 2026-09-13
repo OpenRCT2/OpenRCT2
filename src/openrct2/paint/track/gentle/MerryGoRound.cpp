@@ -17,6 +17,7 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -47,7 +48,7 @@ static void PaintRiders(
         if (imageOffset >= 68)
             continue;
 
-        auto imageIndex = rideEntry.Cars[0].baseImageId + 32 + imageOffset;
+        auto imageIndex = rideEntry.Cars[0].base_image_id + 32 + imageOffset;
         auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[peep], vehicle.peep_tshirt_colours[peep + 1]);
         PaintAddImageAsChild(session, imageId, offset, bb);
     }
@@ -63,7 +64,7 @@ static void PaintCarousel(
     if (rideEntry == nullptr)
         return;
 
-    auto vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
+    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::entity;
@@ -92,7 +93,7 @@ static void PaintCarousel(
         imageTemplate = stationColour;
     }
     auto imageOffset = rotationOffset & 0x1F;
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].baseImageId + imageOffset);
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bb);
 
     if (vehicle != nullptr && vehicle->num_peeps > 0)

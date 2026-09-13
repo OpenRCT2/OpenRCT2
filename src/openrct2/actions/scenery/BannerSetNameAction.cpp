@@ -11,7 +11,8 @@
 
 #include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../core/String.hpp"
+#include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../localisation/StringIds.h"
 #include "../../windows/Intent.h"
@@ -63,7 +64,7 @@ namespace OpenRCT2::GameActions
         }
 
         BannerElement* bannerElement = tileElement->asBanner();
-        CoordsXYZD loc = { banner->position.toCoordsXY(), bannerElement->getBaseZ(), bannerElement->getPosition() };
+        CoordsXYZD loc = { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->GetPosition() };
 
         if (!LocationValid(loc))
         {
@@ -93,7 +94,7 @@ namespace OpenRCT2::GameActions
         ContextBroadcastIntent(&intent);
 
         Drawing::ScrollingText::invalidate();
-        Drawing::GfxInvalidateScreen();
+        GfxInvalidateScreen();
 
         return Result();
     }
