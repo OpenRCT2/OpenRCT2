@@ -164,90 +164,90 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0000,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::centre, PS::topRight, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                             // inverted
-            kSegmentsUnimplemented,                                             // wide
+            (PS::right, PS::centre, PS::topRight, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                 // inverted
+            kSegmentsUnimplemented,                                 // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq1 = {
         .clearance = { 0, 32, 0, 16, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
-            kSegmentsUnimplemented,                                       // inverted
-            kSegmentsUnimplemented,                                       // wide
+            (PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
+            kSegmentsUnimplemented,                           // inverted
+            kSegmentsUnimplemented,                           // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq2 = {
         .clearance = { -32, 0, 0, 16, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                    // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq3 = {
         .clearance = { -32, 32, 0, 32, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0000,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented, // inverted
-            kSegmentsUnimplemented, // wide
+            (PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                                        // inverted
+            kSegmentsUnimplemented,                                                                        // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq4 = {
         .clearance = { -32, 64, 8, 40, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
-            kSegmentsUnimplemented,                                       // inverted
-            kSegmentsUnimplemented,                                       // wide
+            (PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
+            kSegmentsUnimplemented,                           // inverted
+            kSegmentsUnimplemented,                           // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq5 = {
         .clearance = { -64, 32, 8, 40, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                    // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq6 = {
         .clearance = { -64, 64, 8, 64, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0000,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented, // inverted
-            kSegmentsUnimplemented, // wide
+            (PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                                        // inverted
+            kSegmentsUnimplemented,                                                                        // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq7 = {
         .clearance = { -64, 96, 40, 88, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
-            kSegmentsUnimplemented,                                       // inverted
-            kSegmentsUnimplemented,                                       // wide
+            (PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
+            kSegmentsUnimplemented,                           // inverted
+            kSegmentsUnimplemented,                           // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq8 = {
         .clearance = { -96, 64, 40, 88, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                    // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToUp60LongBaseSeq9 = {
         .clearance = { -96, 96, 40, 104, { 0b0010, 0 }, {} },
         .allowedWallEdges = 0b0000,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                          // inverted
-            kSegmentsUnimplemented,                                          // wide
+            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                              // inverted
+            kSegmentsUnimplemented,                              // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq0 = {
@@ -255,90 +255,90 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0000,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::centre, PS::topRight, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                             // inverted
-            kSegmentsUnimplemented,                                             // wide
+            (PS::right, PS::centre, PS::topRight, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                 // inverted
+            kSegmentsUnimplemented,                                 // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq1 = {
         .clearance = { 0, 32, 0, 72, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
-            kSegmentsUnimplemented,                                       // inverted
-            kSegmentsUnimplemented,                                       // wide
+            (PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
+            kSegmentsUnimplemented,                           // inverted
+            kSegmentsUnimplemented,                           // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq2 = {
         .clearance = { -32, 0, 0, 72, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                    // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq3 = {
         .clearance = { -32, 32, 0, 80, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0000,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented, // inverted
-            kSegmentsUnimplemented, // wide
+            (PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                                        // inverted
+            kSegmentsUnimplemented,                                                                        // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq4 = {
         .clearance = { -32, 64, 56, 32, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
-            kSegmentsUnimplemented,                                       // inverted
-            kSegmentsUnimplemented,                                       // wide
+            (PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
+            kSegmentsUnimplemented,                           // inverted
+            kSegmentsUnimplemented,                           // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq5 = {
         .clearance = { -64, 32, 56, 32, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                    // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq6 = {
         .clearance = { -64, 64, 56, 8, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0000,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented, // inverted
-            kSegmentsUnimplemented, // wide
+            (PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                                        // inverted
+            kSegmentsUnimplemented,                                                                        // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq7 = {
         .clearance = { -64, 96, 80, 8, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
-            kSegmentsUnimplemented,                                       // inverted
-            kSegmentsUnimplemented,                                       // wide
+            (PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
+            kSegmentsUnimplemented,                           // inverted
+            kSegmentsUnimplemented,                           // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq8 = {
         .clearance = { -96, 64, 80, 8, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                    // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagUp60ToFlatLongBaseSeq9 = {
         .clearance = { -96, 96, 80, 8, { 0b0010, 0 }, {} },
         .allowedWallEdges = 0b0000,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                          // inverted
-            kSegmentsUnimplemented,                                          // wide
+            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                              // inverted
+            kSegmentsUnimplemented,                              // wide
         } },
     };
     static constexpr SequenceDescriptor kDiagFlatToDown60LongBaseSeq0 = {

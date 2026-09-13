@@ -895,19 +895,16 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
         },
     };
 
-    static constexpr int blockedSegments[7] = {
+    static constexpr PaintSegments kBlockedSegments[7] = {
         kSegmentsAll,
-        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
-        EnumsToFlags(
-            PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-            PaintSegment::bottomRight),
-        EnumsToFlags(
-            PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
-            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-        EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight),
-        EnumsToFlags(
-            PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
-            PaintSegment::bottomRight),
+        { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight },
+        { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+          PaintSegment::bottomRight },
+        { PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
+          PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight },
+        { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight },
+        { PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
+          PaintSegment::bottomRight },
         kSegmentsAll,
     };
 
@@ -917,7 +914,7 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
 
     DrawSupportForSequenceA<TrackElemType::bankedRightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kBlockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
@@ -1063,10 +1060,10 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
         },
     };
 
-    static constexpr int blockedSegments[4] = {
+    static constexpr PaintSegments kBlockedSegments[4] = {
         kSegmentsAll,
         kSegmentsNone,
-        EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+        { PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight },
         kSegmentsAll,
     };
 
@@ -1077,7 +1074,7 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
     DrawSupportForSequenceA<TrackElemType::rightBankedQuarterTurn3Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kBlockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 

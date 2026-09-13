@@ -60,10 +60,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(
-                PS::top, PS::left, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft,
-                PS::bottomRight),   // inverted
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            (PS::top, PS::left, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft,
+             PS::bottomRight),      // inverted
             kSegmentsUnimplemented, // wide
         } },
     };
@@ -72,9 +71,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, {} },
         .allowedWallEdges = 0b0010,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsAll,                                                                           // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsAll,                                                               // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -82,18 +81,18 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, 0, 32, 96, { 0b0010, 0 }, {} },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                          // wide
+            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
+            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                              // wide
         } },
     };
 
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq3 = {
         .clearance = { -32, 0, 120, 16, { 0b0110, 0 }, {} },
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -118,9 +117,9 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftVerticalLoopSeq6 = {
         .clearance = { 0, -32, 120, 16, { 0b1001, 0 }, {} },
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -128,9 +127,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 32, -32, 32, 96, { 0b1000, 0 }, {} },
         .allowedWallEdges = 0b1100,
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::centre, PS::topRight, PS::bottomRight), // narrow
-            EnumsToFlags(PS::right, PS::centre, PS::topRight, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                             // wide
+            (PS::right, PS::centre, PS::topRight, PS::bottomRight), // narrow
+            (PS::right, PS::centre, PS::topRight, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                 // wide
         } },
     };
 
@@ -138,9 +137,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 0, -32, 16, 16, { 0b1111, 0b0011 }, {} },
         .allowedWallEdges = 0b1000,
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsAll,                                                                                   // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsAll,                                                                       // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -150,10 +149,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            EnumsToFlags(
-                PS::top, PS::right, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft,
-                PS::bottomRight),   // inverted
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            (PS::top, PS::right, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft,
+             PS::bottomRight),      // inverted
             kSegmentsUnimplemented, // wide
         } },
     };
@@ -224,9 +222,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -245,9 +243,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, 0, 32, 96, { 0b0011, 0 }, {} },
         .allowedWallEdges = 0b1011,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                       // wide
+            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
+            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                           // wide
         } },
     };
 
@@ -255,9 +253,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, 120, 16, { 0b1111, 0 }, {} },
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -265,9 +263,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, {} },
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -275,9 +273,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, -120, 96, { 0b0011, 0 }, {} },
         .allowedWallEdges = 0b1011,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                       // wide
+            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
+            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                           // wide
         } },
     };
 
@@ -298,9 +296,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -309,9 +307,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -319,9 +317,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, {} },
         .allowedWallEdges = 0b1010,
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -329,9 +327,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -339,9 +337,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -349,9 +347,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -128, -32, 120, 96, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
 
@@ -359,9 +357,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1000,
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -371,9 +369,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -510,9 +508,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                 // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                     // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -520,9 +518,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, 16, 48, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                                 // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                                                     // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -530,9 +528,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, 0, 56, 120, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                          // inverted
-            kSegmentsUnimplemented,                                          // wide
+            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                              // inverted
+            kSegmentsUnimplemented,                              // wide
         } },
     };
 
@@ -540,9 +538,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, -32, 56, 120, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                    // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
 
@@ -551,9 +549,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1000,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                                         // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                             // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -658,9 +656,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                 // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                     // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -668,9 +666,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, {} },
         .allowedWallEdges = 0b1010,
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                 // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                     // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -678,9 +676,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                                 // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                                                     // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -688,9 +686,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                                 // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                                                     // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -698,9 +696,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -128, -32, 120, 96, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                    // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
 
@@ -708,9 +706,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1000,
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                                         // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                             // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -720,9 +718,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                                         // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                             // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -776,9 +774,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                                 // narrow
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            kSegmentsUnimplemented,                                                     // narrow
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -786,9 +784,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, -184, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                                 // narrow
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            kSegmentsUnimplemented,                                                     // narrow
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -796,9 +794,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, 0, -128, 96, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                          // narrow
-            EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                          // wide
+            kSegmentsUnimplemented,                              // narrow
+            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                              // wide
         } },
     };
 
@@ -807,9 +805,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1001,
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                                         // narrow
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            kSegmentsUnimplemented,                                                             // narrow
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -818,9 +816,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1000,
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                                         // narrow
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            kSegmentsUnimplemented,                                                             // narrow
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -829,9 +827,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                 // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            kSegmentsUnimplemented,                     // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -841,9 +839,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                 // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            kSegmentsUnimplemented,                     // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -900,9 +898,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                 // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            kSegmentsUnimplemented,                     // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -910,9 +908,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, {} },
         .allowedWallEdges = 0b1010,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                 // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            kSegmentsUnimplemented,                     // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -920,9 +918,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                                 // narrow
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            kSegmentsUnimplemented,                                                     // narrow
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -930,9 +928,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                                 // narrow
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            kSegmentsUnimplemented,                                                     // narrow
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -940,9 +938,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -128, -32, 120, 96, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                // narrow
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                // wide
+            kSegmentsUnimplemented,                                    // narrow
+            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                    // wide
         } },
     };
 
@@ -950,9 +948,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -96, -32, 64, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1000,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                                         // narrow
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            kSegmentsUnimplemented,                                                             // narrow
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -962,9 +960,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                                                         // narrow
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            kSegmentsUnimplemented,                                                             // narrow
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -1018,9 +1016,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                                 // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                                                     // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -1028,9 +1026,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                                 // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                                                     // inverted
+            kSegmentsUnimplemented,                                                     // wide
         } },
     };
 
@@ -1038,9 +1036,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -64, 0, -160, 96, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                          // inverted
-            kSegmentsUnimplemented,                                          // wide
+            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                              // inverted
+            kSegmentsUnimplemented,                              // wide
         } },
     };
 
@@ -1048,9 +1046,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, -32, -216, 192, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                                         // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                             // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -1058,9 +1056,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 0, -32, -248, 56, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1000,
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                                         // inverted
-            kSegmentsUnimplemented,                                                                         // wide
+            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                             // inverted
+            kSegmentsUnimplemented,                                                             // wide
         } },
     };
 
@@ -1068,9 +1066,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 32, -32, -264, 40, { 0b1111, 0b1100 }, {} },
         .allowedWallEdges = 0b1010,
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                 // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                     // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -1080,9 +1078,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                 // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                     // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -1136,9 +1134,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                 // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            kSegmentsUnimplemented,                     // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -1157,9 +1155,8 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1011,
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
-            EnumsToFlags(
-                PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft,
-                PS::bottomRight),   // inverted
+            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft,
+             PS::bottomRight),      // inverted
             kSegmentsUnimplemented, // wide
         } },
     };
@@ -1169,9 +1166,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            kSegmentsUnimplemented,                                 // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            kSegmentsUnimplemented,                     // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -1179,9 +1176,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, {} },
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                 // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                     // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -1189,9 +1186,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, -120, 96, { 0b0011, 0 }, {} },
         .allowedWallEdges = 0b1011,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                                       // inverted
-            kSegmentsUnimplemented,                                                                       // wide
+            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
+            kSegmentsUnimplemented,                                                           // inverted
+            kSegmentsUnimplemented,                                                           // wide
         } },
     };
 
@@ -1211,9 +1208,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                 // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            kSegmentsUnimplemented,                     // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -1229,9 +1226,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 
@@ -1250,9 +1247,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1011,
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::bottomLeft, PS::topLeft, PS::bottomRight), // narrow
-            EnumsToFlags(PS::left, PS::bottom, PS::centre, PS::bottomLeft, PS::topLeft, PS::bottomRight), // inverted
-            kSegmentsUnimplemented,                                                                       // wide
+            (PS::left, PS::bottom, PS::centre, PS::bottomLeft, PS::topLeft, PS::bottomRight), // narrow
+            (PS::left, PS::bottom, PS::centre, PS::bottomLeft, PS::topLeft, PS::bottomRight), // inverted
+            kSegmentsUnimplemented,                                                           // wide
         } },
     };
 
@@ -1261,9 +1258,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            EnumsToFlags(PS::centre, PS::topRight, PS::bottomLeft), // inverted
-            kSegmentsUnimplemented,                                 // wide
+            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
+            (PS::centre, PS::topRight, PS::bottomLeft), // inverted
+            kSegmentsUnimplemented,                     // wide
         } },
     };
 

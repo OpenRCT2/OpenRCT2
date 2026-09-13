@@ -508,9 +508,7 @@ static void PaintMiniGolfTrackFlat(
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
 
     if (MiniGolfPaintUtilShouldDrawFence(session, trackElement))
@@ -548,9 +546,7 @@ static void PaintMiniGolfTrack25DegUp(
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
 
     imageId = GetStationColourScheme(session, trackElement).WithIndex(kMiniGolfTrackSprites25DegUp[direction][1]);
@@ -590,9 +586,7 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
 
     imageId = GetStationColourScheme(session, trackElement).WithIndex(kMiniGolfTrackSpritesFlatTo25DegUp[direction][1]);
@@ -632,9 +626,7 @@ static void PaintMiniGolfTrack25DegUpToFlat(
 
     MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
 
     imageId = GetStationColourScheme(session, trackElement).WithIndex(kMiniGolfTrackSprites25DegUpToFlat[direction][1]);
@@ -762,7 +754,7 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft), direction),
+            { PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft }, direction),
         0xFFFF, 0);
 
     const bool shouldDrawFence = MiniGolfPaintUtilShouldDrawFence(session, trackElement);

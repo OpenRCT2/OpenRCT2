@@ -11,15 +11,13 @@
 
 #include "../tile_element/Segment.h"
 
-#include <cstdint>
-
 namespace OpenRCT2::BlockedSegments
 {
-    constexpr uint16_t kStraightFlat = EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft);
-    constexpr uint16_t kDiagStraightFlat[] = {
-        EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
-        EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft, PaintSegment::top),
-        EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
-        EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft),
+    constexpr PaintSegments kStraightFlat = { PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft };
+    constexpr PaintSegments kDiagStraightFlat[] = {
+        (PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
+        (PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft, PaintSegment::top),
+        (PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
+        (PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft),
     };
 } // namespace OpenRCT2::BlockedSegments
