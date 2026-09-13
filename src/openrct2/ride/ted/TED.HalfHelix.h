@@ -23,9 +23,9 @@ namespace OpenRCT2::TrackMetadata
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = { {
-            (PS::top, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                           // inverted
-            kSegmentsAll,                                                     // wide
+            { PS::top, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                             // inverted
+            kSegmentsAll,                                                       // wide
         } },
     };
 
@@ -44,9 +44,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, 0, 0, 4, { 0b0010, 0 }, {} },
         .allowedWallEdges = 0b0011,
         .blockedSegments = { {
-            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                              // inverted
-            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft), // wide
+            { PS::left, PS::centre, PS::topLeft, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                // inverted
+            { PS::left, PS::centre, PS::topLeft, PS::bottomLeft }, // wide
         } },
     };
 
@@ -57,9 +57,9 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
-            (PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                 // inverted
-            kSegmentsAll,                                                           // wide
+            { PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                   // inverted
+            kSegmentsAll,                                                             // wide
         } },
     };
 
@@ -70,9 +70,9 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
-            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                               // inverted
-            kSegmentsAll,                                                         // wide
+            { PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                 // inverted
+            kSegmentsAll,                                                           // wide
         } },
     };
 
@@ -91,9 +91,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, -96, 8, 4, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                    // inverted
-            (PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // wide
+            { PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                      // inverted
+            { PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight }, // wide
         } },
     };
 
@@ -105,9 +105,9 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -2,
         .blockedSegments = { {
-            (PS::right, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                 // inverted
-            kSegmentsAll,                                                           // wide
+            { PS::right, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                   // inverted
+            kSegmentsAll,                                                             // wide
         } },
     };
 
@@ -307,9 +307,9 @@ namespace OpenRCT2::TrackMetadata
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = { {
-            (PS::top, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                           // inverted
-            kSegmentsAll,                                                     // wide
+            { PS::top, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                             // inverted
+            kSegmentsAll,                                                       // wide
         } },
     };
 
@@ -317,9 +317,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 0, -32, 0, 0, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
         .blockedSegments = { {
-            kSegmentsNone,                              // narrow
-            kSegmentsUnimplemented,                     // inverted
-            (PS::right, PS::topRight, PS::bottomRight), // wide
+            kSegmentsNone,                                // narrow
+            kSegmentsUnimplemented,                       // inverted
+            { PS::right, PS::topRight, PS::bottomRight }, // wide
         } },
     };
 
@@ -328,9 +328,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = { {
-            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                     // inverted
-            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // wide
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                                       // inverted
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // wide
         } },
     };
 
@@ -338,10 +338,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, -32, 0, 0, { 0b1101, 0 }, {} },
         .woodenSupports = { WoodenSupportSubType::corner1 },
         .blockedSegments = { {
-            (PS::right, PS::centre, PS::topRight, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                 // inverted
-            (PS::top, PS::right, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft,
-             PS::bottomRight), // wide
+            { PS::right, PS::centre, PS::topRight, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                   // inverted
+            { PS::top, PS::right, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight }, // wide
         } },
     };
 
@@ -349,9 +348,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, -64, 0, 4, { 0b1000, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b1100,
         .blockedSegments = { {
-            kSegmentsNone,                              // narrow
-            kSegmentsUnimplemented,                     // inverted
-            (PS::right, PS::topRight, PS::bottomRight), // wide
+            kSegmentsNone,                                // narrow
+            kSegmentsUnimplemented,                       // inverted
+            { PS::right, PS::topRight, PS::bottomRight }, // wide
         } },
     };
 
@@ -360,9 +359,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0011,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .blockedSegments = { {
-            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                           // inverted
-            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // wide
+            { PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                             // inverted
+            { PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // wide
         } },
     };
 
@@ -373,9 +372,9 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
-            (PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                 // inverted
-            kSegmentsAll,                                                           // wide
+            { PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                   // inverted
+            kSegmentsAll,                                                             // wide
         } },
     };
 
@@ -386,9 +385,9 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -1,
         .blockedSegments = { {
-            (PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                               // inverted
-            kSegmentsAll,                                                         // wide
+            { PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                 // inverted
+            kSegmentsAll,                                                           // wide
         } },
     };
 
@@ -396,9 +395,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, -96, 8, 0, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            kSegmentsNone,                        // narrow
-            kSegmentsUnimplemented,               // inverted
-            (PS::top, PS::topLeft, PS::topRight), // wide
+            kSegmentsNone,                          // narrow
+            kSegmentsUnimplemented,                 // inverted
+            { PS::top, PS::topLeft, PS::topRight }, // wide
         } },
     };
 
@@ -407,9 +406,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = { {
-            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                           // inverted
-            (PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight), // wide
+            { PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                             // inverted
+            { PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // wide
         } },
     };
 
@@ -417,10 +416,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { -32, -128, 8, 0, { 0b1110, 0 }, {} },
         .woodenSupports = { WoodenSupportSubType::corner0 },
         .blockedSegments = { {
-            (PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
-            kSegmentsUnimplemented,                           // inverted
-            (PS::top, PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft,
-             PS::bottomRight), // wide
+            { PS::top, PS::centre, PS::topLeft, PS::topRight }, // narrow
+            kSegmentsUnimplemented,                             // inverted
+            { PS::top, PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft, PS::bottomRight }, // wide
         } },
     };
 
@@ -428,9 +426,9 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 0, -128, 8, 4, { 0b0100, 0 }, { ClearanceFlag::flag0 } },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            kSegmentsNone,                        // narrow
-            kSegmentsUnimplemented,               // inverted
-            (PS::top, PS::topLeft, PS::topRight), // wide
+            kSegmentsNone,                          // narrow
+            kSegmentsUnimplemented,                 // inverted
+            { PS::top, PS::topLeft, PS::topRight }, // wide
         } },
     };
 
@@ -439,9 +437,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .blockedSegments = { {
-            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                             // inverted
-            (PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // wide
+            { PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                               // inverted
+            { PS::right, PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight }, // wide
         } },
     };
 
@@ -453,9 +451,9 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .extraSupportRotation = -2,
         .blockedSegments = { {
-            (PS::right, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                 // inverted
-            kSegmentsAll,                                                           // wide
+            { PS::right, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                                   // inverted
+            kSegmentsAll,                                                             // wide
         } },
     };
 

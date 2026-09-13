@@ -15,9 +15,9 @@ namespace OpenRCT2::BlockedSegments
 {
     constexpr PaintSegments kStraightFlat = { PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft };
     constexpr PaintSegments kDiagStraightFlat[] = {
-        (PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
-        (PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft, PaintSegment::top),
-        (PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
-        (PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft),
+        { PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right },
+        { PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft, PaintSegment::top },
+        { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight },
+        { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft },
     };
 } // namespace OpenRCT2::BlockedSegments

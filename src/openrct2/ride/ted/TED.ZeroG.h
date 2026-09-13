@@ -78,9 +78,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
-            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                     // inverted
-            kSegmentsAll,                               // wide
+            { PS::centre, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                       // inverted
+            kSegmentsAll,                                 // wide
         } },
     };
 
@@ -89,9 +89,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
-            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                     // inverted
-            kSegmentsAll,                                                               // wide
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                                       // inverted
+            kSegmentsAll,                                                                 // wide
         } },
     };
 
@@ -102,9 +102,9 @@ namespace OpenRCT2::TrackMetadata
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                     // inverted
-            kSegmentsAll,                                                               // wide
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                                       // inverted
+            kSegmentsAll,                                                                 // wide
         } },
     };
 
@@ -186,9 +186,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
-            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                     // inverted
-            kSegmentsAll,                               // wide
+            { PS::centre, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                       // inverted
+            kSegmentsAll,                                 // wide
         } },
     };
 
@@ -197,9 +197,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
-            (PS::centre, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                     // inverted
-            kSegmentsAll,                               // wide
+            { PS::centre, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                       // inverted
+            kSegmentsAll,                                 // wide
         } },
     };
 
@@ -208,9 +208,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
-            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                     // inverted
-            kSegmentsAll,                                                               // wide
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                                       // inverted
+            kSegmentsAll,                                                                 // wide
         } },
     };
 
@@ -221,9 +221,9 @@ namespace OpenRCT2::TrackMetadata
         .woodenSupports = { WoodenSupportSubType::neSw },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            (PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                     // inverted
-            kSegmentsAll,                                                               // wide
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                                       // inverted
+            kSegmentsAll,                                                                 // wide
         } },
     };
 
