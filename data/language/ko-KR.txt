@@ -1159,7 +1159,6 @@ STR_1816    :손님 목록에서 보여줄 정보의 종류를 선택하세요
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}모든 손님
 STR_1819    :{WINDOW_COLOUR_2}모든 손님 (항목별 분류)
-STR_1820    :{WINDOW_COLOUR_2}{STRINGID} 손님
 STR_1821    :{WINDOW_COLOUR_2}{SMALLFONT}{STRINGID}{MEDIUMFONT} 손님 생각
 STR_1822    :{WINDOW_COLOUR_2}{POP16}{STRINGID}에 대한 손님 생각
 STR_1823    :이 놀이기구/시설에 대한 손님들의 생각을 보여줍니다
@@ -2451,9 +2450,6 @@ STR_5242    :테마 이름이 이미 존재합니다
 STR_5243    :사용할 수 없는 문자가 있습니다
 STR_5244    :테마
 STR_5245    :상단 툴바
-STR_5246    :하단 툴바
-STR_5247    :트랙 에디터 하단 툴바
-STR_5248    :시나리오 에디터 하단 툴바
 STR_5249    :타이틀 메뉴 버튼
 STR_5250    :타이틀 종료 버튼
 STR_5251    :타이틀 설정 버튼
@@ -3181,7 +3177,6 @@ STR_6137    :OpenRCT2 - 롤러코스터 타이쿤 2의 자유 오픈 소스 재�
 STR_6138    :OpenRCT2는 많은 분들이 참여한 작품입니다. 모든 참여자의 목록은 “기여자” 버튼에서 참고할 수 있습니다. 더 많은 정보를 원하시면 http://github.com/OpenRCT2/OpenRCT2 를 방문해주세요.
 STR_6139    :모든 제품과 회사 이름은 해당 소유자의 것입니다. 이러한 제품이나 이름의 사용은 그러한 것들에 대한 제휴나 지지를 뜻하지 않습니다.
 STR_6140    :변경 기록…
-STR_6141    :RCT1 하단 툴바
 STR_6142    :{WINDOW_COLOUR_2}트랙 이름: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
 STR_6144    :시각적 업데이트 표시

@@ -1159,7 +1159,6 @@ STR_1816    :Choisir le type d’informations à afficher dans la liste des visi
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tous les visiteurs
 STR_1819    :{WINDOW_COLOUR_2}Tous les visiteurs (résumé)
-STR_1820    :{WINDOW_COLOUR_2}Visiteurs {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Visiteurs pensant {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visiteurs pensant à {POP16}{STRINGID}
 STR_1823    :Voir les opinions des visiteurs sur cette attraction
@@ -2453,9 +2452,6 @@ STR_5242    :Ce nom de thème existe déjà
 STR_5243    :Caractère invalide utilisé
 STR_5244    :Thèmes
 STR_5245    :Barre d’outils du haut
-STR_5246    :Barre d’outils du bas
-STR_5247    :Barre d’outils du bas (éditeur de voies)
-STR_5248    :Barre d’outils du bas (éditeur de scénarios)
 STR_5249    :Boutons de l’écran titre
 STR_5250    :Bouton Quitter de l’écran titre
 STR_5251    :Bouton Options de l’écran titre
@@ -3184,7 +3180,6 @@ STR_6137    :OpenRCT2, une recréation et amélioration libre et open source de 
 STR_6138    :OpenRCT2 est le fruit du travail de nombreuses personnes, une liste complète est disponible via le bouton {SMALLFONT}Contributions{MEDIUMFONT}. Pour plus d’informations, visitez {SMALLFONT}http://github.com/OpenRCT2/OpenRCT2{MEDIUMFONT}
 STR_6139    :Tous les noms des produits et entreprises appartiennent à leurs propriétaires respectifs. L’utilisation de ces derniers n’implique pas d’affiliation ou d’approbation par eux.
 STR_6140    :Journal des changements…
-STR_6141    :Barre d’outils RCT1 du bas
 STR_6142    :{WINDOW_COLOUR_2}Nom du tracé : {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Type d’attraction : {BLACK}{STRINGID}
 STR_6144    :Afficher les visuels redessinés

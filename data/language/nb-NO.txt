@@ -1151,7 +1151,6 @@ STR_1816    :Velg type informasjon å vise i gjesteliste
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle gjester
 STR_1819    :{WINDOW_COLOUR_2}Alle gjester (totalt)
-STR_1820    :{WINDOW_COLOUR_2}Gjester {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Gjester tenker {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Gjester tenker på {POP16}{STRINGID}
 STR_1823    :Vis gjesters tanker om denne attraksjonen
@@ -2441,9 +2440,6 @@ STR_5242    :Temanavn eksisterer allerede
 STR_5243    :Ugyldige tegn brukt
 STR_5244    :Temaer
 STR_5245    :Øvre Verktøylinje
-STR_5246    :Nedre Verktøylinje
-STR_5247    :Spor-redigerer Nedre Verktøylinje
-STR_5248    :Scenario-redigerer Nedre Verktøylinje
 STR_5249    :Startskjerm Meny Knapper
 STR_5250    :Startskjerm Avslutt Knapp
 STR_5251    :Startskjerm Alternativer Knapp
@@ -3172,7 +3168,6 @@ STR_6137    :OpenRCT2, en gratis og åpen-kildekode-klone av RollerCoaster Tycoo
 STR_6138    :OpenRCT2 er et verk med flere bidragsytere; en full liste finnes i “contributors.md”. For mer informasjon, se https://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alle produkt- og foretaksnavn tilhører deres respektive eiere. Bruk av disse impliserer hverken tilknytning til, eller anbefaling fra deres eiere.
 STR_6140    :Endringslogg…
-STR_6141    :RCT1 nedre verktøylinje
 STR_6142    :{WINDOW_COLOUR_2}Banenavn: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Attraksjonstype: {BLACK}{STRINGID}
 STR_6144    :Vis blokkoppdateringer

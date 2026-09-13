@@ -1157,7 +1157,6 @@ STR_1816    :选择游客列表中要显示的信息类别
 STR_1817    :（{COMMA32}）
 STR_1818    :{WINDOW_COLOUR_2}所有游客
 STR_1819    :{WINDOW_COLOUR_2}所有游客（汇总）
-STR_1820    :{WINDOW_COLOUR_2}{STRINGID}的游客
 STR_1821    :{WINDOW_COLOUR_2}在想{STRINGID}的游客
 STR_1822    :{WINDOW_COLOUR_2}在想{POP16}{SMALLFONT}{STRINGID}{MEDIUMFONT}的游客
 STR_1823    :显示游客对此游乐设施/店铺的想法
@@ -2447,9 +2446,6 @@ STR_5242    :主题名称已使用
 STR_5243    :使用了无效字符
 STR_5244    :主题
 STR_5245    :顶部工具栏
-STR_5246    :底部工具栏
-STR_5247    :轨道编辑器底部工具栏
-STR_5248    :剧情编辑器底部工具栏
 STR_5249    :主界面菜单按钮
 STR_5250    :主界面退出按钮
 STR_5251    :主界面选项按钮
@@ -3178,7 +3174,6 @@ STR_6137    :开源过山车大亨2（OpenRCT2），一款免费且开源的对�
 STR_6138    :开源过山车大亨2（OpenRCT2）是一款由许多作者共同开发的作品，完整的列表可在上方“贡献者”按钮找到。请访问 http://github.com/OpenRCT2/OpenRCT2 获取更多信息
 STR_6139    :所有的产品及公司名称均属其拥有者所有。使用那些名称并不代表本项目与其有任何联系或认可。
 STR_6140    :更新日志……
-STR_6141    :过山车大亨1样式的底部工具栏
 STR_6142    :{WINDOW_COLOUR_2}轨道名称：{BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}游乐设施类型：{BLACK}{STRINGID}
 STR_6144    :显示无效块

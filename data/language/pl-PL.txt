@@ -1157,7 +1157,6 @@ STR_1816    :Wybierz typ informacji wyświetlany na liście gości
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Wszyscy goście
 STR_1819    :{WINDOW_COLOUR_2}Wszyscy goście (pogrupowani)
-STR_1820    :{WINDOW_COLOUR_2}Goście {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Goście którzy myślą {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Goście myślący o {POP16}{STRINGID}
 STR_1823    :Pokaż gości myślących o tej atrakcji
@@ -2447,9 +2446,6 @@ STR_5242    :Już istnieje taka nazwa motywu
 STR_5243    :Użyto nieprawidłowego znaku
 STR_5244    :Motywy
 STR_5245    :Górny pasek narzędzi
-STR_5246    :Dolny pasek narzędzi
-STR_5247    :Dolny pasek narzędzi generatora tras
-STR_5248    :Dolny pasek narzędzi generatora scenariuszy
 STR_5249    :Tytuł przycisku menu
 STR_5250    :Tytuł przycisku wyjścia
 STR_5251    :Tytuł przycisku opcji
@@ -3178,7 +3174,6 @@ STR_6137    :OpenRCT2, darmowe i open-source’owe odtworzenie oraz rozszerzenie
 STR_6138    :OpenRCT2 to wynik pracy wielu autorów, pełną listę można znaleźć wybierając opcję „Współautorzy”. Po więcej informacji odwiedź: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Wszystkie nazwy produktów i firm należą do ich właścicieli. Użycie ich nie oznacza powiązania z nimi ani ich poparcia.
 STR_6140    :Lista zmian…
-STR_6141    :Dolny pasek narzędziowy z RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nazwa toru: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Typ przejażdżki: {BLACK}{STRINGID}
 STR_6144    :Pokaż odrysowane kafelki

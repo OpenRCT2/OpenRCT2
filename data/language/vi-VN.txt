@@ -1107,7 +1107,6 @@ STR_1816    :Chọn loại thông tin để hiển thị trong danh sách khách
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tất cả khách
 STR_1819    :{WINDOW_COLOUR_2}Tất cả khách (tóm tắt)
-STR_1820    :{WINDOW_COLOUR_2}Khách {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Khách đang nghĩ {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Khách đang nghĩ về {POP16}{STRINGID}
 STR_1823    :Hiển thị suy nghĩ của khách về trò chơi/điểm tham quan này
@@ -2393,9 +2392,6 @@ STR_5242    :Tên chủ đề đã tồn tại
 STR_5243    :Ký tự không hợp lệ đã sử dụng
 STR_5244    :Chủ đề
 STR_5245    :Thanh công cụ trên cùng
-STR_5246    :Thanh công cụ dưới cùng
-STR_5247    :Thanh công cụ dưới cùng của trình chỉnh sửa đường ray
-STR_5248    :Thanh công cụ dưới cùng của trình chỉnh sửa kịch bản
 STR_5249    :Nút menu tiêu đề
 STR_5250    :Nút thoát tiêu đề
 STR_5251    :Nút tùy chọn tiêu đề
@@ -3120,7 +3116,6 @@ STR_6137    :OpenRCT2, một bản tạo lại và mở rộng miễn phí và m
 STR_6138    :OpenRCT2 là tác phẩm của nhiều tác giả, danh sách đầy đủ có thể được tìm thấy dưới nút “Contributors”. Để biết thêm thông tin, hãy truy cập http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tất cả tên sản phẩm và công ty thuộc về chủ sở hữu tương ứng của họ. Việc sử dụng chúng không ngụ ý bất kỳ mối liên hệ hoặc chứng thực nào của họ.
 STR_6140    :Nhật ký thay đổi…
-STR_6141    :Thanh công cụ dưới cùng của RCT1
 STR_6142    :{WINDOW_COLOUR_2}Tên đường ray: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Loại trò chơi: {BLACK}{STRINGID}
 STR_6144    :Hiển thị hình ảnh bẩn

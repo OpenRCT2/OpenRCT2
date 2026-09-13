@@ -1158,7 +1158,6 @@ STR_1816    :Välj informationstyp som ska visas i besökarlistan
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alla besökare
 STR_1819    :{WINDOW_COLOUR_2}Alla besökare (sammanfattat)
-STR_1820    :{WINDOW_COLOUR_2}Besökare {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Besökare som tänker {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Besökare som tänker på {POP16}{STRINGID}
 STR_1823    :Visa besökares tankar om den här åkturen eller attraktionen
@@ -2452,9 +2451,6 @@ STR_5242    :Temats namn finns redan
 STR_5243    :Ogiltiga tecken använda
 STR_5244    :Teman
 STR_5245    :Toppens verktygsfält
-STR_5246    :Bottens verktygsfält
-STR_5247    :Spårredigerarens verktygsfält
-STR_5248    :Dekorationsredigerarens verktygsfält
 STR_5249    :Titelmenyns knappar
 STR_5250    :Titelradens avsluta-knapp
 STR_5251    :Titelradens inställningsknapp
@@ -3183,7 +3179,6 @@ STR_6137    :OpenRCT2, en gratis klon av Roller Coaster Tycoon 2 med öppen käl
 STR_6138    :OpenRCT2 är ett samarbete med flera deltagare, en lista med alla deltagare kan hittas i ”contributors.md”. För mer information, besök http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alla produkter och företagsnamn tillhör deras respektive innehavare och ägare. Användningen av dem är ingen anknytning eller bekräftelse från respektive innehavare.
 STR_6140    :Ändringslogg…
-STR_6141    :RCT1s nedre verktygsfält
 STR_6142    :{WINDOW_COLOUR_2}Namn: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID}
 STR_6144    :Visa visuella uppdateringar

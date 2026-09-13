@@ -1158,7 +1158,6 @@ STR_1816    :Selecciona el tipo de información a mostrar en la lista de visitan
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Todos los visitantes
 STR_1819    :{WINDOW_COLOUR_2}Todos los visitantes (agrupados)
-STR_1820    :{WINDOW_COLOUR_2}Visitantes {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Visitantes Pensando {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitantes Pensando en {POP16}{STRINGID}
 STR_1823    :Muestra los pensamientos de los visitantes sobre esta atracción
@@ -2450,9 +2449,6 @@ STR_5242    :Nombre del tema ya existe
 STR_5243    :Caracteres no válidos
 STR_5244    :Temas
 STR_5245    :Barra de herramientas superior
-STR_5246    :Barra de herramientas inferior
-STR_5247    :Editor de Vías (barra inferior)
-STR_5248    :Editor de Escenarios (barra inferior)
 STR_5249    :Color de botones del menú
 STR_5250    :Color del botón salir
 STR_5251    :Color de botones de opciones
@@ -3181,7 +3177,6 @@ STR_6137    :OpenRCT2, juego de código abierto que recrea y expande Roller Coas
 STR_6138    :OpenRCT2 es el trabajo de muchos autores, una lista completa se puede encontrar a través del botón de "Colaboradores". Para más información visita: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Todos los nombres de productos y empresas pertenecen a sus respectivos titulares. El uso de ellos no implica ninguna afiliación o respaldo por ellos.
 STR_6140    :Registro de cambios…
-STR_6141    :Barra de herramientas inferior RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nombre de vía: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo atracción: {BLACK}{STRINGID}
 STR_6144    :Mostrar re-dibujado

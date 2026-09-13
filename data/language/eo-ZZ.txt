@@ -1157,7 +1157,6 @@ STR_1816    :Elekti tipon de informoj por montri en gastlisto
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Ĉiuj gastoj
 STR_1819    :{WINDOW_COLOUR_2}Ĉiuj gastoj (resumitaj)
-STR_1820    :{WINDOW_COLOUR_2}Gastoj {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Gastoj, kiuj pensas {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Gastoj pensantaj pri {POP16}{STRINGID}
 STR_1823    :Montri pensojn de gastoj pri ĉi tiu atrakcio
@@ -2447,9 +2446,6 @@ STR_5242    :Ĉi tiu nomo de temo jam ekzistas
 STR_5243    :Nevalidaj signoj estis uzitaj
 STR_5244    :Temoj
 STR_5245    :Supra ilobreto
-STR_5246    :Malsupra ilobreto
-STR_5247    :Malsupra ilobreto de trakredaktilo
-STR_5248    :Malsupra ilobreto de scenaroredaktilo
 STR_5249    :Menuo-butonoj de titolozono
 STR_5250    :Eliri-butono de titolozono
 STR_5251    :Agordoj-butono de titolozono
@@ -3178,7 +3174,6 @@ STR_6137    :OpenRCT2 estas libera kaj malfermitkoda aliformigo kaj kompletigo d
 STR_6138    :OpenRCT2 estas la verko de multaj aŭtoroj, kompleta listo troviĝas ene de la “Kontribuantoj” butono. Por pli da informaĵoj, vizitu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Ĉiuj produktonomoj kaj firmnomoj apartenas al siaj respektivaj posedantoj. Uzo de ili ne signifas iun ajn filion kun aŭ endosaĵon de ili.
 STR_6140    :Ŝanĝoprotokolo…
-STR_6141    :RCT1-stila malsupra ilobreto
 STR_6142    :{WINDOW_COLOUR_2}Trakonomo: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Atrakciotipo: {BLACK}{STRINGID}
 STR_6144    :Montri senpolurajn bildojn
@@ -3829,3 +3824,23 @@ STR_7040    :Adicioj de trotuaro
 STR_7041    :Panelo de parkinformoj
 STR_7042    :Panelo de datoinformoj
 STR_7043    :Ne eblas ŝanĝi altecon de tero ĉi tie…
+STR_7044    :Novaĵa rulbendo
+STR_7045    :RCT1-stila stata breto
+STR_7046    :Stata breto (RCT1-stila)
+STR_7047    :Etapa regilo (Trakdesegnilo)
+STR_7048    :Etapa regilo (Scenaroredaktilo)
+STR_7049    :OpenRCT2
+STR_7050    :Gastoj marŝas
+STR_7051    :Gastoj iras al {STRINGID}
+STR_7052    :Gastoj vicatendas je {STRINGID}
+STR_7053    :Gastoj dronas
+STR_7054    :Gastoj sur {STRINGID}
+STR_7055    :Gastoj en {STRINGID}
+STR_7056    :Gastoj ĉe {STRINGID}
+STR_7057    :Gastoj sidas
+STR_7058    :Gastoj prenitaj
+STR_7059    :Gastoj spektas je {STRINGID}
+STR_7060    :Gastoj spektas konstruadon de {STRINGID}
+STR_7061    :Gastoj rigardas pejzaĵon
+STR_7062    :Gastoj foriras la parkon
+STR_7063    :Gastoj spektas novan atrakcion konstruatan

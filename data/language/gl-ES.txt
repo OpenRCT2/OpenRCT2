@@ -1158,7 +1158,6 @@ STR_1816    :Seleccione o tipo de información para mostrar na lista de visitant
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Todos os visitantes
 STR_1819    :{WINDOW_COLOUR_2}Todos os visitantes (resumido)
-STR_1820    :{WINDOW_COLOUR_2}Visitantes {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Visitantes pensando {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitantes pensando en {POP16}{STRINGID}
 STR_1823    :Amosa os pensamentos dos visitantes sobre esta atracción
@@ -2448,9 +2447,6 @@ STR_5242    :O nome de tema xa existe
 STR_5243    :Usáronse caracteres non válidos
 STR_5244    :Temas
 STR_5245    :Barra de ferramentas superior
-STR_5246    :Barra de ferramentas inferior
-STR_5247    :Barra de ferramentas inferior do editor de vías
-STR_5248    :Barra de ferramentas inferior do editor de escenarios
 STR_5249    :Botóns do menú principal
 STR_5250    :Botón de saída do xogo
 STR_5251    :Botón de opcións do xogo
@@ -3179,7 +3175,6 @@ STR_6137    :OpenRCT2, unha recreación libre e de código aberto, así como unh
 STR_6138    :OpenRCT2 é obra de moitos autores, pódese atopar unha lista completa a través do botón "Colaboradores". Para obter máis información, visite: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Todos os nomes de produtos e empresas son propiedade dos seus respectivos propietarios. O uso deles non implica ningunha afiliación nin aval por eles.
 STR_6140    :Rexistro de trocos…
-STR_6141    :Barra de ferramentas inferior RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nome da vía: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo de atracción: {BLACK}{STRINGID}
 STR_6144    :Amosar os gráficos sucios
@@ -3825,3 +3820,8 @@ STR_7035    :Estilo de tenda
 STR_7036    :Estilo de vehículo
 STR_7037    :Modo de funcionamento
 STR_7038    :Agardar e cargar
+STR_7039    :Tipo de atracción
+STR_7040    :Adicións de camiños
+STR_7041    :Panel de información do parque
+STR_7042    :Panel de información da data
+STR_7043    :Non se pode modificar a altura do terreo aquí…
