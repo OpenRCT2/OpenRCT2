@@ -15,6 +15,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../scenario/Scenario.h"
 #include "Ride.h"
+#include "TrackData.h"
 #include "VehicleGeometry.h"
 
 using namespace OpenRCT2;
@@ -23,9 +24,9 @@ using namespace OpenRCT2::RideVehicle;
 
 // External globals from Vehicle.cpp
 extern uint32_t _vehicleMotionTrackFlags;
-extern int32_t _vehicleVelocity;
-extern int32_t _vehicleRemainingDistance;
-extern int32_t _vehicleSubpositionsMoved;
+extern int32_t _vehicleVelocityF64E08;
+extern int32_t _vehicleVelocityF64E0C;
+extern int32_t _vehicleUnkF64E10;
 extern CoordsXYZ _vehicleCurPosition;
 
 struct DodgemsTrackSize
@@ -123,9 +124,9 @@ int32_t Vehicle::UpdateMotionDodgems()
     }
     velocity = nextVelocity;
 
-    _vehicleVelocity = nextVelocity;
-    _vehicleRemainingDistance = (nextVelocity / 1024) * 42;
-    _vehicleSubpositionsMoved = 1;
+    _vehicleVelocityF64E08 = nextVelocity;
+    _vehicleVelocityF64E0C = (nextVelocity / 1024) * 42;
+    _vehicleUnkF64E10 = 1;
 
     acceleration = 0;
     if (!curRide->flags.hasAny(RideFlag::breakdownPending, RideFlag::brokenDown)
@@ -176,7 +177,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         }
     }
 
-    remaining_distance += _vehicleRemainingDistance;
+    remaining_distance += _vehicleVelocityF64E0C;
 
     if (remaining_distance >= 13962)
     {
@@ -207,7 +208,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             {
                 break;
             }
-            _vehicleSubpositionsMoved++;
+            _vehicleUnkF64E10++;
         }
 
         if (remaining_distance >= 13962)
@@ -217,7 +218,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             velocity = 0;
             uint8_t direction = orientation | 1;
 
-            Vehicle* collideVehicle = getGameState().entities.getEntity<Vehicle>(collideSprite.value());
+            Vehicle* collideVehicle = getGameState().entities.GetEntity<Vehicle>(collideSprite.value());
             if (collideVehicle != nullptr)
             {
                 var_34 = (ScenarioRand() & 1) ? 1 : -1;

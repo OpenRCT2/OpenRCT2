@@ -41,7 +41,7 @@ namespace OpenRCT2::GameActions
         count
     };
 
-    class ScenarioSetSettingAction final : public GameActionBase<GameCommand::editScenarioOptions>
+    class ScenarioSetSettingAction final : public GameActionBase<GameCommand::EditScenarioOptions>
     {
     private:
         ScenarioSetSetting _setting{ ScenarioSetSetting::count };

@@ -12,6 +12,7 @@
 #include "core/DataSerialiser.h"
 
 #include <memory>
+#include <set>
 #include <string>
 
 struct GameStateSnapshot_t;

@@ -28,7 +28,7 @@ namespace OpenRCT2::GameActions
         rideType,
     };
 
-    class RideSetSettingAction final : public GameActionBase<GameCommand::setRideSetting>
+    class RideSetSettingAction final : public GameActionBase<GameCommand::SetRideSetting>
     {
     private:
         RideId _rideIndex{ RideId::GetNull() };

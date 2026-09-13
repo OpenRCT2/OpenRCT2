@@ -11,12 +11,15 @@
 
     #include "ScTrackIterator.h"
 
+    #include "../../../Context.h"
+    #include "../../../ride/Ride.h"
     #include "../../../ride/Track.h"
     #include "../../../ride/TrackData.h"
     #include "../../../ride/TrackIteration.h"
     #include "../../../ride/ted/TrackElementDescriptor.h"
     #include "../../../world/Map.h"
     #include "../../../world/tile_element/TrackElement.h"
+    #include "../../ScriptEngine.h"
     #include "ScTrackSegment.h"
 
 using namespace OpenRCT2::Scripting;
@@ -32,7 +35,7 @@ JSValue ScTrackIterator::FromElement(JSContext* ctx, const CoordsXY& position, i
         return JS_NULL;
 
     auto trackEl = el->asTrack();
-    return gScTrackIterator.New(ctx, *origin, trackEl->getTrackType());
+    return gScTrackIterator.New(ctx, *origin, trackEl->GetTrackType());
 }
 
 void ScTrackIterator::Register(JSContext* ctx)
@@ -142,7 +145,7 @@ JSValue ScTrackIterator::previous(JSContext* ctx, JSValue thisVal, int argc, JSV
         if (origin)
         {
             data->_position = *origin;
-            data->_type = prev.element->asTrack()->getTrackType();
+            data->_type = prev.element->asTrack()->GetTrackType();
             return JS_NewBool(ctx, true);
         }
     }
@@ -171,7 +174,7 @@ JSValue ScTrackIterator::next(JSContext* ctx, JSValue thisVal, int argc, JSValue
         if (origin)
         {
             data->_position = *origin;
-            data->_type = next.element->asTrack()->getTrackType();
+            data->_type = next.element->asTrack()->GetTrackType();
             return JS_NewBool(ctx, true);
         }
     }

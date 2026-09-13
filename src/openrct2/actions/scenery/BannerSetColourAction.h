@@ -18,7 +18,7 @@ namespace OpenRCT2::Drawing
 
 namespace OpenRCT2::GameActions
 {
-    class BannerSetColourAction final : public GameActionBase<GameCommand::setBannerColour>
+    class BannerSetColourAction final : public GameActionBase<GameCommand::SetBannerColour>
     {
     private:
         CoordsXYZD _loc;

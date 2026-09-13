@@ -9,12 +9,16 @@
 
 #include "Game.h"
 
+#include "Cheats.h"
 #include "Context.h"
 #include "Diagnostic.h"
+#include "Editor.h"
+#include "FileClassifier.h"
 #include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
+#include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
 #include "actions/GameActionRunner.h"
@@ -25,37 +29,54 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
-#include "core/FileSystem.hpp"
+#include "core/Money.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "drawing/Palette.h"
+#include "drawing/Drawing.h"
 #include "drawing/ScrollingText.h"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/PatrolArea.h"
 #include "entity/Peep.h"
+#include "entity/Staff.h"
+#include "interface/Screenshot.h"
 #include "interface/Viewport.h"
-#include "interface/WindowTypes.h"
+#include "interface/Window.h"
+#include "management/Finance.h"
+#include "management/Marketing.h"
 #include "management/Research.h"
 #include "network/Network.h"
+#include "object/Object.h"
+#include "object/ObjectEntryManager.h"
+#include "object/ObjectList.h"
+#include "object/WaterEntry.h"
 #include "platform/Platform.h"
 #include "rct12/CSStringConverter.h"
 #include "ride/Ride.h"
+#include "ride/RideRatings.h"
 #include "ride/Station.h"
+#include "ride/TrackDesign.h"
+#include "ride/Vehicle.h"
+#include "sawyer_coding/SawyerCoding.h"
 #include "scenario/Scenario.h"
-#include "scenes/SceneManager.h"
+#include "scenes/title/TitleScene.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Banner.h"
 #include "world/Entrance.h"
+#include "world/Footpath.h"
 #include "world/Map.h"
+#include "world/MapAnimation.h"
+#include "world/Park.h"
+#include "world/Scenery.h"
+#include "world/Weather.h"
 #include "world/tile_element/SurfaceElement.h"
 
+#include <cstdio>
+#include <iterator>
 #include <memory>
-
-using namespace OpenRCT2;
 
 #ifdef __EMSCRIPTEN__
 extern "C" {
@@ -63,6 +84,8 @@ extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, LoadSaveType
 extern void EmscriptenResetAutosave();
 }
 #endif
+
+using namespace OpenRCT2;
 
 uint16_t gCurrentDeltaTime;
 uint8_t gGamePaused = 0;
@@ -119,9 +142,7 @@ void GameCreateWindows()
 {
     ContextOpenWindow(WindowClass::mainWindow);
     ContextOpenWindow(WindowClass::topToolbar);
-    ContextOpenWindow(WindowClass::gameStatusBar);
-    ContextOpenWindow(WindowClass::parkInfoPanel);
-    ContextOpenWindow(WindowClass::dateInfoPanel);
+    ContextOpenWindow(WindowClass::bottomToolbar);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 }
 
@@ -175,7 +196,7 @@ static void FixGuestsHeadingToParkCount()
 
     for (auto* peep : EntityList<Guest>())
     {
-        if (peep->outsideOfPark && peep->state != PeepState::leavingPark)
+        if (peep->outsideOfPark && peep->State != PeepState::leavingPark)
         {
             guestsHeadingToPark++;
         }
@@ -221,10 +242,10 @@ static void FixPeepsWithInvalidRideReference()
     // Fix possibly invalid field values
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->currentRideStation.ToUnderlying() >= Limits::kMaxStationsPerRide)
+        if (peep->CurrentRideStation.ToUnderlying() >= Limits::kMaxStationsPerRide)
         {
-            const auto srcStation = peep->currentRideStation;
-            const auto rideIdx = peep->currentRide;
+            const auto srcStation = peep->CurrentRideStation;
+            const auto rideIdx = peep->CurrentRide;
             if (rideIdx.IsNull())
             {
                 continue;
@@ -233,10 +254,10 @@ static void FixPeepsWithInvalidRideReference()
             if (ride == nullptr)
             {
                 LOG_WARNING("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->id);
-                peep->currentRide = RideId::GetNull();
+                peep->CurrentRide = RideId::GetNull();
                 continue;
             }
-            auto curName = peep->getName();
+            auto curName = peep->GetName();
             LOG_WARNING(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->id, curName.c_str(), srcStation.ToUnderlying(),
                 rideIdx);
@@ -249,7 +270,7 @@ static void FixPeepsWithInvalidRideReference()
             else
             {
                 LOG_WARNING("Amending ride station to %u.", station);
-                peep->currentRideStation = station;
+                peep->CurrentRideStation = station;
             }
         }
     }
@@ -257,12 +278,12 @@ static void FixPeepsWithInvalidRideReference()
     if (!peepsToRemove.empty())
     {
         // Some broken saves have broken spatial indexes
-        getGameState().entities.resetEntitySpatialIndices();
+        getGameState().entities.ResetEntitySpatialIndices();
     }
 
     for (auto ptr : peepsToRemove)
     {
-        ptr->remove();
+        ptr->Remove();
     }
 }
 
@@ -280,7 +301,7 @@ static void FixInvalidSurfaces()
             if (surfaceElement == nullptr)
             {
                 LOG_ERROR("Null map element at x = %d and y = %d. Fixing...", x, y);
-                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.toCoordsXYZ(), 0b0000);
+                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
                 if (surfaceElement == nullptr)
                 {
                     LOG_ERROR("Unable to fix: Map element limit reached.");
@@ -295,8 +316,8 @@ static void FixInvalidSurfaces()
             {
                 surfaceElement->setBaseZ(kMinimumLandZ);
                 surfaceElement->setClearanceZ(kMinimumLandZ);
-                surfaceElement->setSlope(0);
-                surfaceElement->setWaterHeight(0);
+                surfaceElement->SetSlope(0);
+                surfaceElement->SetWaterHeight(0);
             }
         }
     }
@@ -340,16 +361,12 @@ void GameLoadInit()
     IGameStateSnapshots* snapshots = context->GetGameStateSnapshots();
     snapshots->Reset();
 
-    // TODO: move this to caller sites??
-    auto* sceneMgr = context->GetSceneManager();
-    if (sceneMgr->getActiveScene() != sceneMgr->getScenarioEditorScene()) // HACK
-        sceneMgr->setActiveScene(sceneMgr->getGameScene());
+    context->SetActiveScene(context->GetGameScene());
 
     // Invalidate scrolling text cache to prevent stale text from previous park
     // being displayed due to pointer value reuse in the cache matching logic
     Drawing::ScrollingText::invalidate();
 
-    // TODO: move relevant UI calls to UI subproject
     if (!gLoadKeepWindowsOpen)
     {
         ContextResetSubsystems();
@@ -369,13 +386,13 @@ void GameLoadInit()
     {
         GameActions::ClearQueue();
     }
-    getGameState().entities.resetEntitySpatialIndices();
+    getGameState().entities.ResetEntitySpatialIndices();
     ResetAllSpriteQuadrantPlacements();
 
     gWindowUpdateTicks = 0;
     gCurrentRealTimeTicks = 0;
 
-    Drawing::LoadPalette();
+    LoadPalette();
 
     if (!gOpenRCT2Headless)
     {
@@ -438,7 +455,7 @@ void ResetAllSpriteQuadrantPlacements()
 {
     for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
     {
-        auto* spr = getGameState().entities.getEntity(EntityId::FromUnderlying(i));
+        auto* spr = getGameState().entities.GetEntity(EntityId::FromUnderlying(i));
         if (spr != nullptr && spr->type != EntityType::null)
         {
             spr->moveTo(spr->getLocation());
@@ -475,23 +492,9 @@ void SaveGameCmd(u8string_view name /* = {} */)
     }
     else
     {
-        if (!Platform::IsFilenameValid(name))
-        {
-            LOG_ERROR("Cannot save game: filename contains invalid characters.");
-            return;
-        }
-
         auto& env = GetContext()->GetPlatformEnvironment();
-        auto savesDir = fs::canonical(env.GetDirectoryPath(DirBase::user, DirId::saves));
-        auto savePath = savesDir / fs::u8path(u8string(name) + u8".park");
-
-        if (!fs::weakly_canonical(savePath).u8string().starts_with(savesDir.u8string()))
-        {
-            LOG_ERROR("Save filename must resolve to a path inside the saves directory.");
-            return;
-        }
-
-        SaveGameWithName(savePath.u8string());
+        auto savePath = Path::Combine(env.GetDirectoryPath(DirBase::user, DirId::saves), u8string(name) + u8".park");
+        SaveGameWithName(savePath);
     }
 }
 
@@ -549,8 +552,8 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
     // At first, count how many autosaves there are
     {
-        auto scanner = Path::scanDirectory(filter, false);
-        while (scanner->next())
+        auto scanner = Path::ScanDirectory(filter, false);
+        while (scanner->Next())
         {
             autosavesCount++;
         }
@@ -564,12 +567,12 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
     std::vector<u8string> autosaveFiles;
     {
-        auto scanner = Path::scanDirectory(filter, false);
+        auto scanner = Path::ScanDirectory(filter, false);
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            if (scanner->next())
+            if (scanner->Next())
             {
-                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->getPathRelative()));
+                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->GetPathRelative()));
             }
         }
     }
@@ -721,8 +724,8 @@ void GameLoadOrQuitNoSavePrompt()
             EmscriptenResetAutosave();
 #endif
 
-            auto* sceneMgr = GetContext()->GetSceneManager();
-            sceneMgr->setActiveScene(sceneMgr->getTitleScene());
+            auto* context = GetContext();
+            context->SetActiveScene(context->GetTitleScene());
             break;
         }
         case PromptMode::saveBeforeNewGame:
@@ -737,7 +740,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         default:
             GameUnloadScripts();
-            getGameState().entities.resetAllEntities();
+            getGameState().entities.ResetAllEntities();
             GetContext()->Finish();
             break;
     }
@@ -748,7 +751,7 @@ void StartSilentRecord()
     std::string name = Path::Combine(
         GetContext()->GetPlatformEnvironment().GetDirectoryPath(DirBase::user), u8"debug_replay.parkrep");
     auto* replayManager = GetContext()->GetReplayManager();
-    if (replayManager->StartRecording(name, k_MaxReplayTicks, IReplayManager::RecordType::silent))
+    if (replayManager->StartRecording(name, k_MaxReplayTicks, IReplayManager::RecordType::SILENT))
     {
         ReplayRecordInfo info;
         replayManager->GetCurrentReplayInfo(info);

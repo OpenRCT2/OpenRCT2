@@ -10,9 +10,10 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
@@ -21,12 +22,12 @@
 #include <openrct2/actions/scenery/SignSetStyleAction.h>
 #include <openrct2/actions/scenery/WallRemoveAction.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/interface/Viewport.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
+#include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/LargeSceneryElement.h>
 #include <openrct2/world/tile_element/WallElement.h>
 
@@ -100,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
                 return false;
             }
 
-            auto signViewPosition = banner->position.toCoordsXY().toTileCentre();
+            auto signViewPosition = banner->position.ToCoordsXY().ToTileCentre();
             auto* tileElement = BannerGetTileElement(GetBannerIndex());
             if (tileElement == nullptr)
                 return false;
@@ -115,9 +116,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return false;
                 }
-                _mainColour = wallElement->getPrimaryColour();
-                _textColour = wallElement->getSecondaryColour();
-                _sceneryEntry = wallElement->getEntryIndex();
+                _mainColour = wallElement->GetPrimaryColour();
+                _textColour = wallElement->GetSecondaryColour();
+                _sceneryEntry = wallElement->GetEntryIndex();
             }
             else
             {
@@ -126,9 +127,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return false;
                 }
-                _mainColour = sceneryElement->getPrimaryColour();
-                _textColour = sceneryElement->getSecondaryColour();
-                _sceneryEntry = sceneryElement->getEntryIndex();
+                _mainColour = sceneryElement->GetPrimaryColour();
+                _textColour = sceneryElement->GetSecondaryColour();
+                _sceneryEntry = sceneryElement->GetEntryIndex();
             }
 
             // Create viewport
@@ -166,7 +167,7 @@ namespace OpenRCT2::Ui::Windows
                         close();
                         return;
                     }
-                    auto bannerCoords = banner->position.toCoordsXY();
+                    auto bannerCoords = banner->position.ToCoordsXY();
 
                     if (_isSmall)
                     {
@@ -178,7 +179,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto sceneryRemoveAction = GameActions::LargeSceneryRemoveAction(
                             { bannerCoords, tileElement->getBaseZ(), tileElement->getDirection() },
-                            tileElement->asLargeScenery()->getSequenceIndex());
+                            tileElement->asLargeScenery()->GetSequenceIndex());
                         GameActions::Execute(&sceneryRemoveAction, gameState);
                     }
                     break;
@@ -246,50 +247,50 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            auto& mainColourButton = widgets[WIDX_MAIN_COLOUR];
-            auto& textColourButotn = widgets[WIDX_TEXT_COLOUR];
+            Widget* main_colour_btn = &widgets[WIDX_MAIN_COLOUR];
+            Widget* text_colour_btn = &widgets[WIDX_TEXT_COLOUR];
 
             if (_isSmall)
             {
-                auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
+                auto* wallEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
 
-                mainColourButton.setHidden();
-                textColourButotn.setHidden();
+                main_colour_btn->type = WidgetType::empty;
+                text_colour_btn->type = WidgetType::empty;
                 if (wallEntry == nullptr)
                 {
                     return;
                 }
-                if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
+                if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
                 {
-                    mainColourButton.setVisible();
+                    main_colour_btn->type = WidgetType::colourBtn;
                 }
-                if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
+                if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
                 {
-                    textColourButotn.setVisible();
+                    text_colour_btn->type = WidgetType::colourBtn;
                 }
             }
             else
             {
-                auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
+                auto* sceneryEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
 
-                mainColourButton.setHidden();
-                textColourButotn.setHidden();
+                main_colour_btn->type = WidgetType::empty;
+                text_colour_btn->type = WidgetType::empty;
                 if (sceneryEntry == nullptr)
                 {
                     return;
                 }
                 if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
                 {
-                    mainColourButton.setVisible();
+                    main_colour_btn->type = WidgetType::colourBtn;
                 }
                 if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour))
                 {
-                    textColourButotn.setVisible();
+                    text_colour_btn->type = WidgetType::colourBtn;
                 }
             }
 
-            mainColourButton.image = getColourButtonImage(_mainColour);
-            textColourButotn.image = getColourButtonImage(_textColour);
+            main_colour_btn->image = getColourButtonImage(_mainColour);
+            text_colour_btn->image = getColourButtonImage(_textColour);
         }
 
         void onDraw(Drawing::RenderTarget& rt) override
@@ -312,7 +313,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto signViewPos = CoordsXYZ{ banner->position.toCoordsXY().toTileCentre(), currentFrame };
+            auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), currentFrame };
 
             // Create viewport
             Widget* viewportWidget = &widgets[WIDX_VIEWPORT];

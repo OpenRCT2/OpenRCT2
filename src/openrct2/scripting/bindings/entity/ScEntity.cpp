@@ -11,7 +11,15 @@
 
     #include "ScEntity.hpp"
 
-    #include "../../../GameState.h"
+    #include "../../../entity/Staff.h"
+    #include "ScBalloon.hpp"
+    #include "ScGuest.hpp"
+    #include "ScLitter.hpp"
+    #include "ScMoneyEffect.hpp"
+    #include "ScParticle.hpp"
+    #include "ScPeep.hpp"
+    #include "ScStaff.hpp"
+    #include "ScVehicle.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -154,12 +162,12 @@ namespace OpenRCT2::Scripting
                     auto peep = entity->as<Peep>();
                     // We can't remove a single peep from a ride at the moment as this can cause complications with the
                     // vehicle car having an unsupported peep capacity.
-                    if (peep == nullptr || peep->state == PeepState::onRide || peep->state == PeepState::enteringRide)
+                    if (peep == nullptr || peep->State == PeepState::onRide || peep->State == PeepState::enteringRide)
                     {
                         JS_ThrowPlainError(ctx, "Removing a peep that is on a ride is currently unsupported.");
                         return JS_EXCEPTION;
                     }
-                    peep->remove();
+                    peep->Remove();
                     break;
                 }
                 case EntityType::steamParticle:
@@ -172,7 +180,7 @@ namespace OpenRCT2::Scripting
                 case EntityType::balloon:
                 case EntityType::duck:
                 case EntityType::litter:
-                    getGameState().entities.entityRemove(entity);
+                    getGameState().entities.EntityRemove(entity);
                     break;
                 case EntityType::null:
                     break;
@@ -191,7 +199,7 @@ namespace OpenRCT2::Scripting
     EntityBase* ScEntity::GetEntity(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return OpenRCT2::getGameState().entities.getEntity(id);
+        return OpenRCT2::getGameState().entities.GetEntity(id);
     }
 
     JSValue ScEntity::NewInstance(JSContext* ctx, EntityId entityId)

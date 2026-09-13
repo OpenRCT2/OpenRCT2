@@ -22,7 +22,6 @@
 #include <algorithm>
 #include <iterator>
 #include <openrct2-ui/Ui.h>
-#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
 #include <string>
 #include <vector>
@@ -36,8 +35,8 @@ int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
 {
     auto argvStrings = GetCommandLineArgs(argc, argvW);
 
-    SetConsoleCP(EnumValue(OpenRCT2::CodePage::utf8));
-    SetConsoleOutputCP(EnumValue(OpenRCT2::CodePage::utf8));
+    SetConsoleCP(OpenRCT2::CodePage::UTF8);
+    SetConsoleOutputCP(OpenRCT2::CodePage::UTF8);
 
     std::vector<const char*> argv;
     std::transform(

@@ -9,13 +9,21 @@
 
 #include "../Paint.h"
 
+#include "../../Game.h"
 #include "../../GameState.h"
+#include "../../config/Config.h"
 #include "../../drawing/ColourMap.h"
+#include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
+#include "../../localisation/StringIds.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
+#include "../../world/Scenery.h"
+#include "../../world/TileInspector.h"
 #include "../../world/tile_element/WallElement.h"
 #include "Paint.TileElement.h"
 #include "Paint.Wall.h"
@@ -50,7 +58,7 @@ static void PaintWallDoor(
 
     auto newImageId0 = imageId;
     auto newImageId1 = imageId.WithIndexOffset(1);
-    if (wallEntry.flags.has(WallSceneryFlag::cannotBuildOnSlope))
+    if (wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
     {
         PaintAddImageAsParent(session, newImageId0, offset, bbR1);
         PaintAddImageAsParent(session, newImageId1, offset, bbR2);
@@ -69,10 +77,10 @@ static void PaintWallDoor(
     PROFILED_FUNCTION();
 
     auto bbHeight = wallEntry.height * 8 - 2;
-    auto animationFrame = wallElement.getAnimationFrame();
+    auto animationFrame = wallElement.GetAnimationFrame();
 
     // Add the direction as well
-    if (wallElement.animationIsBackwards())
+    if (wallElement.AnimationIsBackwards())
         animationFrame |= (1 << 4);
 
     auto imageId = wallEntry.image + DirectionToDoorImageOffset[direction & 3][animationFrame];
@@ -132,10 +140,10 @@ static void PaintWallWall(
 {
     PROFILED_FUNCTION();
 
-    auto frameNum = wallEntry.flags2.has(WallSceneryFlag2::isAnimated) ? (getGameState().currentTicks & 7) * 2 : 0;
+    auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (getGameState().currentTicks & 7) * 2 : 0;
     auto imageIndex = wallEntry.image + imageOffset + frameNum;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
-    if ((wallEntry.flags.has(WallSceneryFlag::hasGlass)) && !isGhost)
+    if ((wallEntry.flags & WALL_SCENERY_HAS_GLASS) && !isGhost)
     {
         auto glassImageId = ImageId(imageIndex + 6).WithTransparency(imageTemplate.GetPrimary());
         PaintAddImageAsChild(session, glassImageId, offset, boundBox);
@@ -159,12 +167,12 @@ static void PaintWallScrollingText(
     if (scrollingMode >= ScrollingText::kMaxModes)
         return;
 
-    auto banner = wallElement.getBanner();
+    auto banner = wallElement.GetBanner();
     if (banner == nullptr)
         return;
 
     auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
-                              : wallElement.getSecondaryColour();
+                              : wallElement.GetSecondaryColour();
     auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
     auto bannerText = banner->getText();
@@ -185,11 +193,11 @@ static void PaintWallWall(
     switch (direction)
     {
         case 0:
-            if (wallElement.getSlope() == 2)
+            if (wallElement.GetSlope() == 2)
             {
                 imageOffset = 3;
             }
-            else if (wallElement.getSlope() == 1)
+            else if (wallElement.GetSlope() == 1)
             {
                 imageOffset = 5;
             }
@@ -203,11 +211,11 @@ static void PaintWallWall(
             break;
 
         case 1:
-            if (wallElement.getSlope() == 2)
+            if (wallElement.GetSlope() == 2)
             {
                 imageOffset = 2;
             }
-            else if (wallElement.getSlope() == 1)
+            else if (wallElement.GetSlope() == 1)
             {
                 imageOffset = 4;
             }
@@ -216,16 +224,16 @@ static void PaintWallWall(
                 imageOffset = 0;
             }
 
-            if (wallEntry.flags.has(WallSceneryFlag::hasGlass))
+            if (wallEntry.flags & WALL_SCENERY_HAS_GLASS)
             {
-                if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
+                if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
                 {
                     imageOffset += 12;
                 }
             }
             else
             {
-                if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
+                if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
                 {
                     imageOffset += 6;
                 }
@@ -236,11 +244,11 @@ static void PaintWallWall(
             break;
 
         case 2:
-            if (wallElement.getSlope() == 2)
+            if (wallElement.GetSlope() == 2)
             {
                 imageOffset = 5;
             }
-            else if (wallElement.getSlope() == 1)
+            else if (wallElement.GetSlope() == 1)
             {
                 imageOffset = 3;
             }
@@ -249,7 +257,7 @@ static void PaintWallWall(
                 imageOffset = 1;
             }
 
-            if (wallEntry.flags.has(WallSceneryFlag::isDoubleSided))
+            if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
             {
                 imageOffset += 6;
             }
@@ -259,11 +267,11 @@ static void PaintWallWall(
             break;
 
         case 3:
-            if (wallElement.getSlope() == 2)
+            if (wallElement.GetSlope() == 2)
             {
                 imageOffset = 4;
             }
-            else if (wallElement.getSlope() == 1)
+            else if (wallElement.GetSlope() == 1)
             {
                 imageOffset = 2;
             }
@@ -290,7 +298,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         return;
     }
 
-    auto* wallEntry = wallElement.getEntry();
+    auto* wallEntry = wallElement.GetEntry();
     if (wallEntry == nullptr)
     {
         return;
@@ -299,17 +307,17 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     session.InteractionType = ViewportInteractionItem::wall;
 
     ImageId imageTemplate;
-    if (wallEntry->flags.has(WallSceneryFlag::hasPrimaryColour))
+    if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
     {
-        imageTemplate = imageTemplate.WithPrimary(wallElement.getPrimaryColour());
+        imageTemplate = imageTemplate.WithPrimary(wallElement.GetPrimaryColour());
     }
-    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
+    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
     {
-        imageTemplate = imageTemplate.WithSecondary(wallElement.getSecondaryColour());
+        imageTemplate = imageTemplate.WithSecondary(wallElement.GetSecondaryColour());
     }
-    if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
     {
-        imageTemplate = imageTemplate.WithTertiary(wallElement.getTertiaryColour());
+        imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }
 
     PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.clearanceHeight);
@@ -336,7 +344,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
         isGhost = true;
     }
 
-    if (wallEntry->flags.has(WallSceneryFlag::isDoor))
+    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
     {
         PaintWallDoor(session, *wallEntry, wallElement, imageTemplate, direction, height);
     }

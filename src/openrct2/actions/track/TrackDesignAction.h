@@ -9,13 +9,12 @@
 
 #pragma once
 
-#include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {
-    class TrackDesignAction final : public GameActionBase<GameCommand::placeTrackDesign>
+    class TrackDesignAction final : public GameActionBase<GameCommand::PlaceTrackDesign>
     {
     private:
         CoordsXYZD _loc;

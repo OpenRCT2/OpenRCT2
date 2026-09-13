@@ -44,7 +44,7 @@ namespace OpenRCT2::GameActions
         count,
     };
 
-    class TileModifyAction final : public GameActionBase<GameCommand::modifyTile>
+    class TileModifyAction final : public GameActionBase<GameCommand::ModifyTile>
     {
     private:
         CoordsXY _loc;

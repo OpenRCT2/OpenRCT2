@@ -11,6 +11,7 @@
 
 #include "../Diagnostic.h"
 #include "../core/Guard.hpp"
+#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "RCT1.h"
@@ -1438,7 +1439,7 @@ namespace OpenRCT2::RCT1
     {
         static constexpr const char * map[] =
         {
-            "rct1.water.natural_water",
+            "rct2.water.wtrcyan",
             "rct2.water.wtrorng",
         };
         return map[waterType];
@@ -1512,25 +1513,6 @@ namespace OpenRCT2::RCT1
                 return true;
             default:
                 return false;
-        }
-    }
-
-    uint8_t getAdditionalZeroCars(const VehicleType vehicleType)
-    {
-        switch (vehicleType)
-        {
-            case VehicleType::woodenMineCars:
-            case VehicleType::woodenMouseCars:
-            case VehicleType::steelMouseCars:
-            case VehicleType::sportscars:
-            case VehicleType::racingCars:
-            case VehicleType::trucks:
-            case VehicleType::vintageCars:
-            case VehicleType::catCars:
-            case VehicleType::helicopterCars:
-                return 2;
-            default:
-                return 0;
         }
     }
 } // namespace OpenRCT2::RCT1

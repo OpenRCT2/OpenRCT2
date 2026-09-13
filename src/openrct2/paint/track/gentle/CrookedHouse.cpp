@@ -20,6 +20,7 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -58,7 +59,7 @@ static void PaintCrookedHouseStructure(
     if (tileElement == nullptr)
         return;
 
-    auto ride = GetRide(tileElement->asTrack()->getRideIndex());
+    auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
     if (ride == nullptr)
         return;
 
@@ -68,7 +69,7 @@ static void PaintCrookedHouseStructure(
 
     if (ride->flags.has(RideFlag::onTrack))
     {
-        auto vehicle = getGameState().entities.getEntity<Vehicle>(ride->vehicles[0]);
+        auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::entity;
@@ -77,7 +78,7 @@ static void PaintCrookedHouseStructure(
     }
 
     const auto& boundBox = kCrookedHouseData[segment];
-    auto imageIndex = rideEntry->Cars[0].baseImageId + direction;
+    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(
         session, stationColour.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },
         { { boundBox.offset, height + 3 }, { boundBox.length, 127 } });

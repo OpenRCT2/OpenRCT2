@@ -264,7 +264,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    [[nodiscard]] std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
+    std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         const INetworkEndpoint& broadcastEndpoint) const
     {
         auto broadcastAddress = broadcastEndpoint.GetHostname();
@@ -321,7 +321,7 @@ namespace OpenRCT2::Network
         });
     }
 
-    [[nodiscard]] std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync() const
+    std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync() const
     {
         return std::async(std::launch::async, [&] {
             // Get all possible LAN broadcast addresses
@@ -370,15 +370,13 @@ namespace OpenRCT2::Network
 
         Http::Request request;
         request.url = std::move(masterServerUrl);
-        request.method = Http::Method::get;
+        request.method = Http::Method::GET;
         request.header["Accept"] = "application/json";
-        // Despite DoAsync, the future below is not stored, so it will block the calling thread until the request completes
-        // TOOD: Review if this is acceptable
-        std::ignore = Http::DoAsync(request, [p](Http::Response& response) -> void {
+        Http::DoAsync(request, [p](Http::Response& response) -> void {
             json_t root;
             try
             {
-                if (response.status != Http::Status::ok)
+                if (response.status != Http::Status::Ok)
                 {
                     throw MasterServerException(STR_SERVER_LIST_NO_CONNECTION);
                 }

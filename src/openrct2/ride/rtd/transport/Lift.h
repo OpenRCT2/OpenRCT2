@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kLiftRTD =
+constexpr RideTypeDescriptor LiftRTD =
 {
     .Category = RideCategory::transport,
     .StartTrackPiece = TrackElemType::towerBase,
@@ -31,11 +30,11 @@ constexpr RideTypeDescriptor kLiftRTD =
                      RtdFlag::cannotHaveGaps, RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::hasVehicleColours,
                      RtdFlag::hasTrack, RtdFlag::allowExtraTowerBases, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner),
-    .rideModes = { RideMode::shuttle },
+    .RideModes = EnumsToFlags(RideMode::shuttle),
     .DefaultMode = RideMode::shuttle,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_LIFT, STR_RIDE_DESCRIPTION_LIFT },
-    .NameConvention = { RideComponentType::cabin, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::doorsStuckClosed, Breakdown::doorsStuckOpen, Breakdown::vehicleMalfunction },
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
@@ -53,20 +52,20 @@ constexpr RideTypeDescriptor kLiftRTD =
         { Drawing::Colour::black, Drawing::Colour::black, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_LIFT_TRACK, 0 },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "lift",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 11), RideRating::make(0, 35), RideRating::make(0, 30) },
         15,
         7,
         false,
         {
-            { RatingsModifierType::bonusProximity,         0, 11183, 0, 0 },
-            { RatingsModifierType::bonusScenery,           0, 83662, 0, 0 },
-            { RatingsModifierType::bonusTowerRide,       0, 45875, 0, 26214 },
-            { RatingsModifierType::requirementUnsheltered, 5, 4, 1, 1 },
+            { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,           0, 83662, 0, 0 },
+            { RatingsModifierType::BonusTowerRide,       0, 45875, 0, 26214 },
+            { RatingsModifierType::RequirementUnsheltered, 5, 4, 1, 1 },
         },
     },
 };

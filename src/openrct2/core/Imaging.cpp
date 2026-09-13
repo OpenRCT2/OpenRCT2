@@ -13,6 +13,7 @@
 
 #include "../Diagnostic.h"
 #include "../Version.h"
+#include "../drawing/Drawing.h"
 #include "FileSystem.hpp"
 #include "Guard.hpp"
 #include "IStream.hpp"
@@ -115,10 +116,7 @@ namespace OpenRCT2::Imaging
             if (colourType == PNG_COLOR_TYPE_RGB)
             {
                 // 24-bit PNG (no alpha)
-                if (rowBytes != pngWidth * 3)
-                {
-                    throw std::runtime_error("PNG must have 24-bit colours in RGB mode. ");
-                }
+                Guard::Assert(rowBytes == pngWidth * 3, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
                     auto src = rowPointers[i];
@@ -134,10 +132,7 @@ namespace OpenRCT2::Imaging
             else if (bitDepth == 8 && !expandTo32)
             {
                 // 8-bit paletted or greyscale
-                if (rowBytes != pngWidth)
-                {
-                    throw std::runtime_error("PNG must be 8-bit paletted when using \"keep\" palette. ");
-                }
+                Guard::Assert(rowBytes == pngWidth, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
                     std::copy_n(rowPointers[i], rowBytes, dst);
@@ -147,10 +142,7 @@ namespace OpenRCT2::Imaging
             else
             {
                 // 32-bit PNG (with alpha)
-                if (rowBytes != pngWidth * 4)
-                {
-                    throw std::runtime_error("PNG must either have 8-bit paletted, or 24-bit/32-bit full colour data. ");
-                }
+                Guard::Assert(rowBytes == pngWidth * 4, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
                     std::copy_n(rowPointers[i], rowBytes, dst);

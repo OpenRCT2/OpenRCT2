@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../TrackImporter.h"
+#include "../config/Config.h"
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
@@ -245,8 +246,7 @@ namespace OpenRCT2::RCT1
             td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
             td->operation.departFlags = td4Base.DepartFlags;
             td->trackAndVehicle.numberOfTrains = td4Base.NumberOfTrains;
-            td->trackAndVehicle.numberOfCarsPerTrain = td4Base.NumberOfCarsPerTrain
-                + getAdditionalZeroCars(td4Base.VehicleType);
+            td->trackAndVehicle.numberOfCarsPerTrain = td4Base.NumberOfCarsPerTrain;
             td->operation.minWaitingTime = td4Base.MinWaitingTime;
             td->operation.maxWaitingTime = td4Base.MaxWaitingTime;
             td->operation.operationSetting = std::min(
@@ -269,7 +269,7 @@ namespace OpenRCT2::RCT1
             td->statistics.ratings.intensity = td4Base.Intensity * kTD46RatingsMultiplier;
             td->statistics.ratings.nausea = td4Base.Nausea * kTD46RatingsMultiplier;
             td->statistics.upkeepCost = ToMoney64(td4Base.UpkeepCost);
-            td->statistics.spaceRequired.setNull();
+            td->statistics.spaceRequired.SetNull();
             td->operation.liftHillSpeed = 5;
             td->operation.numCircuits = 1;
             td->operation.operationSetting = std::min(

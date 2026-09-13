@@ -9,36 +9,35 @@
 
 #include "CarEntry.h"
 
-#include "../drawing/Drawing.Sprite.h"
-#include "../drawing/RenderTarget.h"
+#include "../drawing/Drawing.h"
 #include "../entity/Yaw.hpp"
 
 #include <cstdint>
 
-uint32_t CarEntry::numRotationSprites(SpriteGroupType spriteGroup) const
+uint32_t CarEntry::NumRotationSprites(SpriteGroupType spriteGroup) const
 {
-    return NumSpritesPrecision(spriteGroups[EnumValue(spriteGroup)].spritePrecision);
+    return NumSpritesPrecision(SpriteGroups[EnumValue(spriteGroup)].spritePrecision);
 }
 
-int32_t CarEntry::spriteByYaw(int32_t yaw, SpriteGroupType spriteGroup) const
+int32_t CarEntry::SpriteByYaw(int32_t yaw, SpriteGroupType spriteGroup) const
 {
-    return YawToPrecision(yaw, spriteGroups[EnumValue(spriteGroup)].spritePrecision);
+    return YawToPrecision(yaw, SpriteGroups[EnumValue(spriteGroup)].spritePrecision);
 }
 
-bool CarEntry::groupEnabled(SpriteGroupType spriteGroup) const
+bool CarEntry::GroupEnabled(SpriteGroupType spriteGroup) const
 {
-    return spriteGroups[EnumValue(spriteGroup)].isEnabled();
+    return SpriteGroups[EnumValue(spriteGroup)].Enabled();
 }
 
-uint32_t CarEntry::groupImageId(SpriteGroupType spriteGroup) const
+uint32_t CarEntry::GroupImageId(SpriteGroupType spriteGroup) const
 {
-    return spriteGroups[EnumValue(spriteGroup)].imageId;
+    return SpriteGroups[EnumValue(spriteGroup)].imageId;
 }
 
-uint32_t CarEntry::getSpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const
+uint32_t CarEntry::SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const
 {
-    return ((spriteByYaw(imageDirection, spriteGroup) + numRotationSprites(spriteGroup) * rankIndex) * baseNumFrames)
-        + groupImageId(spriteGroup);
+    return ((SpriteByYaw(imageDirection, spriteGroup) + NumRotationSprites(spriteGroup) * rankIndex) * base_num_frames)
+        + GroupImageId(spriteGroup);
 }
 
 /**
@@ -66,7 +65,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
     for (int32_t i = 0; i < numImages; ++i)
     {
-        GfxDrawSpriteSoftware(rt, ImageId(carEntry.baseImageId + i), { 0, 0 });
+        GfxDrawSpriteSoftware(rt, ImageId(carEntry.base_image_id + i), { 0, 0 });
     }
 
     int32_t spriteWidth = -1;
@@ -146,5 +145,5 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
 bool CarEntry::isVisible() const
 {
-    return tabRotationMask != 0;
+    return TabRotationMask != 0;
 }

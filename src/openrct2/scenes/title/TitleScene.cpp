@@ -18,17 +18,18 @@
 #include "../../audio/Audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
-#include "../../drawing/Drawing.Screen.h"
-#include "../../drawing/Palette.h"
+#include "../../drawing/Drawing.h"
+#include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
-#include "../../interface/Window.h"
+#include "../../network/Network.h"
 #include "../../network/NetworkBase.h"
 #include "../../scenario/ScenarioRepository.h"
-#include "../../scenes/SceneManager.h"
 #include "../../ui/UiContext.h"
 #include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
+#include "../../windows/Intent.h"
 #include "../../world/Map.h"
+#include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 
@@ -154,7 +155,7 @@ void TitleScene::Tick()
         {
             gameStateUpdateLogic();
         }
-        Drawing::UpdatePaletteEffects();
+        UpdatePaletteEffects();
         // update_weather_animation();
     }
 
@@ -226,13 +227,13 @@ void TitleScene::TitleInitialise()
                 const ScenarioSource sourceGame = ScenarioRepositoryGetByIndex(s)->SourceGame;
                 switch (sourceGame)
                 {
-                    case ScenarioSource::rct1:
+                    case ScenarioSource::RCT1:
                         RCT1Count++;
                         break;
-                    case ScenarioSource::rct1AA:
+                    case ScenarioSource::RCT1_AA:
                         RCT1AAInstalled = true;
                         break;
-                    case ScenarioSource::rct1LL:
+                    case ScenarioSource::RCT1_LL:
                         RCT1LLInstalled = true;
                         break;
                     default:
@@ -311,7 +312,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
                         Config::Get().interface.currentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
-                    Drawing::GfxInvalidateScreen();
+                    GfxInvalidateScreen();
                     return true;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;
@@ -333,8 +334,8 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
 
 void TitleCreateWindows()
 {
-    auto* sceneMgr = GetContext()->GetSceneManager();
-    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
+    auto* context = GetContext();
+    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
         titleScene->CreateWindows();
@@ -343,8 +344,8 @@ void TitleCreateWindows()
 
 void* TitleGetSequencePlayer()
 {
-    auto* sceneMgr = GetContext()->GetSceneManager();
-    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
+    auto* context = GetContext();
+    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
         return titleScene->GetSequencePlayer();
@@ -354,8 +355,8 @@ void* TitleGetSequencePlayer()
 
 void TitleSequenceChangePreset(size_t preset)
 {
-    auto* sceneMgr = GetContext()->GetSceneManager();
-    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
+    auto* context = GetContext();
+    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
         titleScene->ChangePresetSequence(preset);
@@ -369,8 +370,8 @@ size_t TitleGetConfigSequence()
 
 size_t TitleGetCurrentSequence()
 {
-    auto* sceneMgr = GetContext()->GetSceneManager();
-    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
+    auto* context = GetContext();
+    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
         return titleScene->GetCurrentSequence();
@@ -380,8 +381,8 @@ size_t TitleGetCurrentSequence()
 
 bool TitlePreviewSequence(size_t value)
 {
-    auto* sceneMgr = GetContext()->GetSceneManager();
-    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
+    auto* context = GetContext();
+    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
         return titleScene->PreviewSequence(value);
@@ -391,8 +392,8 @@ bool TitlePreviewSequence(size_t value)
 
 void TitleStopPreviewingSequence()
 {
-    auto* sceneMgr = GetContext()->GetSceneManager();
-    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
+    auto* context = GetContext();
+    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
         titleScene->StopPreviewingSequence();
@@ -401,8 +402,8 @@ void TitleStopPreviewingSequence()
 
 bool TitleIsPreviewingSequence()
 {
-    auto* sceneMgr = GetContext()->GetSceneManager();
-    auto* titleScene = static_cast<TitleScene*>(sceneMgr->getTitleScene());
+    auto* context = GetContext();
+    auto* titleScene = static_cast<TitleScene*>(context->GetTitleScene());
     if (titleScene != nullptr)
     {
         return titleScene->IsPreviewingSequence();

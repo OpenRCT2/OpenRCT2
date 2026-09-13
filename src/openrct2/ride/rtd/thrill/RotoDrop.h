@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kRotoDropRTD =
+constexpr RideTypeDescriptor RotoDropRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::towerBase,
@@ -32,10 +31,10 @@ constexpr RideTypeDescriptor kRotoDropRTD =
                      RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::singleSession, RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .rideModes = { RideMode::freefallDrop },
+    .RideModes = EnumsToFlags(RideMode::freefallDrop),
     .DefaultMode = RideMode::freefallDrop,
     .Naming = { STR_RIDE_NAME_ROTO_DROP, STR_RIDE_DESCRIPTION_ROTO_DROP },
-    .NameConvention = { RideComponentType::car, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction },
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
@@ -52,19 +51,19 @@ constexpr RideTypeDescriptor kRotoDropRTD =
         { Drawing::Colour::black, Drawing::Colour::lightBlue, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "roto_drop",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(2, 80), RideRating::make(3, 50), RideRating::make(3, 50) },
         24,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusProximity,   0, 11183, 0, 0 },
-            { RatingsModifierType::bonusScenery,     0, 25098, 0, 0 },
-            { RatingsModifierType::bonusRotoDrop,    0, 0, 0, 0 },
+            { RatingsModifierType::BonusProximity,   0, 11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,     0, 25098, 0, 0 },
+            { RatingsModifierType::BonusRotoDrop,    0, 0, 0, 0 },
         },
     },
 };

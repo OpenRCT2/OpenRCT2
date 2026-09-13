@@ -10,11 +10,9 @@
 #include "Award.h"
 
 #include "../GameState.h"
-#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
-#include "../entity/Staff.h"
 #include "../localisation/Formatter.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
@@ -184,7 +182,7 @@ static bool AwardIsDeservedBestValue(GameState_t& gameState, Park::ParkData& par
     if (activeAwardTypes & EnumToFlag(AwardType::mostDisappointing))
         return false;
 
-    if (park.flags.has(ParkFlag::noMoney) || !Park::EntranceFeeUnlocked(park))
+    if ((park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked(park))
         return false;
 
     if (park.totalRideValueForMoney < 10.00_GBP)
@@ -234,7 +232,7 @@ static bool AwardIsDeservedWorstValue(GameState_t& gameState, Park::ParkData& pa
 {
     if (activeAwardTypes & EnumToFlag(AwardType::bestValue))
         return false;
-    if (park.flags.has(ParkFlag::noMoney))
+    if (park.flags & PARK_FLAGS_NO_MONEY)
         return false;
 
     const auto parkEntranceFee = Park::GetEntranceFee(park);
@@ -280,18 +278,10 @@ static bool AwardIsDeservedBestStaff(GameState_t& gameState, Park::ParkData& par
     if (activeAwardTypes & EnumToFlag(AwardType::mostUntidy))
         return false;
 
-    auto staffCount = gameState.entities.getEntityListCount(EntityType::staff);
-    auto peepCount = gameState.entities.getEntityListCount(EntityType::guest);
-    FlagHolder<uint8_t, StaffType> foundStaffTypes{};
+    auto staffCount = gameState.entities.GetEntityListCount(EntityType::staff);
+    auto peepCount = gameState.entities.GetEntityListCount(EntityType::guest);
 
-    for (auto* staff : EntityList<Staff>())
-    {
-        foundStaffTypes.set(staff->assignedStaffType);
-    }
-
-    return (
-        foundStaffTypes.hasAll(StaffType::handyman, StaffType::mechanic, StaffType::security, StaffType::entertainer)
-        && staffCount >= 20 && staffCount >= peepCount / 32);
+    return ((staffCount != 0) && staffCount >= 20 && staffCount >= peepCount / 32);
 }
 
 /** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */
@@ -655,7 +645,7 @@ void AwardUpdateAll()
     auto& gameState = getGameState();
     auto& park = gameState.park;
 
-    if (park.flags.has(ParkFlag::parkOpen))
+    if (park.flags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;

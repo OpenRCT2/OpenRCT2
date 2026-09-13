@@ -11,11 +11,13 @@
 
 #include "../Context.h"
 #include "../Date.h"
+#include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
+#include "../Version.h"
 #include "../actions/GameActionRunner.h"
 #include "../actions/cheats/CheatSetAction.h"
 #include "../actions/general/GameSetSpeedAction.h"
@@ -32,15 +34,19 @@
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.Screen.h"
+#include "../drawing/Drawing.h"
+#include "../drawing/Font.h"
 #include "../drawing/Image.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
+#include "../interface/Chat.h"
+#include "../interface/Viewport.h"
 #include "../interface/WindowBase.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/StringIds.h"
+#include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/Network.h"
@@ -48,26 +54,28 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../object/PeepAnimationsObject.h"
+#include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
-#include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
-#include "../scenes/editor/EditorController.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
+#include "../world/Scenery.h"
 #include "Viewport.h"
 
 #include <array>
 #include <cmath>
 #include <cstdarg>
 #include <cstdlib>
+#include <deque>
 #include <exception>
 #include <string>
+#include <thread>
 #include <vector>
 
 #ifndef DISABLE_TTF
@@ -88,6 +96,14 @@ static void ConsoleCommandWindows(InteractiveConsole& console, const arguments_t
 static void ConsoleCommandHelp(InteractiveConsole& console, const arguments_t& argv);
 
 static bool InvalidArguments(bool* invalid, bool arguments);
+
+#define SET_FLAG(variable, flag, value)                                                                                        \
+    {                                                                                                                          \
+        if (value)                                                                                                             \
+            variable |= flag;                                                                                                  \
+        else                                                                                                                   \
+            variable &= ~(flag);                                                                                               \
+    }
 
 static int32_t ConsoleParseInt(const std::string& src, bool* valid)
 {
@@ -259,9 +275,9 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     {
                         for (int32_t i = 0; i < ride->numTrains; ++i)
                         {
-                            for (Vehicle* vehicle = gameState.entities.getEntity<Vehicle>(ride->vehicles[i]);
+                            for (Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[i]);
                                  vehicle != nullptr;
-                                 vehicle = gameState.entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                                 vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                             {
                                 vehicle->mass = mass;
                             }
@@ -448,9 +464,9 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
         {
             for (auto peep : EntityList<Staff>())
             {
-                auto name = peep->getName();
+                auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->assignedStaffType, peep->energy,
+                    "staff id %03d type: %02u energy %03u name %s", peep->id, peep->assignedStaffType, peep->Energy,
                     name.c_str());
             }
         }
@@ -481,11 +497,11 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
 
                 if (int_valid[0] && int_valid[1])
                 {
-                    Peep* peep = gameState.entities.getEntity<Peep>(EntityId::FromUnderlying(int_val[0]));
+                    Peep* peep = gameState.entities.GetEntity<Peep>(EntityId::FromUnderlying(int_val[0]));
                     if (peep != nullptr)
                     {
-                        peep->energy = int_val[1];
-                        peep->energyTarget = int_val[1];
+                        peep->Energy = int_val[1];
+                        peep->EnergyTarget = int_val[1];
                     }
                 }
             }
@@ -500,7 +516,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                     console.WriteLineError("Invalid staff ID");
                     return;
                 }
-                auto staff = gameState.entities.getEntity<Staff>(EntityId::FromUnderlying(int_val[0]));
+                auto staff = gameState.entities.GetEntity<Staff>(EntityId::FromUnderlying(int_val[0]));
                 if (staff == nullptr)
                 {
                     console.WriteLineError("Invalid staff ID");
@@ -610,50 +626,52 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         else if (argv[0] == "guest_prefer_less_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_less_intense_rides %d", gameState.park.flags.has(ParkFlag::guestPreferLessIntenseRides));
+                "guest_prefer_less_intense_rides %d", (gameState.park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "guest_prefer_more_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_more_intense_rides %d", gameState.park.flags.has(ParkFlag::guestPreferMoreIntenseRides));
+                "guest_prefer_more_intense_rides %d", (gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "forbid_marketing_campaigns")
         {
             console.WriteFormatLine(
-                "forbid_marketing_campaigns %d", gameState.park.flags.has(ParkFlag::forbidMarketingCampaigns));
+                "forbid_marketing_campaigns %d", (gameState.park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
         }
         else if (argv[0] == "forbid_landscape_changes")
         {
-            console.WriteFormatLine("forbid_landscape_changes %d", gameState.park.flags.has(ParkFlag::forbidLandscapeChanges));
+            console.WriteFormatLine(
+                "forbid_landscape_changes %d", (gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
         }
         else if (argv[0] == "forbid_tree_removal")
         {
-            console.WriteFormatLine("forbid_tree_removal %d", gameState.park.flags.has(ParkFlag::forbidTreeRemoval));
+            console.WriteFormatLine("forbid_tree_removal %d", (gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
         }
         else if (argv[0] == "forbid_high_construction")
         {
-            console.WriteFormatLine("forbid_high_construction %d", gameState.park.flags.has(ParkFlag::forbidHighConstruction));
+            console.WriteFormatLine(
+                "forbid_high_construction %d", (gameState.park.flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
         }
         else if (argv[0] == "pay_for_rides")
         {
-            console.WriteFormatLine("pay_for_rides %d", gameState.park.flags.has(ParkFlag::freeEntry));
+            console.WriteFormatLine("pay_for_rides %d", (gameState.park.flags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
         }
         else if (argv[0] == "no_money")
         {
-            console.WriteFormatLine("no_money %d", gameState.park.flags.has(ParkFlag::noMoney));
+            console.WriteFormatLine("no_money %d", (gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0);
         }
         else if (argv[0] == "difficult_park_rating")
         {
-            console.WriteFormatLine("difficult_park_rating %d", gameState.park.flags.has(ParkFlag::difficultParkRating));
+            console.WriteFormatLine("difficult_park_rating %d", (gameState.park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
         }
         else if (argv[0] == "difficult_guest_generation")
         {
             console.WriteFormatLine(
-                "difficult_guest_generation %d", gameState.park.flags.has(ParkFlag::difficultGuestGeneration));
+                "difficult_guest_generation %d", (gameState.park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
         }
         else if (argv[0] == "park_open")
         {
-            console.WriteFormatLine("park_open %d", gameState.park.flags.has(ParkFlag::parkOpen));
+            console.WriteFormatLine("park_open %d", (gameState.park.flags & PARK_FLAGS_PARK_OPEN) != 0);
         }
         else if (argv[0] == "game_speed")
         {
@@ -670,7 +688,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
             {
                 Viewport* viewport = WindowGetViewport(w);
                 auto info = GetMapCoordinatesFromPosWindow(
-                    w, { viewport->width / 2, viewport->height / 2 }, ViewportInteractionItem::terrain);
+                    w, { viewport->width / 2, viewport->height / 2 }, EnumsToFlags(ViewportInteractionItem::terrain));
 
                 auto tileMapCoord = TileCoordsXY(info.Loc);
                 console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);
@@ -862,7 +880,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "pay_for_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            gameState.park.flags.set(ParkFlag::freeEntry, static_cast<bool>(int_val[0]));
+            SET_FLAG(gameState.park.flags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
             console.Execute("get pay_for_rides");
         }
         else if (varName == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
@@ -911,7 +929,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             WindowBase* w = WindowGetMain();
             if (w != nullptr)
             {
-                auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).toCoordsXYZ().toTileCentre();
+                auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
                 location.z = TileElementHeight(location);
                 w->setViewportLocation(location);
                 console.Execute("get location");
@@ -922,7 +940,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             float newScale = static_cast<float>(0.001 * std::trunc(1000 * double_val[0]));
             Config::Get().general.windowScale = std::clamp(newScale, 0.5f, 5.0f);
             Config::Save();
-            Drawing::GfxInvalidateScreen();
+            GfxInvalidateScreen();
             ContextTriggerResize();
             ContextUpdateCursorScale();
             console.Execute("get window_scale");
@@ -1020,7 +1038,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             console.WriteLineError("Invalid variable.");
         }
 
-        Drawing::GfxInvalidateScreen();
+        GfxInvalidateScreen();
     }
     else
     {
@@ -1114,7 +1132,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
     ContextBroadcastIntent(&ridesIntent);
 
     gWindowUpdateTicks = 0;
-    Drawing::GfxInvalidateScreen();
+    GfxInvalidateScreen();
     console.WriteLine("Object file loaded.");
 }
 
@@ -1219,13 +1237,13 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
 
 static void ConsoleCommandRemoveUnusedObjects(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    int32_t result = Editor::RemoveUnusedObjects();
+    int32_t result = EditorRemoveUnusedObjects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
 }
 
 static void ConsoleCommandRemoveFloatingObjects(InteractiveConsole& console, const arguments_t& argv)
 {
-    uint16_t result = getGameState().entities.removeFloatingEntities();
+    uint16_t result = getGameState().entities.RemoveFloatingEntities();
     console.WriteFormatLine("Removed %d flying objects", result);
 }
 
@@ -1239,7 +1257,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
     for (int32_t i = 0; i < static_cast<uint8_t>(EntityType::count); ++i)
     {
         auto& gameState = getGameState();
-        spriteCount += gameState.entities.getEntityListCount(EntityType(i));
+        spriteCount += gameState.entities.GetEntityListCount(EntityType(i));
     }
 
     auto bannerCount = GetNumBanners();
@@ -1305,7 +1323,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
     GameActions::Execute(&setDateAction, getGameState());
 
     auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
+    windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
 }
 
 static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1564,7 +1582,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 auto* guest = guests[0];
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
-                guest->tShirtColour = Drawing::getRandomColour();
+                guest->TshirtColour = static_cast<Drawing::Colour>(UtilRand() % Drawing::kColourNumNormal);
                 guest->invalidate();
             }
             break;
@@ -1580,7 +1598,7 @@ static void ConsoleCommandMpDesync(InteractiveConsole& console, const arguments_
                 auto* guest = guests[0];
                 if (guests.size() > 1)
                     guest = guests[UtilRand() % guests.size() - 1];
-                guest->remove();
+                guest->Remove();
             }
             break;
         }
@@ -1750,7 +1768,7 @@ static void ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& 
     Drawing::Colour colour = Drawing::Colour::brightRed;
     if (argv.size() > 3)
         colour = static_cast<Drawing::Colour>(atoi(argv[3].c_str()) % Drawing::kColourNumNormal);
-    Balloon::create({ x, y, z }, colour, false);
+    Balloon::Create({ x, y, z }, colour, false);
 }
 
 using console_command_func = void (*)(InteractiveConsole& console, const arguments_t& argv);

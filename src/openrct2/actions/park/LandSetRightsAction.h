@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../../world/MapOwnership.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
@@ -24,17 +23,17 @@ namespace OpenRCT2::GameActions
         count
     };
 
-    class LandSetRightsAction final : public GameActionBase<GameCommand::setLandOwnership>
+    class LandSetRightsAction final : public GameActionBase<GameCommand::SetLandOwnership>
     {
     private:
         MapRange _range;
         LandSetRightSetting _setting{ LandSetRightSetting::count };
-        OwnershipFlags _ownership{};
+        uint8_t _ownership{};
 
     public:
         LandSetRightsAction() = default;
-        LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, OwnershipFlags ownership = kUnowned);
-        LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, OwnershipFlags ownership = kUnowned);
+        LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership = 0);
+        LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership = 0);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

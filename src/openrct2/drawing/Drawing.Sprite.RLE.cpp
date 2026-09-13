@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "Drawing.Sprite.h"
-#include "RenderTarget.h"
 
 #include <cassert>
 #include <cstring>

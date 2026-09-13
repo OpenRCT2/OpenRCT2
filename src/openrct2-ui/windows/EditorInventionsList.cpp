@@ -7,10 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <iterator>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Editor.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
@@ -23,11 +24,14 @@
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
+#include <openrct2/object/DefaultObjects.h>
 #include <openrct2/object/ObjectList.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideManager.hpp>
-#include <openrct2/scenes/editor/EditorController.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/Scenery.h>
 
 using namespace OpenRCT2::Drawing;
 
@@ -90,7 +94,7 @@ namespace OpenRCT2::Ui::Windows
             auto maxObjects = getObjectEntryGroupCount(objectType);
             for (auto i = 0u; i < maxObjects; i++)
             {
-                Editor::ClearSelectedObject(objectType, i);
+                Editor::ClearSelectedObject(objectType, i, ObjectSelectionFlags::AllFlags);
             }
         }
 
@@ -99,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
         for (const auto& ride : RideManager(gameState))
         {
             Editor::SetSelectedObject(
-                ObjectType::ride, ride.subtype, { ObjectSelectionFlag::selected, ObjectSelectionFlag::inUse });
+                ObjectType::ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
         }
     }
 
@@ -350,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
             auto* researchItem = GetItemFromScrollY(isInvented, screenCoords.y);
             if (researchItem != nullptr && !researchItem->isAlwaysResearched())
             {
-                return CursorID::handOpen;
+                return CursorID::HandOpen;
             }
             return fallback;
         }
@@ -445,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            widgets[WIDX_CLOSE].setHidden(gLegacyScene == LegacyScene::scenarioEditor);
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
 
             int16_t scrollListHeight = (height - 88) / 2;
 
@@ -622,7 +626,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            return CursorID::handClosed;
+            return CursorID::HandClosed;
         }
 
         void onMoved(const ScreenCoordsXY& screenCoords) override

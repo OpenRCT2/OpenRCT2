@@ -9,13 +9,11 @@
 
 #pragma once
 
-#include <cstdint>
+#include "../core/EnumUtils.hpp"
+#include "../world/Location.hpp"
+#include "Angles.h"
 
-struct CoordsXY;
-struct CoordsXYZ;
-
-enum class VehiclePitch : uint8_t;
-enum class VehicleRoll : uint8_t;
+#include <array>
 
 namespace OpenRCT2::RideVehicle::Geometry
 {

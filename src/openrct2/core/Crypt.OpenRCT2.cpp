@@ -11,6 +11,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 
 using namespace OpenRCT2::Crypt;

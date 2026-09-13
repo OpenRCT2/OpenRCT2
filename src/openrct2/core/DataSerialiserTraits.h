@@ -13,9 +13,12 @@
 #include "../entity/Guest.h"
 #include "../network/Network.h"
 #include "../network/NetworkTypes.h"
+#include "../object/Object.h"
+#include "../ride/RideColour.h"
 #include "../ride/TrackDesign.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
+#include "../world/Location.hpp"
 #include "../world/tile_element/TileElement.h"
 #include "DataSerialiserTag.h"
 #include "Endianness.h"
@@ -223,21 +226,21 @@ namespace OpenRCT2
         static void encode(IStream* stream, const DataSerialiserTag<T>& tag)
         {
             DataSerializerTraits<T> s;
-            s.encode(stream, tag.data());
+            s.encode(stream, tag.Data());
         }
         static void decode(IStream* stream, DataSerialiserTag<T>& tag)
         {
             DataSerializerTraits<T> s;
-            s.decode(stream, tag.data());
+            s.decode(stream, tag.Data());
         }
         static void log(IStream* stream, const DataSerialiserTag<T>& tag)
         {
-            const char* name = tag.name();
+            const char* name = tag.Name();
             stream->Write(name, strlen(name));
             stream->Write(" = ", 3);
 
             DataSerializerTraits<T> s;
-            s.log(stream, tag.data());
+            s.log(stream, tag.Data());
 
             stream->Write("; ", 2);
         }
@@ -427,10 +430,10 @@ namespace OpenRCT2
     {
         static void encode(IStream* stream, const MapRange& v)
         {
-            stream->WriteValue(ByteSwapBE(v.getX1()));
-            stream->WriteValue(ByteSwapBE(v.getY1()));
-            stream->WriteValue(ByteSwapBE(v.getX2()));
-            stream->WriteValue(ByteSwapBE(v.getY2()));
+            stream->WriteValue(ByteSwapBE(v.GetX1()));
+            stream->WriteValue(ByteSwapBE(v.GetY1()));
+            stream->WriteValue(ByteSwapBE(v.GetX2()));
+            stream->WriteValue(ByteSwapBE(v.GetY2()));
         }
         static void decode(IStream* stream, MapRange& v)
         {
@@ -444,8 +447,8 @@ namespace OpenRCT2
         {
             char coords[128] = {};
             snprintf(
-                coords, sizeof(coords), "MapRange(x1 = %d, y1 = %d, x2 = %d, y2 = %d)", v.getX1(), v.getY1(), v.getX2(),
-                v.getY2());
+                coords, sizeof(coords), "MapRange(x1 = %d, y1 = %d, x2 = %d, y2 = %d)", v.GetX1(), v.GetY1(), v.GetX2(),
+                v.GetY2());
 
             stream->Write(coords, strlen(coords));
         }
@@ -461,11 +464,11 @@ namespace OpenRCT2
             stream->WriteValue(tileElement.baseHeight);
             stream->WriteValue(tileElement.clearanceHeight);
             stream->WriteValue(tileElement.owner);
-            for (auto v : tileElement.pad05)
+            for (auto v : tileElement.Pad05)
             {
                 stream->WriteValue(v);
             }
-            for (auto v : tileElement.pad08)
+            for (auto v : tileElement.Pad08)
             {
                 stream->WriteValue(v);
             }
@@ -477,11 +480,11 @@ namespace OpenRCT2
             tileElement.baseHeight = stream->ReadValue<uint8_t>();
             tileElement.clearanceHeight = stream->ReadValue<uint8_t>();
             tileElement.owner = stream->ReadValue<uint8_t>();
-            for (auto& v : tileElement.pad05)
+            for (auto& v : tileElement.Pad05)
             {
                 v = stream->ReadValue<uint8_t>();
             }
-            for (auto& v : tileElement.pad08)
+            for (auto& v : tileElement.Pad08)
             {
                 v = stream->ReadValue<uint8_t>();
             }
@@ -640,7 +643,7 @@ namespace OpenRCT2
         static void encode(IStream* stream, const ObjectEntryDescriptor& val)
         {
             stream->WriteValue<uint8_t>(static_cast<uint8_t>(val.Generation));
-            if (val.Generation == ObjectGeneration::dat)
+            if (val.Generation == ObjectGeneration::DAT)
             {
                 DataSerializerTraits<RCTObjectEntry> s;
                 s.encode(stream, val.Entry);
@@ -655,7 +658,7 @@ namespace OpenRCT2
         static void decode(IStream* stream, ObjectEntryDescriptor& val)
         {
             auto generation = static_cast<ObjectGeneration>(stream->ReadValue<uint8_t>());
-            if (generation == ObjectGeneration::dat)
+            if (generation == ObjectGeneration::DAT)
             {
                 DataSerializerTraits<RCTObjectEntry> s;
                 RCTObjectEntry entry;
@@ -881,7 +884,7 @@ namespace OpenRCT2
         static void log(IStream* stream, const IntensityRange& val)
         {
             char msg[128] = {};
-            snprintf(msg, sizeof(msg), "IntensityRange(min = %d, max = %d)", val.getMinimum(), val.getMaximum());
+            snprintf(msg, sizeof(msg), "IntensityRange(min = %d, max = %d)", val.GetMinimum(), val.GetMaximum());
             stream->Write(msg, strlen(msg));
         }
     };

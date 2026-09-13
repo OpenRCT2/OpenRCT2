@@ -32,7 +32,7 @@ namespace OpenRCT2::World::MapGenerator
         if (surfaceElement == nullptr)
             return 0;
 
-        surfaceElement->setSlope(kTileSlopeFlat);
+        surfaceElement->SetSlope(kTileSlopeFlat);
 
         auto x = tileCoords.x, y = tileCoords.y;
         auto raisedLand = 0;
@@ -130,7 +130,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (doubleCorner != -1)
         {
-            uint8_t slope = surfaceElement->getSlope() | kTileSlopeDiagonalFlag;
+            uint8_t slope = surfaceElement->GetSlope() | kTileSlopeDiagonalFlag;
             switch (doubleCorner)
             {
                 case 0:
@@ -146,11 +146,11 @@ namespace OpenRCT2::World::MapGenerator
                     slope |= kTileSlopeECornerDown;
                     break;
             }
-            surfaceElement->setSlope(slope);
+            surfaceElement->SetSlope(slope);
         }
         else
         {
-            uint8_t slope = surfaceElement->getSlope();
+            uint8_t slope = surfaceElement->GetSlope();
             // Corners
             auto surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 1 });
             if (surfaceElement2 != nullptr && surfaceElement2->baseHeight > surfaceElement->baseHeight)
@@ -191,7 +191,7 @@ namespace OpenRCT2::World::MapGenerator
                 slope = kTileSlopeFlat;
                 surfaceElement->baseHeight = surfaceElement->clearanceHeight += 2;
             }
-            surfaceElement->setSlope(slope);
+            surfaceElement->SetSlope(slope);
         }
 
         return raisedLand;
@@ -283,7 +283,7 @@ namespace OpenRCT2::World::MapGenerator
         }
 
         // Check if the calculated slope is the same already
-        uint8_t currentSlope = surfaceElement->getSlope();
+        uint8_t currentSlope = surfaceElement->GetSlope();
         if (currentSlope == slope)
         {
             return 0;
@@ -292,17 +292,17 @@ namespace OpenRCT2::World::MapGenerator
         if ((slope & kTileSlopeRaisedCornersMask) == kTileSlopeRaisedCornersMask)
         {
             // All corners are raised, raise the entire tile instead.
-            surfaceElement->setSlope(kTileSlopeFlat);
+            surfaceElement->SetSlope(kTileSlopeFlat);
             surfaceElement->baseHeight = (surfaceElement->clearanceHeight += 2);
-            if (surfaceElement->getWaterHeight() <= surfaceElement->getBaseZ())
+            if (surfaceElement->GetWaterHeight() <= surfaceElement->getBaseZ())
             {
-                surfaceElement->setWaterHeight(0);
+                surfaceElement->SetWaterHeight(0);
             }
         }
         else
         {
             // Apply the slope to this tile
-            surfaceElement->setSlope(slope);
+            surfaceElement->SetSlope(slope);
 
             // Set correct clearance height
             if (slope & kTileSlopeDiagonalFlag)

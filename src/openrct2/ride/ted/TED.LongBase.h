@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../localisation/StringIds.h"
 #include "TrackElementDescriptor.h"
 
 namespace OpenRCT2::TrackMetadata

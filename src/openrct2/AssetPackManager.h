@@ -10,6 +10,7 @@
 #pragma once
 
 #include "core/FileSystem.hpp"
+#include "drawing/ImageId.hpp"
 
 #include <memory>
 #include <vector>

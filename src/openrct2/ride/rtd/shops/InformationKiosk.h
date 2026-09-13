@@ -10,13 +10,12 @@
 #pragma once
 
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kInformationKioskRTD =
+constexpr RideTypeDescriptor InformationKioskRTD =
 {
     .Category = RideCategory::shop,
     .StartTrackPiece = TrackElemType::flatTrack1x1B,
@@ -30,10 +29,10 @@ constexpr RideTypeDescriptor kInformationKioskRTD =
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide,
                      RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::shopStall },
+    .RideModes = EnumsToFlags(RideMode::shopStall),
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK },
-    .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .availableBreakdowns = {},
     .Heights = { 12, kDefaultInformationKioskHeight, 0, 0, },
     .MaxMass = 255,
@@ -47,21 +46,21 @@ constexpr RideTypeDescriptor kInformationKioskRTD =
     .BonusValue = 15,
     .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::infoKiosk,
+    .ColourKey = RideColourKey::InfoKiosk,
     .Name = "information_kiosk",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::stall,
+        RatingsCalculationType::Stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,
         false,
-        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::kioskOrFacility,
 };

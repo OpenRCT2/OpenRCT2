@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class SignSetNameAction final : public GameActionBase<GameCommand::setSignName>
+    class SignSetNameAction final : public GameActionBase<GameCommand::SetSignName>
     {
     private:
         BannerIndex _bannerIndex{ BannerIndex::GetNull() };

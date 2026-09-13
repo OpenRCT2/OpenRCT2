@@ -1,6 +1,8 @@
 #include "VehicleSounds.h"
 
+#include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../windows/Windows.h"
 
 #include <cassert>
 #include <numeric>
@@ -9,8 +11,8 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/audio/AudioChannel.h>
+#include <openrct2/audio/AudioMixer.h>
 #include <openrct2/entity/EntityRegistry.h>
-#include <openrct2/interface/Viewport.h>
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
@@ -71,7 +73,7 @@ namespace OpenRCT2::Audio
             }
             iterator& operator++()
             {
-                Current = getGameState().entities.getEntity<Vehicle>(NextVehicleId);
+                Current = getGameState().entities.GetEntity<Vehicle>(NextVehicleId);
                 if (Current != nullptr)
                 {
                     NextVehicleId = Current->next_vehicle_on_train;
@@ -107,7 +109,7 @@ namespace OpenRCT2::Audio
         if (gLegacyScene == LegacyScene::scenarioEditor)
             return false;
 
-        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != Editor::Step::rollerCoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::rollerCoasterDesigner)
             return false;
 
         if (vehicle.sound1_id == SoundId::null && vehicle.sound2_id == SoundId::null)
@@ -131,7 +133,7 @@ namespace OpenRCT2::Audio
             bottom -= quarter_h;
         }
 
-        if (left >= vehicle.spriteData.spriteRect.getRight() || bottom >= vehicle.spriteData.spriteRect.getBottom())
+        if (left >= vehicle.spriteData.spriteRect.GetRight() || bottom >= vehicle.spriteData.spriteRect.GetBottom())
             return false;
 
         auto right = gMusicTrackingViewport->ViewWidth() + left;
@@ -143,7 +145,7 @@ namespace OpenRCT2::Audio
             top += quarter_h + quarter_h;
         }
 
-        if (right < vehicle.spriteData.spriteRect.getRight() || top < vehicle.spriteData.spriteRect.getTop())
+        if (right < vehicle.spriteData.spriteRect.GetRight() || top < vehicle.spriteData.spriteRect.GetTop())
             return false;
 
         return true;
@@ -173,7 +175,7 @@ namespace OpenRCT2::Audio
     {
         VehicleSoundParams param;
         param.priority = priority;
-        int32_t panX = (vehicle.spriteData.spriteRect.getLeft() / 2) + (vehicle.spriteData.spriteRect.getRight() / 2)
+        int32_t panX = (vehicle.spriteData.spriteRect.GetLeft() / 2) + (vehicle.spriteData.spriteRect.GetRight() / 2)
             - gMusicTrackingViewport->viewPos.x;
         panX = gMusicTrackingViewport->zoom.ApplyInversedTo(panX);
         panX += gMusicTrackingViewport->pos.x;
@@ -185,7 +187,7 @@ namespace OpenRCT2::Audio
         }
         param.panX = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
-        int32_t panY = (vehicle.spriteData.spriteRect.getTop() / 2) + (vehicle.spriteData.spriteRect.getBottom() / 2)
+        int32_t panY = (vehicle.spriteData.spriteRect.GetTop() / 2) + (vehicle.spriteData.spriteRect.GetBottom() / 2)
             - gMusicTrackingViewport->viewPos.y;
         panY = gMusicTrackingViewport->zoom.ApplyInversedTo(panY);
         panY += gMusicTrackingViewport->pos.y;
@@ -202,7 +204,7 @@ namespace OpenRCT2::Audio
         const auto* rideType = vehicle.GetRideEntry();
         if (rideType != nullptr)
         {
-            if (rideType->Cars[vehicle.vehicle_type].doubleSoundFrequency & 1)
+            if (rideType->Cars[vehicle.vehicle_type].double_sound_frequency & 1)
             {
                 frequency *= 2;
             }
@@ -432,14 +434,14 @@ namespace OpenRCT2::Audio
 
     enum class SoundType
     {
-        trackNoises,
-        otherNoises, // e.g. Screams
+        TrackNoises,
+        OtherNoises, // e.g. Screams
     };
 
     template<SoundType type>
     static uint16_t SoundFrequency(const SoundId id, uint16_t baseFrequency)
     {
-        if constexpr (type == SoundType::trackNoises)
+        if constexpr (type == SoundType::TrackNoises)
         {
             if (IsSpecialFrequencySound(id))
             {
@@ -460,7 +462,7 @@ namespace OpenRCT2::Audio
     template<SoundType type>
     static bool ShouldUpdateChannelRate(const SoundId id)
     {
-        return type == SoundType::trackNoises || !IsFixedFrequencySound(id);
+        return type == SoundType::TrackNoises || !IsFixedFrequencySound(id);
     }
 
     template<SoundType type>
@@ -602,12 +604,12 @@ namespace OpenRCT2::Audio
             vehicleSound->volume = tempvolume;
             panVol = std::max(0, panVol - tempvolume);
 
-            Vehicle* vehicle = getGameState().entities.getEntity<Vehicle>(EntityId::FromUnderlying(vehicleSoundParams.id));
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(EntityId::FromUnderlying(vehicleSoundParams.id));
             if (vehicle != nullptr)
             {
-                UpdateSound<SoundType::trackNoises>(
+                UpdateSound<SoundType::TrackNoises>(
                     vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->trackSound, panVol);
-                UpdateSound<SoundType::otherNoises>(
+                UpdateSound<SoundType::OtherNoises>(
                     vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->otherSound, panVol);
             }
         }

@@ -11,42 +11,40 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../GameState.h"
     #include "../../../core/EnumMap.hpp"
-    #include "../../../entity/Peep.h"
     #include "ScEntity.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    static const EnumMap<PeepFlag> kPeepFlagMap(
+    static const EnumMap<uint32_t> PeepFlagMap(
         {
-            { "leavingPark", PeepFlag::leavingPark },
-            { "slowWalk", PeepFlag::slowWalk },
-            { "tracking", PeepFlag::tracking },
-            { "waving", PeepFlag::waving },
-            { "hasPaidForParkEntry", PeepFlag::hasPaidForParkEntry },
-            { "photo", PeepFlag::photo },
-            { "painting", PeepFlag::painting },
-            { "wow", PeepFlag::wow },
-            { "litter", PeepFlag::litter },
-            { "lost", PeepFlag::lost },
-            { "hunger", PeepFlag::hunger },
-            { "toilet", PeepFlag::toilet },
-            { "crowded", PeepFlag::crowded },
-            { "happiness", PeepFlag::happiness },
-            { "nausea", PeepFlag::nausea },
-            { "purple", PeepFlag::purple },
-            { "pizza", PeepFlag::pizza },
-            { "explode", PeepFlag::explode },
-            { "rideShouldBeMarkedAsFavourite", PeepFlag::rideShouldBeMarkedAsFavourite },
-            { "parkEntranceChosen", PeepFlag::parkEntranceChosen },
-            { "contagious", PeepFlag::contagious },
-            { "joy", PeepFlag::joy },
-            { "angry", PeepFlag::angry },
-            { "iceCream", PeepFlag::iceCream },
-            { "hereWeAre", PeepFlag::hereWeAre },
-            { "positionFrozen", PeepFlag::positionFrozen },
-            { "animationFrozen", PeepFlag::animationFrozen },
+            { "leavingPark", PEEP_FLAGS_LEAVING_PARK },
+            { "slowWalk", PEEP_FLAGS_SLOW_WALK },
+            { "tracking", PEEP_FLAGS_TRACKING },
+            { "waving", PEEP_FLAGS_WAVING },
+            { "hasPaidForParkEntry", PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY },
+            { "photo", PEEP_FLAGS_PHOTO },
+            { "painting", PEEP_FLAGS_PAINTING },
+            { "wow", PEEP_FLAGS_WOW },
+            { "litter", PEEP_FLAGS_LITTER },
+            { "lost", PEEP_FLAGS_LOST },
+            { "hunger", PEEP_FLAGS_HUNGER },
+            { "toilet", PEEP_FLAGS_TOILET },
+            { "crowded", PEEP_FLAGS_CROWDED },
+            { "happiness", PEEP_FLAGS_HAPPINESS },
+            { "nausea", PEEP_FLAGS_NAUSEA },
+            { "purple", PEEP_FLAGS_PURPLE },
+            { "pizza", PEEP_FLAGS_PIZZA },
+            { "explode", PEEP_FLAGS_EXPLODE },
+            { "rideShouldBeMarkedAsFavourite", PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE },
+            { "parkEntranceChosen", PEEP_FLAGS_PARK_ENTRANCE_CHOSEN },
+            { "contagious", PEEP_FLAGS_CONTAGIOUS },
+            { "joy", PEEP_FLAGS_JOY },
+            { "angry", PEEP_FLAGS_ANGRY },
+            { "iceCream", PEEP_FLAGS_ICE_CREAM },
+            { "hereWeAre", PEEP_FLAGS_HERE_WE_ARE },
+            { "positionFrozen", PEEP_FLAGS_POSITION_FROZEN },
+            { "animationFrozen", PEEP_FLAGS_ANIMATION_FROZEN },
         });
 
     class ScPeep;
@@ -72,7 +70,7 @@ namespace OpenRCT2::Scripting
         static JSValue name_get(JSContext* ctx, JSValue thisVal)
         {
             auto peep = GetPeep(thisVal);
-            return JSFromStdString(ctx, peep != nullptr ? peep->getName() : std::string());
+            return JSFromStdString(ctx, peep != nullptr ? peep->GetName() : std::string());
         }
         static JSValue name_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
         {
@@ -81,7 +79,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                peep->setName(value);
+                peep->SetName(value);
             }
             return JS_UNDEFINED;
         }
@@ -92,8 +90,8 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                auto mask = kPeepFlagMap[key];
-                return JS_NewBool(ctx, peep->peepFlags.has(mask));
+                auto mask = PeepFlagMap[key];
+                return JS_NewBool(ctx, (peep->PeepFlags & mask) != 0);
             }
             return JS_NewBool(ctx, false);
         }
@@ -106,8 +104,11 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                auto mask = kPeepFlagMap[key];
-                peep->peepFlags.set(mask, value);
+                auto mask = PeepFlagMap[key];
+                if (value)
+                    peep->PeepFlags |= mask;
+                else
+                    peep->PeepFlags &= ~mask;
                 peep->invalidate();
             }
             return JS_UNDEFINED;
@@ -118,7 +119,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                return ToJSValue(ctx, peep->getDestination());
+                return ToJSValue(ctx, peep->GetDestination());
             }
             return JS_NULL;
         }
@@ -130,8 +131,8 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                auto pos = JStoCoordsXY(ctx, value);
-                peep->setDestination(pos);
+                auto pos = JSToCoordsXY(ctx, value);
+                peep->SetDestination(pos);
                 peep->invalidate();
             }
             return JS_UNDEFINED;
@@ -140,7 +141,7 @@ namespace OpenRCT2::Scripting
         static JSValue direction_get(JSContext* ctx, JSValue thisVal)
         {
             auto peep = GetPeep(thisVal);
-            return JS_NewUint32(ctx, peep != nullptr ? peep->peepDirection : 0);
+            return JS_NewUint32(ctx, peep != nullptr ? peep->PeepDirection : 0);
         }
 
         static JSValue direction_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
@@ -150,7 +151,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr && value < kNumOrthogonalDirections)
             {
-                peep->peepDirection = value;
+                peep->PeepDirection = value;
                 peep->orientation = value << 3;
                 peep->invalidate();
             }
@@ -160,7 +161,7 @@ namespace OpenRCT2::Scripting
         static JSValue energy_get(JSContext* ctx, JSValue thisVal)
         {
             auto peep = GetPeep(thisVal);
-            return JS_NewUint32(ctx, peep != nullptr ? peep->energy : 0);
+            return JS_NewUint32(ctx, peep != nullptr ? peep->Energy : 0);
         }
         static JSValue energy_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
         {
@@ -170,7 +171,7 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 value = static_cast<uint8_t>(std::clamp<uint32_t>(value, kPeepMinEnergy, kPeepMaxEnergy));
-                peep->energy = value;
+                peep->Energy = value;
                 peep->invalidate();
             }
             return JS_UNDEFINED;
@@ -179,7 +180,7 @@ namespace OpenRCT2::Scripting
         static JSValue energyTarget_get(JSContext* ctx, JSValue thisVal)
         {
             auto peep = GetPeep(thisVal);
-            return JS_NewUint32(ctx, peep != nullptr ? peep->energyTarget : 0);
+            return JS_NewUint32(ctx, peep != nullptr ? peep->EnergyTarget : 0);
         }
         static JSValue energyTarget_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
         {
@@ -189,7 +190,7 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 auto target = static_cast<uint8_t>(std::clamp<uint32_t>(value, kPeepMinEnergy, kPeepMaxEnergyTarget));
-                peep->energyTarget = target;
+                peep->EnergyTarget = target;
             }
             return JS_UNDEFINED;
         }
@@ -198,7 +199,7 @@ namespace OpenRCT2::Scripting
         static Peep* GetPeep(JSValue thisVal)
         {
             auto id = GetEntityId(thisVal);
-            return getGameState().entities.getEntity<Peep>(id);
+            return getGameState().entities.GetEntity<Peep>(id);
         }
     };
 

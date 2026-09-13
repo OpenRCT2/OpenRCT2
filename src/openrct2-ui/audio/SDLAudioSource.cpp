@@ -17,10 +17,10 @@ using namespace OpenRCT2::Audio;
 
 enum class AudioCodecKind
 {
-    unknown,
-    wav,
-    ogg,
-    flac,
+    Unknown,
+    Wav,
+    Ogg,
+    Flac,
 };
 
 bool SDLAudioSource::IsReleased() const
@@ -87,13 +87,13 @@ static AudioCodecKind GetAudioCodec(SDL_RWops* rw)
     switch (magic)
     {
         case kMagicFLAC:
-            return AudioCodecKind::flac;
+            return AudioCodecKind::Flac;
         case kMagicOGG:
-            return AudioCodecKind::ogg;
+            return AudioCodecKind::Ogg;
         case kMagicRIFF:
-            return AudioCodecKind::wav;
+            return AudioCodecKind::Wav;
         default:
-            return AudioCodecKind::unknown;
+            return AudioCodecKind::Unknown;
     }
 }
 
@@ -102,11 +102,11 @@ std::unique_ptr<SDLAudioSource> OpenRCT2::Audio::CreateAudioSource(SDL_RWops* rw
     auto codec = GetAudioCodec(rw);
     switch (codec)
     {
-        case AudioCodecKind::flac:
+        case AudioCodecKind::Flac:
             return CreateFlacAudioSource(rw);
-        case AudioCodecKind::ogg:
+        case AudioCodecKind::Ogg:
             return CreateOggAudioSource(rw);
-        case AudioCodecKind::wav:
+        case AudioCodecKind::Wav:
             return CreateWavAudioSource(rw);
         default:
             throw std::runtime_error("Unsupported audio codec");

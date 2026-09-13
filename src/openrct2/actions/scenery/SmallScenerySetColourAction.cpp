@@ -13,9 +13,13 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
+#include "../../ride/Ride.h"
+#include "../../ride/TrackDesign.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
 
 namespace OpenRCT2::GameActions
@@ -102,9 +106,9 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting)
         {
-            sceneryElement->setPrimaryColour(_primaryColour);
-            sceneryElement->setSecondaryColour(_secondaryColour);
-            sceneryElement->setTertiaryColour(_tertiaryColour);
+            sceneryElement->SetPrimaryColour(_primaryColour);
+            sceneryElement->SetSecondaryColour(_secondaryColour);
+            sceneryElement->SetTertiaryColour(_tertiaryColour);
 
             MapInvalidateTileFull(_loc);
         }

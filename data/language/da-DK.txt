@@ -230,6 +230,7 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Kan ikke tilgå grafik data fil
 STR_0823    :Manglende eller utilgængelig data fil
+STR_0824    :{BLACK}❌
 STR_0825    :Valgte navn er allerede i brug
 STR_0826    :For mange navne defineret
 STR_0827    :Ikke penge nok - Der kræves {CURRENCY2DP}
@@ -269,7 +270,7 @@ STR_0892    :Skærmbillede gemt på disken som ‘{STRINGID}’
 STR_0893    :Skærmbillede fejlet !
 STR_0894    :Landskab data område fuld !
 STR_0895    :Kan ikke bygge delvist over og under overfladen
-STR_0896    :{STRING} Konstruktion
+STR_0896    :{STRINGID} Konstruktion
 STR_0897    :Retning
 STR_0898    :Venstresving
 STR_0899    :Højresving
@@ -2674,7 +2675,7 @@ STR_5573    :Fjern fra favoritter
 STR_5574    :Server Navn:
 STR_5575    :Max spillere:
 STR_5576    :Port:
-STR_5577    :Syd Koreanske Won (₩)
+STR_5577    :Syd Koreanske Won (W)
 STR_5578    :Russiske Rubler (₽)
 STR_5579    :Vindues skalarings faktor:
 STR_5580    :Tjekkiske koruna (Kč)
@@ -2865,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Antal forlystelser: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antal butikker og boder: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Antal information kiosker og andre faciliteter: {BLACK}{COMMA16}
 STR_5810    :Deaktiver vogn begrænsninger
-STR_5811    :Hvis det er markeret, kan du have op til{NEWLINE}255 vogne per tog, og{newline}255 tog per tur
+STR_5811    :Hvis det er markeret, kan du have op til{NEWLINE}255 vogne per tog, og{newline}31 tog per tur
 STR_5812    :Vis multiplayer vindue
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -3199,6 +3200,7 @@ STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
 STR_6161    :Skift gitterlinjer Visning til/fra
 STR_6162    :Snurrende Vild Mus
 STR_6163    :Muse formede biler suser gennem skarpe kurver og korte fald, imens de snurrer lidt rundt for at desorientere gæsterne
+STR_6164    :{WHITE}❌
 STR_6165    :Brug vertikal synk.
 STR_6166    :Synkroniserer hvert billede, som vises, til skærmens opdateringshastighed, hvilket forhindrer, udrivninger i grafikken.
 STR_6167    :Avanceret
@@ -3279,7 +3281,7 @@ STR_6271    :Terræn kanter
 STR_6272    :Stationer
 STR_6273    :Musik
 STR_6274    :Kan ikke sætte farveskema…
-STR_6275    :Stations stil
+STR_6275    :{WINDOW_COLOUR_2}Stations stil:
 STR_6276    :{RED}{STRINGID} har fastklemte gæster, muligvis på grund af forkert forlystelsetype eller operations tilstand.
 STR_6277    :Stations index: {BLACK}{STRINGID}
 STR_6278    :Autogem mængde

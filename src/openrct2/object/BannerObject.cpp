@@ -13,9 +13,10 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
 #include "../object/Object.h"
+#include "../object/ObjectRepository.h"
+#include "ObjectList.h"
 
 namespace OpenRCT2
 {

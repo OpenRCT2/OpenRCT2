@@ -26,7 +26,7 @@ namespace OpenRCT2::GameActions
         BannerIndex bannerId = BannerIndex::GetNull();
     };
 
-    class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::placeLargeScenery>
+    class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>
     {
     private:
         CoordsXYZD _loc;

@@ -7,18 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/Viewport.h"
+
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
+#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/network/PlayerKickAction.h>
 #include <openrct2/actions/network/PlayerSetGroupAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/network/NetworkAction.h>
@@ -230,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (viewport == nullptr)
                 {
-                    const auto viewportFocus = Focus(TileCoordsXYZ(128, 128, 0).toCoordsXYZ());
+                    const auto viewportFocus = Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ());
                     ViewportCreate(*this, windowPos, width, height, viewportFocus);
                     flags |= WindowFlag::noScrolling;
                     onPrepareDraw();
@@ -550,7 +551,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, { Dropdown::Flag::autoClose }, numItems, widget->right - dropdownWidget->left);
+                0, 0, numItems, widget->right - dropdownWidget->left);
 
             for (int32_t i = 0; i < Network::GetNumGroups(); i++)
             {

@@ -11,7 +11,7 @@
 
 #include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../localisation/StringIdType.h"
 #include "../../management/Finance.h"
@@ -66,7 +66,7 @@ namespace OpenRCT2::GameActions
         }
 
         res.expenditure = ExpenditureType::landscaping;
-        auto location = banner->position.toCoordsXY().toTileCentre();
+        auto location = banner->position.ToCoordsXY().ToTileCentre();
         res.position = { location, TileElementHeight(location) };
 
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
@@ -78,7 +78,7 @@ namespace OpenRCT2::GameActions
         }
 
         BannerElement* bannerElement = tileElement->asBanner();
-        CoordsXYZ loc = { banner->position.toCoordsXY(), bannerElement->getBaseZ() };
+        CoordsXYZ loc = { banner->position.ToCoordsXY(), bannerElement->getBaseZ() };
 
         if (!LocationValid(loc))
         {
@@ -132,7 +132,7 @@ namespace OpenRCT2::GameActions
         }
 
         res.expenditure = ExpenditureType::landscaping;
-        auto location = banner->position.toCoordsXY().toTileCentre();
+        auto location = banner->position.ToCoordsXY().ToTileCentre();
         res.position = { location, TileElementHeight(location) };
 
         TileElement* tileElement = BannerGetTileElement(_bannerIndex);
@@ -164,9 +164,9 @@ namespace OpenRCT2::GameActions
                 uint8_t allowedEdges = 0xF;
                 if (banner->flags.has(BannerFlag::noEntry))
                 {
-                    allowedEdges &= ~(1 << bannerElement->getPosition());
+                    allowedEdges &= ~(1 << bannerElement->GetPosition());
                 }
-                bannerElement->setAllowedEdges(allowedEdges);
+                bannerElement->SetAllowedEdges(allowedEdges);
                 break;
             }
             default:
@@ -179,7 +179,7 @@ namespace OpenRCT2::GameActions
         ContextBroadcastIntent(&intent);
 
         Drawing::ScrollingText::invalidate();
-        Drawing::GfxInvalidateScreen();
+        GfxInvalidateScreen();
 
         return res;
     }

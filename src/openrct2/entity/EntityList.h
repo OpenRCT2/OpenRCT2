@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../GameState.h"
+#include "../rct12/RCT12.h"
 #include "../world/Location.hpp"
 #include "EntityBase.h"
 #include "EntityRegistry.h"
@@ -43,7 +44,7 @@ namespace OpenRCT2
 
             while (iter != end && Entity == nullptr)
             {
-                Entity = gameState.entities.tryGetEntity<T>(*iter++);
+                Entity = gameState.entities.TryGetEntity<T>(*iter++);
             }
             return *this;
         }
@@ -82,7 +83,7 @@ namespace OpenRCT2
 
     public:
         EntityTileList(const CoordsXY& loc)
-            : vec(getGameState().entities.getEntityTileList(loc))
+            : vec(getGameState().entities.GetEntityTileList(loc))
         {
         }
 
@@ -120,7 +121,7 @@ namespace OpenRCT2
 
             while (iter != end && Entity == nullptr)
             {
-                Entity = gameState.entities.tryGetEntity<T>(*iter++);
+                Entity = gameState.entities.TryGetEntity<T>(*iter++);
             }
             return *this;
         }
@@ -160,7 +161,7 @@ namespace OpenRCT2
 
     public:
         EntityList()
-            : vec(getGameState().entities.getEntityList(T::kEntityType))
+            : vec(getGameState().entities.GetEntityList(T::cEntityType))
         {
         }
 

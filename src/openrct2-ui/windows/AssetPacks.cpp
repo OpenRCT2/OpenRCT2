@@ -10,15 +10,14 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/AssetPack.h>
 #include <openrct2/AssetPackManager.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
@@ -270,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
                 auto checkmark = Formatter();
                 checkmark.Add<StringId>(STR_STRING);
                 checkmark.Add<char*>(kCheckMarkString);
-                drawText(rt, ScreenCoordsXY{ rect.getLeft() + 1, rect.getTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
+                drawText(rt, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
             }
         }
 

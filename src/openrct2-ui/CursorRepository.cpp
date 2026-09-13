@@ -13,6 +13,7 @@
 
 #include <cmath>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Guard.hpp>
 #include <openrct2/interface/Cursors.h>
 #include <vector>
 
@@ -21,14 +22,14 @@ using namespace OpenRCT2::Ui;
 CursorRepository::~CursorRepository()
 {
     _scaledCursors.clear();
-    _currentCursor = CursorID::undefined;
+    _currentCursor = CursorID::Undefined;
     _currentCursorScale = 1;
 }
 
 void CursorRepository::LoadCursors()
 {
     SetCursorScale(static_cast<uint8_t>(round(Config::Get().general.windowScale)));
-    SetCurrentCursor(CursorID::arrow);
+    SetCurrentCursor(CursorID::Arrow);
 }
 
 CursorID CursorRepository::GetCurrentCursor()
@@ -122,9 +123,9 @@ void CursorRepository::GenerateScaledCursorSetHolder(uint8_t scale)
             switch (cursorId)
             {
                 // We can't scale the system cursors, but they should be appropriately scaled anyway
-                case CursorID::arrow:
+                case CursorID::Arrow:
                     return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
-                case CursorID::handPoint:
+                case CursorID::HandPoint:
                     return SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
                 default:
                     return this->Create(getCursorData(cursorId), scale);

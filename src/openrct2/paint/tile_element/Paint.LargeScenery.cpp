@@ -9,10 +9,15 @@
 
 #include "../Paint.h"
 
+#include "../../Game.h"
+#include "../../GameState.h"
+#include "../../config/Config.h"
 #include "../../core/CodepointView.hpp"
+#include "../../core/EnumUtils.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../core/UTF8.h"
 #include "../../drawing/ColourMap.h"
+#include "../../drawing/Drawing.h"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
@@ -20,8 +25,10 @@
 #include "../../localisation/StringIds.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../profiling/Profiling.h"
+#include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
-#include "../../world/Banner.h"
+#include "../../world/Scenery.h"
+#include "../../world/TileInspector.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../Boundbox.h"
 #include "../support/WoodenSupports.h"
@@ -191,7 +198,7 @@ static void PaintLargeScenery3DText(
 
     if (sceneryEntry.tiles.size() != 1)
     {
-        auto sequenceDirection = (tileElement.getSequenceIndex() - 1) & 3;
+        auto sequenceDirection = (tileElement.GetSequenceIndex() - 1) & 3;
         if (sequenceDirection != direction)
         {
             return;
@@ -201,7 +208,7 @@ static void PaintLargeScenery3DText(
     if (session.rt.zoom_level > ZoomLevel{ 1 })
         return;
 
-    auto banner = tileElement.getBanner();
+    auto banner = tileElement.GetBanner();
     if (banner == nullptr)
         return;
 
@@ -210,7 +217,7 @@ static void PaintLargeScenery3DText(
         return;
 
     auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
-                              : tileElement.getSecondaryColour();
+                              : tileElement.GetSecondaryColour();
     auto imageTemplate = ImageId().WithPrimary(textColour);
 
     char signString[256];
@@ -304,10 +311,10 @@ static void PaintLargeSceneryScrollingText(
     PROFILED_FUNCTION();
 
     auto textColour = isGhost ? static_cast<OpenRCT2::Drawing::Colour>(OpenRCT2::Drawing::Colour::grey)
-                              : tileElement.getSecondaryColour();
+                              : tileElement.GetSecondaryColour();
     auto textPaletteIndex = direction == 0 ? getColourMap(textColour).midDark : getColourMap(textColour).light;
 
-    auto banner = tileElement.getBanner();
+    auto banner = tileElement.GetBanner();
     if (banner == nullptr)
         return;
 
@@ -324,9 +331,9 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
         return;
 
-    auto sequenceNum = tileElement.getSequenceIndex();
+    auto sequenceNum = tileElement.GetSequenceIndex();
 
-    const auto* sceneryEntry = tileElement.getEntry();
+    const auto* sceneryEntry = tileElement.GetEntry();
     if (sceneryEntry == nullptr)
         return;
 
@@ -359,15 +366,15 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     {
         if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
         {
-            imageTemplate = imageTemplate.WithPrimary(tileElement.getPrimaryColour());
+            imageTemplate = imageTemplate.WithPrimary(tileElement.GetPrimaryColour());
         }
         if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour))
         {
-            imageTemplate = imageTemplate.WithSecondary(tileElement.getSecondaryColour());
+            imageTemplate = imageTemplate.WithSecondary(tileElement.GetSecondaryColour());
         }
         if (sceneryEntry->flags.has(LargeSceneryFlag::hasTertiaryColour))
         {
-            imageTemplate = imageTemplate.WithTertiary(tileElement.getTertiaryColour());
+            imageTemplate = imageTemplate.WithTertiary(tileElement.GetTertiaryColour());
         }
     }
 
@@ -396,7 +403,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         }
         else if (session.rt.zoom_level <= ZoomLevel{ 0 })
         {
-            auto sequenceDirection2 = (tileElement.getSequenceIndex() - 1) & 3;
+            auto sequenceDirection2 = (tileElement.GetSequenceIndex() - 1) & 3;
             if (sequenceDirection2 == direction)
             {
                 PaintLargeSceneryScrollingText(session, *sceneryEntry, tileElement, direction, height, bbOffset, isGhost);

@@ -9,16 +9,20 @@
 
 #include "LandSetHeightAction.h"
 
+#include "../../Context.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../ride/RideData.h"
+#include "../../windows/Intent.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
+#include "../../world/Scenery.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/PathElement.h"
@@ -57,7 +61,7 @@ namespace OpenRCT2::GameActions
 
     Result LandSetHeightAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        if (park.flags.has(ParkFlag::forbidLandscapeChanges))
+        if (park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
         {
             return Result(Status::disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
         }
@@ -65,7 +69,7 @@ namespace OpenRCT2::GameActions
         StringId errorMessage = CheckParameters();
         if (errorMessage != kStringIdNone)
         {
-            return Result(Status::disallowed, STR_CANT_CHANGE_LAND_HEIGHT_HERE, errorMessage);
+            return Result(Status::disallowed, kStringIdNone, errorMessage);
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
@@ -79,13 +83,13 @@ namespace OpenRCT2::GameActions
         money64 sceneryRemovalCost = 0;
         if (!gameState.cheats.disableClearanceChecks)
         {
-            if (park.flags.has(ParkFlag::forbidTreeRemoval))
+            if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 // Check for obstructing large trees
                 TileElement* tileElement = CheckTreeObstructions();
                 if (tileElement != nullptr)
                 {
-                    auto res = Result(Status::disallowed, STR_CANT_CHANGE_LAND_HEIGHT_HERE, kStringIdNone);
+                    auto res = Result(Status::disallowed, kStringIdNone, kStringIdNone);
                     MapGetObstructionErrorText(tileElement, res);
                     return res;
                 }
@@ -99,7 +103,7 @@ namespace OpenRCT2::GameActions
             errorMessage = CheckRideSupports();
             if (errorMessage != kStringIdNone)
             {
-                return Result(Status::disallowed, STR_CANT_CHANGE_LAND_HEIGHT_HERE, errorMessage);
+                return Result(Status::disallowed, kStringIdNone, errorMessage);
             }
         }
 
@@ -111,21 +115,21 @@ namespace OpenRCT2::GameActions
         // For that, we need the old height, so we can't use the _height variable.
         auto oldCoords = CoordsXYZ{ _coords, surfaceElement->getBaseZ() };
         auto* pathElement = MapGetFootpathElement(oldCoords);
-        if (pathElement != nullptr && pathElement->asPath()->isLevelCrossing(oldCoords))
+        if (pathElement != nullptr && pathElement->asPath()->IsLevelCrossing(oldCoords))
         {
             return Result(Status::disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, kStringIdNone);
         }
 
+        TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
+        if (tileElement != nullptr)
+        {
+            auto res = Result(Status::disallowed, kStringIdNone, kStringIdNone);
+            MapGetObstructionErrorText(tileElement, res);
+            return res;
+        }
+
         if (!gameState.cheats.disableClearanceChecks)
         {
-            TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
-            if (tileElement != nullptr)
-            {
-                auto res = Result(Status::disallowed, STR_CANT_CHANGE_LAND_HEIGHT_HERE, kStringIdNone);
-                MapGetObstructionErrorText(tileElement, res);
-                return res;
-            }
-
             uint8_t zCorner = _height;
             if (_style & kTileSlopeRaisedCornersMask)
             {
@@ -138,7 +142,7 @@ namespace OpenRCT2::GameActions
 
             auto clearResult = MapCanConstructWithClearAt(
                 { _coords, _height * kCoordsZStep, zCorner * kCoordsZStep }, MapSetLandHeightClearFunc, { 0b1111, 0 }, {},
-                { .slope = _style });
+                _style, CreateCrossingMode::none);
             if (clearResult.error != Status::ok)
             {
                 clearResult.error = Status::disallowed;
@@ -218,7 +222,7 @@ namespace OpenRCT2::GameActions
             if (_height + 4 < sceneryElement->baseHeight)
                 continue;
 
-            auto* sceneryEntry = sceneryElement->getEntry();
+            auto* sceneryEntry = sceneryElement->GetEntry();
             if (!sceneryEntry->flags.has(SmallSceneryFlag::isTree))
                 continue;
 
@@ -238,7 +242,7 @@ namespace OpenRCT2::GameActions
             if (_height + 4 < sceneryElement->baseHeight)
                 continue;
 
-            auto* sceneryEntry = sceneryElement->getEntry();
+            auto* sceneryEntry = sceneryElement->GetEntry();
             if (sceneryEntry == nullptr)
                 continue;
 
@@ -250,21 +254,26 @@ namespace OpenRCT2::GameActions
 
     void LandSetHeightAction::SmallSceneryRemoval() const
     {
-        for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
+        TileElement* tileElement = MapGetFirstElementAt(_coords);
+        do
         {
-            if (_height > sceneryElement->clearanceHeight)
+            if (tileElement == nullptr)
+                break;
+            if (tileElement->getType() != TileElementType::SmallScenery)
                 continue;
-            if (_height + 4 < sceneryElement->baseHeight)
+            if (_height > tileElement->clearanceHeight)
                 continue;
-            TileElementRemove(reinterpret_cast<TileElement*>(sceneryElement));
-        }
+            if (_height + 4 < tileElement->baseHeight)
+                continue;
+            TileElementRemove(tileElement--);
+        } while (!(tileElement++)->isLastForTile());
     }
 
     StringId LandSetHeightAction::CheckRideSupports() const
     {
         for (auto* trackElement : TileElementsView<TrackElement>(_coords))
         {
-            RideId rideIndex = trackElement->getRideIndex();
+            RideId rideIndex = trackElement->GetRideIndex();
 
             auto ride = GetRide(rideIndex);
             if (ride == nullptr)
@@ -291,9 +300,9 @@ namespace OpenRCT2::GameActions
 
     TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const
     {
-        if (surfaceElement->asSurface()->hasTrackThatNeedsWater())
+        if (surfaceElement->asSurface()->HasTrackThatNeedsWater())
         {
-            uint32_t waterHeight = surfaceElement->asSurface()->getWaterHeight();
+            uint32_t waterHeight = surfaceElement->asSurface()->GetWaterHeight();
             if (waterHeight != 0)
             {
                 if (_style & kTileSlopeMask)
@@ -329,11 +338,11 @@ namespace OpenRCT2::GameActions
     {
         surfaceElement->baseHeight = _height;
         surfaceElement->clearanceHeight = _height;
-        surfaceElement->asSurface()->setSlope(_style);
-        int32_t waterHeight = surfaceElement->asSurface()->getWaterHeight() / kCoordsZStep;
+        surfaceElement->asSurface()->SetSlope(_style);
+        int32_t waterHeight = surfaceElement->asSurface()->GetWaterHeight() / kCoordsZStep;
         if (waterHeight != 0 && waterHeight <= _height)
         {
-            surfaceElement->asSurface()->setWaterHeight(0);
+            surfaceElement->asSurface()->SetWaterHeight(0);
         }
 
         MapInvalidateTileFull(_coords);
@@ -343,10 +352,10 @@ namespace OpenRCT2::GameActions
         TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] CommandFlags flags,
         [[maybe_unused]] money64* price)
     {
-        if ((*tile_element)->getType() == TileElementType::surface)
+        if ((*tile_element)->getType() == TileElementType::Surface)
             return true;
 
-        if ((*tile_element)->getType() == TileElementType::smallScenery)
+        if ((*tile_element)->getType() == TileElementType::SmallScenery)
             return true;
 
         return false;

@@ -10,6 +10,7 @@
 #include "UTF8.h"
 
 #include <cstring>
+#include <wchar.h>
 
 uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr)
 {

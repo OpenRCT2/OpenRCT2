@@ -12,16 +12,18 @@
 #include "../core/FlagHolder.hpp"
 #include "../core/Imaging.h"
 #include "../core/JsonFwd.hpp"
-#include "../interface/ScreenCoords.hpp"
-#include "G1Element.h"
+#include "../drawing/G1Element.h"
+#include "../world/Location.hpp"
+
+struct Image;
 
 namespace OpenRCT2::Drawing
 {
     enum class ImportMode : uint8_t
     {
-        standard,
-        closest,
-        dithering,
+        Default,
+        Closest,
+        Dithering,
     };
 
     enum class ImportFlag : uint8_t
@@ -33,16 +35,16 @@ namespace OpenRCT2::Drawing
 
     enum class Palette : uint8_t
     {
-        openRCT2,
-        keepIndices,
+        OpenRCT2,
+        KeepIndices,
     };
 
     struct ImageImportMeta
     {
         ScreenCoordsXY offset{};
-        Palette palette = Palette::openRCT2;
+        Palette palette = Palette::OpenRCT2;
         ImportFlags importFlags = { ImportFlag::rle };
-        ImportMode importMode = ImportMode::standard;
+        ImportMode importMode = ImportMode::Default;
         ScreenCoordsXY srcOffset{};
         ScreenSize srcSize{};
         int32_t zoomedOffset{};
@@ -71,11 +73,11 @@ namespace OpenRCT2::Drawing
     private:
         enum class PaletteIndexType : uint8_t
         {
-            normal,
-            primaryRemap,
-            secondaryRemap,
-            tertiaryRemap,
-            special,
+            Normal,
+            PrimaryRemap,
+            SecondaryRemap,
+            TertiaryRemap,
+            Special,
         };
 
         static std::vector<int32_t> GetPixels(const Image& image, const ImageImportMeta& meta);

@@ -13,7 +13,6 @@
 #include "../../core/Guard.hpp"
 #include "../../drawing/ScrollingText.h"
 #include "../../interface/WindowClasses.h"
-#include "../../object/WallSceneryEntry.h"
 #include "../../ui/WindowManager.h"
 #include "BannerElement.h"
 #include "EntranceElement.h"
@@ -24,45 +23,45 @@
 
 namespace OpenRCT2
 {
-    BannerIndex TileElement::getBannerIndex() const
+    BannerIndex TileElement::GetBannerIndex() const
     {
         switch (getType())
         {
-            case TileElementType::largeScenery:
+            case TileElementType::LargeScenery:
             {
-                auto* sceneryEntry = asLargeScenery()->getEntry();
+                auto* sceneryEntry = asLargeScenery()->GetEntry();
                 if (sceneryEntry == nullptr || sceneryEntry->scrolling_mode == kScrollingModeNone)
                     return BannerIndex::GetNull();
 
-                return asLargeScenery()->getBannerIndex();
+                return asLargeScenery()->GetBannerIndex();
             }
-            case TileElementType::wall:
+            case TileElementType::Wall:
             {
-                auto* wallEntry = asWall()->getEntry();
+                auto* wallEntry = asWall()->GetEntry();
                 if (wallEntry == nullptr || wallEntry->scrolling_mode == kScrollingModeNone)
                     return BannerIndex::GetNull();
 
-                return asWall()->getBannerIndex();
+                return asWall()->GetBannerIndex();
             }
-            case TileElementType::banner:
-                return asBanner()->getIndex();
+            case TileElementType::Banner:
+                return asBanner()->GetIndex();
             default:
                 return BannerIndex::GetNull();
         }
     }
 
-    void TileElement::setBannerIndex(BannerIndex bannerIndex)
+    void TileElement::SetBannerIndex(BannerIndex bannerIndex)
     {
         switch (getType())
         {
-            case TileElementType::wall:
-                asWall()->setBannerIndex(bannerIndex);
+            case TileElementType::Wall:
+                asWall()->SetBannerIndex(bannerIndex);
                 break;
-            case TileElementType::largeScenery:
-                asLargeScenery()->setBannerIndex(bannerIndex);
+            case TileElementType::LargeScenery:
+                asLargeScenery()->SetBannerIndex(bannerIndex);
                 break;
-            case TileElementType::banner:
-                asBanner()->setIndex(bannerIndex);
+            case TileElementType::Banner:
+                asBanner()->SetIndex(bannerIndex);
                 break;
             default:
                 LOG_ERROR("Tried to set banner index on unsuitable tile element!");
@@ -70,9 +69,9 @@ namespace OpenRCT2
         }
     }
 
-    void TileElement::removeBannerEntry()
+    void TileElement::RemoveBannerEntry()
     {
-        auto bannerIndex = getBannerIndex();
+        auto bannerIndex = GetBannerIndex();
         auto banner = GetBanner(bannerIndex);
         if (banner != nullptr)
         {
@@ -82,22 +81,22 @@ namespace OpenRCT2
         }
     }
 
-    RideId TileElement::getRideIndex() const
+    RideId TileElement::GetRideIndex() const
     {
         switch (getType())
         {
-            case TileElementType::track:
-                return asTrack()->getRideIndex();
-            case TileElementType::entrance:
-                return asEntrance()->getRideIndex();
-            case TileElementType::path:
-                return asPath()->getRideIndex();
+            case TileElementType::Track:
+                return asTrack()->GetRideIndex();
+            case TileElementType::Entrance:
+                return asEntrance()->GetRideIndex();
+            case TileElementType::Path:
+                return asPath()->GetRideIndex();
             default:
                 return RideId::GetNull();
         }
     }
 
-    void TileElement::clearAs(TileElementType newType)
+    void TileElement::ClearAs(TileElementType newType)
     {
         type = 0;
         setType(newType);
@@ -105,18 +104,18 @@ namespace OpenRCT2
         baseHeight = kMinimumLandHeight;
         clearanceHeight = kMinimumLandHeight;
         owner = 0;
-        std::fill_n(pad05, sizeof(pad05), 0x00);
-        std::fill_n(pad08, sizeof(pad08), 0x00);
+        std::fill_n(Pad05, sizeof(Pad05), 0x00);
+        std::fill_n(Pad08, sizeof(Pad08), 0x00);
     }
 
-    bool tileElementIsUnderground(TileElement* tileElement)
+    bool TileElementIsUnderground(TileElement* tileElement)
     {
         do
         {
             tileElement++;
             if ((tileElement - 1)->isLastForTile())
                 return false;
-        } while (tileElement->getType() != TileElementType::surface);
+        } while (tileElement->getType() != TileElementType::Surface);
         return true;
     }
 } // namespace OpenRCT2

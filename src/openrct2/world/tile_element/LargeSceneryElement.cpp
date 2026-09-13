@@ -12,92 +12,100 @@
 #include "../../drawing/Colour.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
+#include "../../object/ObjectManager.h"
 #include "../Banner.h"
 
 #include <cassert>
 
 namespace OpenRCT2
 {
-    Drawing::Colour LargeSceneryElement::getPrimaryColour() const
+    Drawing::Colour LargeSceneryElement::GetPrimaryColour() const
     {
-        return colour[0];
+        return Colour[0];
     }
 
-    Drawing::Colour LargeSceneryElement::getSecondaryColour() const
+    Drawing::Colour LargeSceneryElement::GetSecondaryColour() const
     {
-        return colour[1];
+        return Colour[1];
     }
 
-    Drawing::Colour LargeSceneryElement::getTertiaryColour() const
+    Drawing::Colour LargeSceneryElement::GetTertiaryColour() const
     {
-        return colour[2];
+        return Colour[2];
     }
 
-    void LargeSceneryElement::setPrimaryColour(Drawing::Colour newColour)
+    void LargeSceneryElement::SetPrimaryColour(Drawing::Colour newColour)
     {
         assert(EnumValue(newColour) < Drawing::kColourNumTotal);
-        colour[0] = newColour;
+        Colour[0] = newColour;
     }
 
-    void LargeSceneryElement::setSecondaryColour(Drawing::Colour newColour)
+    void LargeSceneryElement::SetSecondaryColour(Drawing::Colour newColour)
     {
         assert(EnumValue(newColour) < Drawing::kColourNumTotal);
-        colour[1] = newColour;
+        Colour[1] = newColour;
     }
 
-    void LargeSceneryElement::setTertiaryColour(Drawing::Colour newColour)
+    void LargeSceneryElement::SetTertiaryColour(Drawing::Colour newColour)
     {
         assert(EnumValue(newColour) < Drawing::kColourNumTotal);
-        colour[2] = newColour;
+        Colour[2] = newColour;
     }
 
-    Banner* LargeSceneryElement::getBanner() const
+    Banner* LargeSceneryElement::GetBanner() const
     {
-        return ::GetBanner(getBannerIndex());
+        return ::GetBanner(GetBannerIndex());
     }
 
-    BannerIndex LargeSceneryElement::getBannerIndex() const
+    BannerIndex LargeSceneryElement::GetBannerIndex() const
     {
-        return bannerIndex;
+        return BannerIndex;
     }
 
-    void LargeSceneryElement::setBannerIndex(::BannerIndex newIndex)
+    void LargeSceneryElement::SetBannerIndex(::BannerIndex newIndex)
     {
-        this->bannerIndex = newIndex;
+        this->BannerIndex = newIndex;
     }
 
-    bool LargeSceneryElement::isAccounted() const
+    bool LargeSceneryElement::IsAccounted() const
     {
-        return flags2.has(LargeSceneryElementFlag::accounted);
+        return (Flags2 & LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED) != 0;
     }
 
-    void LargeSceneryElement::setIsAccounted(bool isAccounted)
+    void LargeSceneryElement::SetIsAccounted(bool isAccounted)
     {
-        flags2.set(LargeSceneryElementFlag::accounted, isAccounted);
+        if (isAccounted)
+        {
+            Flags2 |= LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED;
+        }
+        else
+        {
+            Flags2 &= ~LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED;
+        }
     }
 
-    ObjectEntryIndex LargeSceneryElement::getEntryIndex() const
+    ObjectEntryIndex LargeSceneryElement::GetEntryIndex() const
     {
-        return entryIndex;
+        return EntryIndex;
     }
 
-    const LargeSceneryEntry* LargeSceneryElement::getEntry() const
+    const LargeSceneryEntry* LargeSceneryElement::GetEntry() const
     {
-        return OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(getEntryIndex());
+        return OpenRCT2::ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(GetEntryIndex());
     }
 
-    uint8_t LargeSceneryElement::getSequenceIndex() const
+    uint8_t LargeSceneryElement::GetSequenceIndex() const
     {
-        return sequenceIndex;
+        return SequenceIndex;
     }
 
-    void LargeSceneryElement::setEntryIndex(ObjectEntryIndex newIndex)
+    void LargeSceneryElement::SetEntryIndex(ObjectEntryIndex newIndex)
     {
-        entryIndex = newIndex;
+        EntryIndex = newIndex;
     }
 
-    void LargeSceneryElement::setSequenceIndex(uint8_t newIndex)
+    void LargeSceneryElement::SetSequenceIndex(uint8_t newIndex)
     {
-        sequenceIndex = newIndex;
+        SequenceIndex = newIndex;
     }
 } // namespace OpenRCT2

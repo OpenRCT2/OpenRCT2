@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../world/Scenery.h"
 #include "SceneryObject.h"
 #include "SmallSceneryEntry.h"
 

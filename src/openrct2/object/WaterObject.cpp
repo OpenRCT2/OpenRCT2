@@ -7,17 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#pragma warning(disable : 4706) // assignment within conditional expression
+
 #include "WaterObject.h"
 
-#include "../core/Guard.hpp"
+#include "../OpenRCT2.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
-#include "../drawing/Palette.h"
 #include "../drawing/Text.h"
-#include "../interface/ScreenCoords.hpp"
+#include "../localisation/Formatter.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
+#include "../world/Location.hpp"
+
+#include <array>
+#include <cstring>
+#include <memory>
 
 namespace OpenRCT2
 {
@@ -38,7 +45,7 @@ namespace OpenRCT2
         _legacyType.waterWavesPalette = _legacyType.mainPalette + 1;
         _legacyType.waterSparklesPalette = _legacyType.mainPalette + 4;
 
-        Drawing::LoadPalette();
+        LoadPalette();
     }
 
     void WaterObject::Unload()

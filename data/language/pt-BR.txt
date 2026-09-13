@@ -230,6 +230,7 @@ STR_0820    :Nov
 STR_0821    :Dez
 STR_0822    :Impossível acessar arquivo de dados gráficos
 STR_0823    :Arquivo de dados ausente ou inacessível
+STR_0824    :{BLACK}❌
 STR_0825    :Nome escolhido já está em uso
 STR_0826    :Foram definidos nomes em excesso
 STR_0827    :Dinheiro insuficiente - requer {CURRENCY2DP}
@@ -269,7 +270,7 @@ STR_0892    :Captura de tela salva no disco como ‘{STRINGID}’
 STR_0893    :Captura de tela falhou!
 STR_0894    :Dados da área da paisagem cheios!
 STR_0895    :Impossível construir parcialmente acima e abaixo do chão
-STR_0896    :{STRING} Construção
+STR_0896    :{STRINGID} Construção
 STR_0897    :Sentido
 STR_0898    :Curva à Esquerda
 STR_0899    :Curva à Direita
@@ -778,7 +779,7 @@ STR_1408    :{WINDOW_COLOUR_2}Custo: {BLACK}{CURRENCY}
 STR_1409    :Entrada/Saída Plataforma
 STR_1410    :Torre Vertical
 STR_1411    :{STRINGID} no caminho
-STR_1412    :{WINDOW_COLOUR_3}O registro de dados não está disponível para este tipo de atração
+STR_1412    :{WINDOW_COLOUR_3}O registro de dados não estão disponíveis para este tipo de atração
 STR_1413    :{WINDOW_COLOUR_3}O registro de dados vai começar quando o próximo {STRINGID} sair de {STRINGID}
 STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Velocidade
@@ -2291,7 +2292,7 @@ STR_3343    :Converter Jogo Salvo em Cenário
 STR_3344    :Construtor de Pista
 STR_3345    :Gerenciador de Projetos de Pista
 STR_3346    :Impossível salvar projeto de pista…
-STR_3347    :Atração é muito grande, contém muitos elementos, ou o cenário está muito espalhado
+STR_3347    :Atração é muito grande, contém muitos elementos, ou o cenários é muito espalhado
 STR_3348    :Renomear
 STR_3349    :Excluir
 STR_3350    :Nome do projeto de pista
@@ -2674,7 +2675,7 @@ STR_5573    :Remover dos Favoritos
 STR_5574    :Nome do Servidor:
 STR_5575    :Máximo de Jogadores:
 STR_5576    :Porta:
-STR_5577    :Won Sul-Coreano(₩)
+STR_5577    :Won Sul-Coreano(W)
 STR_5578    :Rublo Russo (₽)
 STR_5579    :Fator escalar da janela:
 STR_5580    :Coroa Tcheca (Kč)
@@ -2846,7 +2847,7 @@ STR_5788    :Intervalo de inspeção:
 STR_5789    :Desabilitar efeitos de relâmpago
 STR_5790    :Ativa preço estilo RCT1{NEWLINE}(atrações e entradas ambos pagos)
 STR_5791    :Define a confiança de todas as atrações em 100%{NEWLINE}e reinicia a data de construção para “este ano”
-STR_5792    :Conserta todas as atrações quebradas
+STR_5792    :Conserta todos as atrações quebradas
 STR_5793    :Reinicia o histórico de acidentes de uma atração,{NEWLINE}então visitantes não irão reclamar que não é seguro
 STR_5794    :Alguns cenários desabilitam a edição de algumas{NEWLINE}das atrações que já estão no parque.{NEWLINE}Esta trapaça desliga a restrição
 STR_5795    :Visitantes andam em todas as atrações{NEWLINE}do parque mesmo se a intensidade for extremamente alta
@@ -2865,7 +2866,7 @@ STR_5807    :{WINDOW_COLOUR_2}Número de atrações: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Número de lojas e barracas: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Número de quiosques de informações e outras instalações: {BLACK}{COMMA16}
 STR_5810    :Desabilitar limites do veículo
-STR_5811    :Se selecionado, você pode ter até {NEWLINE}255 carros por trem e 255 {NEWLINE}trens por atração
+STR_5811    :Se selecionado, você pode ter até {NEWLINE}255 carros por trem e 31 {NEWLINE}trens por atração
 STR_5812    :Mostrar janela multijogador
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
@@ -2925,7 +2926,7 @@ STR_5872    :Desabilita o envelhecimento das plantas para que elas não murchem.
 STR_5873    :Permitir corrente de elevação em todas{NEWLINE}as peças de pista
 STR_5874    :Permite que qualquer parte da pista tenha corrente de elevação
 STR_5875    :Motor gráfico:
-STR_5876    :Motor gráfico que será usado para renderizar o jogo.
+STR_5876    :Engine que será usada para renderizar o jogo.
 STR_5877    :Software
 STR_5878    :Software (exibição por hardware)
 STR_5879    :OpenGL (experimental)
@@ -3199,11 +3200,12 @@ STR_6160    :{WINDOW_COLOUR_2}Veículos disponíveis: {BLACK}{STRING}
 STR_6161    :Alternar exibição de grade
 STR_6162    :Rato Maluco Giratório
 STR_6163    :Carros no formato de rato correm por curvas fechadas e pequenas quedas, girando suavemente para desorientar os passageiros
+STR_6164    :{WHITE}❌
 STR_6165    :Usar sincronização vertical
 STR_6166    :Sincroniza cada quadro mostrado com a taxa de atualização do monitor, prevenindo cortes na tela.
 STR_6167    :Avançado
 STR_6168    :Sequência de Título
-STR_6170    :Melhorias de interface
+STR_6170    :Melhoras de Interface
 STR_6171    :Procurar
 STR_6172    :Procura
 STR_6173    :Por favor, forneça um nome para pesquisar:
@@ -3279,7 +3281,7 @@ STR_6271    :Bordas do Terreno
 STR_6272    :Estações
 STR_6273    :Música
 STR_6274    :Impossível definir esquema de cor…
-STR_6275    :Estilo da estação
+STR_6275    :{WINDOW_COLOUR_2}Estilo da estação:
 STR_6276    :{RED}{STRINGID} está deixando visitantes presos, possivelmente por um tipo de brinquedo ou modo de operação inválido.
 STR_6277    :Índice de estação: {BLACK}{STRINGID}
 STR_6278    :Quantidade de Autosave
@@ -3815,17 +3817,3 @@ STR_7025    :Tornar visível
 STR_7026    :Tornar toda a atração visível
 STR_7028    :Quarto de Espiral para Cima
 STR_7029    :Quarto de Espiral para Baixo
-STR_7030    :{WINDOW_COLOUR_2}Visitantes entretidos: {BLACK}{COMMA32}
-STR_7031    :Desabilitar crescimento da grama
-STR_7032    :Desabilitar envelhecimento da grama, para que não cresça.
-STR_7033    :Estilo da Pista
-STR_7034    :Estilo do Labirinto
-STR_7035    :Estilo da Loja
-STR_7036    :Estilo do Veículo
-STR_7037    :Modo de operação
-STR_7038    :Espera e carregamento
-STR_7039    :Tipo de atração
-STR_7040    :Acréscimos dos caminhos
-STR_7041    :Painel de informações do parque
-STR_7042    :Painel de informações da data
-STR_7043    :Não é possível mudar a altura do terreno aqui…

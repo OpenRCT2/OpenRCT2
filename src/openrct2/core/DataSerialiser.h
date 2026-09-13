@@ -39,22 +39,22 @@ namespace OpenRCT2
         {
         }
 
-        bool isSaving() const
+        bool IsSaving() const
         {
             return _isSaving;
         }
 
-        bool isLoading() const
+        bool IsLoading() const
         {
             return !_isSaving;
         }
 
-        bool isLogging() const
+        bool IsLogging() const
         {
             return _isLogging;
         }
 
-        IStream& getStream()
+        IStream& GetStream()
         {
             return _activeStream;
         }

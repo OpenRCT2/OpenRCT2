@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
-        auto index = bannerElement->getIndex();
+        auto index = bannerElement->GetIndex();
         auto banner = GetBanner(index);
         if (banner == nullptr)
         {

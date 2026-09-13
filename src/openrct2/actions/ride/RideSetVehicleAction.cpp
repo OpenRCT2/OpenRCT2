@@ -14,14 +14,16 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../core/EnumUtils.hpp"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../core/MemoryStream.h"
+#include "../../drawing/Drawing.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Research.h"
 #include "../../object/ObjectManager.h"
 #include "../../ride/Ride.h"
 #include "../../ride/RideData.h"
-#include "../../windows/Intent.h"
+#include "../../ui/WindowManager.h"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -139,10 +141,6 @@ namespace OpenRCT2::GameActions
                 ride->removePeeps();
                 ride->vehicleChangeTimeout = 100;
 
-                if (ride->numCircuits > 1)
-                {
-                    InvalidateTestResults(*ride);
-                }
                 ride->proposedNumTrains = _value;
                 break;
             case RideSetVehicleType::numCarsPerTrain:
@@ -205,16 +203,13 @@ namespace OpenRCT2::GameActions
                 return Result(Status::invalidParameters, errTitle, kStringIdNone);
         }
 
+        ride->numCircuits = 1;
         ride->updateMaxVehicles();
-        if (ride->numTrains > 1)
-        {
-            ride->numCircuits = 1;
-        }
 
         auto res = Result();
-        if (!ride->overallView.isNull())
+        if (!ride->overallView.IsNull())
         {
-            auto location = ride->overallView.toTileCentre();
+            auto location = ride->overallView.ToTileCentre();
             res.position = { location, TileElementHeight(res.position) };
         }
 
@@ -222,7 +217,7 @@ namespace OpenRCT2::GameActions
         intent.PutExtra(INTENT_EXTRA_RIDE_ID, _rideIndex.ToUnderlying());
         ContextBroadcastIntent(&intent);
 
-        Drawing::GfxInvalidateScreen();
+        GfxInvalidateScreen();
         return res;
     }
 

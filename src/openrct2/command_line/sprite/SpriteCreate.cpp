@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../core/FileStream.h"
 #include "../../core/StringTypes.h"
+#include "../../drawing/Drawing.h"
 #include "SpriteCommands.h"
 #include "SpriteFile.h"
 
@@ -15,18 +17,18 @@
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    ExitCode create(const char** argv, int32_t argc)
+    int32_t create(const char** argv, int32_t argc)
     {
         if (argc < 2)
         {
             fprintf(stderr, "usage: sprite create <spritefile>\n");
-            return ExitCode::fail;
+            return -1;
         }
 
         const utf8* spriteFilePath = argv[1];
 
         SpriteFile spriteFile;
         spriteFile.Save(spriteFilePath);
-        return ExitCode::ok;
+        return 0;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

@@ -17,6 +17,7 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -31,7 +32,7 @@ static void Paint3dCinemaDome(
     if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
         session.InteractionType = ViewportInteractionItem::entity;
-        session.CurrentlyDrawnEntity = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
+        session.CurrentlyDrawnEntity = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     }
 
     auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
@@ -40,7 +41,7 @@ static void Paint3dCinemaDome(
         imageTemplate = stationColour;
     }
 
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].baseImageId + direction);
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);
     PaintAddImageAsParent(
         session, imageId, { xOffset, yOffset, height + 3 }, { { xOffset + 16, yOffset + 16, height + 3 }, { 24, 24, 47 } });
 

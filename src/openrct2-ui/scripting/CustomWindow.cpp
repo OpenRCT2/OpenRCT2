@@ -16,6 +16,8 @@
     #include "../scripting/ScWidget.hpp"
     #include "../windows/Windows.h"
     #include "CustomListView.h"
+    #include "ScUi.hpp"
+    #include "ScWindow.h"
 
     #include <limits>
     #include <openrct2/SpriteIds.h>
@@ -23,7 +25,8 @@
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/ColourWithFlags.h>
     #include <openrct2/interface/Viewport.h>
-    #include <openrct2/interface/WindowTypes.h>
+    #include <openrct2/interface/Window.h>
+    #include <openrct2/scripting/Plugin.h>
     #include <optional>
     #include <string>
     #include <utility>
@@ -74,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
         bool IsDisabled{};
         bool IsVisible{};
         bool IsPressed{};
-        std::optional<bool> HasBorder;
+        bool HasBorder{};
         bool ShowColumnHeaders{};
         bool IsStriped{};
         bool CanSelect{};
@@ -105,10 +108,12 @@ namespace OpenRCT2::Ui::Windows
                 if (JS_IsString(jsImage) || JS_IsNumber(jsImage))
                 {
                     result.Image = ImageId(ImageFromJSValue(ctx, jsImage));
+                    result.HasBorder = false;
                 }
                 else
                 {
                     result.Text = AsOrDefault(ctx, desc, "text", "");
+                    result.HasBorder = true;
                 }
                 JS_FreeValue(ctx, jsImage);
                 result.IsPressed = AsOrDefault(ctx, desc, "isPressed", false);
@@ -168,7 +173,7 @@ namespace OpenRCT2::Ui::Windows
                 result.OnHighlight = JSToCallback(ctx, desc, "onHighlight");
                 result.CanSelect = AsOrDefault(ctx, desc, "canSelect", false);
                 if (JS_IsUndefined(scrollbars))
-                    result.Scrollbars = ScrollbarType::vertical;
+                    result.Scrollbars = ScrollbarType::Vertical;
                 else
                     result.Scrollbars = ScrollbarTypeFromJS(ctx, scrollbars);
                 JS_FreeValue(ctx, cols);
@@ -189,12 +194,7 @@ namespace OpenRCT2::Ui::Windows
                 result.MaxLength = AsOrDefault(ctx, desc, "maxLength", 32);
                 result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
-            JSValue jsBorder = JS_GetPropertyStr(ctx, desc, "border");
-            if (JS_IsBool(jsBorder))
-            {
-                result.HasBorder = JS_ToBool(ctx, jsBorder) > 0;
-            }
-            JS_FreeValue(ctx, jsBorder);
+            result.HasBorder = AsOrDefault(ctx, desc, "border", result.HasBorder);
             return result;
         }
     };
@@ -472,16 +472,6 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widgetScrollUpdateThumbs(*this, widgetIndex);
                 }
-                if (widget.type == WidgetType::textBox)
-                {
-                    auto currentTextBox = GetCurrentTextBox();
-                    if (currentTextBox.window.classification == classification && currentTextBox.window.number == number
-                        && currentTextBox.widgetIndex == widgetIndex)
-                    {
-                        WindowUpdateTextboxCaret();
-                        GetWindowManager()->InvalidateWidget(*this, widgetIndex);
-                    }
-                }
                 widgetIndex++;
             }
 
@@ -522,12 +512,12 @@ namespace OpenRCT2::Ui::Windows
                     auto& listView = _info.ListViews[scrollIndex];
                     auto wwidth = widget.width() - 2;
                     auto wheight = widget.height() - 2;
-                    if (listView.GetScrollbars() == ScrollbarType::horizontal
-                        || listView.GetScrollbars() == ScrollbarType::both)
+                    if (listView.GetScrollbars() == ScrollbarType::Horizontal
+                        || listView.GetScrollbars() == ScrollbarType::Both)
                     {
                         wheight -= kScrollBarWidth + 1;
                     }
-                    if (listView.GetScrollbars() == ScrollbarType::vertical || listView.GetScrollbars() == ScrollbarType::both)
+                    if (listView.GetScrollbars() == ScrollbarType::Vertical || listView.GetScrollbars() == ScrollbarType::Both)
                     {
                         wwidth -= kScrollBarWidth + 1;
                     }
@@ -654,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[widget->colour], 0,
-                        {}, numItems, widget->width() - 4);
+                        Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(numItems))
                         gDropdown.items[selectedIndex].setChecked(true);
@@ -976,11 +966,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (desc.Image.HasValue())
                 {
-                    // When the border is not specified, flatBtn lets the theme decide whether to draw one.
-                    if (!desc.HasBorder.has_value())
-                        widget.type = WidgetType::flatBtn;
-                    else
-                        widget.type = *desc.HasBorder ? WidgetType::imgBtn : WidgetType::hiddenButton;
+                    widget.type = desc.HasBorder ? WidgetType::imgBtn : WidgetType::flatBtn;
                     widget.image = desc.Image;
                 }
                 else
@@ -1064,11 +1050,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget.type = WidgetType::scroll;
                 widget.content = 0;
-                if (desc.Scrollbars == ScrollbarType::horizontal)
+                if (desc.Scrollbars == ScrollbarType::Horizontal)
                     widget.content = SCROLL_HORIZONTAL;
-                else if (desc.Scrollbars == ScrollbarType::vertical)
+                else if (desc.Scrollbars == ScrollbarType::Vertical)
                     widget.content = SCROLL_VERTICAL;
-                else if (desc.Scrollbars == ScrollbarType::both)
+                else if (desc.Scrollbars == ScrollbarType::Both)
                     widget.content = SCROLL_BOTH;
                 widgetList.push_back(widget);
             }

@@ -18,6 +18,7 @@
 #include "rct2/RCT2.h"
 #include "sawyer_coding/SawyerChunkReader.h"
 #include "sawyer_coding/SawyerCoding.h"
+#include "scenario/Scenario.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::SawyerCoding;
@@ -200,26 +201,26 @@ FileExtension GetFileExtensionType(u8string_view path)
 {
     auto extension = Path::GetExtension(path);
     if (String::iequals(extension, ".dat") || String::iequals(extension, ".pob"))
-        return FileExtension::dat;
+        return FileExtension::DAT;
     if (String::iequals(extension, ".sc4"))
-        return FileExtension::sc4;
+        return FileExtension::SC4;
     if (String::iequals(extension, ".sv4"))
-        return FileExtension::sv4;
+        return FileExtension::SV4;
     if (String::iequals(extension, ".td4"))
-        return FileExtension::td4;
+        return FileExtension::TD4;
     if (String::iequals(extension, ".sc6"))
-        return FileExtension::sc6;
+        return FileExtension::SC6;
     if (String::iequals(extension, ".sea"))
-        return FileExtension::sc6;
+        return FileExtension::SC6;
     if (String::iequals(extension, ".sv6"))
-        return FileExtension::sv6;
+        return FileExtension::SV6;
     if (String::iequals(extension, ".sv7"))
-        return FileExtension::sv6;
+        return FileExtension::SV6;
     if (String::iequals(extension, ".td6"))
-        return FileExtension::td6;
+        return FileExtension::TD6;
     if (String::iequals(extension, ".td7"))
-        return FileExtension::td6;
+        return FileExtension::TD6;
     if (String::iequals(extension, ".park"))
-        return FileExtension::park;
-    return FileExtension::unknown;
+        return FileExtension::PARK;
+    return FileExtension::Unknown;
 }

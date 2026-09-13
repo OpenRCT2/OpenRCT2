@@ -12,6 +12,8 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
+#include "../PlatformEnvironment.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -21,24 +23,22 @@
 #include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 
+#include <cassert>
+#include <limits>
 #include <memory>
-
-using namespace OpenRCT2::CommandLine;
 
 namespace OpenRCT2
 {
     static int32_t _compressLevel = kParkFileSaveCompressionLevel;
-    static bool _stripObjects = false;
 
     // clang-format off
     static constexpr CommandLineOptionDefinition kConvertOptions[]
     {
         { CMDLINE_TYPE_INTEGER, &_compressLevel, 'l', "compress-level", "The compression level to use when writing the converted file" },
-        { CMDLINE_TYPE_SWITCH, &_stripObjects, kNAC, "strip-objects", "Do not pack custom objects into the converted file" },
         kOptionTableEnd
     };
 
-    static ExitCode HandleCommandConvert(CommandLineArgEnumerator* argEnumerator);
+    static exitcode_t HandleCommandConvert(CommandLineArgEnumerator* argEnumerator);
 
     const CommandLineCommand CommandLine::kConvertCommands[]{
         // Main commands
@@ -50,10 +50,10 @@ namespace OpenRCT2
     static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType);
     static u8string GetFileTypeFriendlyName(FileExtension fileType);
 
-    static ExitCode HandleCommandConvert(CommandLineArgEnumerator* enumerator)
+    static exitcode_t HandleCommandConvert(CommandLineArgEnumerator* enumerator)
     {
-        ExitCode result = CommandLine::HandleCommandDefault();
-        if (result != ExitCode::launch)
+        exitcode_t result = CommandLine::HandleCommandDefault();
+        if (result != EXITCODE_CONTINUE)
         {
             return result;
         }
@@ -63,7 +63,7 @@ namespace OpenRCT2
         if (!enumerator->TryPopString(&rawSourcePath))
         {
             Console::Error::WriteLine("Expected a source path.");
-            return ExitCode::fail;
+            return EXITCODE_FAIL;
         }
 
         const auto sourcePath = Path::GetAbsolute(rawSourcePath);
@@ -81,22 +81,22 @@ namespace OpenRCT2
         auto destinationFileType = GetFileExtensionType(destinationPath.c_str());
 
         // Validate target type
-        if (destinationFileType != FileExtension::park)
+        if (destinationFileType != FileExtension::PARK)
         {
             Console::Error::WriteLine("Only conversion to .PARK is supported.");
-            return ExitCode::fail;
+            return EXITCODE_FAIL;
         }
 
         // Validate the source type
         switch (sourceFileType)
         {
-            case FileExtension::sc4:
-            case FileExtension::sv4:
-            case FileExtension::sc6:
-            case FileExtension::sv6:
+            case FileExtension::SC4:
+            case FileExtension::SV4:
+            case FileExtension::SC6:
+            case FileExtension::SV6:
                 break;
-            case FileExtension::park:
-                if (destinationFileType == FileExtension::park)
+            case FileExtension::PARK:
+                if (destinationFileType == FileExtension::PARK)
                 {
                     Console::Error::WriteLine(
                         "File is already an OpenRCT2 saved game or scenario. Updating file version and recompressing.");
@@ -104,7 +104,7 @@ namespace OpenRCT2
                 break;
             default:
                 Console::Error::WriteLine("Only conversion from .SC4, .SV4, .SC6, .SV6, or .PARK is supported.");
-                return ExitCode::fail;
+                return EXITCODE_FAIL;
         }
 
         // Perform conversion
@@ -130,10 +130,10 @@ namespace OpenRCT2
         catch (const std::exception& ex)
         {
             Console::Error::WriteLine(ex.what());
-            return ExitCode::fail;
+            return EXITCODE_FAIL;
         }
 
-        if (sourceFileType == FileExtension::sc4 || sourceFileType == FileExtension::sc6)
+        if (sourceFileType == FileExtension::SC4 || sourceFileType == FileExtension::SC6)
         {
             // We are converting a scenario, so reset the park
             ScenarioBegin(gameState);
@@ -142,10 +142,6 @@ namespace OpenRCT2
         try
         {
             auto exporter = std::make_unique<ParkFileExporter>();
-            if (!_stripObjects)
-            {
-                exporter->ExportObjectsList = objManager.GetPackableObjects();
-            }
 
             // HACK remove the main window so it saves the park with the
             //      correct initial view
@@ -157,11 +153,11 @@ namespace OpenRCT2
         catch (const std::exception& ex)
         {
             Console::Error::WriteLine(ex.what());
-            return ExitCode::fail;
+            return EXITCODE_FAIL;
         }
 
         Console::WriteLine("Conversion successful!");
-        return ExitCode::ok;
+        return EXITCODE_OK;
     }
 
     static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType)
@@ -176,15 +172,15 @@ namespace OpenRCT2
     {
         switch (fileType)
         {
-            case FileExtension::sc4:
+            case FileExtension::SC4:
                 return "RollerCoaster Tycoon 1 scenario";
-            case FileExtension::sv4:
+            case FileExtension::SV4:
                 return "RollerCoaster Tycoon 1 saved game";
-            case FileExtension::sc6:
+            case FileExtension::SC6:
                 return "RollerCoaster Tycoon 2 scenario";
-            case FileExtension::sv6:
+            case FileExtension::SV6:
                 return "RollerCoaster Tycoon 2 saved game";
-            case FileExtension::park:
+            case FileExtension::PARK:
                 return "OpenRCT2 park";
             default:
                 break;

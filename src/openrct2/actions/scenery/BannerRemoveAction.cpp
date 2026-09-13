@@ -15,6 +15,7 @@
 #include "../../object/ObjectEntryManager.h"
 #include "../../world/Banner.h"
 #include "../../world/Map.h"
+#include "../../world/Scenery.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/tile_element/BannerElement.h"
 #include "../GameAction.hpp"
@@ -69,14 +70,14 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto bannerIndex = bannerElement->getIndex();
+        auto bannerIndex = bannerElement->GetIndex();
         if (bannerIndex == BannerIndex::GetNull())
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto banner = bannerElement->getBanner();
+        auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
@@ -109,14 +110,14 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto bannerIndex = bannerElement->getIndex();
+        auto bannerIndex = bannerElement->GetIndex();
         if (bannerIndex == BannerIndex::GetNull())
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto banner = bannerElement->getBanner();
+        auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             LOG_ERROR("Invalid banner index %u", bannerIndex);
@@ -129,7 +130,7 @@ namespace OpenRCT2::GameActions
             res.cost = -((bannerEntry->price * 3) / 4);
         }
 
-        reinterpret_cast<TileElement*>(bannerElement)->removeBannerEntry();
+        reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();
         MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
         bannerElement->remove();
 
@@ -145,7 +146,7 @@ namespace OpenRCT2::GameActions
                 continue;
             if (bannerElement->isGhost() && !GetFlags().has(CommandFlag::ghost))
                 continue;
-            if (bannerElement->getPosition() != _loc.direction)
+            if (bannerElement->GetPosition() != _loc.direction)
                 continue;
 
             return bannerElement;

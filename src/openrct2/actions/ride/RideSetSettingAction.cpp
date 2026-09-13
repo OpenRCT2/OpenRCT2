@@ -12,7 +12,7 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../drawing/Drawing.h"
 #include "../../object/MusicObject.h"
 #include "../../object/ObjectManager.h"
 #include "../../ride/Ride.h"
@@ -146,11 +146,6 @@ namespace OpenRCT2::GameActions
                     LOG_ERROR("Arbitrary ride type changes not allowed.");
                     return Result(Status::disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
                 }
-                if (_value >= RIDE_TYPE_COUNT)
-                {
-                    LOG_ERROR("Invalid ride type: %u", _value);
-                    return Result(Status::disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
-                }
                 break;
             default:
                 LOG_ERROR("Invalid ride setting %u", static_cast<uint8_t>(_setting));
@@ -237,14 +232,14 @@ namespace OpenRCT2::GameActions
             case RideSetSetting::rideType:
                 ride->type = _value;
                 ride->updateRideTypeForAllPieces();
-                Drawing::GfxInvalidateScreen();
+                GfxInvalidateScreen();
                 break;
         }
 
         auto res = Result();
-        if (!ride->overallView.isNull())
+        if (!ride->overallView.IsNull())
         {
-            auto location = ride->overallView.toTileCentre();
+            auto location = ride->overallView.ToTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
         auto* windowMgr = Ui::GetWindowManager();
@@ -254,7 +249,7 @@ namespace OpenRCT2::GameActions
 
     bool RideSetSettingAction::RideIsModeValid(const Ride& ride) const
     {
-        return ride.getRideTypeDescriptor().rideModes.has(static_cast<RideMode>(_value));
+        return ride.getRideTypeDescriptor().RideModes & (1uLL << _value);
     }
 
     bool RideSetSettingAction::RideIsValidLiftHillSpeed(GameState_t& gameState, const Ride& ride) const

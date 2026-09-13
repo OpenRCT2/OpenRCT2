@@ -14,7 +14,6 @@
     #include "../OpenRCT2.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
-    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
 
     #include <CoreText/CoreText.h>
@@ -271,12 +270,12 @@ namespace OpenRCT2::Platform
         }
     }
 
-    std::vector<std::string> GetSearchablePathsRCT1()
+    std::vector<std::string_view> GetSearchablePathsRCT1()
     {
         return {};
     }
 
-    std::vector<std::string> GetSearchablePathsRCT2()
+    std::vector<std::string_view> GetSearchablePathsRCT2()
     {
         return { "/Applications" };
     }

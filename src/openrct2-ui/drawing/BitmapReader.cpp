@@ -9,7 +9,7 @@
 
 #include "BitmapReader.h"
 
-#include <SDL_surface.h>
+#include <SDL.h>
 #include <cstring>
 #include <openrct2/core/Imaging.h>
 #include <stdexcept>

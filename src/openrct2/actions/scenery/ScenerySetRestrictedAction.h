@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class ScenerySetRestrictedAction final : public GameActionBase<GameCommand::setRestrictedScenery>
+    class ScenerySetRestrictedAction final : public GameActionBase<GameCommand::SetRestrictedScenery>
     {
     private:
         ObjectType _objectType;

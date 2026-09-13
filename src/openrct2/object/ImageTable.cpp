@@ -21,7 +21,7 @@
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.Sprite.h"
+#include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -405,13 +405,13 @@ namespace OpenRCT2
         {
             // Search recursively for any file with the target name (case insensitive)
             auto filter = Path::Combine(objectsPath, u8"*.dat;*.pob");
-            auto scanner = Path::scanDirectory(filter, true);
-            while (scanner->next())
+            auto scanner = Path::ScanDirectory(filter, true);
+            while (scanner->Next())
             {
-                auto currentName = Path::GetFileName(scanner->getPathRelative());
+                auto currentName = Path::GetFileName(scanner->GetPathRelative());
                 if (String::iequals(currentName, name) || String::iequals(currentName, altName))
                 {
-                    objectPath = scanner->getPath();
+                    objectPath = scanner->GetPath();
                     break;
                 }
             }

@@ -11,22 +11,20 @@
 
     #include "CustomListView.h"
 
+    #include "../interface/Viewport.h"
+    #include "../interface/Widget.h"
+    #include "../windows/Windows.h"
+
     #include <numeric>
-    #include <openrct2-ui/interface/Window.h>
     #include <openrct2/Context.h>
     #include <openrct2/core/String.hpp>
     #include <openrct2/drawing/ColourMap.h>
     #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
-    #include <openrct2/drawing/FilterPaletteIds.h>
-    #include <openrct2/drawing/Line.h>
     #include <openrct2/drawing/Rectangle.h>
-    #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/drawing/Text.h>
-    #include <openrct2/interface/Widget.h>
     #include <openrct2/localisation/Formatter.h>
-    #include <openrct2/localisation/StringIds.h>
-    #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/localisation/Formatting.h>
 
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Scripting;
@@ -42,20 +40,20 @@ namespace OpenRCT2::Scripting
         {
             auto s = JSToStdString(ctx, d);
             if (s == "ascending")
-                return ColumnSortOrder::ascending;
+                return ColumnSortOrder::Ascending;
             if (s == "descending")
-                return ColumnSortOrder::descending;
+                return ColumnSortOrder::Descending;
         }
-        return ColumnSortOrder::none;
+        return ColumnSortOrder::None;
     }
 
     static JSValue ColumnSortOrderToJS(JSContext* ctx, ColumnSortOrder value)
     {
         switch (value)
         {
-            case ColumnSortOrder::ascending:
+            case ColumnSortOrder::Ascending:
                 return JSFromStdString(ctx, "ascending");
-            case ColumnSortOrder::descending:
+            case ColumnSortOrder::Descending:
                 return JSFromStdString(ctx, "descending");
             default:
                 return JSFromStdString(ctx, "none");
@@ -179,12 +177,12 @@ namespace OpenRCT2::Scripting
     {
         auto value = JSToStdString(ctx, d);
         if (value == "horizontal")
-            return ScrollbarType::horizontal;
+            return ScrollbarType::Horizontal;
         if (value == "vertical")
-            return ScrollbarType::vertical;
+            return ScrollbarType::Vertical;
         if (value == "both")
-            return ScrollbarType::both;
-        return ScrollbarType::none;
+            return ScrollbarType::Both;
+        return ScrollbarType::None;
     }
 
     JSValue ScrollbarTypeToJS(JSContext* ctx, const ScrollbarType value)
@@ -192,13 +190,13 @@ namespace OpenRCT2::Scripting
         switch (value)
         {
             default:
-            case ScrollbarType::none:
+            case ScrollbarType::None:
                 return JSFromStdString(ctx, "none");
-            case ScrollbarType::horizontal:
+            case ScrollbarType::Horizontal:
                 return JSFromStdString(ctx, "horizontal");
-            case ScrollbarType::vertical:
+            case ScrollbarType::Vertical:
                 return JSFromStdString(ctx, "vertical");
-            case ScrollbarType::both:
+            case ScrollbarType::Both:
                 return JSFromStdString(ctx, "both");
         }
     }
@@ -225,11 +223,11 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
         auto widget = GetWidget();
         if (widget != nullptr)
         {
-            if (value == ScrollbarType::horizontal)
+            if (value == ScrollbarType::Horizontal)
                 widget->content = SCROLL_HORIZONTAL;
-            else if (value == ScrollbarType::vertical)
+            else if (value == ScrollbarType::Vertical)
                 widget->content = SCROLL_VERTICAL;
-            else if (value == ScrollbarType::both)
+            else if (value == ScrollbarType::Both)
                 widget->content = SCROLL_BOTH;
             else
                 widget->content = 0;
@@ -249,7 +247,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SelectedCell = std::nullopt;
     Columns = columns;
     LastKnownSize = {};
-    SortItems(0, ColumnSortOrder::none);
+    SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
         WindowUpdateScrollWidgets(*ParentWindow);
@@ -266,7 +264,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
 {
     SelectedCell = std::nullopt;
     Items = items;
-    SortItems(0, ColumnSortOrder::none);
+    SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
         WindowUpdateScrollWidgets(*ParentWindow);
@@ -277,7 +275,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
 void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialising)
 {
     Items = std::move(items);
-    SortItems(0, ColumnSortOrder::none);
+    SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
         WindowUpdateScrollWidgets(*ParentWindow);
@@ -294,16 +292,16 @@ bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
 
 void CustomListView::SortItems(int32_t column)
 {
-    auto sortOrder = ColumnSortOrder::ascending;
+    auto sortOrder = ColumnSortOrder::Ascending;
     if (CurrentSortColumn == column)
     {
-        if (CurrentSortOrder == ColumnSortOrder::ascending)
+        if (CurrentSortOrder == ColumnSortOrder::Ascending)
         {
-            sortOrder = ColumnSortOrder::descending;
+            sortOrder = ColumnSortOrder::Descending;
         }
-        else if (CurrentSortOrder == ColumnSortOrder::descending)
+        else if (CurrentSortOrder == ColumnSortOrder::Descending)
         {
-            sortOrder = ColumnSortOrder::none;
+            sortOrder = ColumnSortOrder::None;
         }
     }
     SortItems(column, sortOrder);
@@ -318,11 +316,11 @@ void CustomListView::SortItems(int32_t column, ColumnSortOrder order)
         SortedItems[i] = i;
     }
 
-    if (order != ColumnSortOrder::none)
+    if (order != ColumnSortOrder::None)
     {
         std::sort(
             SortedItems.begin(), SortedItems.end(), [this, column](size_t a, size_t b) { return SortItem(a, b, column); });
-        if (order == ColumnSortOrder::descending)
+        if (order == ColumnSortOrder::Descending)
         {
             std::reverse(SortedItems.begin(), SortedItems.end());
         }
@@ -356,7 +354,7 @@ void CustomListView::Resize(const ScreenSize& size)
     }
 
     // Calculate column widths
-    bool hasHorizontalScroll = Scrollbars == ScrollbarType::horizontal || Scrollbars == ScrollbarType::both;
+    bool hasHorizontalScroll = Scrollbars == ScrollbarType::Horizontal || Scrollbars == ScrollbarType::Both;
     int32_t widthRemaining = size.width;
     for (size_t c = 0; c < Columns.size(); c++)
     {
@@ -402,7 +400,7 @@ ScreenSize CustomListView::GetSize()
     IsMouseDown = false;
 
     ScreenSize result;
-    if (Scrollbars == ScrollbarType::horizontal || Scrollbars == ScrollbarType::both)
+    if (Scrollbars == ScrollbarType::Horizontal || Scrollbars == ScrollbarType::Both)
     {
         result.width = std::accumulate(
             Columns.begin(), Columns.end(), 0, [](int32_t acc, const ListViewColumn& column) { return acc + column.Width; });
@@ -410,7 +408,7 @@ ScreenSize CustomListView::GetSize()
         // Fixes an off-by-one error that causes the scrollbar thumb to not fill when the widget is wide enough
         result.width--;
     }
-    if (Scrollbars == ScrollbarType::vertical || Scrollbars == ScrollbarType::both)
+    if (Scrollbars == ScrollbarType::Vertical || Scrollbars == ScrollbarType::Both)
     {
         result.height = static_cast<int32_t>(Items.size() * kListRowHeight);
         if (ShowColumnHeaders)
@@ -640,7 +638,7 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
             auto columnWidth = column.Width;
             if (columnWidth != 0)
             {
-                auto sortOrder = ColumnSortOrder::none;
+                auto sortOrder = ColumnSortOrder::None;
                 if (CurrentSortColumn == j)
                 {
                     sortOrder = CurrentSortOrder;
@@ -669,13 +667,13 @@ void CustomListView::PaintHeading(
         PaintCell(rt, pos, size, text.c_str(), false);
     }
 
-    if (sortOrder == ColumnSortOrder::ascending)
+    if (sortOrder == ColumnSortOrder::Ascending)
     {
         auto ft = Formatter();
         ft.Add<StringId>(STR_UP);
         drawText(rt, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::right });
     }
-    else if (sortOrder == ColumnSortOrder::descending)
+    else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter();
         ft.Add<StringId>(STR_DOWN);

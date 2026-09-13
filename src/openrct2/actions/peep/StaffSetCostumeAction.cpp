@@ -13,7 +13,6 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../entity/EntityRegistry.h"
-#include "../../entity/Staff.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/ObjectManager.h"
 #include "../../object/PeepAnimationsObject.h"
@@ -54,7 +53,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto* staff = gameState.entities.tryGetEntity<Staff>(_spriteIndex);
+        auto* staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
@@ -75,25 +74,25 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetCostumeAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto* staff = gameState.entities.tryGetEntity<Staff>(_spriteIndex);
+        auto* staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
 
-        staff->animationObjectIndex = _costume;
-        staff->animationGroup = PeepAnimationGroup::normal;
+        staff->AnimationObjectIndex = _costume;
+        staff->AnimationGroup = PeepAnimationGroup::normal;
 
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
 
-        staff->peepFlags.unset(PeepFlag::slowWalk);
+        staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
         if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
-            staff->peepFlags.set(PeepFlag::slowWalk);
+            staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
 
-        staff->animationFrameNum = 0;
-        staff->updateCurrentAnimationType();
+        staff->AnimationFrameNum = 0;
+        staff->UpdateCurrentAnimationType();
         staff->invalidate();
 
         auto* windowMgr = Ui::GetWindowManager();

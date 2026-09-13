@@ -7,10 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <chrono>
 #include <mutex>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/core/Console.hpp>
@@ -18,12 +16,13 @@
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/Platform.h>
@@ -69,7 +68,6 @@ namespace OpenRCT2::Ui::Windows
         std::mutex _downloadedEntriesMutex;
         std::mutex _queueMutex;
         bool _nextDownloadQueued{};
-        std::vector<std::shared_future<void>> _pendingRequests; // Store futures to prevent blocking destructors
 
         DownloadStatusInfo _lastDownloadStatusInfo;
         DownloadStatusInfo _downloadStatusInfo;
@@ -82,7 +80,6 @@ namespace OpenRCT2::Ui::Windows
     public:
         void Begin(const std::vector<ObjectEntryDescriptor>& entries)
         {
-            _pendingRequests.clear();
             _lastDownloadStatusInfo = {};
             _downloadStatusInfo = {};
             _lastDownloadSource = {};
@@ -105,10 +102,6 @@ namespace OpenRCT2::Ui::Windows
 
         void Update()
         {
-            std::erase_if(_pendingRequests, [](const std::shared_future<void>& f) {
-                return f.wait_for(std::chrono::seconds::zero()) == std::future_status::ready;
-            });
-
             std::lock_guard guard(_queueMutex);
             if (_nextDownloadQueued)
             {
@@ -176,11 +169,12 @@ namespace OpenRCT2::Ui::Windows
         {
             try
             {
+                Console::WriteLine("Downloading %s", url.c_str());
                 Http::Request req;
-                req.method = Http::Method::get;
+                req.method = Http::Method::GET;
                 req.url = url;
-                _pendingRequests.push_back(Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                    if (response.status == Http::Status::ok)
+                Http::DoAsync(req, [this, entry, name](Http::Response response) {
+                    if (response.status == Http::Status::Ok)
                     {
                         // Check that download operation hasn't been cancelled
                         if (_downloadingObjects)
@@ -189,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
                             auto dataLen = response.body.size();
 
                             auto& objRepo = GetContext()->GetObjectRepository();
-                            objRepo.AddObjectFromFile(ObjectGeneration::dat, name, data, dataLen);
+                            objRepo.AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
 
                             std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
                             _downloadedEntries.push_back(entry);
@@ -200,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
                         Console::Error::WriteLine("  Failed to download %s", name.c_str());
                     }
                     QueueNextDownload();
-                }));
+                });
             }
             catch (const std::exception&)
             {
@@ -227,10 +221,10 @@ namespace OpenRCT2::Ui::Windows
             try
             {
                 Http::Request req;
-                req.method = Http::Method::get;
+                req.method = Http::Method::GET;
                 req.url = kOpenRCT2ApiLegacyObjectURL + name;
-                _pendingRequests.push_back(Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                    if (response.status == Http::Status::ok)
+                Http::DoAsync(req, [this, entry, name](Http::Response response) {
+                    if (response.status == Http::Status::Ok)
                     {
                         auto jresponse = Json::FromString(response.body);
                         if (jresponse.is_object())
@@ -246,7 +240,7 @@ namespace OpenRCT2::Ui::Windows
                             }
                         }
                     }
-                    else if (response.status == Http::Status::notFound)
+                    else if (response.status == Http::Status::NotFound)
                     {
                         Console::Error::WriteLine("  %s not found", name.c_str());
                         QueueNextDownload();
@@ -257,7 +251,7 @@ namespace OpenRCT2::Ui::Windows
                             "  %s query failed (status %d)", name.c_str(), static_cast<int32_t>(response.status));
                         QueueNextDownload();
                     }
-                }));
+                });
             }
             catch (const std::exception&)
             {
@@ -334,28 +328,6 @@ namespace OpenRCT2::Ui::Windows
                 return STR_OBJECT_SELECTION_PARK_ENTRANCE;
             case ObjectType::water:
                 return STR_OBJECT_SELECTION_WATER;
-            case ObjectType::terrainSurface:
-                return STR_OBJECT_SELECTION_TERRAIN_SURFACES;
-            case ObjectType::terrainEdge:
-                return STR_OBJECT_SELECTION_TERRAIN_EDGES;
-            case ObjectType::station:
-                return STR_OBJECT_SELECTION_STATIONS;
-            case ObjectType::music:
-                return STR_OBJECT_SELECTION_MUSIC;
-            case ObjectType::footpathSurface:
-                return STR_OBJECT_SELECTION_FOOTPATH_SURFACES;
-            case ObjectType::footpathRailings:
-                return STR_OBJECT_SELECTION_FOOTPATH_RAILINGS;
-            case ObjectType::peepNames:
-                return STR_OBJECT_SELECTION_PEEP_NAMES;
-            case ObjectType::peepAnimations:
-                return STR_OBJECT_SELECTION_PEEP_ANIMATIONS;
-            case ObjectType::climate:
-                return STR_OBJECT_SELECTION_CLIMATE;
-            // Intransient objects, should never pop up here
-            case ObjectType::scenarioMeta:
-                return STR_OBJECT_SELECTION_SCENARIO_TEXTS;
-            case ObjectType::audio:
             default:
                 return STR_UNKNOWN_OBJECT_TYPE;
         }
@@ -575,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
 
                 drawText(rt, screenCoords, entry.GetName(), { Colour::darkGreen });
 
-                if (entry.Generation == ObjectGeneration::dat)
+                if (entry.Generation == ObjectGeneration::DAT)
                 {
                     // ... source game ...
                     const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
@@ -607,10 +579,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::objectLoadError);
         if (window == nullptr)
         {
-            // The ‘stick to front’ flag is needed because ‘Load game’ also has it set, and not setting it would cause our
-            // window to get displayed _under_ ‘Load game’.
-            window = windowMgr->Create<ObjectLoadErrorWindow>(
-                WindowClass::objectLoadError, kWindowSize, { WindowFlag::stickToFront });
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::objectLoadError, kWindowSize, {});
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->initialise(path, numMissingObjects, missingObjects);

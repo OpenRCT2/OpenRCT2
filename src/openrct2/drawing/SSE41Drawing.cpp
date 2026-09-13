@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "../core/Guard.hpp"
-#include "Drawing.Sprite.h"
+#include "Drawing.h"
 #include "PaletteIndex.h"
 
 using OpenRCT2::Drawing::PaletteIndex;

@@ -11,19 +11,17 @@
 
 #include <memory>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/ColourMap.h>
-#include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
@@ -169,7 +167,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Warnings
             const TrackDesign& td = *_trackDesign;
-            if (td.gameStateData.hasFlag(TrackDesignGameStateFlag::sceneryUnavailable))
+            if (td.gameStateData.hasFlag(TrackDesignGameStateFlag::SceneryUnavailable))
             {
                 if (!gTrackDesignSceneryToggle)
                 {
@@ -335,7 +333,7 @@ namespace OpenRCT2::Ui::Windows
 
             screenPos.y += 4;
 
-            if (!td.statistics.spaceRequired.isNull())
+            if (!td.statistics.spaceRequired.IsNull())
             {
                 // Space required
                 auto ft = Formatter();

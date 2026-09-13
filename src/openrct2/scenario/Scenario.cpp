@@ -9,21 +9,29 @@
 
 #include "Scenario.h"
 
+#include "../Cheats.h"
 #include "../Context.h"
 #include "../Date.h"
+#include "../FileClassifier.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/ResultWithMessage.h"
+#include "../audio/Audio.h"
 #include "../config/Config.h"
+#include "../core/BitSet.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
-#include "../drawing/Palette.h"
-#include "../drawing/PaletteIndex.h"
+#include "../core/UnitConversion.h"
+#include "../drawing/Drawing.h"
 #include "../entity/Duck.h"
+#include "../entity/Guest.h"
 #include "../entity/Staff.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Formatter.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
@@ -32,21 +40,29 @@
 #include "../management/Research.h"
 #include "../network/Network.h"
 #include "../object/ObjectEntryManager.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/ScenarioMetaObject.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
+#include "../rct1/RCT1.h"
+#include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/Entrance.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
+#include "../world/Scenery.h"
+#include "../world/Weather.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "ScenarioRepository.h"
+#include "ScenarioSources.h"
 
 #include <chrono>
 
@@ -63,7 +79,7 @@ static void ScenarioCheckObjective(GameState_t& gameState);
 
 void ScenarioBegin(GameState_t& gameState)
 {
-    GameLoadInit(); // NB: calls `setActiveScene`
+    GameLoadInit();
     ScenarioReset(gameState);
 
     if (gameState.scenarioOptions.objective.Type != ObjectiveType::none && !gLoadKeepWindowsOpen)
@@ -112,7 +128,7 @@ void ScenarioReset(GameState_t& gameState)
     park.totalAdmissions = 0;
     park.totalIncomeFromAdmissions = 0;
 
-    park.flags.unset(ParkFlag::scenarioCompleteNameInput);
+    park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.scenarioCompletedBy = "?";
 
@@ -121,7 +137,7 @@ void ScenarioReset(GameState_t& gameState)
     AwardReset();
     ResetAllRideBuildDates();
     ResetDate();
-    Duck::removeAll();
+    Duck::RemoveAll();
     Park::UpdateSize(park);
     MapCountRemainingLandRights();
     Staff::resetStats();
@@ -137,13 +153,13 @@ void ScenarioReset(GameState_t& gameState)
     park.ratingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
-    if (park.flags.has(ParkFlag::noMoney))
+    if (park.flags & PARK_FLAGS_NO_MONEY)
     {
-        park.flags.set(ParkFlag::parkOpen);
+        park.flags |= PARK_FLAGS_PARK_OPEN;
         park.entranceFee = 0;
     }
 
-    park.flags.set(ParkFlag::spritesInitialised);
+    park.flags |= PARK_FLAGS_SPRITES_INITIALISED;
     gGamePaused = false;
 }
 
@@ -182,7 +198,7 @@ void ScenarioSuccess(GameState_t& gameState)
     if (ScenarioRepositoryTryRecordHighscore(gameState.scenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
-        gameState.park.flags.set(ParkFlag::scenarioCompleteNameInput);
+        gameState.park.flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gameState.scenarioCompanyValueRecord = companyValue;
     }
     ScenarioEnd();
@@ -198,7 +214,7 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
     {
         gameState.scenarioCompletedBy = name;
     }
-    gameState.park.flags.unset(ParkFlag::scenarioCompleteNameInput);
+    gameState.park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
 /**
@@ -210,7 +226,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
     const auto& park = getGameState().park;
     const auto max_fee = AddClamp(park.totalRideValueForMoney, park.totalRideValueForMoney / 2);
 
-    if (park.flags.has(ParkFlag::parkOpen) && Park::GetEntranceFee(park) > max_fee)
+    if ((park.flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee(park) > max_fee)
     {
         if (!park.entrances.empty())
         {
@@ -286,7 +302,7 @@ static void ScenarioDayUpdate(GameState_t& gameState)
     auto& park = gameState.park;
 
     // Lower the casualty penalty
-    uint16_t casualtyPenaltyModifier = park.flags.has(ParkFlag::noMoney) ? 40 : 7;
+    uint16_t casualtyPenaltyModifier = (park.flags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
     park.ratingCasualtyPenalty = std::max(0, park.ratingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
@@ -305,8 +321,9 @@ static void ScenarioWeekUpdate()
     RideCheckAllReachable();
     RideUpdateFavouritedStat();
 
-    const auto& waterEntry = getActiveWaterEntry();
-    if (month <= MONTH_APRIL && waterEntry.flags & WATER_FLAGS_ALLOW_DUCKS)
+    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
+
+    if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
     {
         // 100 attempts at finding some water to create a few ducks at
         for (int32_t i = 0; i < 100; i++)
@@ -363,7 +380,7 @@ static void ScenarioUpdateDayNightCycle()
     // Only update palette if day / night cycle has changed
     if (gDayNightCycle != currentDayNightCycle)
     {
-        Drawing::UpdatePalette(Drawing::gGamePalette, Drawing::PaletteIndex::pi10, 236);
+        UpdatePalette(gGamePalette, Drawing::PaletteIndex::pi10, 236);
     }
 }
 
@@ -462,7 +479,7 @@ bool ScenarioCreateDucks()
         CoordsXY targetPos{ centrePos.x + innerPos.x - SquareRadiusSize, centrePos.y + innerPos.y - SquareRadiusSize };
 
         Guard::Assert(MapIsLocationValid(targetPos));
-        Duck::create(targetPos);
+        Duck::Create(targetPos);
     }
 
     return true;
@@ -541,13 +558,13 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
     TileElementIteratorBegin(&it);
     do
     {
-        if (it.element->getType() == TileElementType::track)
+        if (it.element->getType() == TileElementType::Track)
         {
             markTrackAsIndestructible = false;
 
             if (isFiveCoasterObjective)
             {
-                auto ride = GetRide(it.element->asTrack()->getRideIndex());
+                auto ride = GetRide(it.element->asTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->flags.has(RideFlag::indestructibleTrack))
@@ -556,7 +573,7 @@ static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
                 }
             }
 
-            it.element->asTrack()->setIsIndestructible(markTrackAsIndestructible);
+            it.element->asTrack()->SetIsIndestructible(markTrackAsIndestructible);
         }
     } while (TileElementIteratorNext(&it));
 
@@ -577,7 +594,7 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
     }
 
     if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating)
-        gameState.park.flags.set(ParkFlag::parkOpen);
+        gameState.park.flags |= PARK_FLAGS_PARK_OPEN;
 
     ScenarioReset(gameState);
 
@@ -605,11 +622,11 @@ static void ScenarioCheckObjective(GameState_t& gameState)
 {
     auto& park = gameState.park;
     auto status = gameState.scenarioOptions.objective.Check(park, gameState);
-    if (status == ObjectiveStatus::success)
+    if (status == ObjectiveStatus::Success)
     {
         ScenarioSuccess(gameState);
     }
-    else if (status == ObjectiveStatus::failure)
+    else if (status == ObjectiveStatus::Failure)
     {
         ScenarioFailure(gameState);
     }

@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class StaffFireAction final : public GameActionBase<GameCommand::fireStaffMember>
+    class StaffFireAction final : public GameActionBase<GameCommand::FireStaffMember>
     {
     private:
         EntityId _spriteId{ EntityId::GetNull() };

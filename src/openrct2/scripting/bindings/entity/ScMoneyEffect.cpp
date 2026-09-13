@@ -33,7 +33,7 @@ namespace OpenRCT2::Scripting
     MoneyEffect* ScMoneyEffect::GetMoneyEffect(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.getEntity<MoneyEffect>(id);
+        return getGameState().entities.GetEntity<MoneyEffect>(id);
     }
 
     JSValue ScMoneyEffect::value_get(JSContext* ctx, JSValue thisVal)
@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
         auto moneyEffect = GetMoneyEffect(thisVal);
         if (moneyEffect != nullptr)
         {
-            moneyEffect->setValue(value);
+            moneyEffect->SetValue(value);
         }
         return JS_UNDEFINED;
     }

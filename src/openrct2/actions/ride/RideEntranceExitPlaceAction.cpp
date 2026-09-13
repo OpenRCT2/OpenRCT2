@@ -16,7 +16,6 @@
 #include "../../ride/Ride.h"
 #include "../../ride/Station.h"
 #include "../../world/ConstructionClearance.h"
-#include "../../world/Entrance.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
 #include "../../world/QuarterTile.h"
@@ -88,11 +87,11 @@ namespace OpenRCT2::GameActions
         }
 
         const auto& station = ride->getStation(_stationNum);
-        const auto location = _isExit ? station.exit : station.entrance;
+        const auto location = _isExit ? station.Exit : station.Entrance;
 
-        if (!location.isNull())
+        if (!location.IsNull())
         {
-            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.toCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = QueryNested(&rideEntranceExitRemove, gameState);
@@ -103,7 +102,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto z = ride->getStation(_stationNum).getBaseZ();
+        auto z = ride->getStation(_stationNum).GetBaseZ();
         if (!LocationValid(_loc))
         {
             return Result(Status::invalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
@@ -119,7 +118,7 @@ namespace OpenRCT2::GameActions
         }
         auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
+            { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(), kTileSlopeFlat);
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = errorTitle;
@@ -138,7 +137,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.position = { _loc.toTileCentre(), z };
+        res.position = { _loc.ToTileCentre(), z };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
         return res;
@@ -164,10 +163,10 @@ namespace OpenRCT2::GameActions
         }
 
         auto& station = ride->getStation(_stationNum);
-        const auto location = _isExit ? station.exit : station.entrance;
-        if (!location.isNull())
+        const auto location = _isExit ? station.Exit : station.Entrance;
+        if (!location.IsNull())
         {
-            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.toCoordsXY(), _rideIndex, _stationNum, _isExit);
+            auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = ExecuteNested(&rideEntranceExitRemove, gameState);
@@ -178,7 +177,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto z = station.getBaseZ();
+        auto z = station.GetBaseZ();
         if (!GetFlags().has(CommandFlag::allowDuringPaused) && !GetFlags().has(CommandFlag::ghost)
             && !gameState.cheats.disableClearanceChecks)
         {
@@ -188,7 +187,8 @@ namespace OpenRCT2::GameActions
 
         auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags().with(CommandFlag::apply));
+            { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags().with(CommandFlag::apply),
+            kTileSlopeFlat);
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = errorTitle;
@@ -196,7 +196,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        res.position = { _loc.toTileCentre(), z };
+        res.position = { _loc.ToTileCentre(), z };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
 
@@ -205,20 +205,20 @@ namespace OpenRCT2::GameActions
 
         entranceElement->setDirection(_direction);
         entranceElement->setClearanceZ(clear_z);
-        entranceElement->setEntranceType(_isExit ? EntranceType::rideExit : EntranceType::rideEntrance);
-        entranceElement->setStationIndex(_stationNum);
-        entranceElement->setRideIndex(_rideIndex);
+        entranceElement->SetEntranceType(_isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
+        entranceElement->SetStationIndex(_stationNum);
+        entranceElement->SetRideIndex(_rideIndex);
         entranceElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
         if (_isExit)
         {
-            station.exit = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
+            station.Exit = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
         }
         else
         {
-            station.entrance = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
-            station.lastPeepInQueue = EntityId::GetNull();
-            station.queueLength = 0;
+            station.Entrance = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->getDirection() });
+            station.LastPeepInQueue = EntityId::GetNull();
+            station.QueueLength = 0;
 
             MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));
         }
@@ -254,7 +254,8 @@ namespace OpenRCT2::GameActions
         }
         int16_t baseZ = loc.z;
         int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
-        auto canBuild = MapCanConstructWithClearAt({ loc, baseZ, clearZ }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, {});
+        auto canBuild = MapCanConstructWithClearAt(
+            { loc, baseZ, clearZ }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, {}, kTileSlopeFlat);
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = errorTitle;
@@ -272,7 +273,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, errorTitle, STR_TOO_HIGH);
         }
         auto res = Result();
-        res.position = { loc.toTileCentre(), TileElementHeight(loc) };
+        res.position = { loc.ToTileCentre(), TileElementHeight(loc) };
         res.expenditure = ExpenditureType::rideConstruction;
         res.cost += canBuild.cost;
         return res;

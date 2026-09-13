@@ -7,19 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Paint.Tunnel.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::standard;
+static constexpr TunnelGroup kTunnelGroupIncline = TunnelGroup::Standard;
 
 enum
 {
@@ -159,13 +160,13 @@ static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackEleme
     switch (direction)
     {
         case 0:
-            return kDoorOpeningInwardsToImage[trackElement.getDoorAState()];
+            return kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
         case 1:
-            return kDoorOpeningOutwardsToImage[trackElement.getDoorBState()];
+            return kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
         case 2:
-            return kDoorOpeningOutwardsToImage[trackElement.getDoorBState()];
+            return kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
         case 3:
-            return kDoorOpeningInwardsToImage[trackElement.getDoorAState()];
+            return kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
     }
     return TunnelType::doorClosed;
 }
@@ -228,16 +229,16 @@ static void PaintGhostTrainTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroupIncline, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroupIncline, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::SlopeStart);
             break;
     }
 
@@ -254,15 +255,15 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isBackwards = trackElement.getTrackType() == TrackElemType::down25ToFlat;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::down25ToFlat;
     TunnelType doorImage;
     if (!isBackwards)
     {
-        doorImage = kDoorOpeningInwardsToImage[trackElement.getDoorAState()];
+        doorImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
     }
     else
     {
-        doorImage = kDoorOpeningOutwardsToImage[trackElement.getDoorBState()];
+        doorImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
     }
 
     auto imageId = session.TrackColours.WithIndex(kGhostTrainTrackPiecesFlatTo25DegUp[direction][0]);
@@ -282,10 +283,10 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
             PaintUtilPushTunnelLeft(session, height, doorImage);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroupIncline, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroupIncline, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroupIncline, TunnelSubType::SlopeEnd);
             break;
         case 3:
             PaintUtilPushTunnelRight(session, height, doorImage);
@@ -333,16 +334,16 @@ static void PaintGhostTrainTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::flat);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kDoorFlatTo25DegOpeningOutwardsToImage[trackElement.getDoorBState()]);
+            PaintUtilPushTunnelRight(session, height + 8, kDoorFlatTo25DegOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kDoorFlatTo25DegOpeningOutwardsToImage[trackElement.getDoorBState()]);
+            PaintUtilPushTunnelLeft(session, height + 8, kDoorFlatTo25DegOpeningOutwardsToImage[trackElement.GetDoorBState()]);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::flat);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
     }
 }
@@ -366,16 +367,16 @@ static void PaintGhostTrainTrackFlatTo25DegDown(
     switch ((direction + 2) % 4)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::flat);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kDoorFlatTo25DegOpeningInwardsToImage[trackElement.getDoorAState()]);
+            PaintUtilPushTunnelRight(session, height + 8, kDoorFlatTo25DegOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kDoorFlatTo25DegOpeningInwardsToImage[trackElement.getDoorAState()]);
+            PaintUtilPushTunnelLeft(session, height + 8, kDoorFlatTo25DegOpeningInwardsToImage[trackElement.GetDoorAState()]);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::flat);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroupIncline, TunnelSubType::Flat);
             break;
     }
 }
@@ -420,10 +421,10 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, kGhostTrainTrackPiecesQuarterTurn3Tiles, nullptr,
         defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets);
-    bool isBackwards = trackElement.getTrackType() == TrackElemType::leftQuarterTurn3Tiles;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::leftQuarterTurn3Tiles;
     bool isDoorA = (!isBackwards && trackSequence == 0) || (isBackwards && trackSequence == 3);
-    auto tunnelType = isDoorA ? kDoorOpeningInwardsToImage[trackElement.getDoorAState()]
-                              : kDoorOpeningOutwardsToImage[trackElement.getDoorBState()];
+    auto tunnelType = isDoorA ? kDoorOpeningInwardsToImage[trackElement.GetDoorAState()]
+                              : kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
     TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, tunnelType);
 
     switch (trackSequence)
@@ -470,17 +471,17 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isBackwards = trackElement.getTrackType() == TrackElemType::rightQuarterTurn1Tile;
+    bool isBackwards = trackElement.GetTrackType() == TrackElemType::rightQuarterTurn1Tile;
     TunnelType tunnelStartImage, tunnelEndImage;
     if (!isBackwards)
     {
-        tunnelStartImage = kDoorOpeningInwardsToImage[trackElement.getDoorAState()];
-        tunnelEndImage = kDoorOpeningOutwardsToImage[trackElement.getDoorBState()];
+        tunnelStartImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
+        tunnelEndImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
     }
     else
     {
-        tunnelStartImage = kDoorOpeningOutwardsToImage[trackElement.getDoorBState()];
-        tunnelEndImage = kDoorOpeningInwardsToImage[trackElement.getDoorAState()];
+        tunnelStartImage = kDoorOpeningOutwardsToImage[trackElement.GetDoorBState()];
+        tunnelEndImage = kDoorOpeningInwardsToImage[trackElement.GetDoorAState()];
     }
 
     TrackPaintUtilLeftQuarterTurn1TilePaint(

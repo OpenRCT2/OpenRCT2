@@ -16,6 +16,7 @@
     #include <openrct2/core/Console.hpp>
     #include <openrct2/core/FileStream.h>
     #include <openrct2/core/Path.hpp>
+    #include <openrct2/core/String.hpp>
 
 using namespace OpenRCT2::Ui;
 

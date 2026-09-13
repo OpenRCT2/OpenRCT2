@@ -9,12 +9,11 @@
 
 #pragma once
 
-#include "../../ride/Ride.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {
-    class RideSetStatusAction final : public GameActionBase<GameCommand::setRideStatus>
+    class RideSetStatusAction final : public GameActionBase<GameCommand::SetRideStatus>
     {
     private:
         RideId _rideIndex{ RideId::GetNull() };

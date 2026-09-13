@@ -13,6 +13,8 @@
 
     #include "NetworkTypes.h"
 
+    #include <memory>
+
 namespace OpenRCT2::Network
 {
     Packet::Packet(Command id) noexcept

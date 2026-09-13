@@ -14,11 +14,10 @@
     #include "ScGraphicsContext.hpp"
 
     #include <openrct2/Context.h>
-    #include <openrct2/drawing/Drawing.Sprite.h>
     #include <openrct2/drawing/Image.h>
     #include <openrct2/drawing/ImageImporter.h>
-    #include <openrct2/drawing/NewDrawing.h>
     #include <openrct2/drawing/X8DrawingEngine.h>
+    #include <openrct2/scripting/Plugin.h>
     #include <thirdparty/base64.hpp>
 
 using namespace OpenRCT2::Drawing;
@@ -27,19 +26,19 @@ namespace OpenRCT2::Scripting
 {
     enum class PixelDataKind
     {
-        unknown,
-        raw,
-        rle,
-        palette,
-        png
+        Unknown,
+        Raw,
+        Rle,
+        Palette,
+        Png
     };
 
     enum class PixelDataPaletteKind
     {
-        none,
-        keep,
-        closest,
-        dither
+        None,
+        Keep,
+        Closest,
+        Dither
     };
 
     struct PixelData
@@ -253,14 +252,14 @@ namespace OpenRCT2::Scripting
     {
         switch (palette)
         {
-            case PixelDataPaletteKind::closest:
-                return ImportMode::closest;
-            case PixelDataPaletteKind::dither:
-                return ImportMode::dithering;
-            case PixelDataPaletteKind::none:
-            case PixelDataPaletteKind::keep:
+            case PixelDataPaletteKind::Closest:
+                return ImportMode::Closest;
+            case PixelDataPaletteKind::Dither:
+                return ImportMode::Dithering;
+            case PixelDataPaletteKind::None:
+            case PixelDataPaletteKind::Keep:
             default:
-                return ImportMode::standard;
+                return ImportMode::Default;
         }
     }
 
@@ -269,7 +268,7 @@ namespace OpenRCT2::Scripting
         std::vector<uint8_t> imageData;
         switch (pixelData.Type)
         {
-            case PixelDataKind::raw:
+            case PixelDataKind::Raw:
             {
                 auto data = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 if (pixelData.Stride != pixelData.Width)
@@ -284,15 +283,15 @@ namespace OpenRCT2::Scripting
                 imageData = std::move(data);
                 break;
             }
-            case PixelDataKind::rle:
+            case PixelDataKind::Rle:
             {
                 imageData = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 break;
             }
-            case PixelDataKind::png:
+            case PixelDataKind::Png:
             {
-                auto imageFormat = pixelData.Palette == PixelDataPaletteKind::keep ? ImageFormat::png : ImageFormat::png32;
-                auto palette = pixelData.Palette == PixelDataPaletteKind::keep ? Palette::keepIndices : Palette::openRCT2;
+                auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? ImageFormat::png : ImageFormat::png32;
+                auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? Palette::KeepIndices : Palette::OpenRCT2;
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = GetDataFromBufferLikeObject(ctx, pixelData.Data);
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
@@ -302,7 +301,7 @@ namespace OpenRCT2::Scripting
                 ImageImporter importer;
                 auto importResult = importer.Import(image, meta);
 
-                pixelData.Type = PixelDataKind::rle;
+                pixelData.Type = PixelDataKind::Rle;
                 pixelData.Width = importResult.Element.width;
                 pixelData.Height = importResult.Element.height;
 
@@ -318,25 +317,25 @@ namespace OpenRCT2::Scripting
     static PixelDataKind PixelDataKindFromJS(const std::string& s)
     {
         if (s == "raw")
-            return PixelDataKind::raw;
+            return PixelDataKind::Raw;
         if (s == "rle")
-            return PixelDataKind::rle;
+            return PixelDataKind::Rle;
         if (s == "palette")
-            return PixelDataKind::palette;
+            return PixelDataKind::Palette;
         if (s == "png")
-            return PixelDataKind::png;
-        return PixelDataKind::unknown;
+            return PixelDataKind::Png;
+        return PixelDataKind::Unknown;
     }
 
     static PixelDataPaletteKind PixelDataPaletteKindFromJS(const std::string& s)
     {
         if (s == "keep")
-            return PixelDataPaletteKind::keep;
+            return PixelDataPaletteKind::Keep;
         if (s == "closest")
-            return PixelDataPaletteKind::closest;
+            return PixelDataPaletteKind::Closest;
         if (s == "dither")
-            return PixelDataPaletteKind::dither;
-        return PixelDataPaletteKind::none;
+            return PixelDataPaletteKind::Dither;
+        return PixelDataPaletteKind::None;
     }
 
     static PixelData GetPixelDataFromJS(JSContext* ctx, JSValue jsPixelData)
@@ -371,7 +370,7 @@ namespace OpenRCT2::Scripting
         el.width = pixelData.Width;
         el.height = pixelData.Height;
         el.flags = {};
-        if (pixelData.Type == PixelDataKind::rle)
+        if (pixelData.Type == PixelDataKind::Rle)
         {
             el.flags.set(G1Flag::hasRLECompression);
         }
@@ -441,7 +440,7 @@ namespace OpenRCT2::Scripting
             newg1.offset = reinterpret_cast<uint8_t*>(rt.bits);
             newg1.width = size.width;
             newg1.height = size.height;
-            newg1.flags = { G1Flag::hasTransparency };
+            newg1.flags = {};
             GfxSetG1Element(id, &newg1);
         }
 

@@ -9,11 +9,12 @@
 
 #pragma once
 
+#include "../../management/Finance.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {
-    class FootpathRemoveAction final : public GameActionBase<GameCommand::removePath>
+    class FootpathRemoveAction final : public GameActionBase<GameCommand::RemovePath>
     {
     private:
         CoordsXYZ _loc;

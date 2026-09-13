@@ -11,6 +11,7 @@
 
 #include "../../Diagnostic.h"
 #include "../../ride/Ride.h"
+#include "../../ride/Station.h"
 #include "../../world/Entrance.h"
 #include "../../world/Map.h"
 #include "../../world/TileElementsView.h"
@@ -48,17 +49,17 @@ namespace OpenRCT2::GameActions
     }
 
     static TileElement* FindEntranceElement(
-        const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, EntranceType entranceType)
+        const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, int32_t entranceType)
     {
         for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
         {
-            if (entranceElement->getRideIndex() != rideIndex)
+            if (entranceElement->GetRideIndex() != rideIndex)
                 continue;
 
-            if (entranceElement->getStationIndex() != stationNum)
+            if (entranceElement->GetStationIndex() != stationNum)
                 continue;
 
-            if (entranceElement->getEntranceType() != entranceType)
+            if (entranceElement->GetEntranceType() != entranceType)
                 continue;
 
             return entranceElement->as<TileElement>();
@@ -91,7 +92,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* entranceElement = FindEntranceElement(
-            _loc, _rideIndex, _stationNum, _isExit ? EntranceType::rideExit : EntranceType::rideEntrance);
+            _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
 
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
         if (entranceElement != nullptr && (GetFlags().has(CommandFlag::ghost)) && !(entranceElement->isGhost()))
@@ -127,7 +128,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* entranceElement = FindEntranceElement(
-            _loc, _rideIndex, _stationNum, _isExit ? EntranceType::rideExit : EntranceType::rideEntrance);
+            _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
 
         // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
         if (entranceElement != nullptr && isGhost && !(entranceElement->isGhost()))
@@ -156,11 +157,11 @@ namespace OpenRCT2::GameActions
         auto& station = ride->getStation(_stationNum);
         if (_isExit)
         {
-            station.exit.setNull();
+            station.Exit.SetNull();
         }
         else
         {
-            station.entrance.setNull();
+            station.Entrance.SetNull();
         }
 
         FootpathUpdateQueueChains();

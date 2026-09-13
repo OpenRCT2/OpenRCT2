@@ -15,11 +15,7 @@
 #include <utility>
 
 struct CoordsXYZ;
-
-namespace OpenRCT2
-{
-    struct Ride;
-}
+struct Ride;
 
 namespace OpenRCT2::RideAudio
 {

@@ -22,7 +22,7 @@
     #include <ApplicationServices/ApplicationServices.h>
     #include <Cocoa/Cocoa.h>
     #include <CoreFoundation/CFBundle.h>
-    #include <SDL_video.h>
+    #include <SDL.h>
     #include <mach-o/dyld.h>
     #pragma clang diagnostic pop
     #include <openrct2/Diagnostic.h>
@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui
 
                 NSString* directory;
                 NSSavePanel* panel;
-                if (desc.Type == FileDialogType::save)
+                if (desc.Type == FileDialogType::Save)
                 {
                     NSString* filePath = [NSString stringWithUTF8String:desc.DefaultFilename.c_str()];
                     directory = filePath.stringByDeletingLastPathComponent;
@@ -137,7 +137,7 @@ namespace OpenRCT2::Ui
                     panel = [NSSavePanel savePanel];
                     panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
                 }
-                else if (desc.Type == FileDialogType::open)
+                else if (desc.Type == FileDialogType::Open)
                 {
                     directory = [NSString stringWithUTF8String:desc.InitialDirectory.c_str()];
                     NSOpenPanel* open = [NSOpenPanel openPanel];

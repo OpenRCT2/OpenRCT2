@@ -29,102 +29,102 @@ namespace OpenRCT2
         return lhs.y < rhs.y;
     }
 
-    const PatrolArea::Cell* PatrolArea::getCell(const TileCoordsXY& pos) const
+    const PatrolArea::Cell* PatrolArea::GetCell(const TileCoordsXY& pos) const
     {
-        return const_cast<PatrolArea*>(this)->getCell(pos);
+        return const_cast<PatrolArea*>(this)->GetCell(pos);
     }
 
-    PatrolArea::Cell* PatrolArea::getCell(const TileCoordsXY& pos)
+    PatrolArea::Cell* PatrolArea::GetCell(const TileCoordsXY& pos)
     {
-        auto areaPos = TileCoordsXY(pos.x / Cell::kWidth, pos.y / Cell::kHeight);
-        if (areaPos.x < 0 || areaPos.x >= kCellColumns || areaPos.y < 0 || areaPos.y >= kCellRows)
+        auto areaPos = TileCoordsXY(pos.x / Cell::Width, pos.y / Cell::Height);
+        if (areaPos.x < 0 || areaPos.x >= CellColumns || areaPos.y < 0 || areaPos.y >= CellRows)
             return nullptr;
 
-        auto& area = areas[(areaPos.y * kCellColumns) + areaPos.x];
+        auto& area = Areas[(areaPos.y * CellColumns) + areaPos.x];
         return &area;
     }
 
-    bool PatrolArea::isEmpty() const
+    bool PatrolArea::IsEmpty() const
     {
-        return tileCount == 0;
+        return TileCount == 0;
     }
 
-    void PatrolArea::clear()
+    void PatrolArea::Clear()
     {
-        for (auto& area : areas)
+        for (auto& area : Areas)
         {
-            area.sortedTiles.clear();
+            area.SortedTiles.clear();
         }
     }
 
-    bool PatrolArea::get(const TileCoordsXY& pos) const
+    bool PatrolArea::Get(const TileCoordsXY& pos) const
     {
-        auto* area = getCell(pos);
+        auto* area = GetCell(pos);
         if (area == nullptr)
             return false;
 
-        auto it = Algorithm::binaryFind(area->sortedTiles.begin(), area->sortedTiles.end(), pos, CompareTileCoordsXY);
-        auto found = it != area->sortedTiles.end();
+        auto it = Algorithm::binaryFind(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+        auto found = it != area->SortedTiles.end();
         return found;
     }
 
-    bool PatrolArea::get(const CoordsXY& pos) const
+    bool PatrolArea::Get(const CoordsXY& pos) const
     {
-        return get(TileCoordsXY(pos));
+        return Get(TileCoordsXY(pos));
     }
 
-    void PatrolArea::set(const TileCoordsXY& pos, bool value)
+    void PatrolArea::Set(const TileCoordsXY& pos, bool value)
     {
-        auto* area = getCell(pos);
+        auto* area = GetCell(pos);
         if (area == nullptr)
             return;
 
-        auto it = std::lower_bound(area->sortedTiles.begin(), area->sortedTiles.end(), pos, CompareTileCoordsXY);
-        auto found = it != area->sortedTiles.end() && *it == pos;
+        auto it = std::lower_bound(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+        auto found = it != area->SortedTiles.end() && *it == pos;
 
         if (!found && value)
         {
-            area->sortedTiles.insert(it, pos);
-            tileCount++;
+            area->SortedTiles.insert(it, pos);
+            TileCount++;
         }
         else if (found && !value)
         {
-            area->sortedTiles.erase(it);
-            assert(tileCount != 0);
-            tileCount--;
+            area->SortedTiles.erase(it);
+            assert(TileCount != 0);
+            TileCount--;
         }
     }
 
-    void PatrolArea::set(const CoordsXY& pos, bool value)
+    void PatrolArea::Set(const CoordsXY& pos, bool value)
     {
-        set(TileCoordsXY(pos), value);
+        Set(TileCoordsXY(pos), value);
     }
 
-    void PatrolArea::unify(const PatrolArea& other)
+    void PatrolArea::Union(const PatrolArea& other)
     {
-        for (size_t i = 0; i < areas.size(); i++)
+        for (size_t i = 0; i < Areas.size(); i++)
         {
-            for (const auto& pos : other.areas[i].sortedTiles)
+            for (const auto& pos : other.Areas[i].SortedTiles)
             {
-                set(pos, true);
+                Set(pos, true);
             }
         }
     }
 
-    void PatrolArea::unify(const std::vector<TileCoordsXY>& other)
+    void PatrolArea::Union(const std::vector<TileCoordsXY>& other)
     {
         for (const auto& pos : other)
         {
-            set(pos, true);
+            Set(pos, true);
         }
     }
 
-    std::vector<TileCoordsXY> PatrolArea::toVector() const
+    std::vector<TileCoordsXY> PatrolArea::ToVector() const
     {
         std::vector<TileCoordsXY> result;
-        for (const auto& area : areas)
+        for (const auto& area : Areas)
         {
-            for (const auto& pos : area.sortedTiles)
+            for (const auto& pos : area.SortedTiles)
             {
                 result.push_back(pos);
             }
@@ -143,7 +143,7 @@ namespace OpenRCT2
         {
             // Reset all of the merged data for the type.
             auto& mergedArea = _consolidatedPatrolArea[staffType];
-            mergedArea.clear();
+            mergedArea.Clear();
 
             for (auto staff : EntityList<Staff>())
             {
@@ -153,14 +153,14 @@ namespace OpenRCT2
                 if (staff->patrolInfo == nullptr)
                     continue;
 
-                mergedArea.unify(*staff->patrolInfo);
+                mergedArea.Union(*staff->patrolInfo);
             }
         }
     }
 
     bool IsPatrolAreaSetForStaffType(StaffType type, const CoordsXY& coords)
     {
-        return _consolidatedPatrolArea[EnumValue(type)].get(coords);
+        return _consolidatedPatrolArea[EnumValue(type)].Get(coords);
     }
 
     std::variant<StaffType, EntityId> GetPatrolAreaToRender()

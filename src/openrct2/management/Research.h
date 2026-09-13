@@ -13,6 +13,9 @@
 #include "../object/ObjectTypes.h"
 #include "../ride/RideTypes.h"
 
+#include <optional>
+
+struct RideObjectEntry;
 struct ScenerySelection;
 
 namespace OpenRCT2

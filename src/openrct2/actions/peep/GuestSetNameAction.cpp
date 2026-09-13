@@ -9,13 +9,16 @@
 
 #include "GuestSetNameAction.h"
 
+#include "../../Cheats.h"
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.Screen.h"
+#include "../../core/MemoryStream.h"
+#include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../localisation/StringIds.h"
 #include "../../windows/Intent.h"
+#include "../../world/Park.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -60,7 +63,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_NAME_GUEST, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto guest = gameState.entities.tryGetEntity<Guest>(_spriteIndex);
+        auto guest = gameState.entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
@@ -72,20 +75,20 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetNameAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto guest = gameState.entities.tryGetEntity<Guest>(_spriteIndex);
+        auto guest = gameState.entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
             return Result(Status::invalidParameters, STR_CANT_NAME_GUEST, kStringIdNone);
         }
 
-        auto curName = guest->getName();
+        auto curName = guest->GetName();
         if (curName == _name)
         {
             return Result();
         }
 
-        if (!guest->setName(_name))
+        if (!guest->SetName(_name))
         {
             return Result(Status::unknown, STR_CANT_NAME_GUEST, kStringIdNone);
         }
@@ -93,7 +96,7 @@ namespace OpenRCT2::GameActions
         // Easter egg functions are for guests only
         guest->handleEasterEggName();
 
-        Drawing::GfxInvalidateScreen();
+        GfxInvalidateScreen();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
         ContextBroadcastIntent(&intent);

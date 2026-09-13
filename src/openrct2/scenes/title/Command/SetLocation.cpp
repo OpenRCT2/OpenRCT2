@@ -11,8 +11,8 @@
 
 #include "../../../OpenRCT2.h"
 #include "../../../interface/Viewport.h"
+#include "../../../interface/Window.h"
 #include "../../../interface/WindowBase.h"
-#include "../../../interface/WindowTypes.h"
 #include "../../../world/Map.h"
 
 namespace OpenRCT2::Title
@@ -22,7 +22,7 @@ namespace OpenRCT2::Title
         WindowBase* w = WindowGetMain();
         if (w != nullptr)
         {
-            auto loc = TileCoordsXY(Location.X, Location.Y).toCoordsXY().toTileCentre();
+            auto loc = TileCoordsXY(Location.X, Location.Y).ToCoordsXY().ToTileCentre();
             int32_t z = TileElementHeight(loc);
 
             // Prevent scroll adjustment due to window placement when in-game

@@ -1,7 +1,9 @@
 #include "WindowBase.h"
 
 #include "../config/Config.h"
-#include "../drawing/NewDrawing.h"
+#include "../drawing/Drawing.h"
+#include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
 #include "Cursors.h"
 #include "Viewport.h"
 
@@ -45,20 +47,21 @@ namespace OpenRCT2
 
     CursorID WindowBase::onCursor(WidgetIndex, const ScreenCoordsXY&, CursorID)
     {
-        return CursorID::arrow;
+        return CursorID::Arrow;
     }
 
     static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth, bool translucent)
     {
         auto closeButtonSize = Config::Get().interface.enlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
-        closeButton.setWidth(closeButtonSize.width);
         if (Config::Get().interface.windowButtonsOnTheLeft)
         {
-            closeButton.moveToX(2);
+            closeButton.left = 2;
+            closeButton.right = 2 + closeButtonSize;
         }
         else
         {
-            closeButton.moveToX(windowWidth - 2 - closeButtonSize.width);
+            closeButton.left = windowWidth - 3 - closeButtonSize;
+            closeButton.right = windowWidth - 3;
         }
 
         // Set appropriate close button
@@ -108,7 +111,7 @@ namespace OpenRCT2
 
         // Figure out if we need to push the other widgets down to accommodate a resized title/caption
         auto preferredHeight = getTitleBarTargetHeight();
-        auto currentHeight = titleWidget.height();
+        auto currentHeight = titleWidget.height() - 1;
         auto heightDifference = preferredHeight - currentHeight;
 
         if (!hasTitleWidget || heightDifference == 0)
@@ -118,7 +121,7 @@ namespace OpenRCT2
 
         // Offset title and close button
         titleWidget.bottom += heightDifference;
-        closeButton.bottom = titleWidget.bottom - 1;
+        closeButton.bottom += heightDifference;
 
         height += heightDifference;
         minHeight += heightDifference;
@@ -150,7 +153,7 @@ namespace OpenRCT2
     int16_t WindowBase::getTitleBarCurrentHeight() const
     {
         if (!flags.has(WindowFlag::noTitleBar) && widgets.size() > 2)
-            return widgets[1].height();
+            return widgets[1].height() - 1;
         else
             return 0;
     }

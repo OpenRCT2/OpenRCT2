@@ -10,6 +10,8 @@
 #include "Scenery.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
+#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/GameActionRunner.h"
@@ -25,12 +27,16 @@
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectLimits.h"
+#include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
 #include "../object/SceneryGroupEntry.h"
+#include "../object/SceneryGroupObject.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
-#include "../world/ScenerySelection.h"
+#include "Footpath.h"
 #include "Map.h"
+#include "Park.h"
 #include "tile_element/PathElement.h"
 #include "tile_element/SmallSceneryElement.h"
 
@@ -134,24 +140,24 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
                 continue;
         }
 
-        if (tileElement->getType() == TileElementType::smallScenery)
+        if (tileElement->getType() == TileElementType::SmallScenery)
         {
-            tileElement->asSmallScenery()->updateAge(sceneryPos);
+            tileElement->asSmallScenery()->UpdateAge(sceneryPos);
         }
-        else if (tileElement->getType() == TileElementType::path)
+        else if (tileElement->getType() == TileElementType::Path)
         {
-            if (tileElement->asPath()->hasAddition() && !tileElement->asPath()->additionIsGhost())
+            if (tileElement->asPath()->HasAddition() && !tileElement->asPath()->AdditionIsGhost())
             {
-                auto* pathAddEntry = tileElement->asPath()->getAdditionEntry();
+                auto* pathAddEntry = tileElement->asPath()->GetAdditionEntry();
                 if (pathAddEntry != nullptr)
                 {
                     if (pathAddEntry->flags & PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER)
                     {
-                        JumpingFountain::startAnimation(JumpingFountainType::water, sceneryPos, tileElement);
+                        JumpingFountain::StartAnimation(JumpingFountainType::Water, sceneryPos, tileElement);
                     }
                     else if (pathAddEntry->flags & PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW)
                     {
-                        JumpingFountain::startAnimation(JumpingFountainType::snow, sceneryPos, tileElement);
+                        JumpingFountain::StartAnimation(JumpingFountainType::Snow, sceneryPos, tileElement);
                     }
                 }
             }
@@ -163,9 +169,9 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
  *
  *  rct2: 0x006E33D9
  */
-void SmallSceneryElement::updateAge(const CoordsXY& sceneryPos)
+void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
 {
-    auto* sceneryEntry = getEntry();
+    auto* sceneryEntry = GetEntry();
     if (sceneryEntry == nullptr)
     {
         return;
@@ -177,9 +183,9 @@ void SmallSceneryElement::updateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (!sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered) || Weather::isDry() || getAge() < 5)
+    if (!sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered) || Weather::isDry() || GetAge() < 5)
     {
-        increaseAge(sceneryPos);
+        IncreaseAge(sceneryPos);
         return;
     }
 
@@ -197,17 +203,17 @@ void SmallSceneryElement::updateAge(const CoordsXY& sceneryPos)
 
         switch (tileElementAbove->getType())
         {
-            case TileElementType::largeScenery:
-            case TileElementType::entrance:
-            case TileElementType::path:
+            case TileElementType::LargeScenery:
+            case TileElementType::Entrance:
+            case TileElementType::Path:
                 MapInvalidateTileZoom1({ sceneryPos, tileElementAbove->getBaseZ(), tileElementAbove->getClearanceZ() });
-                increaseAge(sceneryPos);
+                IncreaseAge(sceneryPos);
                 return;
-            case TileElementType::smallScenery:
-                sceneryEntry = tileElementAbove->asSmallScenery()->getEntry();
+            case TileElementType::SmallScenery:
+                sceneryEntry = tileElementAbove->asSmallScenery()->GetEntry();
                 if (sceneryEntry->flags.has(SmallSceneryFlag::vOffsetCentre))
                 {
-                    increaseAge(sceneryPos);
+                    IncreaseAge(sceneryPos);
                     return;
                 }
                 break;
@@ -217,7 +223,7 @@ void SmallSceneryElement::updateAge(const CoordsXY& sceneryPos)
     }
 
     // Reset age / water plant
-    setAge(0);
+    SetAge(0);
     MapInvalidateTileZoom1({ sceneryPos, getBaseZ(), getClearanceZ() });
 }
 
@@ -249,7 +255,7 @@ void SceneryRemoveGhostToolPlacement()
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->getType() != TileElementType::path)
+            if (tileElement->getType() != TileElementType::Path)
                 continue;
 
             if (tileElement->getBaseZ() != gSceneryGhostPosition.z)

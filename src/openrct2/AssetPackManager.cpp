@@ -18,8 +18,10 @@
 #include "core/FileSystem.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "object/AudioSampleTable.h"
 
 #include <algorithm>
+#include <cstdio>
 
 namespace OpenRCT2
 {

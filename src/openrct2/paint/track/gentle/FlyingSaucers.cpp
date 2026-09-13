@@ -14,6 +14,7 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -50,7 +51,7 @@ static void PaintFlyingSaucers(
 
     const StationObject* stationObject = ride.getStationObject();
 
-    if (stationObject != nullptr && !stationObject->Flags.has(StationObjectFlag::noPlatforms))
+    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
         auto imageId = session.TrackColours.WithIndex(SprFlyingSaucersFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });

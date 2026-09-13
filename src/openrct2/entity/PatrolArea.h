@@ -28,33 +28,33 @@ namespace OpenRCT2
     private:
         struct Cell
         {
-            static constexpr auto kWidth = 64;
-            static constexpr auto kHeight = 64;
-            static constexpr auto kNumTiles = kWidth * kHeight;
+            static constexpr auto Width = 64;
+            static constexpr auto Height = 64;
+            static constexpr auto NumTiles = Width * Height;
 
-            std::vector<TileCoordsXY> sortedTiles;
+            std::vector<TileCoordsXY> SortedTiles;
         };
 
-        static constexpr auto kCellColumns = (kMaximumMapSizeTechnical + (Cell::kWidth - 1)) / Cell::kWidth;
-        static constexpr auto kCellRows = (kMaximumMapSizeTechnical + (Cell::kHeight - 1)) / Cell::kHeight;
-        static constexpr auto kNumCells = kCellColumns * kCellRows;
+        static constexpr auto CellColumns = (kMaximumMapSizeTechnical + (Cell::Width - 1)) / Cell::Width;
+        static constexpr auto CellRows = (kMaximumMapSizeTechnical + (Cell::Height - 1)) / Cell::Height;
+        static constexpr auto NumCells = CellColumns * CellRows;
 
-        std::array<Cell, kNumCells> areas;
-        size_t tileCount{};
+        std::array<Cell, NumCells> Areas;
+        size_t TileCount{};
 
-        const Cell* getCell(const TileCoordsXY& pos) const;
-        Cell* getCell(const TileCoordsXY& pos);
+        const Cell* GetCell(const TileCoordsXY& pos) const;
+        Cell* GetCell(const TileCoordsXY& pos);
 
     public:
-        bool isEmpty() const;
-        void clear();
-        bool get(const TileCoordsXY& pos) const;
-        bool get(const CoordsXY& pos) const;
-        void set(const TileCoordsXY& pos, bool value);
-        void set(const CoordsXY& pos, bool value);
-        void unify(const PatrolArea& other);
-        void unify(const std::vector<TileCoordsXY>& other);
-        std::vector<TileCoordsXY> toVector() const;
+        bool IsEmpty() const;
+        void Clear();
+        bool Get(const TileCoordsXY& pos) const;
+        bool Get(const CoordsXY& pos) const;
+        void Set(const TileCoordsXY& pos, bool value);
+        void Set(const CoordsXY& pos, bool value);
+        void Union(const PatrolArea& other);
+        void Union(const std::vector<TileCoordsXY>& other);
+        std::vector<TileCoordsXY> ToVector() const;
     };
 
     void UpdateConsolidatedPatrolAreas();

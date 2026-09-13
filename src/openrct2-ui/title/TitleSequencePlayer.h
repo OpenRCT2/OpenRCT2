@@ -12,6 +12,7 @@
 #include <memory>
 
 struct ITitleSequencePlayer;
+struct IScenarioRepository;
 
 namespace OpenRCT2
 {

@@ -7,6 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../drawing/Drawing.h"
+#include "../interface/Viewport.h"
+#include "../ride/TrackPaint.h"
 #include "Paint.h"
 
 PaintStruct* PaintAddImageAsParentRotated(

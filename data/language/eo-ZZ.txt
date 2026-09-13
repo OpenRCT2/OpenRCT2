@@ -114,7 +114,7 @@ STR_0530    :Ĉaroj pendas de ŝtala kablo, kiu etendiĝas de unu flanko de la a
 STR_0531    :Onda fervojo kompakta kun ŝtala trako, sur kie la trajno veturas tra korktiriloj kaj lopoj
 STR_0532    :Labirinto konstruita de 6-futaj altaj heĝoj aŭ muroj. La gastoj vagas en tiu labirinto, kaj eliras nur kiam ili trovas la elirejon.
 STR_0533    :Ligna konstruaĵo kun interna ŝtuparo kaj ekstera spirala tobogano, kiun oni uzas kun toboganomatoj
-STR_0534    :Gastoj vetkuras unu la alian en aŭtetoj sur asfalta trako
+STR_0534    :Gastoj vetkuras unu la alian en gokartoj sur asfalta trako
 STR_0535    :Boatoj veturas laŭ akvokanalo, kaj plaŭde malsupreniras krutajn deklivojn por trempi la rajdantojn
 STR_0536    :Rondaj boatoj vagas laŭ larĝa akvokanalo, plaŭdas tra akvofaloj, kaj ekscitas rajdantojn per ŝaŭmantaj rapidfluoj
 STR_0537    :Gastoj albatiĝas al unu la alian per elektraj doĝemoj, kiujn ili stiras
@@ -230,6 +230,7 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Ne eblas atingi dosieron de grafikodatumoj
 STR_0823    :Mankanta aŭ malatingebla datumdosieron
+STR_0824    :{BLACK}❌
 STR_0825    :Elektita nomo estas jam uzata
 STR_0826    :Tro da nomoj difinitaj
 STR_0827    :Ne sufiĉe da mono - tio bezonas {CURRENCY2DP}
@@ -269,7 +270,7 @@ STR_0892    :Ekrankopio estis konservita al la disko kiel ‘{STRINGID}’
 STR_0893    :Malsukcesis konservi ekrankopion!
 STR_0894    :Zono de pejzaĝodatumoj estas plena!
 STR_0895    :Ne eblas konstrui kaj parte supertere kaj parte subtere
-STR_0896    :{STRING} Konstruado
+STR_0896    :{STRINGID} Konstruado
 STR_0897    :Direkto
 STR_0898    :Maldekstra kurbo
 STR_0899    :Dekstra kurbo
@@ -2674,7 +2675,7 @@ STR_5573    :Forigi el preferatoj
 STR_5574    :Servilonomo:
 STR_5575    :Maks. ludantoj:
 STR_5576    :Pordo:
-STR_5577    :Sud-Koreia vono (₩)
+STR_5577    :Sud-Koreia vono (W)
 STR_5578    :Rusa rublo (₽)
 STR_5579    :Skalo de fenestro:
 STR_5580    :Ĉeĥia krono (Kč)
@@ -2865,14 +2866,14 @@ STR_5807    :{WINDOW_COLOUR_2}Nombro de atrakcioj: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Nombro de vendejoj kaj budoj: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Nombro de informokioskoj kaj aliaj servoj: {BLACK}{COMMA16}
 STR_5810    :Malŝalti limojn de veturiloj
-STR_5811    :Se elektita, vi povas havi ĝis{NEWLINE}255 ĉarojn por ĉiu trajno kaj 255{NEWLINE}trajnojn por ĉiu atrakcio
+STR_5811    :Se elektita, vi povas havi ĝis{NEWLINE}255 ĉarojn por ĉiu trajno kaj 31{NEWLINE}trajnojn por ĉiu atrakcio
 STR_5812    :Montri plurludantan fenestron
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 
 #tooltips
 STR_5815    :Montri kadrojn ĉiusekunde enlude
-STR_5816    :Agordas proporcion, per kiu la ludo estas skalita.{NEWLINE}Plej utila dum ludado en{NEWLINE}altaj distingivoj
+STR_5816    :Agordas proporcion por skali la ludon per.{NEWLINE}Plej utila ludante en{NEWLINE}altaj distingivoj
 STR_5820    :Minimumigi la ludon se fokuso{NEWLINE}perdiĝas dum plenekrana reĝimo
 STR_5822    :Cikli inter tago kaj nokto.{NEWLINE}Plena ciklo daŭras unu enludan monaton
 STR_5823    :Montri rubandojn majuskle (RCT1-konduto)
@@ -3199,6 +3200,7 @@ STR_6160    :{WINDOW_COLOUR_2}Veturiloj disponeblaj: {BLACK}{STRING}
 STR_6161    :Baskulilo por montri kradliniojn
 STR_6162    :Turniĝanta Sovaĝa Muso
 STR_6163    :Musoformaj ĉaroj rapidiras trans subitaj anguloj kaj mallongaj malaltiĝoj, milde turniĝante por malorientigi la gastojn
+STR_6164    :{WHITE}❌
 STR_6165    :Uzi vertikalan sinkronigon
 STR_6166    :Sinkronigas ĉiun kadron montritan laŭ la ofteco de ekrano-aktualigo, por preventi ekrano-ŝiron.
 STR_6167    :Altnivela
@@ -3279,7 +3281,7 @@ STR_6271    :Tereno-flankoj
 STR_6272    :Stacioj
 STR_6273    :Muziko
 STR_6274    :Ne eblas agordi kolorskemon…
-STR_6275    :Staciostilo
+STR_6275    :{WINDOW_COLOUR_2}Staciostilo:
 STR_6276    :{RED}{STRINGID} havas gastojn staŭlitajn, eble pro nevalida atrakciotipo aŭ reĝimo de funkciiado.
 STR_6277    :Stacioindekso: {BLACK}{STRINGID}
 STR_6278    :Kiomo por aŭtokonservi
@@ -3628,7 +3630,7 @@ STR_6633    :Kontrolado de scenarodosieroj…
 STR_6634    :Kontrolado de trakdesegnaĵodosieroj…
 STR_6635    :Kontrolado de havaĵo-pakoj…
 STR_6636    :Kontrolado de titolosekvencoj…
-STR_6637    :Ŝargado de la titolosekvenco…
+STR_6637    :Ŝargas titolosekvencon…
 STR_6638    :Pligrandigita fasado
 STR_6639    :Modifas la fasadon por esti pli taŭga por tuŝekranoj
 STR_6640    :Redakti havaĵo-pakojn…
@@ -3639,9 +3641,9 @@ STR_6644    :Tuŝekranaj plibonigoj
 STR_6645    :Pligrandigas kelkajn elementojn de la fasado, por ke ili estas pli facile klakeblaj aŭ tuŝeblaj.
 STR_6646    :Aŭtoro: {STRING}
 STR_6647    :Aŭtoroj: {STRING}
-STR_6648    :Ŝargado de kromprograma modulo…
-STR_6649    :Ŝargado de scenaro…
-STR_6650    :Ŝargado de konservita ludo…
+STR_6648    :Ŝargas kromprograman modulon…
+STR_6649    :Ŝargas scenaron…
+STR_6650    :Ŝargas konservitan ludon…
 STR_6651    :{STRING} ({COMMA32}%)
 STR_6652    :Erarfenestro
 STR_6653    :Ĉiuj fontoj montritaj
@@ -3815,17 +3817,3 @@ STR_7025    :Videbligi
 STR_7026    :Videbligas la tutan atrakcion
 STR_7028    :Kvarona kreska helico
 STR_7029    :Kvarona malkreska helico
-STR_7030    :{WINDOW_COLOUR_2}Gastoj amuzitaj: {BLACK}{COMMA32}
-STR_7031    :Malŝalti kreskadon de herbo
-STR_7032    :Malŝalti maljuniĝon de herbo, por ke ĝi ne kresku.
-STR_7033    :Trakstilo
-STR_7034    :Labirintostilo
-STR_7035    :Vendejostilo
-STR_7036    :Veturilostilo
-STR_7037    :Reĝimo de funkciado
-STR_7038    :Atendo kaj ŝarĝo
-STR_7039    :Atrakciotipo
-STR_7040    :Adicioj de trotuaro
-STR_7041    :Panelo de parkinformoj
-STR_7042    :Panelo de datoinformoj
-STR_7043    :Ne eblas ŝanĝi altecon de tero ĉi tie…

@@ -14,7 +14,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class StaffSetColourAction final : public GameActionBase<GameCommand::setStaffColour>
+    class StaffSetColourAction final : public GameActionBase<GameCommand::SetStaffColour>
     {
     private:
         uint8_t _staffType{};

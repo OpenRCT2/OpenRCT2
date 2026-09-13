@@ -8,18 +8,21 @@
  *****************************************************************************/
 
 #include "../../../SpriteIds.h"
+#include "../../../drawing/Drawing.h"
+#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
+#include "../../track/Segment.h"
 #include "../../track/Support.h"
 #include "../../track_pieces/QuarterHelix.h"
 
 namespace OpenRCT2::HybridRC
 {
-    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
+    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
     static constexpr bool kLeftQuarterHelixLargeUpSpriteMapArray[kNumOrthogonalDirections][kQuarterHelixSequenceCount]
                                                                 [kQuarterHelixSequenceSpriteCount]
@@ -107,7 +110,7 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.hasChain())
+        if (trackElement.HasChain())
         {
             PaintAddImageAsParentRotated(
                 session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_LIFT_TRACK_FLAT + direction),
@@ -121,7 +124,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -137,7 +140,7 @@ namespace OpenRCT2::HybridRC
             { (SPR_TRACKS_HYBRID_TRACK_BRAKE + 1), (SPR_TRACKS_HYBRID_TRACK_BLOCK_BRAKE + 1) },
         };
 
-        if (trackElement.getTrackType() == TrackElemType::endStation)
+        if (trackElement.GetTrackType() == TrackElemType::endStation)
         {
             PaintAddImageAsParentRotated(
                 session, direction, GetTrackColour(session).WithIndex(imageIds[direction][1]), { 0, 0, height },
@@ -164,7 +167,7 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.hasChain())
+        if (trackElement.HasChain())
         {
             PaintAddImageAsParentRotated(
                 session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_LIFT_TRACK_GENTLE + direction + 8),
@@ -181,11 +184,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -223,7 +226,7 @@ namespace OpenRCT2::HybridRC
         };
 
         auto* ps = PaintAddImageAsParentRotated(
-            session, direction, GetTrackColour(session).WithIndex(imageIds[trackElement.hasChain() ? 0 : 1][direction]),
+            session, direction, GetTrackColour(session).WithIndex(imageIds[trackElement.HasChain() ? 0 : 1][direction]),
             { 0, 0, height },
             { { boundBoxOffsets[direction].x, boundBoxOffsets[direction].y, boundBoxOffsets[direction].z },
               { boundBoxLengths[direction].x, boundBoxLengths[direction].y, boundBoxLengths[direction].z } });
@@ -238,11 +241,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up60Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
@@ -252,7 +255,7 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.hasChain())
+        if (trackElement.HasChain())
         {
             PaintAddImageAsParentRotated(
                 session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_LIFT_TRACK_GENTLE + direction),
@@ -269,11 +272,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -283,7 +286,7 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.hasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -352,11 +355,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25DegToUp60Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -366,7 +369,7 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.hasChain())
+        if (trackElement.HasChain())
         {
             switch (direction)
             {
@@ -436,11 +439,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up60DegToUp25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -450,7 +453,7 @@ namespace OpenRCT2::HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        if (trackElement.hasChain())
+        if (trackElement.HasChain())
         {
             PaintAddImageAsParentRotated(
                 session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_LIFT_TRACK_GENTLE + direction + 4),
@@ -467,11 +470,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -598,7 +601,7 @@ namespace OpenRCT2::HybridRC
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -646,10 +649,10 @@ namespace OpenRCT2::HybridRC
         switch (direction)
         {
             case 1:
-                PaintUtilPushTunnelRight(session, height + 48, kTunnelGroup, TunnelSubType::slopeEnd);
+                PaintUtilPushTunnelRight(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
                 break;
             case 2:
-                PaintUtilPushTunnelLeft(session, height + 48, kTunnelGroup, TunnelSubType::slopeEnd);
+                PaintUtilPushTunnelLeft(session, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
                 break;
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -688,7 +691,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 48, kTunnelGroup, TunnelSubType::slopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction, height + 48, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 80);
@@ -738,7 +741,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -821,10 +824,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -881,7 +884,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1063,10 +1066,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1123,7 +1126,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1291,7 +1294,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1447,7 +1450,7 @@ namespace OpenRCT2::HybridRC
         };
 
         TrackPaintUtilDiagTilesPaint(
-            session, 3, height, direction, trackSequence, images[trackElement.hasChain()], defaultDiagTileOffsets,
+            session, 3, height, direction, trackSequence, images[trackElement.HasChain()], defaultDiagTileOffsets,
             defaultDiagBoundLengths, nullptr, 0, GetTrackColour(session));
 
         DrawSupportForSequenceA<TrackElemType::diagFlat>(
@@ -1658,7 +1661,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1686,7 +1689,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1716,7 +1719,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1746,7 +1749,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1783,7 +1786,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1811,7 +1814,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1841,7 +1844,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1871,7 +1874,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1908,7 +1911,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1936,7 +1939,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1966,7 +1969,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -1996,7 +1999,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2033,7 +2036,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2061,7 +2064,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2091,7 +2094,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2121,7 +2124,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2158,7 +2161,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2185,7 +2188,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2214,7 +2217,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2243,7 +2246,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2281,7 +2284,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2309,7 +2312,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2339,7 +2342,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2369,7 +2372,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2406,7 +2409,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2434,7 +2437,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2464,7 +2467,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2494,7 +2497,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2531,7 +2534,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2559,7 +2562,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2589,7 +2592,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2619,7 +2622,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2656,7 +2659,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2684,7 +2687,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2714,7 +2717,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2744,7 +2747,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2781,7 +2784,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2809,7 +2812,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2839,7 +2842,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2869,7 +2872,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2906,7 +2909,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2934,7 +2937,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2964,7 +2967,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -2994,7 +2997,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3031,7 +3034,7 @@ namespace OpenRCT2::HybridRC
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3059,7 +3062,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3089,7 +3092,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3119,7 +3122,7 @@ namespace OpenRCT2::HybridRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3184,7 +3187,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -3224,7 +3227,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -3281,11 +3284,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -3329,11 +3332,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -3377,11 +3380,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -3425,11 +3428,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -3498,7 +3501,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -4524,7 +4527,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -4623,10 +4626,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4695,7 +4698,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -4905,10 +4908,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -4977,7 +4980,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -5177,7 +5180,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -5392,7 +5395,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5463,10 +5466,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5523,7 +5526,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5594,10 +5597,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5670,7 +5673,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5863,10 +5866,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -5923,7 +5926,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -6116,10 +6119,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -6192,7 +6195,7 @@ namespace OpenRCT2::HybridRC
                 break;
         }
         TrackPaintUtilLeftQuarterTurn1TileTunnel(
-            session, kTunnelGroup, direction, height, -8, TunnelSubType::slopeStart, +56, TunnelSubType::slopeEnd);
+            session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
@@ -6245,7 +6248,7 @@ namespace OpenRCT2::HybridRC
                 break;
         }
         TrackPaintUtilRightQuarterTurn1TileTunnel(
-            session, kTunnelGroup, direction, height, -8, TunnelSubType::slopeStart, +56, TunnelSubType::slopeEnd);
+            session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
@@ -6403,11 +6406,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6448,11 +6451,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6493,11 +6496,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6538,11 +6541,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6614,11 +6617,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6662,11 +6665,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6710,11 +6713,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -6758,11 +6761,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -6832,11 +6835,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6874,11 +6877,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -6933,11 +6936,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -6978,11 +6981,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -7023,11 +7026,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -7068,11 +7071,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -7158,7 +7161,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -7236,10 +7239,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -7291,7 +7294,7 @@ namespace OpenRCT2::HybridRC
                     WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -7370,10 +7373,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -7452,7 +7455,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -7665,10 +7668,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -7729,7 +7732,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -7942,10 +7945,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -8012,7 +8015,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -8136,10 +8139,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -8188,7 +8191,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -8312,10 +8315,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -8370,7 +8373,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -8478,10 +8481,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -8528,10 +8531,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -8640,7 +8643,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -8694,7 +8697,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -8803,10 +8806,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -8853,10 +8856,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -8964,7 +8967,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -9044,7 +9047,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -9235,10 +9238,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -9285,10 +9288,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -9479,7 +9482,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -9533,7 +9536,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -9724,10 +9727,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -9774,10 +9777,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -9968,7 +9971,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -10048,7 +10051,7 @@ namespace OpenRCT2::HybridRC
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -10133,10 +10136,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::tall);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Tall);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::tall);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -10193,7 +10196,7 @@ namespace OpenRCT2::HybridRC
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -10280,10 +10283,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::tall);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Tall);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::tall);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Tall);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -10345,7 +10348,7 @@ namespace OpenRCT2::HybridRC
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
@@ -10426,10 +10429,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -10478,7 +10481,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
@@ -10559,10 +10562,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -10631,7 +10634,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
@@ -10781,10 +10784,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -10839,7 +10842,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
@@ -10988,10 +10991,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -11142,7 +11145,7 @@ namespace OpenRCT2::HybridRC
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11166,7 +11169,7 @@ namespace OpenRCT2::HybridRC
             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -11219,7 +11222,7 @@ namespace OpenRCT2::HybridRC
                     WoodenSupportTransitionType::flatToUp60DegLongBaseSeq0);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -11314,10 +11317,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -11361,7 +11364,7 @@ namespace OpenRCT2::HybridRC
                     WoodenSupportTransitionType::up60DegToFlatLongBaseSeq0);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 80);
@@ -11456,10 +11459,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -11491,7 +11494,7 @@ namespace OpenRCT2::HybridRC
             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -11505,7 +11508,7 @@ namespace OpenRCT2::HybridRC
             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
@@ -11522,11 +11525,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -11580,7 +11583,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -11655,10 +11658,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -11715,7 +11718,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -11786,10 +11789,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -11842,7 +11845,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -11921,10 +11924,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -11977,7 +11980,7 @@ namespace OpenRCT2::HybridRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -12057,10 +12060,10 @@ namespace OpenRCT2::HybridRC
                 switch (direction)
                 {
                     case 0:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 1:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -12108,7 +12111,7 @@ namespace OpenRCT2::HybridRC
                     WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -12258,7 +12261,7 @@ namespace OpenRCT2::HybridRC
                     WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -12513,7 +12516,7 @@ namespace OpenRCT2::HybridRC
 
                 if (direction == 1 || direction == 2)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
 
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -12664,7 +12667,7 @@ namespace OpenRCT2::HybridRC
                     session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 1)
                 {
-                    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -13901,7 +13904,7 @@ namespace OpenRCT2::HybridRC
                     WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -14051,7 +14054,7 @@ namespace OpenRCT2::HybridRC
                     WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -14320,7 +14323,7 @@ namespace OpenRCT2::HybridRC
                     WoodenSupportTransitionType::up25Deg);
                 if (direction == 1 || direction == 2)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -14486,7 +14489,7 @@ namespace OpenRCT2::HybridRC
                     session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 1)
                 {
-                    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -14544,11 +14547,11 @@ namespace OpenRCT2::HybridRC
             WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::squareSlopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::squareSlopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, TunnelType::SquareSlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(kSegmentsAll, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 56);

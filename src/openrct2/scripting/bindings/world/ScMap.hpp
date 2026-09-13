@@ -12,6 +12,9 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../../ScriptEngine.h"
+    #include "../ride/ScRide.hpp"
+    #include "../ride/ScTrackIterator.h"
+    #include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -42,8 +45,6 @@ namespace OpenRCT2::Scripting
         static JSValue createEntity(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
         static JSValue getTrackIterator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
-
-        static JSValue getPathNavigator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
         static JSValue GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite);
 

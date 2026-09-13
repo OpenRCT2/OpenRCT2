@@ -15,8 +15,8 @@
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Theme.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/GameState.h>
@@ -26,17 +26,17 @@
 #include <openrct2/actions/general/ScenarioSetSettingAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/audio/AudioContext.h>
+#include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/core/File.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
-#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/drawing/Text.h>
-#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -756,7 +756,10 @@ namespace OpenRCT2::Ui::Windows
             const bool advancedTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_ADVANCED;
             const bool disableAlwaysNative = !hasFilePicker && advancedTabSelected;
             setWidgetDisabled(WIDX_ALWAYS_NATIVE_LOADSAVE, disableAlwaysNative);
-            widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].setHidden(disableAlwaysNative);
+            if (disableAlwaysNative)
+            {
+                widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WidgetType::empty;
+            }
         }
 
         void CommonPrepareDrawAfter()
@@ -1145,7 +1148,7 @@ namespace OpenRCT2::Ui::Windows
 
             setCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, Config::Get().general.enableLightFx);
             const bool lightFxEnabled = Config::Get().general.dayNightCycle
-                && Config::Get().general.drawingEngine == DrawingEngine::softwareWithHardwareDisplay;
+                && Config::Get().general.drawingEngine == DrawingEngine::SoftwareWithHardwareDisplay;
             setWidgetDisabled(WIDX_ENABLE_LIGHT_FX_CHECKBOX, !lightFxEnabled);
             if (!lightFxEnabled)
                 Config::Get().general.enableLightFx = false;
@@ -1772,8 +1775,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, {},
-                        numItems, widget->width() - 4);
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
+                        Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     gDropdown.items[static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex())].setChecked(true);
                     invalidateWidget(WIDX_THEMES_DROPDOWN);
@@ -1885,7 +1888,8 @@ namespace OpenRCT2::Ui::Windows
                     numItems++;
 
                     WindowDropdownShowText(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], {}, numItems);
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1],
+                        Dropdown::Flag::StayOpen, numItems);
 
                     auto selectedIndex = Config::Get().interface.randomTitleSequence
                         ? numItems - 1
@@ -1901,8 +1905,8 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[1] = Dropdown::MenuLabel(STR_SCENARIO_PREVIEWS_SCREENSHOTS);
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, {},
-                        numItems, widget->width() - 4);
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
+                        Dropdown::Flag::StayOpen, numItems, widget->width() - 4);
 
                     gDropdown.items[Config::Get().interface.scenarioPreviewScreenshots].setChecked(true);
                     break;
@@ -2150,9 +2154,9 @@ namespace OpenRCT2::Ui::Windows
         {
             if (!Config::Get().general.rct1Path.empty())
             {
-                widgets[WIDX_PATH_TO_RCT1_PATH].setVisible();
-                widgets[WIDX_PATH_TO_RCT1_BROWSE].setHidden();
-                widgets[WIDX_PATH_TO_RCT1_CLEAR].setVisible();
+                widgets[WIDX_PATH_TO_RCT1_PATH].type = WidgetType::label;
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WidgetType::empty;
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WidgetType::button;
 
                 // Get 'Clear' button string width
                 auto clearLabel = LanguageGetString(STR_CLEAR_BUTTON);
@@ -2163,9 +2167,9 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_PATH_TO_RCT1_PATH].setHidden();
-                widgets[WIDX_PATH_TO_RCT1_BROWSE].setVisible();
-                widgets[WIDX_PATH_TO_RCT1_CLEAR].setHidden();
+                widgets[WIDX_PATH_TO_RCT1_PATH].type = WidgetType::empty;
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WidgetType::button;
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WidgetType::empty;
 
                 // Get 'Browse' button string width
                 auto browseLabel = LanguageGetString(STR_BROWSE);
@@ -2263,8 +2267,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // helper function, all dropdown boxes have similar properties
             WindowDropdownShowTextCustomWidth(
-                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, {}, num_items,
-                widget->width() - 4);
+                { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
+                Dropdown::Flag::StayOpen, num_items, widget->width() - 4);
         }
 
         void DrawTabImages(RenderTarget& rt)

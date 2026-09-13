@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#pragma warning(disable : 4706) // assignment within conditional expression
+
 #include "LargeSceneryObject.h"
 
 #include "../core/Guard.hpp"
@@ -15,8 +17,8 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/ScrollingText.h"
 #include "../interface/Cursors.h"
-#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
+#include "../world/Location.hpp"
 
 #include <iterator>
 
@@ -201,7 +203,7 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::statueDown);
+            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
 
             _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
             _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;

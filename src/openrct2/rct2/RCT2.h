@@ -11,7 +11,6 @@
 
 #include "../core/FileSystem.hpp"
 #include "../core/FixedPoint.hpp"
-#include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../ride/Angles.h"
 #include "../ride/RideRatings.h"
@@ -21,22 +20,15 @@
 #include <vector>
 
 struct RideObjectEntry;
-
+enum class Breakdown : uint8_t;
+enum class EditorStep : uint8_t;
+enum class MechanicStatus : uint8_t;
+enum class RideInvalidateFlag : uint8_t;
 enum class VehicleColourSettings : uint8_t;
 
-namespace OpenRCT2
-{
-    enum class Breakdown : uint8_t;
-    enum class MechanicStatus : uint8_t;
-    enum class RideInvalidateFlag : uint8_t;
-
-    using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
-} // namespace OpenRCT2
-
-namespace OpenRCT2::Editor
-{
-    enum class Step : uint8_t;
-}
+template<typename THolderType, typename TEnumType>
+struct FlagHolder;
+using RideInvalidateFlags = FlagHolder<uint8_t, RideInvalidateFlag>;
 
 namespace OpenRCT2::Scenario
 {
@@ -789,7 +781,7 @@ namespace OpenRCT2::RCT2
      */
     struct S6Info
     {
-        Editor::Step EditorStep;
+        ::EditorStep EditorStep;
         Scenario::Category Category;           // 0x01
         Scenario::ObjectiveType ObjectiveType; // 0x02
         uint8_t ObjectiveArg1;                 // 0x03

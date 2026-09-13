@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kSpiralSlideRTD =
+constexpr RideTypeDescriptor SpiralSlideRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack2x2,
@@ -32,11 +31,11 @@ constexpr RideTypeDescriptor kSpiralSlideRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt,
                      RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission },
+    .RideModes = EnumsToFlags(RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission),
     .DefaultMode = RideMode::singleRidePerAdmission,
     .OperatingSettings = { 1, 5 },
     .Naming = { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE },
-    .NameConvention = { RideComponentType::train, RideComponentType::building, RideComponentType::station },
+    .NameConvention = { RideComponentType::Train, RideComponentType::Building, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 15, 128, 0, 2, },
     .MaxMass = 255,
@@ -55,30 +54,30 @@ constexpr RideTypeDescriptor kSpiralSlideRTD =
         { Drawing::Colour::beige, Drawing::Colour::saturatedRed, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_SLIDE_TRACK, 0 },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "spiral_slide",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::flatRide,
+        RatingsCalculationType::FlatRide,
         { RideRating::make(1, 50), RideRating::make(1, 40), RideRating::make(0, 90) },
         8,
         2,
         false,
         {
-            { RatingsModifierType::bonusSlideUnlimitedRides, 0, RideRating::make(0, 40), RideRating::make(0, 20), RideRating::make(0, 25) },
-            { RatingsModifierType::bonusScenery,             0, 25098, 0, 0 },
+            { RatingsModifierType::BonusSlideUnlimitedRides, 0, RideRating::make(0, 40), RideRating::make(0, 20), RideRating::make(0, 25) },
+            { RatingsModifierType::BonusScenery,             0, 25098, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceSpiralSlide,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::standard,
+    .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = updateSpiralSlide,
     .specialType = RtdSpecialType::spiralSlide,
 };

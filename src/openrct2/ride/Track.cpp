@@ -10,7 +10,12 @@
 #include "Track.h"
 
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../actions/ResultWithMessage.h"
+#include "../audio/Audio.h"
+#include "../interface/Viewport.h"
+#include "../network/Network.h"
+#include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/TileElement.h"
@@ -19,6 +24,7 @@
 #include "RideData.h"
 #include "Station.h"
 #include "TrackData.h"
+#include "TrackDesign.h"
 #include "ted/TrackElementDescriptor.h"
 
 #include <cassert>
@@ -33,13 +39,13 @@ using OpenRCT2::GameActions::CommandFlags;
  */
 int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b)
 {
-    auto trackType = a->asTrack()->getTrackType();
+    auto trackType = a->asTrack()->GetTrackType();
     const auto* ted = &GetTrackElementDescriptor(trackType);
     auto aBank = ted->definition.rollEnd;
     auto aAngle = ted->definition.pitchEnd;
     aBank = TrackGetActualBank(a, aBank);
 
-    trackType = b->asTrack()->getTrackType();
+    trackType = b->asTrack()->GetTrackType();
     ted = &GetTrackElementDescriptor(trackType);
     auto bBank = ted->definition.rollStart;
     auto bAngle = ted->definition.pitchStart;
@@ -57,13 +63,13 @@ static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex
     {
         if (loc.z != tileElement->getBaseZ())
             continue;
-        if (tileElement->getType() != TileElementType::track)
+        if (tileElement->getType() != TileElementType::Track)
             continue;
         if (tileElement->getDirection() != loc.direction)
             continue;
-        if (tileElement->asTrack()->getRideIndex() != rideIndex)
+        if (tileElement->asTrack()->GetRideIndex() != rideIndex)
             continue;
-        if (!tileElement->asTrack()->isStation())
+        if (!tileElement->asTrack()->IsStation())
             continue;
 
         return tileElement;
@@ -75,10 +81,10 @@ static void ride_remove_station(Ride& ride, const CoordsXYZ& location)
 {
     for (auto& station : ride.getStations())
     {
-        auto stationStart = station.getStart();
+        auto stationStart = station.GetStart();
         if (stationStart == location)
         {
-            station.start.setNull();
+            station.Start.SetNull();
             ride.numStations--;
             break;
         }
@@ -111,11 +117,11 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, Comma
             assert(!stationIndex.IsNull());
 
             auto& station = ride->getStation(stationIndex);
-            station.start.x = loc.x;
-            station.start.y = loc.y;
-            station.height = loc.z / kCoordsZStep;
-            station.depart = 1;
-            station.length = 0;
+            station.Start.x = loc.x;
+            station.Start.y = loc.y;
+            station.Height = loc.z / kCoordsZStep;
+            station.Depart = 1;
+            station.Length = 0;
             ride->numStations++;
         }
         return { true };
@@ -132,7 +138,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, Comma
         stationElement = find_station_element(loc, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->asTrack()->getTrackType() == TrackElemType::endStation)
+            if (stationElement->asTrack()->GetTrackType() == TrackElemType::endStation)
             {
                 if (flags.has(CommandFlag::apply))
                 {
@@ -154,7 +160,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, Comma
         stationElement = find_station_element(loc, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->asTrack()->getTrackType() == TrackElemType::endStation)
+            if (stationElement->asTrack()->GetTrackType() == TrackElemType::endStation)
             {
                 if (flags.has(CommandFlag::apply))
                 {
@@ -203,10 +209,10 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, Comma
                     else
                     {
                         auto& station = ride->getStation(stationIndex);
-                        station.start = loc;
-                        station.height = loc.z / kCoordsZStep;
-                        station.depart = 1;
-                        station.length = stationLength;
+                        station.Start = loc;
+                        station.Height = loc.z / kCoordsZStep;
+                        station.Depart = 1;
+                        station.Length = stationLength;
                         ride->numStations++;
                     }
 
@@ -220,7 +226,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, Comma
                 {
                     targetTrackType = TrackElemType::middleStation;
                 }
-                stationElement->asTrack()->setTrackType(targetTrackType);
+                stationElement->asTrack()->SetTrackType(targetTrackType);
 
                 MapInvalidateElement(loc, stationElement);
 
@@ -270,7 +276,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
     CoordsXYZD currentLoc = stationBackLoc;
     while ((stationElement = find_station_element(currentLoc, rideIndex)) != nullptr)
     {
-        if (stationElement->asTrack()->getTrackType() == TrackElemType::endStation)
+        if (stationElement->asTrack()->GetTrackType() == TrackElemType::endStation)
         {
             if (flags.has(CommandFlag::apply))
             {
@@ -293,7 +299,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
         stationElement = find_station_element(currentLoc, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->asTrack()->getTrackType() == TrackElemType::endStation)
+            if (stationElement->asTrack()->GetTrackType() == TrackElemType::endStation)
             {
                 if (flags.has(CommandFlag::apply))
                 {
@@ -337,10 +343,10 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
                     else
                     {
                         auto& station = ride->getStation(stationIndex);
-                        station.start = currentLoc;
-                        station.height = currentLoc.z / kCoordsZStep;
-                        station.depart = 1;
-                        station.length = stationLength != 0 ? stationLength : ByteF441D1;
+                        station.Start = currentLoc;
+                        station.Height = currentLoc.z / kCoordsZStep;
+                        station.Depart = 1;
+                        station.Length = stationLength != 0 ? stationLength : ByteF441D1;
                         ride->numStations++;
                     }
 
@@ -365,7 +371,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
                         }
                     }
                 }
-                stationElement->asTrack()->setTrackType(targetTrackType);
+                stationElement->asTrack()->SetTrackType(targetTrackType);
 
                 MapInvalidateElement(currentLoc, stationElement);
             }
@@ -383,10 +389,10 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
 
 TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank)
 {
-    auto ride = GetRide(tileElement->asTrack()->getRideIndex());
+    auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
     if (ride != nullptr)
     {
-        bool isInverted = tileElement->asTrack()->isInverted();
+        bool isInverted = tileElement->asTrack()->IsInverted();
         return TrackGetActualBank2(ride->type, isInverted, bank);
     }
     return bank;
@@ -413,14 +419,14 @@ TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll b
 
 TrackRoll TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement)
 {
-    auto trackType = tileElement->asTrack()->getTrackType();
+    auto trackType = tileElement->asTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
     auto bankStart = ted.definition.rollStart;
-    auto ride = GetRide(tileElement->asTrack()->getRideIndex());
+    auto ride = GetRide(tileElement->asTrack()->GetRideIndex());
     if (ride == nullptr)
         return bankStart;
 
-    bool isInverted = useInvertedSprites ^ tileElement->asTrack()->isInverted();
+    bool isInverted = useInvertedSprites ^ tileElement->asTrack()->IsInverted();
     return TrackGetActualBank2(ride->type, isInverted, bankStart);
 }
 
@@ -433,18 +439,18 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
     if (trackEl == nullptr)
         return {};
 
-    const auto& ted = GetTrackElementDescriptor(trackEl->getTrackType());
+    const auto& ted = GetTrackElementDescriptor(trackEl->GetTrackType());
     auto direction = trackEl->getDirection();
     auto coords = CoordsXYZ(posEl.x, posEl.y, trackEl->getBaseZ());
 
     // Subtract the current sequence's offset
-    auto sequenceIndex = trackEl->getSequenceIndex();
+    auto sequenceIndex = trackEl->GetSequenceIndex();
     if (sequenceIndex >= ted.sequenceData.numSequences)
         return {};
 
     const auto& trackBlock = ted.sequenceData.sequences[sequenceIndex].clearance;
     CoordsXY trackBlockOffset = { trackBlock.x, trackBlock.y };
-    coords += trackBlockOffset.rotate(DirectionReverse(direction));
+    coords += trackBlockOffset.Rotate(DirectionReverse(direction));
     coords.z -= trackBlock.z;
 
     return CoordsXYZD(coords, direction);
@@ -465,16 +471,16 @@ bool TrackGetIsSheltered(const CoordsXYZ& input)
         if (tileElement->getBaseZ() <= input.z)
             continue;
 
-        if (tileElement->getType() == TileElementType::largeScenery)
+        if (tileElement->getType() == TileElementType::LargeScenery)
             return true;
 
-        if (tileElement->getType() == TileElementType::path)
+        if (tileElement->getType() == TileElementType::Path)
             return true;
 
-        if (tileElement->getType() != TileElementType::smallScenery)
+        if (tileElement->getType() != TileElementType::SmallScenery)
             continue;
 
-        auto* sceneryEntry = tileElement->asSmallScenery()->getEntry();
+        auto* sceneryEntry = tileElement->asSmallScenery()->GetEntry();
         if (sceneryEntry == nullptr)
             continue;
 

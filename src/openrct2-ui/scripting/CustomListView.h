@@ -11,24 +11,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../interface/Window.h"
+
     #include <cstdint>
     #include <memory>
-    #include <openrct2/scripting/Plugin.h>
+    #include <openrct2/scripting/ScriptEngine.h>
     #include <optional>
     #include <string>
     #include <vector>
-
-namespace OpenRCT2
-{
-    struct ScrollArea;
-    struct Widget;
-    struct WindowBase;
-} // namespace OpenRCT2
-
-namespace OpenRCT2::Drawing
-{
-    struct RenderTarget;
-}
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -36,17 +26,17 @@ namespace OpenRCT2::Ui::Windows
 
     enum class ScrollbarType
     {
-        none,
-        horizontal,
-        vertical,
-        both
+        None,
+        Horizontal,
+        Vertical,
+        Both
     };
 
     enum class ColumnSortOrder
     {
-        none,
-        ascending,
-        descending,
+        None,
+        Ascending,
+        Descending,
     };
 
     struct ListViewColumn
@@ -109,7 +99,7 @@ namespace OpenRCT2::Ui::Windows
         size_t ScrollIndex{};
         std::vector<ListViewColumn> Columns;
         std::vector<ListViewItem> Items;
-        ScrollbarType Scrollbars = ScrollbarType::vertical;
+        ScrollbarType Scrollbars = ScrollbarType::Vertical;
 
     public:
         std::shared_ptr<Plugin> Owner;

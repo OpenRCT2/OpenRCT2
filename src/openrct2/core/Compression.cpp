@@ -11,7 +11,6 @@
 
 #include "../Diagnostic.h"
 #include "Guard.hpp"
-#include "IStream.hpp"
 #include "StreamBuffer.hpp"
 
 #ifndef ZLIB_CONST

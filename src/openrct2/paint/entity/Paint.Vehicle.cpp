@@ -55,49 +55,47 @@ void PaintVehicle(PaintSession& session, const Vehicle& vehicle, int32_t imageDi
         carEntry = &rideEntry->Cars[carEntryIndex];
     }
 
-    switch (carEntry->paintStyle)
+    switch (carEntry->PaintStyle)
     {
-        case VehiclePaintStyle::standard:
+        case VEHICLE_VISUAL_DEFAULT:
             VehicleVisualDefault(session, imageDirection, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::launchedFreefall:
+        case VEHICLE_VISUAL_LAUNCHED_FREEFALL:
             VehicleVisualLaunchedFreefall(
                 session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::observationTower:
+        case VEHICLE_VISUAL_OBSERVATION_TOWER:
             VehicleVisualObservationTower(
                 session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::riverRapids:
+        case VEHICLE_VISUAL_RIVER_RAPIDS:
             VehicleVisualRiverRapids(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::miniGolfPlayer:
+        case VEHICLE_VISUAL_MINI_GOLF_PLAYER:
             VehicleVisualMiniGolfPlayer(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle);
             break;
-        case VehiclePaintStyle::miniGolfBall:
+        case VEHICLE_VISUAL_MINI_GOLF_BALL:
             VehicleVisualMiniGolfBall(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle);
             break;
-        case VehiclePaintStyle::reverser:
+        case VEHICLE_VISUAL_REVERSER:
             VehicleVisualReverser(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::splashBoatsOrWaterCoaster:
+        case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:
             VehicleVisualSplashBoatsOrWaterCoaster(
                 session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::rotoDrop:
+        case VEHICLE_VISUAL_ROTO_DROP:
             VehicleVisualRotoDrop(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::virginiaReel:
+        case VEHICLE_VISUAL_VIRGINIA_REEL:
             VehicleVisualVirginiaReel(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::submarine:
+        case VEHICLE_VISUAL_SUBMARINE:
             VehicleVisualSubmarine(session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
             break;
-        case VehiclePaintStyle::spinningCars:
+        case VEHICLE_VISUAL_SPINNING_CARS:
             VehicleVisualClassicMiniSpinning(
                 session, vehicle.x, imageDirection, vehicle.y, vehicle.z + zOffset, &vehicle, carEntry);
-            break;
-        default:
             break;
     }
 }

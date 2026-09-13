@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../Input.h"
 #include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -23,6 +24,7 @@
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "Paint.h"
+#include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <limits>
@@ -235,13 +237,13 @@ static void VirtualFloorGetTileProperties(
     {
         const auto elementType = tileElement->getType();
 
-        if (elementType == TileElementType::surface)
+        if (elementType == TileElementType::Surface)
         {
             if (height < tileElement->getClearanceZ())
             {
                 *outBelowGround = true;
             }
-            else if (height < (tileElement->getBaseZ() + kLandHeightStep) && tileElement->asSurface()->getSlope() != 0)
+            else if (height < (tileElement->getBaseZ() + kLandHeightStep) && tileElement->asSurface()->GetSlope() != 0)
             {
                 *outBelowGround = true;
                 *outOccupied = true;
@@ -258,7 +260,7 @@ static void VirtualFloorGetTileProperties(
             continue;
         }
 
-        if (elementType == TileElementType::wall || elementType == TileElementType::banner)
+        if (elementType == TileElementType::Wall || elementType == TileElementType::Banner)
         {
             int32_t direction = tileElement->getDirection();
             *outOccupiedEdges |= 1 << direction;

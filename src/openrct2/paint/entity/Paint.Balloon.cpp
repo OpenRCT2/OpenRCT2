@@ -9,10 +9,10 @@
 
 #include "Paint.Balloon.h"
 
-#include "../../SpriteIds.h"
 #include "../../drawing/ImageId.hpp"
 #include "../../entity/Balloon.h"
 #include "../../profiling/Profiling.h"
+#include "../../profiling/ProfilingMacros.hpp"
 #include "../Paint.h"
 
 using namespace OpenRCT2;
@@ -21,7 +21,7 @@ void PaintBalloon(PaintSession& session, const Balloon& balloon, int32_t imageDi
 {
     PROFILED_FUNCTION();
 
-    uint32_t imageId = SPR_BALLOON + (balloon.frame & 7);
+    uint32_t imageId = 22651 + (balloon.frame & 7);
     if (balloon.popped != 0)
     {
         imageId += 8;

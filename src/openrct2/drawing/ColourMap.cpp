@@ -11,8 +11,9 @@
 
 #include "../SpriteIds.h"
 #include "../core/Guard.hpp"
-#include "Colour.h"
-#include "Drawing.Sprite.h"
+
+// FIXME: only included for GfxGetG1Element()
+#include "Drawing.h"
 
 namespace OpenRCT2::Drawing
 {

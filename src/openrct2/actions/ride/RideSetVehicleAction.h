@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
         count,
     };
 
-    class RideSetVehicleAction final : public GameActionBase<GameCommand::setRideVehicles>
+    class RideSetVehicleAction final : public GameActionBase<GameCommand::SetRideVehicles>
     {
     private:
         RideId _rideIndex{ RideId::GetNull() };

@@ -9,13 +9,21 @@
 
 #include "Paint.TileElement.h"
 
+#include "../../Game.h"
+#include "../../Input.h"
 #include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../interface/Viewport.h"
 #include "../../profiling/Profiling.h"
+#include "../../ride/RideData.h"
+#include "../../ride/TrackData.h"
+#include "../../ride/TrackPaint.h"
+#include "../../world/Entrance.h"
+#include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/MapSelection.h"
+#include "../../world/Scenery.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
 #include "../../world/tile_element/TileElement.h"
@@ -186,9 +194,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         do
         {
             maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->getClearanceZ()));
-            if (element->getType() == TileElementType::surface)
+            if (element->getType() == TileElementType::Surface)
             {
-                maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->asSurface()->getWaterHeight()));
+                maxHeight = std::max(maxHeight, static_cast<uint16_t>(element->asSurface()->GetWaterHeight()));
             }
         } while (!(element++)->isLastForTile());
     }
@@ -221,7 +229,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             // see-through on: paint this tile_element as partial or hidden later on
             // note: surface elements are not painted even with see-through turned on
             if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0
-                || tile_element->getType() == TileElementType::surface)
+                || tile_element->getType() == TileElementType::Surface)
             {
                 continue;
             }
@@ -250,9 +258,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
                     break;
                 }
                 auto type = tile_element_sub_iterator->getType();
-                if (type == TileElementType::path)
+                if (type == TileElementType::Path)
                     session.PathElementOnSameHeight = tile_element_sub_iterator;
-                else if (type == TileElementType::track)
+                else if (type == TileElementType::Track)
                     session.TrackElementOnSameHeight = tile_element_sub_iterator;
             }
         }
@@ -262,28 +270,28 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (tile_element->getType())
         {
-            case TileElementType::surface:
+            case TileElementType::Surface:
                 PaintSurface(session, direction, baseZ, *(tile_element->asSurface()));
                 break;
-            case TileElementType::path:
+            case TileElementType::Path:
                 PaintPath(session, baseZ, *(tile_element->asPath()));
                 break;
-            case TileElementType::track:
+            case TileElementType::Track:
                 PaintTrack(session, direction, baseZ, *(tile_element->asTrack()));
                 break;
-            case TileElementType::smallScenery:
+            case TileElementType::SmallScenery:
                 PaintSmallScenery(session, direction, baseZ, *(tile_element->asSmallScenery()));
                 break;
-            case TileElementType::entrance:
+            case TileElementType::Entrance:
                 PaintEntrance(session, direction, baseZ, *(tile_element->asEntrance()));
                 break;
-            case TileElementType::wall:
+            case TileElementType::Wall:
                 PaintWall(session, direction, baseZ, *(tile_element->asWall()));
                 break;
-            case TileElementType::largeScenery:
+            case TileElementType::LargeScenery:
                 PaintLargeScenery(session, direction, baseZ, *(tile_element->asLargeScenery()));
                 break;
-            case TileElementType::banner:
+            case TileElementType::Banner:
                 PaintBanner(session, direction, baseZ, *(tile_element->asBanner()));
                 break;
         }
@@ -300,7 +308,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         return;
     }
 
-    if ((tile_element - 1)->getType() == TileElementType::surface)
+    if ((tile_element - 1)->getType() == TileElementType::Surface)
     {
         return;
     }

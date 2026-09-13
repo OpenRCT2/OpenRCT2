@@ -12,12 +12,13 @@
     #include "../interface/Theme.h"
 
     #include <openrct2-ui/interface/Widget.h>
-    #include <openrct2-ui/interface/Window.h>
     #include <openrct2-ui/windows/Windows.h>
     #include <openrct2/Context.h>
     #include <openrct2/Game.h>
+    #include <openrct2/ParkImporter.h>
     #include <openrct2/config/Config.h>
     #include <openrct2/core/String.hpp>
+    #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/Text.h>
     #include <openrct2/interface/Chat.h>
     #include <openrct2/network/Network.h>

@@ -16,7 +16,7 @@
 #include "ReplayManager.h"
 #include "actions/GameActionRunner.h"
 #include "config/Config.h"
-#include "drawing/Palette.h"
+#include "drawing/Drawing.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
 #include "interface/Screenshot.h"
@@ -24,7 +24,6 @@
 #include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
-#include "scenes/editor/EditorScene.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequencePlayer.h"
 #include "scripting/ScriptEngine.h"
@@ -66,7 +65,7 @@ namespace OpenRCT2
         FinanceInit();
         BannerInit(gameState);
         RideInitAll();
-        gameState.entities.resetAllEntities();
+        gameState.entities.ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
         ResetDate();
         Weather::reset();
@@ -84,7 +83,7 @@ namespace OpenRCT2
         auto clipboardIntent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
         ContextBroadcastIntent(&clipboardIntent);
 
-        Drawing::LoadPalette();
+        LoadPalette();
 
         CheatsReset();
         ClearRestrictedScenery();
@@ -94,7 +93,7 @@ namespace OpenRCT2
         scriptEngine.ClearParkStorage();
 #endif
 
-        EntityTweener::get().reset();
+        EntityTweener::Get().Reset();
     }
 
     /**
@@ -173,14 +172,14 @@ namespace OpenRCT2
 
                 // Keep updating the money effect even when paused.
                 auto& gameState = getGameState();
-                gameState.entities.updateMoneyEffect();
+                gameState.entities.UpdateMoneyEffect();
 
                 // Post-tick network update
                 Network::PostTick();
 
                 // Post-tick game actions.
                 GameActions::ProcessQueue(gameState);
-                gameState.entities.updateEntitiesSpatialIndex();
+                gameState.entities.UpdateEntitiesSpatialIndex();
             }
         }
 
@@ -320,7 +319,7 @@ namespace OpenRCT2
         auto restoreProvisionalIntent = Intent(INTENT_ACTION_RESTORE_PROVISIONAL_ELEMENTS);
         ContextBroadcastIntent(&restoreProvisionalIntent);
         VehicleUpdateAll();
-        gameState.entities.updateAllMiscEntities();
+        gameState.entities.UpdateAllMiscEntities();
         Ride::updateAll();
 
         if (!isInEditorMode())
@@ -338,13 +337,12 @@ namespace OpenRCT2
         VehicleSoundsUpdate();
         PeepUpdateCrowdNoise();
         Weather::updateSound();
-
-        EditorScene::OpenWindowsForCurrentStep();
+        EditorOpenWindowsForCurrentStep();
 
         // Update windows
         // WindowDispatchUpdateAll();
 
-        gameState.entities.updateEntitiesSpatialIndex();
+        gameState.entities.UpdateEntitiesSpatialIndex();
 
         // Start autosave timer after update
         if (gLastAutoSaveUpdate == kAutosavePause)

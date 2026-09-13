@@ -9,9 +9,13 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#include "../../../Context.h"
+#include "../../../ride/Ride.h"
+#include "../../ScriptEngine.h"
+#include "../object/ScObject.hpp"
+#include "ScRideStation.hpp"
 
-    #include "../../ScriptEngine.h"
+#ifdef ENABLE_SCRIPTING
 
 namespace OpenRCT2::Scripting
 {
@@ -124,11 +128,6 @@ namespace OpenRCT2::Scripting
         static JSValue value_get(JSContext* ctx, JSValue thisVal);
         static JSValue value_set(JSContext* ctx, JSValue thisVal, JSValue value);
         static JSValue downtime_get(JSContext* ctx, JSValue thisVal);
-        static JSValue reliability_get(JSContext* ctx, JSValue thisVal);
-        static JSValue guestCount_get(JSContext* ctx, JSValue thisVal);
-        static JSValue isEmpty_get(JSContext* ctx, JSValue thisVal);
-        static JSValue incomePerHour_get(JSContext* ctx, JSValue thisVal);
-        static JSValue profit_get(JSContext* ctx, JSValue thisVal);
         static JSValue liftHillSpeed_get(JSContext* ctx, JSValue thisVal);
         static JSValue liftHillSpeed_set(JSContext* ctx, JSValue thisVal, JSValue value);
         static JSValue maxLiftHillSpeed_get(JSContext* ctx, JSValue thisVal);

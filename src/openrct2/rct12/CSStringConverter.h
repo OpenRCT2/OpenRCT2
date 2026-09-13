@@ -16,9 +16,8 @@
 namespace OpenRCT2
 {
     enum class RCT2LanguageId : uint8_t;
-    enum class UnicodeChar : char32_t;
 
-    UnicodeChar EncodingConvertRCT2ToUnicode(wchar_t rct2str);
+    wchar_t EncodingConvertRCT2ToUnicode(wchar_t rct2str);
 
     std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId);
 } // namespace OpenRCT2

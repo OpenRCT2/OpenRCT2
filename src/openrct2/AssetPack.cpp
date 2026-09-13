@@ -13,6 +13,7 @@
 #include "core/Json.hpp"
 #include "core/Path.hpp"
 #include "core/Zip.h"
+#include "drawing/Image.h"
 #include "localisation/LocalisationService.h"
 #include "object/Object.h"
 

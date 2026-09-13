@@ -9,15 +9,14 @@
 
 #pragma once
 
-#include <cstddef>
+#include "IStream.hpp"
+
 #include <cstdint>
 #include <limits>
 #include <utility>
 
 namespace OpenRCT2
 {
-    struct IStream;
-
     struct StreamReadBuffer
     {
         StreamReadBuffer(IStream& stream, uint64_t length, size_t bufferLength);

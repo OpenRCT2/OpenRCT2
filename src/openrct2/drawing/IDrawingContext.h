@@ -9,12 +9,10 @@
 
 #pragma once
 
+#include "../world/Location.hpp"
 #include "FilterPaletteIds.h"
-#include "ImageId.hpp"
 #include "PaletteIndex.h"
-
-struct ScreenLine;
-struct TTFSurface;
+#include "TTF.h"
 
 namespace OpenRCT2::Drawing
 {

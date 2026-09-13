@@ -15,7 +15,7 @@ enum class MapSelectType : uint8_t;
 
 namespace OpenRCT2::GameActions
 {
-    class LandLowerAction final : public GameActionBase<GameCommand::lowerLand>
+    class LandLowerAction final : public GameActionBase<GameCommand::LowerLand>
     {
     private:
         CoordsXY _coords;

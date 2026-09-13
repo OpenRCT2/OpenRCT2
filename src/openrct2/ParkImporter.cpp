@@ -12,6 +12,8 @@
 #include "Context.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "object/ObjectManager.h"
+#include "object/ObjectRepository.h"
 
 #include <memory>
 

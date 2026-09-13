@@ -13,8 +13,10 @@
 
     #include <cstring>
     #include <fnmatch.h>
+    #include <limits.h>
     #include <locale.h>
     #include <pwd.h>
+    #include <stdlib.h>
     #include <unistd.h>
     #include <vector>
     #if defined(__FreeBSD__) || defined(__NetBSD__)
@@ -30,9 +32,9 @@
         #include <fontconfig/fontconfig.h>
     #endif // DISABLE_TTF
 
+    #include "../Date.h"
     #include "../OpenRCT2.h"
     #include "../core/Path.hpp"
-    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
     #include "Platform.h"
 
@@ -388,33 +390,17 @@ namespace OpenRCT2::Platform
         return ret;
     }
 
-    std::vector<std::string> GetSearchablePathsRCT1()
+    std::vector<std::string_view> GetSearchablePathsRCT1()
     {
-        auto userHome = GetFolderPath(SpecialFolder::userHome);
         return {
-            userHome + "/.wine/drive_c/GOG Games/RollerCoaster Tycoon Deluxe",
-            userHome + "/.wine/drive_c/Program Files/GalaxyClient/Games/RollerCoaster Tycoon Deluxe",
-            userHome + "/.wine/drive_c/Program Files (x86)/GalaxyClient/Games/RollerCoaster Tycoon Deluxe",
-            userHome + "/.wine/drive_c/Program Files/Hasbro Interactive/RollerCoaster Tycoon",
-            userHome + "/.wine/drive_c/Program Files (x86)/Hasbro Interactive/RollerCoaster Tycoon",
             // game-data-packager uses this path when installing game files
             "/usr/share/games/roller-coaster-tycoon",
         };
     }
 
-    std::vector<std::string> GetSearchablePathsRCT2()
+    std::vector<std::string_view> GetSearchablePathsRCT2()
     {
-        auto userHome = GetFolderPath(SpecialFolder::userHome);
         return {
-            userHome + "/.wine/drive_c/GOG Games/RollerCoaster Tycoon 2 Triple Thrill Pack",
-            userHome + "/.wine/drive_c/Program Files/GalaxyClient/Games/RollerCoaster Tycoon 2 Triple Thrill Pack",
-            userHome + "/.wine/drive_c/Program Files (x86)/GalaxyClient/Games/RollerCoaster Tycoon 2 Triple Thrill Pack",
-            userHome + "/.wine/drive_c/Program Files/Atari/RollerCoaster Tycoon 2",
-            userHome + "/.wine/drive_c/Program Files (x86)/Atari/RollerCoaster Tycoon 2",
-            userHome + "/.wine/drive_c/Program Files/Infogrames/RollerCoaster Tycoon 2",
-            userHome + "/.wine/drive_c/Program Files (x86)/Infogrames/RollerCoaster Tycoon 2",
-            userHome + "/.wine/drive_c/Program Files/Infogrames Interactive/RollerCoaster Tycoon 2",
-            userHome + "/.wine/drive_c/Program Files (x86)/Infogrames Interactive/RollerCoaster Tycoon 2",
             // game-data-packager uses this path when installing game files
             "/usr/share/games/roller-coaster-tycoon2",
         };

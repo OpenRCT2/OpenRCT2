@@ -11,7 +11,9 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../Context.h"
     #include "../../../Date.h"
+    #include "../../../Game.h"
     #include "../../../GameState.h"
     #include "../../ScriptEngine.h"
 

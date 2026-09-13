@@ -11,7 +11,7 @@
 
     #include "UiContext.h"
 
-    #include <SDL_messagebox.h>
+    #include <SDL.h>
     #include <dlfcn.h>
     #include <jni.h>
     #include <openrct2/Diagnostic.h>

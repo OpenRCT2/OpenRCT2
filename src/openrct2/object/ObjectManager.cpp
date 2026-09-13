@@ -19,24 +19,25 @@
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
+#include "../ui/WindowManager.h"
 #include "BannerSceneryEntry.h"
-#include "LargeSceneryEntry.h"
+#include "LargeSceneryObject.h"
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
 #include "ObjectRepository.h"
-#include "PathAdditionEntry.h"
+#include "PathAdditionObject.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
-#include "SceneryObject.h"
-#include "SmallSceneryEntry.h"
-#include "WallSceneryEntry.h"
+#include "SmallSceneryObject.h"
+#include "WallObject.h"
 
 #include <algorithm>
 #include <array>
 #include <atomic>
 #include <memory>
 #include <mutex>
+#include <thread>
 #include <unordered_set>
 
 namespace OpenRCT2
@@ -87,7 +88,7 @@ namespace OpenRCT2
 
             if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
             {
-#if DEBUG > 0
+#ifdef DEBUG
                 if (index != kObjectEntryIndexNull)
                 {
                     LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);
@@ -393,8 +394,7 @@ namespace OpenRCT2
                     loadedObject = object;
                     list[*slot] = object;
                     UpdateSceneryGroupIndexes();
-                    if (objectType == ObjectType::ride)
-                        ResetTypeToRideEntryIndexMap();
+                    ResetTypeToRideEntryIndexMap();
                 }
             }
             return loadedObject;

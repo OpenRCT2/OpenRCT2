@@ -14,6 +14,7 @@
 
 #include <cassert>
 #include <cstdint>
+#include <limits>
 
 namespace OpenRCT2::Drawing
 {
@@ -23,12 +24,12 @@ namespace OpenRCT2::Drawing
 
 enum class ImageCatalogue
 {
-    unknown,
-    g1,
-    g2,
-    csg,
-    object,
-    temporary,
+    UNKNOWN,
+    G1,
+    G2,
+    CSG,
+    OBJECT,
+    TEMPORARY,
 };
 
 OpenRCT2::Drawing::FilterPaletteID GetGlassPaletteId(OpenRCT2::Drawing::Colour);

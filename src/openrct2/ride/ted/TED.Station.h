@@ -12,6 +12,8 @@
 #include "../../localisation/StringIds.h"
 #include "TrackElementDescriptor.h"
 
+#include <cstdint>
+
 namespace OpenRCT2::TrackMetadata
 {
     using PS = PaintSegment;

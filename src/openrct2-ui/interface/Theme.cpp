@@ -7,9 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#pragma warning(disable : 4706) // assignment within conditional expression
+
 #include "Theme.h"
 
 #include "../UiStringIds.h"
+#include "Window.h"
 
 #include <memory>
 #include <openrct2/Context.h>
@@ -22,10 +25,8 @@
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/ColourWithFlags.h>
-#include <openrct2/interface/WindowBase.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 #include <stdexcept>
@@ -134,7 +135,7 @@ namespace OpenRCT2::Ui
      */
     struct WindowThemeDesc
     {
-        OpenRCT2::WindowClass WindowClass;
+        ::WindowClass WindowClass;
         const utf8* WindowClassSZ;
         StringId WindowName;
         VariableWindowColours windowColours;
@@ -157,10 +158,7 @@ namespace OpenRCT2::Ui
     {
         // WindowClass                              WindowClassSZ                        WindowName                                        windowColours
         { WindowClass::topToolbar,                  "WC_TOP_TOOLBAR",                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    { opaque(Drawing::Colour::lightBlue),               opaque(Drawing::Colour::darkGreen),               opaque(Drawing::Colour::darkBrown),             opaque(Drawing::Colour::grey)         } },
-        { WindowClass::gameStatusBar,               "WC_GAME_STATUS_BAR",                STR_THEMES_WINDOW_GAME_STATUS_BAR,                { translucent(Drawing::Colour::darkGreen)                                                                                                                                                    } },
-        { WindowClass::newsTicker,                  "WC_NEWS_TICKER",                    STR_THEMES_WINDOW_NEWS_TICKER,                    { opaque(Drawing::Colour::black),                   opaque(Drawing::Colour::black)                                                                                                           } },
-        { WindowClass::parkInfoPanel,               "WC_PARK_INFO_PANEL",                STR_THEMES_WINDOW_PARK_INFO_PANEL,                { translucent(Drawing::Colour::darkGreen),          opaque(Drawing::Colour::brightGreen)                                                                                                     } },
-        { WindowClass::dateInfoPanel,               "WC_DATE_INFO_PANEL",                STR_THEMES_WINDOW_DATE_INFO_PANEL,                { translucent(Drawing::Colour::darkGreen)                                                                                                                                                    } },
+        { WindowClass::bottomToolbar,               "WC_BOTTOM_TOOLBAR",                 STR_THEMES_WINDOW_BOTTOM_TOOLBAR,                 { translucent(Drawing::Colour::darkGreen),          opaque(Drawing::Colour::black),                    opaque(Drawing::Colour::black),                  opaque(Drawing::Colour::brightGreen) } },
         { WindowClass::ride,                        "WC_RIDE",                           STR_THEMES_WINDOW_RIDE,                           { opaque(Drawing::Colour::grey),                     opaque(Drawing::Colour::bordeauxRed),             opaque(Drawing::Colour::saturatedGreen)                                     } },
         { WindowClass::rideConstruction,            "WC_RIDE_CONSTRUCTION",              STR_THEMES_WINDOW_RIDE_CONSTRUCTION,              { opaque(Drawing::Colour::darkBrown),               opaque(Drawing::Colour::darkBrown),               opaque(Drawing::Colour::darkBrown)                                          } },
         { WindowClass::rideList,                    "WC_RIDE_LIST",                      STR_THEMES_WINDOW_RIDE_LIST,                      { opaque(Drawing::Colour::grey),                     opaque(Drawing::Colour::bordeauxRed),             opaque(Drawing::Colour::bordeauxRed)                                        } },
@@ -210,8 +208,8 @@ namespace OpenRCT2::Ui
         { WindowClass::landRights,                  "WC_LAND_RIGHTS",                    STR_THEMES_WINDOW_LAND_RIGHTS,                    { opaque(Drawing::Colour::darkYellow),              opaque(Drawing::Colour::darkYellow),              opaque(Drawing::Colour::darkYellow)                                         } },
         { WindowClass::themes,                      "WC_THEMES",                         STR_THEMES_WINDOW_THEMES,                         { opaque(Drawing::Colour::grey),                     opaque(Drawing::Colour::darkGreen),               opaque(Drawing::Colour::darkGreen)                                          } },
         { WindowClass::staff,                       "WC_STAFF",                          STR_THEMES_WINDOW_STAFF,                          { opaque(Drawing::Colour::grey),                     opaque(Drawing::Colour::lightPurple),             opaque(Drawing::Colour::lightPurple)                                        } },
-        { WindowClass::editorStepControlTrack,      "WC_EDITOR_STEP_CONTROL_TRACK",      STR_THEMES_WINDOW_EDITOR_STEP_CONTROL_TRACK,      { translucent(Drawing::Colour::lightBlue),          translucent(Drawing::Colour::lightBlue),          translucent(Drawing::Colour::lightBlue)                                     } },
-        { WindowClass::editorStepControlScenario,   "WC_EDITOR_STEP_CONTROL_SCENARIO",   STR_THEMES_WINDOW_EDITOR_STEP_CONTROL_SCENARIO,   { translucent(Drawing::Colour::lightBrown),         translucent(Drawing::Colour::lightBrown),         translucent(Drawing::Colour::mossGreen)                                     } },
+        { WindowClass::editorTrackBottomToolbar,    "WC_EDITOR_TRACK_BOTTOM_TOOLBAR",    STR_THEMES_WINDOW_BOTTOM_TOOLBAR_TRACK_EDITOR,    { translucent(Drawing::Colour::lightBlue),          translucent(Drawing::Colour::lightBlue),          translucent(Drawing::Colour::lightBlue)                                     } },
+        { WindowClass::editorScenarioBottomToolbar, "WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR", STR_THEMES_WINDOW_BOTTOM_TOOLBAR_SCENARIO_EDITOR, { translucent(Drawing::Colour::lightBrown),         translucent(Drawing::Colour::lightBrown),         translucent(Drawing::Colour::mossGreen)                                     } },
         { WindowClass::tileInspector,               "WC_TILE_INSPECTOR",                 STR_TILE_INSPECTOR_TITLE,                         { opaque(Drawing::Colour::lightBlue),               opaque(Drawing::Colour::lightBlue)                                                                                   } },
         { WindowClass::viewClipping,                "WC_VIEW_CLIPPING",                  STR_VIEW_CLIPPING_TITLE,                          { opaque(Drawing::Colour::darkGreen)                                                                                                                            } },
         { WindowClass::patrolArea,                  "WC_PATROL_AREA",                    STR_SET_PATROL_AREA,                              { opaque(Drawing::Colour::lightPurple),             opaque(Drawing::Colour::lightPurple),             opaque(Drawing::Colour::lightPurple)                                        } },
@@ -234,10 +232,7 @@ namespace OpenRCT2::Ui
 
     static constexpr std::array kPredefinedThemeRCT1Entries = std::to_array<UIThemeWindowEntry>({
         { WindowClass::topToolbar,             { opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::grey),                opaque(Drawing::Colour::grey),     opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black) } },
-        { WindowClass::gameStatusBar,          { translucent(Drawing::Colour::grey) } },
-        { WindowClass::newsTicker,             { opaque(Drawing::Colour::voidBackground),   opaque(Drawing::Colour::grey) } },
-        { WindowClass::parkInfoPanel,          { translucent(Drawing::Colour::grey),        opaque(Drawing::Colour::yellow) } },
-        { WindowClass::dateInfoPanel,          { translucent(Drawing::Colour::grey) } },
+        { WindowClass::bottomToolbar,          { translucent(Drawing::Colour::grey),        opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::voidBackground),                opaque(Drawing::Colour::yellow),   opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black) } },
         { WindowClass::ride,                   { opaque(Drawing::Colour::bordeauxRed),     opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::saturatedGreen),     opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black) } },
         { WindowClass::rideList,               { opaque(Drawing::Colour::bordeauxRed),     opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::grey),                opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black) } },
         { WindowClass::constructRide,          { opaque(Drawing::Colour::bordeauxRed),     opaque(Drawing::Colour::grey),             opaque(Drawing::Colour::grey),                opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black),    opaque(Drawing::Colour::black) } },
@@ -267,7 +262,7 @@ namespace OpenRCT2::Ui
     const UITheme kPredefinedThemeRCT1 = UITheme::CreatePredefined(
         "*RCT1", kPredefinedThemeRCT1Entries,
         UITHEME_FLAG_USE_LIGHTS_RIDE | UITHEME_FLAG_USE_LIGHTS_PARK | UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT
-            | UITHEME_FLAG_USE_GAME_STATUS_BAR | UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
+            | UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR | UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
 
     const UITheme kPredefinedThemeRCT2 = UITheme::CreatePredefined("*RCT2", kPredefinedThemeRCT2Entries, 0);
 
@@ -339,22 +334,6 @@ namespace OpenRCT2::Ui
         return colourSettingsEntry;
     }
 
-    static ColourWithFlags jsonColourObjectToColourWithFlags(json_t input, uint8_t version)
-    {
-        if (version == 0)
-        {
-            auto number = Json::GetNumber<uint8_t>(input);
-            return ColourWithFlags::fromLegacy(number);
-        }
-
-        auto colourObject = Json::AsObject(input);
-        auto colour = colourFromString(Json::GetString(colourObject["colour"]), Drawing::Colour::black);
-        auto isTranslucent = Json::GetBoolean(colourObject["translucent"], false);
-        ColourFlags flags{};
-        flags.set(ColourFlag::translucent, isTranslucent);
-        return ColourWithFlags{ colour, flags };
-    }
-
     UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc* wtDesc, json_t& jsonData, uint8_t version)
     {
         Guard::Assert(jsonData.is_object(), "UIThemeWindowEntry::FromJson expects parameter jsonData to be object");
@@ -375,7 +354,21 @@ namespace OpenRCT2::Ui
 
         for (size_t i = 0; i < colourCount; i++)
         {
-            result.Theme.Colours[i] = jsonColourObjectToColourWithFlags(jsonColours[i], version);
+            if (version == 0)
+            {
+                auto number = Json::GetNumber<uint8_t>(jsonColours[i]);
+                result.Theme.Colours[i] = ColourWithFlags::fromLegacy(number);
+            }
+            else
+            {
+                auto colourObject = Json::AsObject(jsonColours[i]);
+                auto colour = colourFromString(Json::GetString(colourObject["colour"]), Drawing::Colour::black);
+                auto isTranslucent = Json::GetBoolean(colourObject["translucent"], false);
+                ColourFlags flags{};
+                flags.set(ColourFlag::translucent, isTranslucent);
+
+                result.Theme.Colours[i] = { colour, flags };
+            }
         }
 
         return result;
@@ -448,7 +441,7 @@ namespace OpenRCT2::Ui
             { "useLightsRide", (Flags & UITHEME_FLAG_USE_LIGHTS_RIDE) != 0 },
             { "useLightsPark", (Flags & UITHEME_FLAG_USE_LIGHTS_PARK) != 0 },
             { "useAltScenarioSelectFont", (Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) != 0 },
-            { "useFullBottomToolbar", (Flags & UITHEME_FLAG_USE_GAME_STATUS_BAR) != 0 },
+            { "useFullBottomToolbar", (Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR) != 0 },
             { "use3dImageButtons", (Flags & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS) != 0 },
         };
 
@@ -471,45 +464,6 @@ namespace OpenRCT2::Ui
         }
 
         return result;
-    }
-
-    static void importOldBottomToolbar(UITheme& theme, json_t& jsonObj, uint8_t version)
-    {
-        auto jsonColours = Json::AsArray(jsonObj["colours"]);
-        const auto panelColour = jsonColourObjectToColourWithFlags(jsonColours[0], version);
-        const auto newsTickerButtonsColour = jsonColourObjectToColourWithFlags(jsonColours[1], version);
-        const auto messageBackgroundColour = jsonColourObjectToColourWithFlags(jsonColours[2], version);
-        const auto parkRatingBarColour = jsonColourObjectToColourWithFlags(jsonColours[3], version);
-
-        const auto* parkInfoPanelDesc = GetWindowThemeDescriptor(WindowClass::parkInfoPanel);
-        UIThemeWindowEntry parkInfoPanelEntry{};
-        parkInfoPanelEntry.Class = parkInfoPanelDesc->WindowClass;
-        parkInfoPanelEntry.Theme = parkInfoPanelDesc->windowColours.defaultTheme;
-        parkInfoPanelEntry.Theme.Colours[0] = panelColour;
-        parkInfoPanelEntry.Theme.Colours[1] = parkRatingBarColour;
-        theme.SetEntry(&parkInfoPanelEntry);
-
-        const auto* dateInfoPanelDesc = GetWindowThemeDescriptor(WindowClass::dateInfoPanel);
-        UIThemeWindowEntry dateInfoPanelEntry{};
-        dateInfoPanelEntry.Class = dateInfoPanelDesc->WindowClass;
-        dateInfoPanelEntry.Theme = dateInfoPanelDesc->windowColours.defaultTheme;
-        dateInfoPanelEntry.Theme.Colours[0] = panelColour;
-        theme.SetEntry(&dateInfoPanelEntry);
-
-        const auto* statusBarDesc = GetWindowThemeDescriptor(WindowClass::gameStatusBar);
-        UIThemeWindowEntry statusBarEntry{};
-        statusBarEntry.Class = statusBarDesc->WindowClass;
-        statusBarEntry.Theme = statusBarDesc->windowColours.defaultTheme;
-        statusBarEntry.Theme.Colours[0] = panelColour;
-        theme.SetEntry(&statusBarEntry);
-
-        const auto* newsTickerDesc = GetWindowThemeDescriptor(WindowClass::newsTicker);
-        UIThemeWindowEntry newsTickerEntry{};
-        newsTickerEntry.Class = newsTickerDesc->WindowClass;
-        newsTickerEntry.Theme = newsTickerDesc->windowColours.defaultTheme;
-        newsTickerEntry.Theme.Colours[0] = messageBackgroundColour;
-        newsTickerEntry.Theme.Colours[1] = newsTickerButtonsColour;
-        theme.SetEntry(&newsTickerEntry);
     }
 
     UITheme* UITheme::FromJson(json_t& jsonObj)
@@ -536,7 +490,7 @@ namespace OpenRCT2::Ui
                     { "useLightsRide", UITHEME_FLAG_USE_LIGHTS_RIDE },
                     { "useLightsPark", UITHEME_FLAG_USE_LIGHTS_PARK },
                     { "useAltScenarioSelectFont", UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT },
-                    { "useFullBottomToolbar", UITHEME_FLAG_USE_GAME_STATUS_BAR },
+                    { "useFullBottomToolbar", UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR },
                     { "use3dImageButtons", UITHEME_FLAG_USE_3D_IMAGE_BUTTONS },
                 });
 
@@ -546,23 +500,14 @@ namespace OpenRCT2::Ui
                 {
                     if (jsonValue.is_object())
                     {
-                        const utf8* windowClassName = jsonKey.data();
-                        // May occur in older themes created before the bottom toolbar split
-                        if (strcmp(windowClassName, "WC_BOTTOM_TOOLBAR") == 0)
+                        const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(jsonKey.data());
+                        if (wtDesc == nullptr)
                         {
-                            importOldBottomToolbar(*result, jsonValue, version);
+                            continue;
                         }
-                        else
-                        {
-                            const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(windowClassName);
-                            if (wtDesc == nullptr)
-                            {
-                                continue;
-                            }
 
-                            UIThemeWindowEntry entry = UIThemeWindowEntry::FromJson(wtDesc, jsonValue, version);
-                            result->SetEntry(&entry);
-                        }
+                        UIThemeWindowEntry entry = UIThemeWindowEntry::FromJson(wtDesc, jsonValue, version);
+                        result->SetEntry(&entry);
                     }
                 }
             }
@@ -638,18 +583,18 @@ namespace OpenRCT2::Ui
             }
 
             auto themesPattern = Path::Combine(GetThemePath(), u8"*.json");
-            auto scanner = Path::scanDirectory(themesPattern, true);
-            while (scanner->next())
+            auto scanner = Path::ScanDirectory(themesPattern, true);
+            while (scanner->Next())
             {
-                const auto& fileInfo = scanner->getFileInfo();
-                auto name = Path::GetFileNameWithoutExtension(fileInfo.name);
+                const auto& fileInfo = scanner->GetFileInfo();
+                auto name = Path::GetFileNameWithoutExtension(fileInfo.Name);
 
                 AvailableTheme theme{};
                 theme.Name = name;
                 theme.Path = GetThemeFileName(name);
                 outThemes->push_back(std::move(theme));
 
-                if (Path::Equals(CurrentThemePath, scanner->getPath()))
+                if (Path::Equals(CurrentThemePath, scanner->GetPath()))
                 {
                     ActiveAvailableThemeIndex = outThemes->size() - 1;
                 }
@@ -674,7 +619,7 @@ namespace OpenRCT2::Ui
             CurrentTheme = theme;
             CurrentThemePath.clear();
 
-            Drawing::GfxInvalidateScreen();
+            GfxInvalidateScreen();
         }
 
         static void LoadTheme(const std::string& path)

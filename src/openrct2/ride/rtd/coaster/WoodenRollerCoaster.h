@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kWoodenRollerCoasterRTD =
+constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = TrackElemType::endStation,
@@ -31,13 +30,13 @@ constexpr RideTypeDescriptor kWoodenRollerCoasterRTD =
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 7, 27 },
     .BoosterSettings = { 0, 68 },
     .LegacyBoosterSettings = { 0, 68 },
     .Naming = { STR_RIDE_NAME_WOODEN_ROLLER_COASTER, STR_RIDE_DESCRIPTION_WOODEN_ROLLER_COASTER },
-    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction, Breakdown::brakesFailure },
     .Heights = { 41, 24, 8, 11, },
     .MaxMass = 19,
@@ -60,35 +59,35 @@ constexpr RideTypeDescriptor kWoodenRollerCoasterRTD =
         { Drawing::Colour::sepia, Drawing::Colour::umber, Drawing::Colour::grey }, // The Voyage /* Change supports to "minetrain" if possible in the future. */
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "wooden_rc",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(3, 20), RideRating::make(2, 60), RideRating::make(2, 00) },
         19,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           6000,             873, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
-            { RatingsModifierType::bonusTrainLength,      0,                187245, 0, 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,                44281, 88562, 35424 },
-            { RatingsModifierType::bonusAverageSpeed,     0,                364088, 655360, 0 },
-            { RatingsModifierType::bonusDuration,         150,              26214, 0, 0 },
-            { RatingsModifierType::bonusGForces,          0,                40960, 34555, 49648 },
-            { RatingsModifierType::bonusTurns,            0,                26749, 43458, 45749 },
-            { RatingsModifierType::bonusDrops,            0,                40777, 46811, 49152 },
-            { RatingsModifierType::bonusSheltered,        0,                16705, 30583, 35108 },
-            { RatingsModifierType::bonusReversedTrains,   0,                2, 10, 15 },
-            { RatingsModifierType::bonusProximity,        0,                22367, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,                11155, 0, 0 },
-            { RatingsModifierType::requirementDropHeight, 12,               2, 2, 2 },
-            { RatingsModifierType::requirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::requirementNegativeGs, MakeFixed16_2dp(0, 10), 2, 2, 2 },
-            { RatingsModifierType::requirementLength,     0x1720000,        2, 2, 2 },
-            { RatingsModifierType::requirementNumDrops,   2,                2, 2, 2 },
-            { RatingsModifierType::penaltyLateralGs,      0,                40960, 34555, 49648 },
+            { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
+            { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
+            { RatingsModifierType::BonusAverageSpeed,     0,                364088, 655360, 0 },
+            { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
+            { RatingsModifierType::BonusGForces,          0,                40960, 34555, 49648 },
+            { RatingsModifierType::BonusTurns,            0,                26749, 43458, 45749 },
+            { RatingsModifierType::BonusDrops,            0,                40777, 46811, 49152 },
+            { RatingsModifierType::BonusSheltered,        0,                16705, 30583, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 10, 15 },
+            { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },
+            { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 10), 2, 2, 2 },
+            { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
+            { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
+            { RatingsModifierType::PenaltyLateralGs,      0,                40960, 34555, 49648 },
         },
     },
 };

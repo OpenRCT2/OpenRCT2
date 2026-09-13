@@ -12,10 +12,10 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
-#include "../world/tile_element/EntranceElement.h"
+#include "../paint/tile_element/Paint.TileElement.h"
 
 namespace OpenRCT2
 {
@@ -68,11 +68,11 @@ namespace OpenRCT2
         PopulateTablesFromJson(context, root);
     }
 
-    ImageIndex EntranceObject::GetImage(ParkEntranceSequence sequence, Direction direction) const
+    ImageIndex EntranceObject::GetImage(uint8_t sequence, Direction direction) const
     {
-        if (EnumValue(sequence) > 2)
+        if (sequence > 2)
             return kImageIndexUndefined;
-        return _legacyType.image_id + ((direction & 3) * 3) + EnumValue(sequence);
+        return _legacyType.image_id + ((direction & 3) * 3) + sequence;
     }
 
     uint8_t EntranceObject::GetScrollingMode() const

@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class BannerRemoveAction final : public GameActionBase<GameCommand::removeBanner>
+    class BannerRemoveAction final : public GameActionBase<GameCommand::RemoveBanner>
     {
     private:
         CoordsXYZD _loc;

@@ -14,7 +14,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class BalloonPressAction final : public GameActionBase<GameCommand::balloonPress>
+    class BalloonPressAction final : public GameActionBase<GameCommand::BalloonPress>
     {
         EntityId _spriteIndex{ EntityId::GetNull() };
 

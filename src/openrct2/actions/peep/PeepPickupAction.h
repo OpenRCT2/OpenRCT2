@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
         count
     };
 
-    class PeepPickupAction final : public GameActionBase<GameCommand::pickupGuest>
+    class PeepPickupAction final : public GameActionBase<GameCommand::PickupGuest>
     {
     private:
         PeepPickupType _type{ PeepPickupType::count };

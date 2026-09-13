@@ -22,6 +22,8 @@
 #include "FileStream.h"
 #include "String.hpp"
 
+#include <fstream>
+
 namespace OpenRCT2::File
 {
     bool Exists(u8string_view path)

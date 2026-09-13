@@ -11,12 +11,11 @@
 
 #ifdef ENABLE_SCRIPTING
 
+    #include "../../../entity/Particle.h"
+    #include "../../../world/Location.hpp"
     #include "ScEntity.hpp"
 
-namespace OpenRCT2
-{
-    struct VehicleCrashParticle;
-}
+    #include <optional>
 
 namespace OpenRCT2::Scripting
 {

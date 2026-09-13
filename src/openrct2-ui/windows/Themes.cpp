@@ -11,16 +11,15 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
+#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/ColourMap.h>
-#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
@@ -33,7 +32,7 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum : uint8_t
+    enum
     {
         WINDOW_THEMES_TAB_SETTINGS,
         WINDOW_THEMES_TAB_MAIN_UI,
@@ -110,28 +109,60 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, 54}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
         makeWidget({ 10, 69}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
         makeWidget({ 10, 84}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
-        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_GAME_STATUS_BAR                                        ), // rct1 bottom toolbar
+        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         ), // rct1 bottom toolbar
         makeWidget({ 10,114}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_USE_3D_IMAGE_BUTTONS                                        )  // use 3D image buttons
     );
     // clang-format on
 
 #pragma region Tabs
 
-    static constexpr std::array kThemesTabMainClasses = std::to_array<WindowClass>({
+    // clang-format off
+    static int32_t window_themes_tab_animation_loops[] = {
+        32,
+        32,
+        1,
+        1,
+        64,
+        32,
+        8,
+        14,
+        38,
+    };
+    static int32_t window_themes_tab_animation_divisor[] = {
+        4,
+        4,
+        1,
+        1,
+        4,
+        2,
+        2,
+        2,
+        2,
+    };
+    static int32_t window_themes_tab_sprites[] = {
+        SPR_TAB_PAINT_0,
+        SPR_TAB_KIOSKS_AND_FACILITIES_0,
+        SPR_TAB_PARK_ENTRANCE,
+        SPR_G2_TAB_LAND,
+        SPR_TAB_RIDE_0,
+        SPR_TAB_WRENCH_0,
+        SPR_TAB_GEARS_0,
+        SPR_TAB_STAFF_OPTIONS_0,
+        SPR_TAB_FINANCES_MARKETING_0,
+    };
+
+    static WindowClass window_themes_tab_1_classes[] = {
         WindowClass::topToolbar,
-        WindowClass::gameStatusBar,
-        WindowClass::newsTicker,
-        WindowClass::parkInfoPanel,
-        WindowClass::dateInfoPanel,
-        WindowClass::editorStepControlScenario,
-        WindowClass::editorStepControlTrack,
+        WindowClass::bottomToolbar,
+        WindowClass::editorScenarioBottomToolbar,
+        WindowClass::editorTrackBottomToolbar,
         WindowClass::titleMenu,
         WindowClass::titleExit,
         WindowClass::titleOptions,
         WindowClass::scenarioSelect,
-    });
+    };
 
-    static constexpr std::array kThemesTabParkClasses = std::to_array<WindowClass>({
+    static WindowClass window_themes_tab_2_classes[] = {
         WindowClass::parkInformation,
         WindowClass::editorParkEntrance,
         WindowClass::finances,
@@ -140,9 +171,9 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::map,
         WindowClass::viewport,
         WindowClass::recentNews,
-    });
+    };
 
-    static constexpr std::array kThemesTabToolsClasses = std::to_array<WindowClass>({
+    static WindowClass window_themes_tab_3_classes[] = {
         WindowClass::land,
         WindowClass::water,
         WindowClass::clearScenery,
@@ -155,9 +186,9 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::constructRide,
         WindowClass::trackDesignList,
         WindowClass::patrolArea,
-    });
+    };
 
-    static constexpr std::array kThemesTabRidesGuestsClasses = std::to_array<WindowClass>({
+    static WindowClass window_themes_tab_4_classes[] = {
         WindowClass::ride,
         WindowClass::rideList,
         WindowClass::peep,
@@ -165,18 +196,18 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::staff,
         WindowClass::staffList,
         WindowClass::banner,
-    });
+    };
 
-    static constexpr std::array kThemesTabEditorsClasses = std::to_array<WindowClass>({
+    static WindowClass window_themes_tab_5_classes[] = {
         WindowClass::editorObjectSelection,
         WindowClass::editorInventionList,
         WindowClass::editorScenarioOptions,
         WindowClass::mapgen,
         WindowClass::manageTrackDesign,
         WindowClass::installTrack,
-    });
+    };
 
-    static constexpr std::array kThemesTabMiscClasses = std::to_array<WindowClass>({
+    static WindowClass window_themes_tab_6_classes[] = {
         WindowClass::cheats,
         WindowClass::tileInspector,
         WindowClass::viewClipping,
@@ -194,9 +225,9 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::player,
         WindowClass::chat,
         WindowClass::console,
-    });
+    };
 
-    static constexpr std::array kThemesTabPromptsClasses = std::to_array<WindowClass>({
+    static WindowClass window_themes_tab_7_classes[] = {
         WindowClass::error,
         WindowClass::savePrompt,
         WindowClass::demolishRidePrompt,
@@ -205,30 +236,18 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::loadsaveOverwritePrompt,
         WindowClass::progressWindow,
         WindowClass::networkStatus,
-    });
-
-    struct ThemeTabInfo
-    {
-        uint8_t tabId;
-        WidgetIndex tabWidgetIndex;
-        int32_t baseImageId;
-        int32_t numAnimationFrames;
-        int32_t animationDivisor;
-        std::span<const WindowClass> windowClasses;
     };
 
-    // clang-format off
-    static constexpr std::array kThemeTabInfo = std::to_array<ThemeTabInfo>({
-        { WINDOW_THEMES_TAB_SETTINGS,     WIDX_THEMES_SETTINGS_TAB,    SPR_TAB_PAINT_0,                  32,  4,  {}                           },
-        { WINDOW_THEMES_TAB_MAIN_UI,      WIDX_THEMES_MAIN_UI_TAB,     SPR_TAB_KIOSKS_AND_FACILITIES_0,  32,  4,  kThemesTabMainClasses        },
-        { WINDOW_THEMES_TAB_PARK,         WIDX_THEMES_PARK_TAB,        SPR_TAB_PARK_ENTRANCE,            1,   1,  kThemesTabParkClasses        },
-        { WINDOW_THEMES_TAB_TOOLS,        WIDX_THEMES_TOOLS_TAB,       SPR_G2_TAB_LAND,                  1,   1,  kThemesTabToolsClasses       },
-        { WINDOW_THEMES_TAB_RIDES_PEEPS,  WIDX_THEMES_RIDE_PEEPS_TAB,  SPR_TAB_RIDE_0,                   64,  4,  kThemesTabRidesGuestsClasses },
-        { WINDOW_THEMES_TAB_EDITORS,      WIDX_THEMES_EDITORS_TAB,     SPR_TAB_WRENCH_0,                 32,  2,  kThemesTabEditorsClasses     },
-        { WINDOW_THEMES_TAB_MISC,         WIDX_THEMES_MISC_TAB,        SPR_TAB_GEARS_0,                  8,   2,  kThemesTabMiscClasses        },
-        { WINDOW_THEMES_TAB_PROMPTS,      WIDX_THEMES_PROMPTS_TAB,     SPR_TAB_STAFF_OPTIONS_0,          14,  2,  kThemesTabPromptsClasses     },
-        { WINDOW_THEMES_TAB_FEATURES,     WIDX_THEMES_FEATURES_TAB,    SPR_TAB_FINANCES_MARKETING_0,     38,  2,  {}                           },
-    });
+    static WindowClass* window_themes_tab_classes[] = {
+        nullptr,
+        window_themes_tab_1_classes,
+        window_themes_tab_2_classes,
+        window_themes_tab_3_classes,
+        window_themes_tab_4_classes,
+        window_themes_tab_5_classes,
+        window_themes_tab_6_classes,
+        window_themes_tab_7_classes,
+    };
     // clang-format on
 
 #pragma endregion
@@ -294,7 +313,7 @@ namespace OpenRCT2::Ui::Windows
         void onUpdate() override
         {
             currentFrame++;
-            if (currentFrame >= kThemeTabInfo[_selectedTab].numAnimationFrames)
+            if (currentFrame >= window_themes_tab_animation_loops[_selectedTab])
                 currentFrame = 0;
 
             invalidateWidget(WIDX_THEMES_SETTINGS_TAB + _selectedTab);
@@ -312,37 +331,66 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_THEMES_LIST].right = width - 4;
             widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
 
-            const bool isSettings = _selectedTab == WINDOW_THEMES_TAB_SETTINGS;
-            const bool isFeatures = _selectedTab == WINDOW_THEMES_TAB_FEATURES;
-            const bool isOther = !(isSettings || isFeatures);
-
-            widgets[WIDX_THEMES_HEADER_WINDOW].setVisible(isOther);
-            widgets[WIDX_THEMES_HEADER_PALETTE].setVisible(isOther);
-            widgets[WIDX_THEMES_HEADER_TRANSPARENCY].setVisible(isOther);
-            widgets[WIDX_THEMES_LIST].setVisible(isOther);
-
-            widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].setVisible(isFeatures);
-            widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].setVisible(isFeatures);
-            widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].setVisible(isFeatures);
-            widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].setVisible(isFeatures);
-            widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].setVisible(isFeatures);
-
-            widgets[WIDX_THEMES_DUPLICATE_BUTTON].setVisible(isSettings);
-            widgets[WIDX_THEMES_DELETE_BUTTON].setVisible(isSettings);
-            widgets[WIDX_THEMES_RENAME_BUTTON].setVisible(isSettings);
-            widgets[WIDX_THEMES_PRESETS].setVisible(isSettings);
-            widgets[WIDX_THEMES_PRESETS_DROPDOWN].setVisible(isSettings);
-
-            widgets[WIDX_THEMES_COLOURBTN_MASK].setHidden();
-
-            if (isFeatures)
+            if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS)
             {
+                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::empty;
+                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::empty;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::empty;
+                widgets[WIDX_THEMES_LIST].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::button;
+                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::button;
+                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::button;
+                widgets[WIDX_THEMES_PRESETS].type = WidgetType::dropdownMenu;
+                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::button;
+                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
+            }
+            else if (_selectedTab == WINDOW_THEMES_TAB_FEATURES)
+            {
+                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::empty;
+                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::empty;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::empty;
+                widgets[WIDX_THEMES_LIST].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_PRESETS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
+                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
+
                 setCheckboxValue(WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
                 setCheckboxValue(WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
                 setCheckboxValue(
                     WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
-                setCheckboxValue(WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR);
+                setCheckboxValue(WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
                 setCheckboxValue(WIDX_THEMES_USE_3D_IMAGE_BUTTONS, ThemeGetFlags() & UITHEME_FLAG_USE_3D_IMAGE_BUTTONS);
+            }
+            else
+            {
+                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::tableHeader;
+                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::tableHeader;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::tableHeader;
+                widgets[WIDX_THEMES_LIST].type = WidgetType::scroll;
+                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
+                widgets[WIDX_THEMES_USE_3D_IMAGE_BUTTONS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_PRESETS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
+                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
             }
         }
 
@@ -410,8 +458,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, {},
-                        num_items, widget->width() - 4);
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
+                        Dropdown::Flag::StayOpen, num_items, widget->width() - 4);
 
                     gDropdown.items[static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex())].setChecked(true);
                     break;
@@ -460,17 +508,9 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_GAME_STATUS_BAR));
+                        ThemeSetFlags(ThemeGetFlags() ^ static_cast<uint8_t>(UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
                         ThemeSave();
-
-                        if (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR)
-                        {
-                            windowMgr->OpenWindow(WindowClass::gameStatusBar);
-                        }
-                        else
-                        {
-                            windowMgr->CloseByClass(WindowClass::gameStatusBar);
-                        }
+                        windowMgr->InvalidateAll();
                     }
                     break;
                 case WIDX_THEMES_USE_3D_IMAGE_BUTTONS:
@@ -642,13 +682,14 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            auto& colourButton = widgets[WIDX_THEMES_COLOURBTN_MASK];
-                            colourButton.setVisible();
-                            colourButton.left = _button_offset_x + widgets[WIDX_THEMES_LIST].left + _button_size;
-                            colourButton.top = GetTotalColoursUpTo(_classIndex) * (_button_size + 2) - _button_offset_y - 4
-                                + _button_size * _buttonIndex - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
-                            colourButton.right = colourButton.left + 12;
-                            colourButton.bottom = colourButton.top + 12;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::colourBtn;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + widgets[WIDX_THEMES_LIST].left
+                                + _button_size;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].top = GetTotalColoursUpTo(_classIndex) * (_button_size + 2)
+                                - _button_offset_y - 4 + _button_size * _buttonIndex - scrolls[0].contentOffsetY
+                                + widgets[WIDX_THEMES_LIST].top;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
 
                             auto colour = ThemeGetColour(wc, _buttonIndex);
                             WindowDropdownShowColour(
@@ -784,7 +825,7 @@ namespace OpenRCT2::Ui::Windows
 
         WindowClass GetWindowClassTabIndex(int32_t index)
         {
-            auto classes = kThemeTabInfo[_selectedTab].windowClasses;
+            WindowClass* classes = window_themes_tab_classes[_selectedTab];
             return classes[index];
         }
 
@@ -849,20 +890,38 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t GetColourSchemeTabCount()
         {
-            auto& tabInfo = kThemeTabInfo[_selectedTab];
-            return static_cast<int32_t>(tabInfo.windowClasses.size());
+            switch (_selectedTab)
+            {
+                case 1:
+                    return sizeof(window_themes_tab_1_classes);
+                case 2:
+                    return sizeof(window_themes_tab_2_classes);
+                case 3:
+                    return sizeof(window_themes_tab_3_classes);
+                case 4:
+                    return sizeof(window_themes_tab_4_classes);
+                case 5:
+                    return sizeof(window_themes_tab_5_classes);
+                case 6:
+                    return sizeof(window_themes_tab_6_classes);
+                case 7:
+                    return sizeof(window_themes_tab_7_classes);
+            }
+            return 0;
         }
 
         void WindowThemesDrawTabImages(RenderTarget& rt)
         {
-            for (auto& tabInfo : kThemeTabInfo)
+            for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
             {
-                int32_t sprite_idx = tabInfo.baseImageId;
-                if (_selectedTab == tabInfo.tabId)
-                    sprite_idx += currentFrame / tabInfo.animationDivisor;
-
-                auto& widget = widgets[tabInfo.tabWidgetIndex];
-                GfxDrawSprite(rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widget.left, widget.top });
+                int32_t sprite_idx = window_themes_tab_sprites[i];
+                if (_selectedTab == i)
+                    sprite_idx += currentFrame / window_themes_tab_animation_divisor[_selectedTab];
+                GfxDrawSprite(
+                    rt, ImageId(sprite_idx),
+                    windowPos
+                        + ScreenCoordsXY{ widgets[WIDX_THEMES_SETTINGS_TAB + i].left,
+                                          widgets[WIDX_THEMES_SETTINGS_TAB + i].top });
             }
         }
     };

@@ -10,6 +10,7 @@
 #include "TitleSequence.h"
 
 #include "../../Diagnostic.h"
+#include "../../core/Collections.hpp"
 #include "../../core/Console.hpp"
 #include "../../core/File.h"
 #include "../../core/FileScanner.h"
@@ -20,6 +21,8 @@
 #include "../../core/String.hpp"
 #include "../../core/StringBuilder.h"
 #include "../../core/Zip.h"
+#include "../../scenario/ScenarioRepository.h"
+#include "../../scenario/ScenarioSources.h"
 
 #include <algorithm>
 #include <array>
@@ -299,10 +302,10 @@ namespace OpenRCT2::Title
         std::vector<std::string> saves;
 
         auto pattern = Path::Combine(path, u8"*.sc6;*.sv6;*.park;*.sv4;*.sc4");
-        auto scanner = Path::scanDirectory(pattern, true);
-        while (scanner->next())
+        auto scanner = Path::ScanDirectory(pattern, true);
+        while (scanner->Next())
         {
-            saves.push_back(scanner->getPathRelative());
+            saves.push_back(scanner->GetPathRelative());
         }
         return saves;
     }

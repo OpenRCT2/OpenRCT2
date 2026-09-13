@@ -49,6 +49,7 @@ namespace OpenRCT2
         ImageIndex previewImage{};
         uint8_t flags{};
     };
+    constexpr PathSurfaceDescriptor kPathSurfaceDescriptorDummy{};
 
     struct PathRailingsDescriptor
     {
@@ -61,6 +62,7 @@ namespace OpenRCT2
         uint8_t flags{};
         uint8_t scrollingMode = kScrollingModeNone;
     };
+    constexpr PathRailingsDescriptor kPathRailingsDescriptorDummy{};
 
     using PathConstructFlags = uint8_t;
     namespace PathConstructFlag

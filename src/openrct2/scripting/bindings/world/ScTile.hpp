@@ -13,10 +13,11 @@
 
     #include "ScTileElement.hpp"
 
-namespace OpenRCT2
-{
-    struct TileElement;
-}
+    #include <cstdio>
+    #include <cstring>
+    #include <memory>
+    #include <utility>
+    #include <vector>
 
 namespace OpenRCT2::Scripting
 {

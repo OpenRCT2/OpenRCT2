@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../actions/GameAction.hpp"
+#include "../actions/GameCommand.h"
 #include "../core/Money.hpp"
 #include "../world/Location.hpp"
 

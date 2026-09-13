@@ -14,6 +14,8 @@
 #include "InvalidationGrid.h"
 #include "RenderTarget.h"
 
+#include <memory>
+
 namespace OpenRCT2
 {
     namespace Ui
@@ -23,6 +25,7 @@ namespace OpenRCT2
 
     namespace Drawing
     {
+        struct TextDrawInfo;
         class X8DrawingContext;
 
         class X8WeatherDrawer final : public IWeatherDrawer

@@ -12,6 +12,7 @@
 #include "EntityBase.h"
 
 struct CoordsXY;
+struct PaintSession;
 
 namespace OpenRCT2
 {
@@ -19,34 +20,34 @@ namespace OpenRCT2
 
     struct Duck : EntityBase
     {
-        static constexpr auto kEntityType = EntityType::duck;
+        static constexpr auto cEntityType = EntityType::duck;
         enum class DuckState : uint8_t
         {
-            flyToWater,
-            swim,
-            drink,
-            doubleDrink,
-            flyAway,
+            FlyToWater,
+            Swim,
+            Drink,
+            DoubleDrink,
+            FlyAway,
         };
         uint16_t frame;
-        int16_t targetX;
-        int16_t targetY;
+        int16_t target_x;
+        int16_t target_y;
         DuckState state;
 
-        static void create(const CoordsXY& pos);
-        static void removeAll();
-        void press();
-        void update();
-        uint32_t getFrameImage(int32_t direction) const;
-        bool isFlying();
-        void remove();
+        static void Create(const CoordsXY& pos);
+        static void RemoveAll();
+        void Press();
+        void Update();
+        uint32_t GetFrameImage(int32_t direction) const;
+        bool IsFlying();
+        void Remove();
         void serialise(DataSerialiser& stream);
 
     private:
-        void updateFlyToWater();
-        void updateSwim();
-        void updateDrink();
-        void updateDoubleDrink();
-        void updateFlyAway();
+        void UpdateFlyToWater();
+        void UpdateSwim();
+        void UpdateDrink();
+        void UpdateDoubleDrink();
+        void UpdateFlyAway();
     };
 } // namespace OpenRCT2

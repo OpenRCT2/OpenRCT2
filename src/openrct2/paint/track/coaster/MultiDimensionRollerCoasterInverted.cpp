@@ -9,12 +9,11 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/ted/TrackElemType.h"
 #include "../../track/Segment.h"
 
 namespace OpenRCT2::MultiDimensionRCInverted
 {
-    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
+    static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 
     static constexpr ImageIndex MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN = 26551;
     static constexpr ImageIndex MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 26552;
@@ -71,7 +70,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
@@ -130,11 +129,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
@@ -168,11 +167,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -234,11 +233,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
@@ -278,11 +277,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
         }
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -350,11 +349,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
@@ -414,11 +413,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
@@ -509,7 +508,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -659,10 +658,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -721,7 +720,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
@@ -767,7 +766,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
@@ -813,7 +812,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
@@ -859,7 +858,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
@@ -907,7 +906,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -1052,10 +1051,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1133,11 +1132,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
@@ -1203,11 +1202,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
@@ -1273,11 +1272,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
@@ -1343,11 +1342,11 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
         if (direction == 0 || direction == 3)
         {
-            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+            PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
         }
         else
         {
-            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+            PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
         }
         PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
@@ -1422,7 +1421,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
@@ -1475,7 +1474,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -1613,10 +1612,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1666,7 +1665,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -1781,10 +1780,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1836,7 +1835,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -1914,10 +1913,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1978,7 +1977,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -2056,10 +2055,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 2:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 3:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2104,7 +2103,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
@@ -2235,7 +2234,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(
-                        session, direction, height - 8, TunnelGroup::inverted, TunnelSubType::slopeStart);
+                        session, direction, height - 8, TunnelGroup::Inverted, TunnelSubType::SlopeStart);
                 }
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
@@ -2284,10 +2283,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (direction)
         {
             case 1:
-                PaintUtilPushTunnelRight(session, height + 48, TunnelGroup::inverted, TunnelSubType::slopeEnd);
+                PaintUtilPushTunnelRight(session, height + 48, TunnelGroup::Inverted, TunnelSubType::SlopeEnd);
                 break;
             case 2:
-                PaintUtilPushTunnelLeft(session, height + 48, TunnelGroup::inverted, TunnelSubType::slopeEnd);
+                PaintUtilPushTunnelLeft(session, height + 48, TunnelGroup::Inverted, TunnelSubType::SlopeEnd);
                 break;
         }
         PaintUtilSetSegmentSupportHeight(
@@ -2327,7 +2326,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 48, TunnelGroup::inverted, TunnelSubType::slopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction, height + 48, TunnelGroup::Inverted, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2376,7 +2375,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -2554,7 +2553,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -2756,7 +2755,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -2939,7 +2938,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -3105,7 +3104,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3137,7 +3136,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3168,7 +3167,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3200,7 +3199,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3262,7 +3261,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3294,7 +3293,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3325,7 +3324,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3357,7 +3356,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3521,7 +3520,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3553,7 +3552,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3584,7 +3583,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3616,7 +3615,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3882,7 +3881,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         switch (trackSequence)
         {
             case 0:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3914,7 +3913,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3945,7 +3944,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -3977,7 +3976,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
-                if (trackElement.hasChain())
+                if (trackElement.HasChain())
                 {
                     switch (direction)
                     {
@@ -6101,7 +6100,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -6161,10 +6160,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6220,7 +6219,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
 
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
@@ -6279,10 +6278,10 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 switch (direction)
                 {
                     case 1:
-                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                     case 2:
-                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -6302,7 +6301,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
         const TrackElement& trackElement, const SupportType supportType)
     {
-        const bool isClosed = trackElement.isBrakeClosed();
+        const bool isClosed = trackElement.IsBrakeClosed();
         static constexpr uint32_t imageIds[kNumOrthogonalDirections][2] = {
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
@@ -6322,7 +6321,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 session, supportType.metal, MetalSupportPlace::centre, 0, height + 36, session.SupportColours);
         }
 
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
@@ -6358,7 +6357,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -6513,7 +6512,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -6546,7 +6545,7 @@ namespace OpenRCT2::MultiDimensionRCInverted
         const TrackElement& trackElement, const SupportType supportType)
     {
         TrackPaintUtilDiagTilesPaint(
-            session, -3, height + 24, direction, trackSequence, kMultidimDiagBlockBrakeImages[trackElement.isBrakeClosed()],
+            session, -3, height + 24, direction, trackSequence, kMultidimDiagBlockBrakeImages[trackElement.IsBrakeClosed()],
             defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
         const uint16_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];

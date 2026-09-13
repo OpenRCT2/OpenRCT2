@@ -9,7 +9,7 @@
 
 #include "../../ride/Vehicle.h"
 
-#include "../../ride/CarEntry.h"
+#include "../../ride/Ride.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 
@@ -22,18 +22,18 @@ namespace OpenRCT2
         uint32_t result = imageDirection;
         if (vehicle->restraints_position >= 64)
         {
-            if ((carEntry->groupEnabled(SpriteGroupType::restraintAnimation)) && !(imageDirection & 3))
+            if ((carEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)) && !(imageDirection & 3))
             {
                 auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
-                result = (carEntry->spriteByYaw(imageDirection, SpriteGroupType::restraintAnimation) + restraintFrame)
-                        * carEntry->baseNumFrames
-                    + carEntry->groupImageId(SpriteGroupType::restraintAnimation);
+                result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
+                        * carEntry->base_num_frames
+                    + carEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
             }
         }
         else
         {
-            result = (carEntry->spriteByYaw(imageDirection, SpriteGroupType::slopeFlat) * carEntry->baseNumFrames)
-                + carEntry->groupImageId(SpriteGroupType::slopeFlat) + vehicle->SwingSprite;
+            result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::SlopeFlat) * carEntry->base_num_frames)
+                + carEntry->GroupImageId(SpriteGroupType::SlopeFlat) + vehicle->SwingSprite;
         }
         return result;
     }
@@ -55,13 +55,13 @@ namespace OpenRCT2
             imageId1 = ImageId(baseImageId + 1).WithRemap(Drawing::FilterPaletteID::paletteGhost);
         }
 
-        const auto& bb = VehicleBoundboxes[carEntry->drawOrder][Entity::Yaw::YawTo16(imageDirection)];
+        const auto& bb = VehicleBoundboxes[carEntry->draw_order][Entity::Yaw::YawTo16(imageDirection)];
         PaintAddImageAsParent(
             session, imageId0, { 0, 0, z },
             { { bb.offset_x, bb.offset_y, bb.offset_z + z }, { bb.length_x, bb.length_y, bb.length_z } });
         PaintAddImageAsParent(
             session, imageId1, { 0, 0, z },
             { { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 }, { bb.length_x, bb.length_y, 2 } });
-        assert(carEntry->effectVisual == EffectVisual::unknown1);
+        assert(carEntry->effect_visual == 1);
     }
 } // namespace OpenRCT2

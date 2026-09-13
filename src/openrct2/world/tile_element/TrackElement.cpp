@@ -9,19 +9,27 @@
 
 #include "TrackElement.h"
 
+#include "../../GameState.h"
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 
 namespace OpenRCT2
 {
-    bool TrackElement::hasChain() const
+    bool TrackElement::HasChain() const
     {
-        return flags2.has(TrackTileElementFlag::hasChainLift);
+        return Flags2 & TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
     }
 
-    void TrackElement::setHasChain(bool on)
+    void TrackElement::SetHasChain(bool on)
     {
-        flags2.set(TrackTileElementFlag::hasChainLift, on);
+        if (on)
+        {
+            Flags2 |= TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
+        }
+        else
+        {
+            Flags2 &= ~TRACK_ELEMENT_FLAGS2_CHAIN_LIFT;
+        }
     }
 
     /**
@@ -29,9 +37,9 @@ namespace OpenRCT2
      * A beginning of a block can be the end of a station, the end of a lift hill,
      * or a block brake.
      */
-    bool TrackElement::isBlockStart() const
+    bool TrackElement::IsBlockStart() const
     {
-        switch (getTrackType())
+        switch (GetTrackType())
         {
             case TrackElemType::endStation:
             case TrackElemType::cableLiftHill:
@@ -42,227 +50,256 @@ namespace OpenRCT2
             case TrackElemType::up60ToFlat:
             case TrackElemType::diagUp25ToFlat:
             case TrackElemType::diagUp60ToFlat:
-                return hasChain();
+                return HasChain();
             default:
                 return false;
         }
     }
 
-    bool TrackElement::isStation() const
+    bool TrackElement::IsStation() const
     {
-        return trackTypeIsStation(getTrackType());
+        return trackTypeIsStation(GetTrackType());
     }
 
-    uint8_t TrackElement::getSeatRotation() const
+    uint8_t TrackElement::GetSeatRotation() const
     {
-        const auto* ride = GetRide(getRideIndex());
+        const auto* ride = GetRide(GetRideIndex());
         if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::hasLandscapeDoors))
             return kDefaultSeatRotation;
 
-        return uRide.colourScheme >> 4;
+        return URide.ColourScheme >> 4;
     }
 
-    void TrackElement::setSeatRotation(uint8_t newSeatRotation)
+    void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
     {
-        uRide.colourScheme &= ~kTrackElementColourSeatRotationMask;
-        uRide.colourScheme |= (newSeatRotation << 4);
+        URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
+        URide.ColourScheme |= (newSeatRotation << 4);
     }
 
-    bool TrackElement::isTakingPhoto() const
+    bool TrackElement::IsTakingPhoto() const
     {
-        return uRide.onridePhotoBits != 0;
+        return URide.OnridePhotoBits != 0;
     }
 
-    void TrackElement::setPhotoTimeout()
+    void TrackElement::SetPhotoTimeout()
     {
-        uRide.onridePhotoBits = 3;
+        URide.OnridePhotoBits = 3;
     }
 
-    void TrackElement::setPhotoTimeout(uint8_t value)
+    void TrackElement::SetPhotoTimeout(uint8_t value)
     {
-        uRide.onridePhotoBits = value;
+        URide.OnridePhotoBits = value;
     }
 
-    uint8_t TrackElement::getPhotoTimeout() const
+    uint8_t TrackElement::GetPhotoTimeout() const
     {
-        return uRide.onridePhotoBits;
+        return URide.OnridePhotoBits;
     }
 
-    void TrackElement::decrementPhotoTimeout()
+    void TrackElement::DecrementPhotoTimeout()
     {
-        uRide.onridePhotoBits = std::max(0, uRide.onridePhotoBits - 1);
+        URide.OnridePhotoBits = std::max(0, URide.OnridePhotoBits - 1);
     }
 
-    uint16_t TrackElement::getMazeEntry() const
+    uint16_t TrackElement::GetMazeEntry() const
     {
-        return uMaze.mazeEntry;
+        return UMaze.MazeEntry;
     }
 
-    void TrackElement::setMazeEntry(uint16_t newMazeEntry)
+    void TrackElement::SetMazeEntry(uint16_t newMazeEntry)
     {
-        uMaze.mazeEntry = newMazeEntry;
+        UMaze.MazeEntry = newMazeEntry;
     }
 
-    void TrackElement::mazeEntryAdd(uint16_t addVal)
+    void TrackElement::MazeEntryAdd(uint16_t addVal)
     {
-        uMaze.mazeEntry |= addVal;
+        UMaze.MazeEntry |= addVal;
     }
 
-    void TrackElement::mazeEntrySubtract(uint16_t subVal)
+    void TrackElement::MazeEntrySubtract(uint16_t subVal)
     {
-        uMaze.mazeEntry &= ~subVal;
+        UMaze.MazeEntry &= ~subVal;
     }
 
-    TrackElemType TrackElement::getTrackType() const
+    TrackElemType TrackElement::GetTrackType() const
     {
-        return trackType;
+        return TrackType;
     }
 
-    void TrackElement::setTrackType(TrackElemType newType)
+    void TrackElement::SetTrackType(TrackElemType newType)
     {
-        trackType = newType;
+        TrackType = newType;
     }
 
-    ride_type_t TrackElement::getRideType() const
+    ride_type_t TrackElement::GetRideType() const
     {
-        return rideType;
+        return RideType;
     }
 
-    void TrackElement::setRideType(const ride_type_t newRideType)
+    void TrackElement::SetRideType(const ride_type_t rideType)
     {
-        rideType = newRideType;
+        RideType = rideType;
     }
 
-    uint8_t TrackElement::getSequenceIndex() const
+    uint8_t TrackElement::GetSequenceIndex() const
     {
-        return uRide.sequence;
+        return URide.Sequence;
     }
 
-    void TrackElement::setSequenceIndex(uint8_t newSequenceIndex)
+    void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
     {
-        uRide.sequence = newSequenceIndex;
+        URide.Sequence = newSequenceIndex;
     }
 
-    StationIndex TrackElement::getStationIndex() const
+    StationIndex TrackElement::GetStationIndex() const
     {
-        return uRide.stationIndex;
+        return URide.stationIndex;
     }
 
-    void TrackElement::setStationIndex(StationIndex newStationIndex)
+    void TrackElement::SetStationIndex(StationIndex newStationIndex)
     {
-        uRide.stationIndex = newStationIndex;
+        URide.stationIndex = newStationIndex;
     }
 
-    uint8_t TrackElement::getDoorAState() const
+    uint8_t TrackElement::GetDoorAState() const
     {
-        return (uRide.colourScheme & kTrackElementColourDoorAMask) >> 2;
+        return (URide.ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_A_MASK) >> 2;
     }
 
-    uint8_t TrackElement::getDoorBState() const
+    uint8_t TrackElement::GetDoorBState() const
     {
-        return (uRide.colourScheme & kTrackElementColourDoorBMask) >> 5;
+        return (URide.ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_B_MASK) >> 5;
     }
 
-    void TrackElement::setDoorAState(uint8_t newState)
+    void TrackElement::SetDoorAState(uint8_t newState)
     {
-        uRide.colourScheme &= ~kTrackElementColourDoorAMask;
-        uRide.colourScheme |= ((newState << 2) & kTrackElementColourDoorAMask);
+        URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_A_MASK;
+        URide.ColourScheme |= ((newState << 2) & TRACK_ELEMENT_COLOUR_DOOR_A_MASK);
     }
 
-    void TrackElement::setDoorBState(uint8_t newState)
+    void TrackElement::SetDoorBState(uint8_t newState)
     {
-        uRide.colourScheme &= ~kTrackElementColourDoorBMask;
-        uRide.colourScheme |= ((newState << 5) & kTrackElementColourDoorBMask);
+        URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_B_MASK;
+        URide.ColourScheme |= ((newState << 5) & TRACK_ELEMENT_COLOUR_DOOR_B_MASK);
     }
 
-    RideId TrackElement::getRideIndex() const
+    RideId TrackElement::GetRideIndex() const
     {
-        return rideIndex;
+        return RideIndex;
     }
 
-    void TrackElement::setRideIndex(RideId newRideIndex)
+    void TrackElement::SetRideIndex(RideId newRideIndex)
     {
-        rideIndex = newRideIndex;
+        RideIndex = newRideIndex;
     }
 
-    uint8_t TrackElement::getColourScheme() const
+    uint8_t TrackElement::GetColourScheme() const
     {
-        return uRide.colourScheme & kTrackElementColourSchemeMask;
+        return URide.ColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK;
     }
 
-    void TrackElement::setColourScheme(RideColourScheme newColourScheme)
+    void TrackElement::SetColourScheme(RideColourScheme newColourScheme)
     {
-        uRide.colourScheme &= ~kTrackElementColourSchemeMask;
-        uRide.colourScheme |= (EnumValue(newColourScheme) & kTrackElementColourSchemeMask);
+        URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_SCHEME_MASK;
+        URide.ColourScheme |= (EnumValue(newColourScheme) & TRACK_ELEMENT_COLOUR_SCHEME_MASK);
     }
 
-    bool TrackElement::hasCableLift() const
+    bool TrackElement::HasCableLift() const
     {
-        return flags2.has(TrackTileElementFlag::isCableLift);
+        return Flags2 & TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
     }
 
-    void TrackElement::setHasCableLift(bool on)
+    void TrackElement::SetHasCableLift(bool on)
     {
-        return flags2.set(TrackTileElementFlag::isCableLift, on);
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
+        if (on)
+            Flags2 |= TRACK_ELEMENT_FLAGS2_CABLE_LIFT;
     }
 
-    bool TrackElement::isInverted() const
+    bool TrackElement::IsInverted() const
     {
-        return flags2.has(TrackTileElementFlag::inverted);
+        return Flags2 & TRACK_ELEMENT_FLAGS2_INVERTED;
     }
 
-    void TrackElement::setInverted(bool inverted)
+    void TrackElement::SetInverted(bool inverted)
     {
-        return flags2.set(TrackTileElementFlag::inverted, inverted);
+        if (inverted)
+        {
+            Flags2 |= TRACK_ELEMENT_FLAGS2_INVERTED;
+        }
+        else
+        {
+            Flags2 &= ~TRACK_ELEMENT_FLAGS2_INVERTED;
+        }
     }
 
-    bool TrackElement::isBrakeClosed() const
+    bool TrackElement::IsBrakeClosed() const
     {
-        return flags2.has(TrackTileElementFlag::brakeClosed);
+        return (Flags2 & TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED) != 0;
     }
 
-    void TrackElement::setBrakeClosed(bool isClosed)
+    void TrackElement::SetBrakeClosed(bool isClosed)
     {
-        return flags2.set(TrackTileElementFlag::brakeClosed, isClosed);
+        if (isClosed)
+        {
+            Flags2 |= TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
+        }
+        else
+        {
+            Flags2 &= ~TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
+        }
     }
 
-    bool TrackElement::isIndestructible() const
+    bool TrackElement::IsIndestructible() const
     {
-        return flags2.has(TrackTileElementFlag::isIndestructible);
+        return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0 && !getGameState().cheats.makeAllDestructible;
     }
 
-    void TrackElement::setIsIndestructible(bool isIndestructible)
+    void TrackElement::SetIsIndestructible(bool isIndestructible)
     {
-        return flags2.set(TrackTileElementFlag::isIndestructible, isIndestructible);
+        if (isIndestructible)
+        {
+            Flags2 |= TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
+        }
+        else
+        {
+            Flags2 &= ~TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
+        }
     }
 
-    uint8_t TrackElement::getBrakeBoosterSpeed() const
+    uint8_t TrackElement::GetBrakeBoosterSpeed() const
     {
-        return uRide.brakeBoosterSpeed << 1;
+        return URide.BrakeBoosterSpeed << 1;
     }
 
-    void TrackElement::setBrakeBoosterSpeed(uint8_t speed)
+    void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
     {
-        uRide.brakeBoosterSpeed = (speed >> 1);
+        URide.BrakeBoosterSpeed = (speed >> 1);
     }
 
-    bool TrackElement::hasGreenLight() const
+    bool TrackElement::HasGreenLight() const
     {
-        return flags2.has(TrackTileElementFlag::hasGreenLight);
+        return (Flags2 & TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT) != 0;
     }
 
-    void TrackElement::setHasGreenLight(bool on)
+    void TrackElement::SetHasGreenLight(bool on)
     {
-        return flags2.set(TrackTileElementFlag::hasGreenLight, on);
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
+        if (on)
+        {
+            Flags2 |= TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
+        }
     }
 
-    bool TrackElement::isHighlighted() const
+    bool TrackElement::IsHighlighted() const
     {
-        return flags2.has(TrackTileElementFlag::highlight);
+        return (Flags2 & TRACK_ELEMENT_FLAGS2_HIGHLIGHT);
     }
 
-    void TrackElement::setHighlight(bool on)
+    void TrackElement::SetHighlight(bool on)
     {
-        return flags2.set(TrackTileElementFlag::highlight, on);
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
+        if (on)
+            Flags2 |= TRACK_ELEMENT_FLAGS2_HIGHLIGHT;
     }
 } // namespace OpenRCT2

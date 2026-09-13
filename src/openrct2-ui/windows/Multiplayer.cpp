@@ -10,18 +10,18 @@
 #include <cassert>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/network/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/network/Network.h>
@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowTextCustomWidth(
                 windowPos + ScreenCoordsXY{ dropdownWidget->left, dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, { Dropdown::Flag::autoClose }, numItems, widget->right - dropdownWidget->left);
+                0, 0, numItems, widget->right - dropdownWidget->left);
 
             for (auto i = 0; i < Network::GetNumGroups(); i++)
             {
@@ -519,7 +519,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
             setWidgetPressed(WIDX_TAB1 + page, true);
 
-            refreshList();
             onResize();
             onPrepareDraw();
             initScrollWidgets();
@@ -612,6 +611,8 @@ namespace OpenRCT2::Ui::Windows
                 {
                     WindowSetResize(*this, { 420, 124 }, { 500, 450 });
 
+                    numListItems = (IsServerPlayerInvisible() ? Network::GetNumVisiblePlayers() : Network::GetNumPlayers());
+
                     widgets[WIDX_HEADER_PING].right = width - 5;
 
                     selectedListItem = -1;
@@ -675,7 +676,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB4);
 
-                    widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].setHidden(Network::GetMode() == Network::Mode::client);
+                    if (Network::GetMode() == Network::Mode::client)
+                    {
+                        widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WidgetType::empty;
+                    }
 
                     setCheckboxValue(WIDX_LOG_CHAT_CHECKBOX, Config::Get().network.logChat);
                     setCheckboxValue(WIDX_LOG_SERVER_ACTIONS_CHECKBOX, Config::Get().network.logServerActions);
@@ -894,14 +898,6 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-
-        void refreshList()
-        {
-            if (page == WINDOW_MULTIPLAYER_PAGE_PLAYERS)
-            {
-                numListItems = (IsServerPlayerInvisible() ? Network::GetNumVisiblePlayers() : Network::GetNumPlayers());
-            }
-        }
     };
 
     WindowBase* MultiplayerOpen()
@@ -917,15 +913,5 @@ namespace OpenRCT2::Ui::Windows
         }
 
         return window;
-    }
-
-    void MultiplayerRefreshList()
-    {
-        auto* windowMgr = GetWindowManager();
-        auto w = static_cast<MultiplayerWindow*>(windowMgr->FindByClass(WindowClass::multiplayer));
-        if (w != nullptr)
-        {
-            w->refreshList();
-        }
     }
 } // namespace OpenRCT2::Ui::Windows

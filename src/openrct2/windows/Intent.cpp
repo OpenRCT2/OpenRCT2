@@ -9,6 +9,8 @@
 
 #include "Intent.h"
 
+#include "../core/Guard.hpp"
+
 #include <ranges>
 #include <utility>
 

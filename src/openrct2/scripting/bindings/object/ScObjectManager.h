@@ -12,6 +12,10 @@
 #ifdef ENABLE_SCRIPTING
 
     #include "../../ScriptEngine.h"
+    #include "ScInstalledObject.hpp"
+    #include "ScObject.hpp"
+
+    #include <memory>
 
 namespace OpenRCT2::Scripting
 {

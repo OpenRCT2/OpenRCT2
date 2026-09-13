@@ -11,7 +11,6 @@
 
 #include "../../Diagnostic.h"
 #include "../../core/Guard.hpp"
-#include "../../drawing/TextColour.h"
 #include "../../management/Finance.h"
 #include "../../object/BannerSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
@@ -19,6 +18,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/Scenery.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/tile_element/BannerElement.h"
 #include "../../world/tile_element/PathElement.h"
@@ -149,9 +149,9 @@ namespace OpenRCT2::GameActions
         Guard::Assert(bannerElement != nullptr);
 
         bannerElement->setClearanceZ(_loc.z + kPathClearance);
-        bannerElement->setPosition(_loc.direction);
-        bannerElement->resetAllowedEdges();
-        bannerElement->setIndex(banner->id);
+        bannerElement->SetPosition(_loc.direction);
+        bannerElement->ResetAllowedEdges();
+        bannerElement->SetIndex(banner->id);
         bannerElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
         MapInvalidateTileFull(_loc);
@@ -168,7 +168,7 @@ namespace OpenRCT2::GameActions
             if (pathElement->getBaseZ() != _loc.z && pathElement->getBaseZ() != _loc.z - kPathHeightStep)
                 continue;
 
-            if (!(pathElement->getEdges() & (1 << _loc.direction)))
+            if (!(pathElement->GetEdges() & (1 << _loc.direction)))
                 continue;
 
             if (pathElement->isGhost() && !GetFlags().has(CommandFlag::ghost))

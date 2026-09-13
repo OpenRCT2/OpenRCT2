@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kTopSpinRTD =
+constexpr RideTypeDescriptor TopSpinRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::flatTrack3x3,
@@ -32,10 +31,10 @@ constexpr RideTypeDescriptor kTopSpinRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::beginners, RideMode::intense, RideMode::berserk },
+    .RideModes = EnumsToFlags(RideMode::beginners, RideMode::intense, RideMode::berserk),
     .DefaultMode = RideMode::beginners,
     .Naming = { STR_RIDE_NAME_TOP_SPIN, STR_RIDE_DESCRIPTION_TOP_SPIN },
-    .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 16, 112, 3, 2, },
     .MaxMass = 255,
@@ -53,18 +52,18 @@ constexpr RideTypeDescriptor kTopSpinRTD =
         { Drawing::Colour::darkGreen, Drawing::Colour::brightRed, Drawing::Colour::brightRed },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_TOP_SPIN_TRACK, 0 },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "top_spin",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::flatRide,
+        RatingsCalculationType::FlatRide,
         { 1, 1, 1 },
         19,
         0,
         false,
         {
-            { RatingsModifierType::bonusTopSpinMode, 0, 0, 0, 0 },
-            { RatingsModifierType::bonusScenery,     0, 11155, 0, 0 },
+            { RatingsModifierType::BonusTopSpinMode, 0, 0, 0, 0 },
+            { RatingsModifierType::BonusScenery,     0, 11155, 0, 0 },
         },
     },
 };

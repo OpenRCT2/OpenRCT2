@@ -14,6 +14,7 @@
     #include "../core/Guard.hpp"
     #include "../core/Json.hpp"
     #include "NetworkAction.h"
+    #include "NetworkTypes.h"
 
 namespace OpenRCT2::Network
 {

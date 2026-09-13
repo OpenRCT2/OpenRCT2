@@ -15,7 +15,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class CustomAction final : public GameActionBase<GameCommand::custom>
+    class CustomAction final : public GameActionBase<GameCommand::Custom>
     {
     private:
         std::string _id;

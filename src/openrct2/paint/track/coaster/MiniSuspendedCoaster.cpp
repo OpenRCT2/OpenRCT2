@@ -7,8 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
+#include "../../../drawing/Drawing.h"
+#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
@@ -19,7 +21,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
 
 static constexpr ImageIndex kMiniSuspendedRCFlatImages[2][kNumOrthogonalDirections] = {
     { 28491, 28492, 28493, 28494 },
@@ -31,7 +33,7 @@ static void MiniSuspendedRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.hasChain())
+    if (trackElement.HasChain())
     {
         switch (direction)
         {
@@ -71,7 +73,7 @@ static void MiniSuspendedRCTrackFlat(
             session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 30, session.SupportColours);
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
 
@@ -108,7 +110,7 @@ static void MiniSuspendedRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.hasChain())
+    if (trackElement.HasChain())
     {
         switch (direction)
         {
@@ -170,11 +172,11 @@ static void MiniSuspendedRCTrack25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -184,7 +186,7 @@ static void MiniSuspendedRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.hasChain())
+    if (trackElement.HasChain())
     {
         switch (direction)
         {
@@ -246,11 +248,11 @@ static void MiniSuspendedRCTrackFlatTo25DegUp(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
@@ -260,7 +262,7 @@ static void MiniSuspendedRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    if (trackElement.hasChain())
+    if (trackElement.HasChain())
     {
         switch (direction)
         {
@@ -322,11 +324,11 @@ static void MiniSuspendedRCTrack25DegUpToFlat(
 
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::flat);
+        PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
+        PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
     }
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -396,7 +398,7 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -530,10 +532,10 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -588,7 +590,7 @@ static void MiniSuspendedRCTrackSBendLeft(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -691,10 +693,10 @@ static void MiniSuspendedRCTrackSBendLeft(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -740,7 +742,7 @@ static void MiniSuspendedRCTrackSBendRight(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -842,10 +844,10 @@ static void MiniSuspendedRCTrackSBendRight(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -894,7 +896,7 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -965,10 +967,10 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
             switch (direction)
             {
                 case 2:
-                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 3:
-                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1029,7 +1031,7 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -1194,7 +1196,7 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
+                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -1340,7 +1342,7 @@ static void MiniSuspendedRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const auto* images = kMiniSuspendedRCFlatImages[trackElement.hasChain()];
+    const auto* images = kMiniSuspendedRCFlatImages[trackElement.HasChain()];
     TrackPaintUtilDiagTilesPaint(
         session, 1, height + 24, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
@@ -1362,7 +1364,7 @@ static void MiniSuspendedRCTrackDiag25DegUp(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1393,7 +1395,7 @@ static void MiniSuspendedRCTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1424,7 +1426,7 @@ static void MiniSuspendedRCTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1456,7 +1458,7 @@ static void MiniSuspendedRCTrackDiag25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1501,7 +1503,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1532,7 +1534,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1563,7 +1565,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1595,7 +1597,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1640,7 +1642,7 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1671,7 +1673,7 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1702,7 +1704,7 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1734,7 +1736,7 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1779,7 +1781,7 @@ static void MiniSuspendedRCTrackDiag25DegDown(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1810,7 +1812,7 @@ static void MiniSuspendedRCTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1841,7 +1843,7 @@ static void MiniSuspendedRCTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 2:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1873,7 +1875,7 @@ static void MiniSuspendedRCTrackDiag25DegDown(
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 3:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1918,7 +1920,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1948,7 +1950,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
                 0xFFFF, 0);
             break;
         case 1:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -1978,7 +1980,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
                 0xFFFF, 0);
             break;
         case 2:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -2009,7 +2011,7 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
                 0xFFFF, 0);
             break;
         case 3:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -2054,7 +2056,7 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
     switch (trackSequence)
     {
         case 0:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -2085,7 +2087,7 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 1:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -2116,7 +2118,7 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {
@@ -2148,7 +2150,7 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 3:
-            if (trackElement.hasChain())
+            if (trackElement.HasChain())
             {
                 switch (direction)
                 {

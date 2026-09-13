@@ -11,7 +11,6 @@
 
 #include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
@@ -20,26 +19,22 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/BackgroundWorker.hpp>
 #include <openrct2/core/FileStream.h>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Line.h>
 #include <openrct2/drawing/Rectangle.h>
-#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/LocalisationService.h>
-#include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ScenarioMetaObject.h>
 #include <openrct2/park/ParkPreview.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioCategory.h>
-#include <openrct2/scenario/ScenarioObjective.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/ui/WindowManager.h>
@@ -64,8 +59,8 @@ namespace OpenRCT2::Ui::Windows
 
     enum class ListItemType : uint8_t
     {
-        heading,
-        scenario,
+        Heading,
+        Scenario,
     };
 
     struct ScenarioListItem
@@ -329,7 +324,7 @@ namespace OpenRCT2::Ui::Windows
             for (uint32_t i = 0; i < std::size(kScenarioOriginStringIds); i++)
             {
                 const Widget& widget = widgets[WIDX_TAB1 + i];
-                if (widget.isHidden())
+                if (widget.type == WidgetType::empty)
                     continue;
 
                 auto ft = Formatter();
@@ -450,10 +445,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (listItem.type)
                 {
-                    case ListItemType::heading:
+                    case ListItemType::Heading:
                         y += 18;
                         break;
-                    case ListItemType::scenario:
+                    case ListItemType::Scenario:
                         y += scenarioItemHeight;
                         break;
                 }
@@ -474,10 +469,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (listItem.type)
                 {
-                    case ListItemType::heading:
+                    case ListItemType::Heading:
                         mutableScreenCoords.y -= 18;
                         break;
-                    case ListItemType::scenario:
+                    case ListItemType::Scenario:
                         mutableScreenCoords.y -= scenarioItemHeight;
                         if (mutableScreenCoords.y < 0)
                         {
@@ -519,10 +514,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (listItem.type)
                 {
-                    case ListItemType::heading:
+                    case ListItemType::Heading:
                         mutableScreenCoords.y -= 18;
                         break;
-                    case ListItemType::scenario:
+                    case ListItemType::Scenario:
                         mutableScreenCoords.y -= scenarioItemHeight;
                         if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                         {
@@ -572,7 +567,7 @@ namespace OpenRCT2::Ui::Windows
 
                 switch (listItem.type)
                 {
-                    case ListItemType::heading:
+                    case ListItemType::Heading:
                     {
                         const int32_t horizontalRuleMargin = 4;
                         DrawCategoryHeading(
@@ -580,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
                         y += 18;
                         break;
                     }
-                    case ListItemType::scenario:
+                    case ListItemType::Scenario:
                     {
                         // Draw hover highlight
                         const ScenarioIndexEntry* scenario = listItem.scenario.scenario;
@@ -711,7 +706,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Category heading
                 StringId headingStringId = kStringIdNone;
-                if (selectedTab != EnumValue(ScenarioSource::real) && currentHeading.category != scenario->Category)
+                if (selectedTab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                 {
                     currentHeading.category = scenario->Category;
                     headingStringId = Scenario::kScenarioCategoryStringIds[currentHeading.raw];
@@ -720,14 +715,14 @@ namespace OpenRCT2::Ui::Windows
                 if (headingStringId != kStringIdNone)
                 {
                     ScenarioListItem headerItem;
-                    headerItem.type = ListItemType::heading;
+                    headerItem.type = ListItemType::Heading;
                     headerItem.heading.string_id = headingStringId;
                     _listItems.push_back(std::move(headerItem));
                 }
 
                 // Scenario
                 ScenarioListItem scenarioItem;
-                scenarioItem.type = ListItemType::scenario;
+                scenarioItem.type = ListItemType::Scenario;
                 scenarioItem.scenario.scenario = scenario;
                 if (IsLockingEnabled())
                 {
@@ -773,10 +768,10 @@ namespace OpenRCT2::Ui::Windows
                     for (auto it = _listItems.begin(); it != _listItems.end();)
                     {
                         const auto& listItem = *it;
-                        if (listItem.type == ListItemType::heading)
+                        if (listItem.type == ListItemType::Heading)
                         {
                             auto nextIt = std::next(it);
-                            if (nextIt == _listItems.end() || nextIt->type == ListItemType::heading)
+                            if (nextIt == _listItems.end() || nextIt->type == ListItemType::Heading)
                             {
                                 it = _listItems.erase(it);
                                 continue;
@@ -837,7 +832,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& widget = widgets[i + WIDX_TAB1];
                 if (!(showPages & (1 << i)))
                 {
-                    widget.setHidden();
+                    widget.type = WidgetType::empty;
                     continue;
                 }
 

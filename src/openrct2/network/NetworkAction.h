@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../actions/GameAction.hpp"
+#include "../actions/GameCommand.h"
 #include "../localisation/StringIdType.h"
 
 #include <array>

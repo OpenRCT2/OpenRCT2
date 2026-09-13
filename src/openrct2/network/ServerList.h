@@ -14,6 +14,7 @@
 
 #include <future>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <vector>
 

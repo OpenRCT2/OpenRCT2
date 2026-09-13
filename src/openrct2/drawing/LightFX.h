@@ -9,17 +9,17 @@
 
 #pragma once
 
-#include "PaletteType.h"
+#include "ColourPalette.h"
 
 #include <cstdint>
 
 struct CoordsXY;
+struct Vehicle;
 struct CoordsXYZ;
 
 namespace OpenRCT2
 {
     struct EntityBase;
-    struct Vehicle;
     struct Viewport;
 } // namespace OpenRCT2
 

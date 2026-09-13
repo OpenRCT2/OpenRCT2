@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class LandSetHeightAction final : public GameActionBase<GameCommand::setLandHeight>
+    class LandSetHeightAction final : public GameActionBase<GameCommand::SetLandHeight>
     {
     private:
         CoordsXY _coords;

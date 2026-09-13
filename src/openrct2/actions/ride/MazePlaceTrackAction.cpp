@@ -15,6 +15,7 @@
 #include "../../management/Finance.h"
 #include "../../ride/MazeCost.h"
 #include "../../ride/RideData.h"
+#include "../../ride/TrackData.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
@@ -109,7 +110,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.toTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags(),
+            kTileSlopeFlat);
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -166,15 +168,15 @@ namespace OpenRCT2::GameActions
         if (!flags.has(CommandFlag::ghost))
         {
             FootpathRemoveLitter(_loc);
-            WallRemoveAt({ _loc.toTileStart(), _loc.z, _loc.z + 32 });
+            WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
         auto baseHeight = _loc.z;
         auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc.toTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
-            GetFlags().with(CommandFlag::apply));
+            { _loc.ToTileStart(), baseHeight, clearanceHeight }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
+            GetFlags().with(CommandFlag::apply), kTileSlopeFlat);
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -183,23 +185,23 @@ namespace OpenRCT2::GameActions
 
         res.cost = MazeCalculateCost(canBuild.cost, *ride, _loc);
 
-        auto startLoc = _loc.toTileStart();
+        auto startLoc = _loc.ToTileStart();
 
         auto* trackElement = TileElementInsert<TrackElement>(_loc, 0b1111);
         Guard::Assert(trackElement != nullptr);
 
         trackElement->setClearanceZ(clearanceHeight);
-        trackElement->setTrackType(TrackElemType::maze);
-        trackElement->setRideType(ride->type);
-        trackElement->setRideIndex(_rideIndex);
-        trackElement->setMazeEntry(_mazeEntry);
+        trackElement->SetTrackType(TrackElemType::maze);
+        trackElement->SetRideType(ride->type);
+        trackElement->SetRideIndex(_rideIndex);
+        trackElement->SetMazeEntry(_mazeEntry);
         trackElement->setGhost(flags.has(CommandFlag::ghost));
 
         MapInvalidateTileFull(startLoc);
 
         ride->mazeTiles++;
-        ride->getStation().setBaseZ(trackElement->getBaseZ());
-        ride->getStation().start = { 0, 0 };
+        ride->getStation().SetBaseZ(trackElement->getBaseZ());
+        ride->getStation().Start = { 0, 0 };
 
         if (ride->mazeTiles == 1)
         {

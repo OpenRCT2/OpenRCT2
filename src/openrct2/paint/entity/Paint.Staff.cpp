@@ -12,6 +12,7 @@
 #include "../../drawing/LightFX.h"
 #include "../../entity/Staff.h"
 #include "../../profiling/Profiling.h"
+#include "../../profiling/ProfilingMacros.hpp"
 #include "../Paint.h"
 #include "Paint.Peep.h"
 
@@ -32,7 +33,7 @@ void PaintStaff(PaintSession& session, const Staff& staff, int32_t orientation)
 
     Direction direction = (orientation >> 3);
     auto baseImageData = PaintPeepGetBaseImageAndOffset(staff, direction);
-    auto imageId = ImageId(baseImageData.baseImageId, staff.tShirtColour);
+    auto imageId = ImageId(baseImageData.baseImageId, staff.TshirtColour);
 
     PaintAddImageAsParent(session, imageId, kPaintPeepOffset(staff.z), kPaintPeepBoundBox(staff.z));
 }

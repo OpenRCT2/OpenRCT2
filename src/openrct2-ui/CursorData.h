@@ -9,10 +9,7 @@
 
 #pragma once
 
-#include <cstddef>
-#include <cstdint>
-
-enum class CursorID : uint8_t;
+#include <openrct2/interface/Cursors.h>
 
 namespace OpenRCT2::Ui
 {

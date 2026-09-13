@@ -14,10 +14,11 @@
 #include <functional>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/interface/InGameConsole.h>
+#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -30,17 +31,21 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
-#include <openrct2/drawing/Drawing.Screen.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/network/Network.h>
 #include <openrct2/object/WallSceneryEntry.h>
+#include <openrct2/platform/Platform.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/ride/TrackPaint.h>
 #include <openrct2/scenes/title/TitleScene.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
+#include <openrct2/world/Park.h>
+#include <openrct2/world/Scenery.h>
 #include <openrct2/world/TileInspector.h>
 #include <openrct2/world/tile_element/WallElement.h>
 
@@ -89,7 +94,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate scenery
     WindowBase* w = windowMgr->FindByClass(WindowClass::scenery);
     if (w != nullptr && !widgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
-        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].isVisible())
+        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WidgetType::empty)
     {
         w->onMouseUp(WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
         return;
@@ -98,7 +103,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate construction track piece
     w = windowMgr->FindByClass(WindowClass::rideConstruction);
     if (w != nullptr && !widgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
-        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].isVisible())
+        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WidgetType::empty)
     {
         // Check if building a maze...
         if (w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
@@ -111,7 +116,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate track design preview
     w = windowMgr->FindByClass(WindowClass::trackDesignList);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].isVisible())
+        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WidgetType::empty)
     {
         w->onMouseUp(WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
         return;
@@ -120,7 +125,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate track design placement
     w = windowMgr->FindByClass(WindowClass::trackDesignPlace);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].isVisible())
+        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WidgetType::empty)
     {
         w->onMouseUp(WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
         return;
@@ -129,7 +134,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate park entrance
     w = windowMgr->FindByClass(WindowClass::editorParkEntrance);
     if (w != nullptr && !widgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
-        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].isVisible())
+        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].type != WidgetType::empty)
     {
         w->onMouseUp(WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON);
         return;
@@ -138,7 +143,7 @@ static void ShortcutRotateConstructionObject()
     // Rotate selected element in tile inspector
     w = windowMgr->FindByClass(WindowClass::tileInspector);
     if (w != nullptr && !widgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
-        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].isVisible())
+        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WidgetType::empty)
     {
         w->onMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
         return;
@@ -170,27 +175,23 @@ static void ShortcutRemoveTopBottomToolbarToggle()
         {
             windowMgr->CloseByClass(WindowClass::dropdown);
             windowMgr->CloseByClass(WindowClass::topToolbar);
-            windowMgr->CloseByClass(WindowClass::gameStatusBar);
-            windowMgr->CloseByClass(WindowClass::newsTicker);
-            windowMgr->CloseByClass(WindowClass::parkInfoPanel);
-            windowMgr->CloseByClass(WindowClass::dateInfoPanel);
-        }
-        else if (gLegacyScene == LegacyScene::playing)
-        {
-            ContextOpenWindow(WindowClass::topToolbar);
-            ContextOpenWindow(WindowClass::gameStatusBar);
-            ContextOpenWindow(WindowClass::parkInfoPanel);
-            ContextOpenWindow(WindowClass::dateInfoPanel);
+            windowMgr->CloseByClass(WindowClass::bottomToolbar);
         }
         else
         {
-            ContextOpenWindow(WindowClass::topToolbar);
-            ContextOpenWindow(WindowClass::editorStepController); // previous step
-            ContextOpenWindow(WindowClass::editorStatusLine);
-            ContextOpenWindow(WindowClass::editorStepController); // next step
+            if (gLegacyScene == LegacyScene::playing)
+            {
+                ContextOpenWindow(WindowClass::topToolbar);
+                ContextOpenWindow(WindowClass::bottomToolbar);
+            }
+            else
+            {
+                ContextOpenWindow(WindowClass::topToolbar);
+                ContextOpenWindowView(WindowView::editorBottomToolbar);
+            }
         }
     }
-    Drawing::GfxInvalidateScreen();
+    GfxInvalidateScreen();
 }
 
 static void ShortcutAdjustLand()
@@ -198,7 +199,7 @@ static void ShortcutAdjustLand()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -212,7 +213,7 @@ static void ShortcutAdjustWater()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -226,7 +227,7 @@ static void ShortcutBuildScenery()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -240,7 +241,7 @@ static void ShortcutBuildPaths()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -269,7 +270,7 @@ static void ShortcutShowFinancialInformation()
         return;
 
     if (!(isInTrackDesignerOrManager()))
-        if (!getGameState().park.flags.has(ParkFlag::noMoney))
+        if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::finances);
 }
 
@@ -342,7 +343,7 @@ static void ShortcutShowMap()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == Editor::Step::landscapeEditor)
+    if (gLegacyScene != LegacyScene::scenarioEditor || getGameState().editorStep == EditorStep::landscapeEditor)
         if (!(isInTrackDesignerOrManager()))
             ContextOpenWindow(WindowClass::map);
 }
@@ -399,7 +400,7 @@ static void ShortcutClearScenery()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor)
+    if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor)
         return;
 
     if (isInTrackDesignerOrManager())
@@ -439,7 +440,7 @@ static void ShortcutOpenSceneryPicker()
 {
     if ((gLegacyScene == LegacyScene::titleSequence || gLegacyScene == LegacyScene::trackDesigner
          || gLegacyScene == LegacyScene::trackDesignsManager)
-        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != Editor::Step::landscapeEditor))
+        || (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep != EditorStep::landscapeEditor))
         return;
 
     auto* windowMgr = GetWindowManager();
@@ -460,7 +461,7 @@ static void ShortcutScaleUp()
 {
     Config::Get().general.windowScale += 0.25f;
     Config::Save();
-    Drawing::GfxInvalidateScreen();
+    GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
 }
@@ -470,7 +471,7 @@ static void ShortcutScaleDown()
     Config::Get().general.windowScale -= 0.25f;
     Config::Get().general.windowScale = std::max(0.5f, Config::Get().general.windowScale);
     Config::Save();
-    Drawing::GfxInvalidateScreen();
+    GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
 }
@@ -480,7 +481,7 @@ static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
     auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::tileInspector);
-    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].isVisible())
+    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WidgetType::empty)
     {
         w->onMouseUp(widgetIndex);
     }
@@ -490,7 +491,7 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
     auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::tileInspector);
-    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].isVisible())
+    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WidgetType::empty)
     {
         w->onMouseDown(widgetIndex);
     }
@@ -508,23 +509,23 @@ static void ShortcutToggleWallSlope()
     const TileElement* tileElement = TileInspector::GetSelectedElement();
 
     // Ensure an element is selected and it's a wall
-    if (tileElement == nullptr || tileElement->getType() != TileElementType::wall)
+    if (tileElement == nullptr || tileElement->getType() != TileElementType::Wall)
     {
         return;
     }
 
     // Ensure a wall can be built on a slope
-    if (tileElement->asWall()->getEntry()->flags.has(WallSceneryFlag::cannotBuildOnSlope))
+    if (tileElement->asWall()->GetEntry()->flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
     {
         return;
     }
 
-    int32_t currSlopeValue = tileElement->asWall()->getSlope();
+    int32_t currSlopeValue = tileElement->asWall()->GetSlope();
     int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;
     auto modifyTile = GameActions::TileModifyAction(
-        windowTileInspectorTile.toCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
+        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
         newSlopeValue);
     GameActions::Execute(&modifyTile, getGameState());
 }
@@ -563,7 +564,7 @@ static void ShortcutIncreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE;
                 break;
         }
-        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].isVisible())
+        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].type != WidgetType::empty)
             w->onMouseDown(action);
         return;
     }
@@ -603,7 +604,7 @@ static void ShortcutDecreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE;
                 break;
         }
-        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].isVisible())
+        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].type != WidgetType::empty)
             w->onMouseDown(action);
         return;
     }
@@ -740,7 +741,7 @@ static void ShortcutToggleTransparentWater()
 
     Config::Get().general.transparentWater ^= 1;
     Config::Save();
-    Drawing::GfxInvalidateScreen();
+    GfxInvalidateScreen();
 }
 
 #pragma endregion
@@ -761,7 +762,7 @@ void ShortcutManager::registerDefaultShortcuts()
         {
             windowMgr->CloseAll();
         }
-        else if (getGameState().editorStep == Editor::Step::landscapeEditor)
+        else if (getGameState().editorStep == EditorStep::landscapeEditor)
         {
             windowMgr->CloseTop();
         }
@@ -806,7 +807,7 @@ void ShortcutManager::registerDefaultShortcuts()
             ChatToggle();
         }
     });
-    registerShortcut(ShortcutId::kInterfaceScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", Drawing::ToggleWindowedMode);
+    registerShortcut(ShortcutId::kInterfaceScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", ToggleWindowedMode);
     registerShortcut(ShortcutId::kInterfaceScaleIncrease, STR_SHORTCUT_SCALE_UP, ShortcutScaleUp);
     registerShortcut(ShortcutId::kInterfaceScaleDecrease, STR_SHORTCUT_SCALE_DOWN, ShortcutScaleDown);
     registerShortcut(ShortcutId::kInterfaceOpenLand, STR_SHORTCUT_ADJUST_LAND, "F1", ShortcutAdjustLand);

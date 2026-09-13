@@ -11,13 +11,12 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kJuniorRollerCoasterRTD =
+constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = TrackElemType::endStation,
@@ -31,14 +30,14 @@ constexpr RideTypeDescriptor kJuniorRollerCoasterRTD =
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::allowDoorsOnTrack,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned },
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 18 },
     .TrackSpeedSettings = { 30, 15 },
     .BoosterSettings = { 17, 16 },
     .LegacyBoosterSettings = { 17, 16, 1 },
     .Naming = { STR_RIDE_NAME_JUNIOR_ROLLER_COASTER, STR_RIDE_DESCRIPTION_JUNIOR_ROLLER_COASTER },
-    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::restraintsStuckClosed, Breakdown::restraintsStuckOpen, Breakdown::vehicleMalfunction, Breakdown::brakesFailure },
     .Heights = { 12, 24, 4, 7, },
     .MaxMass = 18,
@@ -58,33 +57,33 @@ constexpr RideTypeDescriptor kJuniorRollerCoasterRTD =
         { Drawing::Colour::black, Drawing::Colour::lightBlue, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "junior_rc",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(2, 40), RideRating::make(2, 50), RideRating::make(1, 80) },
         13,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::bonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::bonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
-            { RatingsModifierType::bonusTrainLength,      0,                187245, 0, 0 },
-            { RatingsModifierType::bonusMaxSpeed,         0,                44281, 88562, 35424 },
-            { RatingsModifierType::bonusAverageSpeed,     0,                291271, 436906, 0 },
-            { RatingsModifierType::bonusDuration,         150,              26214, 0, 0 },
-            { RatingsModifierType::bonusGForces,          0,                20480, 23831, 49648 },
-            { RatingsModifierType::bonusTurns,            0,                26749, 34767, 45749 },
-            { RatingsModifierType::bonusDrops,            0,                29127, 46811, 49152 },
-            { RatingsModifierType::bonusSheltered,        0,                25700, 30583, 35108 },
-            { RatingsModifierType::bonusReversedTrains,   0,                2, 10, 12 },
-            { RatingsModifierType::bonusProximity,        0,                20130, 0, 0 },
-            { RatingsModifierType::bonusScenery,          0,                9760, 0, 0 },
-            { RatingsModifierType::requirementDropHeight, 6,                2, 2, 2 },
-            { RatingsModifierType::requirementMaxSpeed,   0x70000,          2, 2, 2 },
-            { RatingsModifierType::requirementNumDrops,   1,                2, 2, 2 },
-            { RatingsModifierType::penaltyLateralGs,      0,                20480, 23831, 49648 },
+            { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
+            { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
+            { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
+            { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
+            { RatingsModifierType::BonusGForces,          0,                20480, 23831, 49648 },
+            { RatingsModifierType::BonusTurns,            0,                26749, 34767, 45749 },
+            { RatingsModifierType::BonusDrops,            0,                29127, 46811, 49152 },
+            { RatingsModifierType::BonusSheltered,        0,                25700, 30583, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 10, 12 },
+            { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                9760, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 6,                2, 2, 2 },
+            { RatingsModifierType::RequirementMaxSpeed,   0x70000,          2, 2, 2 },
+            { RatingsModifierType::RequirementNumDrops,   1,                2, 2, 2 },
+            { RatingsModifierType::PenaltyLateralGs,      0,                20480, 23831, 49648 },
         },
     },
 };

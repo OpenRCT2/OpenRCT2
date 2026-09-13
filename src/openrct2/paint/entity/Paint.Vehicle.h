@@ -11,11 +11,7 @@
 
 #include <cstdint>
 
-namespace OpenRCT2
-{
-    struct Vehicle;
-}
-
 struct PaintSession;
+struct Vehicle;
 
-void PaintVehicle(PaintSession& session, const OpenRCT2::Vehicle& vehicle, int32_t imageDirection);
+void PaintVehicle(PaintSession& session, const Vehicle& vehicle, int32_t imageDirection);

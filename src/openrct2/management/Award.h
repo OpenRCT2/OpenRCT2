@@ -9,10 +9,11 @@
 
 #pragma once
 
-#include "../drawing/ImageIndexType.h"
-#include "../localisation/StringIdType.h"
+#include "../SpriteIds.h"
+#include "../localisation/StringIds.h"
 
 #include <cstdint>
+#include <vector>
 
 enum class AwardType : uint16_t
 {

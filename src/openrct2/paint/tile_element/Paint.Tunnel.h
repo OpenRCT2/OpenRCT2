@@ -9,31 +9,32 @@
 
 #pragma once
 
+#include "../../world/Location.hpp"
+
 #include <cstdint>
 
 struct PaintSession;
-using Direction = uint8_t;
 
 constexpr uint8_t kTunnelMaxCount = 65;
 
 enum class TunnelType : uint8_t
 {
-    standardFlat = 0,       // Used on flat track (or the flat part of flat-to-sloped track)
-    standardSlopeStart = 1, // Used on the lower end of sloped track
-    standardSlopeEnd = 2,   // Used on the upper end of sloped track
-    invertedFlat = 3,       // Used on flat track (or the flat part of flat-to-sloped track)
-    invertedSlopeStart = 4, // Used on the lower end of sloped track
-    invertedSlopeEnd = 5,   // Used on the upper end of sloped track
-    squareFlat = 6,         // Used on flat track (or the flat part of flat-to-sloped track)
-    squareSlopeStart = 7,   // Used on the lower end of sloped track
-    squareSlopeEnd = 8,     // Used on the upper end of sloped track
-    invertedSquare = 9,
-    pathAndMiniGolf = 10,
-    path11 = 11,
-    standardFlatTo25Deg = 12,
-    invertedFlatTo25Deg = 13,
-    squareFlatTo25Deg = 14,
-    invertedSquareFlatTo25Deg = 15,
+    StandardFlat = 0,       // Used on flat track (or the flat part of flat-to-sloped track)
+    StandardSlopeStart = 1, // Used on the lower end of sloped track
+    StandardSlopeEnd = 2,   // Used on the upper end of sloped track
+    InvertedFlat = 3,       // Used on flat track (or the flat part of flat-to-sloped track)
+    InvertedSlopeStart = 4, // Used on the lower end of sloped track
+    InvertedSlopeEnd = 5,   // Used on the upper end of sloped track
+    SquareFlat = 6,         // Used on flat track (or the flat part of flat-to-sloped track)
+    SquareSlopeStart = 7,   // Used on the lower end of sloped track
+    SquareSlopeEnd = 8,     // Used on the upper end of sloped track
+    InvertedSquare = 9,
+    PathAndMiniGolf = 10,
+    Path11 = 11,
+    StandardFlatTo25Deg = 12,
+    InvertedFlatTo25Deg = 13,
+    SquareFlatTo25Deg = 14,
+    InvertedSquareFlatTo25Deg = 15,
 
     // Ghost train doors
     doorClosed = 16,
@@ -52,19 +53,19 @@ constexpr uint8_t kTunnelTypeCount = 26;
 
 enum class TunnelGroup : uint8_t
 {
-    standard = 0,
-    square = 1,
-    inverted = 2,
+    Standard = 0,
+    Square = 1,
+    Inverted = 2,
 };
 constexpr uint8_t kTunnelGroupCount = 3;
 
 enum class TunnelSubType : uint8_t
 {
-    flat = 0,
-    slopeStart = 1,
-    slopeEnd = 2,
-    flatTo25Deg = 3,
-    tall = 4,
+    Flat = 0,
+    SlopeStart = 1,
+    SlopeEnd = 2,
+    FlatTo25Deg = 3,
+    Tall = 4,
 };
 constexpr uint8_t kTunnelSubTypeCount = 5;
 

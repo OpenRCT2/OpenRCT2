@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class TrackSetBrakeSpeedAction final : public GameActionBase<GameCommand::setBrakesSpeed>
+    class TrackSetBrakeSpeedAction final : public GameActionBase<GameCommand::SetBrakesSpeed>
     {
     private:
         CoordsXYZ _loc;

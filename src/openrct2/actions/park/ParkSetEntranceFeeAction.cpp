@@ -9,11 +9,13 @@
 
 #include "ParkSetEntranceFeeAction.h"
 
+#include "../../Cheats.h"
 #include "../../Diagnostic.h"
+#include "../../GameState.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Park.h"
-#include "../../world/ParkData.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -41,7 +43,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetEntranceFeeAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        if (park.flags.has(ParkFlag::noMoney))
+        if ((park.flags & PARK_FLAGS_NO_MONEY) != 0)
         {
             LOG_ERROR("Can't set park entrance fee because the park has no money");
             return Result(Status::disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, kStringIdNone);

@@ -25,6 +25,8 @@
     #define OpenRCT2_CPUID_MSVC_X86
 #endif
 
+#include "../Context.h"
+#include "../core/CallingConventions.h"
 #include "../core/File.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"

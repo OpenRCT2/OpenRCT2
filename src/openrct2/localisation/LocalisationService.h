@@ -20,6 +20,7 @@
 namespace OpenRCT2
 {
     struct ILanguagePack;
+    struct IObjectManager;
     struct IPlatformEnvironment;
 } // namespace OpenRCT2
 

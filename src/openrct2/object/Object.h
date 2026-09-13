@@ -18,6 +18,8 @@
 #include "ObjectTypes.h"
 #include "StringTable.h"
 
+#include <memory>
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -34,15 +36,15 @@ namespace OpenRCT2
     using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
     static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
-    enum class ObjectSelectionFlag : uint8_t
+    namespace ObjectSelectionFlags
     {
-        selected,
-        inUse = 2,
-        // required = 3, // Unused feature
-        alwaysRequired = 4,
-        flag5 = 5,
-    };
-    using ObjectSelectionFlags = FlagHolder<uint8_t, ObjectSelectionFlag>;
+        constexpr uint8_t Selected = (1 << 0);
+        constexpr uint8_t InUse = (1 << 2);
+        // constexpr uint8_t Required = (1 << 3);               // Unused feature
+        constexpr uint8_t AlwaysRequired = (1 << 4);
+        constexpr uint8_t Flag6 = (1 << 5);
+        constexpr uint8_t AllFlags = 0xFF;
+    } // namespace ObjectSelectionFlags
 
 #pragma pack(push, 1)
     /**
@@ -99,13 +101,13 @@ namespace OpenRCT2
 
     enum class ObjectGeneration : uint8_t
     {
-        dat,
-        json,
+        DAT,
+        JSON,
     };
 
     struct ObjectEntryDescriptor
     {
-        ObjectGeneration Generation = ObjectGeneration::json;
+        ObjectGeneration Generation = ObjectGeneration::JSON;
 
         // DAT
         RCTObjectEntry Entry{};
@@ -131,7 +133,9 @@ namespace OpenRCT2
         static ObjectEntryDescriptor Parse(std::string_view identifier);
     };
 
+    struct IObjectRepository;
     struct IStream;
+    struct ObjectRepositoryItem;
 
     enum class ObjectError : uint32_t
     {
@@ -214,7 +218,7 @@ namespace OpenRCT2
 
         void MarkAsJsonObject()
         {
-            _generation = ObjectGeneration::json;
+            _generation = ObjectGeneration::JSON;
         }
 
         ObjectGeneration GetGeneration() const

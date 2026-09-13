@@ -9,10 +9,12 @@
 
 #pragma once
 
+#include "core/IStream.hpp"
 #include "ride/TrackDesign.h"
 
 #include <memory>
 #include <string>
+#include <vector>
 
 /**
  * Interface to import scenarios and saved games.

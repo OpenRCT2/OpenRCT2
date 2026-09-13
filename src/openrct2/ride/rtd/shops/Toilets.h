@@ -10,13 +10,12 @@
 #pragma once
 
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kToiletsRTD =
+constexpr RideTypeDescriptor ToiletsRTD =
 {
     .Category = RideCategory::shop,
     .StartTrackPiece = TrackElemType::flatTrack1x1A,
@@ -30,11 +29,11 @@ constexpr RideTypeDescriptor kToiletsRTD =
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::guestsShouldGoInsideFacility, RtdFlag::describeAsInside,
                      RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::shopStall },
+    .RideModes = EnumsToFlags(RideMode::shopStall),
     .DefaultMode = RideMode::shopStall,
     .OperatingSettings = { 4, 4 },
     .Naming = { STR_RIDE_NAME_TOILETS, STR_RIDE_DESCRIPTION_TOILETS },
-    .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
     .availableBreakdowns = {},
     .Heights = { 12, kDefaultToiletHeight, 0, 0, },
     .MaxMass = 255,
@@ -48,21 +47,21 @@ constexpr RideTypeDescriptor kToiletsRTD =
     .BonusValue = 5,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::toilets,
+    .ColourKey = RideColourKey::Toilets,
     .Name = "toilets",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::stall,
+        RatingsCalculationType::Stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,
         false,
-        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::kioskOrFacility,
     .specialType = RtdSpecialType::toilet,

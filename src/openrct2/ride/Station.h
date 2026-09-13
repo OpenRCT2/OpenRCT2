@@ -11,12 +11,10 @@
 
 #include "../Identifiers.h"
 
-namespace OpenRCT2
-{
-    struct Ride;
+struct Ride;
+struct TileCoordsXYZD;
 
-    void RideUpdateStation(OpenRCT2::Ride& ride, StationIndex stationIndex);
-    StationIndex RideGetFirstValidStationExit(const OpenRCT2::Ride& ride);
-    StationIndex RideGetFirstValidStationStart(const OpenRCT2::Ride& ride);
-    StationIndex RideGetFirstEmptyStationStart(const OpenRCT2::Ride& ride);
-} // namespace OpenRCT2
+void RideUpdateStation(Ride& ride, StationIndex stationIndex);
+StationIndex RideGetFirstValidStationExit(const Ride& ride);
+StationIndex RideGetFirstValidStationStart(const Ride& ride);
+StationIndex RideGetFirstEmptyStationStart(const Ride& ride);

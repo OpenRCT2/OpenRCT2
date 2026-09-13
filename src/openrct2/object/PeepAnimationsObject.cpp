@@ -9,7 +9,8 @@
 
 #include "PeepAnimationsObject.h"
 
-#include "../Diagnostic.h"
+#include "../Context.h"
+#include "../PlatformEnvironment.h"
 #include "../core/EnumMap.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"

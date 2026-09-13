@@ -11,9 +11,10 @@
 
 #include "../Context.h"
 #include "../core/Guard.hpp"
+#include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../interface/ScreenCoords.hpp"
 #include "ObjectManager.h"
 
 namespace OpenRCT2

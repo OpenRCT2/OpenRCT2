@@ -15,6 +15,7 @@
 #include "../../management/Finance.h"
 #include "../../object/LargeSceneryEntry.h"
 #include "../../world/Map.h"
+#include "../../world/Scenery.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 
 namespace OpenRCT2::GameActions
@@ -109,7 +110,7 @@ namespace OpenRCT2::GameActions
             return res;
         }
 
-        auto* sceneryEntry = largeElement->getEntry();
+        auto* sceneryEntry = largeElement->GetEntry();
 
         if (sceneryEntry == nullptr)
         {
@@ -117,7 +118,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
         // Work out the base tile coordinates (Tile with index 0)
-        auto rotatedBaseCoordsOffset = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.rotate(_loc.direction),
+        auto rotatedBaseCoordsOffset = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
                                                   sceneryEntry->tiles[_tileIndex].offset.z };
 
         auto baseTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedBaseCoordsOffset;
@@ -125,7 +126,7 @@ namespace OpenRCT2::GameActions
         for (auto& tile : sceneryEntry->tiles)
         {
             // Work out the current tile coordinates
-            auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile.offset }.rotate(_loc.direction), tile.offset.z };
+            auto rotatedTileCoords = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
             auto currentTile = CoordsXYZ{ baseTile.x, baseTile.y, baseTile.z } + rotatedTileCoords;
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
@@ -152,9 +153,9 @@ namespace OpenRCT2::GameActions
             }
             if (isExecuting)
             {
-                tileElement->setPrimaryColour(_primaryColour);
-                tileElement->setSecondaryColour(_secondaryColour);
-                tileElement->setTertiaryColour(_tertiaryColour);
+                tileElement->SetPrimaryColour(_primaryColour);
+                tileElement->SetSecondaryColour(_secondaryColour);
+                tileElement->SetTertiaryColour(_tertiaryColour);
 
                 MapInvalidateTileFull(currentTile);
             }

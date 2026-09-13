@@ -9,12 +9,16 @@
 
 #include "JumpingFountain.h"
 
+#include "../Game.h"
 #include "../GameState.h"
 #include "../core/DataSerialiser.h"
 #include "../object/PathAdditionEntry.h"
+#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
+#include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
+#include "../world/Scenery.h"
 #include "../world/tile_element/PathElement.h"
 #include "EntityRegistry.h"
 
@@ -84,7 +88,7 @@ namespace OpenRCT2
         return type == EntityType::jumpingFountain;
     }
 
-    void JumpingFountain::startAnimation(
+    void JumpingFountain::StartAnimation(
         const JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement)
     {
         const auto currentTicks = getGameState().currentTicks;
@@ -100,7 +104,7 @@ namespace OpenRCT2
                 // 0, 1, 2, 3
                 for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
                 {
-                    create(
+                    Create(
                         newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
                         _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
                 }
@@ -110,7 +114,7 @@ namespace OpenRCT2
                 randomIndex = ScenarioRand() & 1;
                 for (int32_t i = randomIndex; i < kNumOrthogonalDirections; i += 2)
                 {
-                    create(
+                    Create(
                         newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
                         _fountainDirectionFlags[i] | _fountainPatternFlags[pattern], 0);
                 }
@@ -118,52 +122,52 @@ namespace OpenRCT2
             case Pattern::racingPairs:
                 // random [0 - 3 and 4 - 7]
                 randomIndex = ScenarioRand() & 3;
-                create(
+                Create(
                     newType, { newLoc + _fountainDirectionsPositive[randomIndex], newZ }, _fountainDirections[randomIndex],
                     _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
                 randomIndex += 4;
-                create(
+                Create(
                     newType, { newLoc + _fountainDirectionsPositive[randomIndex], newZ }, _fountainDirections[randomIndex],
                     _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
                 break;
             default:
                 // random [0 - 7]
                 randomIndex = ScenarioRand() & 7;
-                create(
+                Create(
                     newType, { newLoc + _fountainDirectionsPositive[randomIndex], newZ }, _fountainDirections[randomIndex],
                     _fountainDirectionFlags[randomIndex] | _fountainPatternFlags[pattern], 0);
                 break;
         }
     }
 
-    void JumpingFountain::create(
+    void JumpingFountain::Create(
         const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const FountainFlags newFlags,
         const int32_t iteration)
     {
-        auto* jumpingFountain = getGameState().entities.createEntity<JumpingFountain>();
+        auto* jumpingFountain = getGameState().entities.CreateEntity<JumpingFountain>();
         if (jumpingFountain != nullptr)
         {
-            jumpingFountain->iteration = iteration;
+            jumpingFountain->Iteration = iteration;
             jumpingFountain->fountainFlags = newFlags;
             jumpingFountain->orientation = direction << 3;
             jumpingFountain->spriteData.width = 33;
             jumpingFountain->spriteData.heightMin = 36;
             jumpingFountain->spriteData.heightMax = 12;
             jumpingFountain->moveTo(newLoc);
-            jumpingFountain->fountainType = newType;
-            jumpingFountain->numTicksAlive = 0;
+            jumpingFountain->FountainType = newType;
+            jumpingFountain->NumTicksAlive = 0;
             jumpingFountain->frame = 0;
         }
     }
 
-    void JumpingFountain::update()
+    void JumpingFountain::Update()
     {
-        numTicksAlive++;
+        NumTicksAlive++;
         // Originally this would not update the frame on the following
         // ticks: 1, 3, 6, 9, 11, 14, 17, 19, 22, 25
         // This change was to simplify the code base. There is a small increase
         // in speed of the fountain jump because of this change.
-        if (numTicksAlive % 3 == 0)
+        if (NumTicksAlive % 3 == 0)
         {
             return;
         }
@@ -171,22 +175,22 @@ namespace OpenRCT2
         invalidate();
         frame++;
 
-        switch (fountainType)
+        switch (FountainType)
         {
-            case JumpingFountainType::water:
+            case JumpingFountainType::Water:
                 if (frame == 11 && fountainFlags.has(FountainFlag::fast))
                 {
-                    advanceAnimation();
+                    AdvanceAnimation();
                 }
                 if (frame == 16 && !fountainFlags.has(FountainFlag::fast))
                 {
-                    advanceAnimation();
+                    AdvanceAnimation();
                 }
                 break;
-            case JumpingFountainType::snow:
+            case JumpingFountainType::Snow:
                 if (frame == 16)
                 {
-                    advanceAnimation();
+                    AdvanceAnimation();
                 }
                 break;
             default:
@@ -195,25 +199,25 @@ namespace OpenRCT2
 
         if (frame == 16)
         {
-            getGameState().entities.entityRemove(this);
+            getGameState().entities.EntityRemove(this);
         }
     }
 
-    JumpingFountainType JumpingFountain::getType() const
+    JumpingFountainType JumpingFountain::GetType() const
     {
-        return fountainType;
+        return FountainType;
     }
 
-    void JumpingFountain::advanceAnimation()
+    void JumpingFountain::AdvanceAnimation()
     {
-        const JumpingFountainType newType = getType();
+        const JumpingFountainType newType = GetType();
         const int32_t direction = (orientation >> 3) & 7;
         const CoordsXY newLoc = CoordsXY{ x, y } + CoordsDirectionDelta[direction];
 
         int32_t availableDirections = 0;
         for (uint32_t i = 0; i < _fountainDirectionsNegative.size(); i++)
         {
-            if (isJumpingFountain(newType, { newLoc + _fountainDirectionsNegative[i], z }))
+            if (IsJumpingFountain(newType, { newLoc + _fountainDirectionsNegative[i], z }))
             {
                 availableDirections |= 1 << i;
             }
@@ -231,28 +235,28 @@ namespace OpenRCT2
 
         if (fountainFlags.has(FountainFlag::goToEdge))
         {
-            goToEdge({ newLoc, z }, availableDirections);
+            GoToEdge({ newLoc, z }, availableDirections);
             return;
         }
 
         if (fountainFlags.has(FountainFlag::bounce))
         {
-            bounce({ newLoc, z }, availableDirections);
+            Bounce({ newLoc, z }, availableDirections);
             return;
         }
 
         if (fountainFlags.has(FountainFlag::split))
         {
-            split({ newLoc, z }, availableDirections);
+            Split({ newLoc, z }, availableDirections);
             return;
         }
 
-        random({ newLoc, z }, availableDirections);
+        Random({ newLoc, z }, availableDirections);
     }
 
-    bool JumpingFountain::isJumpingFountain(const JumpingFountainType newType, const CoordsXYZ& newLoc)
+    bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const CoordsXYZ& newLoc)
     {
-        const int32_t pathAdditionFlagMask = newType == JumpingFountainType::snow ? PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW
+        const int32_t pathAdditionFlagMask = newType == JumpingFountainType::Snow ? PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW
                                                                                   : PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER;
 
         TileElement* tileElement = MapGetFirstElementAt(newLoc);
@@ -260,16 +264,16 @@ namespace OpenRCT2
             return false;
         do
         {
-            if (tileElement->getType() != TileElementType::path)
+            if (tileElement->getType() != TileElementType::Path)
                 continue;
             if (tileElement->getBaseZ() != newLoc.z)
                 continue;
-            if (tileElement->asPath()->additionIsGhost())
+            if (tileElement->asPath()->AdditionIsGhost())
                 continue;
-            if (!tileElement->asPath()->hasAddition())
+            if (!tileElement->asPath()->HasAddition())
                 continue;
 
-            auto* pathAdditionEntry = tileElement->asPath()->getAdditionEntry();
+            auto* pathAdditionEntry = tileElement->asPath()->GetAdditionEntry();
             if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & pathAdditionFlagMask)
             {
                 return true;
@@ -279,19 +283,19 @@ namespace OpenRCT2
         return false;
     }
 
-    void JumpingFountain::goToEdge(const CoordsXYZ& newLoc, const int32_t availableDirections) const
+    void JumpingFountain::GoToEdge(const CoordsXYZ& newLoc, const int32_t availableDirections) const
     {
         int32_t direction = (orientation >> 3) << 1;
         if (availableDirections & (1 << direction))
         {
-            createNext(newLoc, direction);
+            CreateNext(newLoc, direction);
             return;
         }
 
         direction++;
         if (availableDirections & (1 << direction))
         {
-            createNext(newLoc, direction);
+            CreateNext(newLoc, direction);
             return;
         }
 
@@ -303,7 +307,7 @@ namespace OpenRCT2
 
         if (fountainFlags.has(FountainFlag::split))
         {
-            split(newLoc, availableDirections);
+            Split(newLoc, availableDirections);
             return;
         }
 
@@ -313,35 +317,35 @@ namespace OpenRCT2
             direction = (direction + 1) & 7;
         }
 
-        createNext(newLoc, direction);
+        CreateNext(newLoc, direction);
     }
 
-    void JumpingFountain::bounce(const CoordsXYZ& newLoc, const int32_t availableDirections)
+    void JumpingFountain::Bounce(const CoordsXYZ& newLoc, const int32_t availableDirections)
     {
-        iteration++;
-        if (iteration < 8)
+        Iteration++;
+        if (Iteration < 8)
         {
             int32_t direction = ((orientation >> 3) ^ 2) << 1;
             if (availableDirections & (1 << direction))
             {
-                createNext(newLoc, direction);
+                CreateNext(newLoc, direction);
             }
             else
             {
                 direction++;
                 if (availableDirections & (1 << direction))
                 {
-                    createNext(newLoc, direction);
+                    CreateNext(newLoc, direction);
                 }
             }
         }
     }
 
-    void JumpingFountain::split(const CoordsXYZ& newLoc, int32_t availableDirections) const
+    void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections) const
     {
-        if (iteration < 3)
+        if (Iteration < 3)
         {
-            const auto newType = getType();
+            const auto newType = GetType();
             int32_t direction = ((orientation >> 3) ^ 2) << 1;
             availableDirections &= ~(1 << direction);
             availableDirections &= ~(1 << (direction + 1));
@@ -352,20 +356,20 @@ namespace OpenRCT2
                 {
                     auto copiedFlags = fountainFlags;
                     copiedFlags.unset(FountainFlag::direction);
-                    create(newType, newLoc, direction >> 1, copiedFlags, iteration + 1);
+                    Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
                 }
                 direction++;
                 if (availableDirections & (1 << direction))
                 {
                     auto copiedFlags = fountainFlags;
                     copiedFlags.set(FountainFlag::direction);
-                    create(newType, newLoc, direction >> 1, copiedFlags, iteration + 1);
+                    Create(newType, newLoc, direction >> 1, copiedFlags, Iteration + 1);
                 }
             }
         }
     }
 
-    void JumpingFountain::random(const CoordsXYZ& newLoc, int32_t availableDirections) const
+    void JumpingFountain::Random(const CoordsXYZ& newLoc, int32_t availableDirections) const
     {
         const uint32_t randomIndex = ScenarioRand();
         if ((randomIndex & 0xFFFF) >= kFountainChanceOfStoppingRandomMode)
@@ -375,27 +379,27 @@ namespace OpenRCT2
             {
                 direction = (direction + 1) & 7;
             }
-            createNext(newLoc, direction);
+            CreateNext(newLoc, direction);
         }
     }
 
-    void JumpingFountain::createNext(const CoordsXYZ& newLoc, int32_t direction) const
+    void JumpingFountain::CreateNext(const CoordsXYZ& newLoc, int32_t direction) const
     {
-        const auto newType = getType();
+        const auto newType = GetType();
         auto newFlags = fountainFlags;
         newFlags.set(FountainFlag::direction, !!(direction & 1));
-        create(newType, newLoc, direction >> 1, newFlags, iteration);
+        Create(newType, newLoc, direction >> 1, newFlags, Iteration);
     }
 
     void JumpingFountain::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;
-        stream << fountainType;
-        stream << numTicksAlive;
+        stream << FountainType;
+        stream << NumTicksAlive;
         stream << fountainFlags.holder;
-        stream << targetX;
-        stream << targetY;
-        stream << iteration;
+        stream << TargetX;
+        stream << TargetY;
+        stream << Iteration;
     }
 } // namespace OpenRCT2

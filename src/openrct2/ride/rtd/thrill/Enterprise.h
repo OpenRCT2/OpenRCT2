@@ -10,13 +10,12 @@
 #pragma once
 
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kEnterpriseRTD =
+constexpr RideTypeDescriptor EnterpriseRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::flatTrack4x4,
@@ -31,11 +30,11 @@ constexpr RideTypeDescriptor kEnterpriseRTD =
                      RtdFlag::isFlatRide, RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .rideModes = { RideMode::rotation },
+    .RideModes = EnumsToFlags(RideMode::rotation),
     .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 10, 20 },
     .Naming = { STR_RIDE_NAME_ENTERPRISE, STR_RIDE_DESCRIPTION_ENTERPRISE },
-    .NameConvention = { RideComponentType::wheel, RideComponentType::structure, RideComponentType::station },
+    .NameConvention = { RideComponentType::Wheel, RideComponentType::Structure, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 16, 160, 3, 2, },
     .MaxMass = 255,
@@ -49,28 +48,28 @@ constexpr RideTypeDescriptor kEnterpriseRTD =
     .BonusValue = 45,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "enterprise",
-    .RatingsData =
+    .RatingsData = 
     {
-        RatingsCalculationType::flatRide,
+        RatingsCalculationType::FlatRide,
         { RideRating::make(3, 60), RideRating::make(4, 55), RideRating::make(5, 72) },
         22,
         3,
         false,
         {
-            { RatingsModifierType::bonusOperationOption, 0, 1, 16, 16 },
-            { RatingsModifierType::bonusScenery,         0, 19521, 0, 0 },
+            { RatingsModifierType::BonusOperationOption, 0, 1, 16, 16 }, 
+            { RatingsModifierType::BonusScenery,         0, 19521, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingEnterprise,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::standard,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationEnterprise,
     .specialType = RtdSpecialType::enterprise,
 };

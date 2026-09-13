@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class StaffSetOrdersAction final : public GameActionBase<GameCommand::setStaffOrders>
+    class StaffSetOrdersAction final : public GameActionBase<GameCommand::SetStaffOrders>
     {
     private:
         EntityId _spriteIndex{ EntityId::GetNull() };

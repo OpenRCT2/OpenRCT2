@@ -15,7 +15,6 @@
 #include "../../core/Money.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../management/Finance.h"
-#include "../../ride/RideColour.h"
 #include "../../ride/RideData.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackData.h"
@@ -187,7 +186,7 @@ namespace OpenRCT2::GameActions
         for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.rotate(_origin.direction), 0 };
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), 0 };
             auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
             if (!LocationValid(tileCoords))
@@ -236,7 +235,7 @@ namespace OpenRCT2::GameActions
         for (int32_t blockIndex = 0; blockIndex < ted.sequenceData.numSequences; blockIndex++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[blockIndex].clearance;
-            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.rotate(_origin.direction), trackBlock.z };
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
             auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
             auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
 
@@ -270,8 +269,8 @@ namespace OpenRCT2::GameActions
             // When placing from a track design, ignore track elements from the same ride to allow it to intersect itself.
             auto ignoreRideId = _fromTrackDesign ? _rideIndex : RideId::GetNull();
             auto canBuild = MapCanConstructWithClearAt(
-                { mapLoc, baseZ, clearanceZ }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(),
-                { .crossingMode = crossingMode, .ignoreRideId = ignoreRideId });
+                { mapLoc, baseZ, clearanceZ }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                crossingMode, false, ignoreRideId);
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -326,33 +325,28 @@ namespace OpenRCT2::GameActions
                         Status::unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
                 }
 
-                if (!gameState.cheats.disableClearanceChecks)
+                auto waterHeight = surfaceElement->GetWaterHeight();
+                if (waterHeight == 0)
                 {
-                    auto waterHeight = surfaceElement->getWaterHeight();
-                    if (waterHeight == 0)
-                    {
-                        return Result(
-                            Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                            STR_CAN_ONLY_BUILD_THIS_ON_WATER);
-                    }
+                    return Result(
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                }
 
-                    if (waterHeight != baseZ)
+                if (waterHeight != baseZ)
+                {
+                    return Result(
+                        Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_WATER);
+                }
+                waterHeight -= kLandHeightStep;
+                if (waterHeight == surfaceElement->getBaseZ())
+                {
+                    uint8_t slope = surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask;
+                    if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
+                        || slope == kTileSlopeNCornerDown)
                     {
                         return Result(
                             Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
                             STR_CAN_ONLY_BUILD_THIS_ON_WATER);
-                    }
-                    waterHeight -= kLandHeightStep;
-                    if (waterHeight == surfaceElement->getBaseZ())
-                    {
-                        uint8_t slope = surfaceElement->getSlope() & kTileSlopeRaisedCornersMask;
-                        if (slope == kTileSlopeWCornerDown || slope == kTileSlopeSCornerDown || slope == kTileSlopeECornerDown
-                            || slope == kTileSlopeNCornerDown)
-                        {
-                            return Result(
-                                Status::disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
-                                STR_CAN_ONLY_BUILD_THIS_ON_WATER);
-                        }
                     }
                 }
             }
@@ -452,11 +446,11 @@ namespace OpenRCT2::GameActions
         const auto& block0 = ted.sequenceData.sequences[0].clearance;
         auto clearanceHeight = rideEntry->Clearance;
         CoordsXYZ originLocation = CoordsXYZ{ _origin.x, _origin.y, _origin.z }
-            + CoordsXYZ{ CoordsXY{ block0.x, block0.y }.rotate(_origin.direction), block0.z };
+            + CoordsXYZ{ CoordsXY{ block0.x, block0.y }.Rotate(_origin.direction), block0.z };
         for (int32_t blockIndex = 0; blockIndex < ted.sequenceData.numSequences; blockIndex++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[blockIndex].clearance;
-            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.rotate(_origin.direction), trackBlock.z };
+            auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction), trackBlock.z };
             auto mapLoc = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
             auto quarterTile = trackBlock.quarterTile.Rotate(_origin.direction);
@@ -482,7 +476,7 @@ namespace OpenRCT2::GameActions
             auto ignoreRideId = _fromTrackDesign ? _rideIndex : RideId::GetNull();
             auto canBuild = MapCanConstructWithClearAt(
                 mapLocWithClearance, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
-                { .crossingMode = crossingMode, .ignoreRideId = ignoreRideId });
+                kTileSlopeFlat, crossingMode, false, ignoreRideId);
             if (canBuild.error != Status::ok)
             {
                 canBuild.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -494,9 +488,9 @@ namespace OpenRCT2::GameActions
             if (crossingMode == CreateCrossingMode::trackOverPath && !GetFlags().has(CommandFlag::ghost))
             {
                 auto footpathElement = MapGetFootpathElement(mapLoc);
-                if (footpathElement != nullptr && footpathElement->hasAddition())
+                if (footpathElement != nullptr && footpathElement->HasAddition())
                 {
-                    footpathElement->setAddition(0);
+                    footpathElement->SetAddition(0);
                 }
             }
 
@@ -554,7 +548,7 @@ namespace OpenRCT2::GameActions
             supportCosts += (supportHeight / (2 * kCoordsZStep)) * rtd.BuildCosts.SupportPrice;
 
             bool isOrigin = false;
-            if (!ride->overallView.isNull())
+            if (!ride->overallView.IsNull())
             {
                 if (!GetFlags().has(CommandFlag::noSpend))
                 {
@@ -562,7 +556,7 @@ namespace OpenRCT2::GameActions
                 }
             }
 
-            if (isOrigin || ride->overallView.isNull())
+            if (isOrigin || ride->overallView.IsNull())
             {
                 ride->overallView = mapLoc;
             }
@@ -577,11 +571,11 @@ namespace OpenRCT2::GameActions
 
             trackElement->setClearanceZ(clearanceZ);
             trackElement->setDirection(_origin.direction);
-            trackElement->setHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
-            trackElement->setSequenceIndex(blockIndex);
-            trackElement->setRideIndex(_rideIndex);
-            trackElement->setTrackType(_trackType);
-            trackElement->setRideType(_rideType);
+            trackElement->SetHasChain(_trackPlaceFlags.has(LiftHillAndInverted::liftHill));
+            trackElement->SetSequenceIndex(blockIndex);
+            trackElement->SetRideIndex(_rideIndex);
+            trackElement->SetTrackType(_trackType);
+            trackElement->SetRideType(_rideType);
             trackElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             switch (_trackType)
@@ -594,31 +588,31 @@ namespace OpenRCT2::GameActions
                     break;
                 case TrackElemType::brakes:
                 case TrackElemType::diagBrakes:
-                    trackElement->setBrakeClosed(true);
+                    trackElement->SetBrakeClosed(true);
                     break;
                 default:
                     break;
             }
             if (trackTypeHasSpeedSetting(_trackType))
             {
-                trackElement->setBrakeBoosterSpeed(_brakeSpeed);
+                trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
             }
 
             if (rtd.flags.has(RtdFlag::hasLandscapeDoors))
             {
-                trackElement->setDoorAState(kLandEdgeDoorFrameClosed);
-                trackElement->setDoorBState(kLandEdgeDoorFrameClosed);
+                trackElement->SetDoorAState(kLandEdgeDoorFrameClosed);
+                trackElement->SetDoorBState(kLandEdgeDoorFrameClosed);
             }
             else
             {
-                trackElement->setSeatRotation(_seatRotation);
+                trackElement->SetSeatRotation(_seatRotation);
             }
 
             if (_trackPlaceFlags.has(LiftHillAndInverted::inverted))
             {
-                trackElement->setInverted(true);
+                trackElement->SetInverted(true);
             }
-            trackElement->setColourScheme(static_cast<RideColourScheme>(_colour));
+            trackElement->SetColourScheme(static_cast<RideColourScheme>(_colour));
 
             if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::connectsToPath))
             {
@@ -663,7 +657,7 @@ namespace OpenRCT2::GameActions
                 auto* waterSurfaceElement = MapGetSurfaceElementAt(mapLoc);
                 if (waterSurfaceElement != nullptr)
                 {
-                    waterSurfaceElement->setHasTrackThatNeedsWater(true);
+                    waterSurfaceElement->SetHasTrackThatNeedsWater(true);
                     tileElement = waterSurfaceElement->as<TileElement>();
                 }
             }
@@ -746,7 +740,7 @@ namespace OpenRCT2::GameActions
         for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
         {
             const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-            auto rotatedTrack = CoordsXY{ trackBlock.x, trackBlock.y }.rotate(_origin.direction);
+            auto rotatedTrack = CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(_origin.direction);
 
             auto tileCoords = CoordsXY{ _origin.x, _origin.y } + rotatedTrack;
             if (!MapCheckCapacityAndReorganise(tileCoords, numTiles))

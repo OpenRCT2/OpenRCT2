@@ -9,22 +9,97 @@
 
 #include "Drawing.h"
 
+#include "../Context.h"
+#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
+#include "../OpenRCT2.h"
 #include "../SpriteIds.h"
-#include "../interface/ScreenCoords.hpp"
-#include "Drawing.Sprite.h"
-#include "FilterPaletteIds.h"
+#include "../config/Config.h"
+#include "../core/Guard.hpp"
+#include "../object/ObjectEntryManager.h"
+#include "../object/WaterEntry.h"
+#include "../platform/Platform.h"
+#include "../util/Util.h"
+#include "../world/Location.hpp"
+#include "../world/Weather.h"
 #include "Font.h"
-#include "Line.h"
+#include "LightFX.h"
 #include "Rectangle.h"
-#include "RenderTarget.h"
 #include "Text.h"
 
+#include <array>
 #include <cassert>
+#include <cstring>
+#include <numeric>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+
+static constexpr auto kPaletteOffsetDynamic = PaletteIndex::pi10;
+static constexpr uint8_t kPaletteLengthDynamic = 236;
+
+static constexpr uint8_t kPaletteLengthWaterWaves = 5;
+static constexpr uint8_t kPaletteLengthWaterSparkles = 5;
+
+static constexpr auto kPaletteOffsetAnimated = PaletteIndex::waterWaves0;
+static constexpr uint8_t kPaletteLengthAnimated = 16;
+
+static auto _defaultPaletteMapping = []() {
+    std::array<PaletteIndex, 256> res;
+    for (size_t i = 0; i < std::size(res); i++)
+    {
+        res[i] = static_cast<PaletteIndex>(i);
+    }
+    return res;
+}();
+
+PaletteMap PaletteMap::GetDefault()
+{
+    return PaletteMap(_defaultPaletteMapping);
+}
+
+PaletteIndex& PaletteMap::operator[](size_t index)
+{
+    return _data[index];
+}
+
+PaletteIndex PaletteMap::operator[](size_t index) const
+{
+    return _data[index];
+}
+
+PaletteIndex PaletteMap::Blend(PaletteIndex src, PaletteIndex dst) const
+{
+    const auto srcValue = EnumValue(src);
+    const auto dstValue = EnumValue(dst);
+#ifdef _DEBUG
+    // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
+    assert(src != PaletteIndex::transparent);
+    assert(static_cast<size_t>(srcValue - 1) < _numMaps);
+    assert(static_cast<size_t>(dstValue) < _mapLength);
+#endif
+    auto idx = ((srcValue - 1) * 256) + dstValue;
+    return _data[idx];
+}
+
+void PaletteMap::Copy(PaletteIndex dstIndex, const PaletteMap& src, PaletteIndex srcIndex, size_t length)
+{
+    auto srcOffset = EnumValue(srcIndex);
+    auto dstOffset = EnumValue(dstIndex);
+    auto maxLength = std::min(_data.size() - srcOffset, _data.size() - dstOffset);
+    assert(length <= maxLength);
+    auto copyLength = std::min(length, maxLength);
+    std::copy(src._data.begin() + srcOffset, src._data.begin() + srcOffset + copyLength, _data.begin() + dstOffset);
+}
+
+GamePalette gPalette;
+GamePalette gGamePalette;
+uint32_t gPaletteEffectFrame;
+
+ImageId gPickupPeepImage;
+int32_t gPickupPeepX;
+int32_t gPickupPeepY;
 
 bool gPaintForceRedraw{ false };
 
@@ -374,6 +449,143 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[kColourNumTotal] = {
 };
 // clang-format on
 
+ImageCatalogue ImageId::GetCatalogue() const
+{
+    auto index = GetIndex();
+    if (index >= SPR_TEMP_BEGIN && index < SPR_TEMP_END)
+    {
+        return ImageCatalogue::TEMPORARY;
+    }
+    if (index < SPR_RCTC_G1_END)
+    {
+        return ImageCatalogue::G1;
+    }
+    if (index < SPR_G2_END)
+    {
+        return ImageCatalogue::G2;
+    }
+    if (index < SPR_CSG_END)
+    {
+        return ImageCatalogue::CSG;
+    }
+    if (index < SPR_IMAGE_LIST_END)
+    {
+        return ImageCatalogue::OBJECT;
+    }
+    return ImageCatalogue::UNKNOWN;
+}
+
+static auto GetMaskFunction()
+{
+    if (Platform::AVX2Available())
+    {
+        LOG_VERBOSE("registering AVX2 mask function");
+        return MaskAvx2;
+    }
+    else if (Platform::SSE41Available())
+    {
+        LOG_VERBOSE("registering SSE4.1 mask function");
+        return MaskSse4_1;
+    }
+    else
+    {
+        LOG_VERBOSE("registering scalar mask function");
+        return MaskScalar;
+    }
+}
+
+static const auto MaskFunc = GetMaskFunction();
+
+void MaskFn(
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
+    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+{
+    MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
+}
+
+void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
+{
+    Rectangle::filter(rt, { coords, coords }, palette);
+}
+
+/**
+ *
+ *  rct2: 0x00683854
+ * a1 (ebx)
+ * product (cl)
+ */
+void GfxTransposePalette(ImageIndex pal, uint8_t product)
+{
+    const auto* g1 = GfxGetG1Palette(pal);
+    if (g1 == nullptr)
+        return;
+
+    auto index = g1->startIndex;
+    auto* src = g1->palette;
+
+    for (auto numColours = g1->numColours; numColours > 0; numColours--)
+    {
+        auto& dst = gGamePalette[index];
+        // Make sure the image never gets darker than the void colour (not-quite-black), to avoid the background colour
+        // jumping between void and 100% black.
+        dst.blue = std::max<uint8_t>(35, ((src->blue * product) >> 8));
+        dst.green = std::max<uint8_t>(35, ((src->green * product) >> 8));
+        dst.red = std::max<uint8_t>(23, ((src->red * product) >> 8));
+        src++;
+
+        index++;
+    }
+    UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
+}
+
+/**
+ *
+ *  rct2: 0x006837E3
+ */
+void LoadPalette()
+{
+    if (gOpenRCT2NoGraphics)
+    {
+        return;
+    }
+
+    uint32_t palette = SPR_GAME_DEFAULT_PALETTE;
+
+    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
+    if (water_type != nullptr)
+    {
+        Guard::Assert(water_type->mainPalette != kImageIndexUndefined, "Failed to load water palette");
+        palette = water_type->mainPalette;
+    }
+
+    const auto* g1 = GfxGetG1Palette(palette);
+    if (g1 != nullptr)
+    {
+        auto index = g1->startIndex;
+        auto* src = g1->palette;
+        for (auto numColours = g1->numColours; numColours > 0; numColours--)
+        {
+            auto& dst = gGamePalette[index];
+            dst.blue = src->blue;
+            dst.green = src->green;
+            dst.red = src->red;
+            src++;
+            index++;
+        }
+    }
+    UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
+    GfxInvalidateScreen();
+}
+
+/**
+ *
+ *  rct2: 0x006ED7E5
+ */
+void GfxInvalidateScreen()
+{
+    GfxSetDirtyBlocks({ { 0, 0 }, { ContextGetWidth(), ContextGetHeight() } });
+}
+
 /*
  *
  * rct2: 0x006EE53B
@@ -433,6 +645,31 @@ bool ClipRenderTarget(RenderTarget& dst, RenderTarget& src, const ScreenCoordsXY
     return false;
 }
 
+void GfxInvalidatePickedUpPeep()
+{
+    auto imageId = gPickupPeepImage;
+    if (imageId.HasValue())
+    {
+        auto* g1 = GfxGetG1Element(imageId);
+        if (g1 != nullptr)
+        {
+            int32_t left = gPickupPeepX + g1->xOffset;
+            int32_t top = gPickupPeepY + g1->yOffset;
+            int32_t right = left + g1->width;
+            int32_t bottom = top + g1->height;
+            GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
+        }
+    }
+}
+
+void GfxDrawPickedUpPeep(RenderTarget& rt)
+{
+    if (gPickupPeepImage.HasValue())
+    {
+        GfxDrawSprite(rt, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
+    }
+}
+
 std::optional<uint32_t> GetPaletteG1Index(FilterPaletteID paletteId)
 {
     if (EnumValue(paletteId) < kPaletteTotalOffsets)
@@ -459,6 +696,221 @@ std::optional<PaletteMap> GetPaletteMapForColour(FilterPaletteID paletteId)
 FilterPaletteID GetGlassPaletteId(Colour c)
 {
     return kGlassPaletteIds[EnumValue(c)];
+}
+
+void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex, int32_t numColours)
+{
+    for (int32_t i = EnumValue(startIndex); i < numColours + EnumValue(startIndex); i++)
+    {
+        const auto& colour = palette[i];
+        uint8_t b = colour.blue;
+        uint8_t g = colour.green;
+        uint8_t r = colour.red;
+
+        if (LightFx::IsAvailable())
+        {
+            LightFx::ApplyPaletteFilter(i, &r, &g, &b);
+        }
+        else
+        {
+            float night = gDayNightCycle;
+            if (night >= 0 && Weather::gLightningFlash == 0)
+            {
+                r = Lerp(r, SoftLight(r, 8), night);
+                g = Lerp(g, SoftLight(g, 8), night);
+                b = Lerp(b, SoftLight(b, 128), night);
+            }
+        }
+
+        gPalette[i].blue = b;
+        gPalette[i].green = g;
+        gPalette[i].red = r;
+        gPalette[i].alpha = 0;
+    }
+
+    // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
+    gPalette[255].blue = 255;
+    gPalette[255].green = 255;
+    gPalette[255].red = 255;
+    gPalette[255].alpha = 0;
+
+    if (!gOpenRCT2Headless)
+    {
+        DrawingEngineSetPalette(gPalette);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006838BD
+ */
+void UpdatePaletteEffects()
+{
+    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
+
+    if (Weather::gLightningFlash == 1)
+    {
+        // Change palette to lighter colour during lightning
+        int32_t palette = SPR_GAME_DEFAULT_PALETTE;
+
+        if (water_type != nullptr)
+        {
+            palette = water_type->mainPalette;
+        }
+        const auto* g1 = GfxGetG1Palette(palette);
+        if (g1 != nullptr)
+        {
+            auto startIndex = g1->startIndex;
+
+            for (int32_t i = 0; i < g1->numColours; i++)
+            {
+                auto& paletteOffset = gGamePalette[startIndex + i];
+                const auto& g1PaletteEntry = g1->palette[i];
+                paletteOffset.blue = -((0xFF - g1PaletteEntry.blue) / 2) - 1;
+                paletteOffset.green = -((0xFF - g1PaletteEntry.green) / 2) - 1;
+                paletteOffset.red = -((0xFF - g1PaletteEntry.red) / 2) - 1;
+            }
+
+            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
+        }
+        Weather::gLightningFlash++;
+    }
+    else
+    {
+        if (Weather::gLightningFlash == 2)
+        {
+            // Change palette back to normal after lightning
+            int32_t palette = SPR_GAME_DEFAULT_PALETTE;
+
+            if (water_type != nullptr)
+            {
+                palette = water_type->mainPalette;
+            }
+
+            const auto* g1 = GfxGetG1Palette(palette);
+            if (g1 != nullptr)
+            {
+                auto startIndex = g1->startIndex;
+
+                for (int32_t i = 0; i < g1->numColours; i++)
+                {
+                    auto& paletteOffset = gGamePalette[startIndex + i];
+                    const auto& g1PaletteEntry = g1->palette[i];
+                    paletteOffset.blue = g1PaletteEntry.blue;
+                    paletteOffset.green = g1PaletteEntry.green;
+                    paletteOffset.red = g1PaletteEntry.red;
+                }
+            }
+        }
+
+        // Animate the water/lava/chain movement palette
+        uint32_t shade = 0;
+        if (Config::Get().general.renderWeatherGloom)
+        {
+            auto paletteId = Weather::getWeatherGloomPaletteId(getGameState().weatherCurrent);
+            if (paletteId != FilterPaletteID::paletteNull)
+            {
+                shade = 1;
+                if (paletteId != FilterPaletteID::paletteDarken1)
+                {
+                    shade = 2;
+                }
+            }
+        }
+        uint32_t j = gPaletteEffectFrame;
+        j = ((static_cast<uint16_t>((~j / 2) * 128) * 15) >> 16);
+        uint32_t waterId = SPR_GAME_PALETTE_WATER;
+        if (water_type != nullptr)
+        {
+            waterId = water_type->waterWavesPalette;
+        }
+        const auto* g1 = GfxGetG1Palette(shade + waterId);
+        if (g1 != nullptr)
+        {
+            const auto* g1PaletteEntry = &g1->palette[j];
+            int32_t n = kPaletteLengthWaterWaves;
+            for (int32_t i = 0; i < n; i++)
+            {
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::waterWaves0) + i];
+                vd.blue = g1PaletteEntry->blue;
+                vd.green = g1PaletteEntry->green;
+                vd.red = g1PaletteEntry->red;
+                g1PaletteEntry += 3;
+                if (g1PaletteEntry >= &g1->palette[3 * n])
+                {
+                    g1PaletteEntry -= 3 * n;
+                }
+            }
+        }
+
+        waterId = SPR_GAME_PALETTE_3;
+        if (water_type != nullptr)
+        {
+            waterId = water_type->waterSparklesPalette;
+        }
+
+        g1 = GfxGetG1Palette(shade + waterId);
+        if (g1 != nullptr)
+        {
+            auto* src = &g1->palette[j];
+            int32_t n = kPaletteLengthWaterSparkles;
+            for (int32_t i = 0; i < n; i++)
+            {
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::waterSparkles0) + i];
+                vd.blue = src->blue;
+                vd.green = src->green;
+                vd.red = src->red;
+                src += 3;
+                if (src >= &g1->palette[3 * n])
+                {
+                    src -= 3 * n;
+                }
+            }
+        }
+
+        j = (static_cast<uint16_t>(gPaletteEffectFrame * -960) * 3) >> 16;
+        waterId = SPR_GAME_PALETTE_4;
+        g1 = GfxGetG1Palette(shade + waterId);
+        if (g1 != nullptr)
+        {
+            auto* src = &g1->palette[j];
+            const int32_t n = 3;
+            for (int32_t i = 0; i < n; i++)
+            {
+                auto& vd = gGamePalette[EnumValue(PaletteIndex::primaryRemap0) + i];
+                vd.blue = src->blue;
+                vd.green = src->green;
+                vd.red = src->red;
+                src++;
+                if (src >= &g1->palette[3])
+                {
+                    src -= n;
+                }
+            }
+        }
+
+        UpdatePalette(gGamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
+        if (Weather::gLightningFlash == 2)
+        {
+            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
+            Weather::gLightningFlash = 0;
+        }
+    }
+}
+
+void RefreshVideo()
+{
+    ContextRecreateWindow();
+    DrawingEngineSetPalette(gPalette);
+    GfxInvalidateScreen();
+}
+
+void ToggleWindowedMode()
+{
+    int32_t rt = Config::Get().general.fullscreenMode == 0 ? 2 : 0;
+    ContextSetFullscreenMode(rt);
+    Config::Get().general.fullscreenMode = rt;
+    Config::Save();
 }
 
 void DebugRT(RenderTarget& rt)

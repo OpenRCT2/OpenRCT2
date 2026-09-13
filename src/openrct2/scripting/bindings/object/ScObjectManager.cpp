@@ -12,12 +12,10 @@
     #include "ScObjectManager.h"
 
     #include "../../../Context.h"
-    #include "../../../drawing/Palette.h"
     #include "../../../object/ObjectList.h"
     #include "../../../ride/RideData.h"
     #include "../../../windows/Intent.h"
-    #include "ScInstalledObject.hpp"
-    #include "ScObject.hpp"
+    #include "../../ScriptEngine.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -89,7 +87,6 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
 
         JSValue result = JS_NewArray(ctx);
         int64_t index = 0;
-        bool loadedWater = false;
         for (const auto& descriptor : descriptors)
         {
             auto obj = objectManager.LoadObject(descriptor);
@@ -99,9 +96,6 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
                 auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
                 auto scLoadedObject = CreateScObject(ctx, obj->GetObjectType(), objIndex);
                 JS_SetPropertyInt64(ctx, result, index, scLoadedObject);
-
-                if (obj->GetObjectType() == ObjectType::water)
-                    loadedWater = true;
             }
             else
             {
@@ -110,11 +104,6 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
             index++;
         }
         RefreshResearchedItems();
-        if (loadedWater)
-        {
-            Drawing::LoadPalette();
-        }
-
         return result;
     }
     else
@@ -143,12 +132,6 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
                     {
                         MarkAsResearched(obj);
                         RefreshResearchedItems();
-
-                        if (obj->GetObjectType() == ObjectType::water)
-                        {
-                            Drawing::LoadPalette();
-                        }
-
                         auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
                         return CreateScObject(ctx, obj->GetObjectType(), objIndex);
                     }
@@ -161,12 +144,6 @@ JSValue ScObjectManager::load(JSContext* ctx, JSValue thisVal, int argc, JSValue
                 {
                     MarkAsResearched(obj);
                     RefreshResearchedItems();
-
-                    if (obj->GetObjectType() == ObjectType::water)
-                    {
-                        Drawing::LoadPalette();
-                    }
-
                     auto objIndex = objectManager.GetLoadedObjectEntryIndex(obj);
                     return CreateScObject(ctx, obj->GetObjectType(), objIndex);
                 }
@@ -328,10 +305,6 @@ JSValue ScObjectManager::CreateScObject(JSContext* ctx, ObjectType type, int32_t
         case ObjectType::banners:
         {
             return ScBannerObject::New(ctx, type, index);
-        }
-        case ObjectType::footpathSurface:
-        {
-            return ScFootpathSurfaceObject::New(ctx, type, index);
         }
         case ObjectType::sceneryGroup:
         {

@@ -19,7 +19,7 @@ namespace OpenRCT2::GameActions
         EntityId StaffEntityId = EntityId::GetNull();
     };
 
-    class StaffHireNewAction final : public GameActionBase<GameCommand::hireNewStaffMember>
+    class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaffMember>
     {
     private:
         bool _autoPosition{};

@@ -15,6 +15,7 @@
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../core/Guard.hpp"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../object/PathAdditionEntry.h"
@@ -24,13 +25,17 @@
 #include "../../world/Footpath.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
+#include "../../world/Scenery.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/Wall.h"
 #include "../../world/tile_element/EntranceElement.h"
 #include "../../world/tile_element/PathElement.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
+
+#include <algorithm>
 
 namespace OpenRCT2::GameActions
 {
@@ -75,7 +80,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         res.cost = 0;
         res.expenditure = ExpenditureType::landscaping;
-        res.position = _loc.toTileCentre();
+        res.position = _loc.ToTileCentre();
 
         gFootpathGroundFlags = 0;
 
@@ -126,7 +131,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         res.cost = 0;
         res.expenditure = ExpenditureType::landscaping;
-        res.position = _loc.toTileCentre();
+        res.position = _loc.ToTileCentre();
 
         if (!GetFlags().has(CommandFlag::ghost))
         {
@@ -165,10 +170,10 @@ namespace OpenRCT2::GameActions
     bool FootpathPlaceAction::IsSameAsPathElement(const PathElement* pathElement) const
     {
         // Check if both this action and the element is queue
-        if (pathElement->isQueue() != ((_constructFlags & PathConstructFlag::IsQueue) != 0))
+        if (pathElement->IsQueue() != ((_constructFlags & PathConstructFlag::IsQueue) != 0))
             return false;
 
-        auto footpathObj = pathElement->getLegacyPathEntry();
+        auto footpathObj = pathElement->GetLegacyPathEntry();
         if (footpathObj == nullptr)
         {
             if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
@@ -176,12 +181,12 @@ namespace OpenRCT2::GameActions
                 return false;
             }
 
-            return pathElement->getSurfaceEntryIndex() == _type && pathElement->getRailingsEntryIndex() == _railingsType;
+            return pathElement->GetSurfaceEntryIndex() == _type && pathElement->GetRailingsEntryIndex() == _railingsType;
         }
 
         if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
         {
-            return pathElement->getLegacyPathEntryIndex() == _type;
+            return pathElement->GetLegacyPathEntryIndex() == _type;
         }
 
         return false;
@@ -189,11 +194,11 @@ namespace OpenRCT2::GameActions
 
     bool FootpathPlaceAction::IsSameAsEntranceElement(const EntranceElement& entranceElement) const
     {
-        if (entranceElement.hasLegacyPathEntry())
+        if (entranceElement.HasLegacyPathEntry())
         {
             if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
             {
-                return entranceElement.getLegacyPathEntryIndex() == _type;
+                return entranceElement.GetLegacyPathEntryIndex() == _type;
             }
 
             return false;
@@ -204,12 +209,12 @@ namespace OpenRCT2::GameActions
             return false;
         }
 
-        return entranceElement.getSurfaceEntryIndex() == _type;
+        return entranceElement.GetSurfaceEntryIndex() == _type;
     }
 
     Result FootpathPlaceAction::ElementUpdateQuery(PathElement* pathElement, Result res) const
     {
-        if (_constructFlags & PathConstructFlag::IsQueue && pathElement->isLevelCrossing(_loc))
+        if (_constructFlags & PathConstructFlag::IsQueue && pathElement->IsLevelCrossing(_loc))
         {
             return Result(Status::disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_QUEUE_PATHS_CANNOT_BE_USED_FOR_LEVEL_CROSSINGS);
         }
@@ -242,17 +247,17 @@ namespace OpenRCT2::GameActions
 
         if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
         {
-            pathElement->setLegacyPathEntryIndex(_type);
+            pathElement->SetLegacyPathEntryIndex(_type);
         }
         else
         {
-            pathElement->setSurfaceEntryIndex(_type);
-            pathElement->setRailingsEntryIndex(_railingsType);
+            pathElement->SetSurfaceEntryIndex(_type);
+            pathElement->SetRailingsEntryIndex(_railingsType);
         }
 
-        pathElement->setIsQueue((_constructFlags & PathConstructFlag::IsQueue) != 0);
+        pathElement->SetIsQueue((_constructFlags & PathConstructFlag::IsQueue) != 0);
 
-        auto* elem = pathElement->getAdditionEntry();
+        auto* elem = pathElement->GetAdditionEntry();
         if (elem != nullptr)
         {
             if (_constructFlags & PathConstructFlag::IsQueue)
@@ -260,8 +265,8 @@ namespace OpenRCT2::GameActions
                 // remove any addition that isn't a TV or a lamp
                 if ((elem->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) == 0 && (elem->flags & PATH_ADDITION_FLAG_LAMP) == 0)
                 {
-                    pathElement->setIsBroken(false);
-                    pathElement->setAddition(0);
+                    pathElement->SetIsBroken(false);
+                    pathElement->SetAddition(0);
                 }
             }
             else
@@ -269,8 +274,8 @@ namespace OpenRCT2::GameActions
                 // remove all TVs
                 if ((elem->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) != 0)
                 {
-                    pathElement->setIsBroken(false);
-                    pathElement->setAddition(0);
+                    pathElement->SetIsBroken(false);
+                    pathElement->SetAddition(0);
                 }
             }
         }
@@ -300,7 +305,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
-        if (entranceElement != nullptr && (entranceElement->getSequenceIndex()) == ParkEntranceSequence::centre)
+        // Make sure the entrance part is the middle
+        if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
             entrancePath = true;
             // Make the price the same as replacing a path
@@ -315,7 +321,7 @@ namespace OpenRCT2::GameActions
         auto crossingMode = isQueue || (_slope.type != FootpathSlopeType::flat) ? CreateCrossingMode::none
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), { .crossingMode = crossingMode });
+            { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
@@ -367,7 +373,8 @@ namespace OpenRCT2::GameActions
         }
 
         auto entranceElement = MapGetParkEntranceElementAt(_loc, false);
-        if (entranceElement != nullptr && (entranceElement->getSequenceIndex()) == ParkEntranceSequence::centre)
+        // Make sure the entrance part is the middle
+        if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
         {
             entrancePath = true;
             // Make the price the same as replacing a path
@@ -383,7 +390,7 @@ namespace OpenRCT2::GameActions
                                                                                 : CreateCrossingMode::pathOverTrack;
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, zLow, zHigh }, MapPlaceNonSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
-            { .crossingMode = crossingMode });
+            kTileSlopeFlat, crossingMode);
         if (!entrancePath && canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
@@ -408,11 +415,11 @@ namespace OpenRCT2::GameActions
             {
                 if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
                 {
-                    entranceElement->setLegacyPathEntryIndex(_type);
+                    entranceElement->SetLegacyPathEntryIndex(_type);
                 }
                 else
                 {
-                    entranceElement->setSurfaceEntryIndex(_type);
+                    entranceElement->SetSurfaceEntryIndex(_type);
                 }
                 MapInvalidateTileFull(_loc);
             }
@@ -425,20 +432,20 @@ namespace OpenRCT2::GameActions
             pathElement->setClearanceZ(zHigh);
             if (_constructFlags & PathConstructFlag::IsLegacyPathObject)
             {
-                pathElement->setLegacyPathEntryIndex(_type);
+                pathElement->SetLegacyPathEntryIndex(_type);
             }
             else
             {
-                pathElement->setSurfaceEntryIndex(_type);
-                pathElement->setRailingsEntryIndex(_railingsType);
+                pathElement->SetSurfaceEntryIndex(_type);
+                pathElement->SetRailingsEntryIndex(_railingsType);
             }
-            pathElement->setSlopeDirection(_slope.direction);
-            pathElement->setSloped(_slope.type == FootpathSlopeType::sloped);
-            pathElement->setIsQueue(isQueue);
-            pathElement->setAddition(0);
-            pathElement->setRideIndex(RideId::GetNull());
-            pathElement->setAdditionStatus(255);
-            pathElement->setIsBroken(false);
+            pathElement->SetSlopeDirection(_slope.direction);
+            pathElement->SetSloped(_slope.type == FootpathSlopeType::sloped);
+            pathElement->SetIsQueue(isQueue);
+            pathElement->SetAddition(0);
+            pathElement->SetRideIndex(RideId::GetNull());
+            pathElement->SetAdditionStatus(255);
+            pathElement->SetIsBroken(false);
             pathElement->setGhost(GetFlags().has(CommandFlag::ghost));
 
             FootpathQueueChainReset();
@@ -498,9 +505,9 @@ namespace OpenRCT2::GameActions
 
     void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) const
     {
-        if (pathElement->isSloped() && !GetFlags().has(CommandFlag::ghost))
+        if (pathElement->IsSloped() && !GetFlags().has(CommandFlag::ghost))
         {
-            auto direction = pathElement->getSlopeDirection();
+            auto direction = pathElement->GetSlopeDirection();
             int32_t z = pathElement->getBaseZ();
             WallRemoveIntersectingWalls({ _loc, z, z + (6 * kCoordsZStep) }, DirectionReverse(direction));
             WallRemoveIntersectingWalls({ _loc, z, z + (6 * kCoordsZStep) }, direction);
@@ -528,9 +535,9 @@ namespace OpenRCT2::GameActions
         {
             if (pathElement->getBaseZ() != footpathPos.z)
                 continue;
-            if (pathElement->isSloped() != isSloped)
+            if (pathElement->IsSloped() != isSloped)
                 continue;
-            if (isSloped && pathElement->getSlopeDirection() != slope.direction)
+            if (isSloped && pathElement->GetSlopeDirection() != slope.direction)
                 continue;
             return pathElement;
         }

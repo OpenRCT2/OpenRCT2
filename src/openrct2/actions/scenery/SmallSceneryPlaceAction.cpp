@@ -13,15 +13,18 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
+#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/SmallSceneryEntry.h"
+#include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/MapAnimation.h"
+#include "../../world/Park.h"
 #include "../../world/QuarterTile.h"
 #include "../../world/Scenery.h"
 #include "../../world/Wall.h"
@@ -29,6 +32,7 @@
 #include "../../world/tile_element/SmallSceneryElement.h"
 #include "../../world/tile_element/SurfaceElement.h"
 #include "../GameAction.hpp"
+#include "SmallSceneryRemoveAction.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -92,13 +96,14 @@ namespace OpenRCT2::GameActions
             surfaceHeight = waterHeight;
         }
         auto res = Result();
-        auto centre = _loc.toTileCentre();
+        auto centre = _loc.ToTileCentre();
         res.position.x = centre.x;
         res.position.y = centre.y;
         res.position.z = surfaceHeight;
         if (_loc.z != 0)
         {
             surfaceHeight = _loc.z;
+            res.position.z = surfaceHeight;
         }
 
         if (!LocationValid(_loc))
@@ -139,7 +144,7 @@ namespace OpenRCT2::GameActions
         auto loc2 = _loc;
         if (sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
         {
-            loc2 = loc2.toTileCentre();
+            loc2 = loc2.ToTileCentre();
         }
         else
         {
@@ -164,7 +169,6 @@ namespace OpenRCT2::GameActions
         if (_loc.z == 0)
         {
             targetHeight = surfaceHeight;
-            res.position.z = targetHeight;
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
@@ -175,9 +179,9 @@ namespace OpenRCT2::GameActions
 
         auto* surfaceElement = MapGetSurfaceElementAt(_loc);
 
-        if (surfaceElement != nullptr && !gameState.cheats.disableClearanceChecks && surfaceElement->getWaterHeight() > 0)
+        if (surfaceElement != nullptr && !gameState.cheats.disableClearanceChecks && surfaceElement->GetWaterHeight() > 0)
         {
-            int32_t water_height = surfaceElement->getWaterHeight() - 1;
+            int32_t water_height = surfaceElement->GetWaterHeight() - 1;
             if (water_height > targetHeight)
             {
                 return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
@@ -191,9 +195,9 @@ namespace OpenRCT2::GameActions
                 return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
 
-            if (surfaceElement != nullptr && surfaceElement->getWaterHeight() > 0)
+            if (surfaceElement != nullptr && surfaceElement->GetWaterHeight() > 0)
             {
-                if (surfaceElement->getWaterHeight() > targetHeight)
+                if (surfaceElement->GetWaterHeight() > targetHeight)
                 {
                     return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
                 }
@@ -201,8 +205,8 @@ namespace OpenRCT2::GameActions
         }
 
         if (!gameState.cheats.disableClearanceChecks && sceneryEntry->flags.has(SmallSceneryFlag::requiresFlatSurface)
-            && !supportsRequired && surfaceElement != nullptr && surfaceElement->getWaterHeight() == 0
-            && (surfaceElement->getSlope() != kTileSlopeFlat))
+            && !supportsRequired && surfaceElement != nullptr && surfaceElement->GetWaterHeight() == 0
+            && (surfaceElement->GetSlope() != kTileSlopeFlat))
         {
             return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
         }
@@ -214,7 +218,7 @@ namespace OpenRCT2::GameActions
             {
                 if (surfaceElement != nullptr)
                 {
-                    if (surfaceElement->getWaterHeight() > 0 || (surfaceElement->getBaseZ()) != targetHeight)
+                    if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->getBaseZ()) != targetHeight)
                     {
                         return Result(Status::disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
                     }
@@ -265,7 +269,8 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->flags.has(SmallSceneryFlag::isTree);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), { .isTree = isTree });
+            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat, CreateCrossingMode::none,
+            isTree);
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -299,13 +304,14 @@ namespace OpenRCT2::GameActions
             surfaceHeight = waterHeight;
         }
         auto res = Result();
-        auto centre = _loc.toTileCentre();
+        auto centre = _loc.ToTileCentre();
         res.position.x = centre.x;
         res.position.y = centre.y;
         res.position.z = surfaceHeight;
         if (_loc.z != 0)
         {
             surfaceHeight = _loc.z;
+            res.position.z = surfaceHeight;
         }
 
         auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
@@ -353,7 +359,6 @@ namespace OpenRCT2::GameActions
         if (_loc.z == 0)
         {
             targetHeight = surfaceHeight;
-            res.position.z = targetHeight;
         }
 
         if (!GetFlags().has(CommandFlag::ghost))
@@ -404,8 +409,8 @@ namespace OpenRCT2::GameActions
         QuarterTile quarterTile = QuarterTile{ collisionQuadrants, supports }.Rotate(quadRotation);
         const auto isTree = sceneryEntry->flags.has(SmallSceneryFlag::isTree);
         auto canBuild = MapCanConstructWithClearAt(
-            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply),
-            { .isTree = isTree });
+            { _loc, zLow, zHigh }, MapPlaceSceneryClearFunc, quarterTile, GetFlags().with(CommandFlag::apply), kTileSlopeFlat,
+            CreateCrossingMode::none, isTree);
         if (canBuild.error != Status::ok)
         {
             canBuild.errorTitle = STR_CANT_POSITION_THIS_HERE;
@@ -423,23 +428,23 @@ namespace OpenRCT2::GameActions
         }
 
         sceneryElement->setDirection(_loc.direction);
-        sceneryElement->setSceneryQuadrant(quadrant);
-        sceneryElement->setEntryIndex(_sceneryType);
-        sceneryElement->setAge(0);
-        sceneryElement->setPrimaryColour(_primaryColour);
-        sceneryElement->setSecondaryColour(_secondaryColour);
-        sceneryElement->setTertiaryColour(_tertiaryColour);
+        sceneryElement->SetSceneryQuadrant(quadrant);
+        sceneryElement->SetEntryIndex(_sceneryType);
+        sceneryElement->SetAge(0);
+        sceneryElement->SetPrimaryColour(_primaryColour);
+        sceneryElement->SetSecondaryColour(_secondaryColour);
+        sceneryElement->SetTertiaryColour(_tertiaryColour);
         sceneryElement->setClearanceZ(sceneryElement->getBaseZ() + sceneryEntry->height + 7);
         sceneryElement->setGhost(GetFlags().has(CommandFlag::ghost));
         if (supportsRequired)
         {
-            sceneryElement->setNeedsSupports();
+            sceneryElement->SetNeedsSupports();
         }
 
         const auto clearanceData = canBuild.getData<ConstructClearResult>();
         const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         res.setData(
-            SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->getBaseZ(), sceneryElement->getSceneryQuadrant() });
+            SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->getBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
         MapInvalidateTileFull(_loc);
         if (sceneryEntry->flags.has(SmallSceneryFlag::isClock))

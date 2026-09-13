@@ -9,10 +9,9 @@
 
 #pragma once
 
-#include <cstdint>
-#include <functional>
+#include "../Location.hpp"
 
-struct TileCoordsXY;
+#include <functional>
 
 namespace OpenRCT2::World::MapGenerator
 {

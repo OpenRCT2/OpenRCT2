@@ -9,6 +9,7 @@
 
 #include "MapSelection.h"
 
+#include "../interface/Viewport.h"
 #include "Map.h"
 
 MapSelectFlags gMapSelectFlags;
@@ -35,9 +36,9 @@ MapRange getMapSelectRange()
 
 void setMapSelectRange(const MapRange& range)
 {
-    const auto normalised = range.normalise();
-    gMapSelectPositionA = normalised.point1;
-    gMapSelectPositionB = normalised.point2;
+    const auto normalised = range.Normalise();
+    gMapSelectPositionA = normalised.Point1;
+    gMapSelectPositionB = normalised.Point2;
 }
 
 void setMapSelectRange(const CoordsXY coords)

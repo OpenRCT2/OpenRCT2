@@ -1,6 +1,5 @@
 #include "TrackIteration.h"
 
-#include "../ride/RideConstruction.h"
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"
 #include "../world/tile_element/TileElement.h"
@@ -167,12 +166,12 @@ namespace OpenRCT2
                     return nullptr;
                 }
             }
-        } while (!(trackBeginEnd.begin_element->asTrack()->isBlockStart()));
+        } while (!(trackBeginEnd.begin_element->asTrack()->IsBlockStart()));
 
         // Get the start of the track block instead of the end
         location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
         auto trackOrigin = OpenRCT2::MapGetTrackElementAtOfTypeSeq(
-            location, trackBeginEnd.begin_element->asTrack()->getTrackType(), 0);
+            location, trackBeginEnd.begin_element->asTrack()->GetTrackType(), 0);
         if (trackOrigin == nullptr)
         {
             return nullptr;
@@ -214,16 +213,16 @@ namespace OpenRCT2
             if (trackElement == nullptr)
                 continue;
 
-            if (trackElement->getRideIndex() != ride.id)
+            if (trackElement->GetRideIndex() != ride.id)
                 continue;
 
-            if (trackElement->getSequenceIndex() != 0)
+            if (trackElement->GetSequenceIndex() != 0)
                 continue;
 
             if (tileElement->isGhost() != isGhost)
                 continue;
 
-            const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->getTrackType());
+            const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->GetTrackType());
             if (ted.sequenceData.numSequences == 0)
                 continue;
 
@@ -267,13 +266,13 @@ namespace OpenRCT2
         if (inputElement == nullptr)
             return false;
 
-        auto rideIndex = inputElement->getRideIndex();
+        auto rideIndex = inputElement->GetRideIndex();
         const auto* ride = GetRide(rideIndex);
         if (ride == nullptr)
             return false;
 
-        const auto& ted = TrackMetadata::GetTrackElementDescriptor(inputElement->getTrackType());
-        auto sequenceIndex = inputElement->getSequenceIndex();
+        const auto& ted = TrackMetadata::GetTrackElementDescriptor(inputElement->GetTrackType());
+        auto sequenceIndex = inputElement->GetSequenceIndex();
         if (sequenceIndex >= ted.sequenceData.numSequences)
             return false;
 
@@ -289,8 +288,8 @@ namespace OpenRCT2
         CoordsXY coords = { x, y };
         CoordsXY trackCoordOffset = { trackCoordinate.x, trackCoordinate.y };
         CoordsXY trackBlockOffset = { trackBlock.x, trackBlock.y };
-        coords += trackCoordOffset.rotate(rotation);
-        coords += trackBlockOffset.rotate(DirectionReverse(rotation));
+        coords += trackCoordOffset.Rotate(rotation);
+        coords += trackBlockOffset.Rotate(DirectionReverse(rotation));
 
         OriginZ -= trackBlock.z;
         OriginZ += trackCoordinate.zEnd;
@@ -337,14 +336,14 @@ namespace OpenRCT2
             if (trackElement == nullptr)
                 continue;
 
-            if (trackElement->getRideIndex() != ride.id)
+            if (trackElement->GetRideIndex() != ride.id)
                 continue;
 
-            const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->getTrackType());
+            const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->GetTrackType());
             if (ted.sequenceData.numSequences == 0)
                 continue;
 
-            auto sequenceIndex = trackElement->getSequenceIndex();
+            auto sequenceIndex = trackElement->GetSequenceIndex();
             if ((sequenceIndex + 1) != ted.sequenceData.numSequences)
                 continue;
 
@@ -371,7 +370,7 @@ namespace OpenRCT2
 
             CoordsXY coords = { outTrackBeginEnd->begin_x, outTrackBeginEnd->begin_y };
             CoordsXY offsets = { nextTrackCoordinate.x, nextTrackCoordinate.y };
-            coords += offsets.rotate(DirectionReverse(nextRotation));
+            coords += offsets.Rotate(DirectionReverse(nextRotation));
             outTrackBeginEnd->begin_x = coords.x;
             outTrackBeginEnd->begin_y = coords.y;
 
@@ -409,14 +408,14 @@ namespace OpenRCT2
         if (trackElement == nullptr)
             return false;
 
-        const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->getTrackType());
+        const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackElement->GetTrackType());
 
-        auto rideIndex = trackElement->getRideIndex();
+        auto rideIndex = trackElement->GetRideIndex();
         const auto* ride = GetRide(rideIndex);
         if (ride == nullptr)
             return false;
 
-        auto sequenceIndex = trackElement->getSequenceIndex();
+        auto sequenceIndex = trackElement->GetSequenceIndex();
         if (sequenceIndex >= ted.sequenceData.numSequences)
             return false;
 
@@ -428,7 +427,7 @@ namespace OpenRCT2
         uint8_t rotation = trackElement->getDirection();
         CoordsXY coords = CoordsXY{ trackPos };
         CoordsXY offsets = { trackBlock.x, trackBlock.y };
-        coords += offsets.rotate(DirectionReverse(rotation));
+        coords += offsets.Rotate(DirectionReverse(rotation));
 
         z -= trackBlock.z;
         z += trackCoordinate.zBegin;
@@ -449,7 +448,7 @@ namespace OpenRCT2
      */
     bool findTrackGap(const Ride& ride, const CoordsXYE& input, CoordsXYE* output)
     {
-        if (input.element == nullptr || input.element->getType() != TileElementType::track)
+        if (input.element == nullptr || input.element->getType() != TileElementType::Track)
             return false;
 
         const auto& rtd = ride.getRideTypeDescriptor();
@@ -458,7 +457,7 @@ namespace OpenRCT2
 
         auto* windowMgr = Ui::GetWindowManager();
         const WindowBase* w = windowMgr->FindByClass(WindowClass::rideConstruction);
-        if (w != nullptr && _rideConstructionState != RideConstructionState::state0 && _currentRideIndex == ride.id)
+        if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == ride.id)
         {
             RideConstructionInvalidateCurrentTrack();
         }

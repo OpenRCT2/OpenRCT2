@@ -11,17 +11,15 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/JobPool.h"
 #include "../core/Numerics.hpp"
-#include "../drawing/Drawing.Screen.h"
-#include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
-#include "../drawing/NewDrawing.h"
 #include "../drawing/Rectangle.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -47,6 +45,7 @@
 
 #include <cstring>
 #include <list>
+#include <unordered_map>
 
 namespace OpenRCT2
 {
@@ -101,7 +100,7 @@ namespace OpenRCT2
         // If the start location was invalid
         // propagate the invalid location to the output.
         // This fixes a bug that caused the game to enter an infinite loop.
-        if (loc.isNull())
+        if (loc.IsNull())
         {
             return std::nullopt;
         }
@@ -121,7 +120,7 @@ namespace OpenRCT2
                     return arg;
                 else if constexpr (std::is_same_v<T, EntityFocus>)
                 {
-                    auto* centreEntity = getGameState().entities.getEntity(arg);
+                    auto* centreEntity = getGameState().entities.GetEntity(arg);
                     if (centreEntity != nullptr)
                     {
                         return CoordsXYZ{ centreEntity->x, centreEntity->y, centreEntity->z };
@@ -305,9 +304,9 @@ namespace OpenRCT2
         if (window != nullptr)
         {
             // skip current window and non-intersecting windows
-            if (window == originalWindow || drawRect.getRight() <= window->windowPos.x
-                || drawRect.getLeft() >= window->windowPos.x + window->width || drawRect.getBottom() <= window->windowPos.y
-                || drawRect.getTop() >= window->windowPos.y + window->height)
+            if (window == originalWindow || drawRect.GetRight() <= window->windowPos.x
+                || drawRect.GetLeft() >= window->windowPos.x + window->width || drawRect.GetBottom() <= window->windowPos.y
+                || drawRect.GetTop() >= window->windowPos.y + window->height)
             {
                 auto itWindowPos = WindowGetIterator(window);
                 // Get next valid window after.
@@ -324,52 +323,52 @@ namespace OpenRCT2
                 return;
             }
 
-            if (drawRect.getLeft() < window->windowPos.x)
+            if (drawRect.GetLeft() < window->windowPos.x)
             {
-                ScreenRect leftRect = { drawRect.point1, { window->windowPos.x, drawRect.getBottom() } };
+                ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x, drawRect.GetBottom() } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
 
-                ScreenRect rightRect = { { window->windowPos.x, drawRect.getTop() }, drawRect.point2 };
+                ScreenRect rightRect = { { window->windowPos.x, drawRect.GetTop() }, drawRect.Point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
-            else if (drawRect.getRight() > window->windowPos.x + window->width)
+            else if (drawRect.GetRight() > window->windowPos.x + window->width)
             {
-                ScreenRect leftRect = { drawRect.point1, { window->windowPos.x + window->width, drawRect.getBottom() } };
+                ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x + window->width, drawRect.GetBottom() } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
 
-                ScreenRect rightRect = { { window->windowPos.x + window->width, drawRect.getTop() }, drawRect.point2 };
+                ScreenRect rightRect = { { window->windowPos.x + window->width, drawRect.GetTop() }, drawRect.Point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
-            else if (drawRect.getTop() < window->windowPos.y)
+            else if (drawRect.GetTop() < window->windowPos.y)
             {
-                ScreenRect topRect = { drawRect.point1, { drawRect.getRight(), window->windowPos.y } };
+                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
-                ScreenRect bottomRect = { { drawRect.getLeft(), window->windowPos.y }, drawRect.point2 };
+                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y }, drawRect.Point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, bottomRect);
             }
-            else if (drawRect.getBottom() > window->windowPos.y + window->height)
+            else if (drawRect.GetBottom() > window->windowPos.y + window->height)
             {
-                ScreenRect topRect = { drawRect.point1, { drawRect.getRight(), window->windowPos.y + window->height } };
+                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y + window->height } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
-                ScreenRect bottomRect = { { drawRect.getLeft(), window->windowPos.y + window->height }, drawRect.point2 };
+                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y + window->height }, drawRect.Point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, bottomRect);
             }
         }
         else
         {
-            auto left = drawRect.getLeft();
-            auto right = drawRect.getRight();
-            auto top = drawRect.getTop();
-            auto bottom = drawRect.getBottom();
+            auto left = drawRect.GetLeft();
+            auto right = drawRect.GetRight();
+            auto top = drawRect.GetTop();
+            auto bottom = drawRect.GetBottom();
 
             // if moved more than the draw rectangle size
-            if (abs(shift.x) < drawRect.getWidth() && abs(shift.y) < drawRect.getHeight())
+            if (abs(shift.x) < drawRect.GetWidth() && abs(shift.y) < drawRect.GetHeight())
             {
                 // update whole block ?
                 DrawingEngineCopyRect(
-                    drawRect.getLeft(), drawRect.getTop(), drawRect.getWidth(), drawRect.getHeight(), shift.x, shift.y);
+                    drawRect.GetLeft(), drawRect.GetTop(), drawRect.GetWidth(), drawRect.GetHeight(), shift.x, shift.y);
 
                 if (shift.x > 0)
                 {
@@ -420,20 +419,20 @@ namespace OpenRCT2
             if (w->viewport == window->viewport)
                 continue;
 
-            if (drawRect.getRight() <= w->windowPos.x)
+            if (drawRect.GetRight() <= w->windowPos.x)
                 continue;
-            if (w->windowPos.x + w->width <= drawRect.getLeft())
-                continue;
-
-            if (drawRect.getBottom() <= w->windowPos.y)
-                continue;
-            if (w->windowPos.y + w->height <= drawRect.getTop())
+            if (w->windowPos.x + w->width <= drawRect.GetLeft())
                 continue;
 
-            const int32_t left = std::max(w->windowPos.x, drawRect.getLeft());
-            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.getRight());
-            const int32_t top = std::max(w->windowPos.y, drawRect.getTop());
-            const int32_t bottom = std::min(w->windowPos.y + w->height, drawRect.getBottom());
+            if (drawRect.GetBottom() <= w->windowPos.y)
+                continue;
+            if (w->windowPos.y + w->height <= drawRect.GetTop())
+                continue;
+
+            const int32_t left = std::max(w->windowPos.x, drawRect.GetLeft());
+            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.GetRight());
+            const int32_t top = std::max(w->windowPos.y, drawRect.GetTop());
+            const int32_t bottom = std::min(w->windowPos.y + w->height, drawRect.GetBottom());
 
             if (left >= right || top >= bottom)
                 continue;
@@ -473,7 +472,7 @@ namespace OpenRCT2
         }
         else
         {
-            Drawing::GfxInvalidateScreen();
+            GfxInvalidateScreen();
         }
     }
 
@@ -612,7 +611,7 @@ namespace OpenRCT2
     {
         if (!window->viewportTargetSprite.IsNull() && window->viewport != nullptr)
         {
-            auto* sprite = getGameState().entities.getEntity(window->viewportTargetSprite);
+            auto* sprite = getGameState().entities.GetEntity(window->viewportTargetSprite);
             if (sprite == nullptr)
             {
                 return;
@@ -636,7 +635,7 @@ namespace OpenRCT2
 
     void ViewportUpdateSmartFollowEntity(WindowBase* window)
     {
-        auto entity = getGameState().entities.tryGetEntity(window->viewportSmartFollowSprite);
+        auto entity = getGameState().entities.TryGetEntity(window->viewportSmartFollowSprite);
         if (entity == nullptr || entity->type == EntityType::null)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
@@ -682,7 +681,7 @@ namespace OpenRCT2
         Focus focus = Focus(peep.id);
         window->viewportTargetSprite = peep.id;
 
-        if (peep.state == PeepState::picked)
+        if (peep.State == PeepState::picked)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();
@@ -691,16 +690,16 @@ namespace OpenRCT2
         }
 
         bool overallFocus = true;
-        if (peep.state == PeepState::onRide || peep.state == PeepState::enteringRide
-            || (peep.state == PeepState::leavingRide && peep.x == kLocationNull))
+        if (peep.State == PeepState::onRide || peep.State == PeepState::enteringRide
+            || (peep.State == PeepState::leavingRide && peep.x == kLocationNull))
         {
-            auto ride = GetRide(peep.currentRide);
+            auto ride = GetRide(peep.CurrentRide);
             if (ride != nullptr && ride->flags.has(RideFlag::onTrack))
             {
-                auto train = getGameState().entities.getEntity<Vehicle>(ride->vehicles[peep.currentTrain]);
+                auto train = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
                 if (train != nullptr)
                 {
-                    const auto car = train->GetCar(peep.currentCar);
+                    const auto car = train->GetCar(peep.CurrentCar);
                     if (car != nullptr)
                     {
                         focus = Focus(car->id);
@@ -713,10 +712,10 @@ namespace OpenRCT2
 
         if (peep.x == kLocationNull && overallFocus)
         {
-            auto ride = GetRide(peep.currentRide);
+            auto ride = GetRide(peep.CurrentRide);
             if (ride != nullptr)
             {
-                auto xy = ride->overallView.toTileCentre();
+                auto xy = ride->overallView.ToTileCentre();
                 CoordsXYZ coordFocus;
                 coordFocus.x = xy.x;
                 coordFocus.y = xy.y;
@@ -731,7 +730,7 @@ namespace OpenRCT2
 
     void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep)
     {
-        if (peep.state == PeepState::picked)
+        if (peep.State == PeepState::picked)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();
@@ -1060,12 +1059,12 @@ namespace OpenRCT2
 
         if (direction != nullptr)
             *direction = my_direction;
-        return { mapCoords->toTileStart() };
+        return { mapCoords->ToTileStart() };
     }
 
     [[nodiscard]] bool Viewport::ContainsTile(const TileCoordsXY coords) const noexcept
     {
-        const auto centreCoords = coords.toCoordsXY() + CoordsXY(kCoordsXYHalfTile, kCoordsXYHalfTile);
+        const auto centreCoords = coords.ToCoordsXY() + CoordsXY(kCoordsXYHalfTile, kCoordsXYHalfTile);
         const auto screenPos = Translate3DTo2DWithZ(rotation, CoordsXYZ{ centreCoords, 0 });
         const auto left = screenPos.x - kScreenCoordsTileWidthHalf;
         const auto top = screenPos.y - (kMaxTileElementHeight * kCoordsZStep) - kScreenCoordsTileHeightHalf;
@@ -1107,7 +1106,7 @@ namespace OpenRCT2
         // Reverse of Translate3DTo2DWithZ
         CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
         auto inverseRotation = DirectionFlipXAxis(rotation);
-        return ret.rotate(inverseRotation);
+        return ret.Rotate(inverseRotation);
     }
 
     /**
@@ -1296,8 +1295,8 @@ namespace OpenRCT2
     {
         switch (cursor)
         {
-            case CursorID::treeDown:
-            case CursorID::flowerDown:
+            case CursorID::TreeDown:
+            case CursorID::FlowerDown:
                 return true;
             default:
                 return false;
@@ -1308,10 +1307,10 @@ namespace OpenRCT2
     {
         switch (tileElement->getType())
         {
-            case TileElementType::smallScenery:
+            case TileElementType::SmallScenery:
             {
                 auto sceneryItem = tileElement->asSmallScenery();
-                auto sceneryEntry = sceneryItem->getEntry();
+                auto sceneryEntry = sceneryItem->GetEntry();
                 if (sceneryEntry != nullptr
                     && (sceneryEntry->flags.has(SmallSceneryFlag::isTree) || IsCursorIdVegetation(sceneryEntry->tool_id)))
                 {
@@ -1319,20 +1318,20 @@ namespace OpenRCT2
                 }
                 break;
             }
-            case TileElementType::largeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto sceneryItem = tileElement->asLargeScenery();
-                auto sceneryEntry = sceneryItem->getEntry();
+                auto sceneryEntry = sceneryItem->GetEntry();
                 if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
                 {
                     return true;
                 }
                 break;
             }
-            case TileElementType::wall:
+            case TileElementType::Wall:
             {
                 auto sceneryItem = tileElement->asWall();
-                auto sceneryEntry = sceneryItem->getEntry();
+                auto sceneryEntry = sceneryItem->GetEntry();
                 if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
                 {
                     return true;
@@ -1474,11 +1473,18 @@ namespace OpenRCT2
     /**
      * Checks if a PaintStruct sprite type is in the filter mask.
      */
-    static bool PSInteractionTypeIsInFilter(PaintStruct* ps, ViewportInteractionItems filter)
+    static bool PSInteractionTypeIsInFilter(PaintStruct* ps, uint16_t filter)
     {
-        return (ps->InteractionItem != ViewportInteractionItem::none && ps->InteractionItem != ViewportInteractionItem::label
-                && ps->InteractionItem <= ViewportInteractionItem::banner)
-            && filter.has(ps->InteractionItem);
+        if (ps->InteractionItem != ViewportInteractionItem::none && ps->InteractionItem != ViewportInteractionItem::label
+            && ps->InteractionItem <= ViewportInteractionItem::banner)
+        {
+            auto mask = EnumToFlag(ps->InteractionItem);
+            if (filter & mask)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -1641,8 +1647,7 @@ namespace OpenRCT2
      *
      *  rct2: 0x0068862C
      */
-    InteractionInfo SetInteractionInfoFromPaintSession(
-        PaintSession* session, uint32_t viewFlags, ViewportInteractionItems filter)
+    InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32_t viewFlags, uint16_t filter)
     {
         PROFILED_FUNCTION();
 
@@ -1699,15 +1704,14 @@ namespace OpenRCT2
      * tileElement: edx
      * viewport: edi
      */
-    InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags)
+    InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags)
     {
         auto* windowMgr = Ui::GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         return GetMapCoordinatesFromPosWindow(window, screenCoords, flags);
     }
 
-    InteractionInfo GetMapCoordinatesFromPosWindow(
-        WindowBase* window, const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags)
+    InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags)
     {
         InteractionInfo info{};
         if (window == nullptr || window->viewport == nullptr)
@@ -1743,7 +1747,7 @@ namespace OpenRCT2
             PaintSession* session = PaintSessionAlloc(rt, viewport->flags, viewport->rotation);
             PaintSessionGenerate(*session);
             PaintSessionArrange(*session);
-            info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags);
+            info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags & 0xFFFF);
             PaintSessionFree(session);
         }
         return info;
@@ -1760,18 +1764,18 @@ namespace OpenRCT2
         auto viewPos = viewport->viewPos;
         auto viewportScreenPos = viewport->pos;
 
-        ScreenRect invalidRect = { { zoom.ApplyInversedTo(screenRect.getLeft() - viewPos.x),
-                                     zoom.ApplyInversedTo(screenRect.getTop() - viewPos.y) },
-                                   { zoom.ApplyInversedTo(screenRect.getRight() - viewPos.x),
-                                     zoom.ApplyInversedTo(screenRect.getBottom() - viewPos.y) } };
+        ScreenRect invalidRect = { { zoom.ApplyInversedTo(screenRect.GetLeft() - viewPos.x),
+                                     zoom.ApplyInversedTo(screenRect.GetTop() - viewPos.y) },
+                                   { zoom.ApplyInversedTo(screenRect.GetRight() - viewPos.x),
+                                     zoom.ApplyInversedTo(screenRect.GetBottom() - viewPos.y) } };
 
-        if (invalidRect.getTop() >= viewport->height || invalidRect.getBottom() <= 0 || invalidRect.getLeft() >= viewport->width
-            || invalidRect.getRight() <= 0)
+        if (invalidRect.GetTop() >= viewport->height || invalidRect.GetBottom() <= 0 || invalidRect.GetLeft() >= viewport->width
+            || invalidRect.GetRight() <= 0)
         {
             return;
         }
-        invalidRect.point1 += viewportScreenPos;
-        invalidRect.point2 += viewportScreenPos;
+        invalidRect.Point1 += viewportScreenPos;
+        invalidRect.Point2 += viewportScreenPos;
         GfxSetDirtyBlocks(invalidRect);
     }
 
@@ -1815,14 +1819,14 @@ namespace OpenRCT2
             return std::nullopt;
         }
         auto myViewport = window->viewport;
-        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, ViewportInteractionItem::terrain);
+        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
         if (info.interactionType == ViewportInteractionItem::none)
         {
             return std::nullopt;
         }
 
         auto start_vp_pos = myViewport->ScreenToViewportCoord(screenCoords);
-        CoordsXY cursorMapPos = info.Loc.toTileCentre();
+        CoordsXY cursorMapPos = info.Loc.ToTileCentre();
 
         // Iterates the cursor location to work out exactly where on the tile it is
         for (int32_t i = 0; i < 5; i++)
@@ -1872,7 +1876,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *quadrant = MapGetTileQuadrant(*mapCoords);
-        return mapCoords->toTileStart();
+        return mapCoords->ToTileStart();
     }
 
     /**
@@ -1886,7 +1890,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *quadrant = MapGetTileQuadrant(*mapCoords);
-        return mapCoords->toTileStart();
+        return mapCoords->ToTileStart();
     }
 
     /**
@@ -1900,7 +1904,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *side = MapGetTileSide(*mapCoords);
-        return mapCoords->toTileStart();
+        return mapCoords->ToTileStart();
     }
 
     /**
@@ -1914,12 +1918,12 @@ namespace OpenRCT2
             return std::nullopt;
 
         *side = MapGetTileSide(*mapCoords);
-        return mapCoords->toTileStart();
+        return mapCoords->ToTileStart();
     }
 
     ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos)
     {
-        auto rotated = pos.rotate(rotation);
+        auto rotated = pos.Rotate(rotation);
         // Use right shift to avoid issues like #9301
         return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
     }

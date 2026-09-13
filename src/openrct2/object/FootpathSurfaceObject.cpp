@@ -10,9 +10,10 @@
 #include "FootpathSurfaceObject.h"
 
 #include "../core/Guard.hpp"
+#include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../interface/ScreenCoords.hpp"
+#include "../drawing/Image.h"
 #include "FootpathEntry.h"
 #include "ObjectRepository.h"
 

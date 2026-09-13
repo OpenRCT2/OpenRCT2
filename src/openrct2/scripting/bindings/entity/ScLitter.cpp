@@ -11,7 +11,6 @@
 
     #include "ScLitter.hpp"
 
-    #include "../../../GameState.h"
     #include "../../../core/EnumMap.hpp"
     #include "../../../entity/Litter.h"
 
@@ -52,7 +51,7 @@ namespace OpenRCT2::Scripting
     Litter* ScLitter::GetLitter(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.getEntity<Litter>(id);
+        return getGameState().entities.GetEntity<Litter>(id);
     }
 
     JSValue ScLitter::litterType_get(JSContext* ctx, JSValue thisVal)

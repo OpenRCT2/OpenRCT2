@@ -2,18 +2,19 @@
 
 #include "../../object/BannerSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
+#include "../../object/ObjectManager.h"
 #include "../Banner.h"
 
 namespace OpenRCT2
 {
-    Banner* BannerElement::getBanner() const
+    Banner* BannerElement::GetBanner() const
     {
-        return ::GetBanner(getIndex());
+        return ::GetBanner(GetIndex());
     }
 
-    const BannerSceneryEntry* BannerElement::getEntry() const
+    const BannerSceneryEntry* BannerElement::GetEntry() const
     {
-        auto banner = getBanner();
+        auto banner = GetBanner();
         if (banner != nullptr)
         {
             return OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
@@ -21,39 +22,39 @@ namespace OpenRCT2
         return nullptr;
     }
 
-    BannerIndex BannerElement::getIndex() const
+    BannerIndex BannerElement::GetIndex() const
     {
         return index;
     }
 
-    void BannerElement::setIndex(BannerIndex newIndex)
+    void BannerElement::SetIndex(BannerIndex newIndex)
     {
         index = newIndex;
     }
 
-    uint8_t BannerElement::getPosition() const
+    uint8_t BannerElement::GetPosition() const
     {
         return position;
     }
 
-    void BannerElement::setPosition(uint8_t newPosition)
+    void BannerElement::SetPosition(uint8_t newPosition)
     {
         position = newPosition;
     }
 
-    uint8_t BannerElement::getAllowedEdges() const
+    uint8_t BannerElement::GetAllowedEdges() const
     {
-        return allowedEdges & 0b00001111;
+        return AllowedEdges & 0b00001111;
     }
 
-    void BannerElement::setAllowedEdges(uint8_t newEdges)
+    void BannerElement::SetAllowedEdges(uint8_t newEdges)
     {
-        allowedEdges &= ~0b00001111;
-        allowedEdges |= (newEdges & 0b00001111);
+        AllowedEdges &= ~0b00001111;
+        AllowedEdges |= (newEdges & 0b00001111);
     }
 
-    void BannerElement::resetAllowedEdges()
+    void BannerElement::ResetAllowedEdges()
     {
-        allowedEdges |= 0b00001111;
+        AllowedEdges |= 0b00001111;
     }
 } // namespace OpenRCT2

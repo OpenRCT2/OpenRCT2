@@ -12,35 +12,37 @@
     #include "ScPark.hpp"
 
     #include "../../../Context.h"
+    #include "../../../Date.h"
     #include "../../../GameState.h"
-    #include "../../../core/EnumMap.hpp"
-    #include "../../../drawing/Drawing.Screen.h"
+    #include "../../../core/String.hpp"
+    #include "../../../drawing/Drawing.h"
+    #include "../../../entity/Guest.h"
+    #include "../../../management/Finance.h"
+    #include "../../../management/NewsItem.h"
     #include "../../../ui/WindowManager.h"
     #include "../../../windows/Intent.h"
     #include "../../../world/Park.h"
-    #include "../../../world/ParkData.h"
+    #include "../../ScriptEngine.h"
     #include "../entity/ScGuest.hpp"
-    #include "ScAward.hpp"
     #include "ScParkMessage.hpp"
-    #include "ScResearch.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    static const EnumMap<ParkFlag> kParkFlagMap(
+    static const EnumMap<uint64_t> ParkFlagMap(
         {
-            { "open", ParkFlag::parkOpen },
-            { "scenarioCompleteNameInput", ParkFlag::scenarioCompleteNameInput },
-            { "forbidLandscapeChanges", ParkFlag::forbidLandscapeChanges },
-            { "forbidTreeRemoval", ParkFlag::forbidTreeRemoval },
-            { "forbidHighConstruction", ParkFlag::forbidHighConstruction },
-            { "preferLessIntenseRides", ParkFlag::guestPreferLessIntenseRides },
-            { "forbidMarketingCampaigns", ParkFlag::forbidMarketingCampaigns },
-            { "preferMoreIntenseRides", ParkFlag::guestPreferMoreIntenseRides },
-            { "noMoney", ParkFlag::noMoney },
-            { "difficultGuestGeneration", ParkFlag::difficultGuestGeneration },
-            { "freeParkEntry", ParkFlag::freeEntry },
-            { "difficultParkRating", ParkFlag::difficultParkRating },
-            { "unlockAllPrices", ParkFlag::unlockAllPrices },
+            { "open", PARK_FLAGS_PARK_OPEN },
+            { "scenarioCompleteNameInput", PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT },
+            { "forbidLandscapeChanges", PARK_FLAGS_FORBID_LANDSCAPE_CHANGES },
+            { "forbidTreeRemoval", PARK_FLAGS_FORBID_TREE_REMOVAL },
+            { "forbidHighConstruction", PARK_FLAGS_FORBID_HIGH_CONSTRUCTION },
+            { "preferLessIntenseRides", PARK_FLAGS_PREF_LESS_INTENSE_RIDES },
+            { "forbidMarketingCampaigns", PARK_FLAGS_FORBID_MARKETING_CAMPAIGN },
+            { "preferMoreIntenseRides", PARK_FLAGS_PREF_MORE_INTENSE_RIDES },
+            { "noMoney", PARK_FLAGS_NO_MONEY },
+            { "difficultGuestGeneration", PARK_FLAGS_DIFFICULT_GUEST_GENERATION },
+            { "freeParkEntry", PARK_FLAGS_PARK_FREE_ENTRY },
+            { "difficultParkRating", PARK_FLAGS_DIFFICULT_PARK_RATING },
+            { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
         });
 
     JSValue ScPark::cash_get(JSContext* ctx, JSValue thisVal)
@@ -159,8 +161,6 @@ namespace OpenRCT2::Scripting
     {
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         auto guest = Park::GenerateGuest();
-        if (guest == nullptr)
-            return JS_NULL;
         return ScGuest::New(ctx, guest->id);
     }
 
@@ -322,7 +322,7 @@ namespace OpenRCT2::Scripting
         if (park.name != valueStr)
         {
             park.name = std::move(valueStr);
-            Drawing::GfxInvalidateScreen();
+            GfxInvalidateScreen();
         }
         return JS_UNDEFINED;
     }
@@ -330,8 +330,8 @@ namespace OpenRCT2::Scripting
     JSValue ScPark::getFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         JS_UNPACK_STR(key, ctx, argv[0])
-        const auto flag = kParkFlagMap[key];
-        return JS_NewBool(ctx, getGameState().park.flags.has(flag));
+        auto mask = ParkFlagMap[key];
+        return JS_NewBool(ctx, (getGameState().park.flags & mask) != 0);
     }
 
     JSValue ScPark::setFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -340,10 +340,13 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, argv[1]);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
-        const auto flag = kParkFlagMap[key];
+        auto mask = ParkFlagMap[key];
         auto& gameState = getGameState();
-        gameState.park.flags.set(flag, value);
-        Drawing::GfxInvalidateScreen();
+        if (value)
+            gameState.park.flags |= mask;
+        else
+            gameState.park.flags &= ~mask;
+        GfxInvalidateScreen();
         return JS_UNDEFINED;
     }
 

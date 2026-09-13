@@ -11,11 +11,14 @@
 
     #include "CustomMenu.h"
 
+    #include "../interface/Viewport.h"
+
     #include <openrct2-ui/UiContext.h>
     #include <openrct2-ui/input/ShortcutManager.h>
+    #include <openrct2/Input.h>
     #include <openrct2/core/EnumMap.hpp>
-    #include <openrct2/interface/Viewport.h>
     #include <openrct2/scripting/ScriptUtil.hpp>
+    #include <openrct2/ui/UiContext.h>
     #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
 
@@ -61,7 +64,7 @@ namespace OpenRCT2::Scripting
         scriptEngine.ExecutePluginCall(Owner, Callback.callback, {}, false);
     }
 
-    static constexpr std::array<std::string_view, EnumValue(CursorID::count)> kCursorNames = {
+    static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
         "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
         "picker",        "tree_down",  "fountain_down", "statue_down",   "bench_down", "cross_hair",  "bin_down",
         "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
@@ -71,9 +74,9 @@ namespace OpenRCT2::Scripting
     JSValue CursorIDToJSValue(JSContext* ctx, CursorID id)
     {
         auto idVal = EnumValue(id);
-        if (idVal < kCursorNames.size())
+        if (idVal < CursorNames.size())
         {
-            return JSFromStdString(ctx, kCursorNames[idVal]);
+            return JSFromStdString(ctx, CursorNames[idVal]);
         }
         return JS_UNDEFINED;
     }
@@ -83,15 +86,15 @@ namespace OpenRCT2::Scripting
         if (JS_IsString(value))
         {
             std::string valueStr = JSToStdString(ctx, value);
-            for (uint8_t i = 0; i < EnumValue(CursorID::count); i++)
+            for (uint8_t i = 0; i < EnumValue(CursorID::Count); i++)
             {
-                if (kCursorNames[i] == valueStr)
+                if (CursorNames[i] == valueStr)
                 {
                     return static_cast<CursorID>(i);
                 }
             }
         }
-        return CursorID::arrow;
+        return CursorID::Arrow;
     }
 
     static const EnumMap<ViewportInteractionItem> ToolFilterMap{
@@ -263,14 +266,14 @@ namespace OpenRCT2::Scripting
             JSValue filter = JS_GetPropertyStr(ctx, value, "filter");
             if (JS_IsArray(filter))
             {
-                customTool.Filter.clearAll();
+                customTool.Filter = 0;
                 int64_t len = -1;
                 JS_GetLength(ctx, filter, &len);
                 for (int64_t i = 0; i < len; i++)
                 {
                     JSValue curFilter = JS_GetPropertyInt64(ctx, filter, i);
                     auto elem = FilterJSValToEnum(ctx, curFilter);
-                    customTool.Filter.set(elem);
+                    customTool.Filter |= static_cast<uint32_t>(EnumToFlag(elem));
                     JS_FreeValue(ctx, curFilter);
                 }
             }

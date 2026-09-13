@@ -12,13 +12,12 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
-#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor kObservationTowerRTD =
+constexpr RideTypeDescriptor ObservationTowerRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::towerBase,
@@ -32,11 +31,11 @@ constexpr RideTypeDescriptor kObservationTowerRTD =
                      RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
-    .rideModes = { RideMode::rotatingLift },
+    .RideModes = EnumsToFlags(RideMode::rotatingLift),
     .DefaultMode = RideMode::rotatingLift,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },
-    .NameConvention = { RideComponentType::cabin, RideComponentType::track, RideComponentType::station },
+    .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::vehicleMalfunction },
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
@@ -54,20 +53,20 @@ constexpr RideTypeDescriptor kObservationTowerRTD =
         { Drawing::Colour::white, Drawing::Colour::yellow, Drawing::Colour::grey },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_TRACK, SPR_RIDE_DESIGN_PREVIEW_OBSERVATION_TOWER_SUPPORTS },
-    .ColourKey = RideColourKey::ride,
+    .ColourKey = RideColourKey::Ride,
     .Name = "observation_tower",
     .RatingsData =
     {
-        RatingsCalculationType::normal,
+        RatingsCalculationType::Normal,
         { RideRating::make(1, 50), RideRating::make(0, 00), RideRating::make(0, 10) },
         15,
         7,
         false,
         {
-            { RatingsModifierType::bonusProximity,         0, 20130, 0, 0 },
-            { RatingsModifierType::bonusScenery,           0, 83662, 0, 0 },
-            { RatingsModifierType::bonusTowerRide,       0, 45875, 0, 26214 },
-            { RatingsModifierType::requirementUnsheltered, 5, 4, 1, 1 },
+            { RatingsModifierType::BonusProximity,         0, 20130, 0, 0 },
+            { RatingsModifierType::BonusScenery,           0, 83662, 0, 0 },
+            { RatingsModifierType::BonusTowerRide,       0, 45875, 0, 26214 },
+            { RatingsModifierType::RequirementUnsheltered, 5, 4, 1, 1 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
