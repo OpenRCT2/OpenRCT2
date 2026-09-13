@@ -534,7 +534,7 @@ namespace OpenRCT2::ObjectFactory
             throw std::runtime_error("Object JSON root was not an object");
         }
 
-        LOG_VERBOSE("CreateObjectFromJson(...) PATH = %.*s", static_cast<int>(path.length()), path.data());
+        LOG_VERBOSE("CreateObjectFromJson(...)");
 
         std::unique_ptr<Object> result;
 
