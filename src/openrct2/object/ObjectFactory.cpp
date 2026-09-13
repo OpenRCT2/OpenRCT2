@@ -534,14 +534,13 @@ namespace OpenRCT2::ObjectFactory
             throw std::runtime_error("Object JSON root was not an object");
         }
 
-        LOG_VERBOSE("CreateObjectFromJson(...)");
+        LOG_VERBOSE("CreateObjectFromJson(...) PATH = %.*s", static_cast<int>(path.length()), path.data());
 
         std::unique_ptr<Object> result;
 
         if (!jRoot["objectType"].is_string())
         {
-            LOG_VERBOSE("Ignoring JSON file (%.*s): objectType is not a string",
-                static_cast<int>(path.length()), path.data());
+            LOG_VERBOSE("Ignoring JSON file (%.*s): objectType is not a string", static_cast<int>(path.length()), path.data());
             return nullptr;
         }
 
