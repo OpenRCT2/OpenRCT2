@@ -7583,7 +7583,7 @@ static void LimLaunchedRCTrackDiagLeftBankedUp25ToUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 9, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -7695,7 +7695,7 @@ static void LimLaunchedRCTrackDiagRightBankedUp25ToUp25(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 5, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 9, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
@@ -8227,7 +8227,7 @@ static void LimLaunchedRCTrackDiagUp25LeftBanked(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::leftCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 8, height, session.SupportColours);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -8335,7 +8335,7 @@ static void LimLaunchedRCTrackDiagUp25RightBanked(
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, 6, height, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 8, height, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
