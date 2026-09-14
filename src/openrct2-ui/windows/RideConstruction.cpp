@@ -2693,7 +2693,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             TileElement tempTrackTileElement{};
             TileElement* backupTileElementArrays[5]{};
-            PaintSession* session = PaintSessionAlloc(rt, 0, GetCurrentRotation());
+            PaintSession* session = PaintSessionAlloc(rt, ViewportFlag::NONE, GetCurrentRotation());
             trackDirection &= 3;
 
             auto currentRide = GetRide(rideIndex);

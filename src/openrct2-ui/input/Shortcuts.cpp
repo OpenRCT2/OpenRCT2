@@ -66,14 +66,14 @@ static void RotateCamera(int32_t direction)
     }
 }
 
-static void ToggleViewFlag(int32_t viewportFlag)
+static void ToggleViewFlag(ViewportFlag viewportFlag)
 {
     if (gLegacyScene != LegacyScene::titleSequence)
     {
         auto window = WindowGetMain();
         if (window != nullptr)
         {
-            window->viewport->flags ^= viewportFlag;
+            window->viewport->flags.flip(viewportFlag);
             window->invalidate();
         }
     }

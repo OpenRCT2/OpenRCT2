@@ -102,7 +102,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            uint32_t wflags = 0;
+            ViewportFlags wflags = ViewportFlag::NONE;
             WindowBase* w = WindowGetMain();
 
             if (w != nullptr)
@@ -140,12 +140,12 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        uint32_t ToggleTransparency(uint32_t wflags, uint32_t transparencyFlag, uint32_t seeThroughFlag)
+        ViewportFlags ToggleTransparency(ViewportFlags wflags, ViewportFlag transparencyFlag, ViewportFlag seeThroughFlag)
         {
-            wflags ^= transparencyFlag;
-            if (wflags & transparencyFlag)
+            wflags.flip(transparencyFlag);
+            if (wflags.has(transparencyFlag))
             {
-                wflags |= seeThroughFlag;
+                wflags.set(seeThroughFlag);
             }
             SaveInConfig(wflags);
             return wflags;
@@ -153,7 +153,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ToggleViewportFlag(WidgetIndex widgetIndex)
         {
-            uint32_t wflags = 0;
+            ViewportFlags wflags = ViewportFlag::NONE;
             WindowBase* w = WindowGetMain();
 
             if (w == nullptr)
@@ -164,22 +164,22 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HIDE_RIDES:
-                    wflags ^= ViewportFlag::HIDE_RIDES;
+                    wflags.flip(ViewportFlag::HIDE_RIDES);
                     break;
                 case WIDX_HIDE_VEHICLES:
-                    wflags ^= ViewportFlag::HIDE_VEHICLES;
+                    wflags.flip(ViewportFlag::HIDE_VEHICLES);
                     break;
                 case WIDX_HIDE_SCENERY:
-                    wflags ^= ViewportFlag::HIDE_SCENERY;
+                    wflags.flip(ViewportFlag::HIDE_SCENERY);
                     break;
                 case WIDX_HIDE_VEGETATION:
-                    wflags ^= ViewportFlag::HIDE_VEGETATION;
+                    wflags.flip(ViewportFlag::HIDE_VEGETATION);
                     break;
                 case WIDX_HIDE_PATHS:
-                    wflags ^= ViewportFlag::HIDE_PATHS;
+                    wflags.flip(ViewportFlag::HIDE_PATHS);
                     break;
                 case WIDX_HIDE_SUPPORTS:
-                    wflags ^= ViewportFlag::HIDE_SUPPORTS;
+                    wflags.flip(ViewportFlag::HIDE_SUPPORTS);
                     break;
                 case WIDX_INVISIBLE_RIDES:
                     wflags = ToggleTransparency(wflags, ViewportFlag::INVISIBLE_RIDES, ViewportFlag::HIDE_RIDES);
@@ -200,10 +200,10 @@ namespace OpenRCT2::Ui::Windows
                     wflags = ToggleTransparency(wflags, ViewportFlag::INVISIBLE_SUPPORTS, ViewportFlag::HIDE_SUPPORTS);
                     break;
                 case WIDX_HIDE_GUESTS:
-                    wflags ^= ViewportFlag::HIDE_GUESTS;
+                    wflags.flip(ViewportFlag::HIDE_GUESTS);
                     break;
                 case WIDX_HIDE_STAFF:
-                    wflags ^= ViewportFlag::HIDE_STAFF;
+                    wflags.flip(ViewportFlag::HIDE_STAFF);
                     break;
                 default:
                     return;
@@ -216,14 +216,14 @@ namespace OpenRCT2::Ui::Windows
             w->invalidate();
         }
 
-        void SaveInConfig(uint32_t wflags)
+        void SaveInConfig(ViewportFlags wflags)
         {
-            Config::Get().general.invisibleRides = wflags & ViewportFlag::INVISIBLE_RIDES;
-            Config::Get().general.invisibleVehicles = wflags & ViewportFlag::INVISIBLE_VEHICLES;
-            Config::Get().general.invisibleScenery = wflags & ViewportFlag::INVISIBLE_SCENERY;
-            Config::Get().general.invisibleTrees = wflags & ViewportFlag::INVISIBLE_VEGETATION;
-            Config::Get().general.invisiblePaths = wflags & ViewportFlag::INVISIBLE_PATHS;
-            Config::Get().general.invisibleSupports = wflags & ViewportFlag::INVISIBLE_SUPPORTS;
+            Config::Get().general.invisibleRides = wflags.has(ViewportFlag::INVISIBLE_RIDES);
+            Config::Get().general.invisibleVehicles = wflags.has(ViewportFlag::INVISIBLE_VEHICLES);
+            Config::Get().general.invisibleScenery = wflags.has(ViewportFlag::INVISIBLE_SCENERY);
+            Config::Get().general.invisibleTrees = wflags.has(ViewportFlag::INVISIBLE_VEGETATION);
+            Config::Get().general.invisiblePaths = wflags.has(ViewportFlag::INVISIBLE_PATHS);
+            Config::Get().general.invisibleSupports = wflags.has(ViewportFlag::INVISIBLE_SUPPORTS);
             Config::Save();
         }
     };

@@ -95,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
                 savedViewPos = { x - (viewport->ViewWidth() / 2), y - (viewport->ViewHeight() / 2) };
             }
 
-            viewport->flags |= ViewportFlag::SOUND_ON | ViewportFlag::INDEPENDENT_ROTATION;
+            viewport->flags.set(ViewportFlag::SOUND_ON, ViewportFlag::INDEPENDENT_ROTATION);
 
             WindowSetResize(*this, kWindowSize, { (ContextGetWidth() * 4) / 5, (ContextGetHeight() * 4) / 5 });
         }

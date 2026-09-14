@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowBase* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
                     {
-                        mainWindow->viewport->flags ^= ViewportFlag::CLIP_VIEW;
+                        mainWindow->viewport->flags.flip(ViewportFlag::CLIP_VIEW);
                         mainWindow->invalidate();
                     }
                     this->invalidate();
@@ -146,7 +146,7 @@ namespace OpenRCT2::Ui::Windows
                     // Toggle height clipping see-through.
                     if (auto mainWindow = WindowGetMain(); mainWindow != nullptr)
                     {
-                        mainWindow->viewport->flags ^= ViewportFlag::CLIP_VIEW_SEE_THROUGH;
+                        mainWindow->viewport->flags.flip(ViewportFlag::CLIP_VIEW_SEE_THROUGH);
                         mainWindow->invalidate();
                     }
                     invalidate();
@@ -274,9 +274,9 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                setCheckboxValue(WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & ViewportFlag::CLIP_VIEW);
+                setCheckboxValue(WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags.has(ViewportFlag::CLIP_VIEW));
                 setCheckboxValue(
-                    WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, mainWindow->viewport->flags & ViewportFlag::CLIP_VIEW_SEE_THROUGH);
+                    WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, mainWindow->viewport->flags.has(ViewportFlag::CLIP_VIEW_SEE_THROUGH));
             }
 
             setWidgetPressed(WIDX_CLIP_SELECTOR, IsActive());

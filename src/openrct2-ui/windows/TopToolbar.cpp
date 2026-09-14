@@ -340,50 +340,50 @@ namespace OpenRCT2::Ui::Windows
                 switch (dropdownIndex)
                 {
                     case DDIDX_UNDERGROUND_INSIDE:
-                        w->viewport->flags ^= ViewportFlag::UNDERGROUND_INSIDE;
+                        w->viewport->flags.flip(ViewportFlag::UNDERGROUND_INSIDE);
                         break;
                     case DDIDX_TRANSPARENT_WATER:
                         Config::Get().general.transparentWater ^= 1;
                         Config::Save();
                         break;
                     case DDIDX_HIDE_BASE:
-                        w->viewport->flags ^= ViewportFlag::HIDE_BASE;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_BASE);
                         break;
                     case DDIDX_HIDE_VERTICAL:
-                        w->viewport->flags ^= ViewportFlag::HIDE_VERTICAL;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_VERTICAL);
                         break;
                     case DDIDX_HIDE_RIDES:
-                        w->viewport->flags ^= ViewportFlag::HIDE_RIDES;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_RIDES);
                         break;
                     case DDIDX_HIDE_VEHICLES:
-                        w->viewport->flags ^= ViewportFlag::HIDE_VEHICLES;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_VEHICLES);
                         break;
                     case DDIDX_HIDE_VEGETATION:
-                        w->viewport->flags ^= ViewportFlag::HIDE_VEGETATION;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_VEGETATION);
                         break;
                     case DDIDX_HIDE_SCENERY:
-                        w->viewport->flags ^= ViewportFlag::HIDE_SCENERY;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_SCENERY);
                         break;
                     case DDIDX_HIDE_PATHS:
-                        w->viewport->flags ^= ViewportFlag::HIDE_PATHS;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_PATHS);
                         break;
                     case DDIDX_HIDE_SUPPORTS:
-                        w->viewport->flags ^= ViewportFlag::HIDE_SUPPORTS;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_SUPPORTS);
                         break;
                     case DDIDX_HIDE_GUESTS:
-                        w->viewport->flags ^= ViewportFlag::HIDE_GUESTS;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_GUESTS);
                         break;
                     case DDIDX_HIDE_STAFF:
-                        w->viewport->flags ^= ViewportFlag::HIDE_STAFF;
+                        w->viewport->flags.flip(ViewportFlag::HIDE_STAFF);
                         break;
                     case DDIDX_LAND_HEIGHTS:
-                        w->viewport->flags ^= ViewportFlag::LAND_HEIGHTS;
+                        w->viewport->flags.flip(ViewportFlag::LAND_HEIGHTS);
                         break;
                     case DDIDX_TRACK_HEIGHTS:
-                        w->viewport->flags ^= ViewportFlag::TRACK_HEIGHTS;
+                        w->viewport->flags.flip(ViewportFlag::TRACK_HEIGHTS);
                         break;
                     case DDIDX_PATH_HEIGHTS:
-                        w->viewport->flags ^= ViewportFlag::PATH_HEIGHTS;
+                        w->viewport->flags.flip(ViewportFlag::PATH_HEIGHTS);
                         break;
                     case DDIDX_VIEW_CLIPPING:
                     {
@@ -395,12 +395,12 @@ namespace OpenRCT2::Ui::Windows
                         else
                         {
                             // If window is already open, toggle the view clipping on/off
-                            w->viewport->flags ^= ViewportFlag::CLIP_VIEW;
+                            w->viewport->flags.flip(ViewportFlag::CLIP_VIEW);
                         }
                         break;
                     }
                     case DDIDX_HIGHLIGHT_PATH_ISSUES:
-                        w->viewport->flags ^= ViewportFlag::HIGHLIGHT_PATH_ISSUES;
+                        w->viewport->flags.flip(ViewportFlag::HIGHLIGHT_PATH_ISSUES);
                         break;
                     case DDIDX_TRANSPARENCY:
                         ContextOpenWindow(WindowClass::transparency);

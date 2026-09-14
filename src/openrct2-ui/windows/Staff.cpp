@@ -1064,7 +1064,7 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (page == WINDOW_STAFF_OVERVIEW && newPage == WINDOW_STAFF_OVERVIEW && viewport != nullptr)
             {
-                viewport->flags ^= ViewportFlag::SOUND_ON;
+                viewport->flags.flip(ViewportFlag::SOUND_ON);
                 listen = (viewport->flags.has(ViewportFlag::SOUND_ON)) != 0;
             }
 
@@ -1127,7 +1127,7 @@ namespace OpenRCT2::Ui::Windows
                 tempFocus = Focus(staff->id);
             }
 
-            uint16_t viewport_flags;
+            ViewportFlags viewport_flags;
 
             if (viewport != nullptr)
             {
@@ -1139,7 +1139,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                viewport_flags = 0;
+                viewport_flags.clearAll();
                 if (Config::Get().general.alwaysShowGridlines)
                     viewport_flags.set(ViewportFlag::GRIDLINES);
             }

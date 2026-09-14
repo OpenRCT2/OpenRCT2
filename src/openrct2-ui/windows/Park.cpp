@@ -601,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
                 newFocus = Focus(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
             }
 
-            int32_t viewportFlags{};
+            ViewportFlags viewportFlags{};
             if (viewport == nullptr)
             {
                 viewportFlags = Config::Get().general.alwaysShowGridlines ? ViewportFlag::GRIDLINES : ViewportFlag::NONE;
@@ -1150,7 +1150,7 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_PARK_PAGE_ENTRANCE && page == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr)
             {
-                viewport->flags ^= ViewportFlag::SOUND_ON;
+                viewport->flags.flip(ViewportFlag::SOUND_ON);
                 listen = (viewport->flags.has(ViewportFlag::SOUND_ON)) != 0;
             }
 

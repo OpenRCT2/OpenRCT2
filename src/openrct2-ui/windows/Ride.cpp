@@ -1186,7 +1186,7 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_RIDE_PAGE_MAIN && page == WINDOW_RIDE_PAGE_MAIN && viewport != nullptr)
             {
-                viewport->flags ^= ViewportFlag::SOUND_ON;
+                viewport->flags.flip(ViewportFlag::SOUND_ON);
                 listen = (viewport->flags.has(ViewportFlag::SOUND_ON)) != 0;
             }
 
@@ -1592,7 +1592,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            uint16_t newViewportFlags = 0;
+            ViewportFlags newViewportFlags = ViewportFlag::NONE;
             if (viewport != nullptr)
             {
                 if (focus == newFocus)
@@ -5669,7 +5669,7 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* w_main = WindowGetMain();
             if (w_main != nullptr)
             {
-                w_main->viewport->flags |= (ViewportFlag::HIDE_VERTICAL | ViewportFlag::HIDE_BASE);
+                w_main->viewport->flags.set(ViewportFlag::HIDE_VERTICAL, ViewportFlag::HIDE_BASE);
             }
 
             GfxInvalidateScreen();
@@ -7454,7 +7454,7 @@ namespace OpenRCT2::Ui::Windows
         WindowBase* main_w = WindowGetMain();
         if (main_w != nullptr)
         {
-            main_w->viewport->flags &= ~(ViewportFlag::HIDE_VERTICAL | ViewportFlag::HIDE_BASE);
+            main_w->viewport->flags.unset(ViewportFlag::HIDE_VERTICAL, ViewportFlag::HIDE_BASE);
         }
 
         GfxInvalidateScreen();

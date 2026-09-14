@@ -508,7 +508,7 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_GUEST_OVERVIEW && page == WINDOW_GUEST_OVERVIEW && viewport != nullptr)
             {
-                viewport->flags ^= ViewportFlag::SOUND_ON;
+                viewport->flags.flip(ViewportFlag::SOUND_ON);
                 listen = (viewport->flags.has(ViewportFlag::SOUND_ON)) != 0;
             }
 
@@ -743,7 +743,7 @@ namespace OpenRCT2::Ui::Windows
 
             ViewportUpdateSmartFollowGuest(this, *peep);
             bool reCreateViewport = false;
-            uint16_t origViewportFlags{};
+            ViewportFlags origViewportFlags{};
             if (viewport != nullptr)
             {
                 if (focus.has_value())
