@@ -1041,6 +1041,8 @@ namespace OpenRCT2::Ui::Windows
                 widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
                     widget.flags.set(WidgetFlag::isDisabled);
+                if (!desc.IsVisible)
+                    widget.flags.set(WidgetFlag::isHidden);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "groupbox")
@@ -1091,6 +1093,8 @@ namespace OpenRCT2::Ui::Windows
                 widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
                     widget.flags.set(WidgetFlag::isDisabled);
+                if (!desc.IsVisible)
+                    widget.flags.set(WidgetFlag::isHidden);
                 widget.flags.set(WidgetFlag::isHoldable);
                 widgetList.push_back(widget);
 
