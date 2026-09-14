@@ -28361,25 +28361,25 @@
     {
         "path": "track/lim/flat_to_steep_diag_0_0.png",
         "x": -32,
-        "y": -8,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_0_1.png",
         "x": -32,
-        "y": -30,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_0_2.png",
         "x": -32,
-        "y": -52,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_1_0.png",
-        "x": -12,
-        "y": 4,
+        "x": -10,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -28390,62 +28390,62 @@
     },
     {
         "path": "track/lim/flat_to_steep_diag_1_2.png",
-        "x": -12,
-        "y": -36,
+        "x": -10,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_2_0.png",
         "x": -32,
-        "y": -8,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_2_1.png",
         "x": -32,
-        "y": -30,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_2_2.png",
         "x": -32,
-        "y": -51,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_3_0.png",
-        "x": -13,
+        "x": -10,
         "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_3_1.png",
-        "x": -13,
+        "x": -10,
         "y": -48,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_steep_diag_3_2.png",
-        "x": -13,
-        "y": -84,
+        "x": -10,
+        "y": -85,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_0_0.png",
         "x": -32,
-        "y": -52,
+        "y": -45,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_0_1.png",
         "x": -32,
-        "y": -22,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_0_2.png",
         "x": -32,
-        "y": -7,
+        "y": -2,
         "palette": "keep"
     },
     {
@@ -28462,44 +28462,44 @@
     },
     {
         "path": "track/lim/steep_to_flat_diag_1_2.png",
-        "x": -12,
-        "y": -18,
+        "x": -10,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_2_0.png",
         "x": -32,
-        "y": -51,
+        "y": -45,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_2_1.png",
         "x": -32,
-        "y": -22,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_2_2.png",
         "x": -32,
-        "y": -7,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_3_0.png",
-        "x": -13,
-        "y": -40,
+        "x": -10,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_3_1.png",
-        "x": -13,
+        "x": -10,
         "y": -72,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_to_flat_diag_3_2.png",
-        "x": -13,
-        "y": -45,
+        "x": -10,
+        "y": -37,
         "palette": "keep"
     },
     {
