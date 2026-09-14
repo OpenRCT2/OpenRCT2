@@ -27014,10 +27014,11 @@
         "y": -21,
         "palette": "keep"
     },
+    
     {
         "path": "track/lim/dive_loop_45_left_0_0.png",
         "x": -32,
-        "y": -27,
+        "y": -28,
         "palette": "keep"
     },
     {
@@ -27028,14 +27029,14 @@
     },
     {
         "path": "track/lim/dive_loop_45_left_0_2.png",
-        "x": -30,
+        "x": -31,
         "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/lim/dive_loop_45_left_0_3.png",
         "x": -16,
-        "y": -11,
+        "y": -12,
         "palette": "keep"
     },
     {
@@ -27065,13 +27066,13 @@
     {
         "path": "track/lim/dive_loop_45_left_2_0.png",
         "x": 0,
-        "y": -31,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/lim/dive_loop_45_left_2_1.png",
         "x": -18,
-        "y": -26,
+        "y": -27,
         "palette": "keep"
     },
     {
@@ -27094,8 +27095,8 @@
     },
     {
         "path": "track/lim/dive_loop_45_left_3_1.png",
-        "x": -28,
-        "y": -50,
+        "x": -25,
+        "y": -45,
         "palette": "keep"
     },
     {
@@ -27107,13 +27108,13 @@
     {
         "path": "track/lim/dive_loop_45_left_3_3.png",
         "x": -23,
-        "y": -11,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/lim/dive_loop_45_right_0_0.png",
         "x": -32,
-        "y": -31,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -27161,12 +27162,12 @@
     {
         "path": "track/lim/dive_loop_45_right_2_0.png",
         "x": 0,
-        "y": -27,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/lim/dive_loop_45_right_2_1.png",
-        "x": -14,
+        "x": -13,
         "y": -41,
         "palette": "keep"
     },
@@ -27179,7 +27180,7 @@
     {
         "path": "track/lim/dive_loop_45_right_2_3.png",
         "x": -23,
-        "y": -11,
+        "y": -12,
         "palette": "keep"
     },
     {
@@ -27191,7 +27192,7 @@
     {
         "path": "track/lim/dive_loop_45_right_3_1.png",
         "x": -5,
-        "y": -52,
+        "y": -45,
         "palette": "keep"
     },
     {
@@ -27203,18 +27204,18 @@
     {
         "path": "track/lim/dive_loop_45_right_3_3.png",
         "x": -15,
-        "y": -11,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_0_0.png",
-        "x": -22,
+        "x": -23,
         "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_0_1.png",
-        "x": -30,
+        "x": -31,
         "y": -24,
         "palette": "keep"
     },
@@ -27232,14 +27233,14 @@
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_1_0.png",
-        "x": -22,
-        "y": -1,
+        "x": -23,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_1_1.png",
         "x": -32,
-        "y": -8,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -27251,25 +27252,25 @@
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_1_3.png",
         "x": -32,
-        "y": -9,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_2_0.png",
-        "x": -3,
-        "y": 0,
+        "x": -4,
+        "y": -1,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_2_1.png",
-        "x": 14,
-        "y": 1,
+        "x": 12,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_2_2.png",
         "x": -29,
-        "y": 2,
+        "y": 1,
         "palette": "keep"
     },
     {
@@ -27281,7 +27282,7 @@
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_3_0.png",
         "x": -25,
-        "y": -15,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -27293,18 +27294,18 @@
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_3_2.png",
         "x": 0,
-        "y": -12,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_3_3.png",
         "x": 0,
-        "y": -9,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_0_0.png",
-        "x": -22,
+        "x": -23,
         "y": -16,
         "palette": "keep"
     },
@@ -27317,31 +27318,31 @@
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_0_2.png",
         "x": -11,
-        "y": -12,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_0_3.png",
         "x": -32,
-        "y": -9,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_1_0.png",
-        "x": -22,
-        "y": 0,
+        "x": -23,
+        "y": -1,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_1_1.png",
-        "x": -33,
-        "y": 1,
+        "x": -32,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_1_2.png",
-        "x": 4,
-        "y": 2,
+        "x": 6,
+        "y": 1,
         "palette": "keep"
     },
     {
@@ -27352,14 +27353,14 @@
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_2_0.png",
-        "x": -2,
-        "y": -1,
+        "x": -3,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_2_1.png",
         "x": -8,
-        "y": -8,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -27371,13 +27372,13 @@
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_2_3.png",
         "x": 0,
-        "y": -9,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_3_0.png",
-        "x": -17,
-        "y": -15,
+        "x": -16,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -27425,7 +27426,7 @@
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_1_0.png",
         "x": -10,
-        "y": 11,
+        "y": 10,
         "palette": "keep"
     },
     {
@@ -27437,13 +27438,13 @@
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_1_2.png",
         "x": -10,
-        "y": -5,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_1_3.png",
         "x": -16,
-        "y": -1,
+        "y": -2,
         "palette": "keep"
     },
     {
@@ -27460,14 +27461,14 @@
     },
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_2_2.png",
-        "x": -12,
-        "y": 4,
+        "x": -14,
+        "y": 2,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_2_3.png",
-        "x": -24,
-        "y": 0,
+        "x": -23,
+        "y": -1,
         "palette": "keep"
     },
     {
@@ -27484,14 +27485,14 @@
     },
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_3_2.png",
-        "x": -25,
+        "x": -24,
         "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_3_3.png",
-        "x": -25,
-        "y": -17,
+        "x": -23,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -27509,19 +27510,19 @@
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_0_2.png",
         "x": -32,
-        "y": 4,
+        "y": 2,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_0_3.png",
-        "x": -30,
-        "y": 0,
+        "x": -29,
+        "y": -1,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_1_0.png",
         "x": 8,
-        "y": 11,
+        "y": 10,
         "palette": "keep"
     },
     {
@@ -27533,19 +27534,19 @@
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_1_2.png",
         "x": -16,
-        "y": -5,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_1_3.png",
-        "x": -24,
-        "y": -1,
+        "x": -23,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_2_0.png",
         "x": -32,
-        "y": -8,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -27562,8 +27563,8 @@
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_2_3.png",
-        "x": -25,
-        "y": -17,
+        "x": -23,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -27580,13 +27581,13 @@
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_3_2.png",
-        "x": -7,
+        "x": -8,
         "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_3_3.png",
-        "x": -23,
+        "x": -24,
         "y": -16,
         "palette": "keep"
     },
@@ -27598,14 +27599,14 @@
     },
     {
         "path": "track/lim/gentle_to_gentle_left_bank_diag_0_1.png",
-        "x": -30,
-        "y": -7,
+        "x": -31,
+        "y": -8,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_to_gentle_left_bank_diag_1.png",
         "x": -10,
-        "y": -5,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -27629,19 +27630,19 @@
     {
         "path": "track/lim/gentle_to_gentle_right_bank_diag_1.png",
         "x": -10,
-        "y": -5,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_to_gentle_right_bank_diag_2_0.png",
-        "x": -9,
+        "x": -7,
         "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_to_gentle_right_bank_diag_2_1.png",
         "x": -32,
-        "y": -7,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -27652,14 +27653,14 @@
     },
     {
         "path": "track/lim/gentle_left_bank_to_gentle_diag_0_0.png",
-        "x": -11,
-        "y": -9,
+        "x": -10,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_left_bank_to_gentle_diag_0_1.png",
         "x": -32,
-        "y": 2,
+        "y": 1,
         "palette": "keep"
     },
     {
@@ -27695,13 +27696,13 @@
     {
         "path": "track/lim/gentle_right_bank_to_gentle_diag_2_0.png",
         "x": -32,
-        "y": -9,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_right_bank_to_gentle_diag_2_1.png",
-        "x": -27,
-        "y": 2,
+        "x": -30,
+        "y": 1,
         "palette": "keep"
     },
     {
@@ -27713,12 +27714,12 @@
     {
         "path": "track/lim/left_bank_to_gentle_left_bank_diag_0.png",
         "x": -32,
-        "y": 1,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lim/left_bank_to_gentle_left_bank_diag_1.png",
-        "x": -9,
+        "x": -7,
         "y": -11,
         "palette": "keep"
     },
@@ -27749,24 +27750,24 @@
     {
         "path": "track/lim/right_bank_to_gentle_right_bank_diag_2.png",
         "x": -32,
-        "y": 1,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lim/right_bank_to_gentle_right_bank_diag_3.png",
-        "x": -9,
+        "x": -7,
         "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_left_bank_to_left_bank_diag_0.png",
         "x": -32,
-        "y": 1,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_left_bank_to_left_bank_diag_1.png",
-        "x": -9,
+        "x": -7,
         "y": -11,
         "palette": "keep"
     },
@@ -27797,24 +27798,24 @@
     {
         "path": "track/lim/gentle_right_bank_to_right_bank_diag_2.png",
         "x": -32,
-        "y": 1,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_right_bank_to_right_bank_diag_3.png",
-        "x": -9,
+        "x": -7,
         "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_left_bank_diag_0.png",
         "x": -32,
-        "y": -7,
+        "y": -8,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_left_bank_diag_1.png",
-        "x": -9,
+        "x": -7,
         "y": -11,
         "palette": "keep"
     },
@@ -27845,25 +27846,25 @@
     {
         "path": "track/lim/gentle_right_bank_diag_2.png",
         "x": -32,
-        "y": -7,
+        "y": -8,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_right_bank_diag_3.png",
-        "x": -9,
+        "x": -7,
         "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_gentle_left_bank_diag_0_0.png",
         "x": -32,
-        "y": 7,
+        "y": 6,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_gentle_left_bank_diag_0_1.png",
-        "x": -29,
-        "y": 1,
+        "x": -28,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -27899,13 +27900,13 @@
     {
         "path": "track/lim/flat_to_gentle_right_bank_diag_2_0.png",
         "x": -10,
-        "y": 7,
+        "y": 6,
         "palette": "keep"
     },
     {
         "path": "track/lim/flat_to_gentle_right_bank_diag_2_1.png",
         "x": -32,
-        "y": 1,
+        "y": 0,
         "palette": "keep"
     },
     {
@@ -27916,14 +27917,14 @@
     },
     {
         "path": "track/lim/gentle_left_bank_to_flat_diag_0_0.png",
-        "x": -11,
-        "y": -1,
+        "x": -10,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_left_bank_to_flat_diag_0_1.png",
         "x": -32,
-        "y": 7,
+        "y": 6,
         "palette": "keep"
     },
     {
@@ -27935,7 +27936,7 @@
     {
         "path": "track/lim/gentle_left_bank_to_flat_diag_2.png",
         "x": -32,
-        "y": -2,
+        "y": -3,
         "palette": "keep"
     },
     {
@@ -27947,7 +27948,7 @@
     {
         "path": "track/lim/gentle_right_bank_to_flat_diag_0.png",
         "x": -32,
-        "y": -2,
+        "y": -3,
         "palette": "keep"
     },
     {
@@ -27959,13 +27960,13 @@
     {
         "path": "track/lim/gentle_right_bank_to_flat_diag_2_0.png",
         "x": -32,
-        "y": -1,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_right_bank_to_flat_diag_2_1.png",
-        "x": -29,
-        "y": 7,
+        "x": -28,
+        "y": 6,
         "palette": "keep"
     },
     {
@@ -27976,8 +27977,8 @@
     },
     {
         "path": "track/lim/large_turn_left_bank_to_diag_gentle_0_0.png",
-        "x": -18,
-        "y": -13,
+        "x": -19,
+        "y": -14,
         "palette": "keep"
     },
     {
@@ -27994,32 +27995,32 @@
     },
     {
         "path": "track/lim/large_turn_left_bank_to_diag_gentle_0_3.png",
-        "x": -9,
+        "x": -10,
         "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_bank_to_diag_gentle_1_0.png",
-        "x": -22,
-        "y": -2,
+        "x": -23,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_bank_to_diag_gentle_1_1.png",
         "x": -32,
-        "y": -8,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_bank_to_diag_gentle_1_2.png",
         "x": -24,
-        "y": 18,
+        "y": 17,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_bank_to_diag_gentle_1_3.png",
         "x": -32,
-        "y": -7,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -28030,7 +28031,7 @@
     },
     {
         "path": "track/lim/large_turn_left_bank_to_diag_gentle_2_1.png",
-        "x": 4,
+        "x": 6,
         "y": -5,
         "palette": "keep"
     },
@@ -28042,7 +28043,7 @@
     },
     {
         "path": "track/lim/large_turn_left_bank_to_diag_gentle_2_3.png",
-        "x": -9,
+        "x": -7,
         "y": -17,
         "palette": "keep"
     },
@@ -28078,8 +28079,8 @@
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_0_1.png",
-        "x": -19,
-        "y": -11,
+        "x": -18,
+        "y": -10,
         "palette": "keep"
     },
     {
@@ -28096,7 +28097,7 @@
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_1_0.png",
-        "x": -18,
+        "x": -19,
         "y": -6,
         "palette": "keep"
     },
@@ -28120,37 +28121,37 @@
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_2_0.png",
-        "x": -3,
-        "y": -2,
+        "x": -4,
+        "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_2_1.png",
         "x": -8,
-        "y": -8,
+        "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_2_2.png",
         "x": 0,
-        "y": 18,
+        "y": 17,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_2_3.png",
         "x": 0,
-        "y": -7,
+        "y": -8,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_3_0.png",
-        "x": -14,
-        "y": -13,
+        "x": -13,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_3_1.png",
-        "x": -3,
+        "x": -2,
         "y": -24,
         "palette": "keep"
     },
@@ -28162,14 +28163,14 @@
     },
     {
         "path": "track/lim/large_turn_right_bank_to_diag_gentle_3_3.png",
-        "x": -9,
+        "x": -7,
         "y": -9,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_bank_to_orthogonal_gentle_0_0.png",
         "x": 0,
-        "y": -5,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -28192,7 +28193,7 @@
     },
     {
         "path": "track/lim/large_turn_left_bank_to_orthogonal_gentle_1_0.png",
-        "x": -9,
+        "x": -7,
         "y": 5,
         "palette": "keep"
     },
@@ -28204,7 +28205,7 @@
     },
     {
         "path": "track/lim/large_turn_left_bank_to_orthogonal_gentle_1_2.png",
-        "x": -6,
+        "x": -5,
         "y": -7,
         "palette": "keep"
     },
@@ -28234,7 +28235,7 @@
     },
     {
         "path": "track/lim/large_turn_left_bank_to_orthogonal_gentle_2_3.png",
-        "x": -22,
+        "x": -20,
         "y": -6,
         "palette": "keep"
     },
@@ -28259,7 +28260,7 @@
     {
         "path": "track/lim/large_turn_left_bank_to_orthogonal_gentle_3_3.png",
         "x": -23,
-        "y": -20,
+        "y": -19,
         "palette": "keep"
     },
     {
@@ -28288,7 +28289,7 @@
     },
     {
         "path": "track/lim/large_turn_right_bank_to_orthogonal_gentle_1_0.png",
-        "x": 4,
+        "x": 3,
         "y": 5,
         "palette": "keep"
     },
@@ -28306,14 +28307,14 @@
     },
     {
         "path": "track/lim/large_turn_right_bank_to_orthogonal_gentle_1_3.png",
-        "x": -24,
+        "x": -23,
         "y": -3,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_bank_to_orthogonal_gentle_2_0.png",
         "x": -32,
-        "y": -5,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -28330,13 +28331,13 @@
     },
     {
         "path": "track/lim/large_turn_right_bank_to_orthogonal_gentle_2_3.png",
-        "x": -21,
+        "x": -20,
         "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_bank_to_orthogonal_gentle_3_0.png",
-        "x": -9,
+        "x": -7,
         "y": -8,
         "palette": "keep"
     },
@@ -28348,14 +28349,14 @@
     },
     {
         "path": "track/lim/large_turn_right_bank_to_orthogonal_gentle_3_2.png",
-        "x": -7,
-        "y": -5,
+        "x": -6,
+        "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_bank_to_orthogonal_gentle_3_3.png",
         "x": -24,
-        "y": -20,
+        "y": -19,
         "palette": "keep"
     },
     {
