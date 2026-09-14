@@ -163,7 +163,7 @@ namespace OpenRCT2::Audio
         const auto& activeViewports = GetAllViewports();
         for (const auto& viewport : activeViewports)
         {
-            if (viewport.flags.has(ViewportFlag::SOUND_ON))
+            if (viewport.flags.has(ViewportFlag::SoundOn))
             {
                 int16_t vx = pos2.x - viewport.viewPos.x;
                 params.pan = viewport.pos.x + viewport.zoom.ApplyInversedTo(vx);

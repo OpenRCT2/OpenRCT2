@@ -240,7 +240,7 @@ static RenderTarget CreateRT(const Viewport& viewport)
         throw std::runtime_error("Giant screenshot failed, unable to allocate memory for image.");
     }
 
-    if (viewport.flags.has(ViewportFlag::TRANSPARENT_BACKGROUND))
+    if (viewport.flags.has(ViewportFlag::TransparentBackground))
     {
         std::memset(rt.bits, EnumValue(PaletteIndex::transparent), static_cast<size_t>(rt.width) * rt.height);
     }
@@ -283,7 +283,7 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 
     auto* const mainWindow = WindowGetMain();
     const auto* const mainViewport = WindowGetViewport(mainWindow);
-    const bool useViewClipping = (mainViewport != nullptr && mainViewport->flags.has(ViewportFlag::CLIP_VIEW));
+    const bool useViewClipping = (mainViewport != nullptr && mainViewport->flags.has(ViewportFlag::ClipView));
 
     // Calculate the viewport bounds
     auto corners = cornerCoords[useViewClipping ? 1 : 0];
@@ -354,7 +354,7 @@ void ScreenshotGiant()
         }
         if (Config::Get().general.transparentScreenshot)
         {
-            viewport.flags.set(ViewportFlag::TRANSPARENT_BACKGROUND);
+            viewport.flags.set(ViewportFlag::TransparentBackground);
         }
 
         rt = CreateRT(viewport);
@@ -387,12 +387,12 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 
     if (options->hide_guests)
     {
-        viewport.flags.set(ViewportFlag::HIDE_GUESTS, ViewportFlag::HIDE_STAFF);
+        viewport.flags.set(ViewportFlag::HideGuests, ViewportFlag::HideStaff);
     }
 
     if (options->hide_sprites)
     {
-        viewport.flags.set(ViewportFlag::HIDE_ENTITIES);
+        viewport.flags.set(ViewportFlag::HideEntities);
     }
 
     if (options->mowed_grass)
@@ -422,7 +422,7 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 
     if (options->transparent || Config::Get().general.transparentScreenshot)
     {
-        viewport.flags.set(ViewportFlag::TRANSPARENT_BACKGROUND);
+        viewport.flags.set(ViewportFlag::TransparentBackground);
     }
 
     if (options->draw_bounding_boxes)
@@ -650,7 +650,7 @@ void CaptureImage(const CaptureOptions& options)
 
     if (options.Transparent)
     {
-        viewport.flags.set(ViewportFlag::TRANSPARENT_BACKGROUND);
+        viewport.flags.set(ViewportFlag::TransparentBackground);
     }
 
     auto outputPath = ResolveFilenameForCapture(options.Filename);

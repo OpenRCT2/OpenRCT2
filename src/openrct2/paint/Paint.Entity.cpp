@@ -48,7 +48,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
     {
         return;
     }
-    if (gTrackDesignSaveMode || session.ViewFlags.has(ViewportFlag::HIDE_ENTITIES))
+    if (gTrackDesignSaveMode || session.ViewFlags.has(ViewportFlag::HideEntities))
     {
         return;
     }
@@ -58,7 +58,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         return;
     }
 
-    const bool highlightPathIssues = session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES);
+    const bool highlightPathIssues = session.ViewFlags.has(ViewportFlag::HighlightPathIssues);
 
     for (auto* entity : EntityTileList(pos))
     {
@@ -84,13 +84,13 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
-        if (session.ViewFlags.has(ViewportFlag::CLIP_VIEW))
+        if (session.ViewFlags.has(ViewportFlag::ClipView))
         {
             if (entityPos.z > (gClipHeight * kCoordsZStep))
             {
                 // see-through off: don't paint this entity at all
                 // see-through on: paint this entity as partial or hidden later on
-                if (!session.ViewFlags.has(ViewportFlag::CLIP_VIEW_SEE_THROUGH))
+                if (!session.ViewFlags.has(ViewportFlag::ClipViewSeeThrough))
                 {
                     continue;
                 }

@@ -127,7 +127,7 @@ static void PathAdditionBinsPaint(
         height += 8;
 
     bool binsAreVandalised = pathElement.isBroken();
-    auto highlightPathIssues = session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES);
+    auto highlightPathIssues = session.ViewFlags.has(ViewportFlag::HighlightPathIssues);
 
     if (edges & EDGE_NE)
     {
@@ -213,7 +213,7 @@ static void PathAdditionJumpingFountainsPaint(
 
 inline bool PathAdditionIsVisible(ViewportFlags viewFlags, const PathAdditionEntry& pathAdditionEntry, bool isBroken)
 {
-    if (!viewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES))
+    if (!viewFlags.has(ViewportFlag::HighlightPathIssues))
         return true;
 
     if (isBroken)

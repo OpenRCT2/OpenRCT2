@@ -311,23 +311,23 @@ namespace OpenRCT2::Ui::Windows
                 colours[1].withFlag(ColourFlag::translucent, true), {}, TOP_TOOLBAR_VIEW_MENU_COUNT);
 
             auto mvpFlags = WindowGetMain()->viewport->flags;
-            gDropdown.items[DDIDX_UNDERGROUND_INSIDE].setChecked(mvpFlags.has(ViewportFlag::UNDERGROUND_INSIDE));
+            gDropdown.items[DDIDX_UNDERGROUND_INSIDE].setChecked(mvpFlags.has(ViewportFlag::UndergroundInside));
             gDropdown.items[DDIDX_TRANSPARENT_WATER].setChecked(Config::Get().general.transparentWater);
-            gDropdown.items[DDIDX_HIDE_BASE].setChecked(mvpFlags.has(ViewportFlag::HIDE_BASE));
-            gDropdown.items[DDIDX_HIDE_VERTICAL].setChecked(mvpFlags.has(ViewportFlag::HIDE_VERTICAL));
-            gDropdown.items[DDIDX_HIDE_RIDES].setChecked(mvpFlags.has(ViewportFlag::HIDE_RIDES));
-            gDropdown.items[DDIDX_HIDE_VEHICLES].setChecked(mvpFlags.has(ViewportFlag::HIDE_VEHICLES));
-            gDropdown.items[DDIDX_HIDE_VEGETATION].setChecked(mvpFlags.has(ViewportFlag::HIDE_VEGETATION));
-            gDropdown.items[DDIDX_HIDE_SCENERY].setChecked(mvpFlags.has(ViewportFlag::HIDE_SCENERY));
-            gDropdown.items[DDIDX_HIDE_PATHS].setChecked(mvpFlags.has(ViewportFlag::HIDE_PATHS));
-            gDropdown.items[DDIDX_HIDE_SUPPORTS].setChecked(mvpFlags.has(ViewportFlag::HIDE_SUPPORTS));
-            gDropdown.items[DDIDX_HIDE_GUESTS].setChecked(mvpFlags.has(ViewportFlag::HIDE_GUESTS));
-            gDropdown.items[DDIDX_HIDE_STAFF].setChecked(mvpFlags.has(ViewportFlag::HIDE_STAFF));
-            gDropdown.items[DDIDX_LAND_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::LAND_HEIGHTS));
-            gDropdown.items[DDIDX_TRACK_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::TRACK_HEIGHTS));
-            gDropdown.items[DDIDX_PATH_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::PATH_HEIGHTS));
-            gDropdown.items[DDIDX_VIEW_CLIPPING].setChecked(mvpFlags.has(ViewportFlag::CLIP_VIEW));
-            gDropdown.items[DDIDX_HIGHLIGHT_PATH_ISSUES].setChecked(mvpFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES));
+            gDropdown.items[DDIDX_HIDE_BASE].setChecked(mvpFlags.has(ViewportFlag::HideBase));
+            gDropdown.items[DDIDX_HIDE_VERTICAL].setChecked(mvpFlags.has(ViewportFlag::HideVertical));
+            gDropdown.items[DDIDX_HIDE_RIDES].setChecked(mvpFlags.has(ViewportFlag::HideRides));
+            gDropdown.items[DDIDX_HIDE_VEHICLES].setChecked(mvpFlags.has(ViewportFlag::HideVehicles));
+            gDropdown.items[DDIDX_HIDE_VEGETATION].setChecked(mvpFlags.has(ViewportFlag::HideVegetation));
+            gDropdown.items[DDIDX_HIDE_SCENERY].setChecked(mvpFlags.has(ViewportFlag::HideScenery));
+            gDropdown.items[DDIDX_HIDE_PATHS].setChecked(mvpFlags.has(ViewportFlag::HidePaths));
+            gDropdown.items[DDIDX_HIDE_SUPPORTS].setChecked(mvpFlags.has(ViewportFlag::HideSupports));
+            gDropdown.items[DDIDX_HIDE_GUESTS].setChecked(mvpFlags.has(ViewportFlag::HideGuests));
+            gDropdown.items[DDIDX_HIDE_STAFF].setChecked(mvpFlags.has(ViewportFlag::HideStaff));
+            gDropdown.items[DDIDX_LAND_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::LandHeights));
+            gDropdown.items[DDIDX_TRACK_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::TrackHeights));
+            gDropdown.items[DDIDX_PATH_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::PathHeights));
+            gDropdown.items[DDIDX_VIEW_CLIPPING].setChecked(mvpFlags.has(ViewportFlag::ClipView));
+            gDropdown.items[DDIDX_HIGHLIGHT_PATH_ISSUES].setChecked(mvpFlags.has(ViewportFlag::HighlightPathIssues));
 
             gDropdown.defaultIndex = DDIDX_UNDERGROUND_INSIDE;
         }
@@ -340,50 +340,50 @@ namespace OpenRCT2::Ui::Windows
                 switch (dropdownIndex)
                 {
                     case DDIDX_UNDERGROUND_INSIDE:
-                        w->viewport->flags.flip(ViewportFlag::UNDERGROUND_INSIDE);
+                        w->viewport->flags.flip(ViewportFlag::UndergroundInside);
                         break;
                     case DDIDX_TRANSPARENT_WATER:
                         Config::Get().general.transparentWater ^= 1;
                         Config::Save();
                         break;
                     case DDIDX_HIDE_BASE:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_BASE);
+                        w->viewport->flags.flip(ViewportFlag::HideBase);
                         break;
                     case DDIDX_HIDE_VERTICAL:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_VERTICAL);
+                        w->viewport->flags.flip(ViewportFlag::HideVertical);
                         break;
                     case DDIDX_HIDE_RIDES:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_RIDES);
+                        w->viewport->flags.flip(ViewportFlag::HideRides);
                         break;
                     case DDIDX_HIDE_VEHICLES:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_VEHICLES);
+                        w->viewport->flags.flip(ViewportFlag::HideVehicles);
                         break;
                     case DDIDX_HIDE_VEGETATION:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_VEGETATION);
+                        w->viewport->flags.flip(ViewportFlag::HideVegetation);
                         break;
                     case DDIDX_HIDE_SCENERY:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_SCENERY);
+                        w->viewport->flags.flip(ViewportFlag::HideScenery);
                         break;
                     case DDIDX_HIDE_PATHS:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_PATHS);
+                        w->viewport->flags.flip(ViewportFlag::HidePaths);
                         break;
                     case DDIDX_HIDE_SUPPORTS:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_SUPPORTS);
+                        w->viewport->flags.flip(ViewportFlag::HideSupports);
                         break;
                     case DDIDX_HIDE_GUESTS:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_GUESTS);
+                        w->viewport->flags.flip(ViewportFlag::HideGuests);
                         break;
                     case DDIDX_HIDE_STAFF:
-                        w->viewport->flags.flip(ViewportFlag::HIDE_STAFF);
+                        w->viewport->flags.flip(ViewportFlag::HideStaff);
                         break;
                     case DDIDX_LAND_HEIGHTS:
-                        w->viewport->flags.flip(ViewportFlag::LAND_HEIGHTS);
+                        w->viewport->flags.flip(ViewportFlag::LandHeights);
                         break;
                     case DDIDX_TRACK_HEIGHTS:
-                        w->viewport->flags.flip(ViewportFlag::TRACK_HEIGHTS);
+                        w->viewport->flags.flip(ViewportFlag::TrackHeights);
                         break;
                     case DDIDX_PATH_HEIGHTS:
-                        w->viewport->flags.flip(ViewportFlag::PATH_HEIGHTS);
+                        w->viewport->flags.flip(ViewportFlag::PathHeights);
                         break;
                     case DDIDX_VIEW_CLIPPING:
                     {
@@ -395,12 +395,12 @@ namespace OpenRCT2::Ui::Windows
                         else
                         {
                             // If window is already open, toggle the view clipping on/off
-                            w->viewport->flags.flip(ViewportFlag::CLIP_VIEW);
+                            w->viewport->flags.flip(ViewportFlag::ClipView);
                         }
                         break;
                     }
                     case DDIDX_HIGHLIGHT_PATH_ISSUES:
-                        w->viewport->flags.flip(ViewportFlag::HIGHLIGHT_PATH_ISSUES);
+                        w->viewport->flags.flip(ViewportFlag::HighlightPathIssues);
                         break;
                     case DDIDX_TRANSPARENCY:
                         ContextOpenWindow(WindowClass::transparency);
