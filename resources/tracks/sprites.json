@@ -28359,6 +28359,150 @@
         "palette": "keep"
     },
     {
+        "path": "track/lim/flat_to_steep_diag_0_0.png",
+        "x": -32,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_0_1.png",
+        "x": -32,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_0_2.png",
+        "x": -32,
+        "y": -52,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_1_0.png",
+        "x": -12,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_1_1.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_1_2.png",
+        "x": -12,
+        "y": -36,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_2_0.png",
+        "x": -32,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_2_1.png",
+        "x": -32,
+        "y": -30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_2_2.png",
+        "x": -32,
+        "y": -51,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_3_0.png",
+        "x": -13,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_3_1.png",
+        "x": -13,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_to_steep_diag_3_2.png",
+        "x": -13,
+        "y": -84,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_0_0.png",
+        "x": -32,
+        "y": -52,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_0_1.png",
+        "x": -32,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_0_2.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_1_0.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_1_1.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_1_2.png",
+        "x": -12,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_2_0.png",
+        "x": -32,
+        "y": -51,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_2_1.png",
+        "x": -32,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_2_2.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_3_0.png",
+        "x": -13,
+        "y": -40,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_3_1.png",
+        "x": -13,
+        "y": -72,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_to_flat_diag_3_2.png",
+        "x": -13,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
         "path": "track/flume/25-60-down-nesw.png",
         "x": -26,
         "y": -39,
