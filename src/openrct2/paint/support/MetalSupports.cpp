@@ -368,9 +368,9 @@ static bool MetalSupportsPaintSetupCommon(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    if (session.ViewFlags & ViewportFlag::HIDE_SUPPORTS)
     {
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        if (session.ViewFlags & ViewportFlag::INVISIBLE_SUPPORTS)
         {
             return false;
         }
@@ -586,9 +586,9 @@ bool PathPoleSupportsPaintSetup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    if (session.ViewFlags & ViewportFlag::HIDE_SUPPORTS)
     {
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        if (session.ViewFlags & ViewportFlag::INVISIBLE_SUPPORTS)
         {
             return false;
         }

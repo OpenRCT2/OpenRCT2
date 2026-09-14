@@ -328,7 +328,7 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
 {
     PROFILED_FUNCTION();
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session.ViewFlags & ViewportFlag::HIGHLIGHT_PATH_ISSUES)
     {
         return;
     }

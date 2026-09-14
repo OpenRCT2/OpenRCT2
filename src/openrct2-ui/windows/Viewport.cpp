@@ -95,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
                 savedViewPos = { x - (viewport->ViewWidth() / 2), y - (viewport->ViewHeight() / 2) };
             }
 
-            viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
+            viewport->flags |= ViewportFlag::SOUND_ON | ViewportFlag::INDEPENDENT_ROTATION;
 
             WindowSetResize(*this, kWindowSize, { (ContextGetWidth() * 4) / 5, (ContextGetHeight() * 4) / 5 });
         }
@@ -106,9 +106,9 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow == nullptr)
                 return;
 
-            if (viewport != nullptr && viewport->flags != (mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION))
+            if (viewport != nullptr && viewport->flags != (mainWindow->viewport->flags | ViewportFlag::INDEPENDENT_ROTATION))
             {
-                viewport->flags = mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
+                viewport->flags = mainWindow->viewport->flags | ViewportFlag::INDEPENDENT_ROTATION;
                 invalidateWidget(WIDX_VIEWPORT);
             }
         }

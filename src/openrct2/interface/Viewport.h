@@ -83,46 +83,46 @@ namespace OpenRCT2
 
     // Flags must currenly retain their values to avoid breaking plugins.
     // Values can be changed when plugins move to using named constants.
-    enum : uint32_t
+    enum class ViewportFlag : uint32_t
     {
-        VIEWPORT_FLAG_NONE = 0u,
+        NONE = 0u,
 
-        VIEWPORT_FLAG_GRIDLINES = (1u << 7),
-        VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1u << 0),
-        VIEWPORT_FLAG_HIDE_BASE = (1u << 12),
-        VIEWPORT_FLAG_HIDE_VERTICAL = (1u << 13),
+        GRIDLINES = (1u << 7),
+        UNDERGROUND_INSIDE = (1u << 0),
+        HIDE_BASE = (1u << 12),
+        HIDE_VERTICAL = (1u << 13),
 
-        VIEWPORT_FLAG_SOUND_ON = (1u << 10),
-        VIEWPORT_FLAG_LAND_OWNERSHIP = (1u << 8),
-        VIEWPORT_FLAG_CONSTRUCTION_RIGHTS = (1u << 9),
-        VIEWPORT_FLAG_HIDE_ENTITIES = (1u << 14),
-        VIEWPORT_FLAG_CLIP_VIEW = (1u << 15),
-        VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH = (1u << 17),
-        VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1u << 18),
-        VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1u << 19),
+        SOUND_ON = (1u << 10),
+        LAND_OWNERSHIP = (1u << 8),
+        CONSTRUCTION_RIGHTS = (1u << 9),
+        HIDE_ENTITIES = (1u << 14),
+        CLIP_VIEW = (1u << 15),
+        CLIP_VIEW_SEE_THROUGH = (1u << 17),
+        HIGHLIGHT_PATH_ISSUES = (1u << 18),
+        TRANSPARENT_BACKGROUND = (1u << 19),
 
-        VIEWPORT_FLAG_LAND_HEIGHTS = (1u << 4),
-        VIEWPORT_FLAG_TRACK_HEIGHTS = (1u << 5),
-        VIEWPORT_FLAG_PATH_HEIGHTS = (1u << 6),
+        LAND_HEIGHTS = (1u << 4),
+        TRACK_HEIGHTS = (1u << 5),
+        PATH_HEIGHTS = (1u << 6),
 
-        VIEWPORT_FLAG_HIDE_RIDES = (1u << 1),
-        VIEWPORT_FLAG_HIDE_VEHICLES = (1u << 20),
-        VIEWPORT_FLAG_HIDE_VEGETATION = (1u << 21),
-        VIEWPORT_FLAG_HIDE_SCENERY = (1u << 2),
-        VIEWPORT_FLAG_HIDE_PATHS = (1u << 16),
-        VIEWPORT_FLAG_HIDE_SUPPORTS = (1u << 3),
-        VIEWPORT_FLAG_HIDE_GUESTS = (1u << 11),
-        VIEWPORT_FLAG_HIDE_STAFF = (1u << 23),
+        HIDE_RIDES = (1u << 1),
+        HIDE_VEHICLES = (1u << 20),
+        HIDE_VEGETATION = (1u << 21),
+        HIDE_SCENERY = (1u << 2),
+        HIDE_PATHS = (1u << 16),
+        HIDE_SUPPORTS = (1u << 3),
+        HIDE_GUESTS = (1u << 11),
+        HIDE_STAFF = (1u << 23),
 
-        VIEWPORT_FLAG_INVISIBLE_RIDES = (1u << 24),
-        VIEWPORT_FLAG_INVISIBLE_VEHICLES = (1u << 25),
-        VIEWPORT_FLAG_INVISIBLE_VEGETATION = (1u << 26),
-        VIEWPORT_FLAG_INVISIBLE_SCENERY = (1u << 27),
-        VIEWPORT_FLAG_INVISIBLE_PATHS = (1u << 28),
-        VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1u << 29),
+        INVISIBLE_RIDES = (1u << 24),
+        INVISIBLE_VEHICLES = (1u << 25),
+        INVISIBLE_VEGETATION = (1u << 26),
+        INVISIBLE_SCENERY = (1u << 27),
+        INVISIBLE_PATHS = (1u << 28),
+        INVISIBLE_SUPPORTS = (1u << 29),
 
-        VIEWPORT_FLAG_INDEPENDENT_ROTATION = (1u << 30),
-        VIEWPORT_FLAG_RENDERING_INHIBITED = (1u << 31),
+        INDEPENDENT_ROTATION = (1u << 30),
+        RENDERING_INHIBITED = (1u << 31),
     };
 } // namespace OpenRCT2
 

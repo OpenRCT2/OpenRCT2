@@ -777,9 +777,9 @@ namespace OpenRCT2::Ui
         auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
 
         PeepDistance goal;
-        if (!(viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS))
+        if (!(viewport->flags & ViewportFlag::HIDE_GUESTS))
             goal = GetClosestPeep<Guest>(viewportCoords, viewport->rotation, maxDistance, goal);
-        if (!(viewport->flags & VIEWPORT_FLAG_HIDE_STAFF))
+        if (!(viewport->flags & ViewportFlag::HIDE_STAFF))
             goal = GetClosestPeep<Staff>(viewportCoords, viewport->rotation, maxDistance, goal);
         return goal.peep;
     }
