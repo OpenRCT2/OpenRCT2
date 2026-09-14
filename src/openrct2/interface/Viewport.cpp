@@ -847,10 +847,8 @@ namespace OpenRCT2
     {
         PROFILED_FUNCTION();
 
-        if (session.ViewFlags.hasAny(ViewportFlag::hideVertical, 
-                                     ViewportFlag::hideBase,
-                                     ViewportFlag::undergroundInside, 
-                                     ViewportFlag::clipView)
+        if (session.ViewFlags.hasAny(
+                ViewportFlag::hideVertical, ViewportFlag::hideBase, ViewportFlag::undergroundInside, ViewportFlag::clipView)
             && !session.ViewFlags.has(ViewportFlag::transparentBackground))
         {
             PaletteIndex colour = PaletteIndex::pi10;
@@ -863,10 +861,8 @@ namespace OpenRCT2
 
         PaintDrawStructs(session);
 
-        if (Config::Get().general.renderWeatherGloom 
-            && !gTrackDesignSaveMode
-            && !session.ViewFlags.has(ViewportFlag::hideEntities) 
-            && !session.ViewFlags.has(ViewportFlag::highlightPathIssues))
+        if (Config::Get().general.renderWeatherGloom && !gTrackDesignSaveMode
+            && !session.ViewFlags.has(ViewportFlag::hideEntities) && !session.ViewFlags.has(ViewportFlag::highlightPathIssues))
         {
             ViewportPaintWeatherGloom(session.rt);
         }
@@ -1262,11 +1258,12 @@ namespace OpenRCT2
             {
                 case ViewportVisibility::standard:
                 { // Set all these flags to 0, and invalidate if any were active
-                    ViewportFlags flags = ViewportFlags(ViewportFlag::undergroundInside, ViewportFlag::hideRides, ViewportFlag::hideScenery,
+                    ViewportFlags flags = ViewportFlags(
+                        ViewportFlag::undergroundInside, ViewportFlag::hideRides, ViewportFlag::hideScenery,
                         ViewportFlag::hidePaths, ViewportFlag::landHeights, ViewportFlag::trackHeights,
-                        ViewportFlag::pathHeights, ViewportFlag::hideGuests, ViewportFlag::hideStaff,
-                        ViewportFlag::hideBase, ViewportFlag::hideVertical, ViewportFlag::hideVehicles,
-                        ViewportFlag::hideSupports, ViewportFlag::hideVegetation);
+                        ViewportFlag::pathHeights, ViewportFlag::hideGuests, ViewportFlag::hideStaff, ViewportFlag::hideBase,
+                        ViewportFlag::hideVertical, ViewportFlag::hideVehicles, ViewportFlag::hideSupports,
+                        ViewportFlag::hideVegetation);
 
                     invalidate += vp->flags.hasAny(flags);
                     vp->flags.unset(flags);
@@ -1374,7 +1371,7 @@ namespace OpenRCT2
                             if (viewFlags.has(ViewportFlag::hideVehicles) || clipped)
                             {
                                 return viewFlags.has(ViewportFlag::invisibleVehicles) ? VisibilityKind::hidden
-                                                                                       : VisibilityKind::partial;
+                                                                                      : VisibilityKind::partial;
                             }
                             // Rides without track can technically have a 'vehicle':
                             // these should be hidden if 'hide rides' is enabled
@@ -1388,7 +1385,7 @@ namespace OpenRCT2
                                 if (ride != nullptr && !ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                                 {
                                     return viewFlags.has(ViewportFlag::invisibleRides) ? VisibilityKind::hidden
-                                                                                        : VisibilityKind::partial;
+                                                                                       : VisibilityKind::partial;
                                 }
                             }
                             break;
@@ -1446,7 +1443,7 @@ namespace OpenRCT2
                         if (viewFlags.has(ViewportFlag::hideVegetation) || clipped)
                         {
                             return viewFlags.has(ViewportFlag::invisibleVegetation) ? VisibilityKind::hidden
-                                                                                     : VisibilityKind::partial;
+                                                                                    : VisibilityKind::partial;
                         }
                     }
                     else
@@ -1454,7 +1451,7 @@ namespace OpenRCT2
                         if (viewFlags.has(ViewportFlag::hideScenery) || clipped)
                         {
                             return viewFlags.has(ViewportFlag::invisibleScenery) ? VisibilityKind::hidden
-                                                                                  : VisibilityKind::partial;
+                                                                                 : VisibilityKind::partial;
                         }
                     }
                 }
