@@ -181,6 +181,7 @@ static constexpr FilterPaletteID kGlassPaletteIds[kColourNumTotal] = {
     FilterPaletteID::paletteGlassRuby,
     FilterPaletteID::paletteGlassSapphire,
     FilterPaletteID::paletteGlassSilver,
+    FilterPaletteID::paletteGlassDeepBlue,
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
@@ -263,6 +264,7 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_RUBY,
     SPR_PALETTE_SAPPHIRE,
     SPR_PALETTE_SILVER,
+    SPR_PALETTE_DEEP_BLUE,
 
     // Additional palettes
     SPR_PALETTE_WATER,
@@ -425,6 +427,7 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_GLASS_RUBY,
     SPR_PALETTE_GLASS_SAPPHIRE,
     SPR_PALETTE_GLASS_SILVER,
+    SPR_PALETTE_GLASS_DEEP_BLUE,
 };
 
 static constexpr TranslucentWindowPalette kWindowPaletteGrey = { FilterPaletteID::paletteTranslucentGrey,                  FilterPaletteID::paletteTranslucentGreyHighlight,             FilterPaletteID::paletteTranslucentGreyShadow };
@@ -521,6 +524,7 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[kColourNumTotal] = {
     kWindowPaletteBrightRed,              // Colour::ruby
     kWindowPaletteLightBlue,              // Colour::sapphire
     kWindowPaletteGrey,                   // Colour::silver
+    kWindowPaletteLightBlue,              // Colour::deepBlue
 };
 // clang-format on
 

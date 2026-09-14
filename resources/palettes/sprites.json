@@ -755,6 +755,11 @@
         "format": "raw"
     },
     {
+        "path": "map_base/palette_map_deep_blue.png",
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "map_base/palette_map_water.png",
         "palette": "keep",
         "format": "raw"
@@ -1523,5 +1528,11 @@
         "path": "map_glass/palette_map_glass_silver.png",
         "palette": "keep",
         "format": "raw"
+    },
+    {
+        "path": "map_glass/palette_map_glass_deep_blue.png",
+        "palette": "keep",
+        "format": "raw"
     }
+]
 ]

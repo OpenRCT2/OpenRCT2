@@ -1304,6 +1304,7 @@ enum : ImageIndex
     SPR_PALETTE_RUBY,
     SPR_PALETTE_SAPPHIRE,
     SPR_PALETTE_SILVER,
+    SPR_PALETTE_DEEP_BLUE,
     SPR_PALETTE_2_END,
 
     // Additional palettes dumped from G1
@@ -1467,6 +1468,7 @@ enum : ImageIndex
     SPR_PALETTE_GLASS_RUBY,
     SPR_PALETTE_GLASS_SAPPHIRE,
     SPR_PALETTE_GLASS_SILVER,
+    SPR_PALETTE_GLASS_DEEP_BLUE,
     SPR_PALETTE_END,
 
     // Sprite font characters

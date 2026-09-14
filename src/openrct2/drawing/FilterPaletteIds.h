@@ -179,5 +179,6 @@ namespace OpenRCT2::Drawing
         paletteGlassRuby = paletteGlass + EnumValue(Colour::ruby),
         paletteGlassSapphire = paletteGlass + EnumValue(Colour::sapphire),
         paletteGlassSilver = paletteGlass + EnumValue(Colour::silver),
+        paletteGlassDeepBlue = paletteGlass + EnumValue(Colour::deepBlue),
     };
 }

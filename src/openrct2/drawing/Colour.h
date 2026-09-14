@@ -98,10 +98,11 @@ namespace OpenRCT2::Drawing
         ruby,
         sapphire,
         silver,
+        deepBlue,
     };
 
-    constexpr uint8_t kColourNumNormal = 72;
-    constexpr uint8_t kColourNumTotal = 74;
+    constexpr uint8_t kColourNumNormal = 73;
+    constexpr uint8_t kColourNumTotal = 75;
 
     constexpr auto kColourNull = static_cast<Colour>(255);
 

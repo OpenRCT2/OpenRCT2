@@ -3857,3 +3857,4 @@ STR_7057    :Pine green
 STR_7058    :Ruby
 STR_7059    :Sapphire
 STR_7060    :Silver
+STR_7061    :Deep blue

@@ -90,6 +90,7 @@ namespace OpenRCT2::Drawing
         { "ruby", Colour::ruby },
         { "sapphire", Colour::sapphire },
         { "silver", Colour::silver },
+        { "deep_blue", Colour::deepBlue },
     };
 
     Colour colourFromString(u8string s, Colour defaultValue)

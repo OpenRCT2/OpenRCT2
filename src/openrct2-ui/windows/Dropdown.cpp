@@ -547,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
         Colour::honeyDew,       Colour::celadon,        Colour::seafoamGreen, Colour::periwinkle,
         Colour::pastelPink,
 
-        Colour::invisible,      Colour::voidBackground,
+        Colour::deepBlue,      Colour::invisible,      Colour::voidBackground,
     };
 
     constexpr std::array kColourTooltips = {
@@ -631,6 +631,7 @@ namespace OpenRCT2::Ui::Windows
         STR_COLOUR_DULL_PURPLE_LIGHT_TIP,
         STR_COLOUR_MAGENTA_LIGHT_TIP,
 
+        STR_COLOUR_DEEP_BLUE_TIP,
         STR_COLOUR_INVISIBLE_TIP,
         STR_COLOUR_VOID_TIP,
     };

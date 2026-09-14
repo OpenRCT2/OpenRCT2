@@ -26,6 +26,8 @@ namespace OpenRCT2::RCT1
         {
             switch (colour)
             {
+                case 5:
+                    return Drawing::Colour::deepBlue;
                 case 8:
                     return Drawing::Colour::emerald;
                 case 15:
