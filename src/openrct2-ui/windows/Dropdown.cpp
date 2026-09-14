@@ -515,36 +515,36 @@ namespace OpenRCT2::Ui::Windows
 
     // Colour ordered for use in colour dropdown
     static constexpr Colour kColoursDropdownOrder[] = {
-        Colour::black,          Colour::saturatedRed,   Colour::darkOrange,   Colour::darkYellow,
-        Colour::forestGreen,    Colour::saturatedGreen, Colour::deepWater,    Colour::darkBlue,
+        Colour::black,          Colour::saturatedRed,   Colour::darkOrange,     Colour::darkYellow,
+        Colour::forestGreen,    Colour::saturatedGreen, Colour::deepWater,      Colour::darkBlue,
         Colour::violet,
 
-        Colour::silver,         Colour::ruby,           Colour::amber,        Colour::gold,
-        Colour::cactus,         Colour::emerald,        Colour::darkerWater,  Colour::sapphire,
+        Colour::silver,         Colour::ruby,           Colour::amber,          Colour::gold,
+        Colour::cactus,         Colour::emerald,        Colour::darkerWater,    Colour::sapphire,
         Colour::amethyst,
 
-        Colour::grey,           Colour::brightRed,      Colour::lightOrange,  Colour::yellow,
-        Colour::mossGreen,      Colour::brightGreen,    Colour::darkWater,    Colour::lightBlue,
+        Colour::grey,           Colour::brightRed,      Colour::lightOrange,    Colour::yellow,
+        Colour::mossGreen,      Colour::brightGreen,    Colour::darkWater,      Colour::lightBlue,
         Colour::brightPurple,
 
-        Colour::white,          Colour::lightPink,      Colour::pastelOrange, Colour::brightYellow,
-        Colour::chartreuse,     Colour::limeGreen,      Colour::lightWater,   Colour::icyBlue,
+        Colour::white,          Colour::lightPink,      Colour::pastelOrange,   Colour::brightYellow,
+        Colour::chartreuse,     Colour::limeGreen,      Colour::lightWater,     Colour::icyBlue,
         Colour::lavender,
 
-        Colour::umber,          Colour::maroon,         Colour::sepia,        Colour::saturatedBrown,
-        Colour::armyGreen,      Colour::hunterGreen,    Colour::viridian,     Colour::darkPurple,
+        Colour::umber,          Colour::maroon,         Colour::sepia,          Colour::saturatedBrown,
+        Colour::armyGreen,      Colour::hunterGreen,    Colour::viridian,       Colour::darkPurple,
         Colour::darkPink,
 
-        Colour::darkBrown,      Colour::crimson,        Colour::copper,       Colour::caramel,
-        Colour::pesto,          Colour::asparagus,      Colour::pineGreen,    Colour::indigo,
+        Colour::darkBrown,      Colour::crimson,        Colour::copper,         Colour::caramel,
+        Colour::pesto,          Colour::asparagus,      Colour::pineGreen,      Colour::indigo,
         Colour::burntPink,
 
-        Colour::brown,          Colour::bordeauxRed,    Colour::salmonPink,   Colour::lightBrown,
-        Colour::darkOliveGreen, Colour::oliveGreen,     Colour::darkGreen,    Colour::lightPurple,
+        Colour::brown,          Colour::bordeauxRed,    Colour::salmonPink,     Colour::lightBrown,
+        Colour::darkOliveGreen, Colour::oliveGreen,     Colour::darkGreen,      Colour::lightPurple,
         Colour::brightPink,
 
-        Colour::beige,          Colour::coralPink,      Colour::peach,        Colour::tan,
-        Colour::honeyDew,       Colour::celadon,        Colour::seafoamGreen, Colour::periwinkle,
+        Colour::beige,          Colour::coralPink,      Colour::peach,          Colour::tan,
+        Colour::honeyDew,       Colour::celadon,        Colour::seafoamGreen,   Colour::periwinkle,
         Colour::pastelPink,
 
         Colour::deepBlue,       Colour::invisible,      Colour::voidBackground,
