@@ -19,6 +19,7 @@
 - Fix: [#27093] Pause and fast forward buttons are shown in multiplayer.
 - Fix: [#27113] Chat button is shown in editor mode.
 - Fix: [#27133] [Plugin] Dropdown and spinner are not fully hidden with isVisible on creation.
+- Fix: [#27136] Guests keep waiting at a level crossing after the train has passed, due to faulty iteration over the track the train has vacated.
 
 0.5.5 (2026-09-06)
 ------------------------------------------------------------------------
