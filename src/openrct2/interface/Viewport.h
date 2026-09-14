@@ -34,13 +34,16 @@ namespace OpenRCT2
     struct TileElement;
     struct WindowBase;
 
+    enum class ViewportFlag : uint32_t;
+    using ViewportFlags = FlagHolder<uint32_t, ViewportFlag>;
+
     struct Viewport
     {
         int32_t width{};
         int32_t height{};
         ScreenCoordsXY pos{};
         ScreenCoordsXY viewPos{};
-        uint32_t flags{};
+        ViewportFlags flags{};
         ZoomLevel zoom{};
         uint8_t rotation{};
         bool isVisible = false;
@@ -226,7 +229,7 @@ namespace OpenRCT2
         WindowBase* window, const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags);
 
     InteractionInfo SetInteractionInfoFromPaintSession(
-        PaintSession* session, uint32_t viewFlags, ViewportInteractionItems filter);
+        PaintSession* session, ViewportFlags viewFlags, ViewportInteractionItems filter);
 
     std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport);
     std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, int32_t z);
@@ -243,7 +246,7 @@ namespace OpenRCT2
 
     void ViewportSetSavedView();
 
-    VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags);
+    VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, ViewportFlags viewFlags);
 
     using ViewportList = sfl::static_vector<Viewport*, kMaxViewportCount>;
 

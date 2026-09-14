@@ -127,7 +127,7 @@ static void PathAdditionBinsPaint(
         height += 8;
 
     bool binsAreVandalised = pathElement.isBroken();
-    auto highlightPathIssues = (session.ViewFlags & ViewportFlag::HIGHLIGHT_PATH_ISSUES) != 0;
+    auto highlightPathIssues = (session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES)) != 0;
 
     if (edges & EDGE_NE)
     {
@@ -211,9 +211,9 @@ static void PathAdditionJumpingFountainsPaint(
     PaintAddImageAsParent(session, imageId.WithIndexOffset(4), { 0, 0, height }, { { 8, 6, height + 2 }, { 1, 1, 2 } });
 }
 
-inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathAdditionEntry& pathAdditionEntry, bool isBroken)
+inline bool PathAdditionIsVisible(ViewportFlags viewFlags, const PathAdditionEntry& pathAdditionEntry, bool isBroken)
 {
-    if (!(viewFlags & ViewportFlag::HIGHLIGHT_PATH_ISSUES))
+    if (!(viewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES)))
         return true;
 
     if (isBroken)

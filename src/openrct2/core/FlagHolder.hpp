@@ -107,6 +107,11 @@ struct FlagHolder
         holder &= ~EnumsToFlags(types...);
     }
 
+    constexpr void unset(const FlagHolder& other)
+    {
+        holder &= ~other.holder;
+    }
+
     constexpr void flip(TEnumType flag)
     {
         holder ^= EnumToFlag(flag);

@@ -579,12 +579,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (_trackPlaceZ < surfaceElement->getBaseZ() && !_triggeredUndergroundView)
                 {
-                    mainWnd->viewport->flags |= ViewportFlag::UNDERGROUND_INSIDE;
+                    mainWnd->viewport->flags.set(ViewportFlag::UNDERGROUND_INSIDE);
                     _triggeredUndergroundView = true;
                 }
                 else if (_trackPlaceZ >= surfaceElement->getBaseZ() && _triggeredUndergroundView)
                 {
-                    mainWnd->viewport->flags &= ~ViewportFlag::UNDERGROUND_INSIDE;
+                    mainWnd->viewport->flags.unset(ViewportFlag::UNDERGROUND_INSIDE);
                     _triggeredUndergroundView = false;
                 }
             }

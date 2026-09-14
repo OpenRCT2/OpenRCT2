@@ -321,7 +321,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
 {
     PROFILED_FUNCTION();
 
-    if (session.ViewFlags & ViewportFlag::HIGHLIGHT_PATH_ISSUES)
+    if (session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES))
         return;
 
     auto sequenceNum = tileElement.getSequenceIndex();

@@ -108,20 +108,20 @@ namespace OpenRCT2::Ui::Windows
             if (w != nullptr)
                 wflags = w->viewport->flags;
 
-            setWidgetPressed(WIDX_HIDE_VEGETATION, (wflags & ViewportFlag::HIDE_VEGETATION));
-            setWidgetPressed(WIDX_HIDE_SCENERY, (wflags & ViewportFlag::HIDE_SCENERY));
-            setWidgetPressed(WIDX_HIDE_PATHS, (wflags & ViewportFlag::HIDE_PATHS));
-            setWidgetPressed(WIDX_HIDE_RIDES, (wflags & ViewportFlag::HIDE_RIDES));
-            setWidgetPressed(WIDX_HIDE_VEHICLES, (wflags & ViewportFlag::HIDE_VEHICLES));
-            setWidgetPressed(WIDX_HIDE_SUPPORTS, (wflags & ViewportFlag::HIDE_SUPPORTS));
-            setWidgetPressed(WIDX_HIDE_GUESTS, (wflags & ViewportFlag::HIDE_GUESTS));
-            setWidgetPressed(WIDX_HIDE_STAFF, (wflags & ViewportFlag::HIDE_STAFF));
-            setWidgetPressed(WIDX_INVISIBLE_VEGETATION, (wflags & ViewportFlag::INVISIBLE_VEGETATION));
-            setWidgetPressed(WIDX_INVISIBLE_SCENERY, (wflags & ViewportFlag::INVISIBLE_SCENERY));
-            setWidgetPressed(WIDX_INVISIBLE_PATHS, (wflags & ViewportFlag::INVISIBLE_PATHS));
-            setWidgetPressed(WIDX_INVISIBLE_RIDES, (wflags & ViewportFlag::INVISIBLE_RIDES));
-            setWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags & ViewportFlag::INVISIBLE_VEHICLES));
-            setWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags & ViewportFlag::INVISIBLE_SUPPORTS));
+            setWidgetPressed(WIDX_HIDE_VEGETATION, (wflags.has(ViewportFlag::HIDE_VEGETATION)));
+            setWidgetPressed(WIDX_HIDE_SCENERY, (wflags.has(ViewportFlag::HIDE_SCENERY)));
+            setWidgetPressed(WIDX_HIDE_PATHS, (wflags.has(ViewportFlag::HIDE_PATHS)));
+            setWidgetPressed(WIDX_HIDE_RIDES, (wflags.has(ViewportFlag::HIDE_RIDES)));
+            setWidgetPressed(WIDX_HIDE_VEHICLES, (wflags.has(ViewportFlag::HIDE_VEHICLES)));
+            setWidgetPressed(WIDX_HIDE_SUPPORTS, (wflags.has(ViewportFlag::HIDE_SUPPORTS)));
+            setWidgetPressed(WIDX_HIDE_GUESTS, (wflags.has(ViewportFlag::HIDE_GUESTS)));
+            setWidgetPressed(WIDX_HIDE_STAFF, (wflags.has(ViewportFlag::HIDE_STAFF)));
+            setWidgetPressed(WIDX_INVISIBLE_VEGETATION, (wflags.has(ViewportFlag::INVISIBLE_VEGETATION)));
+            setWidgetPressed(WIDX_INVISIBLE_SCENERY, (wflags.has(ViewportFlag::INVISIBLE_SCENERY)));
+            setWidgetPressed(WIDX_INVISIBLE_PATHS, (wflags.has(ViewportFlag::INVISIBLE_PATHS)));
+            setWidgetPressed(WIDX_INVISIBLE_RIDES, (wflags.has(ViewportFlag::INVISIBLE_RIDES)));
+            setWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags.has(ViewportFlag::INVISIBLE_VEHICLES)));
+            setWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags.has(ViewportFlag::INVISIBLE_SUPPORTS)));
 
             for (WidgetIndex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
             {

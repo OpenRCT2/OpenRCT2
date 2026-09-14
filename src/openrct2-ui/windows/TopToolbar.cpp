@@ -311,23 +311,23 @@ namespace OpenRCT2::Ui::Windows
                 colours[1].withFlag(ColourFlag::translucent, true), {}, TOP_TOOLBAR_VIEW_MENU_COUNT);
 
             auto mvpFlags = WindowGetMain()->viewport->flags;
-            gDropdown.items[DDIDX_UNDERGROUND_INSIDE].setChecked(mvpFlags & ViewportFlag::UNDERGROUND_INSIDE);
+            gDropdown.items[DDIDX_UNDERGROUND_INSIDE].setChecked(mvpFlags.has(ViewportFlag::UNDERGROUND_INSIDE));
             gDropdown.items[DDIDX_TRANSPARENT_WATER].setChecked(Config::Get().general.transparentWater);
-            gDropdown.items[DDIDX_HIDE_BASE].setChecked(mvpFlags & ViewportFlag::HIDE_BASE);
-            gDropdown.items[DDIDX_HIDE_VERTICAL].setChecked(mvpFlags & ViewportFlag::HIDE_VERTICAL);
-            gDropdown.items[DDIDX_HIDE_RIDES].setChecked(mvpFlags & ViewportFlag::HIDE_RIDES);
-            gDropdown.items[DDIDX_HIDE_VEHICLES].setChecked(mvpFlags & ViewportFlag::HIDE_VEHICLES);
-            gDropdown.items[DDIDX_HIDE_VEGETATION].setChecked(mvpFlags & ViewportFlag::HIDE_VEGETATION);
-            gDropdown.items[DDIDX_HIDE_SCENERY].setChecked(mvpFlags & ViewportFlag::HIDE_SCENERY);
-            gDropdown.items[DDIDX_HIDE_PATHS].setChecked(mvpFlags & ViewportFlag::HIDE_PATHS);
-            gDropdown.items[DDIDX_HIDE_SUPPORTS].setChecked(mvpFlags & ViewportFlag::HIDE_SUPPORTS);
-            gDropdown.items[DDIDX_HIDE_GUESTS].setChecked(mvpFlags & ViewportFlag::HIDE_GUESTS);
-            gDropdown.items[DDIDX_HIDE_STAFF].setChecked(mvpFlags & ViewportFlag::HIDE_STAFF);
-            gDropdown.items[DDIDX_LAND_HEIGHTS].setChecked(mvpFlags & ViewportFlag::LAND_HEIGHTS);
-            gDropdown.items[DDIDX_TRACK_HEIGHTS].setChecked(mvpFlags & ViewportFlag::TRACK_HEIGHTS);
-            gDropdown.items[DDIDX_PATH_HEIGHTS].setChecked(mvpFlags & ViewportFlag::PATH_HEIGHTS);
-            gDropdown.items[DDIDX_VIEW_CLIPPING].setChecked(mvpFlags & ViewportFlag::CLIP_VIEW);
-            gDropdown.items[DDIDX_HIGHLIGHT_PATH_ISSUES].setChecked(mvpFlags & ViewportFlag::HIGHLIGHT_PATH_ISSUES);
+            gDropdown.items[DDIDX_HIDE_BASE].setChecked(mvpFlags.has(ViewportFlag::HIDE_BASE));
+            gDropdown.items[DDIDX_HIDE_VERTICAL].setChecked(mvpFlags.has(ViewportFlag::HIDE_VERTICAL));
+            gDropdown.items[DDIDX_HIDE_RIDES].setChecked(mvpFlags.has(ViewportFlag::HIDE_RIDES));
+            gDropdown.items[DDIDX_HIDE_VEHICLES].setChecked(mvpFlags.has(ViewportFlag::HIDE_VEHICLES));
+            gDropdown.items[DDIDX_HIDE_VEGETATION].setChecked(mvpFlags.has(ViewportFlag::HIDE_VEGETATION));
+            gDropdown.items[DDIDX_HIDE_SCENERY].setChecked(mvpFlags.has(ViewportFlag::HIDE_SCENERY));
+            gDropdown.items[DDIDX_HIDE_PATHS].setChecked(mvpFlags.has(ViewportFlag::HIDE_PATHS));
+            gDropdown.items[DDIDX_HIDE_SUPPORTS].setChecked(mvpFlags.has(ViewportFlag::HIDE_SUPPORTS));
+            gDropdown.items[DDIDX_HIDE_GUESTS].setChecked(mvpFlags.has(ViewportFlag::HIDE_GUESTS));
+            gDropdown.items[DDIDX_HIDE_STAFF].setChecked(mvpFlags.has(ViewportFlag::HIDE_STAFF));
+            gDropdown.items[DDIDX_LAND_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::LAND_HEIGHTS));
+            gDropdown.items[DDIDX_TRACK_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::TRACK_HEIGHTS));
+            gDropdown.items[DDIDX_PATH_HEIGHTS].setChecked(mvpFlags.has(ViewportFlag::PATH_HEIGHTS));
+            gDropdown.items[DDIDX_VIEW_CLIPPING].setChecked(mvpFlags.has(ViewportFlag::CLIP_VIEW));
+            gDropdown.items[DDIDX_HIGHLIGHT_PATH_ISSUES].setChecked(mvpFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES));
 
             gDropdown.defaultIndex = DDIDX_UNDERGROUND_INSIDE;
         }

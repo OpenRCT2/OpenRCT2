@@ -215,7 +215,7 @@ namespace OpenRCT2
         Viewport saveVp{
             .width = image.width,
             .height = image.height,
-            .flags = 0,
+            .flags = ViewportFlag::NONE,
             .zoom = ZoomLevel{ 1 },
             .rotation = mapPosXYZD.direction,
         };

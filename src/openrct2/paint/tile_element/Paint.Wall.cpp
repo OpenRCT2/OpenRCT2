@@ -285,7 +285,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
 {
     PROFILED_FUNCTION();
 
-    if (session.ViewFlags & ViewportFlag::HIGHLIGHT_PATH_ISSUES)
+    if (session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES))
     {
         return;
     }

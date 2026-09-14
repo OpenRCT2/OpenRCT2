@@ -547,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 WindowDrawViewport(rt, *this);
 
-                if (viewport->flags & ViewportFlag::SOUND_ON)
+                if (viewport->flags.has(ViewportFlag::SOUND_ON))
                 {
                     GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
                 }
@@ -1065,7 +1065,7 @@ namespace OpenRCT2::Ui::Windows
             if (page == WINDOW_STAFF_OVERVIEW && newPage == WINDOW_STAFF_OVERVIEW && viewport != nullptr)
             {
                 viewport->flags ^= ViewportFlag::SOUND_ON;
-                listen = (viewport->flags & ViewportFlag::SOUND_ON) != 0;
+                listen = (viewport->flags.has(ViewportFlag::SOUND_ON)) != 0;
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
@@ -1087,7 +1087,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             if (listen && viewport != nullptr)
-                viewport->flags |= ViewportFlag::SOUND_ON;
+                viewport->flags.set(ViewportFlag::SOUND_ON);
         }
 
         void SetPressedTab()
@@ -1141,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 viewport_flags = 0;
                 if (Config::Get().general.alwaysShowGridlines)
-                    viewport_flags |= ViewportFlag::GRIDLINES;
+                    viewport_flags.set(ViewportFlag::GRIDLINES);
             }
 
             onPrepareDraw();

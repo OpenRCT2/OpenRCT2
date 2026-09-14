@@ -13,6 +13,7 @@
 #include "../drawing/FilterPaletteIds.h"
 #include "../drawing/ImageId.hpp"
 #include "../drawing/RenderTarget.h"
+#include "../interface/Viewport.h"
 #include "../localisation/StringIdType.h"
 #include "../world/Location.hpp"
 #include "../world/MapLimits.h"
@@ -147,7 +148,7 @@ struct PaintSessionCore
     PaintStruct* WoodenSupportsPrependTo;
     CoordsXY SpritePosition;
     CoordsXY MapPosition;
-    uint32_t ViewFlags;
+    OpenRCT2::ViewportFlags ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
     ImageId TrackColours;
@@ -297,7 +298,7 @@ void PaintFloatingMoneyEffect(
     PaintSession& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
-PaintSession* PaintSessionAlloc(OpenRCT2::Drawing::RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
+PaintSession* PaintSessionAlloc(OpenRCT2::Drawing::RenderTarget& rt, OpenRCT2::ViewportFlags viewFlags, uint8_t rotation);
 void PaintSessionFree(PaintSession* session);
 void PaintSessionGenerate(PaintSession& session);
 void PaintSessionArrange(PaintSessionCore& session);

@@ -55,7 +55,7 @@ void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, boo
 
         PaintTileElementBase(session, mapCoords);
     }
-    else if (!(session.ViewFlags & ViewportFlag::TRANSPARENT_BACKGROUND))
+    else if (!(session.ViewFlags.has(ViewportFlag::TRANSPARENT_BACKGROUND)))
     {
         BlankTilesPaint(session, mapCoords.x, mapCoords.y);
     }
@@ -116,7 +116,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     CoordsXY coords = origCoords;
 
-    if ((session.ViewFlags & ViewportFlag::CLIP_VIEW))
+    if ((session.ViewFlags.has(ViewportFlag::CLIP_VIEW)))
     {
         if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
             return;
@@ -215,12 +215,12 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         }
 
         // Only paint tile_elements below the clip height.
-        if ((session.ViewFlags & ViewportFlag::CLIP_VIEW) && (tile_element->getBaseZ() > gClipHeight * kCoordsZStep))
+        if ((session.ViewFlags.has(ViewportFlag::CLIP_VIEW)) && (tile_element->getBaseZ() > gClipHeight * kCoordsZStep))
         {
             // see-through off: don't paint this tile_element at all
             // see-through on: paint this tile_element as partial or hidden later on
             // note: surface elements are not painted even with see-through turned on
-            if ((session.ViewFlags & ViewportFlag::CLIP_VIEW_SEE_THROUGH) == 0
+            if ((session.ViewFlags.has(ViewportFlag::CLIP_VIEW_SEE_THROUGH)) == 0
                 || tile_element->getType() == TileElementType::surface)
             {
                 continue;
@@ -326,7 +326,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             }
 
             // Only draw supports below the clipping height.
-            if ((session.ViewFlags & ViewportFlag::CLIP_VIEW) && (segmentHeight > gClipHeight))
+            if ((session.ViewFlags.has(ViewportFlag::CLIP_VIEW)) && (segmentHeight > gClipHeight))
                 continue;
 
             int32_t xOffset = static_cast<int32_t>(sy) * 10;
@@ -385,8 +385,8 @@ uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation)
     return (segments & 0xFF00) | temp;
 }
 
-bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag)
+bool PaintShouldShowHeightMarkers(const PaintSession& session, const ViewportFlag viewportFlag)
 {
     auto rt = &session.rt;
-    return (session.ViewFlags & viewportFlag) && (rt->zoom_level <= ZoomLevel{ 0 });
+    return session.ViewFlags.has(viewportFlag) && (rt->zoom_level <= ZoomLevel{ 0 });
 }

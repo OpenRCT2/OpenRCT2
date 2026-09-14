@@ -749,7 +749,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
         }
     }
 
-    if (session.ViewFlags & ViewportFlag::HIGHLIGHT_PATH_ISSUES)
+    if (session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
     }

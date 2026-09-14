@@ -1965,7 +1965,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
     }
 
     if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex)
-        && !(session.ViewFlags & ViewportFlag::HIGHLIGHT_PATH_ISSUES))
+        && !(session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES)))
     {
         auto trackType = trackElement.getTrackType();
         int32_t trackSequence = trackElement.getSequenceIndex();

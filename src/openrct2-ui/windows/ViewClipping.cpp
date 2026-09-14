@@ -376,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
             // Turn on view clipping when the window is opened.
             if (mainWindow != nullptr)
             {
-                mainWindow->viewport->flags |= ViewportFlag::CLIP_VIEW;
+                mainWindow->viewport->flags.set(ViewportFlag::CLIP_VIEW);
                 mainWindow->invalidate();
             }
         }
@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                mainWindow->viewport->flags &= ~ViewportFlag::CLIP_VIEW;
+                mainWindow->viewport->flags.unset(ViewportFlag::CLIP_VIEW);
                 mainWindow->invalidate();
             }
         }
