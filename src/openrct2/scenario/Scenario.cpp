@@ -306,7 +306,7 @@ static void ScenarioWeekUpdate()
     RideUpdateFavouritedStat();
 
     const auto& waterEntry = getActiveWaterEntry();
-    if (month <= MONTH_APRIL && waterEntry.flags & WATER_FLAGS_ALLOW_DUCKS)
+    if (month <= MONTH_APRIL && waterEntry.flags.has(WaterObjectFlag::allowDucks))
     {
         // 100 attempts at finding some water to create a few ducks at
         for (int32_t i = 0; i < 100; i++)
