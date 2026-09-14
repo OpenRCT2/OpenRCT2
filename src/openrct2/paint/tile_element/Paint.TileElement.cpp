@@ -220,8 +220,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             // see-through off: don't paint this tile_element at all
             // see-through on: paint this tile_element as partial or hidden later on
             // note: surface elements are not painted even with see-through turned on
-            if (!session.ViewFlags.has(ViewportFlag::clipViewSeeThrough)
-                || tile_element->getType() == TileElementType::surface)
+            if (!session.ViewFlags.has(ViewportFlag::clipViewSeeThrough) || tile_element->getType() == TileElementType::surface)
             {
                 continue;
             }
