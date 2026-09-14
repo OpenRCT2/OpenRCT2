@@ -1592,7 +1592,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            ViewportFlags newViewportFlags = ViewportFlag::NONE;
+            ViewportFlags newViewportFlags;
             if (viewport != nullptr)
             {
                 if (focus == newFocus)

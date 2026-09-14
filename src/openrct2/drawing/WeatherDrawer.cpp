@@ -54,7 +54,7 @@ void DrawWeather(RenderTarget& rt, IWeatherDrawer* weatherDrawer)
     if (!Config::Get().general.renderWeatherEffects)
         return;
 
-    ViewportFlags viewFlags = ViewportFlag::NONE;
+    ViewportFlags viewFlags;
 
     const auto* viewport = WindowGetViewport(WindowGetMain());
     if (viewport != nullptr)

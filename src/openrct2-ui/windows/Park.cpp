@@ -604,7 +604,8 @@ namespace OpenRCT2::Ui::Windows
             ViewportFlags viewportFlags{};
             if (viewport == nullptr)
             {
-                viewportFlags = Config::Get().general.alwaysShowGridlines ? ViewportFlag::GRIDLINES : ViewportFlag::NONE;
+                if (Config::Get().general.alwaysShowGridlines)
+                    viewportFlags.set(ViewportFlag::GRIDLINES);
             }
             else
             {

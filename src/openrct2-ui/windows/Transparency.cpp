@@ -102,7 +102,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            ViewportFlags wflags = ViewportFlag::NONE;
+            ViewportFlags wflags;
             WindowBase* w = WindowGetMain();
 
             if (w != nullptr)
@@ -153,7 +153,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ToggleViewportFlag(WidgetIndex widgetIndex)
         {
-            ViewportFlags wflags = ViewportFlag::NONE;
+            ViewportFlags wflags;
             WindowBase* w = WindowGetMain();
 
             if (w == nullptr)
