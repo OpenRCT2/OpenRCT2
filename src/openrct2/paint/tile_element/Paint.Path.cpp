@@ -708,7 +708,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
 {
     PROFILED_FUNCTION();
 
-    if (PaintShouldShowHeightMarkers(session, ViewportFlag::PathHeights))
+    if (PaintShouldShowHeightMarkers(session, ViewportFlag::pathHeights))
     {
         uint16_t heightMarkerBaseZ = pathEl.getBaseZ() + 3;
         if (pathEl.isSloped())
@@ -749,7 +749,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
         }
     }
 
-    if (session.ViewFlags.has(ViewportFlag::HighlightPathIssues))
+    if (session.ViewFlags.has(ViewportFlag::highlightPathIssues))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
     }

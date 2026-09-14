@@ -60,7 +60,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     PROFILED_FUNCTION();
 
     if (session.rt.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
-        || session.ViewFlags.has(ViewportFlag::HighlightPathIssues))
+        || session.ViewFlags.has(ViewportFlag::highlightPathIssues))
         return;
 
     auto banner = bannerElement.getBanner();

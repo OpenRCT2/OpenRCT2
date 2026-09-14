@@ -175,7 +175,7 @@ namespace OpenRCT2
         viewport->rotation = GetCurrentRotation();
 
         if (Config::Get().general.alwaysShowGridlines)
-            viewport->flags.set(ViewportFlag::Gridlines);
+            viewport->flags.set(ViewportFlag::gridlines);
         w.viewport = viewport;
         viewport->isVisible = w.isVisible;
 
@@ -485,15 +485,15 @@ namespace OpenRCT2
         {
             if (!underground)
             {
-                int32_t bit = viewport->flags.has(ViewportFlag::UndergroundInside);
-                viewport->flags.unset(ViewportFlag::UndergroundInside);
+                int32_t bit = viewport->flags.has(ViewportFlag::undergroundInside);
+                viewport->flags.unset(ViewportFlag::undergroundInside);
                 if (!bit)
                     return;
             }
             else
             {
-                int32_t bit = viewport->flags.has(ViewportFlag::UndergroundInside);
-                viewport->flags.set(ViewportFlag::UndergroundInside);
+                int32_t bit = viewport->flags.has(ViewportFlag::undergroundInside);
+                viewport->flags.set(ViewportFlag::undergroundInside);
                 if (bit)
                     return;
             }
@@ -802,7 +802,7 @@ namespace OpenRCT2
             auto* viewport = w->viewport;
             if (viewport == nullptr)
                 return;
-            if (viewport->flags.has(ViewportFlag::IndependentRotation))
+            if (viewport->flags.has(ViewportFlag::independentRotation))
                 return;
             ViewportRotateSingleInternal(*w, direction);
         });
@@ -820,7 +820,7 @@ namespace OpenRCT2
      */
     void ViewportRender(RenderTarget& rt, const Viewport* viewport)
     {
-        if (viewport->flags.has(ViewportFlag::RenderingInhibited))
+        if (viewport->flags.has(ViewportFlag::renderingInhibited))
             return;
 
         if (rt.x + rt.width <= viewport->pos.x)
@@ -847,14 +847,14 @@ namespace OpenRCT2
     {
         PROFILED_FUNCTION();
 
-        if (session.ViewFlags.hasAny(ViewportFlag::HideVertical, 
-                                     ViewportFlag::HideBase,
-                                     ViewportFlag::UndergroundInside, 
-                                     ViewportFlag::ClipView)
-            && !session.ViewFlags.has(ViewportFlag::TransparentBackground))
+        if (session.ViewFlags.hasAny(ViewportFlag::hideVertical, 
+                                     ViewportFlag::hideBase,
+                                     ViewportFlag::undergroundInside, 
+                                     ViewportFlag::clipView)
+            && !session.ViewFlags.has(ViewportFlag::transparentBackground))
         {
             PaletteIndex colour = PaletteIndex::pi10;
-            if (session.ViewFlags.has(ViewportFlag::HideEntities))
+            if (session.ViewFlags.has(ViewportFlag::hideEntities))
             {
                 colour = PaletteIndex::transparent;
             }
@@ -865,8 +865,8 @@ namespace OpenRCT2
 
         if (Config::Get().general.renderWeatherGloom 
             && !gTrackDesignSaveMode
-            && !session.ViewFlags.has(ViewportFlag::HideEntities) 
-            && !session.ViewFlags.has(ViewportFlag::HighlightPathIssues))
+            && !session.ViewFlags.has(ViewportFlag::hideEntities) 
+            && !session.ViewFlags.has(ViewportFlag::highlightPathIssues))
         {
             ViewportPaintWeatherGloom(session.rt);
         }
@@ -1124,9 +1124,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!(mainWindow->viewport->flags.has(ViewportFlag::Gridlines)))
+                if (!(mainWindow->viewport->flags.has(ViewportFlag::gridlines)))
                 {
-                    mainWindow->viewport->flags.set(ViewportFlag::Gridlines);
+                    mainWindow->viewport->flags.set(ViewportFlag::gridlines);
                     mainWindow->invalidate();
                 }
             }
@@ -1150,7 +1150,7 @@ namespace OpenRCT2
             {
                 if (!Config::Get().general.alwaysShowGridlines)
                 {
-                    mainWindow->viewport->flags.unset(ViewportFlag::Gridlines);
+                    mainWindow->viewport->flags.unset(ViewportFlag::gridlines);
                     mainWindow->invalidate();
                 }
             }
@@ -1168,9 +1168,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!mainWindow->viewport->flags.has(ViewportFlag::LandOwnership))
+                if (!mainWindow->viewport->flags.has(ViewportFlag::landOwnership))
                 {
-                    mainWindow->viewport->flags.set(ViewportFlag::LandOwnership);
+                    mainWindow->viewport->flags.set(ViewportFlag::landOwnership);
                     mainWindow->invalidate();
                 }
             }
@@ -1192,9 +1192,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (mainWindow->viewport->flags.has(ViewportFlag::LandOwnership))
+                if (mainWindow->viewport->flags.has(ViewportFlag::landOwnership))
                 {
-                    mainWindow->viewport->flags.unset(ViewportFlag::LandOwnership);
+                    mainWindow->viewport->flags.unset(ViewportFlag::landOwnership);
                     mainWindow->invalidate();
                 }
             }
@@ -1212,9 +1212,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!mainWindow->viewport->flags.has(ViewportFlag::ConstructionRights))
+                if (!mainWindow->viewport->flags.has(ViewportFlag::constructionRights))
                 {
-                    mainWindow->viewport->flags.set(ViewportFlag::ConstructionRights);
+                    mainWindow->viewport->flags.set(ViewportFlag::constructionRights);
                     mainWindow->invalidate();
                 }
             }
@@ -1236,9 +1236,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (mainWindow->viewport->flags.has(ViewportFlag::ConstructionRights))
+                if (mainWindow->viewport->flags.has(ViewportFlag::constructionRights))
                 {
-                    mainWindow->viewport->flags.unset(ViewportFlag::ConstructionRights);
+                    mainWindow->viewport->flags.unset(ViewportFlag::constructionRights);
                     mainWindow->invalidate();
                 }
             }
@@ -1262,11 +1262,11 @@ namespace OpenRCT2
             {
                 case ViewportVisibility::standard:
                 { // Set all these flags to 0, and invalidate if any were active
-                    ViewportFlags flags = ViewportFlags(ViewportFlag::UndergroundInside, ViewportFlag::HideRides, ViewportFlag::HideScenery,
-                        ViewportFlag::HidePaths, ViewportFlag::LandHeights, ViewportFlag::TrackHeights,
-                        ViewportFlag::PathHeights, ViewportFlag::HideGuests, ViewportFlag::HideStaff,
-                        ViewportFlag::HideBase, ViewportFlag::HideVertical, ViewportFlag::HideVehicles,
-                        ViewportFlag::HideSupports, ViewportFlag::HideVegetation);
+                    ViewportFlags flags = ViewportFlags(ViewportFlag::undergroundInside, ViewportFlag::hideRides, ViewportFlag::hideScenery,
+                        ViewportFlag::hidePaths, ViewportFlag::landHeights, ViewportFlag::trackHeights,
+                        ViewportFlag::pathHeights, ViewportFlag::hideGuests, ViewportFlag::hideStaff,
+                        ViewportFlag::hideBase, ViewportFlag::hideVertical, ViewportFlag::hideVehicles,
+                        ViewportFlag::hideSupports, ViewportFlag::hideVegetation);
 
                     invalidate += vp->flags.hasAny(flags);
                     vp->flags.unset(flags);
@@ -1275,19 +1275,19 @@ namespace OpenRCT2
                 case ViewportVisibility::undergroundViewOn:      // 6CB79D
                 case ViewportVisibility::undergroundViewGhostOn: // 6CB7C4
                     // Set underground on, invalidate if it was off
-                    invalidate += !(vp->flags.has(ViewportFlag::UndergroundInside));
-                    vp->flags.set(ViewportFlag::UndergroundInside);
+                    invalidate += !(vp->flags.has(ViewportFlag::undergroundInside));
+                    vp->flags.set(ViewportFlag::undergroundInside);
                     break;
                 case ViewportVisibility::trackHeights: // 6CB7EB
                     // Set track heights on, invalidate if off
-                    invalidate += !(vp->flags.has(ViewportFlag::TrackHeights));
-                    vp->flags.set(ViewportFlag::TrackHeights);
+                    invalidate += !(vp->flags.has(ViewportFlag::trackHeights));
+                    vp->flags.set(ViewportFlag::trackHeights);
                     break;
                 case ViewportVisibility::undergroundViewOff:      // 6CB7B1
                 case ViewportVisibility::undergroundViewGhostOff: // 6CB7D8
                     // Set underground off, invalidate if it was on
-                    invalidate += vp->flags.has(ViewportFlag::UndergroundInside);
-                    vp->flags.unset(ViewportFlag::UndergroundInside);
+                    invalidate += vp->flags.has(ViewportFlag::undergroundInside);
+                    vp->flags.unset(ViewportFlag::undergroundInside);
                     break;
             }
             if (invalidate != 0)
@@ -1351,8 +1351,8 @@ namespace OpenRCT2
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, ViewportFlags viewFlags)
     {
         // the cut-away view is active and see-through is activated
-        auto cutAwayViewWithTransparency = viewFlags.has(ViewportFlag::ClipView)
-            && viewFlags.has(ViewportFlag::ClipViewSeeThrough);
+        auto cutAwayViewWithTransparency = viewFlags.has(ViewportFlag::clipView)
+            && viewFlags.has(ViewportFlag::clipViewSeeThrough);
 
         // the element is above the cut-off height
         auto clipped = cutAwayViewWithTransparency && ps->Element == nullptr && ps->Entity != nullptr
@@ -1371,14 +1371,14 @@ namespace OpenRCT2
                     {
                         case EntityType::vehicle:
                         {
-                            if (viewFlags.has(ViewportFlag::HideVehicles) || clipped)
+                            if (viewFlags.has(ViewportFlag::hideVehicles) || clipped)
                             {
-                                return viewFlags.has(ViewportFlag::InvisibleVehicles) ? VisibilityKind::hidden
+                                return viewFlags.has(ViewportFlag::invisibleVehicles) ? VisibilityKind::hidden
                                                                                        : VisibilityKind::partial;
                             }
                             // Rides without track can technically have a 'vehicle':
                             // these should be hidden if 'hide rides' is enabled
-                            if (viewFlags.has(ViewportFlag::HideRides) || clipped)
+                            if (viewFlags.has(ViewportFlag::hideRides) || clipped)
                             {
                                 auto vehicle = ps->Entity->as<Vehicle>();
                                 if (vehicle == nullptr)
@@ -1387,14 +1387,14 @@ namespace OpenRCT2
                                 auto ride = vehicle->GetRide();
                                 if (ride != nullptr && !ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                                 {
-                                    return viewFlags.has(ViewportFlag::InvisibleRides) ? VisibilityKind::hidden
+                                    return viewFlags.has(ViewportFlag::invisibleRides) ? VisibilityKind::hidden
                                                                                         : VisibilityKind::partial;
                                 }
                             }
                             break;
                         }
                         case EntityType::guest:
-                            if (viewFlags.has(ViewportFlag::HideGuests))
+                            if (viewFlags.has(ViewportFlag::hideGuests))
                             {
                                 return VisibilityKind::hidden;
                             }
@@ -1404,7 +1404,7 @@ namespace OpenRCT2
                             }
                             break;
                         case EntityType::staff:
-                            if (viewFlags.has(ViewportFlag::HideStaff))
+                            if (viewFlags.has(ViewportFlag::hideStaff))
                             {
                                 return VisibilityKind::hidden;
                             }
@@ -1423,17 +1423,17 @@ namespace OpenRCT2
                 }
                 break;
             case ViewportInteractionItem::ride:
-                if (viewFlags.has(ViewportFlag::HideRides) || clipped)
+                if (viewFlags.has(ViewportFlag::hideRides) || clipped)
                 {
-                    return viewFlags.has(ViewportFlag::InvisibleRides) ? VisibilityKind::hidden : VisibilityKind::partial;
+                    return viewFlags.has(ViewportFlag::invisibleRides) ? VisibilityKind::hidden : VisibilityKind::partial;
                 }
                 break;
             case ViewportInteractionItem::footpath:
             case ViewportInteractionItem::pathAddition:
             case ViewportInteractionItem::banner:
-                if (viewFlags.has(ViewportFlag::HidePaths) || clipped)
+                if (viewFlags.has(ViewportFlag::hidePaths) || clipped)
                 {
-                    return viewFlags.has(ViewportFlag::InvisiblePaths) ? VisibilityKind::hidden : VisibilityKind::partial;
+                    return viewFlags.has(ViewportFlag::invisiblePaths) ? VisibilityKind::hidden : VisibilityKind::partial;
                 }
                 break;
             case ViewportInteractionItem::scenery:
@@ -1443,23 +1443,23 @@ namespace OpenRCT2
                 {
                     if (IsTileElementVegetation(ps->Element))
                     {
-                        if (viewFlags.has(ViewportFlag::HideVegetation) || clipped)
+                        if (viewFlags.has(ViewportFlag::hideVegetation) || clipped)
                         {
-                            return viewFlags.has(ViewportFlag::InvisibleVegetation) ? VisibilityKind::hidden
+                            return viewFlags.has(ViewportFlag::invisibleVegetation) ? VisibilityKind::hidden
                                                                                      : VisibilityKind::partial;
                         }
                     }
                     else
                     {
-                        if (viewFlags.has(ViewportFlag::HideScenery) || clipped)
+                        if (viewFlags.has(ViewportFlag::hideScenery) || clipped)
                         {
-                            return viewFlags.has(ViewportFlag::InvisibleScenery) ? VisibilityKind::hidden
+                            return viewFlags.has(ViewportFlag::invisibleScenery) ? VisibilityKind::hidden
                                                                                   : VisibilityKind::partial;
                         }
                     }
                 }
                 if (ps->InteractionItem == ViewportInteractionItem::wall
-                    && (viewFlags.has(ViewportFlag::UndergroundInside) || clipped))
+                    && (viewFlags.has(ViewportFlag::undergroundInside) || clipped))
                 {
                     return VisibilityKind::partial;
                 }

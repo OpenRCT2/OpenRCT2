@@ -2146,7 +2146,7 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
     view.height = 217;
     view.pos = { 0, 0 };
     view.zoom = zoom_level;
-    view.flags = ViewportFlags(ViewportFlag::HideBase, ViewportFlag::HideEntities);
+    view.flags = ViewportFlags(ViewportFlag::hideBase, ViewportFlag::hideEntities);
 
     RenderTarget rt;
     rt.x = 0;

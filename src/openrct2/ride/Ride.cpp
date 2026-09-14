@@ -5031,7 +5031,7 @@ namespace OpenRCT2
             Viewport* viewport = WindowGetViewport(w);
             if (w != nullptr && viewport != nullptr)
             {
-                viewport->flags.set(ViewportFlag::SoundOn);
+                viewport->flags.set(ViewportFlag::soundOn);
             }
         }
 

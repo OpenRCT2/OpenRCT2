@@ -308,7 +308,7 @@ namespace OpenRCT2::Title
                 else
                 {
                     // Inhibit viewport rendering while we're loading
-                    WindowSetFlagForAllViewports(ViewportFlag::RenderingInhibited, true);
+                    WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, true);
 
                     ReportProgress(0);
                     auto parkImporter = ParkImporter::Create(path);
@@ -341,7 +341,7 @@ namespace OpenRCT2::Title
             }
 
             // Reset viewport rendering inhibition
-            WindowSetFlagForAllViewports(ViewportFlag::RenderingInhibited, false);
+            WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
 
             gLoadKeepWindowsOpen = false;
             return success;
@@ -366,7 +366,7 @@ namespace OpenRCT2::Title
                 else
                 {
                     // Inhibit viewport rendering while we're loading
-                    WindowSetFlagForAllViewports(ViewportFlag::RenderingInhibited, true);
+                    WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, true);
 
                     ReportProgress(0);
                     bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
@@ -397,7 +397,7 @@ namespace OpenRCT2::Title
             }
 
             // Reset viewport rendering inhibition
-            WindowSetFlagForAllViewports(ViewportFlag::RenderingInhibited, false);
+            WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
 
             gLoadKeepWindowsOpen = false;
             return success;

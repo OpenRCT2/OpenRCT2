@@ -99,7 +99,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     PROFILED_FUNCTION();
 
     auto rideIndex = entranceEl.getRideIndex();
-    if (session.ViewFlags.has(ViewportFlag::HighlightPathIssues)
+    if (session.ViewFlags.has(ViewportFlag::highlightPathIssues)
         || (gTrackDesignSaveMode && rideIndex != gTrackDesignSaveRideIndex))
     {
         return;
@@ -248,7 +248,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
 {
     PROFILED_FUNCTION();
 
-    if (gTrackDesignSaveMode || session.ViewFlags.has(ViewportFlag::HighlightPathIssues))
+    if (gTrackDesignSaveMode || session.ViewFlags.has(ViewportFlag::highlightPathIssues))
         return;
 
     PaintParkEntranceLightEffects(session);
@@ -321,7 +321,7 @@ static void PaintHeightMarkers(PaintSession& session, const EntranceElement& ent
 {
     PROFILED_FUNCTION();
 
-    if (PaintShouldShowHeightMarkers(session, ViewportFlag::PathHeights))
+    if (PaintShouldShowHeightMarkers(session, ViewportFlag::pathHeights))
     {
         if (entranceEl.getDirections() & 0xF)
         {

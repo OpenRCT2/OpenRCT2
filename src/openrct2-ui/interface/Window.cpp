@@ -540,7 +540,7 @@ namespace OpenRCT2::Ui::Windows
             auto viewport = w.viewport;
             if (viewport != nullptr)
             {
-                if (viewport->flags.has(ViewportFlag::SoundOn))
+                if (viewport->flags.has(ViewportFlag::soundOn))
                 {
                     return &w;
                 }

@@ -1046,9 +1046,9 @@ namespace OpenRCT2::Ui::Windows
                     if (mainWindow != nullptr)
                     {
                         if (Config::Get().general.alwaysShowGridlines)
-                            mainWindow->viewport->flags.set(ViewportFlag::Gridlines);
+                            mainWindow->viewport->flags.set(ViewportFlag::gridlines);
                         else
-                            mainWindow->viewport->flags.unset(ViewportFlag::Gridlines);
+                            mainWindow->viewport->flags.unset(ViewportFlag::gridlines);
                     }
                     break;
                 }

@@ -429,9 +429,9 @@ static inline bool WoodenSupportsPaintSetupCommon(
         return false;
     }
 
-    if (session.ViewFlags.has(ViewportFlag::HideSupports))
+    if (session.ViewFlags.has(ViewportFlag::hideSupports))
     {
-        if (session.ViewFlags.has(ViewportFlag::InvisibleSupports))
+        if (session.ViewFlags.has(ViewportFlag::invisibleSupports))
         {
             return false;
         }

@@ -1186,8 +1186,8 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_RIDE_PAGE_MAIN && page == WINDOW_RIDE_PAGE_MAIN && viewport != nullptr)
             {
-                viewport->flags.flip(ViewportFlag::SoundOn);
-                listen = viewport->flags.has(ViewportFlag::SoundOn);
+                viewport->flags.flip(ViewportFlag::soundOn);
+                listen = viewport->flags.has(ViewportFlag::soundOn);
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
@@ -1219,7 +1219,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             if (listen && viewport != nullptr)
-                viewport->flags.set(ViewportFlag::SoundOn);
+                viewport->flags.set(ViewportFlag::soundOn);
         }
 
         void setViewIndex(int16_t newIndex)
@@ -1604,7 +1604,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (Config::Get().general.alwaysShowGridlines)
             {
-                newViewportFlags.set(ViewportFlag::Gridlines);
+                newViewportFlags.set(ViewportFlag::gridlines);
             }
 
             onPrepareDraw();
@@ -2614,7 +2614,7 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr)
             {
                 WindowDrawViewport(rt, *this);
-                if (viewport->flags.has(ViewportFlag::SoundOn))
+                if (viewport->flags.has(ViewportFlag::soundOn))
                     GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
 
@@ -5669,7 +5669,7 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* w_main = WindowGetMain();
             if (w_main != nullptr)
             {
-                w_main->viewport->flags.set(ViewportFlag::HideVertical, ViewportFlag::HideBase);
+                w_main->viewport->flags.set(ViewportFlag::hideVertical, ViewportFlag::hideBase);
             }
 
             GfxInvalidateScreen();
@@ -7454,7 +7454,7 @@ namespace OpenRCT2::Ui::Windows
         WindowBase* main_w = WindowGetMain();
         if (main_w != nullptr)
         {
-            main_w->viewport->flags.unset(ViewportFlag::HideVertical, ViewportFlag::HideBase);
+            main_w->viewport->flags.unset(ViewportFlag::hideVertical, ViewportFlag::hideBase);
         }
 
         GfxInvalidateScreen();

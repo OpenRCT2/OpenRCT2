@@ -764,7 +764,7 @@ namespace OpenRCT2
                 }
 
                 // Inhibit viewport rendering while we're loading
-                WindowSetFlagForAllViewports(ViewportFlag::RenderingInhibited, true);
+                WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, true);
 
                 OpenProgress(asScenario ? STR_LOADING_SCENARIO : STR_LOADING_SAVED_GAME);
                 SetProgress(0, 100, STR_STRING_M_PERCENT);
@@ -787,7 +787,7 @@ namespace OpenRCT2
                 SetProgress(100, 100, STR_STRING_M_PERCENT);
 
                 // Reset viewport rendering inhibition
-                WindowSetFlagForAllViewports(ViewportFlag::RenderingInhibited, false);
+                WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
 
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
@@ -939,7 +939,7 @@ namespace OpenRCT2
             }
 
             CloseProgress();
-            WindowSetFlagForAllViewports(ViewportFlag::RenderingInhibited, false);
+            WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
             return false;
         }
 

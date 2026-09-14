@@ -1965,13 +1965,13 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
     }
 
     if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex)
-        && !session.ViewFlags.has(ViewportFlag::HighlightPathIssues))
+        && !session.ViewFlags.has(ViewportFlag::highlightPathIssues))
     {
         auto trackType = trackElement.getTrackType();
         int32_t trackSequence = trackElement.getSequenceIndex();
         int32_t trackColourScheme = trackElement.getColourScheme();
 
-        if (PaintShouldShowHeightMarkers(session, ViewportFlag::TrackHeights))
+        if (PaintShouldShowHeightMarkers(session, ViewportFlag::trackHeights))
         {
             session.InteractionType = ViewportInteractionItem::none;
             const auto& ted = GetTrackElementDescriptor(trackType);

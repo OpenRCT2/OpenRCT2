@@ -55,7 +55,7 @@ void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, boo
 
         PaintTileElementBase(session, mapCoords);
     }
-    else if (!session.ViewFlags.has(ViewportFlag::TransparentBackground))
+    else if (!session.ViewFlags.has(ViewportFlag::transparentBackground))
     {
         BlankTilesPaint(session, mapCoords.x, mapCoords.y);
     }
@@ -116,7 +116,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     CoordsXY coords = origCoords;
 
-    if (session.ViewFlags.has(ViewportFlag::ClipView))
+    if (session.ViewFlags.has(ViewportFlag::clipView))
     {
         if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
             return;
@@ -215,12 +215,12 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         }
 
         // Only paint tile_elements below the clip height.
-        if (session.ViewFlags.has(ViewportFlag::ClipView) && (tile_element->getBaseZ() > gClipHeight * kCoordsZStep))
+        if (session.ViewFlags.has(ViewportFlag::clipView) && (tile_element->getBaseZ() > gClipHeight * kCoordsZStep))
         {
             // see-through off: don't paint this tile_element at all
             // see-through on: paint this tile_element as partial or hidden later on
             // note: surface elements are not painted even with see-through turned on
-            if (session.ViewFlags.has(ViewportFlag::ClipViewSeeThrough) == 0
+            if (session.ViewFlags.has(ViewportFlag::clipViewSeeThrough) == 0
                 || tile_element->getType() == TileElementType::surface)
             {
                 continue;
@@ -326,7 +326,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             }
 
             // Only draw supports below the clipping height.
-            if (session.ViewFlags.has(ViewportFlag::ClipView) && (segmentHeight > gClipHeight))
+            if (session.ViewFlags.has(ViewportFlag::clipView) && (segmentHeight > gClipHeight))
                 continue;
 
             int32_t xOffset = static_cast<int32_t>(sy) * 10;

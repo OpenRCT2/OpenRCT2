@@ -508,8 +508,8 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_GUEST_OVERVIEW && page == WINDOW_GUEST_OVERVIEW && viewport != nullptr)
             {
-                viewport->flags.flip(ViewportFlag::SoundOn);
-                listen = viewport->flags.has(ViewportFlag::SoundOn);
+                viewport->flags.flip(ViewportFlag::soundOn);
+                listen = viewport->flags.has(ViewportFlag::soundOn);
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
@@ -532,7 +532,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             if (listen && viewport != nullptr)
-                viewport->flags.set(ViewportFlag::SoundOn);
+                viewport->flags.set(ViewportFlag::soundOn);
         }
 
 #pragma region Overview
@@ -790,7 +790,7 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr)
             {
                 WindowDrawViewport(rt, *this);
-                if (viewport->flags.has(ViewportFlag::SoundOn))
+                if (viewport->flags.has(ViewportFlag::soundOn))
                 {
                     GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
                 }

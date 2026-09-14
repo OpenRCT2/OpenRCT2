@@ -343,17 +343,17 @@ static constexpr float kWindowScrollLocations[][2] = {
         int16_t height = TileElementHeight(coords);
         if (coords.z < height - 16)
         {
-            if (!(w.viewport->flags.has(ViewportFlag::UndergroundInside)))
+            if (!(w.viewport->flags.has(ViewportFlag::undergroundInside)))
             {
-                w.viewport->flags.set(ViewportFlag::UndergroundInside);
+                w.viewport->flags.set(ViewportFlag::undergroundInside);
                 w.invalidate();
             }
         }
         else
         {
-            if (w.viewport->flags.has(ViewportFlag::UndergroundInside))
+            if (w.viewport->flags.has(ViewportFlag::undergroundInside))
             {
-                w.viewport->flags.unset(ViewportFlag::UndergroundInside);
+                w.viewport->flags.unset(ViewportFlag::undergroundInside);
                 w.invalidate();
             }
         }
@@ -893,7 +893,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             auto w = it->get();
             auto viewport = w->viewport;
-            if (viewport == nullptr || !(viewport->flags.has(ViewportFlag::SoundOn)))
+            if (viewport == nullptr || !(viewport->flags.has(ViewportFlag::soundOn)))
                 continue;
 
             gMusicTrackingViewport = viewport;
