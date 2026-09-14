@@ -847,7 +847,7 @@ namespace OpenRCT2
     {
         PROFILED_FUNCTION();
 
-        if (session.ViewFlags.hasAll(ViewportFlag::HIDE_VERTICAL, ViewportFlag::HIDE_BASE, ViewportFlag::UNDERGROUND_INSIDE, ViewportFlag::CLIP_VIEW)
+        if (session.ViewFlags.hasAny(ViewportFlag::HIDE_VERTICAL, ViewportFlag::HIDE_BASE, ViewportFlag::UNDERGROUND_INSIDE, ViewportFlag::CLIP_VIEW)
             && !session.ViewFlags.has(ViewportFlag::TRANSPARENT_BACKGROUND))
         {
             PaletteIndex colour = PaletteIndex::pi10;
