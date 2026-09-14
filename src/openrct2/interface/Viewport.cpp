@@ -847,7 +847,10 @@ namespace OpenRCT2
     {
         PROFILED_FUNCTION();
 
-        if (session.ViewFlags.hasAny(ViewportFlag::HIDE_VERTICAL, ViewportFlag::HIDE_BASE, ViewportFlag::UNDERGROUND_INSIDE, ViewportFlag::CLIP_VIEW)
+        if (session.ViewFlags.hasAny(ViewportFlag::HIDE_VERTICAL, 
+                                     ViewportFlag::HIDE_BASE,
+                                     ViewportFlag::UNDERGROUND_INSIDE, 
+                                     ViewportFlag::CLIP_VIEW)
             && !session.ViewFlags.has(ViewportFlag::TRANSPARENT_BACKGROUND))
         {
             PaletteIndex colour = PaletteIndex::pi10;
@@ -860,8 +863,10 @@ namespace OpenRCT2
 
         PaintDrawStructs(session);
 
-        if (Config::Get().general.renderWeatherGloom && !gTrackDesignSaveMode
-            && !(session.ViewFlags.has(ViewportFlag::HIDE_ENTITIES)) && !(session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES)))
+        if (Config::Get().general.renderWeatherGloom 
+            && !gTrackDesignSaveMode
+            && !session.ViewFlags.has(ViewportFlag::HIDE_ENTITIES) 
+            && !session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES))
         {
             ViewportPaintWeatherGloom(session.rt);
         }
@@ -1163,7 +1168,7 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!(mainWindow->viewport->flags.has(ViewportFlag::LAND_OWNERSHIP)))
+                if (!mainWindow->viewport->flags.has(ViewportFlag::LAND_OWNERSHIP))
                 {
                     mainWindow->viewport->flags.set(ViewportFlag::LAND_OWNERSHIP);
                     mainWindow->invalidate();
@@ -1207,7 +1212,7 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!(mainWindow->viewport->flags.has(ViewportFlag::CONSTRUCTION_RIGHTS)))
+                if (!mainWindow->viewport->flags.has(ViewportFlag::CONSTRUCTION_RIGHTS))
                 {
                     mainWindow->viewport->flags.set(ViewportFlag::CONSTRUCTION_RIGHTS);
                     mainWindow->invalidate();
@@ -1346,8 +1351,8 @@ namespace OpenRCT2
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, ViewportFlags viewFlags)
     {
         // the cut-away view is active and see-through is activated
-        auto cutAwayViewWithTransparency = (viewFlags.has(ViewportFlag::CLIP_VIEW))
-            && (viewFlags.has(ViewportFlag::CLIP_VIEW_SEE_THROUGH));
+        auto cutAwayViewWithTransparency = viewFlags.has(ViewportFlag::CLIP_VIEW)
+            && viewFlags.has(ViewportFlag::CLIP_VIEW_SEE_THROUGH);
 
         // the element is above the cut-off height
         auto clipped = cutAwayViewWithTransparency && ps->Element == nullptr && ps->Entity != nullptr
@@ -1368,8 +1373,8 @@ namespace OpenRCT2
                         {
                             if (viewFlags.has(ViewportFlag::HIDE_VEHICLES) || clipped)
                             {
-                                return (viewFlags.has(ViewportFlag::INVISIBLE_VEHICLES)) ? VisibilityKind::hidden
-                                                                                      : VisibilityKind::partial;
+                                return viewFlags.has(ViewportFlag::INVISIBLE_VEHICLES) ? VisibilityKind::hidden
+                                                                                       : VisibilityKind::partial;
                             }
                             // Rides without track can technically have a 'vehicle':
                             // these should be hidden if 'hide rides' is enabled
@@ -1382,8 +1387,8 @@ namespace OpenRCT2
                                 auto ride = vehicle->GetRide();
                                 if (ride != nullptr && !ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                                 {
-                                    return (viewFlags.has(ViewportFlag::INVISIBLE_RIDES)) ? VisibilityKind::hidden
-                                                                                       : VisibilityKind::partial;
+                                    return viewFlags.has(ViewportFlag::INVISIBLE_RIDES) ? VisibilityKind::hidden
+                                                                                        : VisibilityKind::partial;
                                 }
                             }
                             break;
@@ -1420,7 +1425,7 @@ namespace OpenRCT2
             case ViewportInteractionItem::ride:
                 if (viewFlags.has(ViewportFlag::HIDE_RIDES) || clipped)
                 {
-                    return (viewFlags.has(ViewportFlag::INVISIBLE_RIDES)) ? VisibilityKind::hidden : VisibilityKind::partial;
+                    return viewFlags.has(ViewportFlag::INVISIBLE_RIDES) ? VisibilityKind::hidden : VisibilityKind::partial;
                 }
                 break;
             case ViewportInteractionItem::footpath:
@@ -1428,7 +1433,7 @@ namespace OpenRCT2
             case ViewportInteractionItem::banner:
                 if (viewFlags.has(ViewportFlag::HIDE_PATHS) || clipped)
                 {
-                    return (viewFlags.has(ViewportFlag::INVISIBLE_PATHS)) ? VisibilityKind::hidden : VisibilityKind::partial;
+                    return viewFlags.has(ViewportFlag::INVISIBLE_PATHS) ? VisibilityKind::hidden : VisibilityKind::partial;
                 }
                 break;
             case ViewportInteractionItem::scenery:
@@ -1440,16 +1445,16 @@ namespace OpenRCT2
                     {
                         if (viewFlags.has(ViewportFlag::HIDE_VEGETATION) || clipped)
                         {
-                            return (viewFlags.has(ViewportFlag::INVISIBLE_VEGETATION)) ? VisibilityKind::hidden
-                                                                                    : VisibilityKind::partial;
+                            return viewFlags.has(ViewportFlag::INVISIBLE_VEGETATION) ? VisibilityKind::hidden
+                                                                                     : VisibilityKind::partial;
                         }
                     }
                     else
                     {
                         if (viewFlags.has(ViewportFlag::HIDE_SCENERY) || clipped)
                         {
-                            return (viewFlags.has(ViewportFlag::INVISIBLE_SCENERY)) ? VisibilityKind::hidden
-                                                                                 : VisibilityKind::partial;
+                            return viewFlags.has(ViewportFlag::INVISIBLE_SCENERY) ? VisibilityKind::hidden
+                                                                                  : VisibilityKind::partial;
                         }
                     }
                 }

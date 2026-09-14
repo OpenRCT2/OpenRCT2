@@ -492,7 +492,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             return;
     }
 
-    bool neighbourIsClippedAway = (session.ViewFlags.has(ViewportFlag::CLIP_VIEW)) && !TileIsInsideClipView(neighbour);
+    bool neighbourIsClippedAway = session.ViewFlags.has(ViewportFlag::CLIP_VIEW) && !TileIsInsideClipView(neighbour);
 
     if (neighbour.tile_element == nullptr || neighbourIsClippedAway)
     {
@@ -1019,7 +1019,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
     else
     {
-        const bool showGridlines = (session.ViewFlags.has(ViewportFlag::GRIDLINES));
+        const bool showGridlines = session.ViewFlags.has(ViewportFlag::GRIDLINES);
 
         assert(surfaceShape < std::size(Byte97B444));
         const uint8_t image_offset = Byte97B444[surfaceShape];
@@ -1198,8 +1198,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.ViewFlags.has(ViewportFlag::UNDERGROUND_INSIDE))
-        && !(session.ViewFlags.has(ViewportFlag::HIDE_BASE)) && Config::Get().general.landscapeSmoothing)
+    if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !session.ViewFlags.has(ViewportFlag::UNDERGROUND_INSIDE)
+        && !session.ViewFlags.has(ViewportFlag::HIDE_BASE) && Config::Get().general.landscapeSmoothing)
     {
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
@@ -1207,7 +1207,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMRIGHT, selfDescriptor, tileDescriptors[1]);
     }
 
-    if ((session.ViewFlags.has(ViewportFlag::UNDERGROUND_INSIDE)) && !(session.ViewFlags.has(ViewportFlag::HIDE_BASE))
+    if (session.ViewFlags.has(ViewportFlag::UNDERGROUND_INSIDE) && !session.ViewFlags.has(ViewportFlag::HIDE_BASE)
         && !(isInTrackDesignerOrManager()))
     {
         const uint8_t image_offset = Byte97B444[surfaceShape];
@@ -1217,7 +1217,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         PaintAttachToPreviousPS(session, imageId, 0, 0);
     }
 
-    if (!(session.ViewFlags.has(ViewportFlag::HIDE_VERTICAL)))
+    if (!session.ViewFlags.has(ViewportFlag::HIDE_VERTICAL))
     {
         ViewportSurfaceDrawTileSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2], false);
         ViewportSurfaceDrawTileSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3], false);
@@ -1228,9 +1228,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     const uint16_t waterHeight = tileElement.getWaterHeight();
-    const bool waterGetsClipped = (session.ViewFlags.has(ViewportFlag::CLIP_VIEW)) && (waterHeight > gClipHeight * kCoordsZStep);
+    const bool waterGetsClipped = session.ViewFlags.has(ViewportFlag::CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
     const bool waterIsTransparent = Config::Get().general.transparentWater
-        || (session.ViewFlags.has(ViewportFlag::UNDERGROUND_INSIDE));
+        || session.ViewFlags.has(ViewportFlag::UNDERGROUND_INSIDE);
 
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
@@ -1254,7 +1254,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                                                          : EnumValue(SPR_G2_OPAQUE_WATER_OVERLAY);
         PaintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);
 
-        if (!(session.ViewFlags.has(ViewportFlag::HIDE_VERTICAL)))
+        if (!session.ViewFlags.has(ViewportFlag::HIDE_VERTICAL))
         {
             ViewportSurfaceDrawTileSideBottom(
                 session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true);

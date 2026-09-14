@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui
         auto viewport = window->viewport;
         auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, { ViewportInteractionItem::footpath });
         if (info.interactionType != ViewportInteractionItem::footpath
-            || !(viewport->flags.hasAny(ViewportFlag::UNDERGROUND_INSIDE, ViewportFlag::HIDE_BASE, ViewportFlag::HIDE_VERTICAL)))
+            || !viewport->flags.hasAny(ViewportFlag::UNDERGROUND_INSIDE, ViewportFlag::HIDE_BASE, ViewportFlag::HIDE_VERTICAL))
         {
             info = GetMapCoordinatesFromPosWindow(
                 window, screenCoords, { ViewportInteractionItem::terrain, ViewportInteractionItem::footpath });

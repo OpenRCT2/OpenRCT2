@@ -509,7 +509,7 @@ namespace OpenRCT2::Ui::Windows
             if (newPage == WINDOW_GUEST_OVERVIEW && page == WINDOW_GUEST_OVERVIEW && viewport != nullptr)
             {
                 viewport->flags.flip(ViewportFlag::SOUND_ON);
-                listen = (viewport->flags.has(ViewportFlag::SOUND_ON)) != 0;
+                listen = viewport->flags.has(ViewportFlag::SOUND_ON);
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window

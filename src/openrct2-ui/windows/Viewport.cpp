@@ -106,9 +106,9 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow == nullptr)
                 return;
 
-            if (viewport != nullptr && viewport->flags != (mainWindow->viewport->flags | ViewportFlag::INDEPENDENT_ROTATION))
+            if (viewport != nullptr && viewport->flags != mainWindow->viewport->flags.with(ViewportFlag::INDEPENDENT_ROTATION))
             {
-                viewport->flags = mainWindow->viewport->flags | ViewportFlag::INDEPENDENT_ROTATION;
+                viewport->flags = mainWindow->viewport->flags.with(ViewportFlag::INDEPENDENT_ROTATION);
                 invalidateWidget(WIDX_VIEWPORT);
             }
         }

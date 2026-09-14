@@ -48,7 +48,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
     {
         return;
     }
-    if (gTrackDesignSaveMode || (session.ViewFlags.has(ViewportFlag::HIDE_ENTITIES)))
+    if (gTrackDesignSaveMode || session.ViewFlags.has(ViewportFlag::HIDE_ENTITIES))
     {
         return;
     }
@@ -58,7 +58,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         return;
     }
 
-    const bool highlightPathIssues = (session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES));
+    const bool highlightPathIssues = session.ViewFlags.has(ViewportFlag::HIGHLIGHT_PATH_ISSUES);
 
     for (auto* entity : EntityTileList(pos))
     {
@@ -90,7 +90,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             {
                 // see-through off: don't paint this entity at all
                 // see-through on: paint this entity as partial or hidden later on
-                if ((session.ViewFlags.has(ViewportFlag::CLIP_VIEW_SEE_THROUGH)) == 0)
+                if (!session.ViewFlags.has(ViewportFlag::CLIP_VIEW_SEE_THROUGH))
                 {
                     continue;
                 }
