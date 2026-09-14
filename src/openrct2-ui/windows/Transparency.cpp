@@ -153,7 +153,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ToggleViewportFlag(WidgetIndex widgetIndex)
         {
-            ViewportFlags wflags;
+            ViewportFlags wflags{};
             WindowBase* w = WindowGetMain();
 
             if (w == nullptr)

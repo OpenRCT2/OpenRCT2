@@ -1120,7 +1120,7 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!(mainWindow->viewport->flags.has(ViewportFlag::gridlines)))
+                if (!mainWindow->viewport->flags.has(ViewportFlag::gridlines))
                 {
                     mainWindow->viewport->flags.set(ViewportFlag::gridlines);
                     mainWindow->invalidate();

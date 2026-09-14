@@ -343,7 +343,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         int16_t height = TileElementHeight(coords);
         if (coords.z < height - 16)
         {
-            if (!(w.viewport->flags.has(ViewportFlag::undergroundInside)))
+            if (!w.viewport->flags.has(ViewportFlag::undergroundInside))
             {
                 w.viewport->flags.set(ViewportFlag::undergroundInside);
                 w.invalidate();
