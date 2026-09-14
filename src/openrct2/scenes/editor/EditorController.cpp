@@ -714,11 +714,7 @@ namespace OpenRCT2::Editor
             SetEveryRideEntryInvented();
 
             auto& objManager = GetContext()->GetObjectManager();
-            gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-            if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
-            {
-                gameState.lastEntranceStyle = 0;
-            }
+            gameState.lastEntranceStyle = GetDefaultStationObject(objManager);
 
             gameState.editorStep = Editor::Step::rollerCoasterDesigner;
             Drawing::GfxInvalidateScreen();
