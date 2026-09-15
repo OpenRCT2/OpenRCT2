@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui
         auto viewport = window->viewport;
         auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, { ViewportInteractionItem::footpath });
         if (info.interactionType != ViewportInteractionItem::footpath
-            || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
+            || !viewport->flags.hasAny(ViewportFlag::undergroundInside, ViewportFlag::hideBase, ViewportFlag::hideVertical))
         {
             info = GetMapCoordinatesFromPosWindow(
                 window, screenCoords, { ViewportInteractionItem::terrain, ViewportInteractionItem::footpath });
@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui
         auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, ViewportInteractionItem::ride);
         *tileElement = info.Element;
         if (info.interactionType == ViewportInteractionItem::ride
-            && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
+            && viewport->flags.hasAny(ViewportFlag::undergroundInside, ViewportFlag::hideBase, ViewportFlag::hideVertical)
             && (*tileElement)->getType() == TileElementType::entrance)
         {
             uint32_t directions = (*tileElement)->asEntrance()->getDirections();

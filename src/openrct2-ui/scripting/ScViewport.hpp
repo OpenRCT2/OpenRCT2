@@ -174,7 +174,7 @@ namespace OpenRCT2::Scripting
             auto viewport = GetViewport(thisVal);
             if (viewport != nullptr)
             {
-                return JS_NewInt64(ctx, viewport->flags);
+                return JS_NewInt64(ctx, viewport->flags.holder);
             }
             return JS_NewInt32(ctx, 0);
         }
@@ -188,9 +188,10 @@ namespace OpenRCT2::Scripting
                 auto viewport = w->viewport;
                 if (viewport != nullptr)
                 {
-                    if (viewport->flags != valueUint)
+                    auto newValue = ViewportFlags(valueUint);
+                    if (viewport->flags != newValue)
                     {
-                        viewport->flags = valueUint;
+                        viewport->flags = newValue;
                         w->invalidate();
                     }
                 }

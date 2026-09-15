@@ -11,6 +11,7 @@
 
 #include "../core/FlagHolder.hpp"
 #include "../interface/ScreenCoords.hpp"
+#include "../interface/ViewportFlags.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
 #include "Window.h"
@@ -40,7 +41,7 @@ namespace OpenRCT2
         int32_t height{};
         ScreenCoordsXY pos{};
         ScreenCoordsXY viewPos{};
-        uint32_t flags{};
+        ViewportFlags flags{};
         ZoomLevel zoom{};
         uint8_t rotation{};
         bool isVisible = false;
@@ -80,50 +81,6 @@ namespace OpenRCT2
     };
 
     struct Focus;
-
-    // Flags must currenly retain their values to avoid breaking plugins.
-    // Values can be changed when plugins move to using named constants.
-    enum : uint32_t
-    {
-        VIEWPORT_FLAG_NONE = 0u,
-
-        VIEWPORT_FLAG_GRIDLINES = (1u << 7),
-        VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1u << 0),
-        VIEWPORT_FLAG_HIDE_BASE = (1u << 12),
-        VIEWPORT_FLAG_HIDE_VERTICAL = (1u << 13),
-
-        VIEWPORT_FLAG_SOUND_ON = (1u << 10),
-        VIEWPORT_FLAG_LAND_OWNERSHIP = (1u << 8),
-        VIEWPORT_FLAG_CONSTRUCTION_RIGHTS = (1u << 9),
-        VIEWPORT_FLAG_HIDE_ENTITIES = (1u << 14),
-        VIEWPORT_FLAG_CLIP_VIEW = (1u << 15),
-        VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH = (1u << 17),
-        VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1u << 18),
-        VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1u << 19),
-
-        VIEWPORT_FLAG_LAND_HEIGHTS = (1u << 4),
-        VIEWPORT_FLAG_TRACK_HEIGHTS = (1u << 5),
-        VIEWPORT_FLAG_PATH_HEIGHTS = (1u << 6),
-
-        VIEWPORT_FLAG_HIDE_RIDES = (1u << 1),
-        VIEWPORT_FLAG_HIDE_VEHICLES = (1u << 20),
-        VIEWPORT_FLAG_HIDE_VEGETATION = (1u << 21),
-        VIEWPORT_FLAG_HIDE_SCENERY = (1u << 2),
-        VIEWPORT_FLAG_HIDE_PATHS = (1u << 16),
-        VIEWPORT_FLAG_HIDE_SUPPORTS = (1u << 3),
-        VIEWPORT_FLAG_HIDE_GUESTS = (1u << 11),
-        VIEWPORT_FLAG_HIDE_STAFF = (1u << 23),
-
-        VIEWPORT_FLAG_INVISIBLE_RIDES = (1u << 24),
-        VIEWPORT_FLAG_INVISIBLE_VEHICLES = (1u << 25),
-        VIEWPORT_FLAG_INVISIBLE_VEGETATION = (1u << 26),
-        VIEWPORT_FLAG_INVISIBLE_SCENERY = (1u << 27),
-        VIEWPORT_FLAG_INVISIBLE_PATHS = (1u << 28),
-        VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1u << 29),
-
-        VIEWPORT_FLAG_INDEPENDENT_ROTATION = (1u << 30),
-        VIEWPORT_FLAG_RENDERING_INHIBITED = (1u << 31),
-    };
 } // namespace OpenRCT2
 
 enum class VisibilityKind
@@ -226,7 +183,7 @@ namespace OpenRCT2
         WindowBase* window, const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags);
 
     InteractionInfo SetInteractionInfoFromPaintSession(
-        PaintSession* session, uint32_t viewFlags, ViewportInteractionItems filter);
+        PaintSession* session, ViewportFlags viewFlags, ViewportInteractionItems filter);
 
     std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewport** viewport);
     std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, int32_t z);
@@ -243,7 +200,7 @@ namespace OpenRCT2
 
     void ViewportSetSavedView();
 
-    VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags);
+    VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, ViewportFlags viewFlags);
 
     using ViewportList = sfl::static_vector<Viewport*, kMaxViewportCount>;
 

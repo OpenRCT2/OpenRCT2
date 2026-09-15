@@ -492,7 +492,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             return;
     }
 
-    bool neighbourIsClippedAway = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && !TileIsInsideClipView(neighbour);
+    bool neighbourIsClippedAway = session.ViewFlags.has(ViewportFlag::clipView) && !TileIsInsideClipView(neighbour);
 
     if (neighbour.tile_element == nullptr || neighbourIsClippedAway)
     {
@@ -525,7 +525,7 @@ static void ViewportSurfaceDrawTileSideBottom(
     }
 
     auto baseImageId = GetEdgeImage(edgeObject, 0);
-    if (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+    if (session.ViewFlags.has(ViewportFlag::undergroundInside))
     {
         baseImageId = GetEdgeImage(edgeObject, 1);
     }
@@ -712,7 +712,7 @@ static void ViewportSurfaceDrawTileSideTop(
     if (isWater)
     {
         baseImageId = GetEdgeImage(edgeObject, 2); // var_08
-        if (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+        if (session.ViewFlags.has(ViewportFlag::undergroundInside))
         {
             baseImageId = GetEdgeImage(edgeObject, 1); // var_04
         }
@@ -723,7 +723,7 @@ static void ViewportSurfaceDrawTileSideTop(
     }
     else
     {
-        if (!(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+        if (!(session.ViewFlags.has(ViewportFlag::undergroundInside)))
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
             const auto imageId = GetEdgeImage(edgeObject, 3).WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
@@ -992,7 +992,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         descriptor.corner_heights.left = baseHeight + ch.left;
     }
 
-    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_LAND_HEIGHTS))
+    if (PaintShouldShowHeightMarkers(session, ViewportFlag::landHeights))
     {
         const int16_t x = session.MapPosition.x;
         const int16_t y = session.MapPosition.y;
@@ -1019,7 +1019,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
     else
     {
-        const bool showGridlines = (session.ViewFlags & VIEWPORT_FLAG_GRIDLINES);
+        const bool showGridlines = session.ViewFlags.has(ViewportFlag::gridlines);
 
         assert(surfaceShape < std::size(Byte97B444));
         const uint8_t image_offset = Byte97B444[surfaceShape];
@@ -1034,14 +1034,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             uint8_t grassLength = TerrainSurfaceObject::kNoValue;
             if (zoomLevel <= ZoomLevel{ 0 })
             {
-                if ((session.ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
+                if (!session.ViewFlags.hasAny(ViewportFlag::hideBase, ViewportFlag::undergroundInside))
                 {
                     grassLength = tileElement.getGrassLength() & 0x7;
                 }
             }
             imageId = surfaceObject->GetImageId(session.MapPosition, grassLength, rotation, image_offset, showGridlines, false);
         }
-        if (session.ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
+        if (session.ViewFlags.hasAny(ViewportFlag::undergroundInside, ViewportFlag::hideBase))
         {
             imageId = imageId.WithTransparency(FilterPaletteID::paletteDarken1);
         }
@@ -1060,7 +1060,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     auto& gameState = getGameState();
     // Draw Peep Spawns
     if ((gLegacyScene == LegacyScene::scenarioEditor || gameState.cheats.sandboxMode)
-        && session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+        && session.ViewFlags.has(ViewportFlag::landOwnership))
     {
         const CoordsXY& pos = session.MapPosition;
         for (auto& spawn : gameState.peepSpawns)
@@ -1076,12 +1076,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+    if (session.ViewFlags.has(ViewportFlag::landOwnership))
     {
         PaintSurfaceLandOwnership(session, tileElement, height, surfaceShape);
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.hasOwnership(OwnershipFlag::landOwned)))
+    if (session.ViewFlags.has(ViewportFlag::constructionRights) && !(tileElement.hasOwnership(OwnershipFlag::landOwned)))
     {
         PaintSurfaceConstructionRights(session, tileElement, height, surfaceShape);
     }
@@ -1198,8 +1198,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
     }
 
-    if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && Config::Get().general.landscapeSmoothing)
+    if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !session.ViewFlags.has(ViewportFlag::undergroundInside)
+        && !session.ViewFlags.has(ViewportFlag::hideBase) && Config::Get().general.landscapeSmoothing)
     {
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
         ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
@@ -1207,7 +1207,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMRIGHT, selfDescriptor, tileDescriptors[1]);
     }
 
-    if ((session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE)
+    if (session.ViewFlags.has(ViewportFlag::undergroundInside) && !session.ViewFlags.has(ViewportFlag::hideBase)
         && !(isInTrackDesignerOrManager()))
     {
         const uint8_t image_offset = Byte97B444[surfaceShape];
@@ -1217,7 +1217,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         PaintAttachToPreviousPS(session, imageId, 0, 0);
     }
 
-    if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
+    if (!session.ViewFlags.has(ViewportFlag::hideVertical))
     {
         ViewportSurfaceDrawTileSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2], false);
         ViewportSurfaceDrawTileSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3], false);
@@ -1228,9 +1228,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     }
 
     const uint16_t waterHeight = tileElement.getWaterHeight();
-    const bool waterGetsClipped = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
+    const bool waterGetsClipped = session.ViewFlags.has(ViewportFlag::clipView) && (waterHeight > gClipHeight * kCoordsZStep);
     const bool waterIsTransparent = Config::Get().general.transparentWater
-        || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+        || session.ViewFlags.has(ViewportFlag::undergroundInside);
 
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
@@ -1254,7 +1254,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                                                          : EnumValue(SPR_G2_OPAQUE_WATER_OVERLAY);
         PaintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);
 
-        if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
+        if (!session.ViewFlags.has(ViewportFlag::hideVertical))
         {
             ViewportSurfaceDrawTileSideBottom(
                 session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true);
