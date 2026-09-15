@@ -3131,6 +3131,70 @@ bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, co
         }
     }
 
+    else if (
+        (rideType == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER || rideType == RIDE_TYPE_LOOPING_ROLLER_COASTER)
+        && parkFileVersion < kExtendedLimRollerCoasterVersion)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::leftEighthToDiagUp25:
+            case TrackElemType::rightEighthToDiagUp25:
+            case TrackElemType::leftEighthToDiagDown25:
+            case TrackElemType::rightEighthToDiagDown25:
+            case TrackElemType::leftEighthToOrthogonalUp25:
+            case TrackElemType::rightEighthToOrthogonalUp25:
+            case TrackElemType::leftEighthToOrthogonalDown25:
+            case TrackElemType::rightEighthToOrthogonalDown25:
+            case TrackElemType::diagUp25ToLeftBankedUp25:
+            case TrackElemType::diagUp25ToRightBankedUp25:
+            case TrackElemType::diagLeftBankedUp25ToUp25:
+            case TrackElemType::diagRightBankedUp25ToUp25:
+            case TrackElemType::diagDown25ToLeftBankedDown25:
+            case TrackElemType::diagDown25ToRightBankedDown25:
+            case TrackElemType::diagLeftBankedDown25ToDown25:
+            case TrackElemType::diagRightBankedDown25ToDown25:
+            case TrackElemType::diagLeftBankedFlatToLeftBankedUp25:
+            case TrackElemType::diagRightBankedFlatToRightBankedUp25:
+            case TrackElemType::diagLeftBankedUp25ToLeftBankedFlat:
+            case TrackElemType::diagRightBankedUp25ToRightBankedFlat:
+            case TrackElemType::diagLeftBankedFlatToLeftBankedDown25:
+            case TrackElemType::diagRightBankedFlatToRightBankedDown25:
+            case TrackElemType::diagLeftBankedDown25ToLeftBankedFlat:
+            case TrackElemType::diagRightBankedDown25ToRightBankedFlat:
+            case TrackElemType::diagUp25LeftBanked:
+            case TrackElemType::diagUp25RightBanked:
+            case TrackElemType::diagDown25LeftBanked:
+            case TrackElemType::diagDown25RightBanked:
+            case TrackElemType::diagFlatToLeftBankedUp25:
+            case TrackElemType::diagFlatToRightBankedUp25:
+            case TrackElemType::diagLeftBankedUp25ToFlat:
+            case TrackElemType::diagRightBankedUp25ToFlat:
+            case TrackElemType::diagFlatToLeftBankedDown25:
+            case TrackElemType::diagFlatToRightBankedDown25:
+            case TrackElemType::diagLeftBankedDown25ToFlat:
+            case TrackElemType::diagRightBankedDown25ToFlat:
+            case TrackElemType::leftEighthBankToDiagUp25:
+            case TrackElemType::rightEighthBankToDiagUp25:
+            case TrackElemType::leftEighthBankToDiagDown25:
+            case TrackElemType::rightEighthBankToDiagDown25:
+            case TrackElemType::leftEighthBankToOrthogonalUp25:
+            case TrackElemType::rightEighthBankToOrthogonalUp25:
+            case TrackElemType::leftEighthBankToOrthogonalDown25:
+            case TrackElemType::rightEighthBankToOrthogonalDown25:
+            case TrackElemType::leftEighthDiveLoopUpToOrthogonal:
+            case TrackElemType::rightEighthDiveLoopUpToOrthogonal:
+            case TrackElemType::leftEighthDiveLoopDownToDiag:
+            case TrackElemType::rightEighthDiveLoopDownToDiag:
+            case TrackElemType::diagFlatToUp60LongBase:
+            case TrackElemType::diagUp60ToFlatLongBase:
+            case TrackElemType::diagFlatToDown60LongBase:
+            case TrackElemType::diagDown60ToFlatLongBase:
+                return true;
+            default:
+                break;
+        }
+    }
+
     return false;
 }
 
