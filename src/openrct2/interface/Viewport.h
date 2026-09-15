@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
+#include "../interface/ViewportFlags.h"
 #include "../interface/ScreenCoords.hpp"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
@@ -33,9 +34,6 @@ namespace OpenRCT2
     struct Guest;
     struct TileElement;
     struct WindowBase;
-
-    enum class ViewportFlag : uint32_t;
-    using ViewportFlags = FlagHolder<uint32_t, ViewportFlag>;
 
     struct Viewport
     {
@@ -83,48 +81,6 @@ namespace OpenRCT2
     };
 
     struct Focus;
-
-    // Flags must currenly retain their values to avoid breaking plugins.
-    // Values can be changed when plugins move to using named constants.
-    enum class ViewportFlag : uint32_t
-    {
-        gridlines = 7,
-        undergroundInside = 0,
-        hideBase = 12,
-        hideVertical = 13,
-
-        soundOn = 10,
-        landOwnership = 8,
-        constructionRights = 9,
-        hideEntities = 14,
-        clipView = 15,
-        clipViewSeeThrough = 17,
-        highlightPathIssues = 18,
-        transparentBackground = 19,
-
-        landHeights = 4,
-        trackHeights = 5,
-        pathHeights = 6,
-
-        hideRides = 1,
-        hideVehicles = 20,
-        hideVegetation = 21,
-        hideScenery = 2,
-        hidePaths = 16,
-        hideSupports = 3,
-        hideGuests = 11,
-        hideStaff = 23,
-
-        invisibleRides = 24,
-        invisibleVehicles = 25,
-        invisibleVegetation = 26,
-        invisibleScenery = 27,
-        invisiblePaths = 28,
-        invisibleSupports = 29,
-
-        independentRotation = 30,
-        renderingInhibited = 31,
-    };
 } // namespace OpenRCT2
 
 enum class VisibilityKind

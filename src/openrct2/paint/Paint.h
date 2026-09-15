@@ -13,7 +13,7 @@
 #include "../drawing/FilterPaletteIds.h"
 #include "../drawing/ImageId.hpp"
 #include "../drawing/RenderTarget.h"
-#include "../interface/Viewport.h"
+#include "../interface/ViewportFlags.h"
 #include "../localisation/StringIdType.h"
 #include "../world/Location.hpp"
 #include "../world/MapLimits.h"
