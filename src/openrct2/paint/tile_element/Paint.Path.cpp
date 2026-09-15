@@ -884,32 +884,31 @@ static void PathPaintSegmentSupportHeight(
     if (pathElement.getEdgesAndCorners() == 0xFF)
     {
         PaintUtilSetSegmentSupportHeight(
-            session,
-            EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+            session, { PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight },
             0xFFFF, 0);
         return;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintSegment::centre, 0xFFFF, 0);
 
     if (edges & EDGE_NE)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::topRight), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::topRight, 0xFFFF, 0);
     }
 
     if (edges & EDGE_SE)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottomRight), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::bottomRight, 0xFFFF, 0);
     }
 
     if (edges & EDGE_SW)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottomLeft), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::bottomLeft, 0xFFFF, 0);
     }
 
     if (edges & EDGE_NW)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::topLeft), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::topLeft, 0xFFFF, 0);
     }
 }
 

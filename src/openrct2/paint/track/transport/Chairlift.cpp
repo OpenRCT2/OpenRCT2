@@ -84,13 +84,14 @@ const uint32_t chairlift_bullwheel_frames[] = {
     SPR_CHAIRLIFT_BULLWHEEL_FRAME_4,
 };
 
-static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segments, uint16_t height, SupportType supportType)
+static void ChairliftPaintUtilDrawSupports(
+    PaintSession& session, PaintSegments segments, uint16_t height, SupportType supportType)
 {
     bool success = false;
 
     for (uint8_t s = 0; s < std::size(kSegmentOffsets); s++)
     {
-        if (!(segments & kSegmentOffsets[s]))
+        if (!(segments.has(kSegmentOffsets[s])))
         {
             continue;
         }
@@ -110,7 +111,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
     SupportHeight* supportSegments = session.SupportSegments;
     for (uint8_t s = 0; s < std::size(kSegmentOffsets); s++)
     {
-        if (!(segments & kSegmentOffsets[s]))
+        if (!(segments.has(kSegmentOffsets[s])))
         {
             continue;
         }
@@ -489,7 +490,7 @@ static void ChairliftPaintFlatTo25DegUp(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height, supportType);
+    ChairliftPaintUtilDrawSupports(session, PaintSegment::centre, height, supportType);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -544,7 +545,7 @@ static void ChairliftPaint25DegUpToFlat(
             break;
     }
 
-    ChairliftPaintUtilDrawSupports(session, EnumToFlag(PaintSegment::centre), height, supportType);
+    ChairliftPaintUtilDrawSupports(session, PaintSegment::centre, height, supportType);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -635,8 +636,7 @@ static void ChairliftPaintLeftQuarterTurn1Tile(
     }
 
     ChairliftPaintUtilDrawSupports(
-        session, PaintUtilRotateSegments(EnumsToFlags(PaintSegment::topLeft, PaintSegment::bottomLeft), direction), height,
-        supportType);
+        session, PaintUtilRotateSegments({ PaintSegment::topLeft, PaintSegment::bottomLeft }, direction), height, supportType);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

@@ -218,11 +218,11 @@ namespace OpenRCT2::TrackMetadata
         int8_t height = 0;
     };
 
-    using BlockedSegmentsPerType = std::array<uint16_t, kBlockedSegmentsTypeCount>;
+    using BlockedSegmentsPerType = std::array<PaintSegments, kBlockedSegmentsTypeCount>;
     constexpr BlockedSegmentsPerType kFlatStraightBlockedSegments = { {
-        EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft), // narrow
-        EnumsToFlags(PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft), // inverted
-        kSegmentsAll,                                                                         // wide
+        { PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft }, // narrow
+        { PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft }, // inverted
+        kSegmentsAll,                                                               // wide
     } };
 
     static constexpr int16_t kDoNotSetGeneralSupportHeight = std::numeric_limits<int16_t>::min();
