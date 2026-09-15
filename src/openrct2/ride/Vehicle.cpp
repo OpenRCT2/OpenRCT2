@@ -1396,8 +1396,11 @@ namespace OpenRCT2
                     {
                         break;
                     }
-                    xyElement.x = output.begin_x;
-                    xyElement.y = output.begin_y;
+
+                    // Working backwards, begin_element is the section at the end of a piece of track, whereas begin_x and
+                    // begin_y are the coordinates at its start, so the element has to be paired with end_x and end_y
+                    xyElement.x = output.end_x;
+                    xyElement.y = output.end_y;
                     xyElement.element = output.begin_element;
                 }
 
@@ -1426,8 +1429,10 @@ namespace OpenRCT2
             {
                 if (trackBlockGetPrevious(xyElement, &output))
                 {
-                    xyElement.x = output.begin_x;
-                    xyElement.y = output.begin_y;
+                    // Working backwards, begin_element is the section at the end of a piece of track, whereas begin_x and
+                    // begin_y are the coordinates at its start, so the element has to be paired with end_x and end_y
+                    xyElement.x = output.end_x;
+                    xyElement.y = output.end_y;
                     xyElement.element = output.begin_element;
                 }
             }
