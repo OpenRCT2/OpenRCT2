@@ -14,8 +14,6 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../SpriteIds.h"
-#include "../core/File.h"
-#include "../core/FileScanner.h"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
@@ -381,42 +379,33 @@ namespace OpenRCT2
 
     std::string ImageTable::FindLegacyObject(const std::string& name)
     {
+        // The original object files are looked up through the platform environment, which resolves
+        // their name case insensitively from a cached directory listing. Scanning the directory per
+        // look up instead is very slow on file systems with a high per-operation cost, and the game
+        // asks for hundreds of these files whenever it loads a park.
         const auto& env = GetContext()->GetPlatformEnvironment();
-        auto objectsPath = env.GetDirectoryPath(DirBase::rct2, DirId::objects);
-        auto objectPath = Path::Combine(objectsPath, name);
-        if (File::Exists(objectPath))
+        auto objectPath = env.FindFile(DirBase::rct2, DirId::objects, name);
+        if (!objectPath.empty())
         {
             return objectPath;
         }
 
-        std::string altName = name;
-        auto rangeStart = name.find(".DAT");
-        if (rangeStart != std::string::npos)
+        // RCT Classic ships the same objects with a .POB extension
+        auto extensionStart = name.find(".DAT");
+        if (extensionStart != std::string::npos)
         {
-            altName.replace(rangeStart, 4, ".POB");
-        }
-        objectPath = Path::Combine(objectsPath, altName);
-        if (File::Exists(objectPath))
-        {
-            return objectPath;
-        }
+            auto altName = name;
+            altName.replace(extensionStart, 4, ".POB");
 
-        if (!File::Exists(objectPath))
-        {
-            // Search recursively for any file with the target name (case insensitive)
-            auto filter = Path::Combine(objectsPath, u8"*.dat;*.pob");
-            auto scanner = Path::scanDirectory(filter, true);
-            while (scanner->next())
+            objectPath = env.FindFile(DirBase::rct2, DirId::objects, altName);
+            if (!objectPath.empty())
             {
-                auto currentName = Path::GetFileName(scanner->getPathRelative());
-                if (String::iequals(currentName, name) || String::iequals(currentName, altName))
-                {
-                    objectPath = scanner->getPath();
-                    break;
-                }
+                return objectPath;
             }
         }
-        return objectPath;
+
+        // Return the path the object was expected at, so that failing to open it can be reported
+        return Path::Combine(env.GetDirectoryPath(DirBase::rct2, DirId::objects), name);
     }
 
     ImageTable::~ImageTable()
