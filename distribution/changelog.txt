@@ -18,6 +18,7 @@
 - Fix: [#27087] The ‘Update available’ widget is offset incorrectly.
 - Fix: [#27093] Pause and fast forward buttons are shown in multiplayer.
 - Fix: [#27113] Chat button is shown in editor mode.
+- Fix: [#27133] [Plugin] Dropdown and spinner are not fully hidden with isVisible on creation.
 
 0.5.5 (2026-09-06)
 ------------------------------------------------------------------------
