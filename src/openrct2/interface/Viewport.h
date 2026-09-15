@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "../interface/ViewportFlags.h"
 #include "../interface/ScreenCoords.hpp"
+#include "../interface/ViewportFlags.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
 #include "Window.h"

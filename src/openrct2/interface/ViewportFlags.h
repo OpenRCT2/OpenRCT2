@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
- #pragma once
+#pragma once
 
 #include "../core/FlagHolder.hpp"
 
@@ -55,4 +55,4 @@ namespace OpenRCT2
         renderingInhibited = 31,
     };
     using ViewportFlags = FlagHolder<uint32_t, ViewportFlag>;
-}
+} // namespace OpenRCT2
