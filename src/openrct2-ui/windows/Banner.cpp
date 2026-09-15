@@ -89,9 +89,6 @@ namespace OpenRCT2::Ui::Windows
                 *this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
                 viewportWidget.width() - 2, viewportWidget.height() - 2, Focus(_bannerViewPos));
 
-            if (viewport != nullptr && Config::Get().general.alwaysShowGridlines)
-                viewport->flags.set(ViewportFlag::gridlines);
-
             invalidate();
         }
 

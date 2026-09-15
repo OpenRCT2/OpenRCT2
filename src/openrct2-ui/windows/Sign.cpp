@@ -137,8 +137,6 @@ namespace OpenRCT2::Ui::Windows
                 *this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
                 viewportWidget.width() - 2, viewportWidget.height() - 2, Focus(CoordsXYZ{ signViewPosition, viewZ }));
 
-            if (Config::Get().general.alwaysShowGridlines)
-                viewport->flags.set(ViewportFlag::gridlines);
             invalidate();
 
             return true;
@@ -320,8 +318,6 @@ namespace OpenRCT2::Ui::Windows
             ViewportCreate(
                 *this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                 viewportWidget->width() - 2, viewportWidget->height() - 2, Focus(CoordsXYZ{ signViewPos }));
-            if (viewport != nullptr && Config::Get().general.alwaysShowGridlines)
-                viewport->flags.set(ViewportFlag::gridlines);
             invalidate();
         }
     };
