@@ -49,12 +49,10 @@ namespace OpenRCT2
 
     constexpr PaintSegments paintSegmentsFlipXAxis(PaintSegments segments)
     {
-        const bool hasCentre = segments.has(PaintSegment::centre);
         uint8_t outerSegments = segments.holder & 0xFF;
         outerSegments = (outerSegments * 0x0202020202 & 0x010884422010) % 1023; // reverse the bits, std::byteswap is c++23
         outerSegments = Numerics::rol8(outerSegments, 3);
-        segments.holder = outerSegments;
-        segments.set(PaintSegment::centre, hasCentre);
+        segments.holder = static_cast<uint16_t>((segments.holder & EnumToFlag(PaintSegment::centre)) | outerSegments);
         return segments;
     }
 
