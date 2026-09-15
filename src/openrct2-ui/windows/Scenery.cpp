@@ -771,7 +771,7 @@ namespace OpenRCT2::Ui::Windows
                 if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
                 {
                     auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(tabSelectedScenery.EntryIndex);
-                    if (bannerEntry != nullptr && bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                    if (bannerEntry != nullptr && bannerEntry->flags.has(BannerEntryFlag::hasPrimaryColour))
                     {
                         widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setVisible();
                     }
@@ -2294,7 +2294,7 @@ namespace OpenRCT2::Ui::Windows
                     if (banner != nullptr)
                     {
                         auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
-                        if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                        if (bannerEntry->flags.has(BannerEntryFlag::hasPrimaryColour))
                         {
                             auto repaintScenery = GameActions::BannerSetColourAction(
                                 { info.Loc, info.Element->getBaseZ(), info.Element->asBanner()->getPosition() },

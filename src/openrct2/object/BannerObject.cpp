@@ -23,7 +23,7 @@ namespace OpenRCT2
     {
         stream->Seek(6, STREAM_SEEK_CURRENT);
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
-        _legacyType.flags = stream->ReadValue<uint8_t>();
+        _legacyType.flags = stream->ReadValue<BannerEntryFlags>();
         _legacyType.price = stream->ReadValue<money16>();
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         stream->Seek(2, STREAM_SEEK_CURRENT);
@@ -87,10 +87,10 @@ namespace OpenRCT2
         {
             _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
             _legacyType.price = Json::GetNumber<money64>(properties["price"]);
-            _legacyType.flags = Json::GetFlags<uint8_t>(
+            _legacyType.flags = Json::GetFlagHolder<BannerEntryFlags, BannerEntryFlag>(
                 properties,
                 {
-                    { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR },
+                    { "hasPrimaryColour", BannerEntryFlag::hasPrimaryColour },
                 });
 
             SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
