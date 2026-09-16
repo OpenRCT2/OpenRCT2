@@ -1202,9 +1202,9 @@ namespace OpenRCT2::Ui::Windows
             // only offer terrain edge smoothing if we don't use flatland terrain
             setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
 
-            widgets[WIDX_SURFACE_COLOUR_1].setVisible(_surfaceColour1Enabled);
-            widgets[WIDX_SURFACE_COLOUR_2].setVisible(_surfaceColour2Enabled);
-            widgets[WIDX_EDGE_COLOUR_1].setVisible(_edgeColour1Enabled);
+            widgets[WIDX_SURFACE_COLOUR_1].setVisible(_surfaceColour1Enabled && !_randomTerrain);
+            widgets[WIDX_SURFACE_COLOUR_2].setVisible(_surfaceColour2Enabled && !_randomTerrain);
+            widgets[WIDX_EDGE_COLOUR_1].setVisible(_edgeColour1Enabled && !_randomTerrain);
 
             widgets[WIDX_SURFACE_COLOUR_1].image = getColourButtonImage(_settings.surfaceColour1);
             widgets[WIDX_SURFACE_COLOUR_2].image = getColourButtonImage(_settings.surfaceColour2);
