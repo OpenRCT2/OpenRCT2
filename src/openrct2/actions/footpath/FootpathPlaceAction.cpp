@@ -258,7 +258,7 @@ namespace OpenRCT2::GameActions
             if (_constructFlags & PathConstructFlag::IsQueue)
             {
                 // remove any addition that isn't a TV or a lamp
-                if (!elem->flags.hasAny(PathAdditionFlag::PATH_ADDITION_FLAG_IS_QUEUE_SCREEN, PathAdditionFlag::PATH_ADDITION_FLAG_LAMP))
+                if (!elem->flags.hasAny(PathAdditionFlag::isQueueScreen, PathAdditionFlag::lamp))
                 {
                     pathElement->setIsBroken(false);
                     pathElement->setAddition(0);
@@ -267,7 +267,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // remove all TVs
-                if (elem->flags.has(PathAdditionFlag::PATH_ADDITION_FLAG_IS_QUEUE_SCREEN))
+                if (elem->flags.has(PathAdditionFlag::isQueueScreen))
                 {
                     pathElement->setIsBroken(false);
                     pathElement->setAddition(0);

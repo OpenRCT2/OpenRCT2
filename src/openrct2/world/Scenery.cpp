@@ -145,11 +145,11 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
                 auto* pathAddEntry = tileElement->asPath()->getAdditionEntry();
                 if (pathAddEntry != nullptr)
                 {
-                    if (pathAddEntry->flags.has(PathAdditionFlag::PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER))
+                    if (pathAddEntry->flags.has(PathAdditionFlag::jumpingFountainWater))
                     {
                         JumpingFountain::startAnimation(JumpingFountainType::water, sceneryPos, tileElement);
                     }
-                    else if (pathAddEntry->flags.has(PathAdditionFlag::PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
+                    else if (pathAddEntry->flags.has(PathAdditionFlag::jumpingFountainSnow))
                     {
                         JumpingFountain::startAnimation(JumpingFountainType::snow, sceneryPos, tileElement);
                     }

@@ -106,15 +106,15 @@ namespace OpenRCT2
         _legacyType.flags = Json::GetFlagHolder<PathAdditionFlags, PathAdditionFlag>(
             properties,
             {
-                { "isBin",                  PathAdditionFlag::PATH_ADDITION_FLAG_IS_BIN,                   Json::FlagType::normal },
-                { "isBench",                PathAdditionFlag::PATH_ADDITION_FLAG_IS_BENCH,                 Json::FlagType::normal },
-                { "isBreakable",            PathAdditionFlag::PATH_ADDITION_FLAG_BREAKABLE,                Json::FlagType::normal },
-                { "isLamp",                 PathAdditionFlag::PATH_ADDITION_FLAG_LAMP,                     Json::FlagType::normal },
-                { "isJumpingFountainWater", PathAdditionFlag::PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER,   Json::FlagType::normal },
-                { "isJumpingFountainSnow",  PathAdditionFlag::PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW,    Json::FlagType::normal },
-                { "isAllowedOnQueue",       PathAdditionFlag::PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE,      Json::FlagType::inverted },
-                { "isAllowedOnSlope",       PathAdditionFlag::PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE,      Json::FlagType::inverted },
-                { "isTelevision",           PathAdditionFlag::PATH_ADDITION_FLAG_IS_QUEUE_SCREEN,          Json::FlagType::normal },
+                { "isBin",                  PathAdditionFlag::isBin,                   Json::FlagType::normal },
+                { "isBench",                PathAdditionFlag::isBench,                 Json::FlagType::normal },
+                { "isBreakable",            PathAdditionFlag::breakable,                Json::FlagType::normal },
+                { "isLamp",                 PathAdditionFlag::lamp,                     Json::FlagType::normal },
+                { "isJumpingFountainWater", PathAdditionFlag::jumpingFountainWater,   Json::FlagType::normal },
+                { "isJumpingFountainSnow",  PathAdditionFlag::jumpingFountainSnow,    Json::FlagType::normal },
+                { "isAllowedOnQueue",       PathAdditionFlag::dontAllowOnQueue,      Json::FlagType::inverted },
+                { "isAllowedOnSlope",       PathAdditionFlag::dontAllowOnSlope,      Json::FlagType::inverted },
+                { "isTelevision",           PathAdditionFlag::isQueueScreen,          Json::FlagType::normal },
             });
             // clang-format on
         }

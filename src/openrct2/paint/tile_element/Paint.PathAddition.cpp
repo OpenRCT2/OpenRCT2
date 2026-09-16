@@ -278,7 +278,7 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
         if (pathEl.hasAddition() && !(pathEl.isBroken()))
         {
             auto* pathAddEntry = pathEl.getAdditionEntry();
-            if (pathAddEntry != nullptr && pathAddEntry->flags.has(PathAdditionFlag::PATH_ADDITION_FLAG_LAMP))
+            if (pathAddEntry != nullptr && pathAddEntry->flags.has(PathAdditionFlag::lamp))
             {
                 if (!(pathEl.getEdges() & EDGE_NE))
                 {
