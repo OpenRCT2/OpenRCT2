@@ -113,28 +113,28 @@ namespace OpenRCT2::RCT1
         return map[EnumValue(rct1AnimationGroup)];
     }
 
-    std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)
+    TerrainSurfaceMapping GetTerrainSurfaceMapping(uint8_t terrainSurface)
     {
-        static constexpr std::string_view map[Limits::kNumTerrainSurfaces] =
+        static constexpr TerrainSurfaceMapping kMap[Limits::kNumTerrainSurfaces] =
         {
-            "rct2.terrain_surface.grass",
-            "rct2.terrain_surface.sand",
-            "rct2.terrain_surface.dirt",
-            "rct2.terrain_surface.rock",
-            "rct2.terrain_surface.martian",
-            "rct2.terrain_surface.chequerboard",
-            "rct2.terrain_surface.grass_clumps",
-            "rct1aa.terrain_surface.roof_red",
-            "rct2.terrain_surface.ice",
-            "rct1ll.terrain_surface.wood",
-            "rct1ll.terrain_surface.rust",
-            "rct1ll.terrain_surface.roof_grey",
-            "rct2.terrain_surface.grid_red",
-            "rct2.terrain_surface.grid_yellow",
-            "rct2.terrain_surface.grid_purple",
-            "rct2.terrain_surface.grid_green",
+            { "rct2.terrain_surface.grass", Drawing::Colour::black },
+            { "rct2.terrain_surface.sand", Drawing::Colour::black },
+            { "rct2.terrain_surface.dirt", Drawing::Colour::black },
+            { "rct2.terrain_surface.rock", Drawing::Colour::black },
+            { "rct2.terrain_surface.martian", Drawing::Colour::black },
+            { "rct2.terrain_surface.chequerboard", Drawing::Colour::black },
+            { "rct2.terrain_surface.grass_clumps", Drawing::Colour::black },
+            { "rct1aa.terrain_surface.roof_red", Drawing::Colour::black },
+            { "rct2.terrain_surface.ice", Drawing::Colour::black },
+            { "rct1ll.terrain_surface.wood", Drawing::Colour::black },
+            { "rct1ll.terrain_surface.rust", Drawing::Colour::black },
+            { "rct1ll.terrain_surface.roof_grey", Drawing::Colour::black },
+            { "rct2.terrain_surface.grid", Drawing::Colour::brightRed },
+            { "rct2.terrain_surface.grid", Drawing::Colour::yellow },
+            { "rct2.terrain_surface.grid", Drawing::Colour::brightPurple },
+            { "rct2.terrain_surface.grid", Drawing::Colour::brightGreen },
         };
-        return terrainSurface < std::size(map) ? map[terrainSurface] : map[0];
+        return terrainSurface < std::size(kMap) ? kMap[terrainSurface] : kMap[0];
     }
 
     std::string_view GetTerrainEdgeObject(uint8_t terrainEdge)

@@ -157,10 +157,7 @@ namespace OpenRCT2
         "rct2.terrain_surface.chequerboard",
         "rct2.terrain_surface.grass_clumps",
         "rct2.terrain_surface.ice",
-        "rct2.terrain_surface.grid_red",
-        "rct2.terrain_surface.grid_yellow",
-        "rct2.terrain_surface.grid_purple",
-        "rct2.terrain_surface.grid_green",
+        "rct2.terrain_surface.grid",
         "rct2.terrain_surface.sand_red",
         "rct2.terrain_surface.sand_brown",
 
