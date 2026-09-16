@@ -235,16 +235,16 @@ static constexpr TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
     },
 };
 
-static ImageId GetSurfacePattern(const TerrainSurfaceObject* surfaceObject, int32_t offset)
+static ImageId GetSurfacePattern(
+    const SurfaceElement& surfaceElement, const TerrainSurfaceObject* surfaceObject, int32_t offset)
 {
     ImageId image;
     if (surfaceObject != nullptr)
     {
-        image = ImageId(surfaceObject->PatternBaseImageId + offset);
-        if (surfaceObject->Colour != kColourNull)
-        {
-            image = image.WithPrimary(surfaceObject->Colour);
-        }
+        auto primaryColour = surfaceObject->getPrimaryColour(surfaceElement.getPrimarySurfaceColour());
+        image = ImageId(surfaceObject->PatternBaseImageId + offset, primaryColour);
+        if (surfaceObject->Flags.has(TerrainSurfaceFlag::hasSecondaryColour))
+            image = image.WithSecondary(surfaceElement.getSecondarySurfaceColour());
     }
     return image;
 }
@@ -265,17 +265,17 @@ static bool SurfaceShouldSmooth(const TerrainSurfaceObject* surfaceObject)
     return surfaceObject->Flags.has(TerrainSurfaceFlag::smoothWithOther);
 }
 
-static ImageId GetEdgeImageWithOffset(const TerrainEdgeObject* edgeObject, uint32_t offset)
+static ImageId GetEdgeImageWithOffset(const TerrainEdgeObject* edgeObject, uint32_t offset, Colour selectedColour1)
 {
     ImageId result;
     if (edgeObject != nullptr)
     {
-        result = ImageId(edgeObject->BaseImageId + offset);
+        result = ImageId(edgeObject->BaseImageId + offset, selectedColour1);
     }
     return result;
 }
 
-static ImageId GetEdgeImage(const TerrainEdgeObject* edgeObject, uint8_t type)
+static ImageId GetEdgeImage(const TerrainEdgeObject* edgeObject, uint8_t type, Colour selectedColour1)
 {
     static constexpr uint32_t offsets[] = {
         0,
@@ -287,23 +287,23 @@ static ImageId GetEdgeImage(const TerrainEdgeObject* edgeObject, uint8_t type)
     ImageId result;
     if (type < std::size(offsets))
     {
-        result = GetEdgeImageWithOffset(edgeObject, offsets[type]);
+        result = GetEdgeImageWithOffset(edgeObject, offsets[type], selectedColour1);
     }
     return result;
 }
 
-static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType type, edge_t edge)
+static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, TunnelType type, edge_t edge, Colour selectedColour1)
 {
     bool hasDoors = false;
     if (edgeObject != nullptr)
     {
-        hasDoors = edgeObject->HasDoors && !edgeObject->UsesFallbackImages();
+        hasDoors = edgeObject->flags.has(TerrainEdgeFlag::hasDoors) && !edgeObject->UsesFallbackImages();
     }
 
     if (!hasDoors && EnumValue(type) >= kRegularTunnelTypeCount)
         type = TunnelType::standardFlat;
 
-    ImageId result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset)
+    ImageId result = GetEdgeImageWithOffset(edgeObject, kTunnels[EnumValue(type)].imageOffset, selectedColour1)
                          .WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
 
     return result;
@@ -423,7 +423,7 @@ static void ViewportSurfaceSmoothenEdge(
     {
         AttachedPaintStruct* out = session.LastAttachedPS;
         // set content and enable masking
-        out->ColourImageId = GetSurfacePattern(neighbour.surfaceObject, cl);
+        out->ColourImageId = GetSurfacePattern(*(neighbour.tile_element->asSurface()), neighbour.surfaceObject, cl);
         out->IsMasked = true;
     }
 }
@@ -447,7 +447,7 @@ static bool TileIsInsideClipView(const TileDescriptor& tile)
 
 static void ViewportSurfaceDrawTileSideBottom(
     PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, const TileDescriptor& self,
-    const TileDescriptor& neighbour, bool isWater)
+    const TileDescriptor& neighbour, bool isWater, Colour selectedColour1)
 {
     PROFILED_FUNCTION();
 
@@ -524,10 +524,10 @@ static void ViewportSurfaceDrawTileSideBottom(
         return;
     }
 
-    auto baseImageId = GetEdgeImage(edgeObject, 0);
+    auto baseImageId = GetEdgeImage(edgeObject, 0, selectedColour1);
     if (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
-        baseImageId = GetEdgeImage(edgeObject, 1);
+        baseImageId = GetEdgeImage(edgeObject, 1, selectedColour1);
     }
 
     if (edge == EDGE_BOTTOMRIGHT)
@@ -600,7 +600,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             boundBoxLength -= 16;
         }
 
-        auto imageId = GetTunnelImage(edgeObject, tunnelType, edge);
+        auto imageId = GetTunnelImage(edgeObject, tunnelType, edge, selectedColour1);
         PaintAddImageAsParent(
             session, imageId, { offset, zOffset }, { { 0, 0, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
 
@@ -613,7 +613,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             boundBoxLength -= 16;
         }
 
-        imageId = GetTunnelImage(edgeObject, tunnelType, edge).WithIndexOffset(1);
+        imageId = GetTunnelImage(edgeObject, tunnelType, edge, selectedColour1).WithIndexOffset(1);
         PaintAddImageAsParent(
             session, imageId, { offset, curHeight * kCoordsZPerTinyZ },
             { { tunnelTopBoundBoxOffset, boundBoxOffsetZ }, { tunnelBounds, boundBoxLength - 1 } });
@@ -639,7 +639,7 @@ static void ViewportSurfaceDrawTileSideBottom(
 
 static void ViewportSurfaceDrawTileSideTop(
     PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, const TileDescriptor& self,
-    const TileDescriptor& neighbour, bool isWater)
+    const TileDescriptor& neighbour, bool isWater, Drawing::Colour selectedColour1)
 {
     PROFILED_FUNCTION();
 
@@ -711,10 +711,10 @@ static void ViewportSurfaceDrawTileSideTop(
     ImageId baseImageId;
     if (isWater)
     {
-        baseImageId = GetEdgeImage(edgeObject, 2); // var_08
+        baseImageId = GetEdgeImage(edgeObject, 2, selectedColour1); // var_08
         if (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         {
-            baseImageId = GetEdgeImage(edgeObject, 1); // var_04
+            baseImageId = GetEdgeImage(edgeObject, 1, selectedColour1); // var_04
         }
         baseImageId = baseImageId.WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
 
@@ -726,12 +726,13 @@ static void ViewportSurfaceDrawTileSideTop(
         if (!(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
-            const auto imageId = GetEdgeImage(edgeObject, 3).WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
+            const auto imageId = GetEdgeImage(edgeObject, 3, selectedColour1)
+                                     .WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
             const int16_t y = (height - cornerHeight1) * kCoordsZPerTinyZ;
             PaintAttachToPreviousPS(session, imageId, 0, y);
             return;
         }
-        baseImageId = GetEdgeImage(edgeObject, 1).WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
+        baseImageId = GetEdgeImage(edgeObject, 1, selectedColour1).WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
     }
 
     uint8_t cur_height = std::min(neighbourCornerHeight2, neighbourCornerHeight1);
@@ -1039,7 +1040,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                     grassLength = tileElement.getGrassLength() & 0x7;
                 }
             }
-            imageId = surfaceObject->GetImageId(session.MapPosition, grassLength, rotation, image_offset, showGridlines, false);
+            imageId = surfaceObject->GetImageId(
+                session.MapPosition, grassLength, rotation, image_offset, showGridlines, false,
+                tileElement.getPrimarySurfaceColour(), tileElement.getSecondarySurfaceColour());
         }
         if (session.ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
@@ -1213,18 +1216,23 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const uint8_t image_offset = Byte97B444[surfaceShape];
         ImageId imageId;
         if (surfaceObject != nullptr)
-            imageId = surfaceObject->GetImageId(session.MapPosition, 1, rotation, image_offset, false, true);
+            imageId = surfaceObject->GetImageId(
+                session.MapPosition, 1, rotation, image_offset, false, true, tileElement.getPrimarySurfaceColour(),
+                tileElement.getSecondarySurfaceColour());
         PaintAttachToPreviousPS(session, imageId, 0, 0);
     }
 
     if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        ViewportSurfaceDrawTileSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2], false);
-        ViewportSurfaceDrawTileSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3], false);
+        auto edgeColour1 = tileElement.getPrimaryEdgeColour();
+        ViewportSurfaceDrawTileSideTop(
+            session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2], false, edgeColour1);
+        ViewportSurfaceDrawTileSideTop(
+            session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3], false, edgeColour1);
         ViewportSurfaceDrawTileSideBottom(
-            session, EDGE_BOTTOMLEFT, height, edgeObject, selfDescriptor, tileDescriptors[0], false);
+            session, EDGE_BOTTOMLEFT, height, edgeObject, selfDescriptor, tileDescriptors[0], false, edgeColour1);
         ViewportSurfaceDrawTileSideBottom(
-            session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1], false);
+            session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1], false, edgeColour1);
     }
 
     const uint16_t waterHeight = tileElement.getWaterHeight();
@@ -1256,14 +1264,15 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
+            auto edgeColour1 = tileElement.getPrimaryEdgeColour();
             ViewportSurfaceDrawTileSideBottom(
-                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true);
+                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true, edgeColour1);
             ViewportSurfaceDrawTileSideBottom(
-                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1], true);
+                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1], true, edgeColour1);
             ViewportSurfaceDrawTileSideTop(
-                session, EDGE_TOPLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2], true);
+                session, EDGE_TOPLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2], true, edgeColour1);
             ViewportSurfaceDrawTileSideTop(
-                session, EDGE_TOPRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3], true);
+                session, EDGE_TOPRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3], true, edgeColour1);
         }
     }
 

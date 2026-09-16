@@ -853,7 +853,9 @@ namespace OpenRCT2::Ui::Windows
             auto colour = ColourPair(PaletteIndex::transparent);
             const auto* surfaceObject = surfaceElement->getSurfaceObject();
             if (surfaceObject != nullptr)
-                colour = ColourPair(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
+                colour = ColourPair(
+                    surfaceObject->getPrimaryMapColour(surfaceElement->getPrimarySurfaceColour()),
+                    surfaceObject->MapColours[1]);
 
             if (surfaceElement->getWaterHeight() > 0)
                 colour = kWaterColour;
