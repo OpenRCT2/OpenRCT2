@@ -1026,11 +1026,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const uint8_t image_offset = Byte97B444[surfaceShape];
 
         ImageId imageId;
-        if (isInTrackDesignerOrManager())
-        {
-            imageId = ImageId(SPR_TERRAIN_TRACK_DESIGNER);
-        }
-        else if (surfaceObject != nullptr)
+        if (surfaceObject != nullptr)
         {
             uint8_t grassLength = TerrainSurfaceObject::kNoValue;
             if (zoomLevel <= ZoomLevel{ 0 })

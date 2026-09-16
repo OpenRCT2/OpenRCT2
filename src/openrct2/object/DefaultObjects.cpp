@@ -23,6 +23,12 @@ namespace OpenRCT2
 
         "rct2.station.plain",
     };
+    constexpr std::array<std::string_view, 3> kMinimumRequiredObjectsDesigner = {
+        "rct2.terrain_surface.designer_grid",
+        "rct2.terrain_edge.rock",
+
+        "rct2.station.plain",
+    };
 
     constexpr std::array<std::string_view, 82> kCommonScenarioAndTrackDesignerObjects = {
         // An initial default selection
