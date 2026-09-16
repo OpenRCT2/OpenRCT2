@@ -623,7 +623,7 @@ namespace OpenRCT2::RCT2
         void AddDefaultEntries()
         {
             // Add default surfaces
-            _terrainSurfaceEntries.AddRange(DefaultTerrainSurfaces);
+            _terrainSurfaceEntries.AddRange(kDefaultTerrainSurfaces);
 
             // Add default edges
             _terrainEdgeEntries.AddRange(DefaultTerrainEdges);
@@ -1342,6 +1342,7 @@ namespace OpenRCT2::RCT2
                     dst2->setParkFences(src2->GetParkFences());
                     dst2->setWaterHeight(src2->GetWaterHeight());
                     dst2->setHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
+                    dst2->setPrimarySurfaceColour(kTerrainColours[src2->GetSurfaceStyle()]);
 
                     break;
                 }
@@ -1915,7 +1916,7 @@ namespace OpenRCT2::RCT2
                     {
                         return false;
                     }
-                    if (surface->GetSurfaceStyle() >= std::size(DefaultTerrainSurfaces))
+                    if (surface->GetSurfaceStyle() >= std::size(kDefaultTerrainSurfaces))
                     {
                         return true;
                     }
