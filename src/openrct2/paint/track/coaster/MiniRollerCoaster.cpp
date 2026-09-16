@@ -18244,6 +18244,38 @@ static void MiniRCTrackRightEighthDiveLoopToDownOrthogonal(
         session, ride, 5 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
+static void MiniRCTrackDiagFlatCommon(
+    PaintSession& session, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const ImageIndex images[kNumOrthogonalDirections], SupportType supportType)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, images, defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    if (trackSequence == 3)
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::leftCorner, direction, 6, height, session.SupportColours);
+
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+}
+
+static void MiniRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    // X7 originally passed ‘4’ as the special value to MetalASupportsPaintSetup().
+    MiniRCTrackDiagFlatCommon(session, trackSequence, direction, height, kMiniRCDiagBrakeImages, supportType);
+}
+
+static void MiniRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    // X7 originally passed ‘4’ as the special value to MetalASupportsPaintSetup().
+    MiniRCTrackDiagFlatCommon(
+        session, trackSequence, direction, height, kMiniRCDiagBlockBrakeImages[trackElement.isBrakeClosed()], supportType);
+}
 TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
 {
     switch (trackType)
@@ -18520,6 +18552,8 @@ TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
             return MiniRCTrackRightCurvedLiftHill;
         case TrackElemType::booster:
             return MiniRCTrackBooster;
+
+        // openrct2
         case TrackElemType::leftQuarterHelixLargeUp:
             return OpenRCT2::trackPaintLeftQuarterHelixLargeUp<
                 SPR_TRACKS_MINI_TRACK_QUARTER_HELIX_LEFT, OpenRCT2::kLeftQuarterHelixLargeUpSpriteMap, false,
@@ -18552,6 +18586,244 @@ TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
             return OpenRCT2::trackPaintRightQuarterBankedHelixLargeDown<
                 SPR_TRACKS_MINI_TRACK_QUARTER_HELIX_LEFT_BANKED, OpenRCT2::kLeftQuarterBankedHelixLargeUpSpriteMap, false,
                 kLeftQuarterBankedHelixSupportHeights, OpenRCT2::BlockedSegmentsType::narrow, kTunnelGroup, false>;
+
+        case TrackElemType::diagBrakes:
+            return MiniRCTrackDiagBrakes;
+        case TrackElemType::diagBlockBrakes:
+            return MiniRCTrackDiagBlockBrakes;
+
+        case TrackElemType::up90:
+            return MiniRCTrack90DegUp;
+        case TrackElemType::down90:
+            return MiniRCTrack90DegDown;
+        case TrackElemType::up60ToUp90:
+            return MiniRCTrack60DegUpTo90DegUp;
+        case TrackElemType::down90ToDown60:
+            return MiniRCTrack90DegDownTo60DegDown;
+        case TrackElemType::up90ToUp60:
+            return MiniRCTrack90DegUpTo60DegUp;
+        case TrackElemType::down60ToDown90:
+            return MiniRCTrack60DegDownTo90DegDown;
+        case TrackElemType::leftQuarterTurn1TileUp90:
+            return MiniRCTrackLeftQuarterTurn190DegUp;
+        case TrackElemType::rightQuarterTurn1TileUp90:
+            return MiniRCTrackRightQuarterTurn190DegUp;
+        case TrackElemType::leftQuarterTurn1TileDown90:
+            return MiniRCTrackLeftQuarterTurn190DegDown;
+        case TrackElemType::rightQuarterTurn1TileDown90:
+            return MiniRCTrackRightQuarterTurn190DegDown;
+        case TrackElemType::leftBarrelRollUpToDown:
+            return MiniRCTrackLeftBarrelRollUpToDown;
+        case TrackElemType::rightBarrelRollUpToDown:
+            return MiniRCTrackRightBarrelRollUpToDown;
+        case TrackElemType::leftBarrelRollDownToUp:
+            return MiniRCTrackLeftBarrelRollDownToUp;
+        case TrackElemType::rightBarrelRollDownToUp:
+            return MiniRCTrackRightBarrelRollDownToUp;
+        case TrackElemType::leftTwistUpToDown:
+            return MiniRCTrackLeftTwistUpToDown;
+        case TrackElemType::rightTwistUpToDown:
+            return MiniRCTrackRightTwistUpToDown;
+        case TrackElemType::leftTwistDownToUp:
+            return MiniRCTrackLeftTwistDownToUp;
+        case TrackElemType::rightTwistDownToUp:
+            return MiniRCTrackRightTwistDownToUp;
+        case TrackElemType::halfLoopUp:
+            return MiniRCTrackHalfLoopUp;
+        case TrackElemType::halfLoopDown:
+            return MiniRCTrackHalfLoopDown;
+        case TrackElemType::leftVerticalLoop:
+            return MiniRCTrackLeftVerticalLoop;
+        case TrackElemType::rightVerticalLoop:
+            return MiniRCTrackRightVerticalLoop;
+        case TrackElemType::leftCorkscrewUp:
+            return MiniRCTrackLeftCorkscrewUp;
+        case TrackElemType::rightCorkscrewUp:
+            return MiniRCTrackRightCorkscrewUp;
+        case TrackElemType::leftCorkscrewDown:
+            return MiniRCTrackLeftCorkscrewDown;
+        case TrackElemType::rightCorkscrewDown:
+            return MiniRCTrackRightCorkscrewDown;
+        case TrackElemType::leftLargeCorkscrewUp:
+            return MiniRCTrackLeftLargeCorkscrewUp;
+        case TrackElemType::rightLargeCorkscrewUp:
+            return MiniRCTrackRightLargeCorkscrewUp;
+        case TrackElemType::leftLargeCorkscrewDown:
+            return MiniRCTrackLeftLargeCorkscrewDown;
+        case TrackElemType::rightLargeCorkscrewDown:
+            return MiniRCTrackRightLargeCorkscrewDown;
+        case TrackElemType::leftZeroGRollUp:
+            return MiniRCTrackLeftZeroGRollUp;
+        case TrackElemType::rightZeroGRollUp:
+            return MiniRCTrackRightZeroGRollUp;
+        case TrackElemType::leftZeroGRollDown:
+            return MiniRCTrackLeftZeroGRollDown;
+        case TrackElemType::rightZeroGRollDown:
+            return MiniRCTrackRightZeroGRollDown;
+        case TrackElemType::leftLargeZeroGRollUp:
+            return MiniRCTrackLeftLargeZeroGRollUp;
+        case TrackElemType::rightLargeZeroGRollUp:
+            return MiniRCTrackRightLargeZeroGRollUp;
+        case TrackElemType::leftLargeZeroGRollDown:
+            return MiniRCTrackLeftLargeZeroGRollDown;
+        case TrackElemType::rightLargeZeroGRollDown:
+            return MiniRCTrackRightLargeZeroGRollDown;
+        case TrackElemType::leftEighthDiveLoopUpToOrthogonal:
+            return MiniRCTrackLeftEighthDiveLoopUpToOrthogonal;
+        case TrackElemType::rightEighthDiveLoopUpToOrthogonal:
+            return MiniRCTrackRightEighthDiveLoopUpToOrthogonal;
+        case TrackElemType::leftEighthDiveLoopDownToDiag:
+            return MiniRCTrackLeftEighthDiveLoopDownToDiag;
+        case TrackElemType::rightEighthDiveLoopDownToDiag:
+            return MiniRCTrackRightEighthDiveLoopToDownOrthogonal;
+        case TrackElemType::up90ToInvertedFlatQuarterLoop:
+            return MiniRCTrack90DegToInvertedFlatQuarterLoopUp;
+        case TrackElemType::invertedFlatToDown90QuarterLoop:
+            return MiniRCTrackInvertedFlatTo90DegQuarterLoopDown;
+        case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
+            return MiniRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp;
+        case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
+            return MiniRCTrackRightBankToRightQuarterTurn3Tile25DegUp;
+        case TrackElemType::leftQuarterTurn3TilesDown25ToLeftBank:
+            return MiniRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank;
+        case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
+            return MiniRCTrackRightQuarterTurn3Tile25DegDownToRightBank;
+        case TrackElemType::leftMediumHalfLoopUp:
+            return MiniRCTrackLeftMediumHalfLoopUp;
+        case TrackElemType::rightMediumHalfLoopUp:
+            return MiniRCTrackRightMediumHalfLoopUp;
+        case TrackElemType::leftMediumHalfLoopDown:
+            return MiniRCTrackLeftMediumHalfLoopDown;
+        case TrackElemType::rightMediumHalfLoopDown:
+            return MiniRCTrackRightMediumHalfLoopDown;
+        case TrackElemType::leftLargeHalfLoopUp:
+            return MiniRCTrackLeftLargeHalfLoopUp;
+        case TrackElemType::rightLargeHalfLoopUp:
+            return MiniRCTrackRightLargeHalfLoopUp;
+        case TrackElemType::rightLargeHalfLoopDown:
+            return MiniRCTrackRightLargeHalfLoopDown;
+        case TrackElemType::leftLargeHalfLoopDown:
+            return MiniRCTrackLeftLargeHalfLoopDown;
+        case TrackElemType::flatToUp60:
+            return MiniRCTrackFlatTo60DegUp;
+        case TrackElemType::up60ToFlat:
+            return MiniRCTrack60DegUpToFlat;
+        case TrackElemType::flatToDown60:
+            return MiniRCTrackFlatTo60DegDown;
+        case TrackElemType::down60ToFlat:
+            return MiniRCTrack60DegDownToFlat;
+        case TrackElemType::diagFlatToUp60:
+            return MiniRCTrackDiagFlatTo60DegUp;
+        case TrackElemType::diagUp60ToFlat:
+            return MiniRCTrackDiag60DegUpToFlat;
+        case TrackElemType::diagFlatToDown60:
+            return MiniRCTrackDiagFlatTo60DegDown;
+        case TrackElemType::diagDown60ToFlat:
+            return MiniRCTrackDiag60DegDownToFlat;
+        case TrackElemType::flatToUp60LongBase:
+            return MiniRCTrackFlatTo60DegUpLongBase;
+        case TrackElemType::up60ToFlatLongBase:
+            return MiniRCTrack60DegUpToFlatLongBase;
+        case TrackElemType::flatToDown60LongBase:
+            return MiniRCTrackFlatTo60DegDownLongBase;
+        case TrackElemType::down60ToFlatLongBase:
+            return MiniRCTrack60DegDownToFlatLongBase;
+        case TrackElemType::diagFlatToUp60LongBase:
+            return MiniRCTrackDiagFlatTo60DegUpLongBase;
+        case TrackElemType::diagUp60ToFlatLongBase:
+            return MiniRCTrackDiag60DegUpToFlatLongBase;
+        case TrackElemType::diagFlatToDown60LongBase:
+            return MiniRCTrackDiagFlatTo60DegDownLongBase;
+        case TrackElemType::diagDown60ToFlatLongBase:
+            return MiniRCTrackDiag60DegDownToFlatLongBase;
+        case TrackElemType::leftEighthToDiagUp25:
+            return MiniRCTrackLeftEighthToDiagUp25;
+        case TrackElemType::rightEighthToDiagUp25:
+            return MiniRCTrackRightEighthToDiagUp25;
+        case TrackElemType::leftEighthToDiagDown25:
+            return MiniRCTrackLeftEighthToDiagDown25;
+        case TrackElemType::rightEighthToDiagDown25:
+            return MiniRCTrackRightEighthToDiagDown25;
+        case TrackElemType::leftEighthToOrthogonalUp25:
+            return MiniRCTrackLeftEighthToOrthogonalUp25;
+        case TrackElemType::rightEighthToOrthogonalUp25:
+            return MiniRCTrackRightEighthToOrthogonalUp25;
+        case TrackElemType::leftEighthToOrthogonalDown25:
+            return MiniRCTrackLeftEighthToOrthogonalDown25;
+        case TrackElemType::rightEighthToOrthogonalDown25:
+            return MiniRCTrackRightEighthToOrthogonalDown25;
+        case TrackElemType::diagUp25ToLeftBankedUp25:
+            return MiniRCTrackDiagUp25ToLeftBankedUp25;
+        case TrackElemType::diagUp25ToRightBankedUp25:
+            return MiniRCTrackDiagUp25ToRightBankedUp25;
+        case TrackElemType::diagLeftBankedUp25ToUp25:
+            return MiniRCTrackDiagLeftBankedUp25ToUp25;
+        case TrackElemType::diagRightBankedUp25ToUp25:
+            return MiniRCTrackDiagRightBankedUp25ToUp25;
+        case TrackElemType::diagDown25ToLeftBankedDown25:
+            return MiniRCTrackDiagDown25ToLeftBankedDown25;
+        case TrackElemType::diagDown25ToRightBankedDown25:
+            return MiniRCTrackDiagDown25ToRightBankedDown25;
+        case TrackElemType::diagLeftBankedDown25ToDown25:
+            return MiniRCTrackDiagLeftBankedDown25ToDown25;
+        case TrackElemType::diagRightBankedDown25ToDown25:
+            return MiniRCTrackDiagRightBankedDown25ToDown25;
+        case TrackElemType::diagLeftBankedFlatToLeftBankedUp25:
+            return MiniRCTrackDiagLeftBankedFlatToLeftBankedUp25;
+        case TrackElemType::diagRightBankedFlatToRightBankedUp25:
+            return MiniRCTrackDiagRightBankedFlatToRightBankedUp25;
+        case TrackElemType::diagLeftBankedUp25ToLeftBankedFlat:
+            return MiniRCTrackDiagLeftBankedUp25ToLeftBankedFlat;
+        case TrackElemType::diagRightBankedUp25ToRightBankedFlat:
+            return MiniRCTrackDiagRightBankedUp25ToRightBankedFlat;
+        case TrackElemType::diagLeftBankedFlatToLeftBankedDown25:
+            return MiniRCTrackDiagLeftBankedFlatToLeftBankedDown25;
+        case TrackElemType::diagRightBankedFlatToRightBankedDown25:
+            return MiniRCTrackDiagRightBankedFlatToRightBankedDown25;
+        case TrackElemType::diagLeftBankedDown25ToLeftBankedFlat:
+            return MiniRCTrackDiagLeftBankedDown25ToLeftBankedFlat;
+        case TrackElemType::diagRightBankedDown25ToRightBankedFlat:
+            return MiniRCTrackDiagRightBankedDown25ToRightBankedFlat;
+        case TrackElemType::diagUp25LeftBanked:
+            return MiniRCTrackDiagUp25LeftBanked;
+        case TrackElemType::diagUp25RightBanked:
+            return MiniRCTrackDiagUp25RightBanked;
+        case TrackElemType::diagDown25LeftBanked:
+            return MiniRCTrackDiagDown25LeftBanked;
+        case TrackElemType::diagDown25RightBanked:
+            return MiniRCTrackDiagDown25RightBanked;
+        case TrackElemType::diagFlatToLeftBankedUp25:
+            return MiniRCTrackDiagFlatToLeftBankedUp25;
+        case TrackElemType::diagFlatToRightBankedUp25:
+            return MiniRCTrackDiagFlatToRightBankedUp25;
+        case TrackElemType::diagLeftBankedUp25ToFlat:
+            return MiniRCTrackDiagLeftBankedUp25ToFlat;
+        case TrackElemType::diagRightBankedUp25ToFlat:
+            return MiniRCTrackDiagRightBankedUp25ToFlat;
+        case TrackElemType::diagFlatToLeftBankedDown25:
+            return MiniRCTrackDiagFlatToLeftBankedDown25;
+        case TrackElemType::diagFlatToRightBankedDown25:
+            return MiniRCTrackDiagFlatToRightBankedDown25;
+        case TrackElemType::diagLeftBankedDown25ToFlat:
+            return MiniRCTrackDiagLeftBankedDown25ToFlat;
+        case TrackElemType::diagRightBankedDown25ToFlat:
+            return MiniRCTrackDiagRightBankedDown25ToFlat;
+        case TrackElemType::leftEighthBankToDiagUp25:
+            return MiniRCTrackLeftEighthBankToDiagUp25;
+        case TrackElemType::rightEighthBankToDiagUp25:
+            return MiniRCTrackRightEighthBankToDiagUp25;
+        case TrackElemType::leftEighthBankToDiagDown25:
+            return MiniRCTrackLeftEighthBankToDiagDown25;
+        case TrackElemType::rightEighthBankToDiagDown25:
+            return MiniRCTrackRightEighthBankToDiagDown25;
+        case TrackElemType::leftEighthBankToOrthogonalUp25:
+            return MiniRCTrackLeftEighthBankToOrthogonalUp25;
+        case TrackElemType::rightEighthBankToOrthogonalUp25:
+            return MiniRCTrackRightEighthBankToOrthogonalUp25;
+        case TrackElemType::leftEighthBankToOrthogonalDown25:
+            return MiniRCTrackLeftEighthBankToOrthogonalDown25;
+        case TrackElemType::rightEighthBankToOrthogonalDown25:
+            return MiniRCTrackRightEighthBankToOrthogonalDown25;
         default:
             return TrackPaintFunctionDummy;
     }
