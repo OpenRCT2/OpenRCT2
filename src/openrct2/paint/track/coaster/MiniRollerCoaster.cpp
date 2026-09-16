@@ -8849,36 +8849,6 @@ static void MiniRCTrackBooster(
 }
 
 // Added by OpenRCT2
-
-static void MiniRCTrackBooster(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINI_RC_BOOSTER_NE_SW), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINI_RC_BOOSTER_NW_SE), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::centre, direction, 6, height, session.SupportColours);
-    }
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
-}
-
 static void MiniRCTrack90DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
