@@ -294,14 +294,16 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            setWidgetPressed(WIDX_FLOOR, gLandToolTerrainSurface != kObjectEntryIndexNull);
+            auto surfaceButtonSelected = gLandToolTerrainSurface != kObjectEntryIndexNull;
+            auto edgeButtonSelected = gLandToolTerrainEdge != kObjectEntryIndexNull;
+            setWidgetPressed(WIDX_FLOOR, surfaceButtonSelected);
             setWidgetPressed(WIDX_WALL, gLandToolTerrainEdge != kObjectEntryIndexNull);
             setWidgetPressed(WIDX_MOUNTAINMODE, _landToolMountainMode);
             setWidgetPressed(WIDX_PAINTMODE, _landToolPaintMode);
 
-            widgets[WIDX_SURFACE_COLOUR_1].setVisible(_surfaceColour1Enabled);
-            widgets[WIDX_SURFACE_COLOUR_2].setVisible(_surfaceColour2Enabled);
-            widgets[WIDX_EDGE_COLOUR_1].setVisible(_edgeColour1Enabled);
+            widgets[WIDX_SURFACE_COLOUR_1].setVisible(_surfaceColour1Enabled && surfaceButtonSelected);
+            widgets[WIDX_SURFACE_COLOUR_2].setVisible(_surfaceColour2Enabled && surfaceButtonSelected);
+            widgets[WIDX_EDGE_COLOUR_1].setVisible(_edgeColour1Enabled && edgeButtonSelected);
 
             // Update the preview image (for tool sizes up to 7)
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
