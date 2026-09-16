@@ -19,11 +19,16 @@ struct ImageId;
 
 namespace OpenRCT2
 {
+    constexpr auto kDefaultTerrainSurfaceColour1 = Drawing::Colour::brightPurple;
+    constexpr auto kDefaultTerrainSurfaceColour2 = Drawing::Colour::black;
+
     enum class TerrainSurfaceFlag : uint8_t
     {
         smoothWithSelf,
         smoothWithOther,
         canGrow,
+        hasPrimaryColour,
+        hasSecondaryColour,
     };
     using TerrainSurfaceFlags = FlagHolder<uint8_t, TerrainSurfaceFlag>;
 
@@ -70,7 +75,10 @@ namespace OpenRCT2
         void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
         ImageId GetImageId(
-            const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground) const;
+            const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground,
+            Drawing::Colour selectedColour1, Drawing::Colour selectedColour2) const;
+        Drawing::Colour getPrimaryColour(Drawing::Colour selectedColour) const;
+        Drawing::PaletteIndex getPrimaryMapColour(Drawing::Colour selectedColour) const;
 
         static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
     };

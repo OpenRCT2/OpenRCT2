@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/ColourMap.h"
 #include "../drawing/Drawing.h"
 #include "../interface/ScreenCoords.hpp"
 #include "../world/Location.hpp"
@@ -50,11 +51,8 @@ namespace OpenRCT2
 
     void TerrainSurfaceObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
     {
-        auto imageId = ImageId(GetImageId({}, 1, 0, 0, false, false));
-        if (Colour != Drawing::kColourNull)
-        {
-            imageId = imageId.WithPrimary(Colour);
-        }
+        auto imageId = ImageId(
+            GetImageId({}, 1, 0, 0, false, false, kDefaultTerrainSurfaceColour1, kDefaultTerrainSurfaceColour2));
 
         ScreenCoordsXY screenCoords{};
         int32_t x0 = 0;
@@ -90,7 +88,8 @@ namespace OpenRCT2
                 properties,
                 { { "smoothWithSelf", TerrainSurfaceFlag::smoothWithSelf },
                   { "smoothWithOther", TerrainSurfaceFlag::smoothWithOther },
-                  { "canGrow", TerrainSurfaceFlag::canGrow } });
+                  { "canGrow", TerrainSurfaceFlag::canGrow },
+                  { "hasPrimaryColour", TerrainSurfaceFlag::hasPrimaryColour } });
 
             const auto mapColours = properties["mapColours"];
             const bool mapColoursAreValid = mapColours.is_array() && mapColours.size() == std::size(MapColours);
@@ -140,7 +139,8 @@ namespace OpenRCT2
     }
 
     ImageId TerrainSurfaceObject::GetImageId(
-        const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground) const
+        const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground,
+        Drawing::Colour selectedColour1, Drawing::Colour selectedColour2) const
     {
         uint32_t result = DefaultEntry;
         std::span<const SpecialEntry> entries(SpecialEntries);
@@ -170,12 +170,30 @@ namespace OpenRCT2
             }
         }
 
-        ImageId image(EntryBaseImageId + (result * kNumImagesInEntry) + offset);
-        if (Colour != Drawing::kColourNull)
-        {
-            image = image.WithPrimary(Colour);
-        }
+        ImageId image(EntryBaseImageId + (result * kNumImagesInEntry) + offset, getPrimaryColour(selectedColour1));
+        if (Flags.has(TerrainSurfaceFlag::hasSecondaryColour))
+            image = image.WithSecondary(selectedColour2);
+
         return image;
+    }
+
+    Drawing::Colour TerrainSurfaceObject::getPrimaryColour(Drawing::Colour selectedColour) const
+    {
+        if (Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+            return selectedColour;
+
+        if (Colour == Drawing::kColourNull)
+            return selectedColour;
+
+        return Colour;
+    }
+
+    Drawing::PaletteIndex TerrainSurfaceObject::getPrimaryMapColour(Drawing::Colour selectedColour) const
+    {
+        if (Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+            return Drawing::getColourMap(selectedColour).lighter;
+
+        return MapColours[0];
     }
 
     TerrainSurfaceObject* TerrainSurfaceObject::GetById(ObjectEntryIndex entryIndex)

@@ -42,7 +42,7 @@ namespace OpenRCT2
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-        auto imageId = ImageId(BaseImageId + 5);
+        auto imageId = ImageId(BaseImageId + 5, kDefaultTerrainEdgeColour);
         GfxDrawSprite(rt, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
         GfxDrawSprite(rt, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
     }
@@ -55,12 +55,18 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            HasDoors = Json::GetBoolean(properties["hasDoors"]);
             const uint32_t doorSoundNumber = Json::GetNumber<uint32_t>(properties["doorSound"]);
             if (doorSoundNumber < Audio::kDoorSoundTypeCount)
             {
                 doorSound = static_cast<Audio::DoorSoundType>(doorSoundNumber);
             }
+
+            flags = Json::GetFlagHolder<TerrainEdgeFlags, TerrainEdgeFlag>(
+                properties,
+                {
+                    { "hasDoors", TerrainEdgeFlag::hasDoors },
+                    { "hasPrimaryColour", TerrainEdgeFlag::hasPrimaryColour },
+                });
         }
 
         PopulateTablesFromJson(context, root);

@@ -48,7 +48,9 @@ uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
     return 0xFFFFFFFF;
 }
 
-void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentSurfaceType)
+void LandTool::ShowSurfaceStyleDropdown(
+    WindowBase* w, Widget* widget, ObjectEntryIndex currentSurfaceType, Drawing::Colour selectedColour1,
+    Drawing::Colour selectedColour2)
 {
     auto& objManager = GetContext()->GetObjectManager();
 
@@ -60,10 +62,9 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
         if (surfaceObj != nullptr && !surfaceObj->UsesFallbackImages())
         {
-            auto imageId = ImageId(surfaceObj->IconImageId);
-            if (surfaceObj->Colour != Drawing::kColourNull)
-                imageId = imageId.WithPrimary(surfaceObj->Colour);
-
+            auto imageId = ImageId(surfaceObj->IconImageId, surfaceObj->getPrimaryColour(selectedColour1));
+            if (surfaceObj->Flags.has(TerrainSurfaceFlag::hasSecondaryColour))
+                imageId = imageId.WithSecondary(selectedColour2);
             gDropdown.items[itemIndex] = Dropdown::ImageItem(imageId, surfaceObj->NameStringId);
             if (i == currentSurfaceType)
             {
@@ -102,7 +103,8 @@ ObjectEntryIndex LandTool::GetSurfaceStyleFromDropdownIndex(size_t index)
     return kObjectEntryIndexNull;
 }
 
-void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType)
+void LandTool::ShowEdgeStyleDropdown(
+    WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType, Drawing::Colour _selectedColour1)
 {
     auto& objManager = GetContext()->GetObjectManager();
 
@@ -114,7 +116,8 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
         if (edgeObj != nullptr && !edgeObj->UsesFallbackImages())
         {
-            gDropdown.items[itemIndex] = Dropdown::ImageItem(ImageId(edgeObj->IconImageId), edgeObj->NameStringId);
+            gDropdown.items[itemIndex] = Dropdown::ImageItem(
+                ImageId(edgeObj->IconImageId, _selectedColour1), edgeObj->NameStringId);
             if (i == currentEdgeType)
             {
                 defaultIndex = itemIndex;
