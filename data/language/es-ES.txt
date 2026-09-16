@@ -262,7 +262,7 @@ STR_0882    :Cargar Partida
 STR_0883    :Guardar Partida
 STR_0884    :Cargar Paisaje
 STR_0885    :Guardar Paisaje
-STR_0887    :Salir del Editor de escenarios
+STR_0887    :Salir del Editor de Escenarios
 STR_0888    :Salir del Diseñador de Vías
 STR_0889    :Salir del Gestor de Diseños de vías
 STR_0891    :Tomar captura de pantalla
@@ -2286,7 +2286,7 @@ STR_3338    :{BLACK}Recorrido personalizado
 STR_3339    :{BLACK}{COMMA16} diseño disponible, o recorrido personalizado
 STR_3340    :{BLACK}{COMMA16} diseños disponibles, o recorrido personalizado
 STR_3341    :Herramientas de juego
-STR_3342    :Editor de escenarios
+STR_3342    :Editor de Escenarios
 STR_3343    :Convertir partida guardada en escenario
 STR_3344    :Diseñador de Vías
 STR_3345    :Gestor de Diseños de Vías
@@ -3833,3 +3833,9 @@ STR_7040    :Adiciones de los senderos
 STR_7041    :Panel de información del parque
 STR_7042    :Panel de información de la fecha
 STR_7043    :No se puede cambiar la altura del terreno aquí…
+STR_7044    :Barra de noticias
+STR_7045    :Barra de estado al estilo RCT1
+STR_7046    :Barra de estado (estilo RCT1)
+STR_7047    :Control paso a paso (Diseñador de Vías)
+STR_7048    :Control paso a paso (Editor de Escenarios)
+STR_7049    :OpenRCT2
