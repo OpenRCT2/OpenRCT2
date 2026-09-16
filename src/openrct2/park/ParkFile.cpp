@@ -57,6 +57,7 @@
 #include "../world/Weather.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Legacy.h"
 #include "ParkPreview.h"
@@ -99,6 +100,13 @@ namespace OpenRCT2
         // clang-format on
     };
 
+    constexpr auto kGridMap = std::to_array<std::pair<u8string_view, Drawing::Colour>>({
+        { "#RCT2SIR", Drawing::Colour::brightRed },
+        { "#RCT2SIY", Drawing::Colour::yellow },
+        { "#RCT2SIG", Drawing::Colour::brightGreen },
+        { "#RCT2SIP", Drawing::Colour::brightPurple },
+    });
+
     class ParkFile
     {
     public:
@@ -111,6 +119,13 @@ namespace OpenRCT2
         ObjectEntryIndex _pathToSurfaceMap[kMaxPathObjects];
         ObjectEntryIndex _pathToQueueSurfaceMap[kMaxPathObjects];
         ObjectEntryIndex _pathToRailingsMap[kMaxPathObjects];
+
+        struct TerrainSurfaceMapping
+        {
+            ObjectEntryIndex newEntryIndex;
+            Drawing::Colour colour;
+        };
+        std::array<TerrainSurfaceMapping, kMaxTerrainSurfaceObjects> _terrainSurfaceMap{};
 
         void ThrowIfIncompatibleVersion()
         {
@@ -166,9 +181,16 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
-            if (os.getHeader().targetVersion < 0x4)
+
+            auto targetVersion = os.getHeader().targetVersion;
+
+            if (targetVersion < 0x4)
             {
                 UpdateTrackElementsRideType();
+            }
+            if (targetVersion < kColourableTerrainVersion)
+            {
+                UpdateSurfaceElementsColour();
             }
 
             // Initial cash will eventually be removed
@@ -318,8 +340,18 @@ namespace OpenRCT2
                     const RCT2::FootpathMapping& mapping;
                 };
                 std::vector<LegacyFootpathMapping> legacyPathMappings;
+
+                for (ObjectEntryIndex i = 0; i < _terrainSurfaceMap.size(); i++)
+                {
+                    _terrainSurfaceMap[i] = { i, Drawing::Colour::black };
+                }
+                ObjectEntryIndex newGridIndex = kObjectEntryIndexNull;
+                auto& terrainSurfaceMap = _terrainSurfaceMap;
+
                 os.readWriteChunk(
-                    ParkFileChunkType::objects, [&requiredObjects, version, &legacyPathMappings](OrcaStream::ChunkStream& cs) {
+                    ParkFileChunkType::objects,
+                    [&requiredObjects, version, &legacyPathMappings, &terrainSurfaceMap,
+                     &newGridIndex](OrcaStream::ChunkStream& cs) {
                         auto numSubLists = cs.read<uint16_t>();
                         for (size_t i = 0; i < numSubLists; i++)
                         {
@@ -347,6 +379,38 @@ namespace OpenRCT2
                                                 continue;
                                             }
                                         }
+                                        if (version < kColourableTerrainVersion)
+                                        {
+                                            auto datName = u8string(datEntry.GetName());
+                                            if (datName.starts_with("#RCT2SI"))
+                                            {
+                                                // There were four grid objects. Make sure we only try to allocate one.
+                                                auto skip = false;
+
+                                                for (const auto& pair : kGridMap)
+                                                {
+                                                    if (datName == pair.first)
+                                                    {
+                                                        if (newGridIndex == kObjectEntryIndexNull)
+                                                            newGridIndex = j;
+                                                        else
+                                                            skip = true;
+
+                                                        terrainSurfaceMap[j] = { newGridIndex, pair.second };
+
+                                                        desc = ObjectEntryDescriptor();
+                                                        desc.Type = objectType;
+                                                        desc.Identifier = "rct2.terrain_surface.grid";
+                                                        desc.Version = std::make_tuple(1, 0, 0);
+
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (skip)
+                                                    continue;
+                                            }
+                                        }
 
                                         requiredObjects.SetObject(j, desc);
                                         break;
@@ -364,7 +428,7 @@ namespace OpenRCT2
                                                 identifier = newIdentifier;
                                             }
                                         }
-                                        else if (version <= 12)
+                                        if (version <= 12)
                                         {
                                             if (identifier == "openrct2.ride.rmct1")
                                             {
@@ -375,7 +439,7 @@ namespace OpenRCT2
                                                 identifier = "openrct2.ride.single_rail_coaster";
                                             }
                                         }
-                                        else if (version <= 14)
+                                        if (version <= 14)
                                         {
                                             if (identifier == "openrct2.ride.alp1")
                                             {
@@ -1281,6 +1345,24 @@ namespace OpenRCT2
                         {
                             trackElement->setRideType(ride->type);
                         }
+                    }
+                }
+            }
+        }
+
+        void UpdateSurfaceElementsColour()
+        {
+            auto& gameState = getGameState();
+            for (int32_t y = 0; y < gameState.mapSize.y; y++)
+            {
+                for (int32_t x = 0; x < gameState.mapSize.x; x++)
+                {
+                    for (auto* surfaceElement : TileElementsView<SurfaceElement>(TileCoordsXY{ x, y }))
+                    {
+                        auto originalSurfaceIndex = surfaceElement->getSurfaceObjectIndex();
+                        const auto& mapping = _terrainSurfaceMap[originalSurfaceIndex];
+                        surfaceElement->setSurfaceObjectIndex(mapping.newEntryIndex);
+                        surfaceElement->setPrimarySurfaceColour(mapping.colour);
                     }
                 }
             }
