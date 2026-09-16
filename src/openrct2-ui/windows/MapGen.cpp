@@ -93,6 +93,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_HIGH_DOWN,
         WIDX_FLOOR_TEXTURE,
         WIDX_WALL_TEXTURE,
+        WIDX_SURFACE_COLOUR_1,
+        WIDX_SURFACE_COLOUR_2,
+        WIDX_EDGE_COLOUR_1,
         WIDX_RANDOM_TERRAIN,
         WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
 
@@ -154,6 +157,9 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                  ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
         makeWidget        ({179,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
         makeWidget        ({236,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
+        makeWidget        ({186, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR), // surface colour 1
+        makeWidget        ({203, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR), // surface colour 2
+        makeWidget        ({253, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR), // edge colour 1
         makeWidget        ({ 10, 106}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
         makeWidget        ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
     );
@@ -224,6 +230,10 @@ namespace OpenRCT2::Ui::Windows
 
         u8string _xSpinnerCaption{};
         u8string _ySpinnerCaption{};
+
+        bool _surfaceColour1Enabled = false;
+        bool _surfaceColour2Enabled = false;
+        bool _edgeColour1Enabled = false;
 
         void setPage(int32_t newPage)
         {
@@ -995,10 +1005,11 @@ namespace OpenRCT2::Ui::Windows
                     invalidate();
                     break;
                 case WIDX_FLOOR_TEXTURE:
-                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.landTexture);
+                    LandTool::ShowSurfaceStyleDropdown(
+                        this, widget, _settings.landTexture, _settings.surfaceColour1, _settings.surfaceColour2);
                     break;
                 case WIDX_WALL_TEXTURE:
-                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.edgeTexture);
+                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.edgeTexture, _settings.edgeColour1);
                     break;
                 case WIDX_HEIGHTMAP_LOW_UP:
                     _settings.heightmapLow = std::min(_settings.heightmapLow + 2, kMaximumLandHeight / 2 - 1);
@@ -1017,6 +1028,18 @@ namespace OpenRCT2::Ui::Windows
                     _settings.heightmapHigh = std::max<int32_t>(_settings.heightmapHigh - 2, kMinimumLandHeight);
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 2);
                     invalidateWidget(WIDX_HEIGHTMAP_HIGH);
+                    break;
+                case WIDX_SURFACE_COLOUR_1:
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.surfaceColour1);
+                    break;
+                case WIDX_SURFACE_COLOUR_2:
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.surfaceColour2);
+                    break;
+                case WIDX_EDGE_COLOUR_1:
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.edgeColour1);
                     break;
             }
         }
@@ -1087,6 +1110,30 @@ namespace OpenRCT2::Ui::Windows
                     }
                     invalidate();
                     break;
+                case WIDX_SURFACE_COLOUR_1:
+                {
+                    if (dropdownIndex == -1)
+                        break;
+
+                    _settings.surfaceColour1 = ColourDropDownIndexToColour(dropdownIndex);
+                    break;
+                }
+                case WIDX_SURFACE_COLOUR_2:
+                {
+                    if (dropdownIndex == -1)
+                        break;
+
+                    _settings.surfaceColour2 = ColourDropDownIndexToColour(dropdownIndex);
+                    break;
+                }
+                case WIDX_EDGE_COLOUR_1:
+                {
+                    if (dropdownIndex == -1)
+                        break;
+
+                    _settings.edgeColour1 = ColourDropDownIndexToColour(dropdownIndex);
+                    break;
+                }
             }
         }
 
@@ -1119,18 +1166,21 @@ namespace OpenRCT2::Ui::Windows
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
-                surfaceImage = ImageId(surfaceObj->IconImageId);
-                if (surfaceObj->Colour != kColourNull)
-                {
-                    surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
-                }
+                _surfaceColour1Enabled = surfaceObj->Flags.has(TerrainSurfaceFlag::hasPrimaryColour);
+                _surfaceColour2Enabled = surfaceObj->Flags.has(TerrainSurfaceFlag::hasSecondaryColour);
+
+                surfaceImage = ImageId(surfaceObj->IconImageId, surfaceObj->getPrimaryColour(_settings.surfaceColour1));
+                if (_surfaceColour2Enabled)
+                    surfaceImage = surfaceImage.WithSecondary(_settings.surfaceColour2);
             }
 
             ImageId edgeImage;
             const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_settings.edgeTexture);
             if (edgeObj != nullptr)
             {
-                edgeImage = ImageId(edgeObj->IconImageId);
+                _edgeColour1Enabled = edgeObj->flags.has(TerrainEdgeFlag::hasPrimaryColour);
+
+                edgeImage = ImageId(edgeObj->IconImageId, _settings.edgeColour1);
             }
 
             DrawDropdownButton(rt, floorWidgetIndex, surfaceImage);
@@ -1151,6 +1201,14 @@ namespace OpenRCT2::Ui::Windows
 
             // only offer terrain edge smoothing if we don't use flatland terrain
             setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
+
+            widgets[WIDX_SURFACE_COLOUR_1].setVisible(_surfaceColour1Enabled);
+            widgets[WIDX_SURFACE_COLOUR_2].setVisible(_surfaceColour2Enabled);
+            widgets[WIDX_EDGE_COLOUR_1].setVisible(_edgeColour1Enabled);
+
+            widgets[WIDX_SURFACE_COLOUR_1].image = getColourButtonImage(_settings.surfaceColour1);
+            widgets[WIDX_SURFACE_COLOUR_2].image = getColourButtonImage(_settings.surfaceColour2);
+            widgets[WIDX_EDGE_COLOUR_1].image = getColourButtonImage(_settings.edgeColour1);
         }
 
         void TerrainDraw(RenderTarget& rt)
