@@ -2092,7 +2092,7 @@ namespace OpenRCT2::Scripting
             return JS_NULL;
 
         const auto* additionEntry = el->getAdditionEntry();
-        if (additionEntry == nullptr || !(additionEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
+        if (additionEntry == nullptr || !additionEntry->flags.has(PathAdditionFlag::PATH_ADDITION_FLAG_IS_BIN))
             return JS_NULL;
 
         // Each path edge has a 2-bit slot (0 = full, 3 = empty); a bin is only "full" once a

@@ -100,25 +100,25 @@ namespace OpenRCT2::GameActions
             LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
-        uint16_t sceneryFlags = pathAdditionEntry->flags;
+        PathAdditionFlags sceneryFlags = pathAdditionEntry->flags;
 
-        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->isSloped())
+        if (sceneryFlags.has(PathAdditionFlag::PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->isSloped())
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
         }
 
-        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->isQueue())
+        if (sceneryFlags.has(PathAdditionFlag::PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->isQueue())
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
         }
 
-        if (!(sceneryFlags & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
+        if (!sceneryFlags.hasAny(PathAdditionFlag::PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER, PathAdditionFlag::PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW)
             && (pathElement->getEdges()) == 0x0F)
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_PLACED_ON_PATH_EDGES);
         }
 
-        if ((sceneryFlags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->isQueue())
+        if (sceneryFlags.has(PathAdditionFlag::PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->isQueue())
         {
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
         }
@@ -180,7 +180,7 @@ namespace OpenRCT2::GameActions
 
         pathElement->setAdditionEntryIndex(_entryIndex);
         pathElement->setIsBroken(false);
-        if (pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
+        if (pathAdditionEntry->flags.has(PathAdditionFlag::PATH_ADDITION_FLAG_IS_BIN))
         {
             pathElement->setAdditionStatus(255);
         }
