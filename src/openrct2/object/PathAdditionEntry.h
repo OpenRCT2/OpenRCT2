@@ -11,8 +11,8 @@
 
 #include "../core/Money.hpp"
 #include "../localisation/StringIdType.h"
-#include "ObjectTypes.h"
 #include "../object/PathAdditionFlags.h"
+#include "ObjectTypes.h"
 
 enum class CursorID : uint8_t;
 

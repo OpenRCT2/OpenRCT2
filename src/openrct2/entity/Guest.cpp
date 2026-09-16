@@ -2909,7 +2909,8 @@ namespace OpenRCT2
                             if (tileElement->asPath()->additionIsGhost())
                                 break;
 
-                            if (pathAddEntry->flags.hasAny(PathAdditionFlag::jumpingFountainWater, PathAdditionFlag::jumpingFountainSnow))
+                            if (pathAddEntry->flags.hasAny(
+                                    PathAdditionFlag::jumpingFountainWater, PathAdditionFlag::jumpingFountainSnow))
                             {
                                 num_fountains++;
                                 break;

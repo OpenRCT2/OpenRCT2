@@ -26,4 +26,4 @@ namespace OpenRCT2
         isQueueScreen = 8
     };
     using PathAdditionFlags = FlagHolder<uint16_t, PathAdditionFlag>;
-}
+} // namespace OpenRCT2
