@@ -13,17 +13,17 @@
 
 namespace OpenRCT2
 {
-    enum class PathAdditionFlag : uint16_t
+    enum class PathAdditionFlag
     {
-        isBin = 1 << 0,
-        isBench = 1 << 1,
-        breakable = 1 << 2,
-        lamp = 1 << 3,
-        jumpingFountainWater = 1 << 4,
-        jumpingFountainSnow = 1 << 5,
-        dontAllowOnQueue = 1 << 6,
-        dontAllowOnSlope = 1 << 7,
-        isQueueScreen = 1 << 8
+        isBin = 0,
+        isBench = 1,
+        breakable = 2,
+        lamp = 3,
+        jumpingFountainWater = 4,
+        jumpingFountainSnow = 5,
+        dontAllowOnQueue = 6,
+        dontAllowOnSlope = 7,
+        isQueueScreen = 8
     };
     using PathAdditionFlags = FlagHolder<uint16_t, PathAdditionFlag>;
 }
