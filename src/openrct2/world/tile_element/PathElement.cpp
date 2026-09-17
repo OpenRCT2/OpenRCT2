@@ -278,7 +278,7 @@ namespace OpenRCT2
     {
         // TODO: make this an actual decision of the tile element.
         const auto* const railings = getRailingsDescriptor();
-        return railings != nullptr ? railings->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS : false;
+        return railings != nullptr ? railings->flags.has(RailingEntryFlag::drawPathOverSupports) : false;
     }
 
     void PathElement::setShouldDrawPathOverSupports(bool on)

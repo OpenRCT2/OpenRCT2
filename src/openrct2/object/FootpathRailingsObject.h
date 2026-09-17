@@ -22,7 +22,7 @@ namespace OpenRCT2
         uint32_t BridgeImageId{};
         uint32_t RailingsImageId{};
         RailingEntrySupportType SupportType{};
-        uint8_t Flags{};
+        RailingEntryFlags Flags{};
         uint8_t ScrollingMode{};
         Drawing::Colour Colour{};
         PathRailingsDescriptor _descriptor = {};
