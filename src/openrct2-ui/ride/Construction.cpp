@@ -74,6 +74,10 @@ namespace OpenRCT2
         TrackElemType::brakeForDrop,
         kSeparator,
 
+        // Reverse holding brake
+        TrackElemType::reverseHoldingBrake,
+        kSeparator,
+
         // Tower
         TrackElemType::towerBase,
         TrackElemType::towerSection,
@@ -223,7 +227,7 @@ namespace OpenRCT2
     };
 
     // Update the magic number with the current number of track elements to silence
-    static_assert(EnumValue(TrackElemType::count) == 350, "Reminder to add new track element to special dropdown list");
+    static_assert(EnumValue(TrackElemType::count) == 351, "Reminder to add new track element to special dropdown list");
 
     /**
      *
@@ -286,6 +290,11 @@ namespace OpenRCT2
             // Additional tower bases can only be built if the ride allows for it (elevator)
             if (trackType == TrackElemType::towerBase
                 && !currentRide.getRideTypeDescriptor().flags.has(RtdFlag::allowExtraTowerBases))
+                entryIsDisabled = true;
+
+            // The reverse holding brake counts circuits to decide when to catch the train, which only the mode that
+            // sends the train back through the station keeps track of
+            if (trackType == TrackElemType::reverseHoldingBrake && currentRide.mode != RideMode::poweredLaunchPassthrough)
                 entryIsDisabled = true;
 
             // Check if a previous element exists, to collate entries if possible

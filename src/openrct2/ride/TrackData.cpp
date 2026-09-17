@@ -10351,6 +10351,19 @@ namespace OpenRCT2::TrackMetadata
         .sequenceData = { 4, { kDiagDown25Seq0, kDiagDown25Seq1, kDiagDown25Seq2, kDiagDown25Seq3 } },
     };
 
+    constexpr auto kTEDReverseHoldingBrake = TrackElementDescriptor{
+        .description = STR_REVERSE_HOLDING_BRAKE,
+        .coordinates = { 0, 0, 32, 0, 32, 0 },
+        .pieceLength = 32,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 147456,
+        .mirrorElement = TrackElemType::reverseHoldingBrake,
+        .flags = { TrackElementFlag::down },
+        .definition = { TrackGroup::reverseHoldingBrake, TrackPitch::down90, TrackPitch::down90, TrackRoll::none,
+                        TrackRoll::none, 0 },
+        .sequenceData = { 2, { kDown90Seq0, kDown90Seq1 } },
+    };
+
     static constexpr auto kTrackElementDescriptors = std::to_array<TrackElementDescriptor>({
         kTEDFlat,
         kTEDEndStation,
@@ -10702,6 +10715,7 @@ namespace OpenRCT2::TrackMetadata
         kTEDLeftEighthDiveLoopDownToDiag,
         kTEDRightEighthDiveLoopDownToDiag,
         kTEDDiagDown25Brakes,
+        kTEDReverseHoldingBrake,
     });
     static_assert(kTrackElementDescriptors.size() == EnumValue(TrackElemType::count));
 

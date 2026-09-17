@@ -381,7 +381,9 @@ namespace OpenRCT2
 
         diagDown25Brakes = 349,
 
-        count = 350,
+        reverseHoldingBrake = 350,
+
+        count = 351,
 
         none = 65535,
     };

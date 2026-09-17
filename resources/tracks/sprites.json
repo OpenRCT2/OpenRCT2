@@ -50405,5 +50405,29 @@
         "path": "track/raptor/brake_gentle_diag_4.png",
         "x": -3,
         "y": -22
+    },
+    {
+        "path": "track/inverted_impulse/reverse_holding_brake_1.png",
+        "x": -3,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/inverted_impulse/reverse_holding_brake_2.png",
+        "x": -3,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/inverted_impulse/reverse_holding_brake_3.png",
+        "x": -3,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/inverted_impulse/reverse_holding_brake_4.png",
+        "x": -3,
+        "y": -16,
+        "palette": "keep"
     }
 ]
