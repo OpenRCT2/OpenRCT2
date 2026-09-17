@@ -558,7 +558,7 @@ namespace OpenRCT2::Scripting
         static constexpr JSCFunctionListEntry kFuncs[] = {
             JS_CGETSET_DEF("guestsEntertained", &ScEntertainer::guestsEntertained_get, nullptr),
         };
-        gScEntertainer.RegisterDerived(ctx, gScStaff, funcs);
+        gScEntertainer.RegisterDerived(ctx, gScStaff, kFuncs);
     }
 
     JSValue ScEntertainer::guestsEntertained_get(JSContext* ctx, JSValue thisVal)
