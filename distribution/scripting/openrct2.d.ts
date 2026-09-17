@@ -3996,7 +3996,6 @@ declare global {
          */
         readonly guestsEntertained: number;
     }
-    }
 
     interface PatrolArea {
         /**
