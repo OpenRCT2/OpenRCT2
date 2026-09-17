@@ -3824,3 +3824,23 @@ STR_7040    :Acréscimos dos caminhos
 STR_7041    :Painel de informações do parque
 STR_7042    :Painel de informações da data
 STR_7043    :Não é possível mudar a altura do terreno aqui…
+STR_7044    :Rodapé de notícias
+STR_7045    :Barra de status ao estilo RCT1
+STR_7046    :Barra de status (estilo RCT1)
+STR_7047    :Controle de passo (Construtor de Pista)
+STR_7048    :Controle de passo (Editor de Cenário)
+STR_7049    :OpenRCT2
+STR_7050    :Visitantes andando
+STR_7051    :Visitantes indo à {STRINGID}
+STR_7052    :Visitantes em fila para {STRINGID}
+STR_7053    :Visitantes afogando
+STR_7054    :Visitantes em {STRINGID}
+STR_7055    :Visitantes em {STRINGID}
+STR_7056    :Visitantes na {STRINGID}
+STR_7057    :Visitantes sentados
+STR_7058    :Visitantes apanhados
+STR_7059    :Visitantes observando {STRINGID}
+STR_7060    :Visitantes observando a construção de {STRINGID}
+STR_7061    :Visitantes observando a paisagem
+STR_7062    :Visitantes saindo do parque
+STR_7063    :Visitantes observando uma nova atração ser construída
