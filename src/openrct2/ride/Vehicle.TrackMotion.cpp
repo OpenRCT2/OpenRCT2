@@ -55,59 +55,67 @@ namespace OpenRCT2
     constexpr int16_t kVehicleMaxSpinSpeedWaterRide = 512;
     constexpr int16_t kVehicleMinSpinSpeedWaterRide = -kVehicleMaxSpinSpeedWaterRide;
 
-    // The reverse holding brake catches the train at the crest of the spike and lets go again three quarters of a
+    // The vertical holding brake catches the train at the crest of the spike and lets go again three quarters of a
     // second later, unlike the holding brake for drop which holds for over two seconds.
-    constexpr int8_t kReverseHoldingBrakeHoldTicks = kGameUpdateFPS * 3 / 4;
-    // How slow the climb up the spike has to get before the brake counts the train as stalled.
-    constexpr int32_t kReverseHoldingBrakeStallVelocity = 1.0_mph;
+    constexpr int8_t kVerticalHoldingBrakeHoldTicks = kGameUpdateFPS * 3 / 4;
+    // How slow the train has to get before the brake counts it as stalled.
+    constexpr int32_t kVerticalHoldingBrakeStallVelocity = 1.0_mph;
 
     /**
-     * The reverse holding brake only catches the train on its last run out of the station, so that earlier passes are
-     * free to gain height. It is meaningless outside of the mode that lets the train pass through the station.
+     * The vertical holding brake only catches the train on its last circuit, so that earlier passes are free to gain
+     * height. Rides that only run one circuit arm it on that circuit.
      */
-    static bool reverseHoldingBrakeIsArmed(const Ride& ride, uint8_t numLaps)
+    static bool verticalHoldingBrakeIsArmed(const Ride& ride, uint8_t numLaps)
     {
-        if (ride.mode != RideMode::poweredLaunchPassthrough)
-            return false;
-
         return numLaps + 1 >= std::max<uint8_t>(ride.numCircuits, 1);
     }
 
     /**
-     * Called on the head of a train; reports whether any of its cars has reached a reverse holding brake.
+     * Called on the head of a train; reports whether any of its cars has reached a vertical holding brake.
      */
-    bool Vehicle::isAnyCarOnReverseHoldingBrake() const
+    bool Vehicle::isAnyCarOnVerticalHoldingBrake() const
     {
         auto& entities = getGameState().entities;
         for (const Vehicle* car = this; car != nullptr; car = entities.getEntity<Vehicle>(car->next_vehicle_on_train))
         {
-            if (car->GetTrackType() == TrackElemType::reverseHoldingBrake)
+            const auto carTrackType = car->GetTrackType();
+            if (carTrackType == TrackElemType::verticalHoldingBrakeDown
+                || carTrackType == TrackElemType::verticalHoldingBrakeUp)
                 return true;
         }
         return false;
     }
 
     /**
-     * Catches the train the moment its climb up the spike stalls, as long as any part of the train has reached the
-     * brake. The train coasts up backwards, so the stall is where the velocity stops being negative; only looking at
-     * that window also keeps the brake from grabbing the train a second time on the way back down.
+     * Catches the train the moment it stalls, from either direction, as long as any part of the train has reached the
+     * brake.
      */
-    static void applyReverseHoldingBrake(Vehicle& train, const Ride& curRide)
+    static void applyVerticalHoldingBrake(Vehicle& train, const Ride& curRide)
     {
+        if (!train.isAnyCarOnVerticalHoldingBrake())
+        {
+            // Clear of the brake, so it is free to catch this train again next time round
+            train.flags.unset(VehicleFlag::heldByVerticalHoldingBrake);
+            return;
+        }
+
+        // One catch per visit. Just after being let go the train is still barely moving and still sitting on the
+        // brake, so without this the brake would immediately grab it again and never release it.
+        if (train.flags.has(VehicleFlag::heldByVerticalHoldingBrake))
+            return;
+
         if (train.flags.has(VehicleFlag::stoppedOnHoldingBrake))
             return;
 
-        if (train.velocity > 0 || train.velocity <= -kReverseHoldingBrakeStallVelocity)
+        if (std::abs(train.velocity) >= kVerticalHoldingBrakeStallVelocity)
             return;
 
-        if (!reverseHoldingBrakeIsArmed(curRide, train.NumLaps))
+        if (!verticalHoldingBrakeIsArmed(curRide, train.NumLaps))
             return;
 
-        if (!train.isAnyCarOnReverseHoldingBrake())
-            return;
-
+        train.flags.set(VehicleFlag::heldByVerticalHoldingBrake);
         train.flags.set(VehicleFlag::stoppedOnHoldingBrake);
-        train.vertical_drop_countdown = kReverseHoldingBrakeHoldTicks;
+        train.vertical_drop_countdown = kVerticalHoldingBrakeHoldTicks;
     }
 
     /**
@@ -1536,7 +1544,7 @@ namespace OpenRCT2
         _vehicleMotionTrackFlags = 0;
         _vehicleStationIndex = StationIndex::GetNull();
 
-        applyReverseHoldingBrake(*this, *curRide);
+        applyVerticalHoldingBrake(*this, *curRide);
 
         upstopCheck();
         handleBlockBrake();
