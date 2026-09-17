@@ -555,7 +555,7 @@ namespace OpenRCT2::Scripting
 
     void ScEntertainer::Register(JSContext* ctx)
     {
-        static constexpr JSCFunctionListEntry funcs[] = {
+        static constexpr JSCFunctionListEntry kFuncs[] = {
             JS_CGETSET_DEF("guestsEntertained", &ScEntertainer::guestsEntertained_get, nullptr),
         };
         gScEntertainer.RegisterDerived(ctx, gScStaff, funcs);
