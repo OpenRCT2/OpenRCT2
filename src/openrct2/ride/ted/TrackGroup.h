@@ -116,7 +116,7 @@ namespace OpenRCT2
         diagSlopeSteepUp,
         diagSlopeSteepDown,
 
-        reverseHoldingBrake,
+        verticalHoldingBrake,
 
         count,
     };
