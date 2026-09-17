@@ -546,6 +546,34 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    ScEntertainer gScEntertainer;
+
+    JSValue ScEntertainer::New(JSContext* ctx, EntityId entityId)
+    {
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScEntertainer.GetProto());
+    }
+
+    void ScEntertainer::Register(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("guestsEntertained", &ScEntertainer::guestsEntertained_get, nullptr),
+        };
+        gScEntertainer.RegisterDerived(ctx, gScStaff, funcs);
+    }
+
+    JSValue ScEntertainer::guestsEntertained_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto peep = GetStaff(thisVal);
+        if (peep != nullptr && peep->isEntertainer())
+        {
+            return JS_NewUint32(ctx, peep->staffGuestsEntertained);
+        }
+        else
+        {
+            return JS_NULL;
+        }
+    }
+
     ScSecurity gScSecurity;
 
     JSValue ScSecurity::New(JSContext* ctx, EntityId entityId)
