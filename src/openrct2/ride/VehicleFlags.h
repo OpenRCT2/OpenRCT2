@@ -40,6 +40,9 @@ namespace OpenRCT2
         moveSingleCar,
         crashed,       // Car displays as smoke plume
         carIsReversed, // Car is displayed running backwards
+        // Set while a train sits on a vertical holding brake that has caught it, and cleared once the train is clear
+        // of the brake again. Stops the brake grabbing the same train repeatedly as it crawls away.
+        heldByVerticalHoldingBrake,
     };
     using VehicleFlags = FlagHolder<uint32_t, VehicleFlag>;
 } // namespace OpenRCT2
