@@ -399,7 +399,10 @@ static void ViewportSurfaceSmoothenEdge(
             break;
     }
 
-    if (self.surfaceObject == neighbour.surfaceObject)
+    bool sameTextureAndColour = (self.surfaceObject == neighbour.surfaceObject)
+        && (self.tile_element->asSurface()->getPrimarySurfaceColour()
+            == neighbour.tile_element->asSurface()->getPrimarySurfaceColour());
+    if (sameTextureAndColour)
     {
         // same tint
         if (cl == dh)
