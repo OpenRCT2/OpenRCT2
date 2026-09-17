@@ -1,5 +1,6 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
+- Feature: Add a vertical holding brake track piece for the Inverted Impulse Coaster, which holds a train that decelerates to 0kph for 1 second.
 - Feature: [#16014] Land surfaces and edges can now be recoloured.
 - Feature: [#27153] [Plugin] Add `guestsEntertained` to `Entertainer` interface.
 - Feature: [#27184] [Plugin] Double limit of miscellaneous entities (e.g. crash particles, steam plumes and balloons) to 6400.
