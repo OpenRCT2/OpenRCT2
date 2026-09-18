@@ -31,6 +31,7 @@
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/Network.h"
+#include "../object/DefaultObjects.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectManager.h"
 #include "../object/ScenarioMetaObject.h"
@@ -126,12 +127,7 @@ void ScenarioReset(GameState_t& gameState)
     MapCountRemainingLandRights();
     Staff::resetStats();
 
-    gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-    if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
-    {
-        // Fall back to first entrance object
-        gameState.lastEntranceStyle = 0;
-    }
+    gameState.lastEntranceStyle = GetDefaultStationObject(objManager);
 
     park.marketingCampaigns.clear();
     park.ratingCasualtyPenalty = 0;
