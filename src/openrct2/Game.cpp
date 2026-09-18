@@ -500,7 +500,9 @@ void SaveGameWithName(u8string_view name)
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
 
     auto& gameState = getGameState();
-    if (ScenarioSave(gameState, name, Config::Get().general.savePluginData ? 1 : 0))
+    SaveFlags saveFlags{};
+    saveFlags.set(SaveFlag::exportObjects, Config::Get().general.savePluginData);
+    if (ScenarioSave(gameState, name, saveFlags))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -594,12 +596,12 @@ void GameAutosave()
 {
     auto subDirectory = DirId::saves;
     const char* fileExtension = ".park";
-    uint32_t saveFlags = 0x80000000;
+    SaveFlags saveFlags = { SaveFlag::automatic };
     if (isInEditorMode())
     {
         subDirectory = DirId::landscapes;
         fileExtension = ".park";
-        saveFlags |= 2;
+        saveFlags.set(SaveFlag::scenario);
     }
 
     // Retrieve current time
