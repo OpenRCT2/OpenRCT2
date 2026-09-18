@@ -62,15 +62,6 @@ namespace OpenRCT2
     constexpr int32_t kVerticalHoldingBrakeStallVelocity = 1.0_mph;
 
     /**
-     * The vertical holding brake only catches the train on its last circuit, so that earlier passes are free to gain
-     * height. Rides that only run one circuit arm it on that circuit.
-     */
-    static bool verticalHoldingBrakeIsArmed(const Ride& ride, uint8_t numLaps)
-    {
-        return numLaps + 1 >= std::max<uint8_t>(ride.numCircuits, 1);
-    }
-
-    /**
      * Called on the head of a train; reports whether any of its cars has reached a vertical holding brake.
      */
     bool Vehicle::isAnyCarOnVerticalHoldingBrake() const
@@ -89,8 +80,11 @@ namespace OpenRCT2
     /**
      * Catches the train the moment it stalls, from either direction, as long as any part of the train has reached the
      * brake.
+     *
+     * It arms on every circuit rather than only the last one. The game has no way to teach a last-circuit-only rule,
+     * so a brake that silently ignored the train on earlier passes would read as broken rather than as a feature.
      */
-    static void applyVerticalHoldingBrake(Vehicle& train, const Ride& curRide)
+    static void applyVerticalHoldingBrake(Vehicle& train)
     {
         if (!train.isAnyCarOnVerticalHoldingBrake())
         {
@@ -108,9 +102,6 @@ namespace OpenRCT2
             return;
 
         if (std::abs(train.velocity) >= kVerticalHoldingBrakeStallVelocity)
-            return;
-
-        if (!verticalHoldingBrakeIsArmed(curRide, train.NumLaps))
             return;
 
         train.flags.set(VehicleFlag::heldByVerticalHoldingBrake);
@@ -1544,7 +1535,7 @@ namespace OpenRCT2
         _vehicleMotionTrackFlags = 0;
         _vehicleStationIndex = StationIndex::GetNull();
 
-        applyVerticalHoldingBrake(*this, *curRide);
+        applyVerticalHoldingBrake(*this);
 
         upstopCheck();
         handleBlockBrake();
