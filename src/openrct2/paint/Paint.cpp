@@ -62,7 +62,7 @@ bool gPaintBlockedTiles;
 bool gPaintStableSort;
 
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
-static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags);
+static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, ViewportFlags viewFlags);
 
 static int32_t RemapPositionToQuadrant(const PaintStruct& ps, uint8_t rotation)
 {
@@ -676,7 +676,7 @@ void PaintSessionArrange(PaintSessionCore& session)
     return _paintArrangeFuncsLegacy[session.CurrentRotation](session);
 }
 
-static inline void PaintAttachedPS(RenderTarget& rt, PaintStruct* ps, uint32_t viewFlags)
+static inline void PaintAttachedPS(RenderTarget& rt, PaintStruct* ps, ViewportFlags viewFlags)
 {
     AttachedPaintStruct* attached_ps = ps->Attached;
     for (; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
@@ -833,7 +833,7 @@ static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps
     GfxDrawLine(rt, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
-static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags)
+static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, ViewportFlags viewFlags)
 {
     auto visibility = GetPaintStructVisibility(ps, viewFlags);
     switch (visibility)
@@ -847,7 +847,7 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
     }
 }
 
-PaintSession* PaintSessionAlloc(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation)
+PaintSession* PaintSessionAlloc(RenderTarget& rt, ViewportFlags viewFlags, uint8_t rotation)
 {
     return GetContext()->GetPainter()->CreateSession(rt, viewFlags, rotation);
 }

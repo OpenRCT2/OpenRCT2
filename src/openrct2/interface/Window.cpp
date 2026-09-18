@@ -91,15 +91,12 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled)
+    void WindowSetFlagForAllViewports(ViewportFlag viewportFlag, bool enabled)
     {
         WindowVisitEach([&](WindowBase* w) {
             if (w->viewport != nullptr)
             {
-                if (enabled)
-                    w->viewport->flags |= viewportFlag;
-                else
-                    w->viewport->flags &= ~viewportFlag;
+                w->viewport->flags.set(viewportFlag, enabled);
             }
         });
     }
@@ -346,17 +343,17 @@ static constexpr float kWindowScrollLocations[][2] = {
         int16_t height = TileElementHeight(coords);
         if (coords.z < height - 16)
         {
-            if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+            if (!w.viewport->flags.has(ViewportFlag::undergroundInside))
             {
-                w.viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.viewport->flags.set(ViewportFlag::undergroundInside);
                 w.invalidate();
             }
         }
         else
         {
-            if (w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+            if (w.viewport->flags.has(ViewportFlag::undergroundInside))
             {
-                w.viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.viewport->flags.unset(ViewportFlag::undergroundInside);
                 w.invalidate();
             }
         }
@@ -896,7 +893,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             auto w = it->get();
             auto viewport = w->viewport;
-            if (viewport == nullptr || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+            if (viewport == nullptr || !(viewport->flags.has(ViewportFlag::soundOn)))
                 continue;
 
             gMusicTrackingViewport = viewport;
