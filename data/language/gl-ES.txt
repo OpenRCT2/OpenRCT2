@@ -1038,7 +1038,6 @@ STR_1671    :{WINDOW_COLOUR_2}Beneficio total: {BLACK}{CURRENCY2DP}
 STR_1672    :Freos
 STR_1673    :Vía conmutadora de control xiratorio
 STR_1674    :Velocidade do freo
-    :{POP16}{VELOCITY}
 STR_1676    :Establecer límite de velocidade para os freos
 STR_1677    :{WINDOW_COLOUR_2}Popularidade: {BLACK}Descoñecida
 STR_1678    :{WINDOW_COLOUR_2}Popularidade: {BLACK}{COMMA16}%
@@ -3825,3 +3824,23 @@ STR_7040    :Adicións de camiños
 STR_7041    :Panel de información do parque
 STR_7042    :Panel de información da data
 STR_7043    :Non se pode modificar a altura do terreo aquí…
+STR_7044    :Fío de novas
+STR_7045    :Barra de estado estilo RCT1
+STR_7046    :Barra de estado (estilo RCT1)
+STR_7047    :Control de pasos (Deseñador de trazados)
+STR_7048    :Control de pasos (Editor de escenarios)
+STR_7049    :OpenRCT2
+STR_7050    :Visitantes camiñando
+STR_7051    :Visitantes dirixíndose a {STRINGID}
+STR_7052    :Visitantes na cola de {STRINGID}
+STR_7053    :Visitantes afogandose
+STR_7054    :Visitantes en {STRINGID}
+STR_7055    :Visitantes en {STRINGID}
+STR_7056    :Visitantes en {STRINGID}
+STR_7057    :Visitantes sentados
+STR_7058    :Visitantes recollidos
+STR_7059    :Visitantes mirando {STRINGID}
+STR_7060    :Visitantes mirando a construción de {STRINGID}
+STR_7061    :Visitantes mirando a decoración
+STR_7062    :Visitantes saíndo do parque
+STR_7063    :Visitantes mirando a construción dunha nova atracción
