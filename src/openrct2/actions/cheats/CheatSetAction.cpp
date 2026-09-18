@@ -514,7 +514,7 @@ namespace OpenRCT2::GameActions
                 continue;
 
             auto* pathAdditionEntry = path->getAdditionEntry();
-            if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
+            if (pathAdditionEntry != nullptr && pathAdditionEntry->flags.has(PathAdditionFlag::isBin))
                 path->setAdditionStatus(0xFF);
 
         } while (TileElementIteratorNext(&it));

@@ -1120,7 +1120,7 @@ namespace OpenRCT2
                         if (pathElement->hasAddition() && !pathElement->additionIsGhost())
                         {
                             auto* pathAddEntry = pathElement->getAdditionEntry();
-                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN))
+                            if (pathAddEntry != nullptr && pathAddEntry->flags.has(PathAdditionFlag::isQueueScreen))
                             {
                                 found = true;
                             }
@@ -2909,8 +2909,8 @@ namespace OpenRCT2
                             if (tileElement->asPath()->additionIsGhost())
                                 break;
 
-                            if (pathAddEntry->flags
-                                & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
+                            if (pathAddEntry->flags.hasAny(
+                                    PathAdditionFlag::jumpingFountainWater, PathAdditionFlag::jumpingFountainSnow))
                             {
                                 num_fountains++;
                                 break;
@@ -5556,7 +5556,7 @@ namespace OpenRCT2
                     return;
                 }
 
-                if ((pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
+                if (pathAddEntry->flags.has(PathAdditionFlag::isBench))
                     positions_free = 9;
             }
         }
@@ -5939,7 +5939,7 @@ namespace OpenRCT2
                         break;
 
                     auto* pathAddEntry = pathElement->getAdditionEntry();
-                    if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
+                    if (!pathAddEntry->flags.has(PathAdditionFlag::isBin))
                         break;
 
                     if (pathElement->isBroken())
@@ -6051,7 +6051,7 @@ namespace OpenRCT2
                 continue;
 
             auto* pathAddEntry = pathElement->getAdditionEntry();
-            if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
+            if (pathAddEntry == nullptr || !pathAddEntry->flags.has(PathAdditionFlag::isBench))
                 continue;
 
             if (pathElement->isBroken())
@@ -6140,7 +6140,7 @@ namespace OpenRCT2
                 continue;
 
             auto* pathAddEntry = pathElement->getAdditionEntry();
-            if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
+            if (pathAddEntry == nullptr || !pathAddEntry->flags.has(PathAdditionFlag::isBin))
                 continue;
 
             if (pathElement->isBroken())
@@ -6218,7 +6218,7 @@ namespace OpenRCT2
                 continue;
 
             auto* pathAddEntry = pathElement->getAdditionEntry();
-            if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_BREAKABLE))
+            if (pathAddEntry == nullptr || !pathAddEntry->flags.has(PathAdditionFlag::breakable))
                 continue;
 
             if (pathElement->isBroken())
