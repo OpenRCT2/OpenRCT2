@@ -603,7 +603,7 @@ bool PathPoleSupportsPaintSetup(
     uint16_t baseHeight;
 
     if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (height - supportSegments[segment].height < 6)
-        || !(railings.flags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
+        || !railings.flags.has(RailingEntryFlag::hasSupportBaseSprite))
     {
         baseHeight = supportSegments[segment].height;
     }

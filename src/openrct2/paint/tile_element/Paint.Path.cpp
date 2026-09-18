@@ -345,7 +345,7 @@ static void PathPaintFencesAndQueueBannersQueue(
         }
     }
 
-    if (pathElement.hasQueueBanner() && !(railings.flags & RAILING_ENTRY_FLAG_NO_QUEUE_BANNER))
+    if (pathElement.hasQueueBanner() && !railings.flags.has(RailingEntryFlag::noQueueBanner))
     {
         PathPaintQueueBanner(session, pathElement, height, railings, imageTemplate);
     }
@@ -360,7 +360,7 @@ static void PathPaintFencesAndQueueBannersNonQueue(
     uint32_t drawnCorners = 0;
     // If the path is not drawn over the supports, then no corner sprites will be drawn (making double-width paths
     // look like connected series of intersections).
-    if (pathPaintInfo.railings.flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS)
+    if (pathPaintInfo.railings.flags.has(RailingEntryFlag::drawPathOverSupports))
     {
         drawnCorners = (connectedEdges & FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK) >> 4;
     }
@@ -945,7 +945,7 @@ static void PathPaintBoxSupport(
 
         PaintAddImageAsParent(session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, boundbox);
 
-        if (pathElement.isQueue() || (pathPaintInfo.railings.flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
+        if (pathElement.isQueue() || pathPaintInfo.railings.flags.has(RailingEntryFlag::drawPathOverSupports))
         {
             PaintAddImageAsChild(session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, boundbox);
         }
@@ -1000,7 +1000,7 @@ static void PathPaintPoleSupport(
 
         PaintAddImageAsParent(session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, boundbox);
 
-        if (pathElement.isQueue() || (pathPaintInfo.railings.flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
+        if (pathElement.isQueue() || pathPaintInfo.railings.flags.has(RailingEntryFlag::drawPathOverSupports))
         {
             PaintAddImageAsChild(session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, boundbox);
         }
