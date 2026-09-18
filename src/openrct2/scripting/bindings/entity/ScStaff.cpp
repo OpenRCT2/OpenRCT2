@@ -546,34 +546,6 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    ScEntertainer gScEntertainer;
-
-    JSValue ScEntertainer::New(JSContext* ctx, EntityId entityId)
-    {
-        return gScEntity.NewDerivedInstance(ctx, entityId, gScEntertainer.GetProto());
-    }
-
-    void ScEntertainer::Register(JSContext* ctx)
-    {
-        static constexpr JSCFunctionListEntry kFuncs[] = {
-            JS_CGETSET_DEF("guestsEntertained", &ScEntertainer::guestsEntertained_get, nullptr),
-        };
-        gScEntertainer.RegisterDerived(ctx, gScStaff, kFuncs);
-    }
-
-    JSValue ScEntertainer::guestsEntertained_get(JSContext* ctx, JSValue thisVal)
-    {
-        auto peep = GetStaff(thisVal);
-        if (peep != nullptr && peep->isEntertainer())
-        {
-            return JS_NewUint32(ctx, peep->staffGuestsEntertained);
-        }
-        else
-        {
-            return JS_NULL;
-        }
-    }
-
     ScSecurity gScSecurity;
 
     JSValue ScSecurity::New(JSContext* ctx, EntityId entityId)
@@ -595,6 +567,34 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr && peep->assignedStaffType == StaffType::security)
         {
             return JS_NewUint32(ctx, peep->staffVandalsStopped);
+        }
+        else
+        {
+            return JS_NULL;
+        }
+    }
+
+    ScEntertainer gScEntertainer;
+
+    JSValue ScEntertainer::New(JSContext* ctx, EntityId entityId)
+    {
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScEntertainer.GetProto());
+    }
+
+    void ScEntertainer::Register(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry kFuncs[] = {
+            JS_CGETSET_DEF("guestsEntertained", &ScEntertainer::guestsEntertained_get, nullptr),
+        };
+        gScEntertainer.RegisterDerived(ctx, gScStaff, kFuncs);
+    }
+
+    JSValue ScEntertainer::guestsEntertained_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto peep = GetStaff(thisVal);
+        if (peep != nullptr && peep->isEntertainer())
+        {
+            return JS_NewUint32(ctx, peep->staffGuestsEntertained);
         }
         else
         {
