@@ -10,6 +10,7 @@
 #include "Vehicle.h"
 
 #include "../Diagnostic.h"
+#include "../Game.h"
 #include "../GameState.h"
 #include "../audio/Audio.h"
 #include "../core/Speed.hpp"
@@ -27,6 +28,8 @@
 #include "TrackIteration.h"
 #include "VehicleGeometry.h"
 #include "ted/TrackElementDescriptor.h"
+
+#include <algorithm>
 
 namespace OpenRCT2
 {
@@ -51,6 +54,60 @@ namespace OpenRCT2
     constexpr uint8_t kBoosterAccelerationShiftAmount = 16;
     constexpr int16_t kVehicleMaxSpinSpeedWaterRide = 512;
     constexpr int16_t kVehicleMinSpinSpeedWaterRide = -kVehicleMaxSpinSpeedWaterRide;
+
+    // The vertical holding brake catches the train at the crest of the spike and lets go again three quarters of a
+    // second later, unlike the holding brake for drop which holds for over two seconds.
+    constexpr int8_t kVerticalHoldingBrakeHoldTicks = kGameUpdateFPS * 3 / 4;
+    // How slow the train has to get before the brake counts it as stalled.
+    constexpr int32_t kVerticalHoldingBrakeStallVelocity = 1.0_mph;
+
+    /**
+     * Called on the head of a train; reports whether any of its cars has reached a vertical holding brake.
+     */
+    bool Vehicle::isAnyCarOnVerticalHoldingBrake() const
+    {
+        auto& entities = getGameState().entities;
+        for (const Vehicle* car = this; car != nullptr; car = entities.getEntity<Vehicle>(car->next_vehicle_on_train))
+        {
+            const auto carTrackType = car->GetTrackType();
+            if (carTrackType == TrackElemType::verticalHoldingBrakeDown
+                || carTrackType == TrackElemType::verticalHoldingBrakeUp)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Catches the train the moment it stalls, from either direction, as long as any part of the train has reached the
+     * brake.
+     *
+     * It arms on every circuit rather than only the last one. The game has no way to teach a last-circuit-only rule,
+     * so a brake that silently ignored the train on earlier passes would read as broken rather than as a feature.
+     */
+    static void applyVerticalHoldingBrake(Vehicle& train)
+    {
+        if (!train.isAnyCarOnVerticalHoldingBrake())
+        {
+            // Clear of the brake, so it is free to catch this train again next time round
+            train.flags.unset(VehicleFlag::heldByVerticalHoldingBrake);
+            return;
+        }
+
+        // One catch per visit. Just after being let go the train is still barely moving and still sitting on the
+        // brake, so without this the brake would immediately grab it again and never release it.
+        if (train.flags.has(VehicleFlag::heldByVerticalHoldingBrake))
+            return;
+
+        if (train.flags.has(VehicleFlag::stoppedOnHoldingBrake))
+            return;
+
+        if (std::abs(train.velocity) >= kVerticalHoldingBrakeStallVelocity)
+            return;
+
+        train.flags.set(VehicleFlag::heldByVerticalHoldingBrake);
+        train.flags.set(VehicleFlag::stoppedOnHoldingBrake);
+        train.vertical_drop_countdown = kVerticalHoldingBrakeHoldTicks;
+    }
 
     /**
      *
@@ -1477,6 +1534,8 @@ namespace OpenRCT2
         gCurrentVehicle = this;
         _vehicleMotionTrackFlags = 0;
         _vehicleStationIndex = StationIndex::GetNull();
+
+        applyVerticalHoldingBrake(*this);
 
         upstopCheck();
         handleBlockBrake();

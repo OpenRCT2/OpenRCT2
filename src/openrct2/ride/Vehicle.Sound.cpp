@@ -19,6 +19,7 @@
 #include "Ride.h"
 #include "RideData.h"
 #include "VehicleGeometry.h"
+#include "ted/TrackElemType.h"
 
 namespace OpenRCT2
 {
@@ -206,6 +207,17 @@ namespace OpenRCT2
         int32_t totalNumPeeps = NumPeepsUntilTrainTail();
         if (totalNumPeeps == 0)
             return SoundId::null;
+
+        // Riders keep screaming while the vertical holding brake has them stopped dead at the top of the spike. The
+        // checks below go by speed, so without this the most frightening part of the ride would be the quietest,
+        // and they would cut the scream off and start another as soon as the brake let go. Asking for the same
+        // sound throughout instead lets the one scream play out across the hold and the drop that follows, since
+        // ProduceScreamSound only picks a new one when none is playing.
+        //
+        // Deliberately narrow: heldByVerticalHoldingBrake is only set on a train this brake has caught, and is
+        // cleared as soon as the train is clear of the brake, so this cannot add screaming anywhere else.
+        if (flags.has(VehicleFlag::heldByVerticalHoldingBrake))
+            return ProduceScreamSound(totalNumPeeps);
 
         if (velocity < 0)
         {

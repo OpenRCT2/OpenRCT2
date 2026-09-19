@@ -10351,6 +10351,32 @@ namespace OpenRCT2::TrackMetadata
         .sequenceData = { 4, { kDiagDown25Seq0, kDiagDown25Seq1, kDiagDown25Seq2, kDiagDown25Seq3 } },
     };
 
+    constexpr auto kTEDVerticalHoldingBrakeDown = TrackElementDescriptor{
+        .description = STR_VERTICAL_HOLDING_BRAKE,
+        .coordinates = { 0, 0, 32, 0, 32, 0 },
+        .pieceLength = 32,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 147456,
+        .mirrorElement = TrackElemType::verticalHoldingBrakeDown,
+        .flags = { TrackElementFlag::down },
+        .definition = { TrackGroup::verticalHoldingBrake, TrackPitch::down90, TrackPitch::down90, TrackRoll::none,
+                        TrackRoll::none, 0 },
+        .sequenceData = { 2, { kDown90Seq0, kDown90Seq1 } },
+    };
+
+    constexpr auto kTEDVerticalHoldingBrakeUp = TrackElementDescriptor{
+        .description = STR_VERTICAL_HOLDING_BRAKE,
+        .coordinates = { 0, 0, 0, 32, 32, 0 },
+        .pieceLength = 32,
+        .curveChain = { TrackCurve::none, TrackCurve::none },
+        .priceModifier = 147456,
+        .mirrorElement = TrackElemType::verticalHoldingBrakeUp,
+        .flags = { TrackElementFlag::up },
+        .definition = { TrackGroup::verticalHoldingBrake, TrackPitch::up90, TrackPitch::up90, TrackRoll::none,
+                        TrackRoll::none, 0 },
+        .sequenceData = { 2, { kUp90Seq0, kUp90Seq1 } },
+    };
+
     static constexpr auto kTrackElementDescriptors = std::to_array<TrackElementDescriptor>({
         kTEDFlat,
         kTEDEndStation,
@@ -10702,6 +10728,8 @@ namespace OpenRCT2::TrackMetadata
         kTEDLeftEighthDiveLoopDownToDiag,
         kTEDRightEighthDiveLoopDownToDiag,
         kTEDDiagDown25Brakes,
+        kTEDVerticalHoldingBrakeDown,
+        kTEDVerticalHoldingBrakeUp,
     });
     static_assert(kTrackElementDescriptors.size() == EnumValue(TrackElemType::count));
 
