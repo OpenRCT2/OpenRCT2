@@ -119,7 +119,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
             _imeActive = ((e->edit.length != 0 || String::sizeOf(e->edit.text) != 0) && _imeBuffer[0] != '\0');
             break;
         case SDL_EVENT_TEXT_INPUT:
-            // will receive an `SDL_TEXTINPUT` event when a composition is committed
+            // will receive an `SDL_EVENT_TEXT_INPUT` event when a composition is committed
             _imeActive = false;
             _imeBuffer[0] = '\0';
             if (_session.Buffer != nullptr)

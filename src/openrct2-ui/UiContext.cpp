@@ -238,7 +238,7 @@ public:
 
     bool HasFocus() override
     {
-        uint32_t windowFlags = GetWindowFlags();
+        SDL_WindowFlags windowFlags = GetWindowFlags();
         return (windowFlags & SDL_WINDOW_INPUT_FOCUS) != 0;
     }
 
@@ -249,7 +249,7 @@ public:
 
     bool IsMinimised() override
     {
-        uint32_t windowFlags = GetWindowFlags();
+        SDL_WindowFlags windowFlags = GetWindowFlags();
         return (windowFlags & SDL_WINDOW_MINIMIZED) || (windowFlags & SDL_WINDOW_HIDDEN);
     }
 
@@ -835,7 +835,7 @@ private:
 
         DrawingEngineResize();
 
-        uint32_t flags = SDL_GetWindowFlags(_window);
+        SDL_WindowFlags flags = SDL_GetWindowFlags(_window);
         if ((flags & SDL_WINDOW_MINIMIZED) == 0)
         {
             WindowResizeGui(_width, _height);
@@ -939,7 +939,7 @@ private:
         return result;
     }
 
-    uint32_t GetWindowFlags()
+    SDL_WindowFlags GetWindowFlags()
     {
         return SDL_GetWindowFlags(_window);
     }

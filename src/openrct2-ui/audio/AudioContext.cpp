@@ -80,7 +80,7 @@ namespace OpenRCT2::Audio
 
         IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) override
         {
-            auto* rw = StreamToSDL2(std::move(stream));
+            auto* rw = StreamToSDL(std::move(stream));
             if (rw == nullptr)
             {
                 return nullptr;
@@ -112,7 +112,7 @@ namespace OpenRCT2::Audio
 
         IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
         {
-            auto* rw = StreamToSDL2(std::move(stream));
+            auto* rw = StreamToSDL(std::move(stream));
             if (rw == nullptr)
             {
                 return nullptr;
@@ -176,7 +176,7 @@ namespace OpenRCT2::Audio
             return _audioMixer->AddSource(std::move(source));
         }
 
-        static SDL_IOStream* StreamToSDL2(std::unique_ptr<IStream> stream)
+        static SDL_IOStream* StreamToSDL(std::unique_ptr<IStream> stream)
         {
             SDL_IOStreamInterface iface{};
             SDL_INIT_INTERFACE(&iface);
