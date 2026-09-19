@@ -129,7 +129,7 @@ namespace OpenRCT2::GameActions
             res.error = queryRes.error;
             res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             res.errorMessage = queryRes.errorMessage;
-            res.errorMessageArgs = queryRes.errorMessageArgs;
+            res.errorMessageText = queryRes.errorMessageText;
             return res;
         }
 
@@ -198,7 +198,7 @@ namespace OpenRCT2::GameActions
             res.error = queryRes.error;
             res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             res.errorMessage = queryRes.errorMessage;
-            res.errorMessageArgs = queryRes.errorMessageArgs;
+            res.errorMessageText = queryRes.errorMessageText;
 
             return res;
         }
@@ -216,7 +216,7 @@ namespace OpenRCT2::GameActions
             res.error = execRes.error;
             res.errorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             res.errorMessage = execRes.errorMessage;
-            res.errorMessageArgs = execRes.errorMessageArgs;
+            res.errorMessageText = execRes.errorMessageText;
 
             return res;
         }
