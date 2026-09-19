@@ -133,7 +133,7 @@ namespace OpenRCT2
         _tileElementsInUse = gameState.tileElements.size();
     }
 
-    static TileElement GetDefaultSurfaceElement()
+    static TileElement GetDefaultSurfaceElement(Drawing::Colour colour = Drawing::Colour::black)
     {
         TileElement el;
         el.clearAs(TileElementType::surface);
@@ -147,6 +147,7 @@ namespace OpenRCT2
         el.asSurface()->setParkFences(0);
         el.asSurface()->setSurfaceObjectIndex(0);
         el.asSurface()->setEdgeObjectIndex(0);
+        el.asSurface()->setPrimarySurfaceColour(colour);
         return el;
     }
 
@@ -435,12 +436,12 @@ namespace OpenRCT2
      *
      *  rct2: 0x0068AB4C
      */
-    void MapInit(const TileCoordsXY& size)
+    void MapInit(const TileCoordsXY& size, Drawing::Colour surfaceColour1)
     {
         auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
         auto& gameState = getGameState();
-        SetTileElements(gameState, std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
+        SetTileElements(gameState, std::vector<TileElement>(numTiles, GetDefaultSurfaceElement(surfaceColour1)));
 
         gameState.grassSceneryTileLoopPosition = 0;
         gameState.widePathTileLoopPosition = {};

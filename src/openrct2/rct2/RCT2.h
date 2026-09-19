@@ -1070,11 +1070,11 @@ namespace OpenRCT2::RCT2
         const ObjectEntryDescriptor& desc, bool ideallyLoaded = false, bool isQueue = false);
     std::optional<RCTObjectEntry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings);
 
-    static constexpr std::string_view DefaultTerrainSurfaces[] = {
-        "rct2.terrain_surface.grass",        "rct2.terrain_surface.sand",        "rct2.terrain_surface.dirt",
-        "rct2.terrain_surface.rock",         "rct2.terrain_surface.martian",     "rct2.terrain_surface.chequerboard",
-        "rct2.terrain_surface.grass_clumps", "rct2.terrain_surface.ice",         "rct2.terrain_surface.grid_red",
-        "rct2.terrain_surface.grid_yellow",  "rct2.terrain_surface.grid_purple", "rct2.terrain_surface.grid_green",
+    static constexpr std::string_view kDefaultTerrainSurfaces[] = {
+        "rct2.terrain_surface.grass",        "rct2.terrain_surface.sand",       "rct2.terrain_surface.dirt",
+        "rct2.terrain_surface.rock",         "rct2.terrain_surface.martian",    "rct2.terrain_surface.chequerboard",
+        "rct2.terrain_surface.grass_clumps", "rct2.terrain_surface.ice",        "rct2.terrain_surface.grid",
+        "rct2.terrain_surface.grid",         "rct2.terrain_surface.grid",       "rct2.terrain_surface.grid",
         "rct2.terrain_surface.sand_red",     "rct2.terrain_surface.sand_brown",
     };
 
@@ -1085,6 +1085,29 @@ namespace OpenRCT2::RCT2
         "rct1ll.terrain_surface.rust",
         "rct1ll.terrain_surface.wood",
     };
+
+    static constexpr auto kTerrainSurfaceColours = std::to_array<Drawing::Colour>({
+        Drawing::Colour::black,        // grass
+        Drawing::Colour::black,        // sand
+        Drawing::Colour::black,        // dirt
+        Drawing::Colour::black,        // rock
+        Drawing::Colour::black,        // martian
+        Drawing::Colour::black,        // chequerboard
+        Drawing::Colour::black,        // grass_clumps
+        Drawing::Colour::black,        // ice
+        Drawing::Colour::brightRed,    // grid_red
+        Drawing::Colour::yellow,       // grid_yellow
+        Drawing::Colour::brightPurple, // grid_purple
+        Drawing::Colour::brightGreen,  // grid_green
+        Drawing::Colour::black,        // sand_red
+        Drawing::Colour::black,        // sand_brown
+        Drawing::Colour::black,        // roof_red
+        Drawing::Colour::black,        // roof_grey
+        Drawing::Colour::black,        // rust
+        Drawing::Colour::black,        // wood
+    });
+    static_assert(
+        std::size(kTerrainSurfaceColours) == std::size(kDefaultTerrainSurfaces) + std::size(OpenRCT2HybridTerrainSurfaces));
 
     static constexpr std::string_view DefaultTerrainEdges[] = {
         "rct2.terrain_edge.rock",
@@ -1100,6 +1123,25 @@ namespace OpenRCT2::RCT2
         "rct1ll.terrain_edge.green",        "rct1ll.terrain_edge.stone_brown",  "rct1ll.terrain_edge.stone_grey",
         "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b",
     };
+
+    static constexpr auto kTerrainEdgeColours = std::to_array<Drawing::Colour>({
+        Drawing::Colour::black, // rock
+        Drawing::Colour::black, // wood_red
+        Drawing::Colour::black, // wood_black
+        Drawing::Colour::black, // ice
+        Drawing::Colour::black, // brick
+        Drawing::Colour::black, // iron
+        Drawing::Colour::black, // white stucco
+        Drawing::Colour::black, // yellow stucco
+        Drawing::Colour::black, // red stucco
+        Drawing::Colour::black, // purple stucco
+        Drawing::Colour::black, // green stucco
+        Drawing::Colour::black, // brown standstone
+        Drawing::Colour::grey,  // grey sandstone
+        Drawing::Colour::black, // skyscraper a
+        Drawing::Colour::black, // skyscraper b
+    });
+    static_assert(std::size(kTerrainEdgeColours) == std::size(DefaultTerrainEdges) + std::size(OpenRCT2HybridTerrainEdges));
 } // namespace OpenRCT2::RCT2
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);

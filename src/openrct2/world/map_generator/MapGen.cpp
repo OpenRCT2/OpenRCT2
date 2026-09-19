@@ -69,6 +69,8 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     surfaceElement->setSurfaceObjectIndex(surfaceTextureId);
                     surfaceElement->setEdgeObjectIndex(edgeTextureId);
+                    surfaceElement->setPrimarySurfaceColour(settings->surfaceColour1);
+                    surfaceElement->setPrimaryEdgeColour(settings->edgeColour1);
                     surfaceElement->baseHeight = settings->heightmapLow;
                     surfaceElement->clearanceHeight = settings->heightmapLow;
                 }

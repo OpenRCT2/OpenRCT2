@@ -61,7 +61,7 @@ namespace OpenRCT2
         gInMapInitCode = true;
         gameState.currentTicks = 0;
 
-        MapInit(mapSize);
+        MapInit(mapSize, isInTrackDesignerOrManager() ? Drawing::Colour::darkBlue : Drawing::Colour::black);
         Park::Initialise(gameState.park, gameState);
         FinanceInit();
         BannerInit(gameState);

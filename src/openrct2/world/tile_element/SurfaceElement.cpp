@@ -241,4 +241,24 @@ namespace OpenRCT2
         if (on)
             type |= SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
     }
+
+    Drawing::Colour SurfaceElement::getPrimarySurfaceColour() const
+    {
+        return surfaceColour1;
+    }
+
+    void SurfaceElement::setPrimarySurfaceColour(Drawing::Colour newColour)
+    {
+        surfaceColour1 = clampColour(newColour);
+    }
+
+    Drawing::Colour SurfaceElement::getPrimaryEdgeColour() const
+    {
+        return edgeColour1;
+    }
+
+    void SurfaceElement::setPrimaryEdgeColour(Drawing::Colour newColour)
+    {
+        edgeColour1 = clampColour(newColour);
+    }
 } // namespace OpenRCT2

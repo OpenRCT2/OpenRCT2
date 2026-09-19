@@ -24,6 +24,11 @@ namespace OpenRCT2
 {
     struct WindowBase;
     struct Widget;
+
+    namespace Drawing
+    {
+        enum class Colour : uint8_t;
+    }
 } // namespace OpenRCT2
 
 namespace OpenRCT2::LandTool
@@ -33,4 +38,5 @@ namespace OpenRCT2::LandTool
     ObjectEntryIndex GetSurfaceStyleFromDropdownIndex(size_t index);
     void ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType);
     ObjectEntryIndex GetEdgeStyleFromDropdownIndex(size_t index);
+    void resetColourSelection(Drawing::Colour& surfaceColour1, Drawing::Colour& edgeColour1);
 } // namespace OpenRCT2::LandTool

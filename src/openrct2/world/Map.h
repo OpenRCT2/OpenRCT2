@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../drawing/Colour.h"
 #include "Location.hpp"
 #include "MapOwnership.h"
 #include "tile_element/TileElement.h"
@@ -61,7 +62,7 @@ namespace OpenRCT2
     void UnstashMap();
     std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
 
-    void MapInit(const TileCoordsXY& size);
+    void MapInit(const TileCoordsXY& size, Drawing::Colour surfaceColour1 = Drawing::Colour::black);
 
     void MapCountRemainingLandRights();
     void MapStripGhostFlagFromElements();

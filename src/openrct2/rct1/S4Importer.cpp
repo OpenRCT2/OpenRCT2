@@ -94,6 +94,12 @@ namespace OpenRCT2::RCT1
     class S4Importer final : public IParkImporter
     {
     private:
+        struct TerrainEntryMapping
+        {
+            ObjectEntryIndex index = kObjectEntryIndexNull;
+            Drawing::Colour colour = Drawing::Colour::black;
+        };
+
         std::string _s4Path;
         S4 _s4 = {};
         uint8_t _gameVersion = 0;
@@ -125,8 +131,8 @@ namespace OpenRCT2::RCT1
         ObjectEntryIndex _pathTypeToEntryMap[24]{};
         ObjectEntryIndex _pathAdditionTypeToEntryMap[16]{};
         ObjectEntryIndex _sceneryThemeTypeToEntryMap[24]{};
-        ObjectEntryIndex _terrainSurfaceTypeToEntryMap[16]{};
-        ObjectEntryIndex _terrainEdgeTypeToEntryMap[16]{};
+        TerrainEntryMapping _terrainSurfaceTypeToEntryMap[16]{};
+        TerrainEntryMapping _terrainEdgeTypeToEntryMap[16]{};
         ObjectEntryIndex _footpathSurfaceTypeToEntryMap[32]{};
 
         // Research
@@ -374,8 +380,8 @@ namespace OpenRCT2::RCT1
             std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), kObjectEntryIndexNull);
             std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), kObjectEntryIndexNull);
             std::fill(
-                std::begin(_terrainSurfaceTypeToEntryMap), std::end(_terrainSurfaceTypeToEntryMap), kObjectEntryIndexNull);
-            std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), kObjectEntryIndexNull);
+                std::begin(_terrainSurfaceTypeToEntryMap), std::end(_terrainSurfaceTypeToEntryMap), TerrainEntryMapping());
+            std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), TerrainEntryMapping());
             std::fill(
                 std::begin(_footpathSurfaceTypeToEntryMap), std::end(_footpathSurfaceTypeToEntryMap), kObjectEntryIndexNull);
         }
@@ -430,8 +436,7 @@ namespace OpenRCT2::RCT1
             _terrainSurfaceEntries.AddRange(
                 { "rct2.terrain_surface.grass", "rct2.terrain_surface.sand", "rct2.terrain_surface.dirt",
                   "rct2.terrain_surface.rock", "rct2.terrain_surface.martian", "rct2.terrain_surface.chequerboard",
-                  "rct2.terrain_surface.grass_clumps", "rct2.terrain_surface.ice", "rct2.terrain_surface.grid_red",
-                  "rct2.terrain_surface.grid_yellow", "rct2.terrain_surface.grid_purple", "rct2.terrain_surface.grid_green",
+                  "rct2.terrain_surface.grass_clumps", "rct2.terrain_surface.ice", "rct2.terrain_surface.grid",
                   "rct2.terrain_surface.sand_red", "rct2.terrain_surface.sand_brown", "rct1aa.terrain_surface.roof_red",
                   "rct1ll.terrain_surface.roof_grey", "rct1ll.terrain_surface.rust", "rct1ll.terrain_surface.wood" });
 
@@ -775,13 +780,13 @@ namespace OpenRCT2::RCT1
         void AddEntryForTerrainSurface(ObjectEntryIndex terrainSurfaceType)
         {
             assert(terrainSurfaceType < std::size(_terrainSurfaceTypeToEntryMap));
-            if (_terrainSurfaceTypeToEntryMap[terrainSurfaceType] == kObjectEntryIndexNull)
+            if (_terrainSurfaceTypeToEntryMap[terrainSurfaceType].index == kObjectEntryIndexNull)
             {
-                auto identifier = GetTerrainSurfaceObject(terrainSurfaceType);
-                if (!identifier.empty())
+                auto mapping = GetTerrainSurfaceMapping(terrainSurfaceType);
+                if (!mapping.identifier.empty())
                 {
-                    auto entryIndex = _terrainSurfaceEntries.GetOrAddEntry(identifier);
-                    _terrainSurfaceTypeToEntryMap[terrainSurfaceType] = entryIndex;
+                    auto entryIndex = _terrainSurfaceEntries.GetOrAddEntry(mapping.identifier);
+                    _terrainSurfaceTypeToEntryMap[terrainSurfaceType] = { entryIndex, mapping.colour };
                 }
             }
         }
@@ -789,13 +794,13 @@ namespace OpenRCT2::RCT1
         void AddEntryForTerrainEdge(ObjectEntryIndex terrainEdgeType)
         {
             assert(terrainEdgeType < std::size(_terrainEdgeTypeToEntryMap));
-            if (_terrainEdgeTypeToEntryMap[terrainEdgeType] == kObjectEntryIndexNull)
+            if (_terrainEdgeTypeToEntryMap[terrainEdgeType].index == kObjectEntryIndexNull)
             {
-                auto identifier = GetTerrainEdgeObject(terrainEdgeType);
-                if (!identifier.empty())
+                auto mapping = GetTerrainEdgeMapping(terrainEdgeType);
+                if (!mapping.identifier.empty())
                 {
-                    auto entryIndex = _terrainEdgeEntries.GetOrAddEntry(identifier);
-                    _terrainEdgeTypeToEntryMap[terrainEdgeType] = entryIndex;
+                    auto entryIndex = _terrainEdgeEntries.GetOrAddEntry(mapping.identifier);
+                    _terrainEdgeTypeToEntryMap[terrainEdgeType] = { entryIndex, mapping.colour };
                 }
             }
         }
@@ -1659,8 +1664,10 @@ namespace OpenRCT2::RCT1
                     auto edgeStyle = _terrainEdgeTypeToEntryMap[src2->GetEdgeStyle()];
 
                     dst2->setSlope(src2->GetSlope());
-                    dst2->setSurfaceObjectIndex(surfaceStyle);
-                    dst2->setEdgeObjectIndex(edgeStyle);
+                    dst2->setSurfaceObjectIndex(surfaceStyle.index);
+                    dst2->setPrimarySurfaceColour(surfaceStyle.colour);
+                    dst2->setEdgeObjectIndex(edgeStyle.index);
+                    dst2->setPrimaryEdgeColour(edgeStyle.colour);
                     dst2->setGrassLength(src2->GetGrassLength());
                     dst2->setOwnership(src2->GetOwnership());
                     dst2->setParkFences(src2->GetParkFences());
