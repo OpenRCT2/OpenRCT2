@@ -20,7 +20,16 @@ struct ImageId;
 namespace OpenRCT2
 {
     constexpr auto kDefaultTerrainSurfaceColour1 = Drawing::Colour::brightPurple;
-    constexpr auto kDefaultTerrainSurfaceColour2 = Drawing::Colour::black;
+
+    struct MapColour
+    {
+        uint8_t isOffset = 0;
+        union
+        {
+            Drawing::PaletteIndex paletteIndex{};
+            uint8_t mapOffset;
+        };
+    };
 
     enum class TerrainSurfaceFlag : uint8_t
     {
@@ -28,7 +37,6 @@ namespace OpenRCT2
         smoothWithOther,
         canGrow,
         hasPrimaryColour,
-        hasSecondaryColour,
     };
     using TerrainSurfaceFlags = FlagHolder<uint8_t, TerrainSurfaceFlag>;
 
@@ -66,7 +74,7 @@ namespace OpenRCT2
         uint8_t Rotations{};
         money64 Price{};
         TerrainSurfaceFlags Flags{};
-        Drawing::PaletteIndex MapColours[2]{};
+        MapColour MapColours[2]{};
 
         void ReadJson(IReadObjectContext* context, json_t& root) override;
         void Load() override;
@@ -76,9 +84,13 @@ namespace OpenRCT2
 
         ImageId GetImageId(
             const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground,
-            Drawing::Colour selectedColour1, Drawing::Colour selectedColour2) const;
+            Drawing::Colour selectedColour1) const;
         Drawing::Colour getPrimaryColour(Drawing::Colour selectedColour) const;
-        Drawing::PaletteIndex getPrimaryMapColour(Drawing::Colour selectedColour) const;
+        /**
+         * Returns a colour suitable for use in previews, like the Object Selection and the land surfaces selector.
+         */
+        Drawing::Colour getPreviewColour() const;
+        std::array<Drawing::PaletteIndex, 2> getMapColours(Drawing::Colour selectedColour) const;
 
         static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
     };

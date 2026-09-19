@@ -26,18 +26,16 @@ namespace OpenRCT2::GameActions
         ObjectEntryIndex _surfaceStyle{};
         ObjectEntryIndex _edgeStyle{};
         Drawing::Colour _surfaceColour1{};
-        Drawing::Colour _surfaceColour2{};
         Drawing::Colour _edgeColour1{};
 
         bool surfaceColour1NeedsRecolour(const SurfaceElement& surfaceElement, const TerrainSurfaceObject& surfaceObject) const;
-        bool surfaceColour2NeedsRecolour(const SurfaceElement& surfaceElement, const TerrainSurfaceObject& surfaceObject) const;
         bool edgeColour1NeedsRecolour(const SurfaceElement& surfaceElement, const TerrainEdgeObject& surfaceObject) const;
 
     public:
         SurfaceSetStyleAction() = default;
         SurfaceSetStyleAction(
             MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle, Drawing::Colour surfaceColour1,
-            Drawing::Colour surfaceColour2, Drawing::Colour edgeColour1);
+            Drawing::Colour edgeColour1);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 
