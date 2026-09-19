@@ -84,14 +84,14 @@ namespace OpenRCT2::Scenario
         ObjectiveStatus Check(Park::ParkData& park, GameState_t& gameState) const;
 
     private:
-        ObjectiveStatus CheckGuestsBy(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckParkValueBy(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus Check10RollerCoasters(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckGuestsBy(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckParkValueBy(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus Check10RollerCoasters(const Park::ParkData& park, const GameState_t& gameState) const;
         ObjectiveStatus CheckGuestsAndRating(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckMonthlyRideIncome(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus Check10RollerCoastersLength(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckFinish5RollerCoasters(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckRepayLoanAndParkValue(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckMonthlyFoodIncome(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckMonthlyRideIncome(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus Check10RollerCoastersLength(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckFinish5RollerCoasters(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckRepayLoanAndParkValue(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckMonthlyFoodIncome(const Park::ParkData& park, const GameState_t& gameState) const;
     };
 } // namespace OpenRCT2::Scenario
