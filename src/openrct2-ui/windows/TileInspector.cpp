@@ -1851,17 +1851,15 @@ namespace OpenRCT2::Ui::Windows
             windowTileInspectorSelectedIndex = -1;
             scrolls[0].contentOffsetY = 0;
 
-            TileElement* element = MapGetFirstElementAt(_toolMap);
             int16_t numItems = 0;
-            do
+            for (auto* element : TileElementsView(_toolMap))
             {
-                if (element == nullptr)
-                    break;
                 if (element == elementToSelect)
                     windowTileInspectorSelectedIndex = numItems;
 
                 numItems++;
-            } while (!(element++)->isLastForTile());
+            }
+
             windowTileInspectorElementCount = numItems;
             invalidate();
             MapInvalidateTileFull(_toolMap);
