@@ -20,7 +20,7 @@ namespace OpenRCT2::RCT1
     {
         Drawing::Colour colour1, colour2, colour3;
     };
-    struct TerrainSurfaceMapping
+    struct TerrainMapping
     {
         std::string_view identifier;
         Drawing::Colour colour;
@@ -56,8 +56,8 @@ namespace OpenRCT2::RCT1
     std::string_view GetFootpathRailingsObject(uint8_t footpathRailingsType);
     std::string_view GetSceneryGroupObject(uint8_t sceneryGroupType);
     std::string_view GetWaterObject(uint8_t waterType);
-    TerrainSurfaceMapping GetTerrainSurfaceMapping(uint8_t terrain);
-    std::string_view GetTerrainEdgeObject(uint8_t terrainEdge);
+    TerrainMapping GetTerrainSurfaceMapping(uint8_t terrain);
+    TerrainMapping GetTerrainEdgeMapping(uint8_t terrainEdge);
 
     const std::vector<const char*> GetSceneryObjects(uint8_t sceneryType);
 

@@ -252,16 +252,6 @@ namespace OpenRCT2
         surfaceColour1 = clampColour(newColour);
     }
 
-    Drawing::Colour SurfaceElement::getSecondarySurfaceColour() const
-    {
-        return surfaceColour2;
-    }
-
-    void SurfaceElement::setSecondarySurfaceColour(Drawing::Colour newColour)
-    {
-        surfaceColour2 = clampColour(newColour);
-    }
-
     Drawing::Colour SurfaceElement::getPrimaryEdgeColour() const
     {
         return edgeColour1;

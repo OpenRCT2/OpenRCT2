@@ -1342,7 +1342,8 @@ namespace OpenRCT2::RCT2
                     dst2->setParkFences(src2->GetParkFences());
                     dst2->setWaterHeight(src2->GetWaterHeight());
                     dst2->setHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
-                    dst2->setPrimarySurfaceColour(kTerrainColours[src2->GetSurfaceStyle()]);
+                    dst2->setPrimarySurfaceColour(kTerrainSurfaceColours[src2->GetSurfaceStyle()]);
+                    dst2->setPrimaryEdgeColour(kTerrainEdgeColours[src2->GetEdgeStyle()]);
 
                     break;
                 }

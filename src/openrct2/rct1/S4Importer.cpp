@@ -132,7 +132,7 @@ namespace OpenRCT2::RCT1
         ObjectEntryIndex _pathAdditionTypeToEntryMap[16]{};
         ObjectEntryIndex _sceneryThemeTypeToEntryMap[24]{};
         TerrainEntryMapping _terrainSurfaceTypeToEntryMap[16]{};
-        ObjectEntryIndex _terrainEdgeTypeToEntryMap[16]{};
+        TerrainEntryMapping _terrainEdgeTypeToEntryMap[16]{};
         ObjectEntryIndex _footpathSurfaceTypeToEntryMap[32]{};
 
         // Research
@@ -381,7 +381,7 @@ namespace OpenRCT2::RCT1
             std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), kObjectEntryIndexNull);
             std::fill(
                 std::begin(_terrainSurfaceTypeToEntryMap), std::end(_terrainSurfaceTypeToEntryMap), TerrainEntryMapping());
-            std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), kObjectEntryIndexNull);
+            std::fill(std::begin(_terrainEdgeTypeToEntryMap), std::end(_terrainEdgeTypeToEntryMap), TerrainEntryMapping());
             std::fill(
                 std::begin(_footpathSurfaceTypeToEntryMap), std::end(_footpathSurfaceTypeToEntryMap), kObjectEntryIndexNull);
         }
@@ -794,13 +794,13 @@ namespace OpenRCT2::RCT1
         void AddEntryForTerrainEdge(ObjectEntryIndex terrainEdgeType)
         {
             assert(terrainEdgeType < std::size(_terrainEdgeTypeToEntryMap));
-            if (_terrainEdgeTypeToEntryMap[terrainEdgeType] == kObjectEntryIndexNull)
+            if (_terrainEdgeTypeToEntryMap[terrainEdgeType].index == kObjectEntryIndexNull)
             {
-                auto identifier = GetTerrainEdgeObject(terrainEdgeType);
-                if (!identifier.empty())
+                auto mapping = GetTerrainEdgeMapping(terrainEdgeType);
+                if (!mapping.identifier.empty())
                 {
-                    auto entryIndex = _terrainEdgeEntries.GetOrAddEntry(identifier);
-                    _terrainEdgeTypeToEntryMap[terrainEdgeType] = entryIndex;
+                    auto entryIndex = _terrainEdgeEntries.GetOrAddEntry(mapping.identifier);
+                    _terrainEdgeTypeToEntryMap[terrainEdgeType] = { entryIndex, mapping.colour };
                 }
             }
         }
@@ -1666,7 +1666,8 @@ namespace OpenRCT2::RCT1
                     dst2->setSlope(src2->GetSlope());
                     dst2->setSurfaceObjectIndex(surfaceStyle.index);
                     dst2->setPrimarySurfaceColour(surfaceStyle.colour);
-                    dst2->setEdgeObjectIndex(edgeStyle);
+                    dst2->setEdgeObjectIndex(edgeStyle.index);
+                    dst2->setPrimaryEdgeColour(edgeStyle.colour);
                     dst2->setGrassLength(src2->GetGrassLength());
                     dst2->setOwnership(src2->GetOwnership());
                     dst2->setParkFences(src2->GetParkFences());

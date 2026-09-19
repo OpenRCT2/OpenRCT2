@@ -55,11 +55,10 @@ namespace OpenRCT2
         uint8_t surfaceStyle;
         uint8_t edgeObjectIndex;
         Drawing::Colour surfaceColour1;
-        Drawing::Colour surfaceColour2;
         Drawing::Colour edgeColour1;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t pad0E[2];
+        uint8_t pad0D[3];
 #pragma clang diagnostic pop
 
     public:
@@ -95,9 +94,6 @@ namespace OpenRCT2
 
         Drawing::Colour getPrimarySurfaceColour() const;
         void setPrimarySurfaceColour(Drawing::Colour newColour);
-
-        Drawing::Colour getSecondarySurfaceColour() const;
-        void setSecondarySurfaceColour(Drawing::Colour newColour);
 
         Drawing::Colour getPrimaryEdgeColour() const;
         void setPrimaryEdgeColour(Drawing::Colour newColour);
