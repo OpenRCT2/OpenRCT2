@@ -273,7 +273,7 @@ namespace OpenRCT2::Scenario
 
     void Objective::OnFailure(GameState_t& gameState) const
     {
-        switch(Type)
+        switch (Type)
         {
             case ObjectiveType::guestsAndRating:
             {
