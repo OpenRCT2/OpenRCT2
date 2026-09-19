@@ -9,11 +9,11 @@
 
 #pragma once
 
+#include "../localisation/Formatter.h"
 #include "../management/Finance.h"
 #include "../world/Location.hpp"
 
 #include <any>
-#include <array>
 #include <cstdint>
 #include <limits>
 #include <string>
@@ -59,7 +59,7 @@ namespace OpenRCT2::GameActions
         Status error = Status::ok;
         StringVariant errorTitle = kStringIdNone;
         StringVariant errorMessage = kStringIdNone;
-        std::array<uint8_t, 32> errorMessageArgs{};
+        Formatter errorMessageArgs{};
         CoordsXYZ position = { kLocationNull, kLocationNull, kLocationNull };
         money64 cost = 0;
         ExpenditureType expenditure = ExpenditureType::count;
@@ -74,7 +74,8 @@ namespace OpenRCT2::GameActions
 #endif
 
         Result() = default;
-        Result(Status status, StringId title, StringId message, uint8_t* args = nullptr);
+        Result(Status status, StringId title, StringId message);
+        Result(Status status, StringId title, StringId message, const Formatter& args);
 
         std::string getErrorTitle() const;
         std::string getErrorMessage() const;

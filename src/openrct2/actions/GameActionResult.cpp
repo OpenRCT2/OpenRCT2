@@ -2,26 +2,28 @@
 
 #include "../localisation/Formatting.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
 namespace OpenRCT2::GameActions
 {
-    Result::Result(Status status, StringId title, StringId message, uint8_t* args /*= nullptr*/)
+    Result::Result(Status status, StringId title, StringId message)
         : error(status)
         , errorTitle(title)
         , errorMessage(message)
     {
-        if (args != nullptr)
-        {
-            std::copy_n(args, errorMessageArgs.size(), errorMessageArgs.begin());
-        }
+    }
+
+    Result::Result(Status status, StringId title, StringId message, const Formatter& args)
+        : error(status)
+        , errorTitle(title)
+        , errorMessage(message)
+        , errorMessageArgs(args)
+    {
     }
 
     struct StringVariantVisitor
     {
-        const void* ErrorMessageArgs{};
+        const Formatter& ErrorMessageArgs;
 
         std::string operator()(const std::string& str) const
         {
@@ -29,18 +31,18 @@ namespace OpenRCT2::GameActions
         }
         std::string operator()(const StringId strId) const
         {
-            return FormatStringIDLegacy(strId, ErrorMessageArgs);
+            return FormatStringIDLegacy(strId, ErrorMessageArgs.Data());
         }
     };
 
     std::string Result::getErrorTitle() const
     {
-        return std::visit(StringVariantVisitor{ errorMessageArgs.data() }, errorTitle);
+        return std::visit(StringVariantVisitor{ errorMessageArgs }, errorTitle);
     }
 
     std::string Result::getErrorMessage() const
     {
-        return std::visit(StringVariantVisitor{ errorMessageArgs.data() }, errorMessage);
+        return std::visit(StringVariantVisitor{ errorMessageArgs }, errorMessage);
     }
 
 } // namespace OpenRCT2::GameActions

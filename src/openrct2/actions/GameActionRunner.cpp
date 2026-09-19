@@ -191,7 +191,7 @@ namespace OpenRCT2::GameActions
                 result.error = Status::insufficientFunds;
                 result.errorTitle = STR_CANT_DO_THIS;
                 result.errorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
-                Formatter(result.errorMessageArgs.data()).Add<uint32_t>(result.cost);
+                result.errorMessageArgs.Add<uint32_t>(result.cost);
             }
         }
         return result;
