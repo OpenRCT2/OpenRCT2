@@ -12,6 +12,8 @@
 #include "DrawCommands.h"
 #include "OpenGLShaderProgram.h"
 
+#include <SDL3/SDL_pixels.h>
+
 namespace OpenRCT2::Ui
 {
     class DrawRectShader final : public OpenGLShaderProgram
