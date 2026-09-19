@@ -5939,7 +5939,7 @@ namespace OpenRCT2
                         break;
 
                     auto* pathAddEntry = pathElement->getAdditionEntry();
-                    if (!pathAddEntry->flags.has(PathAdditionFlag::isBin))
+                    if (pathAddEntry == nullptr || !pathAddEntry->flags.has(PathAdditionFlag::isBin))
                         break;
 
                     if (pathElement->isBroken())

@@ -4,6 +4,7 @@
 - Improved: [#26947] Rain is now drawn next to the bottom info panels (in RCT2 style).
 - Change: [#27100] Negative G-forces no longer turn red in the stats window and graph when below -2.50.
 - Fix: [#1514] Wrong capitalisation for strings in the Guest List window.
+- Fix: [#15423] Crash when a guest or handyman uses a bin whose path addition object is not loaded.
 - Fix: [#17409] When reading system settings, non-US dollar currencies are not recognised correctly. 
 - Fix: [#19754, #27109] Some rides in RCT1 saves have a wrong number of cars per train.
 - Fix: [#20882] When setting rides with preservation status in the Scenario Editor, some rides are not shown.
