@@ -100,54 +100,31 @@ namespace OpenRCT2::Scenario
      *
      *  rct2: 0x0066A13C
      */
-    ObjectiveStatus Objective::CheckGuestsAndRating(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::CheckGuestsAndRating(const Park::ParkData& park, const GameState_t& gameState) const
     {
-        // TODO: make park-specific
-        if (park.rating < 700 && GetDate().GetMonthsElapsed() >= 1)
+        if (gameState.scenarioParkRatingWarningDays == 29)
+            return ObjectiveStatus::failure;
+
+        if (Config::Get().notifications.parkRatingWarnings)
         {
-            gameState.scenarioParkRatingWarningDays++;
-            if (gameState.scenarioParkRatingWarningDays == 1)
+            switch (gameState.scenarioParkRatingWarningDays)
             {
-                if (Config::Get().notifications.parkRatingWarnings)
-                {
+                case 1:
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
-                }
-            }
-            else if (gameState.scenarioParkRatingWarningDays == 8)
-            {
-                if (Config::Get().notifications.parkRatingWarnings)
-                {
+                    break;
+                case 8:
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
-                }
-            }
-            else if (gameState.scenarioParkRatingWarningDays == 15)
-            {
-                if (Config::Get().notifications.parkRatingWarnings)
-                {
+                    break;
+                case 15:
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
-                }
-            }
-            else if (gameState.scenarioParkRatingWarningDays == 22)
-            {
-                if (Config::Get().notifications.parkRatingWarnings)
-                {
+                    break;
+                case 22:
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
-                }
+                    break;
             }
-            else if (gameState.scenarioParkRatingWarningDays == 29)
-            {
-                News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-                park.flags.unset(ParkFlag::parkOpen);
-                gameState.scenarioOptions.guestInitialHappiness = 50;
-                return ObjectiveStatus::failure;
-            }
-        }
-        else if (gameState.scenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
-        {
-            gameState.scenarioParkRatingWarningDays = 0;
         }
 
-        if (park.rating >= 700)
+        if (park.rating >= kLowParkRatingThreshold)
             if (park.numGuestsInPark >= NumGuests)
                 return ObjectiveStatus::success;
 
@@ -262,7 +239,7 @@ namespace OpenRCT2::Scenario
      * Checks the win/lose conditions of the current objective.
      *  rct2: 0x0066A4B2
      */
-    ObjectiveStatus Objective::Check(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::Check(const Park::ParkData& park, const GameState_t& gameState) const
     {
         if (gameState.scenarioCompletedCompanyValue != kMoney64Undefined)
         {
@@ -291,6 +268,22 @@ namespace OpenRCT2::Scenario
                 return CheckMonthlyFoodIncome(park, gameState);
             default:
                 return ObjectiveStatus::undecided;
+        }
+    }
+
+    void Objective::OnFailure(GameState_t& gameState) const
+    {
+        switch(Type)
+        {
+            case ObjectiveType::guestsAndRating:
+            {
+                News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
+                gameState.park.flags.unset(ParkFlag::parkOpen);
+                gameState.scenarioOptions.guestInitialHappiness = 50;
+                break;
+            }
+            default:
+                break;
         }
     }
 
