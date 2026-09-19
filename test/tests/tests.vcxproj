@@ -113,6 +113,7 @@
     </ClCompile>
     <ClCompile Include="TileElements.cpp" />
     <ClCompile Include="TileElementsView.cpp" />
+    <ClCompile Include="WaterObjectTests.cpp" />
     <ClCompile Include="WidgetStateTests.cpp" />
   </ItemGroup>
   <ItemGroup>
