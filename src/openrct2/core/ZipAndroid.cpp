@@ -30,12 +30,12 @@ public:
     ZipArchive(std::string_view path, ZipAccess access)
     {
         // retrieve the JNI environment.
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
         jclass jniClass = Platform::AndroidFindClass(env, "io/openrct2/ZipArchive");
         jmethodID constructor = env->GetMethodID(jniClass, "<init>", "(Landroid/content/Context;Ljava/lang/String;)V");
 
-        jobject activity = (jobject)SDL_AndroidGetActivity();
+        jobject activity = (jobject)SDL_GetAndroidActivity();
         jstring jniPath = env->NewStringUTF(std::string(path).c_str());
 
         jobject zip = env->NewObject(jniClass, constructor, activity, jniPath);
@@ -66,7 +66,7 @@ public:
         }
 
         // retrieve the JNI environment.
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID closeMethod = env->GetMethodID(zipClass, "close", "()V");
@@ -91,7 +91,7 @@ public:
         }
 
         // retrieve the JNI environment.
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID fileCountMethod = env->GetMethodID(zipClass, "getNumFiles", "()I");
@@ -118,7 +118,7 @@ public:
         }
 
         // retrieve the JNI environment.
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID fileNameMethod = env->GetMethodID(zipClass, "getFileName", "(I)Ljava/lang/String;");
@@ -155,7 +155,7 @@ public:
         }
 
         // retrieve the JNI environment.
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID fileSizeMethod = env->GetMethodID(zipClass, "getFileSize", "(I)J");
@@ -182,7 +182,7 @@ public:
         }
 
         // retrieve the JNI environment.
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jstring javaPath = env->NewStringUTF(std::string(path).c_str());

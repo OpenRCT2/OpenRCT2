@@ -38,7 +38,7 @@ namespace OpenRCT2::Http
             return str;
         };
 
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
         // Create request object
 
