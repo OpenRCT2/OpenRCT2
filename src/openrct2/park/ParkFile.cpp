@@ -2721,16 +2721,9 @@ namespace OpenRCT2
     }
 } // namespace OpenRCT2
 
-enum : uint32_t
+int32_t ScenarioSave(GameState_t& gameState, u8string_view path, SaveFlags flags)
 {
-    S6_SAVE_FLAG_EXPORT = 1 << 0,
-    S6_SAVE_FLAG_SCENARIO = 1 << 1,
-    S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
-};
-
-int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
-{
-    if (flags & S6_SAVE_FLAG_SCENARIO)
+    if (flags.has(SaveFlag::scenario))
     {
         LOG_VERBOSE("saving scenario");
     }
@@ -2739,7 +2732,7 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         LOG_VERBOSE("saving game");
     }
 
-    gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
+    gIsAutosave = flags.has(SaveFlag::automatic);
     if (!gIsAutosave)
     {
         auto* windowMgr = Ui::GetWindowManager();
@@ -2752,13 +2745,13 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
     auto parkFile = std::make_unique<ParkFile>();
     try
     {
-        if (flags & S6_SAVE_FLAG_EXPORT)
+        if (flags.has(SaveFlag::exportObjects))
         {
             auto& objManager = GetContext()->GetObjectManager();
             parkFile->ExportObjectsList = objManager.GetPackableObjects();
         }
         parkFile->OmitTracklessRides = true;
-        if (flags & S6_SAVE_FLAG_SCENARIO)
+        if (flags.has(SaveFlag::scenario))
         {
             // s6exporter->SaveScenario(path);
         }
@@ -2781,7 +2774,7 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
 
     Drawing::GfxInvalidateScreen();
 
-    if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
+    if (result && !flags.has(SaveFlag::automatic))
     {
         gScreenAge = 0;
     }
