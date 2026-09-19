@@ -165,6 +165,7 @@ static void ScenarioEnd()
 void ScenarioFailure(GameState_t& gameState)
 {
     gameState.scenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
+    gameState.scenarioOptions.objective.OnFailure(gameState);
     ScenarioEnd();
 }
 
@@ -264,10 +265,24 @@ void ScenarioAutosaveCheck()
     }
 }
 
+static void ScenarioUpdateLowRatingDayCount(GameState_t& gameState)
+{
+    if (gameState.park.rating < Scenario::Objective::kLowParkRatingThreshold && gameState.date.monthsElapsed >= 1)
+    {
+        gameState.scenarioParkRatingWarningDays++;
+    }
+    else if (gameState.scenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
+    {
+        gameState.scenarioParkRatingWarningDays = 0;
+    }
+}
+
 static void ScenarioDayUpdate(GameState_t& gameState)
 {
     FinanceUpdateDailyProfit();
     PeepUpdateDaysInQueue();
+    ScenarioUpdateLowRatingDayCount(gameState);
+
     switch (gameState.scenarioOptions.objective.Type)
     {
         case ObjectiveType::tenRollercoasters:
