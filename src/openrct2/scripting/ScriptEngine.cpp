@@ -599,6 +599,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScHandyman.Register(ctx);
     gScMechanic.Register(ctx);
     gScSecurity.Register(ctx);
+    gScEntertainer.Register(ctx);
     gScBalloon.Register(ctx);
     gScLitter.Register(ctx);
     gScMoneyEffect.Register(ctx);
@@ -660,6 +661,7 @@ void ScriptEngine::UnregisterClasses()
     gScHandyman.Unregister();
     gScMechanic.Unregister();
     gScSecurity.Unregister();
+    gScEntertainer.Unregister();
     gScBalloon.Unregister();
     gScLitter.Unregister();
     gScMoneyEffect.Unregister();
