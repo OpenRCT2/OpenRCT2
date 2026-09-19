@@ -683,7 +683,7 @@ namespace OpenRCT2
             if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST && stringId != STR_FOOTPATH_IN_THE_WAY)
             {
                 return GameActions::Result(
-                    GameActions::Status::noClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res.errorMessageArgs.data());
+                    GameActions::Status::noClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res.errorMessageArgs);
             }
         }
 

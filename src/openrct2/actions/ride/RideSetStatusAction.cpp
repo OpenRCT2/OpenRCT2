@@ -76,8 +76,7 @@ namespace OpenRCT2::GameActions
 
         res.errorTitle = _StatusErrorTitles[EnumValue(_status)];
 
-        Formatter ft(res.errorMessageArgs.data());
-        ride->formatNameTo(ft);
+        ride->formatNameTo(res.errorMessageArgs);
         if (_status != ride->status)
         {
             if (_status == RideStatus::simulating && ride->flags.has(RideFlag::brokenDown))
@@ -131,9 +130,8 @@ namespace OpenRCT2::GameActions
 
         res.errorTitle = _StatusErrorTitles[EnumValue(_status)];
 
-        Formatter ft(res.errorMessageArgs.data());
-        ft.Increment(6);
-        ride->formatNameTo(ft);
+        res.errorMessageArgs.Increment(6);
+        ride->formatNameTo(res.errorMessageArgs);
         if (!ride->overallView.isNull())
         {
             auto location = ride->overallView.toTileCentre();
