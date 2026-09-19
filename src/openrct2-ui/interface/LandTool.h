@@ -34,11 +34,9 @@ namespace OpenRCT2
 namespace OpenRCT2::LandTool
 {
     uint32_t SizeToSpriteIndex(uint16_t size);
-    void ShowSurfaceStyleDropdown(
-        WindowBase* w, Widget* widget, ObjectEntryIndex currentSurfaceType, Drawing::Colour selectedColour1,
-        Drawing::Colour selectedColour2);
+    void ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentSurfaceType);
     ObjectEntryIndex GetSurfaceStyleFromDropdownIndex(size_t index);
-    void ShowEdgeStyleDropdown(
-        WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType, Drawing::Colour selectedColour1);
+    void ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType);
     ObjectEntryIndex GetEdgeStyleFromDropdownIndex(size_t index);
+    void resetColourSelection(Drawing::Colour& surfaceColour1, Drawing::Colour& edgeColour1);
 } // namespace OpenRCT2::LandTool

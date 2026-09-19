@@ -126,6 +126,7 @@ namespace OpenRCT2
             Drawing::Colour colour;
         };
         std::array<TerrainSurfaceMapping, kMaxTerrainSurfaceObjects> _terrainSurfaceMap{};
+        std::array<Drawing::Colour, kMaxTerrainEdgeObjects> _terrainEdgeMap{};
 
         void ThrowIfIncompatibleVersion()
         {
@@ -190,7 +191,7 @@ namespace OpenRCT2
             }
             if (targetVersion < kColourableTerrainVersion)
             {
-                UpdateSurfaceElementsColour();
+                UpdateSurfaceElementsColour(gameState);
             }
 
             // Initial cash will eventually be removed
@@ -345,12 +346,14 @@ namespace OpenRCT2
                 {
                     _terrainSurfaceMap[i] = { i, Drawing::Colour::black };
                 }
+                std::fill(_terrainEdgeMap.begin(), _terrainEdgeMap.end(), Drawing::Colour::black);
                 ObjectEntryIndex newGridIndex = kObjectEntryIndexNull;
                 auto& terrainSurfaceMap = _terrainSurfaceMap;
+                auto& terrainEdgeMap = _terrainEdgeMap;
 
                 os.readWriteChunk(
                     ParkFileChunkType::objects,
-                    [&requiredObjects, version, &legacyPathMappings, &terrainSurfaceMap,
+                    [&requiredObjects, version, &legacyPathMappings, &terrainSurfaceMap, &terrainEdgeMap,
                      &newGridIndex](OrcaStream::ChunkStream& cs) {
                         auto numSubLists = cs.read<uint16_t>();
                         for (size_t i = 0; i < numSubLists; i++)
@@ -379,10 +382,17 @@ namespace OpenRCT2
                                                 continue;
                                             }
                                         }
+                                        // Void surface and edges are not handled specifically as the default colour is black
+                                        // anyway. This saves us some cycles.
                                         if (version < kColourableTerrainVersion)
                                         {
                                             auto datName = u8string(datEntry.GetName());
-                                            if (datName.starts_with("#RCT2SI"))
+                                            // Grey sandstone
+                                            if (datName == "#RCT1ESG")
+                                            {
+                                                terrainEdgeMap[j] = Drawing::Colour::grey;
+                                            }
+                                            else if (datName.starts_with("#RCT2SI"))
                                             {
                                                 // There were four grid objects. Make sure we only try to allocate one.
                                                 auto skip = false;
@@ -446,6 +456,13 @@ namespace OpenRCT2
                                                 identifier = "openrct2.ride.alpine_coaster";
                                             }
                                         }
+
+                                        if (identifier == "rct1beta.terrain_edge.brick"
+                                            || identifier == "rct1beta.terrain_edge.rock")
+                                        {
+                                            terrainEdgeMap[j] = Drawing::Colour::lightBrown;
+                                        }
+
                                         desc.Identifier = identifier;
                                         desc.Version = VersionTuple(cs.read<std::string>());
 
@@ -1350,19 +1367,21 @@ namespace OpenRCT2
             }
         }
 
-        void UpdateSurfaceElementsColour()
+        void UpdateSurfaceElementsColour(GameState_t& gameState)
         {
-            auto& gameState = getGameState();
             for (int32_t y = 0; y < gameState.mapSize.y; y++)
             {
                 for (int32_t x = 0; x < gameState.mapSize.x; x++)
                 {
                     for (auto* surfaceElement : TileElementsView<SurfaceElement>(TileCoordsXY{ x, y }))
                     {
-                        auto originalSurfaceIndex = surfaceElement->getSurfaceObjectIndex();
-                        const auto& mapping = _terrainSurfaceMap[originalSurfaceIndex];
-                        surfaceElement->setSurfaceObjectIndex(mapping.newEntryIndex);
-                        surfaceElement->setPrimarySurfaceColour(mapping.colour);
+                        const auto originalSurfaceIndex = surfaceElement->getSurfaceObjectIndex();
+                        const auto& surfaceMapping = _terrainSurfaceMap[originalSurfaceIndex];
+                        surfaceElement->setSurfaceObjectIndex(surfaceMapping.newEntryIndex);
+                        surfaceElement->setPrimarySurfaceColour(surfaceMapping.colour);
+
+                        const auto edgeIndex = surfaceElement->getEdgeObjectIndex();
+                        surfaceElement->setPrimaryEdgeColour(_terrainEdgeMap[edgeIndex]);
                     }
                 }
             }

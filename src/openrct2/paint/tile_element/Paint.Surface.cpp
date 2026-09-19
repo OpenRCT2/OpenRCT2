@@ -243,8 +243,6 @@ static ImageId GetSurfacePattern(
     {
         auto primaryColour = surfaceObject->getPrimaryColour(surfaceElement.getPrimarySurfaceColour());
         image = ImageId(surfaceObject->PatternBaseImageId + offset, primaryColour);
-        if (surfaceObject->Flags.has(TerrainSurfaceFlag::hasSecondaryColour))
-            image = image.WithSecondary(surfaceElement.getSecondarySurfaceColour());
     }
     return image;
 }
@@ -1041,7 +1039,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             }
             imageId = surfaceObject->GetImageId(
                 session.MapPosition, grassLength, rotation, image_offset, showGridlines, false,
-                tileElement.getPrimarySurfaceColour(), tileElement.getSecondarySurfaceColour());
+                tileElement.getPrimarySurfaceColour());
         }
         if (session.ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
@@ -1216,8 +1214,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         ImageId imageId;
         if (surfaceObject != nullptr)
             imageId = surfaceObject->GetImageId(
-                session.MapPosition, 1, rotation, image_offset, false, true, tileElement.getPrimarySurfaceColour(),
-                tileElement.getSecondarySurfaceColour());
+                session.MapPosition, 1, rotation, image_offset, false, true, tileElement.getPrimarySurfaceColour());
         PaintAttachToPreviousPS(session, imageId, 0, 0);
     }
 

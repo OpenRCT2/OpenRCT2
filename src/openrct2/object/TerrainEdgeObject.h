@@ -16,7 +16,7 @@
 
 namespace OpenRCT2
 {
-    constexpr auto kDefaultTerrainEdgeColour = Drawing::Colour::beige;
+    constexpr auto kDefaultTerrainEdgeColour1 = Drawing::Colour::beige;
 
     enum class TerrainEdgeFlag : uint8_t
     {
@@ -36,6 +36,7 @@ namespace OpenRCT2
         uint32_t BaseImageId{};
         Audio::DoorSoundType doorSound{};
         TerrainEdgeFlags flags;
+        Drawing::Colour colour = Drawing::kColourNull;
 
         void ReadJson(IReadObjectContext* context, json_t& root) override;
         void Load() override;
@@ -44,5 +45,6 @@ namespace OpenRCT2
         void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
         static TerrainEdgeObject* GetById(ObjectEntryIndex entryIndex);
+        Drawing::Colour getPreviewColour() const;
     };
 } // namespace OpenRCT2

@@ -34,10 +34,9 @@ namespace OpenRCT2::World::MapGenerator
         TileCoordsXY mapSize{ 150, 150 };
         int32_t waterLevel = 6;
         int32_t landTexture = 0;
-        Drawing::Colour surfaceColour1 = kDefaultTerrainSurfaceColour1;
-        Drawing::Colour surfaceColour2 = kDefaultTerrainSurfaceColour1;
+        Drawing::Colour surfaceColour1 = Drawing::Colour::black;
         int32_t edgeTexture = 0;
-        Drawing::Colour edgeColour1 = kDefaultTerrainEdgeColour;
+        Drawing::Colour edgeColour1 = Drawing::Colour::black;
         int32_t heightmapLow = 14;
         int32_t heightmapHigh = 60;
         bool smoothTileEdges = true;

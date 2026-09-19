@@ -25,12 +25,11 @@ namespace OpenRCT2::GameActions
 {
     SurfaceSetStyleAction::SurfaceSetStyleAction(
         MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle, Drawing::Colour surfaceColour1,
-        Drawing::Colour surfaceColour2, Drawing::Colour edgeColour1)
+        Drawing::Colour edgeColour1)
         : _range(range)
         , _surfaceStyle(surfaceStyle)
         , _edgeStyle(edgeStyle)
         , _surfaceColour1(surfaceColour1)
-        , _surfaceColour2(surfaceColour2)
         , _edgeColour1(edgeColour1)
     {
     }
@@ -41,7 +40,6 @@ namespace OpenRCT2::GameActions
         visitor.Visit("surfaceStyle", _surfaceStyle);
         visitor.Visit("edgeStyle", _edgeStyle);
         visitor.Visit("surfaceColour1", _surfaceColour1);
-        visitor.Visit("surfaceColour2", _surfaceColour2);
         visitor.Visit("edgeColour1", _edgeColour1);
     }
 
@@ -50,7 +48,7 @@ namespace OpenRCT2::GameActions
         GameAction::Serialise(stream);
 
         stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle) << DS_TAG(_surfaceColour1)
-               << DS_TAG(_surfaceColour2) << DS_TAG(_edgeColour1);
+               << DS_TAG(_edgeColour1);
     }
 
     bool SurfaceSetStyleAction::surfaceColour1NeedsRecolour(
@@ -60,15 +58,6 @@ namespace OpenRCT2::GameActions
             return false;
 
         return _surfaceColour1 != surfaceElement.getPrimarySurfaceColour();
-    }
-
-    bool SurfaceSetStyleAction::surfaceColour2NeedsRecolour(
-        const SurfaceElement& surfaceElement, const TerrainSurfaceObject& surfaceObject) const
-    {
-        if (!surfaceObject.Flags.has(TerrainSurfaceFlag::hasSecondaryColour))
-            return false;
-
-        return _surfaceColour2 != surfaceElement.getSecondarySurfaceColour();
     }
 
     bool SurfaceSetStyleAction::edgeColour1NeedsRecolour(
@@ -153,8 +142,7 @@ namespace OpenRCT2::GameActions
                     if (surfaceObject != nullptr)
                     {
                         auto curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
-                        if (_surfaceStyle != curSurfaceStyle || surfaceColour1NeedsRecolour(*surfaceElement, *surfaceObject)
-                            || surfaceColour2NeedsRecolour(*surfaceElement, *surfaceObject))
+                        if (_surfaceStyle != curSurfaceStyle || surfaceColour1NeedsRecolour(*surfaceElement, *surfaceObject))
                         {
                             surfaceCost += surfaceObject->Price;
                         }
@@ -224,15 +212,13 @@ namespace OpenRCT2::GameActions
                     if (surfaceObject != nullptr)
                     {
                         auto curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
-                        if (_surfaceStyle != curSurfaceStyle || surfaceColour1NeedsRecolour(*surfaceElement, *surfaceObject)
-                            || surfaceColour2NeedsRecolour(*surfaceElement, *surfaceObject))
+                        if (_surfaceStyle != curSurfaceStyle || surfaceColour1NeedsRecolour(*surfaceElement, *surfaceObject))
                         {
                             surfaceCost += surfaceObject->Price;
 
                             surfaceElement->setSurfaceObjectIndex(_surfaceStyle);
-                            surfaceElement->setPrimarySurfaceColour(surfaceObject->getPrimaryColour(_surfaceColour1));
-                            if (surfaceObject->Flags.has(TerrainSurfaceFlag::hasSecondaryColour))
-                                surfaceElement->setSecondarySurfaceColour(_surfaceColour2);
+                            if (surfaceObject->Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+                                surfaceElement->setPrimarySurfaceColour(surfaceObject->getPrimaryColour(_surfaceColour1));
 
                             MapInvalidateTileFull(coords);
                             FootpathRemoveLitter({ coords, TileElementHeight(coords) });
