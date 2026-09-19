@@ -16736,7 +16736,7 @@ static void MiniRCTrackLeftTwistDownToUp(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINI_TRACK_INLINE_TWIST + 7),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::rightCorner, direction, 14, height,
+                        session, supportType.metal, MetalSupportPlace::rightCorner, direction, 16, height,
                         session.SupportColours);
                     break;
                 case 2:
@@ -16917,7 +16917,7 @@ static void MiniRCTrackRightTwistDownToUp(
                         session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINI_TRACK_INLINE_TWIST + 37),
                         { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::topCorner, direction, 14, height,
+                        session, supportType.metal, MetalSupportPlace::topCorner, direction, 16, height,
                         session.SupportColours);
                     break;
                 case 3:
