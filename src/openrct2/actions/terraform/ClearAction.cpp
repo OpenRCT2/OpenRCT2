@@ -124,16 +124,12 @@ namespace OpenRCT2::GameActions
     money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executing, GameState_t& gameState) const
     {
         // Pass down all flags.
-        TileElement* tileElement = nullptr;
         money64 totalCost = 0;
         bool tileEdited;
         do
         {
             tileEdited = false;
-            tileElement = MapGetFirstElementAt(tilePos);
-            if (tileElement == nullptr)
-                return totalCost;
-            do
+            for (auto* tileElement : TileElementsView(tilePos))
             {
                 if (tileElement->isGhost())
                     continue;
@@ -245,7 +241,10 @@ namespace OpenRCT2::GameActions
                     default:
                         break;
                 }
-            } while (!tileEdited && !(tileElement++)->isLastForTile());
+
+                if (tileEdited)
+                    break;
+            }
         } while (tileEdited);
 
         return totalCost;
