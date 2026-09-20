@@ -164,7 +164,7 @@ static void ScenarioEnd()
 void ScenarioFailure(GameState_t& gameState)
 {
     gameState.scenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
-    gameState.scenarioOptions.objective.OnFailure(gameState);
+    gameState.scenarioOptions.objective.onFailure(gameState.park, gameState);
     ScenarioEnd();
 }
 
@@ -264,9 +264,9 @@ void ScenarioAutosaveCheck()
     }
 }
 
-static void scenarioUpdateLowRatingDayCount(GameState_t& gameState)
+static void scenarioUpdateLowRatingDayCount(Park::ParkData& park, GameState_t& gameState)
 {
-    if (gameState.park.rating < Scenario::Objective::kLowParkRatingThreshold && gameState.date.monthsElapsed >= 1)
+    if (park.rating < Scenario::Objective::kLowParkRatingThreshold && gameState.date.monthsElapsed >= 1)
     {
         gameState.scenarioParkRatingWarningDays++;
     }
@@ -280,7 +280,7 @@ static void ScenarioDayUpdate(GameState_t& gameState)
 {
     FinanceUpdateDailyProfit();
     PeepUpdateDaysInQueue();
-    scenarioUpdateLowRatingDayCount(gameState);
+    scenarioUpdateLowRatingDayCount(gameState.park, gameState);
 
     switch (gameState.scenarioOptions.objective.Type)
     {

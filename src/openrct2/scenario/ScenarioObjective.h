@@ -84,7 +84,7 @@ namespace OpenRCT2::Scenario
         }
 
         ObjectiveStatus Check(const Park::ParkData& park, const GameState_t& gameState) const;
-        void onFailure(GameState_t& gameState) const;
+        void onFailure(Park::ParkData& park, GameState_t& gameState) const;
 
     private:
         ObjectiveStatus CheckGuestsBy(const Park::ParkData& park, const GameState_t& gameState) const;

@@ -271,14 +271,14 @@ namespace OpenRCT2::Scenario
         }
     }
 
-    void Objective::onFailure(GameState_t& gameState) const
+    void Objective::onFailure(Park::ParkData& park, GameState_t& gameState) const
     {
         switch (Type)
         {
             case ObjectiveType::guestsAndRating:
             {
                 News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-                gameState.park.flags.unset(ParkFlag::parkOpen);
+                park.flags.unset(ParkFlag::parkOpen);
                 gameState.scenarioOptions.guestInitialHappiness = 50;
                 break;
             }
