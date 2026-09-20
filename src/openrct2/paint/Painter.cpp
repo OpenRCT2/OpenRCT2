@@ -155,7 +155,7 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation)
+PaintSession* Painter::CreateSession(RenderTarget& rt, ViewportFlags viewFlags, uint8_t rotation)
 {
     PROFILED_FUNCTION();
 

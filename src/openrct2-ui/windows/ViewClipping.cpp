@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowBase* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
                     {
-                        mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
+                        mainWindow->viewport->flags.flip(ViewportFlag::clipView);
                         mainWindow->invalidate();
                     }
                     this->invalidate();
@@ -146,7 +146,7 @@ namespace OpenRCT2::Ui::Windows
                     // Toggle height clipping see-through.
                     if (auto mainWindow = WindowGetMain(); mainWindow != nullptr)
                     {
-                        mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH;
+                        mainWindow->viewport->flags.flip(ViewportFlag::clipViewSeeThrough);
                         mainWindow->invalidate();
                     }
                     invalidate();
@@ -274,9 +274,9 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                setCheckboxValue(WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+                setCheckboxValue(WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags.has(ViewportFlag::clipView));
                 setCheckboxValue(
-                    WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
+                    WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, mainWindow->viewport->flags.has(ViewportFlag::clipViewSeeThrough));
             }
 
             setWidgetPressed(WIDX_CLIP_SELECTOR, IsActive());
@@ -376,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
             // Turn on view clipping when the window is opened.
             if (mainWindow != nullptr)
             {
-                mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
+                mainWindow->viewport->flags.set(ViewportFlag::clipView);
                 mainWindow->invalidate();
             }
         }
@@ -388,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
+                mainWindow->viewport->flags.unset(ViewportFlag::clipView);
                 mainWindow->invalidate();
             }
         }
