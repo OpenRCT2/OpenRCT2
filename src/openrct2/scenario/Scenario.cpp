@@ -264,7 +264,7 @@ void ScenarioAutosaveCheck()
     }
 }
 
-static void ScenarioUpdateLowRatingDayCount(GameState_t& gameState)
+static void scenarioUpdateLowRatingDayCount(GameState_t& gameState)
 {
     if (gameState.park.rating < Scenario::Objective::kLowParkRatingThreshold && gameState.date.monthsElapsed >= 1)
     {
@@ -280,7 +280,7 @@ static void ScenarioDayUpdate(GameState_t& gameState)
 {
     FinanceUpdateDailyProfit();
     PeepUpdateDaysInQueue();
-    ScenarioUpdateLowRatingDayCount(gameState);
+    scenarioUpdateLowRatingDayCount(gameState);
 
     switch (gameState.scenarioOptions.objective.Type)
     {

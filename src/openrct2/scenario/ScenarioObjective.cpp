@@ -271,7 +271,7 @@ namespace OpenRCT2::Scenario
         }
     }
 
-    void Objective::OnFailure(GameState_t& gameState) const
+    void Objective::onFailure(GameState_t& gameState) const
     {
         switch (Type)
         {
