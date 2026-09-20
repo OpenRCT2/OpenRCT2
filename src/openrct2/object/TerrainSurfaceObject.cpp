@@ -13,12 +13,19 @@
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/ColourMap.h"
+#include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/FilterPaletteIds.h"
+#include "../drawing/Image.h"
+#include "../drawing/PaletteMap.h"
+#include "../drawing/RenderTarget.h"
 #include "../interface/ScreenCoords.hpp"
 #include "../world/Location.hpp"
 #include "ObjectManager.h"
 
+using OpenRCT2::Drawing::FilterPaletteID;
 using OpenRCT2::Drawing::PaletteIndex;
+using OpenRCT2::Drawing::PaletteMap;
 
 namespace OpenRCT2
 {
@@ -40,6 +47,51 @@ namespace OpenRCT2
         { "lightest", { .isOffset = 1, .mapOffset = 9 } },
     } };
 
+    void TerrainSurfaceObject::precolourPatternImages()
+    {
+        for (size_t colourNum = 0; colourNum < Drawing::kColourNumTotal; colourNum++)
+        {
+            for (size_t patternOffset = 0; patternOffset < kNumSmoothingPatternImages; patternOffset++)
+            {
+                G1Element newElement = *(GfxGetG1Element(PatternBaseImageId + patternOffset));
+                size_t numPixels = newElement.width * newElement.height;
+                auto pixels8 = new uint8_t[numPixels];
+                // Copy unmodified image so we can colour it
+                std::copy_n(newElement.offset, numPixels, pixels8);
+                newElement.offset = pixels8;
+
+                auto primaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(colourNum))
+                                             .value_or(PaletteMap::GetDefault());
+
+                Drawing::RenderTarget rt;
+                rt.bits = reinterpret_cast<PaletteIndex*>(pixels8);
+                rt.x = 0;
+                rt.y = 0;
+                rt.width = newElement.width;
+                rt.height = newElement.height;
+                rt.pitch = 0;
+                rt.zoom_level = ZoomLevel{ 0 };
+
+                auto dummyImage = ImageId().WithPrimary(static_cast<Drawing::Colour>(colourNum));
+                DrawSpriteArgs args(
+                    dummyImage, primaryPaletteMap, newElement, 0, 0, newElement.width, newElement.height, rt.bits);
+                GfxSpriteToBuffer(rt, args);
+
+                precolouredPatternImages.AddImage(&newElement);
+                delete[] pixels8;
+            }
+        }
+
+        precolouredPatternImageId = GfxObjectAllocateImages(
+            precolouredPatternImages.GetImages(), precolouredPatternImages.GetCount());
+    }
+
+    void TerrainSurfaceObject::unloadPrecolouredPatternImages()
+    {
+        GfxObjectFreeImages(precolouredPatternImageId, precolouredPatternImages.GetCount());
+        precolouredPatternImageId = 0;
+    }
+
     void TerrainSurfaceObject::Load()
     {
         GetStringTable().Sort();
@@ -48,7 +100,10 @@ namespace OpenRCT2
         if (Flags.hasAny(TerrainSurfaceFlag::smoothWithSelf, TerrainSurfaceFlag::smoothWithOther))
         {
             PatternBaseImageId = IconImageId + 1;
-            EntryBaseImageId = PatternBaseImageId + 6;
+            EntryBaseImageId = PatternBaseImageId + kNumSmoothingPatternImages;
+
+            if (Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+                precolourPatternImages();
         }
         else
         {
@@ -61,6 +116,8 @@ namespace OpenRCT2
     {
         LanguageFreeObjectString(NameStringId);
         UnloadImages();
+        if (Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+            unloadPrecolouredPatternImages();
 
         NameStringId = 0;
         IconImageId = 0;
@@ -261,5 +318,14 @@ namespace OpenRCT2
     {
         auto& objMgr = GetContext()->GetObjectManager();
         return objMgr.GetLoadedObject<TerrainSurfaceObject>(entryIndex);
+    }
+
+    ImageIndex TerrainSurfaceObject::getPatternImage(Drawing::Colour selectedColour, uint8_t offset) const
+    {
+        assert(offset < kNumSmoothingPatternImages);
+        if (Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+            return precolouredPatternImageId + (EnumValue(selectedColour) * kNumSmoothingPatternImages) + offset;
+
+        return PatternBaseImageId + offset;
     }
 } // namespace OpenRCT2

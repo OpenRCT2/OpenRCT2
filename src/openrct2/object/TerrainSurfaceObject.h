@@ -19,6 +19,8 @@ struct ImageId;
 
 namespace OpenRCT2
 {
+    constexpr auto kNumSmoothingPatternImages = 6;
+
     constexpr auto kDefaultTerrainSurfaceColour1 = Drawing::Colour::brightPurple;
 
     struct MapColour
@@ -53,6 +55,9 @@ namespace OpenRCT2
 
         static constexpr auto kNumImagesInEntry = 19;
 
+        void precolourPatternImages();
+        void unloadPrecolouredPatternImages();
+
     public:
         static constexpr ObjectType kObjectType = ObjectType::terrainSurface;
 
@@ -60,6 +65,7 @@ namespace OpenRCT2
         StringId NameStringId{};
         uint32_t IconImageId{};
         uint32_t PatternBaseImageId{};
+        ImageIndex precolouredPatternImageId{};
         uint32_t EntryBaseImageId{};
 
         uint32_t NumEntries{};
@@ -75,6 +81,8 @@ namespace OpenRCT2
         money64 Price{};
         TerrainSurfaceFlags Flags{};
         MapColour MapColours[2]{};
+
+        ImageTable precolouredPatternImages{};
 
         void ReadJson(IReadObjectContext* context, json_t& root) override;
         void Load() override;
@@ -93,5 +101,6 @@ namespace OpenRCT2
         std::array<Drawing::PaletteIndex, 2> getMapColours(Drawing::Colour selectedColour) const;
 
         static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
+        ImageIndex getPatternImage(Drawing::Colour selectedColour, uint8_t offset) const;
     };
 } // namespace OpenRCT2

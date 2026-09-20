@@ -243,7 +243,7 @@ static ImageId GetSurfacePattern(Colour surfacePrimaryColour, const TerrainSurfa
     if (surfaceObject != nullptr)
     {
         auto primaryColour = surfaceObject->getPrimaryColour(surfacePrimaryColour);
-        ImageIndex index = surfaceObject->PatternBaseImageId + offset;
+        ImageIndex index = surfaceObject->getPatternImage(primaryColour, offset);
         // auto* g1 = GfxGetG1Element(index);
         image = ImageId(index, primaryColour);
         // auto primaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(primaryColour));
