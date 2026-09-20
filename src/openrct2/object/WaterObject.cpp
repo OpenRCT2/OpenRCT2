@@ -24,7 +24,7 @@ namespace OpenRCT2
     void WaterObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         stream->Seek(14, STREAM_SEEK_CURRENT);
-        _legacyType.flags = stream->ReadValue<uint16_t>();
+        _legacyType.flags = stream->ReadValue<WaterObjectFlags>();
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
         GetImageTable().Read(context, stream);
@@ -69,10 +69,10 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            _legacyType.flags = Json::GetFlags<uint16_t>(
+            _legacyType.flags = Json::GetFlagHolder<WaterObjectFlags, WaterObjectFlag>(
                 properties,
                 {
-                    { "allowDucks", WATER_FLAGS_ALLOW_DUCKS },
+                    { "allowDucks", WaterObjectFlag::allowDucks },
                 });
 
             auto jPalettes = properties["palettes"];
