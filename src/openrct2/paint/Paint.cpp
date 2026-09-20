@@ -10,6 +10,7 @@
 #include "Paint.h"
 
 #include "../Context.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/Money.hpp"
 #include "../core/Numerics.hpp"
@@ -686,6 +687,27 @@ static inline void PaintAttachedPS(RenderTarget& rt, PaintStruct* ps, ViewportFl
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->IsMasked)
         {
+            // G1Element g1Target = *GfxGetG1Element(attached_ps->ColourImageId);
+            // GfxSetG1Element(STR_TEMP_SMOOTHING, &g1Target);
+            // auto primaryColour = attached_ps->ColourImageId.GetPrimary();
+            // auto image = ImageId(STR_TEMP_SMOOTHING, primaryColour);
+            // auto primaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(primaryColour));
+            // if (primaryPaletteMap.has_value())
+            // {
+            //     RenderTarget rt2;
+            //     rt2.bits = reinterpret_cast<PaletteIndex*>(g1Target.offset);
+            //     rt2.x = 0;
+            //     rt2.y = 0;
+            //     rt2.width = g1Target.width;
+            //     rt2.height = g1Target.height;
+            //     rt2.pitch = 0;
+            //     rt2.zoom_level = ZoomLevel{ 0 };
+            //
+            //     DrawSpriteArgs args(image, primaryPaletteMap.value(), g1Target, 0, 0, g1Target.width, g1Target.height,
+            //     rt2.bits); GfxSpriteToBuffer(rt2, args);
+            // }
+            //
+            // GfxDrawSpriteRawMasked(rt, screenCoords, imageId, image);
             GfxDrawSpriteRawMasked(rt, screenCoords, imageId, attached_ps->ColourImageId);
         }
         else
