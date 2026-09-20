@@ -1670,10 +1670,10 @@ declare global {
         cancel: boolean;
     }
 
-	interface RideBreakdownArgs {
-		readonly rideId: number;
-		breakdownReason: string;
-	}
+    interface RideBreakdownArgs {
+        readonly rideId: number;
+        breakdownReason: string;
+    }
 
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
@@ -2597,7 +2597,8 @@ declare global {
         readonly numInversions: number;
 
         /**
-         * Number of holes. Only applicable to the mini-golf.
+         * Number of holes traversed during testing. Only applicable to the mini-golf
+         * and only meaningful after the ride has been tested.
          */
         readonly numHoles: number;
 
@@ -2609,10 +2610,10 @@ declare global {
         readonly trackShelteredEighths: number;
 
         /**
-         * Whether the ride has a water splash or spinning tunnel element.
-         * Internally this is the same check used for "hasWaterSplash", but it
-         * also returns true for spinning tunnels as they share the same
-         * special element type id.
+         * Whether testing detected a water splash or spinning tunnel element.
+         * This exposes the internal `hasWaterSplash()` check, which also returns
+         * true for spinning tunnels because they share the same special element
+         * type ID. Only meaningful after the ride has been tested.
          */
         readonly hasWaterSplashOrSpinningTunnel: boolean;
 
