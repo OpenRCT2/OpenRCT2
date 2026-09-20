@@ -270,7 +270,7 @@ static void scenarioUpdateLowRatingDayCount(Park::ParkData& park, GameState_t& g
     {
         gameState.scenarioParkRatingWarningDays++;
 
-        if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating 
+        if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating
             && Config::Get().notifications.parkRatingWarnings)
         {
             switch (gameState.scenarioParkRatingWarningDays)
