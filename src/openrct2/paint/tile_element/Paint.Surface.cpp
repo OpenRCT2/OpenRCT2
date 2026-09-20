@@ -15,8 +15,6 @@
 #include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
-#include "../../drawing/Drawing.Sprite.h"
-#include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
 #include "../../entity/Staff.h"
@@ -243,24 +241,7 @@ static ImageId GetSurfacePattern(Colour surfacePrimaryColour, const TerrainSurfa
     if (surfaceObject != nullptr)
     {
         auto primaryColour = surfaceObject->getPrimaryColour(surfacePrimaryColour);
-        ImageIndex index = surfaceObject->getPatternImage(primaryColour, offset);
-        // auto* g1 = GfxGetG1Element(index);
-        image = ImageId(index, primaryColour);
-        // auto primaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(primaryColour));
-        // if (primaryPaletteMap.has_value())
-        // {
-        //     RenderTarget rt;
-        //     rt.bits = reinterpret_cast<PaletteIndex*>(g1->offset);
-        //     rt.x = 0;
-        //     rt.y = 0;
-        //     rt.width = g1->width;
-        //     rt.height = g1->height;
-        //     rt.pitch = 0;
-        //     rt.zoom_level = ZoomLevel{ 0 };
-        //
-        //     DrawSpriteArgs args(image, primaryPaletteMap.value(), *g1, 0, 0, g1->width, g1->height, rt.bits);
-        //     GfxSpriteToBuffer(rt, args);
-        // }
+        image = ImageId(surfaceObject->getPatternImage(primaryColour, offset));
     }
     return image;
 }
@@ -436,8 +417,7 @@ static void ViewportSurfaceSmoothenEdge(
             return;
     }
 
-    const auto image_id = ImageId(
-        maskImageBase + Byte97B444[self.slope], self.surfaceObject->getPrimaryColour(ownSurfaceColour));
+    const auto image_id = ImageId(maskImageBase + Byte97B444[self.slope]);
 
     if (PaintAttachToPreviousPS(session, image_id, 0, 0))
     {

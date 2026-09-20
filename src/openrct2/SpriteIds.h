@@ -16,7 +16,7 @@
 #include <cstddef>
 
 // Number of temp sprite slots available for dynamic on-demand drawing
-constexpr size_t kTempSpriteCount = 6;
+constexpr size_t kTempSpriteCount = 5;
 
 enum : ImageIndex
 {
@@ -29,7 +29,6 @@ enum : ImageIndex
     SPR_TEMP_TRACK_PLACE = SPR_TEMP_BEGIN + 2,   // TrackDesignPlace.cpp placement preview
     SPR_TEMP_PARK_PREVIEW = SPR_TEMP_BEGIN + 3,  // ParkPreview.cpp scenario/save preview
     SPR_TEMP_INSTALL_TRACK = SPR_TEMP_BEGIN + 4, // InstallTrack.cpp track install preview
-    STR_TEMP_SMOOTHING = SPR_TEMP_BEGIN + 5,
     SPR_TEMP_END = SPR_TEMP_BEGIN + kTempSpriteCount,
 
     // Unused, listed for documentation purposes only
