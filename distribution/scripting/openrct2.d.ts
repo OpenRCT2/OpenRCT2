@@ -2602,10 +2602,11 @@ declare global {
         readonly numHoles: number;
 
         /**
-         * Raw sheltered length of the ride. To convert to the human-readable
-         * value, right-shift by 16 (i.e. `shelteredLength >> 16`).
+         * Number of sheltered eighths of the tested track, clamped to the range
+         * 0 to 7. This is the value used by the unsheltered ride rating
+         * requirement and is only meaningful after the ride has been tested.
          */
-        readonly shelteredLength: number;
+        readonly trackShelteredEighths: number;
 
         /**
          * Whether the ride has a water splash or spinning tunnel element.

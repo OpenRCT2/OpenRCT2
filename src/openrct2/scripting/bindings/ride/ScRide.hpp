@@ -147,7 +147,7 @@ namespace OpenRCT2::Scripting
         static JSValue highestDropHeight_get(JSContext* ctx, JSValue thisVal);
         static JSValue numInversions_get(JSContext* ctx, JSValue thisVal);
         static JSValue numHoles_get(JSContext* ctx, JSValue thisVal);
-        static JSValue shelteredLength_get(JSContext* ctx, JSValue thisVal);
+        static JSValue trackShelteredEighths_get(JSContext* ctx, JSValue thisVal);
         static JSValue hasWaterSplashOrSpinningTunnel_get(JSContext* ctx, JSValue thisVal);
         static JSValue breakdown_get(JSContext* ctx, JSValue thisVal);
         static JSValue setBreakdown(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);

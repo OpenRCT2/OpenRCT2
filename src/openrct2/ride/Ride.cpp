@@ -596,6 +596,25 @@ namespace OpenRCT2
         return totalLength;
     }
 
+    /**
+     * Calculates how much of the tested track is sheltered in eighths.
+     */
+    uint8_t Ride::getTrackShelteredEighths() const
+    {
+        const int32_t lengthEighth = getTotalLength() / 8;
+        int32_t lengthCounter = lengthEighth;
+        uint8_t shelteredEighths = 0;
+        for (int32_t i = 0; i < 7; i++)
+        {
+            if (shelteredLength >= lengthCounter)
+            {
+                lengthCounter += lengthEighth;
+                shelteredEighths++;
+            }
+        }
+        return shelteredEighths;
+    }
+
     int32_t Ride::getTotalTime() const
     {
         int32_t totalTime = 0;

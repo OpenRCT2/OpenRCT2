@@ -76,7 +76,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("highestDropHeight", ScRide::highestDropHeight_get, nullptr),
             JS_CGETSET_DEF("numInversions", ScRide::numInversions_get, nullptr),
             JS_CGETSET_DEF("numHoles", ScRide::numHoles_get, nullptr),
-            JS_CGETSET_DEF("shelteredLength", ScRide::shelteredLength_get, nullptr),
+            JS_CGETSET_DEF("trackShelteredEighths", ScRide::trackShelteredEighths_get, nullptr),
             JS_CGETSET_DEF("hasWaterSplashOrSpinningTunnel", ScRide::hasWaterSplashOrSpinningTunnel_get, nullptr),
             JS_CGETSET_DEF("breakdown", ScRide::breakdown_get, nullptr),
             JS_CFUNC_DEF("setBreakdown", 1, ScRide::setBreakdown),
@@ -817,10 +817,10 @@ namespace OpenRCT2::Scripting
         return JS_NewUint32(ctx, ride != nullptr ? ride->numHoles : 0);
     }
 
-    JSValue ScRide::shelteredLength_get(JSContext* ctx, JSValue thisVal)
+    JSValue ScRide::trackShelteredEighths_get(JSContext* ctx, JSValue thisVal)
     {
         auto ride = GetRide(thisVal);
-        return JS_NewInt32(ctx, ride != nullptr ? ride->shelteredLength : 0);
+        return JS_NewUint32(ctx, ride != nullptr ? ride->getTrackShelteredEighths() : 0);
     }
 
     JSValue ScRide::hasWaterSplashOrSpinningTunnel_get(JSContext* ctx, JSValue thisVal)
