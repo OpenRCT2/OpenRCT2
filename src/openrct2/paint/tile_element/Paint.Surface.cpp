@@ -15,6 +15,8 @@
 #include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
+#include "../../drawing/Drawing.Sprite.h"
+#include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/PatrolArea.h"
 #include "../../entity/Staff.h"
@@ -235,14 +237,30 @@ static constexpr TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
     },
 };
 
-static ImageId GetSurfacePattern(
-    const SurfaceElement& surfaceElement, const TerrainSurfaceObject* surfaceObject, int32_t offset)
+static ImageId GetSurfacePattern(Colour surfacePrimaryColour, const TerrainSurfaceObject* surfaceObject, int32_t offset)
 {
     ImageId image;
     if (surfaceObject != nullptr)
     {
-        auto primaryColour = surfaceObject->getPrimaryColour(surfaceElement.getPrimarySurfaceColour());
-        image = ImageId(surfaceObject->PatternBaseImageId + offset, primaryColour);
+        auto primaryColour = surfaceObject->getPrimaryColour(surfacePrimaryColour);
+        ImageIndex index = surfaceObject->PatternBaseImageId + offset;
+        // auto* g1 = GfxGetG1Element(index);
+        image = ImageId(index, primaryColour);
+        // auto primaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(primaryColour));
+        // if (primaryPaletteMap.has_value())
+        // {
+        //     RenderTarget rt;
+        //     rt.bits = reinterpret_cast<PaletteIndex*>(g1->offset);
+        //     rt.x = 0;
+        //     rt.y = 0;
+        //     rt.width = g1->width;
+        //     rt.height = g1->height;
+        //     rt.pitch = 0;
+        //     rt.zoom_level = ZoomLevel{ 0 };
+        //
+        //     DrawSpriteArgs args(image, primaryPaletteMap.value(), *g1, 0, 0, g1->width, g1->height, rt.bits);
+        //     GfxSpriteToBuffer(rt, args);
+        // }
     }
     return image;
 }
@@ -397,9 +415,9 @@ static void ViewportSurfaceSmoothenEdge(
             break;
     }
 
+    auto ownSurfaceColour = self.tile_element->asSurface()->getPrimarySurfaceColour();
     bool sameTextureAndColour = (self.surfaceObject == neighbour.surfaceObject)
-        && (self.tile_element->asSurface()->getPrimarySurfaceColour()
-            == neighbour.tile_element->asSurface()->getPrimarySurfaceColour());
+        && (ownSurfaceColour == neighbour.tile_element->asSurface()->getPrimarySurfaceColour());
     if (sameTextureAndColour)
     {
         // same tint
@@ -418,13 +436,17 @@ static void ViewportSurfaceSmoothenEdge(
             return;
     }
 
-    const auto image_id = ImageId(maskImageBase + Byte97B444[self.slope]);
+    const auto image_id = ImageId(
+        maskImageBase + Byte97B444[self.slope], self.surfaceObject->getPrimaryColour(ownSurfaceColour));
 
     if (PaintAttachToPreviousPS(session, image_id, 0, 0))
     {
         AttachedPaintStruct* out = session.LastAttachedPS;
         // set content and enable masking
-        out->ColourImageId = GetSurfacePattern(*(neighbour.tile_element->asSurface()), neighbour.surfaceObject, cl);
+        auto surfacePrimaryColour = Colour::black;
+        if (neighbour.tile_element != nullptr)
+            surfacePrimaryColour = neighbour.tile_element->asSurface()->getPrimarySurfaceColour();
+        out->ColourImageId = GetSurfacePattern(surfacePrimaryColour, neighbour.surfaceObject, cl);
         out->IsMasked = true;
     }
 }

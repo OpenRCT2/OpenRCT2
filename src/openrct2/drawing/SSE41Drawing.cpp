@@ -19,7 +19,8 @@ using OpenRCT2::Drawing::PaletteIndex;
 
 void MaskSse4_1(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap,
+    const OpenRCT2::Drawing::PaletteMap& paletteMap)
 {
     if (width == 32)
     {
@@ -54,7 +55,7 @@ void MaskSse4_1(
     }
     else
     {
-        MaskScalar(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
+        MaskScalar(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap, paletteMap);
     }
 }
 
