@@ -2309,9 +2309,15 @@ namespace OpenRCT2::Scripting
         const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
     {
         const auto* const largeEntry = largeScenery->getEntry();
+        if (largeEntry == nullptr)
+            return nullptr;
+
         const auto direction = largeScenery->getDirection();
         const auto sequenceIndex = largeScenery->getSequenceIndex();
         const auto& tiles = largeEntry->tiles;
+        if (sequenceIndex >= tiles.size())
+            return nullptr;
+
         const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
             CoordsXY{ initialTile.offset }.rotate(direction),
@@ -2354,8 +2360,10 @@ namespace OpenRCT2::Scripting
     void ScTileElement::RemoveBannerEntryIfNeeded(TileElement* element, CoordsXY& coords)
     {
         // check if other element still uses the banner entry
-        if (element->getType() == TileElementType::largeScenery
-            && element->asLargeScenery()->getEntry()->scrolling_mode != kScrollingModeNone
+        const auto* largeSceneryEntry = element->getType() == TileElementType::largeScenery
+            ? element->asLargeScenery()->getEntry()
+            : nullptr;
+        if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != kScrollingModeNone
             && GetOtherLargeSceneryElement(coords, element->asLargeScenery()) != nullptr)
             return;
         // remove banner entry (if one exists)
