@@ -862,7 +862,7 @@ namespace OpenRCT2
         PaintDrawStructs(session);
 
         if (Config::Get().general.renderWeatherGloom && !gTrackDesignSaveMode
-            && !session.ViewFlags.has(ViewportFlag::hideEntities) && !session.ViewFlags.has(ViewportFlag::highlightPathIssues))
+            && !session.ViewFlags.hasAny(ViewportFlag::hideEntities, ViewportFlag::highlightPathIssues))
         {
             ViewportPaintWeatherGloom(session.rt);
         }
@@ -1348,8 +1348,7 @@ namespace OpenRCT2
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, ViewportFlags viewFlags)
     {
         // the cut-away view is active and see-through is activated
-        auto cutAwayViewWithTransparency = viewFlags.has(ViewportFlag::clipView)
-            && viewFlags.has(ViewportFlag::clipViewSeeThrough);
+        auto cutAwayViewWithTransparency = viewFlags.hasAll(ViewportFlag::clipView, ViewportFlag::clipViewSeeThrough);
 
         // the element is above the cut-off height
         auto clipped = cutAwayViewWithTransparency && ps->Element == nullptr && ps->Entity != nullptr
