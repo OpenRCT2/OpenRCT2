@@ -3830,3 +3830,24 @@ STR_7039    :Type d’attraction
 STR_7040    :Éléments de chemin
 STR_7041    :Panneau d’information du parc
 STR_7042    :Panneau d’information du temps
+STR_7043    :Impossible de changer la hauteur du terrain ici…
+STR_7044    :Ruban d’informations
+STR_7045    :Barre d’état façon RCT1
+STR_7046    :Barre d’état (façon RCT1)
+STR_7047    :Bouton d’étape (concepteur de voie)
+STR_7048    :Bouton d’étape (éditeur de scénario)
+STR_7049    :OpenRCT2
+STR_7050    :Visiteurs en train de marcher
+STR_7051    :Visiteurs se dirigeant vers {STRINGID}
+STR_7052    :Visiteurs patientant pour {STRINGID}
+STR_7053    :Visiteurs se noyant
+STR_7054    :Visiteurs sur {STRINGID}
+STR_7055    :Visiteurs dans {STRINGID}
+STR_7056    :Visiteurs à {STRINGID}
+STR_7057    :Visiteurs assis
+STR_7058    :Visiteurs étant déplacé
+STR_7059    :Visiteurs regardant {STRINGID}
+STR_7060    :Visiteurs regardant la construction de {STRINGID}
+STR_7061    :Visiteurs regardant le décor
+STR_7062    :Visiteurs quittant le parc
+STR_7063    :Visiteurs regardant la construction d’une nouvelle attraction
