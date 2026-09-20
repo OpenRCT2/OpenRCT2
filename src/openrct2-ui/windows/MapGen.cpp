@@ -1074,16 +1074,12 @@ namespace OpenRCT2::Ui::Windows
 
                     type = (dropdownIndex == -1) ? _settings.landTexture : dropdownIndex;
 
-                    if (gLandToolTerrainSurface == type)
-                    {
-                        gLandToolTerrainSurface = kObjectEntryIndexNull;
-                    }
-                    else
+                    if (_settings.landTexture != type)
                     {
                         gLandToolTerrainSurface = type;
                         _settings.landTexture = type;
+                        LandTool::resetColourSelection(_settings.surfaceColour1, _settings.edgeColour1);
                     }
-                    LandTool::resetColourSelection(_settings.surfaceColour1, _settings.edgeColour1);
                     invalidate();
                     break;
                 case WIDX_WALL_TEXTURE:
@@ -1092,16 +1088,12 @@ namespace OpenRCT2::Ui::Windows
 
                     type = (dropdownIndex == -1) ? _settings.edgeTexture : dropdownIndex;
 
-                    if (gLandToolTerrainEdge == type)
-                    {
-                        gLandToolTerrainEdge = kObjectEntryIndexNull;
-                    }
-                    else
+                    if (_settings.edgeTexture != type)
                     {
                         gLandToolTerrainEdge = type;
                         _settings.edgeTexture = type;
+                        LandTool::resetColourSelection(_settings.surfaceColour1, _settings.edgeColour1);
                     }
-                    LandTool::resetColourSelection(_settings.surfaceColour1, _settings.edgeColour1);
                     invalidate();
                     break;
                 case WIDX_SURFACE_COLOUR_1:
@@ -1153,8 +1145,10 @@ namespace OpenRCT2::Ui::Windows
             if (surfaceObj != nullptr)
             {
                 _surfaceColour1Enabled = surfaceObj->Flags.has(TerrainSurfaceFlag::hasPrimaryColour);
-
-                surfaceImage = ImageId(surfaceObj->IconImageId, surfaceObj->getPrimaryColour(_settings.surfaceColour1));
+                auto colour = widgets[WIDX_SURFACE_COLOUR_1].isVisible()
+                    ? surfaceObj->getPrimaryColour(_settings.surfaceColour1)
+                    : surfaceObj->getPreviewColour();
+                surfaceImage = ImageId(surfaceObj->IconImageId, colour);
             }
 
             ImageId edgeImage;
@@ -1162,8 +1156,8 @@ namespace OpenRCT2::Ui::Windows
             if (edgeObj != nullptr)
             {
                 _edgeColour1Enabled = edgeObj->flags.has(TerrainEdgeFlag::hasPrimaryColour);
-
-                edgeImage = ImageId(edgeObj->IconImageId, _settings.edgeColour1);
+                auto colour = widgets[WIDX_EDGE_COLOUR_1].isVisible() ? _settings.edgeColour1 : edgeObj->getPreviewColour();
+                edgeImage = ImageId(edgeObj->IconImageId, colour);
             }
 
             DrawDropdownButton(rt, floorWidgetIndex, surfaceImage);
