@@ -195,7 +195,7 @@ namespace OpenRCT2
                 if (mapColoursAreValid)
                     MapColours[i] = processMapColour(mapColours[i]);
                 else
-                    MapColours[0] = kInvalidMapColour;
+                    MapColours[i] = kInvalidMapColour;
             }
 
             for (auto& el : properties["special"])
