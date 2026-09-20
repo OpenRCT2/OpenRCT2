@@ -603,16 +603,16 @@ namespace OpenRCT2
     {
         const int32_t lengthEighth = getTotalLength() / 8;
         int32_t lengthCounter = lengthEighth;
-        uint8_t shelteredEighths = 0;
+        uint8_t trackShelteredEighths = 0;
         for (int32_t i = 0; i < 7; i++)
         {
             if (shelteredLength >= lengthCounter)
             {
                 lengthCounter += lengthEighth;
-                shelteredEighths++;
+                trackShelteredEighths++;
             }
         }
-        return shelteredEighths;
+        return trackShelteredEighths;
     }
 
     int32_t Ride::getTotalTime() const
