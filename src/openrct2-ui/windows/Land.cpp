@@ -897,7 +897,9 @@ namespace OpenRCT2::Ui::Windows
             if (surfaceObj != nullptr)
             {
                 _surfaceColour1Enabled = surfaceObj->Flags.has(TerrainSurfaceFlag::hasPrimaryColour);
-                surfaceImage = ImageId(surfaceObj->IconImageId, surfaceObj->getPrimaryColour(_surfaceColour1));
+                auto colour = widgets[WIDX_SURFACE_COLOUR_1].isVisible() ? surfaceObj->getPrimaryColour(_surfaceColour1)
+                                                                         : surfaceObj->getPreviewColour();
+                surfaceImage = ImageId(surfaceObj->IconImageId, colour);
             }
 
             const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_selectedWallTexture);
@@ -905,7 +907,8 @@ namespace OpenRCT2::Ui::Windows
             if (edgeObj != nullptr)
             {
                 _edgeColour1Enabled = edgeObj->flags.has(TerrainEdgeFlag::hasPrimaryColour);
-                edgeImage = ImageId(edgeObj->IconImageId, _edgeColour1);
+                auto colour = widgets[WIDX_EDGE_COLOUR_1].isVisible() ? _edgeColour1 : edgeObj->getPreviewColour();
+                edgeImage = ImageId(edgeObj->IconImageId, colour);
             }
 
             DrawDropdownButton(rt, WIDX_FLOOR, surfaceImage);
