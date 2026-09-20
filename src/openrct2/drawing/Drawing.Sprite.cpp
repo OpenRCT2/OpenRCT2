@@ -336,10 +336,9 @@ static const auto MaskFunc = GetMaskFunction();
 
 void MaskFn(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap,
-    const OpenRCT2::Drawing::PaletteMap& paletteMap)
+    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
-    MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap, paletteMap);
+    MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
 static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1Element* elements)
@@ -430,8 +429,7 @@ static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1E
 
 void MaskScalar(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap,
-    const OpenRCT2::Drawing::PaletteMap& paletteMap)
+    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
     for (int32_t yy = 0; yy < height; yy++)
     {
@@ -440,7 +438,7 @@ void MaskScalar(
             auto colour = static_cast<PaletteIndex>((*colourSrc) & (*maskSrc));
             if (colour != PaletteIndex::transparent)
             {
-                BlitPixel<kBlendSrc>(&colour, dst, paletteMap);
+                *dst = colour;
             }
 
             maskSrc++;
@@ -455,8 +453,7 @@ void MaskScalar(
 
 static void MaskMagnify(
     const ZoomLevel zoom, int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
-    PaletteIndex* RESTRICT dst, int32_t maskStride, int32_t colourStride, int32_t dstStride, int32_t srcX, int32_t srcY,
-    const PaletteMap& paletteMap)
+    PaletteIndex* RESTRICT dst, int32_t maskStride, int32_t colourStride, int32_t dstStride, int32_t srcX, int32_t srcY)
 {
     for (int32_t y = 0; y < height; y++)
     {
@@ -468,7 +465,7 @@ static void MaskMagnify(
             const auto colour = static_cast<PaletteIndex>((*srcColour) & (*srcMask));
             if (colour != PaletteIndex::transparent)
             {
-                BlitPixel<kBlendSrc>(&colour, dst, paletteMap);
+                *dst = colour;
             }
         }
         dst = nextDst;
@@ -1024,9 +1021,6 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
         return;
     }
 
-    PaletteMap primaryPaletteMap = GetPaletteMapForColour(static_cast<FilterPaletteID>(colourImage.GetPrimary()))
-                                       .value_or(PaletteMap::GetDefault());
-
     ZoomLevel zoom = rt.zoom_level;
     if (rt.zoom_level > ZoomLevel{ 0 })
     {
@@ -1057,7 +1051,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     {
         MaskMagnify(
             zoom, width, height, imgMask->offset, imgColour->offset, dst, imgMask->width, imgColour->width, rt.LineStride(),
-            skipX, skipY, primaryPaletteMap);
+            skipX, skipY);
         return;
     }
 
@@ -1068,7 +1062,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     int32_t colourWrap = imgColour->width - width;
     int32_t dstWrap = rt.LineStride() - width;
 
-    MaskScalar(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap, primaryPaletteMap);
+    MaskFn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
 const G1Element* GfxGetG1Element(const ImageId imageId)
