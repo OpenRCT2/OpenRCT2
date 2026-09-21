@@ -1514,4 +1514,23 @@ namespace OpenRCT2::RCT1
                 return false;
         }
     }
+
+    uint8_t getAdditionalZeroCars(const VehicleType vehicleType)
+    {
+        switch (vehicleType)
+        {
+            case VehicleType::woodenMineCars:
+            case VehicleType::woodenMouseCars:
+            case VehicleType::steelMouseCars:
+            case VehicleType::sportscars:
+            case VehicleType::racingCars:
+            case VehicleType::trucks:
+            case VehicleType::vintageCars:
+            case VehicleType::catCars:
+            case VehicleType::helicopterCars:
+                return 2;
+            default:
+                return 0;
+        }
+    }
 } // namespace OpenRCT2::RCT1

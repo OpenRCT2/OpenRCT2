@@ -2693,7 +2693,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             TileElement tempTrackTileElement{};
             TileElement* backupTileElementArrays[5]{};
-            PaintSession* session = PaintSessionAlloc(rt, 0, GetCurrentRotation());
+            PaintSession* session = PaintSessionAlloc(rt, ViewportFlags(), GetCurrentRotation());
             trackDirection &= 3;
 
             auto currentRide = GetRide(rideIndex);
@@ -3003,12 +3003,14 @@ namespace OpenRCT2::Ui::Windows
         {
             if (im.isModifierKeyPressed(ModifierKey::ctrl))
             {
-                constexpr auto interactionFlags = EnumsToFlags(
-                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::footpath,
-                    ViewportInteractionItem::pathAddition, ViewportInteractionItem::largeScenery,
-                    ViewportInteractionItem::label, ViewportInteractionItem::banner);
+                constexpr ViewportInteractionItems kInteractionFlags = {
+                    ViewportInteractionItem::terrain,      ViewportInteractionItem::ride,
+                    ViewportInteractionItem::footpath,     ViewportInteractionItem::pathAddition,
+                    ViewportInteractionItem::largeScenery, ViewportInteractionItem::label,
+                    ViewportInteractionItem::banner
+                };
 
-                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, kInteractionFlags);
                 if (info.interactionType != ViewportInteractionItem::none)
                 {
                     _trackPlaceCtrlZ = info.Element->getBaseZ();

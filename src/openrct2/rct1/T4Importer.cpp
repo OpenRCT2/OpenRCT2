@@ -245,7 +245,8 @@ namespace OpenRCT2::RCT1
             td->appearance.stationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
             td->operation.departFlags = td4Base.DepartFlags;
             td->trackAndVehicle.numberOfTrains = td4Base.NumberOfTrains;
-            td->trackAndVehicle.numberOfCarsPerTrain = td4Base.NumberOfCarsPerTrain;
+            td->trackAndVehicle.numberOfCarsPerTrain = td4Base.NumberOfCarsPerTrain
+                + getAdditionalZeroCars(td4Base.VehicleType);
             td->operation.minWaitingTime = td4Base.MinWaitingTime;
             td->operation.maxWaitingTime = td4Base.MaxWaitingTime;
             td->operation.operationSetting = std::min(

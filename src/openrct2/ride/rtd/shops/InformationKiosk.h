@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor kInformationKioskRTD =
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .rideModes = { RideMode::shopStall },
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK },
     .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },

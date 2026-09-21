@@ -1044,12 +1044,7 @@ namespace OpenRCT2::Ui::Windows
                     GfxInvalidateScreen();
                     WindowBase* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
-                    {
-                        if (Config::Get().general.alwaysShowGridlines)
-                            mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-                        else
-                            mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
-                    }
+                        mainWindow->viewport->flags.set(ViewportFlag::gridlines, Config::Get().general.alwaysShowGridlines);
                     break;
                 }
                 case WIDX_DAY_NIGHT_CHECKBOX:

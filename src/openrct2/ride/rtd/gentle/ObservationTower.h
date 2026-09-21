@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kObservationTowerRTD =
                      RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::rotatingLift),
+    .rideModes = { RideMode::rotatingLift },
     .DefaultMode = RideMode::rotatingLift,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },

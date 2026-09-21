@@ -32,6 +32,7 @@ namespace OpenRCT2
         "rct2.station.wooden",
         "openrct2.station.noentrance",
         "openrct2.station.noplatformnoentrance",
+        "tygrysek90.station.abstract-open",
         "tygrysek90.station.abstract_open",
         "tygrysek90.station.canvas_tent_open",
         "tygrysek90.station.castle_brown_open",

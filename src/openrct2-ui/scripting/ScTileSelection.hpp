@@ -63,10 +63,10 @@ namespace OpenRCT2::Scripting
                 auto range = GetMapRange(ctx, value);
                 if (range)
                 {
-                    gMapSelectPositionA.x = range->GetX1();
-                    gMapSelectPositionA.y = range->GetY1();
-                    gMapSelectPositionB.x = range->GetX2();
-                    gMapSelectPositionB.y = range->GetY2();
+                    gMapSelectPositionA.x = range->getX1();
+                    gMapSelectPositionA.y = range->getY1();
+                    gMapSelectPositionB.x = range->getX2();
+                    gMapSelectPositionB.y = range->getY2();
                     gMapSelectType = MapSelectType::full;
                     gMapSelectFlags.set(MapSelectFlag::enable);
                 }

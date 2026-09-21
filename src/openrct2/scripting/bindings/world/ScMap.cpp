@@ -200,6 +200,9 @@ namespace OpenRCT2::Scripting
                         case StaffType::security:
                             JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->id));
                             break;
+                        case StaffType::entertainer:
+                            JS_SetPropertyInt64(ctx, result, idx++, ScEntertainer::New(ctx, sprite->id));
+                            break;
                         default:
                             JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
                             break;
@@ -299,6 +302,9 @@ namespace OpenRCT2::Scripting
                             break;
                         case StaffType::security:
                             JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->id));
+                            break;
+                        case StaffType::entertainer:
+                            JS_SetPropertyInt64(ctx, result, idx++, ScEntertainer::New(ctx, sprite->id));
                             break;
                         default:
                             JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
@@ -542,6 +548,8 @@ namespace OpenRCT2::Scripting
                             return ScMechanic::New(ctx, spriteId);
                         case StaffType::security:
                             return ScSecurity::New(ctx, spriteId);
+                        case StaffType::entertainer:
+                            return ScEntertainer::New(ctx, spriteId);
                         default:
                             return ScStaff::New(ctx, spriteId);
                     }

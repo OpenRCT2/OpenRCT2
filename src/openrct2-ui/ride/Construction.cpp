@@ -374,7 +374,7 @@ namespace OpenRCT2
         CoordsXYZD entranceExitCoords{};
         gRideEntranceExitPlaceDirection = kInvalidDirection;
         // determine if the mouse is hovering over a station - that's the station to add the entrance to
-        auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::ride));
+        auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItem::ride);
         if (info.interactionType != ViewportInteractionItem::none)
         {
             if (info.Element->getType() == TileElementType::track)

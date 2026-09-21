@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor kHauntedHouseRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::hauntedHouse),
+    .rideModes = { RideMode::hauntedHouse },
     .DefaultMode = RideMode::hauntedHouse,
     .Naming = { STR_RIDE_NAME_HAUNTED_HOUSE, STR_RIDE_DESCRIPTION_HAUNTED_HOUSE },
     .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },

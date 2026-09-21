@@ -1151,7 +1151,6 @@ STR_1816    :Обрати тип інформації для показу у с�
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Усі гості
 STR_1819    :{WINDOW_COLOUR_2}Усі гості (узагальнено)
-STR_1820    :{WINDOW_COLOUR_2}Гості {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Гості думають {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Гості думають про {POP16}{STRINGID}
 STR_1823    :Показати думки гостей про цей атракціон
@@ -2441,9 +2440,6 @@ STR_5242    :Назва теми вже існує
 STR_5243    :Використано недійсні символи
 STR_5244    :Теми
 STR_5245    :Верхня панель інструментів
-STR_5246    :Нижня панель інструментів
-STR_5247    :Track Editor Bottom Toolbar
-STR_5248    :Scenario Editor Bottom Toolbar
 STR_5249    :Title Menu Buttons
 STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
@@ -3172,7 +3168,6 @@ STR_6137    :OpenRCT2, безплатне відтворення та розши
 STR_6138    :OpenRCT2 — це робота багатьох авторів, повний список можна знайти під кнопкою “Учасники”. Для отримання додаткової інформації відвідайте http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Усі назви продуктів і компаній належать відповідним власникам. Їх використання не означає жодної приналежності до них або схвалення ними.
 STR_6140    :Список змін…
-STR_6141    :Нижня панель інструментів RCT1
 STR_6142    :{WINDOW_COLOUR_2}Назва доріжки: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Тип атракціона: {BLACK}{STRINGID}
 STR_6144    :Показувати візуальні ефекти забруднення

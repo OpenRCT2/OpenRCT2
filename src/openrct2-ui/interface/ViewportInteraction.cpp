@@ -87,8 +87,7 @@ namespace OpenRCT2::Ui
 
         info = GetMapCoordinatesFromPos(
             screenCoords,
-            EnumsToFlags(
-                ViewportInteractionItem::entity, ViewportInteractionItem::ride, ViewportInteractionItem::parkEntrance));
+            { ViewportInteractionItem::entity, ViewportInteractionItem::ride, ViewportInteractionItem::parkEntrance });
         auto tileElement = info.interactionType != ViewportInteractionItem::entity ? info.Element : nullptr;
         // Only valid when info.interactionType == ViewportInteractionItem::entity, but can't assign nullptr without compiler
         // complaining
@@ -272,9 +271,12 @@ namespace OpenRCT2::Ui
         if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != Editor::Step::rollerCoasterDesigner)
             return info;
 
-        constexpr auto flags = static_cast<int32_t>(
-            ~EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
-        info = GetMapCoordinatesFromPos(screenCoords, flags);
+        constexpr ViewportInteractionItems kFlags{ ViewportInteractionItem::entity,       ViewportInteractionItem::ride,
+                                                   ViewportInteractionItem::scenery,      ViewportInteractionItem::footpath,
+                                                   ViewportInteractionItem::pathAddition, ViewportInteractionItem::parkEntrance,
+                                                   ViewportInteractionItem::wall,         ViewportInteractionItem::largeScenery,
+                                                   ViewportInteractionItem::label,        ViewportInteractionItem::banner };
+        info = GetMapCoordinatesFromPos(screenCoords, kFlags);
         auto tileElement = info.Element;
 
         switch (info.interactionType)
@@ -747,8 +749,8 @@ namespace OpenRCT2::Ui
                 screenCoords - ScreenCoordsXY{ peep->spriteData.width, peep->spriteData.heightMin },
                 screenCoords + ScreenCoordsXY{ peep->spriteData.width, peep->spriteData.heightMax });
 
-            auto distance = abs(((spriteRect.GetLeft() + spriteRect.GetRight()) / 2) - viewportCoords.x)
-                + abs(((spriteRect.GetTop() + spriteRect.GetBottom()) / 2) - viewportCoords.y);
+            auto distance = abs(((spriteRect.getLeft() + spriteRect.getRight()) / 2) - viewportCoords.x)
+                + abs(((spriteRect.getTop() + spriteRect.getBottom()) / 2) - viewportCoords.y);
             if (distance > maxDistance)
                 continue;
 
@@ -775,9 +777,9 @@ namespace OpenRCT2::Ui
         auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
 
         PeepDistance goal;
-        if (!(viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS))
+        if (!viewport->flags.has(ViewportFlag::hideGuests))
             goal = GetClosestPeep<Guest>(viewportCoords, viewport->rotation, maxDistance, goal);
-        if (!(viewport->flags & VIEWPORT_FLAG_HIDE_STAFF))
+        if (!viewport->flags.has(ViewportFlag::hideStaff))
             goal = GetClosestPeep<Staff>(viewportCoords, viewport->rotation, maxDistance, goal);
         return goal.peep;
     }
@@ -798,7 +800,7 @@ namespace OpenRCT2::Ui
         }
         auto viewport = window->viewport;
         auto info = GetMapCoordinatesFromPosWindow(
-            window, screenCoords, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
+            window, screenCoords, { ViewportInteractionItem::terrain, ViewportInteractionItem::water });
         auto initialPos = info.Loc;
 
         if (info.interactionType == ViewportInteractionItem::none)

@@ -84,10 +84,10 @@ namespace OpenRCT2::Drawing
     void GfxDrawLineSoftware(RenderTarget& rt, const ScreenLine& line, PaletteIndex colour)
     {
         const ZoomLevel zoom = rt.zoom_level;
-        int32_t x1 = zoom.ApplyInversedTo(line.GetX1());
-        int32_t x2 = zoom.ApplyInversedTo(line.GetX2());
-        int32_t y1 = zoom.ApplyInversedTo(line.GetY1());
-        int32_t y2 = zoom.ApplyInversedTo(line.GetY2());
+        int32_t x1 = zoom.ApplyInversedTo(line.getX1());
+        int32_t x2 = zoom.ApplyInversedTo(line.getX2());
+        int32_t y1 = zoom.ApplyInversedTo(line.getY1());
+        int32_t y2 = zoom.ApplyInversedTo(line.getY2());
         // Check to make sure the line is within the drawing area
         if ((x1 < rt.x) && (x2 < rt.x))
         {
@@ -195,23 +195,23 @@ namespace OpenRCT2::Drawing
             constexpr int32_t kPrecisionFactor = 1000;
 
             const int32_t dashedLineLength = std::hypot(
-                screenLine.GetX2() - screenLine.GetX1(), screenLine.GetY2() - screenLine.GetY1());
+                screenLine.getX2() - screenLine.getX1(), screenLine.getY2() - screenLine.getY1());
             const int32_t lineSegmentCount = dashedLineLength / dashedLineSegmentLength / 2;
             if (lineSegmentCount == 0)
             {
                 return;
             }
 
-            const int32_t lineXDist = std::abs(screenLine.GetX2() - screenLine.GetX1());
-            const int32_t lineYDist = std::abs(screenLine.GetY2() - screenLine.GetY1());
+            const int32_t lineXDist = std::abs(screenLine.getX2() - screenLine.getX1());
+            const int32_t lineYDist = std::abs(screenLine.getY2() - screenLine.getY1());
             const int32_t dxPrecise = kPrecisionFactor * lineXDist / lineSegmentCount / 2;
             const int32_t dyPrecise = kPrecisionFactor * lineYDist / lineSegmentCount / 2;
             IDrawingContext* dc = drawingEngine->GetDrawingContext();
 
             for (int32_t i = 0, x, y; i < lineSegmentCount; ++i)
             {
-                x = screenLine.GetX1() + dxPrecise * i * 2 / kPrecisionFactor;
-                y = screenLine.GetY1() + dyPrecise * i * 2 / kPrecisionFactor;
+                x = screenLine.getX1() + dxPrecise * i * 2 / kPrecisionFactor;
+                y = screenLine.getY1() + dyPrecise * i * 2 / kPrecisionFactor;
                 dc->DrawLine(rt, colour, { { x, y }, { x + dxPrecise / kPrecisionFactor, y + dyPrecise / kPrecisionFactor } });
             }
         }

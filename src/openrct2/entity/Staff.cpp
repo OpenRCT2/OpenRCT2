@@ -281,9 +281,9 @@ namespace OpenRCT2
 
     void Staff::setPatrolArea(const MapRange& range, bool value)
     {
-        for (int32_t yy = range.GetY1(); yy <= range.GetY2(); yy += kCoordsXYStep)
+        for (int32_t yy = range.getY1(); yy <= range.getY2(); yy += kCoordsXYStep)
         {
-            for (int32_t xx = range.GetX1(); xx <= range.GetX2(); xx += kCoordsXYStep)
+            for (int32_t xx = range.getX1(); xx <= range.getX2(); xx += kCoordsXYStep)
             {
                 setPatrolArea({ xx, yy }, value);
             }
@@ -1204,8 +1204,8 @@ namespace OpenRCT2
             }
 
             auto* pathAddEntry = tile_element->asPath()->getAdditionEntry();
-            if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN) || tile_element->asPath()->isBroken()
-                || tile_element->asPath()->additionIsGhost())
+            if (pathAddEntry == nullptr || !pathAddEntry->flags.has(PathAdditionFlag::isBin)
+                || tile_element->asPath()->isBroken() || tile_element->asPath()->additionIsGhost())
             {
                 stateReset();
                 return;
@@ -1574,7 +1574,7 @@ namespace OpenRCT2
         if (pathAddEntry == nullptr)
             return false;
 
-        if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
+        if (!pathAddEntry->flags.has(PathAdditionFlag::isBin))
             return false;
 
         if (tileElement->asPath()->isBroken())

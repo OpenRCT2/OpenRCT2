@@ -262,7 +262,7 @@ STR_0882    :Cargar Partida
 STR_0883    :Guardar Partida
 STR_0884    :Cargar Paisaje
 STR_0885    :Guardar Paisaje
-STR_0887    :Salir del Editor de escenarios
+STR_0887    :Salir del Editor de Escenarios
 STR_0888    :Salir del Diseñador de Vías
 STR_0889    :Salir del Gestor de Diseños de vías
 STR_0891    :Tomar captura de pantalla
@@ -1158,7 +1158,6 @@ STR_1816    :Selecciona el tipo de información a mostrar en la lista de visitan
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Todos los visitantes
 STR_1819    :{WINDOW_COLOUR_2}Todos los visitantes (agrupados)
-STR_1820    :{WINDOW_COLOUR_2}Visitantes {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Visitantes Pensando {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitantes Pensando en {POP16}{STRINGID}
 STR_1823    :Muestra los pensamientos de los visitantes sobre esta atracción
@@ -1261,7 +1260,7 @@ STR_1927    :{YELLOW}{STRINGID} se ha averiado
 STR_1928    :{RED}¡{STRINGID} ha chocado!
 STR_1929    :{RED}{STRINGID} no se ha arreglado{NEWLINE}Comprueba dónde están tus mecánicos y considera organizarlos mejor
 STR_1930    :Activa/Desactiva el seguimiento de este visitante (Con el seguimiento activado, los movimientos de este visitante aparecerán en el área de mensajes)
-STR_1931    :{STRINGID} está haciendo fila en {STRINGID}
+STR_1931    :{STRINGID} está haciendo fila para {STRINGID}
 STR_1932    :{STRINGID} está en {STRINGID}
 STR_1933    :{STRINGID} está en {STRINGID}
 STR_1934    :{STRINGID} ha salido de {STRINGID}
@@ -2287,7 +2286,7 @@ STR_3338    :{BLACK}Recorrido personalizado
 STR_3339    :{BLACK}{COMMA16} diseño disponible, o recorrido personalizado
 STR_3340    :{BLACK}{COMMA16} diseños disponibles, o recorrido personalizado
 STR_3341    :Herramientas de juego
-STR_3342    :Editor de escenarios
+STR_3342    :Editor de Escenarios
 STR_3343    :Convertir partida guardada en escenario
 STR_3344    :Diseñador de Vías
 STR_3345    :Gestor de Diseños de Vías
@@ -2450,9 +2449,6 @@ STR_5242    :Nombre del tema ya existe
 STR_5243    :Caracteres no válidos
 STR_5244    :Temas
 STR_5245    :Barra de herramientas superior
-STR_5246    :Barra de herramientas inferior
-STR_5247    :Editor de Vías (barra inferior)
-STR_5248    :Editor de Escenarios (barra inferior)
 STR_5249    :Color de botones del menú
 STR_5250    :Color del botón salir
 STR_5251    :Color de botones de opciones
@@ -2825,7 +2821,7 @@ STR_5762    :Yuan Chino (CN¥)
 STR_5763    :Todos los archivos
 STR_5764    :Tipo de Atracción inválido
 STR_5765    :No se puede editar una atracción de un tipo no válido
-STR_5766    :Forinto Húngaro (Ft) 
+STR_5766    :Forinto Húngaro (Ft)
 STR_5767    :Ingresos
 STR_5768    :Clientes totales
 STR_5769    :Beneficio total
@@ -3181,7 +3177,6 @@ STR_6137    :OpenRCT2, juego de código abierto que recrea y expande Roller Coas
 STR_6138    :OpenRCT2 es el trabajo de muchos autores, una lista completa se puede encontrar a través del botón de "Colaboradores". Para más información visita: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Todos los nombres de productos y empresas pertenecen a sus respectivos titulares. El uso de ellos no implica ninguna afiliación o respaldo por ellos.
 STR_6140    :Registro de cambios…
-STR_6141    :Barra de herramientas inferior RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nombre de vía: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo atracción: {BLACK}{STRINGID}
 STR_6144    :Mostrar re-dibujado
@@ -3500,7 +3495,7 @@ STR_6502    :Introduce un valor entre {COMMA16} y {COMMA16}
 STR_6503    :Al menos un objeto de estación debe estar seleccionado
 STR_6504    :Al menos una superficie de terreno debe estar seleccionada
 STR_6505    :Al menos un borde de terreno debe estar seleccionado
-STR_6506    :Medio Sacacorchos grande (izq) 
+STR_6506    :Medio Sacacorchos grande (izq)
 STR_6507    :Medio Sacacorchos grande (der)
 STR_6508    :Medio Rizo mediano (izq)
 STR_6509    :Medio Rizo mediano (der)
@@ -3838,3 +3833,23 @@ STR_7040    :Adiciones de los senderos
 STR_7041    :Panel de información del parque
 STR_7042    :Panel de información de la fecha
 STR_7043    :No se puede cambiar la altura del terreno aquí…
+STR_7044    :Barra de noticias
+STR_7045    :Barra de estado al estilo RCT1
+STR_7046    :Barra de estado (estilo RCT1)
+STR_7047    :Control paso a paso (Diseñador de Vías)
+STR_7048    :Control paso a paso (Editor de Escenarios)
+STR_7049    :OpenRCT2
+STR_7050    :Visitantes caminando
+STR_7051    :Visitantes dirigiéndose a {STRINGID}
+STR_7052    :Visitantes haciendo fila para {STRINGID}
+STR_7053    :Visitantes ahogándose
+STR_7054    :Visitantes en {STRINGID}
+STR_7055    :Visitantes en {STRINGID}
+STR_7056    :Visitantes en {STRINGID}
+STR_7057    :Visitantes sentados
+STR_7058    :Visitantes recogidos
+STR_7059    :Visitantes mirando {STRINGID}
+STR_7060    :Visitantes mirando la construcción de {STRINGID}
+STR_7061    :Visitantes observando el decorado
+STR_7062    :Visitantes abandonando el parque
+STR_7063    :Visitantes viendo la construcción de una nueva atracción

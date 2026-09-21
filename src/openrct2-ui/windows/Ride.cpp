@@ -625,7 +625,6 @@ namespace OpenRCT2::Ui::Windows
     };
     static_assert(std::size(GraphsYAxisDetails) == 4);
 
-    static constexpr auto kRideGForcesRedNegVertical = -MakeFixed16_2dp(2, 50);
     static constexpr auto kRideGForcesRedLateral = MakeFixed16_2dp(2, 80);
 
     // Used for sorting the ride type cheat dropdown.
@@ -1187,8 +1186,8 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_RIDE_PAGE_MAIN && page == WINDOW_RIDE_PAGE_MAIN && viewport != nullptr)
             {
-                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
-                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
+                viewport->flags.flip(ViewportFlag::soundOn);
+                listen = viewport->flags.has(ViewportFlag::soundOn);
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
@@ -1220,7 +1219,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             if (listen && viewport != nullptr)
-                viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+                viewport->flags.set(ViewportFlag::soundOn);
         }
 
         void setViewIndex(int16_t newIndex)
@@ -1593,7 +1592,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            uint16_t newViewportFlags = 0;
+            ViewportFlags newViewportFlags;
             if (viewport != nullptr)
             {
                 if (focus == newFocus)
@@ -1605,7 +1604,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (Config::Get().general.alwaysShowGridlines)
             {
-                newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
+                newViewportFlags.set(ViewportFlag::gridlines);
             }
 
             onPrepareDraw();
@@ -2615,7 +2614,7 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr)
             {
                 WindowDrawViewport(rt, *this);
-                if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+                if (viewport->flags.has(ViewportFlag::soundOn))
                     GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
 
@@ -3107,14 +3106,14 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            auto availableModes = ride->getAvailableModes();
+            RideModes availableModes = ride->getAvailableModes();
 
             // Create dropdown list
             auto numAvailableModes = 0;
             auto checkedIndex = -1;
             for (auto i = 0; i < static_cast<uint8_t>(RideMode::count); i++)
             {
-                if (availableModes & (1uLL << i))
+                if (availableModes.has(static_cast<RideMode>(i)))
                 {
                     gDropdown.items[numAvailableModes] = Dropdown::MenuLabel(kRideModeNames[i]);
 
@@ -3376,11 +3375,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MODE_DROPDOWN:
                 {
                     RideMode rideMode = RideMode::nullMode;
-                    auto availableModes = ride->getAvailableModes();
+                    RideModes availableModes = ride->getAvailableModes();
                     auto modeInDropdownIndex = -1;
                     for (RideMode rideModeIndex = RideMode::normal; rideModeIndex < RideMode::count; rideModeIndex++)
                     {
-                        if (availableModes & EnumToFlag(rideModeIndex))
+                        if (availableModes.has(rideModeIndex))
                         {
                             modeInDropdownIndex++;
                             if (modeInDropdownIndex == dropdownIndex)
@@ -4284,7 +4283,7 @@ namespace OpenRCT2::Ui::Windows
         void SetTrackColourScheme(const ScreenCoordsXY& screenPos)
         {
             auto newColourScheme = static_cast<uint8_t>(_rideColour);
-            auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::ride));
+            auto info = GetMapCoordinatesFromPos(screenPos, ViewportInteractionItem::ride);
 
             if (info.interactionType != ViewportInteractionItem::ride)
                 return;
@@ -5670,7 +5669,7 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* w_main = WindowGetMain();
             if (w_main != nullptr)
             {
-                w_main->viewport->flags |= (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+                w_main->viewport->flags.set(ViewportFlag::hideVertical, ViewportFlag::hideBase);
             }
 
             GfxInvalidateScreen();
@@ -5843,10 +5842,11 @@ namespace OpenRCT2::Ui::Windows
             _lastSceneryY = screenCoords.y;
             _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-            constexpr auto interactionFlags = EnumsToFlags(
-                ViewportInteractionItem::scenery, ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
-                ViewportInteractionItem::largeScenery);
-            auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+            constexpr ViewportInteractionItems kInteractionFlags = { ViewportInteractionItem::scenery,
+                                                                     ViewportInteractionItem::footpath,
+                                                                     ViewportInteractionItem::wall,
+                                                                     ViewportInteractionItem::largeScenery };
+            auto info = GetMapCoordinatesFromPos(screenCoords, kInteractionFlags);
             switch (info.interactionType)
             {
                 case ViewportInteractionItem::scenery:
@@ -5868,10 +5868,11 @@ namespace OpenRCT2::Ui::Windows
             _lastSceneryX = screenCoords.x;
             _lastSceneryY = screenCoords.y;
 
-            constexpr auto interactionFlags = EnumsToFlags(
-                ViewportInteractionItem::scenery, ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
-                ViewportInteractionItem::largeScenery);
-            auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+            constexpr ViewportInteractionItems kInteractionFlags = { ViewportInteractionItem::scenery,
+                                                                     ViewportInteractionItem::footpath,
+                                                                     ViewportInteractionItem::wall,
+                                                                     ViewportInteractionItem::largeScenery };
+            auto info = GetMapCoordinatesFromPos(screenCoords, kInteractionFlags);
             switch (info.interactionType)
             {
                 case ViewportInteractionItem::scenery:
@@ -6092,16 +6093,13 @@ namespace OpenRCT2::Ui::Windows
                         {
                             // Max. positive vertical G's
                             stringId = STR_MAX_POSITIVE_VERTICAL_G;
-
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->maxPositiveVerticalG);
                             drawText(rt, screenCoords, stringId, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Max. negative vertical G's
-                            stringId = ride->maxNegativeVerticalG <= kRideGForcesRedNegVertical
-                                ? STR_MAX_NEGATIVE_VERTICAL_G_RED
-                                : STR_MAX_NEGATIVE_VERTICAL_G;
+                            stringId = STR_MAX_NEGATIVE_VERTICAL_G;
                             ft = Formatter();
                             ft.Add<int32_t>(ride->maxNegativeVerticalG);
                             drawText(rt, screenCoords, stringId, ft);
@@ -6462,7 +6460,6 @@ namespace OpenRCT2::Ui::Windows
                     case GRAPH_VERTICAL:
                         firstPoint = measurement->vertical[x] + VerticalGraphHeightOffset;
                         secondPoint = measurement->vertical[x + 1] + VerticalGraphHeightOffset;
-                        intensityThresholdNegative = (kRideGForcesRedNegVertical / 8) + VerticalGraphHeightOffset;
                         break;
                     case GRAPH_LATERAL:
                         firstPoint = measurement->lateral[x] + LateralGraphHeightOffset;
@@ -6499,7 +6496,7 @@ namespace OpenRCT2::Ui::Windows
                     previousMeasurement ? PaletteIndex::pi17 : PaletteIndex::pi21);
 
                 // Draw red over extreme values (if supported by graph type).
-                if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
+                if (listType == GRAPH_LATERAL)
                 {
                     const auto redLineColour = previousMeasurement ? PaletteIndex::pi171 : PaletteIndex::pi173;
 
@@ -6529,22 +6526,23 @@ namespace OpenRCT2::Ui::Windows
         static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
         {
             const auto& gameState = getGameState();
-            const auto existingFlags = gameState.park.samePriceThroughoutPark;
+            const auto existingFlags = ShopItems(gameState.park.samePriceThroughoutPark);
 
             auto newFlags = existingFlags;
             if (GetShopItemDescriptor(shop_item).IsPhoto())
             {
-                if (existingFlags & EnumToFlag(shop_item))
-                    newFlags &= ~EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
+                if (existingFlags.has(shop_item))
+                    newFlags.unset(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
                 else
-                    newFlags |= EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
+                    newFlags.set(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
             }
             else
             {
-                newFlags ^= EnumToFlag(shop_item);
+                newFlags.flip(shop_item);
             }
 
-            auto parkSetParameter = GameActions::ParkSetParameterAction(GameActions::ParkParameter::samePriceInPark, newFlags);
+            auto parkSetParameter = GameActions::ParkSetParameterAction(
+                GameActions::ParkParameter::samePriceInPark, newFlags.holder);
             GameActions::Execute(&parkSetParameter, getGameState());
         }
 
@@ -6847,7 +6845,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                _spinnerCaption0 = FormatStringID(STR_BOTTOM_TOOLBAR_CASH, ridePrimaryPrice);
+                _spinnerCaption0 = FormatStringID(STR_CURRENCY2DP, ridePrimaryPrice);
                 widgets[WIDX_PRIMARY_PRICE].setString(_spinnerCaption0.c_str());
             }
 
@@ -6891,7 +6889,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    _spinnerCaption1 = FormatStringID(STR_BOTTOM_TOOLBAR_CASH, ride->price[1]);
+                    _spinnerCaption1 = FormatStringID(STR_CURRENCY2DP, ride->price[1]);
                     widgets[WIDX_SECONDARY_PRICE].setString(_spinnerCaption1.c_str());
                 }
             }
@@ -7457,7 +7455,7 @@ namespace OpenRCT2::Ui::Windows
         WindowBase* main_w = WindowGetMain();
         if (main_w != nullptr)
         {
-            main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+            main_w->viewport->flags.unset(ViewportFlag::hideVertical, ViewportFlag::hideBase);
         }
 
         GfxInvalidateScreen();

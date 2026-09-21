@@ -48,6 +48,10 @@ namespace OpenRCT2::Network
         return Permission::count;
     }
 
+    /*
+     * When adding an action, also add its permission name (everything following the "PERMISSION_" prefix, in lowercase)
+     * to PermissionType in distribution/scripting/openrct2.d.ts.
+     */
     const std::array<NetworkAction, static_cast<size_t>(Permission::count)> NetworkActions::kActions = {
         NetworkAction{
             STR_ACTION_CHAT,

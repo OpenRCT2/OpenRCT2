@@ -74,8 +74,8 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
-        auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
+        auto xMid = (validRange.getX1() + validRange.getX2()) / 2 + 16;
+        auto yMid = (validRange.getY1() + validRange.getY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
         res.position.x = xMid;
@@ -91,10 +91,10 @@ namespace OpenRCT2::GameActions
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
-        for (CoordsXY coords = { validRange.GetX1(), validRange.GetY1() }; coords.x <= validRange.GetX2();
+        for (CoordsXY coords = { validRange.getX1(), validRange.getY1() }; coords.x <= validRange.getX2();
              coords.x += kCoordsXYStep)
         {
-            for (coords.y = validRange.GetY1(); coords.y <= validRange.GetY2(); coords.y += kCoordsXYStep)
+            for (coords.y = validRange.getY1(); coords.y <= validRange.getY2(); coords.y += kCoordsXYStep)
             {
                 if (!LocationValid(coords))
                     continue;
@@ -148,8 +148,8 @@ namespace OpenRCT2::GameActions
         res.expenditure = ExpenditureType::landscaping;
 
         auto validRange = ClampRangeWithinMap(_range.normalise());
-        auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
-        auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
+        auto xMid = (validRange.getX1() + validRange.getX2()) / 2 + 16;
+        auto yMid = (validRange.getY1() + validRange.getY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
         res.position.x = xMid;
@@ -158,10 +158,10 @@ namespace OpenRCT2::GameActions
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
-        for (CoordsXY coords = { validRange.GetX1(), validRange.GetY1() }; coords.x <= validRange.GetX2();
+        for (CoordsXY coords = { validRange.getX1(), validRange.getY1() }; coords.x <= validRange.getX2();
              coords.x += kCoordsXYStep)
         {
-            for (coords.y = validRange.GetY1(); coords.y <= validRange.GetY2(); coords.y += kCoordsXYStep)
+            for (coords.y = validRange.getY1(); coords.y <= validRange.getY2(); coords.y += kCoordsXYStep)
             {
                 if (!LocationValid(coords))
                     continue;

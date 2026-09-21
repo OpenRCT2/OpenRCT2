@@ -681,10 +681,10 @@ struct MapRange : public CoordsRange<CoordsXY>
         // Don't use std::min/max, as they require <algorithm>, one of C++'s heaviest
         // in this very common header.
         auto result = MapRange(
-            GetX1() < GetX2() ? GetX1() : GetX2(), // min
-            GetY1() < GetY2() ? GetY1() : GetY2(), // min
-            GetX1() > GetX2() ? GetX1() : GetX2(), // max
-            GetY1() > GetY2() ? GetY1() : GetY2()  // max
+            getX1() < getX2() ? getX1() : getX2(), // min
+            getY1() < getY2() ? getY1() : getY2(), // min
+            getX1() > getX2() ? getX1() : getX2(), // max
+            getY1() > getY2() ? getY1() : getY2()  // max
         );
         return result;
     }

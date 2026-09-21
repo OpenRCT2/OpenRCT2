@@ -575,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr)
             {
                 WindowDrawViewport(rt, *this);
-                if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+                if (viewport->flags.has(ViewportFlag::soundOn))
                     GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
 
@@ -601,10 +601,11 @@ namespace OpenRCT2::Ui::Windows
                 newFocus = Focus(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
             }
 
-            int32_t viewportFlags{};
+            ViewportFlags viewportFlags{};
             if (viewport == nullptr)
             {
-                viewportFlags = Config::Get().general.alwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
+                if (Config::Get().general.alwaysShowGridlines)
+                    viewportFlags.set(ViewportFlag::gridlines);
             }
             else
             {
@@ -675,7 +676,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _ratingProps.RecalculateLayout(
-                { _ratingGraphBounds.Point1 + dynamicPadding, _ratingGraphBounds.Point2 - kGraphBottomRightPadding },
+                { _ratingGraphBounds.point1 + dynamicPadding, _ratingGraphBounds.point2 - kGraphBottomRightPadding },
                 kGraphNumYLabels, kParkRatingHistorySize);
         }
 
@@ -699,7 +700,7 @@ namespace OpenRCT2::Ui::Windows
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rectangle::fillInset(
-                rt, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
+                rt, { _ratingGraphBounds.point2 - bigOffset, _ratingGraphBounds.point2 - offset }, colours[1],
                 Rectangle::BorderStyle::none, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawRatingGraph(rt, _ratingProps);
@@ -755,7 +756,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY dynamicPadding{ std::max(maxGraphWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
             _guestProps.RecalculateLayout(
-                { _guestGraphBounds.Point1 + dynamicPadding, _guestGraphBounds.Point2 - kGraphBottomRightPadding },
+                { _guestGraphBounds.point1 + dynamicPadding, _guestGraphBounds.point2 - kGraphBottomRightPadding },
                 kGraphNumYLabels, kGuestsInParkHistorySize);
         }
 
@@ -779,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rectangle::fillInset(
-                rt, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
+                rt, { _guestGraphBounds.point2 - bigOffset, _guestGraphBounds.point2 - offset }, colours[1],
                 Rectangle::BorderStyle::none, Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawGuestGraph(rt, _guestProps);
@@ -881,7 +882,7 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<money64>(parkEntranceFee);
 
-            StringId stringId = STR_BOTTOM_TOOLBAR_CASH;
+            StringId stringId = STR_CURRENCY2DP;
             if (parkEntranceFee == 0)
                 stringId = STR_FREE;
 
@@ -1150,8 +1151,8 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_PARK_PAGE_ENTRANCE && page == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr)
             {
-                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
-                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
+                viewport->flags.flip(ViewportFlag::soundOn);
+                listen = viewport->flags.has(ViewportFlag::soundOn);
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
@@ -1180,7 +1181,7 @@ namespace OpenRCT2::Ui::Windows
             resizeFrame();
 
             if (listen && viewport != nullptr)
-                viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+                viewport->flags.set(ViewportFlag::soundOn);
         }
 
         void SetPressedTab()

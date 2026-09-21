@@ -19,7 +19,7 @@ namespace OpenRCT2
         .mainPalette = SPR_GAME_DEFAULT_PALETTE,
         .waterWavesPalette = SPR_GAME_PALETTE_WATER,
         .waterSparklesPalette = SPR_GAME_PALETTE_3,
-        .flags = 0,
+        .flags = {},
     };
 
     const WaterObjectEntry& getActiveWaterEntry()

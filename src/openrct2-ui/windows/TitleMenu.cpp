@@ -262,7 +262,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEW_VERSION].setVisible(newVersionAvailable);
 
             if (newVersionAvailable)
-                _filterRect.Point1.y = windowPos.y;
+                _filterRect.point1.y = windowPos.y;
         }
 
         void onDraw(RenderTarget& rt) override

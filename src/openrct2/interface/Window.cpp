@@ -91,15 +91,12 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled)
+    void WindowSetFlagForAllViewports(ViewportFlag viewportFlag, bool enabled)
     {
         WindowVisitEach([&](WindowBase* w) {
             if (w->viewport != nullptr)
             {
-                if (enabled)
-                    w->viewport->flags |= viewportFlag;
-                else
-                    w->viewport->flags &= ~viewportFlag;
+                w->viewport->flags.set(viewportFlag, enabled);
             }
         });
     }
@@ -346,17 +343,17 @@ static constexpr float kWindowScrollLocations[][2] = {
         int16_t height = TileElementHeight(coords);
         if (coords.z < height - 16)
         {
-            if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+            if (!w.viewport->flags.has(ViewportFlag::undergroundInside))
             {
-                w.viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.viewport->flags.set(ViewportFlag::undergroundInside);
                 w.invalidate();
             }
         }
         else
         {
-            if (w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+            if (w.viewport->flags.has(ViewportFlag::undergroundInside))
             {
-                w.viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.viewport->flags.unset(ViewportFlag::undergroundInside);
                 w.invalidate();
             }
         }
@@ -763,18 +760,28 @@ static constexpr float kWindowScrollLocations[][2] = {
             dateInfoPanel->windowPos.y = height - 32;
         }
 
-        WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::bottomToolbar);
-        if (bottomWind != nullptr && parkInfoPanel != nullptr && dateInfoPanel != nullptr)
+        auto bottomWidth = std::max(640, width);
+        auto bottomOffset = 0;
+        if (parkInfoPanel != nullptr && dateInfoPanel != nullptr)
         {
-            bottomWind->width = std::max(640, width) - parkInfoPanel->width - dateInfoPanel->width;
-            bottomWind->windowPos.x = parkInfoPanel->width;
-            bottomWind->windowPos.y = height - 32;
+            bottomWidth -= parkInfoPanel->width + dateInfoPanel->width;
+            bottomOffset = parkInfoPanel->width;
         }
-        else if (bottomWind != nullptr)
+
+        WindowBase* statusBar = windowMgr->FindByClass(WindowClass::gameStatusBar);
+        if (statusBar != nullptr)
         {
-            bottomWind->width = std::max(640, width);
-            bottomWind->windowPos.x = 0;
-            bottomWind->windowPos.y = height - 32;
+            statusBar->width = bottomWidth;
+            statusBar->windowPos.x = bottomOffset;
+            statusBar->windowPos.y = height - 32;
+        }
+
+        WindowBase* newsTicker = windowMgr->FindByClass(WindowClass::newsTicker);
+        if (newsTicker != nullptr)
+        {
+            newsTicker->width = bottomWidth;
+            newsTicker->windowPos.x = bottomOffset;
+            newsTicker->windowPos.y = height - 32;
         }
     }
 
@@ -886,7 +893,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             auto w = it->get();
             auto viewport = w->viewport;
-            if (viewport == nullptr || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+            if (viewport == nullptr || !(viewport->flags.has(ViewportFlag::soundOn)))
                 continue;
 
             gMusicTrackingViewport = viewport;

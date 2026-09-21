@@ -4842,7 +4842,13 @@ namespace OpenRCT2
             if (!stationNumTiles.has_value())
                 return;
 
-            auto stationLength = (stationNumTiles.value() * 0x44180) - 0x16B2A;
+            // Change: RCT2 builds in a safety margin, presumably to ensure a block brake just before the station
+            // is never blocked by a tiny overhang from a train in the station. However, this also means
+            // it allows fewer trains or fewer cars per train even for non-block sectioned rides.
+            // For this reason, limit this margin to just block sectioned rides. This also improves
+            // compatibility with RCT1 parks and track designs.
+            const auto safetyMargin = isBlockSectioned() ? 0x16B2A : 0;
+            auto stationLength = (stationNumTiles.value() * 0x44180) - safetyMargin;
             int32_t maxMass = rtd.MaxMass << 8;
             int32_t newMaxCarsPerTrain = 1;
             for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
@@ -5025,7 +5031,7 @@ namespace OpenRCT2
             Viewport* viewport = WindowGetViewport(w);
             if (w != nullptr && viewport != nullptr)
             {
-                viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+                viewport->flags.set(ViewportFlag::soundOn);
             }
         }
 
@@ -5501,12 +5507,12 @@ namespace OpenRCT2
         }
     }
 
-    uint64_t Ride::getAvailableModes() const
+    RideModes Ride::getAvailableModes() const
     {
         if (getGameState().cheats.showAllOperatingModes)
             return kAllRideModesAvailable;
 
-        return getRideTypeDescriptor().RideModes;
+        return getRideTypeDescriptor().rideModes;
     }
 
     const RideTypeDescriptor& Ride::getRideTypeDescriptor() const

@@ -74,8 +74,8 @@ namespace OpenRCT2::GameActions
         auto res = Result();
 
         auto validRange = ClampRangeWithinMap(_range.normalise());
-        CoordsXYZ centre{ (validRange.GetX1() + validRange.GetX2()) / 2 + 16,
-                          (validRange.GetY1() + validRange.GetY2()) / 2 + 16, 0 };
+        CoordsXYZ centre{ (validRange.getX1() + validRange.getX2()) / 2 + 16,
+                          (validRange.getY1() + validRange.getY2()) / 2 + 16, 0 };
         centre.z = TileElementHeight(centre);
 
         res.position = centre;
@@ -87,9 +87,9 @@ namespace OpenRCT2::GameActions
         }
 
         // Game command modified to accept selection size
-        for (auto y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
+        for (auto y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
         {
-            for (auto x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
+            for (auto x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;

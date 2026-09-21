@@ -1159,7 +1159,6 @@ STR_1816    :選擇遊客列表中要顯示的資訊類別
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}所有遊客
 STR_1819    :{WINDOW_COLOUR_2}所有遊客 (總匯)
-STR_1820    :{WINDOW_COLOUR_2}{STRINGID}的遊客
 STR_1821    :{WINDOW_COLOUR_2}在想{STRINGID}的遊客
 STR_1822    :{WINDOW_COLOUR_2}在想{POP16}{SMALLFONT}{STRINGID}{MEDIUMFONT}的遊客
 STR_1823    :顯示遊客對此遊樂設施/店面的想法
@@ -2453,9 +2452,6 @@ STR_5242    :主題名稱已經存在
 STR_5243    :使用了不適合的字符
 STR_5244    :主題
 STR_5245    :頂部工具列
-STR_5246    :底部工具列
-STR_5247    :雲霄飛車設計工具的底部工具列
-STR_5248    :劇情編輯工具的底部工具列
 STR_5249    :主選單的選單按鈕
 STR_5250    :主選單的‘離開遊戲’按鈕
 STR_5251    :主選單的‘選項’按鈕
@@ -3183,7 +3179,6 @@ STR_6137    :OpenRCT2, 一個免費及開放原始碼的模擬樂園2擴充及�
 STR_6138    :OpenRCT2由眾多志願者一起開發, 完整的列表可按下 “貢獻者” 按鈕找到. 請訪問 http://github.com/OpenRCT2/OpenRCT2 以便獲取更多資訊.
 STR_6139    :所有的產品及公司名稱皆屬其擁有者所有. 使用那些名稱並不暗示或代表本項目與他們有任何聯繫.
 STR_6140    :更新日誌…
-STR_6141    :夢幻遊樂園(RCT1)式的底部工具列
 STR_6142    :{WINDOW_COLOUR_2}軌道設計名稱: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}遊樂設施種類: {BLACK}{STRINGID}
 STR_6144    :顥示沒有更新的畫面區域

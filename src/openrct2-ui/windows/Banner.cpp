@@ -89,8 +89,6 @@ namespace OpenRCT2::Ui::Windows
                 *this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
                 viewportWidget.width() - 2, viewportWidget.height() - 2, Focus(_bannerViewPos));
 
-            if (viewport != nullptr)
-                viewport->flags = Config::Get().general.alwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
             invalidate();
         }
 
@@ -276,7 +274,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto* bannerEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
-            const bool visible = bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR);
+            const bool visible = bannerEntry != nullptr && (bannerEntry->flags.has(BannerEntryFlag::hasPrimaryColour));
             widgets[WIDX_MAIN_COLOUR].setVisible(visible);
 
             const bool noEntry = banner->flags.has(BannerFlag::noEntry);

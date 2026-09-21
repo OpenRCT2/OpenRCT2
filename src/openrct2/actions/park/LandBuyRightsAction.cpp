@@ -68,24 +68,24 @@ namespace OpenRCT2::GameActions
         MapRange normRange = _range.normalise();
         // Keep big coordinates within map boundaries
         auto mapSizeMaxXY = GetMapSizeMaxXY();
-        auto aX = std::max<decltype(normRange.GetX1())>(32, normRange.GetX1());
-        auto bX = std::min<decltype(normRange.GetX2())>(mapSizeMaxXY.x, normRange.GetX2());
-        auto aY = std::max<decltype(normRange.GetY1())>(32, normRange.GetY1());
-        auto bY = std::min<decltype(normRange.GetY2())>(mapSizeMaxXY.y, normRange.GetY2());
+        auto aX = std::max<decltype(normRange.getX1())>(32, normRange.getX1());
+        auto bX = std::min<decltype(normRange.getX2())>(mapSizeMaxXY.x, normRange.getX2());
+        auto aY = std::max<decltype(normRange.getY1())>(32, normRange.getY1());
+        auto bY = std::min<decltype(normRange.getY2())>(mapSizeMaxXY.y, normRange.getY2());
 
         MapRange validRange = MapRange{ aX, aY, bX, bY };
 
-        CoordsXYZ centre{ (validRange.GetX1() + validRange.GetX2()) / 2 + 16,
-                          (validRange.GetY1() + validRange.GetY2()) / 2 + 16, 0 };
+        CoordsXYZ centre{ (validRange.getX1() + validRange.getX2()) / 2 + 16,
+                          (validRange.getY1() + validRange.getY2()) / 2 + 16, 0 };
         centre.z = TileElementHeight(centre);
 
         res.position = centre;
         res.expenditure = ExpenditureType::landPurchase;
 
         // Game command modified to accept selection size
-        for (auto y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
+        for (auto y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
         {
-            for (auto x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
+            for (auto x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;

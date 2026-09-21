@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
 #include "../core/Random.hpp"
 #include "../core/StringTypes.h"
@@ -29,6 +30,14 @@ enum
     AUTOSAVE_EVERY_HOUR,
     AUTOSAVE_NEVER
 };
+
+enum class SaveFlag : uint8_t
+{
+    exportObjects,
+    scenario,
+    automatic = 31,
+};
+using SaveFlags = FlagHolder<uint32_t, SaveFlag>;
 
 constexpr uint8_t kAutosavePause = 0;
 constexpr uint8_t kDefaultNumAutosavesToKeep = 10;
@@ -53,7 +62,7 @@ random_engine_t::result_type ScenarioRand();
 uint32_t ScenarioRandMax(uint32_t max);
 
 ResultWithMessage ScenarioPrepareForSave(OpenRCT2::GameState_t& gameState);
-int32_t ScenarioSave(OpenRCT2::GameState_t& gameState, u8string_view path, int32_t flags);
+int32_t ScenarioSave(OpenRCT2::GameState_t& gameState, u8string_view path, SaveFlags flags);
 void ScenarioFailure(OpenRCT2::GameState_t& gameState);
 void ScenarioSuccess(OpenRCT2::GameState_t& gameState);
 void ScenarioSuccessSubmitName(OpenRCT2::GameState_t& gameState, const char* name);

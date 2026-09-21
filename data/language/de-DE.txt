@@ -1158,7 +1158,6 @@ STR_1816    :Informationsart auswählen, die{NEWLINE}in Besucherliste angezeigt{
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle Besucher
 STR_1819    :{WINDOW_COLOUR_2}Alle Besucher (zusammengefasst)
-STR_1820    :{WINDOW_COLOUR_2}Besucher {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Besucher denken {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Besucher denken an {POP16}{STRINGID}
 STR_1823    :Gedanken der Besucher zu dieser{NEWLINE}Attraktion anzeigen
@@ -2448,9 +2447,6 @@ STR_5242    :Dieser Themenname existiert bereits
 STR_5243    :Unzulässige Zeichen benutzt
 STR_5244    :Themen
 STR_5245    :Obere Symbolleiste
-STR_5246    :Untere Symbolleiste
-STR_5247    :Untere Symbolleiste Achterb.-Designer
-STR_5248    :Untere Symbolleiste Szenario-Editor
 STR_5249    :Hauptmenü-Schaltflächen
 STR_5250    :Hauptmenü-Beenden-Schaltfläche
 STR_5251    :Hauptmenü-Optionen-Schaltfläche
@@ -3175,7 +3171,6 @@ STR_6137    :OpenRCT2, eine freie und quelloffene Neuerschaffung von und Erweite
 STR_6138    :OpenRCT2 ist das Werk vieler Autoren, eine vollständige Liste kann mit dem „Mitwirkende“-Knopf gefunden werden. Für weitere Informationen besuchen Sie http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alle Produkt- und Firmennamen sind Eigentum ihrer jeweiligen Inhaber.{NEWLINE}Die Nutzung dieser stellt keine Zugehörigkeit oder Unterstützung dar.
 STR_6140    :Changelog …
-STR_6141    :Untere Symbolleiste im RCT1-Stil
 STR_6142    :{WINDOW_COLOUR_2}Entwurfsname: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Bahntyp: {BLACK}{STRINGID}
 STR_6144    :Neu gezeichnete Kacheln markieren

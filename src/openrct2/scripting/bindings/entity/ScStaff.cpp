@@ -574,6 +574,34 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    ScEntertainer gScEntertainer;
+
+    JSValue ScEntertainer::New(JSContext* ctx, EntityId entityId)
+    {
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScEntertainer.GetProto());
+    }
+
+    void ScEntertainer::Register(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry kFuncs[] = {
+            JS_CGETSET_DEF("guestsEntertained", &ScEntertainer::guestsEntertained_get, nullptr),
+        };
+        gScEntertainer.RegisterDerived(ctx, gScStaff, kFuncs);
+    }
+
+    JSValue ScEntertainer::guestsEntertained_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto peep = GetStaff(thisVal);
+        if (peep != nullptr && peep->isEntertainer())
+        {
+            return JS_NewUint32(ctx, peep->staffGuestsEntertained);
+        }
+        else
+        {
+            return JS_NULL;
+        }
+    }
+
     using OpaquePatrolAreaData = struct
     {
         EntityId staffId;
@@ -626,9 +654,9 @@ namespace OpenRCT2::Scripting
             {
                 MapRange mapRange = { JSToCoordXY(ctx, coordsOrRange, "leftTop"),
                                       JSToCoordXY(ctx, coordsOrRange, "rightBottom") };
-                for (int32_t y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+                for (int32_t y = mapRange.getY1(); y <= mapRange.getY2(); y += kCoordsXYStep)
                 {
-                    for (int32_t x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
+                    for (int32_t x = mapRange.getX1(); x <= mapRange.getX2(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
                         staff->setPatrolArea(coord, reset);

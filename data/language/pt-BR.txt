@@ -1157,7 +1157,6 @@ STR_1816    :Selecione o tipo de informação para mostrar na lista de visitante
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Todos os visitantes
 STR_1819    :{WINDOW_COLOUR_2}Todos os visitantes (resumido)
-STR_1820    :{WINDOW_COLOUR_2}Visitantes {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Pensamentos dos visitantes {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitantes pensam sobre {{POP16}{STRINGID}
 STR_1823    :Mostrar os pensamentos dos visitantes sobre essa atração
@@ -2447,9 +2446,6 @@ STR_5242    :Já existe um tema com este nome
 STR_5243    :Caracteres inválidos usados
 STR_5244    :Temas
 STR_5245    :Barra de Ferramentas Superior
-STR_5246    :Barra de Ferramentas Inferior
-STR_5247    :Barra Inferior do Editor de Pista
-STR_5248    :Barra Inferior do Editor de Cenário
 STR_5249    :Botões do Menu do Jogo
 STR_5250    :Botão de Saída do Jogo
 STR_5251    :Botão de Opções do Jogo
@@ -3178,7 +3174,6 @@ STR_6137    :OpenRCT2, uma recriação e expansão grátis e com código aberto 
 STR_6138    :OpenRCT2 é o trabalho de vários autores, a lista completa pode ser encontrada no botão “Contribuidores”. Para mais informações, visite http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Todos os nomes de produtos e de empresas pertencem aos seus respectivos proprietários. O uso deles não implica qualquer afiliação ou aprovação por eles.
 STR_6140    :Relatório de alterações…
-STR_6141    :Barra de ferramentas Inferior do RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nome da pista: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo de atração: {BLACK}{STRINGID}
 STR_6144    :Mostrar sujeira visual
@@ -3829,3 +3824,23 @@ STR_7040    :Acréscimos dos caminhos
 STR_7041    :Painel de informações do parque
 STR_7042    :Painel de informações da data
 STR_7043    :Não é possível mudar a altura do terreno aqui…
+STR_7044    :Rodapé de notícias
+STR_7045    :Barra de status ao estilo RCT1
+STR_7046    :Barra de status (estilo RCT1)
+STR_7047    :Controle de passo (Construtor de Pista)
+STR_7048    :Controle de passo (Editor de Cenário)
+STR_7049    :OpenRCT2
+STR_7050    :Visitantes andando
+STR_7051    :Visitantes indo à {STRINGID}
+STR_7052    :Visitantes em fila para {STRINGID}
+STR_7053    :Visitantes afogando
+STR_7054    :Visitantes em {STRINGID}
+STR_7055    :Visitantes em {STRINGID}
+STR_7056    :Visitantes na {STRINGID}
+STR_7057    :Visitantes sentados
+STR_7058    :Visitantes apanhados
+STR_7059    :Visitantes observando {STRINGID}
+STR_7060    :Visitantes observando a construção de {STRINGID}
+STR_7061    :Visitantes observando a paisagem
+STR_7062    :Visitantes saindo do parque
+STR_7063    :Visitantes observando uma nova atração ser construída

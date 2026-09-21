@@ -490,11 +490,12 @@ namespace OpenRCT2::Ui::Windows
 
             if (!_trackPlaceCtrlState && im.isModifierKeyPressed(ModifierKey::ctrl))
             {
-                constexpr auto interactionFlags = EnumsToFlags(
-                    ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
-                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery);
+                constexpr ViewportInteractionItems kInteractionFlags = {
+                    ViewportInteractionItem::terrain,  ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+                    ViewportInteractionItem::footpath, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery
+                };
 
-                auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, kInteractionFlags);
                 if (info.interactionType == ViewportInteractionItem::terrain)
                 {
                     _trackPlaceCtrlZ = floor2(surfaceElement->getBaseZ(), kCoordsZStep);
@@ -578,12 +579,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (_trackPlaceZ < surfaceElement->getBaseZ() && !_triggeredUndergroundView)
                 {
-                    mainWnd->viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                    mainWnd->viewport->flags.set(ViewportFlag::undergroundInside);
                     _triggeredUndergroundView = true;
                 }
                 else if (_trackPlaceZ >= surfaceElement->getBaseZ() && _triggeredUndergroundView)
                 {
-                    mainWnd->viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                    mainWnd->viewport->flags.unset(ViewportFlag::undergroundInside);
                     _triggeredUndergroundView = false;
                 }
             }

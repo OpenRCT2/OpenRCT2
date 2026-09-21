@@ -22,6 +22,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/editor/EditorController.h>
@@ -82,8 +83,8 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(
                 this,
-                gLegacyScene == LegacyScene::scenarioEditor ? WindowClass::editorScenarioBottomToolbar
-                                                            : WindowClass::editorTrackBottomToolbar);
+                gLegacyScene == LegacyScene::scenarioEditor ? WindowClass::editorStepControlScenario
+                                                            : WindowClass::editorStepControlTrack);
 
             auto& gameState = getGameState();
             bool stepVisible = gLegacyScene != LegacyScene::trackDesignsManager

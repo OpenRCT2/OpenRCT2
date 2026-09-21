@@ -879,7 +879,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     int32_t height = g1->height;
 
     // This is the start y coordinate on the destination
-    int16_t dest_start_y = y + g1->yOffset;
+    int32_t dest_start_y = y + g1->yOffset;
 
     // For whatever reason the RLE version does not use
     // the zoom mask on the y coordinate but does on x.
@@ -938,7 +938,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
-    int16_t dest_start_x = ((x + g1->xOffset + ~zoom_mask) & zoom_mask) - rt.WorldX();
+    int32_t dest_start_x = ((x + g1->xOffset + ~zoom_mask) & zoom_mask) - rt.WorldX();
 
     if (dest_start_x < 0)
     {

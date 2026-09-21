@@ -3990,6 +3990,11 @@ declare global {
 
     interface Entertainer extends BaseStaff {
         staffType: "entertainer";
+
+        /**
+         * The number of guests entertained by the entertainer.
+         */
+        readonly guestsEntertained: number;
     }
 
     interface PatrolArea {
@@ -4280,7 +4285,8 @@ declare global {
         "toggle_scenery_cluster" |
         "passwordless_login" |
         "modify_tile" |
-        "edit_scenario_options";
+        "edit_scenario_options" |
+        "drag_path_area";
 
     /**
      * Park APIs

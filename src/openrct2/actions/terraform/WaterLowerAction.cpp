@@ -57,8 +57,8 @@ namespace OpenRCT2::GameActions
         auto res = Result();
 
         auto validRange = ClampRangeWithinMap(_range);
-        res.position.x = ((validRange.GetX1() + validRange.GetX2()) / 2) + 16;
-        res.position.y = ((validRange.GetY1() + validRange.GetY2()) / 2) + 16;
+        res.position.x = ((validRange.getX1() + validRange.getX2()) / 2) + 16;
+        res.position.y = ((validRange.getY1() + validRange.getY2()) / 2) + 16;
         int16_t z = TileElementHeight(res.position);
         int16_t waterHeight = TileElementWaterHeight(res.position);
         if (waterHeight != 0)
@@ -71,9 +71,9 @@ namespace OpenRCT2::GameActions
         uint8_t minHeight = GetLowestHeight(gameState, validRange);
         bool hasChanged = false;
         bool withinOwnership = false;
-        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
+        for (int32_t y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
+            for (int32_t x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;
@@ -135,9 +135,9 @@ namespace OpenRCT2::GameActions
     {
         // The lowest height to lower the water to is the highest water level in the selection
         uint8_t minHeight{ 0 };
-        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
+        for (int32_t y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
+            for (int32_t x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
             {
                 if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
                 {

@@ -14,24 +14,24 @@
 template<class T>
 struct CoordsRange
 {
-    T Point1{ 0, 0 };
-    T Point2{ 0, 0 };
+    T point1{ 0, 0 };
+    T point2{ 0, 0 };
 
-    constexpr int32_t GetX1() const
+    constexpr int32_t getX1() const
     {
-        return Point1.x;
+        return point1.x;
     }
-    constexpr int32_t GetY1() const
+    constexpr int32_t getY1() const
     {
-        return Point1.y;
+        return point1.y;
     }
-    constexpr int32_t GetX2() const
+    constexpr int32_t getX2() const
     {
-        return Point2.x;
+        return point2.x;
     }
-    constexpr int32_t GetY2() const
+    constexpr int32_t getY2() const
     {
-        return Point2.y;
+        return point2.y;
     }
 
     constexpr CoordsRange() = default;
@@ -41,8 +41,8 @@ struct CoordsRange
     }
 
     constexpr CoordsRange(const T& pointOne, const T& pointTwo)
-        : Point1(pointOne)
-        , Point2(pointTwo)
+        : point1(pointOne)
+        , point2(pointTwo)
     {
     }
 };

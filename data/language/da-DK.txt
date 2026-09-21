@@ -1157,7 +1157,6 @@ STR_1816    :Vælg typen af information der vises i gæste listen
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle gæster
 STR_1819    :{WINDOW_COLOUR_2}Alle gæster (opsummeret)
-STR_1820    :{WINDOW_COLOUR_2}Gæster {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Gæster tænker {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Gæster tænker på {POP16}{STRINGID}
 STR_1823    :Vis gæsters tanker omkring forlystelse/attraktion
@@ -2447,9 +2446,6 @@ STR_5242    :Tema navnet findes allerede
 STR_5243    :Ugyldige karakterer brugt
 STR_5244    :Temaer
 STR_5245    :Top værktøjslinje
-STR_5246    :Bund værktøjslinje
-STR_5247    :Bane redigerings bund værktøjslinje
-STR_5248    :Scenarie redigerings bund værktøjslinje
 STR_5249    :Titelskærm Menu knapper
 STR_5250    :Titelskærm Afslut knap
 STR_5251    :Titelskærm indstillings knap
@@ -3178,7 +3174,6 @@ STR_6137    :OpenRCT2, en gratis,  open source genskabelse af Roller Coaster Tyc
 STR_6138    :OpenRCT2 er et samarbejde imellem mange forfattere, en komplet liste kan findes under “bidragydere” knappen. Du kan finde flere oplysninger på http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alle produkt- og firmanavne tilhører deres respektive indehavere. Brug af dem indebærer ikke nogen tilknytning til eller godkendelse af dem.
 STR_6140    :Ændringslog…
-STR_6141    :RCT1 bund værktøjslinje
 STR_6142    :{WINDOW_COLOUR_2}Spor navn: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Forlystelses type: {BLACK}{STRINGID}
 STR_6144    :Vis problematiske visualiseringer
