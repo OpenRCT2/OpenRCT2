@@ -139,6 +139,7 @@ enum class TrackDesignGameStateFlag
     hasScenery,
     vehicleUnavailable,
 };
+using TrackDesignGameStateFlags = FlagHolder<uint8_t, TrackDesignGameStateFlag>;
 
 struct TrackDesignTrackAndVehicleSettings
 {
@@ -193,11 +194,8 @@ struct TrackDesignStatistics
 struct TrackDesignGameStateData
 {
     u8string name{};
-    uint8_t flags{};
+    TrackDesignGameStateFlags flags{};
     money64 cost = 0.00_GBP;
-
-    bool hasFlag(TrackDesignGameStateFlag flag) const;
-    void setFlag(TrackDesignGameStateFlag flag, bool on);
 };
 
 namespace OpenRCT2
