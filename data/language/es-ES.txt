@@ -1260,7 +1260,7 @@ STR_1927    :{YELLOW}{STRINGID} se ha averiado
 STR_1928    :{RED}¡{STRINGID} ha chocado!
 STR_1929    :{RED}{STRINGID} no se ha arreglado{NEWLINE}Comprueba dónde están tus mecánicos y considera organizarlos mejor
 STR_1930    :Activa/Desactiva el seguimiento de este visitante (Con el seguimiento activado, los movimientos de este visitante aparecerán en el área de mensajes)
-STR_1931    :{STRINGID} está haciendo fila en {STRINGID}
+STR_1931    :{STRINGID} está haciendo fila para {STRINGID}
 STR_1932    :{STRINGID} está en {STRINGID}
 STR_1933    :{STRINGID} está en {STRINGID}
 STR_1934    :{STRINGID} ha salido de {STRINGID}
@@ -2821,7 +2821,7 @@ STR_5762    :Yuan Chino (CN¥)
 STR_5763    :Todos los archivos
 STR_5764    :Tipo de Atracción inválido
 STR_5765    :No se puede editar una atracción de un tipo no válido
-STR_5766    :Forinto Húngaro (Ft) 
+STR_5766    :Forinto Húngaro (Ft)
 STR_5767    :Ingresos
 STR_5768    :Clientes totales
 STR_5769    :Beneficio total
@@ -3495,7 +3495,7 @@ STR_6502    :Introduce un valor entre {COMMA16} y {COMMA16}
 STR_6503    :Al menos un objeto de estación debe estar seleccionado
 STR_6504    :Al menos una superficie de terreno debe estar seleccionada
 STR_6505    :Al menos un borde de terreno debe estar seleccionado
-STR_6506    :Medio Sacacorchos grande (izq) 
+STR_6506    :Medio Sacacorchos grande (izq)
 STR_6507    :Medio Sacacorchos grande (der)
 STR_6508    :Medio Rizo mediano (izq)
 STR_6509    :Medio Rizo mediano (der)
@@ -3839,3 +3839,17 @@ STR_7046    :Barra de estado (estilo RCT1)
 STR_7047    :Control paso a paso (Diseñador de Vías)
 STR_7048    :Control paso a paso (Editor de Escenarios)
 STR_7049    :OpenRCT2
+STR_7050    :Visitantes caminando
+STR_7051    :Visitantes dirigiéndose a {STRINGID}
+STR_7052    :Visitantes haciendo fila para {STRINGID}
+STR_7053    :Visitantes ahogándose
+STR_7054    :Visitantes en {STRINGID}
+STR_7055    :Visitantes en {STRINGID}
+STR_7056    :Visitantes en {STRINGID}
+STR_7057    :Visitantes sentados
+STR_7058    :Visitantes recogidos
+STR_7059    :Visitantes mirando {STRINGID}
+STR_7060    :Visitantes mirando la construcción de {STRINGID}
+STR_7061    :Visitantes observando el decorado
+STR_7062    :Visitantes abandonando el parque
+STR_7063    :Visitantes viendo la construcción de una nueva atracción
