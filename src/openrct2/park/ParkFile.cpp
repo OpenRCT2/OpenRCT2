@@ -1917,7 +1917,7 @@ namespace OpenRCT2
                         return true;
                     });
                     RideUse::GetTypeHistory().Set(guest->id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
-                    cs.readWrite(guest->itemFlags);
+                    cs.readWrite(guest->itemFlags.holder);
                     cs.readWrite(guest->photo2RideRef);
                     cs.readWrite(guest->photo3RideRef);
                     cs.readWrite(guest->photo4RideRef);
@@ -2471,7 +2471,7 @@ namespace OpenRCT2
         cs.readWrite(guest.hatColour);
         cs.readWrite(guest.favouriteRide);
         cs.readWrite(guest.favouriteRideRating);
-        cs.readWrite(guest.itemFlags);
+        cs.readWrite(guest.itemFlags.holder);
     }
 
     template<>

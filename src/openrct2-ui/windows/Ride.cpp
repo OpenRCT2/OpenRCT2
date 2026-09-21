@@ -6526,22 +6526,23 @@ namespace OpenRCT2::Ui::Windows
         static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
         {
             const auto& gameState = getGameState();
-            const auto existingFlags = gameState.park.samePriceThroughoutPark;
+            const auto existingFlags = ShopItems(gameState.park.samePriceThroughoutPark);
 
             auto newFlags = existingFlags;
             if (GetShopItemDescriptor(shop_item).IsPhoto())
             {
-                if (existingFlags & EnumToFlag(shop_item))
-                    newFlags &= ~EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
+                if (existingFlags.has(shop_item))
+                    newFlags.unset(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
                 else
-                    newFlags |= EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
+                    newFlags.set(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
             }
             else
             {
-                newFlags ^= EnumToFlag(shop_item);
+                newFlags.flip(shop_item);
             }
 
-            auto parkSetParameter = GameActions::ParkSetParameterAction(GameActions::ParkParameter::samePriceInPark, newFlags);
+            auto parkSetParameter = GameActions::ParkSetParameterAction(
+                GameActions::ParkParameter::samePriceInPark, newFlags.holder);
             GameActions::Execute(&parkSetParameter, getGameState());
         }
 

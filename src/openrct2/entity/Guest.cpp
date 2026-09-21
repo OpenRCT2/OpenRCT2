@@ -745,7 +745,7 @@ namespace OpenRCT2
 
             if (timeToConsume == 0)
             {
-                int32_t chosen_food = Numerics::bitScanForward(getFoodOrDrinkFlags());
+                int32_t chosen_food = Numerics::bitScanForward(getFoodOrDrinkFlags().holder);
                 if (chosen_food != -1)
                 {
                     ShopItem food = ShopItem(chosen_food);
@@ -1294,19 +1294,19 @@ namespace OpenRCT2
      * To simplify check of 0x36BA3E0 and 0x11FF78
      * returns false on no food.
      */
-    uint64_t Guest::getFoodOrDrinkFlags() const
+    ShopItems Guest::getFoodOrDrinkFlags() const
     {
-        return getItemFlags() & (ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
+        return getItemFlags().intersect(ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
     }
 
-    uint64_t Guest::getEmptyContainerFlags() const
+    ShopItems Guest::getEmptyContainerFlags() const
     {
-        return getItemFlags() & ShopItemsGetAllContainers();
+        return getItemFlags().intersect(ShopItemsGetAllContainers());
     }
 
     bool Guest::hasFoodOrDrink() const
     {
-        return getFoodOrDrinkFlags() != 0;
+        return !getFoodOrDrinkFlags().isEmpty();
     }
 
     /**
@@ -1315,12 +1315,12 @@ namespace OpenRCT2
      */
     bool Guest::hasDrink() const
     {
-        return getItemFlags() & ShopItemsGetAllDrinks();
+        return getItemFlags().hasAny(ShopItemsGetAllDrinks());
     }
 
     bool Guest::hasEmptyContainer() const
     {
-        return getEmptyContainerFlags() != 0;
+        return !getEmptyContainerFlags().isEmpty();
     }
 
     /**
@@ -1456,7 +1456,7 @@ namespace OpenRCT2
         const auto& shopItemDescriptor = GetShopItemDescriptor(shopItem);
         if (shopItemDescriptor.IsFoodOrDrink())
         {
-            int32_t food = Numerics::bitScanForward(guest.getFoodOrDrinkFlags());
+            int32_t food = Numerics::bitScanForward(guest.getFoodOrDrinkFlags().holder);
             if (food != -1)
             {
                 guest.insertNewThought(PeepThoughtType::haventFinished, static_cast<ShopItem>(food));
@@ -5438,7 +5438,7 @@ namespace OpenRCT2
             if ((!getNextIsSurface()) && (static_cast<uint32_t>(id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
                 && ((0xFFFF & ScenarioRand()) <= 4096))
             {
-                int32_t container = Numerics::bitScanForward(getEmptyContainerFlags());
+                int32_t container = Numerics::bitScanForward(getEmptyContainerFlags().holder);
                 auto litterType = Litter::Type::vomit;
 
                 if (container != -1)
@@ -5963,14 +5963,14 @@ namespace OpenRCT2
 
                 // This counts down 2 = No rubbish, 0 = full
                 uint8_t spaceLeftInBin = 0x3 & (foundElement->getAdditionStatus() >> selectedBin);
-                uint64_t emptyContainers = getEmptyContainerFlags();
+                const auto emptyContainers = getEmptyContainerFlags();
 
                 for (uint8_t curContainer = 0; curContainer < 64; curContainer++)
                 {
-                    if (!(emptyContainers & (1uLL << curContainer)))
+                    auto item = ShopItem(curContainer);
+                    if (!emptyContainers.has(item))
                         continue;
 
-                    auto item = ShopItem(curContainer);
                     if (spaceLeftInBin != 0)
                     {
                         // OpenRCT2 modification: This previously used
@@ -7545,31 +7545,31 @@ namespace OpenRCT2
         }
     }
 
-    uint64_t Guest::getItemFlags() const
+    ShopItems Guest::getItemFlags() const
     {
         return itemFlags;
     }
 
     void Guest::setItemFlags(uint64_t value)
     {
-        itemFlags = value;
+        itemFlags = ShopItems(value);
     }
 
     void Guest::removeAllItems()
     {
-        itemFlags = 0;
+        itemFlags.clearAll();
         timeToConsume = 0;
     }
 
     void Guest::removeItem(ShopItem item)
     {
-        itemFlags &= ~EnumToFlag(item);
+        itemFlags.unset(item);
         timeToConsume = 0;
     }
 
     void Guest::giveItem(ShopItem item)
     {
-        itemFlags |= EnumToFlag(item);
+        itemFlags.set(item);
 
         const auto& shopItemDescriptor = GetShopItemDescriptor(item);
         uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
@@ -7578,7 +7578,7 @@ namespace OpenRCT2
 
     bool Guest::hasItem(ShopItem peepItem) const
     {
-        return getItemFlags() & EnumToFlag(peepItem);
+        return getItemFlags().has(peepItem);
     }
 
     static bool IsThoughtShopItemRelated(const PeepThoughtType type)
@@ -7763,6 +7763,6 @@ namespace OpenRCT2
         stream << hatColour;
         stream << favouriteRide;
         stream << favouriteRideRating;
-        stream << itemFlags;
+        stream << itemFlags.holder;
     }
 } // namespace OpenRCT2
