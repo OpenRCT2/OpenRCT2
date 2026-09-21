@@ -1296,16 +1296,12 @@ namespace OpenRCT2
      */
     ShopItems Guest::getFoodOrDrinkFlags() const
     {
-        ShopItems items = getItemFlags();
-        items.holder &= (ShopItemsGetAllFoods() | ShopItemsGetAllDrinks()).holder;
-        return items;
+        return getItemFlags().intersect(ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
     }
 
     ShopItems Guest::getEmptyContainerFlags() const
     {
-        ShopItems items = getItemFlags();
-        items.holder &= ShopItemsGetAllContainers().holder;
-        return items;
+        return getItemFlags().intersect(ShopItemsGetAllContainers());
     }
 
     bool Guest::hasFoodOrDrink() const

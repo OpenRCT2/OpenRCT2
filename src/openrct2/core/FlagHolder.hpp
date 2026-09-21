@@ -90,6 +90,13 @@ struct FlagHolder
         return res;
     }
 
+    [[nodiscard]] constexpr FlagHolder intersect(const FlagHolder& other) const
+    {
+        FlagHolder res = *this;
+        res.holder &= other.holder;
+        return res;
+    }
+
     /**
      * For situations where you don’t know upfront whether to set or unset the flag,
      * e.g. in game actions where this is passed as a variable.
