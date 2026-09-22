@@ -51,7 +51,7 @@ namespace OpenRCT2
     {
         for (size_t colourNum = 0; colourNum < Drawing::kColourNumTotal; colourNum++)
         {
-            for (size_t patternOffset = 0; patternOffset < kNumSmoothingPatternImages; patternOffset++)
+            for (uint8_t patternOffset = 0; patternOffset < kNumSmoothingPatternImages; patternOffset++)
             {
                 G1Element newElement = *(GfxGetG1Element(PatternBaseImageId + patternOffset));
                 size_t numPixels = newElement.width * newElement.height;
