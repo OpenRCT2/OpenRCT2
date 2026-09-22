@@ -249,7 +249,8 @@ namespace OpenRCT2
 
     void SurfaceElement::setPrimarySurfaceColour(Drawing::Colour newColour)
     {
-        surfaceColour1 = clampColour(newColour);
+        newColour = (newColour == Drawing::Colour::invisible) ? Drawing::Colour::black : clampColour(newColour);
+        surfaceColour1 = newColour;
     }
 
     Drawing::Colour SurfaceElement::getPrimaryEdgeColour() const
@@ -259,6 +260,7 @@ namespace OpenRCT2
 
     void SurfaceElement::setPrimaryEdgeColour(Drawing::Colour newColour)
     {
-        edgeColour1 = clampColour(newColour);
+        newColour = (newColour == Drawing::Colour::invisible) ? Drawing::Colour::black : clampColour(newColour);
+        edgeColour1 = newColour;
     }
 } // namespace OpenRCT2

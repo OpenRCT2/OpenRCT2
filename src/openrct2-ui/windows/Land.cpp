@@ -166,10 +166,12 @@ namespace OpenRCT2::Ui::Windows
                     LandTool::ShowEdgeStyleDropdown(this, widget, _selectedWallTexture);
                     break;
                 case WIDX_SURFACE_COLOUR_1:
-                    WindowDropdownShowColour(this, widget, colours[1].withFlag(ColourFlag::translucent, true), _surfaceColour1);
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _surfaceColour1, true);
                     break;
                 case WIDX_EDGE_COLOUR_1:
-                    WindowDropdownShowColour(this, widget, colours[1].withFlag(ColourFlag::translucent, true), _edgeColour1);
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _edgeColour1, true);
                     break;
                 case WIDX_PREVIEW:
                     InputSize();
