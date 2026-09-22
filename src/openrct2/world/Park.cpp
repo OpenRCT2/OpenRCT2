@@ -311,6 +311,12 @@ namespace OpenRCT2::Park
         gameState.scenarioOptions.details = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
     }
 
+    void updateValuations(ParkData& park, const GameState_t& gameState)
+    {
+        park.value = CalculateParkValue(park, gameState);
+        park.companyValue = CalculateCompanyValue(park);
+    }
+
     void Update(ParkData& park, GameState_t& gameState)
     {
         PROFILED_FUNCTION();
@@ -328,8 +334,7 @@ namespace OpenRCT2::Park
         if (currentTicks % 512 == 0)
         {
             park.rating = CalculateParkRating(park, gameState);
-            park.value = CalculateParkValue(park, gameState);
-            park.companyValue = CalculateCompanyValue(park);
+            updateValuations(park, gameState);
             park.totalRideValueForMoney = calculateTotalRideValueForMoney(park, gameState);
             park.suggestedGuestMaximum = calculateSuggestedMaxGuests(park, gameState);
             park.guestGenerationProbability = calculateGuestGenerationProbability(park);

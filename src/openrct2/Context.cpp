@@ -79,6 +79,7 @@
 #include "ui/WindowManager.h"
 #include "world/MapAnimation.h"
 #include "world/MapSelection.h"
+#include "world/Park.h"
 
 #include <chrono>
 #include <cmath>
@@ -810,6 +811,10 @@ namespace OpenRCT2
                     }
 #endif
                     GameLoadInit(); // NB: calls `setActiveScene`
+
+                    // Park::Update only recalculates these every ~13 seconds, so a save can hold a value that
+                    // predates this park being loaded. Scenarios get the same treatment from ScenarioReset.
+                    Park::updateValuations(gameState.park, gameState);
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == Network::Mode::server)
                     {
