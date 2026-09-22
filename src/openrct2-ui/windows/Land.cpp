@@ -242,6 +242,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     _surfaceColour1 = ColourDropDownIndexToColour(dropdownIndex);
+                    invalidate();
                     break;
                 }
                 case WIDX_EDGE_COLOUR_1:
@@ -250,6 +251,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     _edgeColour1 = ColourDropDownIndexToColour(dropdownIndex);
+                    invalidate();
                     break;
                 }
             }
@@ -896,7 +898,13 @@ namespace OpenRCT2::Ui::Windows
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
-                _surfaceColour1Enabled = surfaceObj->Flags.has(TerrainSurfaceFlag::hasPrimaryColour);
+                auto surfaceColour1ShouldBeEnabled = surfaceObj->Flags.has(TerrainSurfaceFlag::hasPrimaryColour);
+                if (_surfaceColour1Enabled != surfaceColour1ShouldBeEnabled)
+                {
+                    _surfaceColour1Enabled = surfaceColour1ShouldBeEnabled;
+                    invalidate();
+                }
+
                 auto colour = widgets[WIDX_SURFACE_COLOUR_1].isVisible() ? surfaceObj->getPrimaryColour(_surfaceColour1)
                                                                          : surfaceObj->getPreviewColour();
                 surfaceImage = ImageId(surfaceObj->IconImageId, colour);
@@ -906,7 +914,13 @@ namespace OpenRCT2::Ui::Windows
             ImageId edgeImage;
             if (edgeObj != nullptr)
             {
-                _edgeColour1Enabled = edgeObj->flags.has(TerrainEdgeFlag::hasPrimaryColour);
+                auto edgeColour1ShouldBeEnabled = edgeObj->flags.has(TerrainEdgeFlag::hasPrimaryColour);
+                if (_edgeColour1Enabled != edgeColour1ShouldBeEnabled)
+                {
+                    _edgeColour1Enabled = edgeColour1ShouldBeEnabled;
+                    invalidate();
+                }
+
                 auto colour = widgets[WIDX_EDGE_COLOUR_1].isVisible() ? _edgeColour1 : edgeObj->getPreviewColour();
                 edgeImage = ImageId(edgeObj->IconImageId, colour);
             }
