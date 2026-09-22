@@ -24,7 +24,6 @@
 #include "../../world/Banner.h"
 #include "../../world/Map.h"
 #include "../../world/Park.h"
-#include "../../world/TileElementsView.h"
 #include "../../world/tile_element/TrackElement.h"
 #include "../GameActionRunner.h"
 #include "../track/TrackRemoveAction.h"
@@ -201,13 +200,26 @@ namespace OpenRCT2::GameActions
         {
             for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
             {
-                for (auto* trackElement : TileElementsView<TrackElement>(tilePos))
+                const auto tileCoords = tilePos.toCoordsXY();
+                // Loop over all elements of the tile until there are no more items to remove
+                int offset = -1;
+                bool lastForTileReached = false;
+                while (!lastForTileReached)
                 {
+                    offset++;
+                    auto* tileElement = MapGetFirstElementAt(tileCoords) + offset;
+                    if (tileElement == nullptr)
+                        break;
+
+                    lastForTileReached = tileElement->isLastForTile();
+                    if (tileElement->getType() != TileElementType::track)
+                        continue;
+
+                    auto* trackElement = tileElement->asTrack();
                     if (trackElement->getRideIndex() != _rideIndex)
                         continue;
 
-                    const auto location = CoordsXYZD(
-                        tilePos.toCoordsXY(), trackElement->getBaseZ(), trackElement->getDirection());
+                    const auto location = CoordsXYZD(tileCoords, trackElement->getBaseZ(), trackElement->getDirection());
                     const auto type = trackElement->getTrackType();
 
                     if (type != TrackElemType::maze)
@@ -218,7 +230,7 @@ namespace OpenRCT2::GameActions
                         auto removeRes = ExecuteNested(&trackRemoveAction, gameState);
                         if (removeRes.error != Status::ok)
                         {
-                            TileElementRemove(reinterpret_cast<TileElement*>(trackElement));
+                            TileElementRemove(tileElement);
                         }
                         else
                         {
@@ -243,6 +255,9 @@ namespace OpenRCT2::GameActions
                             }
                         }
                     }
+
+                    // Now we have removed an element, decrement the offset, or we may skip consecutive track elements
+                    offset--;
                 }
             }
         }
