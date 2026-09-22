@@ -17,12 +17,12 @@ namespace OpenRCT2::GameActions
     {
     private:
         // TODO change to std::optional when C++17
-        uint32_t _priorities{};
+        ResearchPriorities _priorities{};
         uint8_t _fundingAmount{};
 
     public:
         ParkSetResearchFundingAction() = default;
-        ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount);
+        ParkSetResearchFundingAction(ResearchPriorities priorities, uint8_t fundingAmount);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

@@ -2079,28 +2079,28 @@ namespace OpenRCT2::RCT1
             }
 
             // Research funding / priority
-            uint8_t activeResearchTypes = 0;
+            ResearchPriorities activeResearchTypes = {};
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::rollercoaster);
+                activeResearchTypes.set(ResearchCategory::rollercoaster);
             }
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_THRILL_RIDES)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::thrill);
-                activeResearchTypes |= EnumToFlag(ResearchCategory::water);
+                activeResearchTypes.set(ResearchCategory::thrill);
+                activeResearchTypes.set(ResearchCategory::water);
             }
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::gentle);
-                activeResearchTypes |= EnumToFlag(ResearchCategory::transport);
+                activeResearchTypes.set(ResearchCategory::gentle);
+                activeResearchTypes.set(ResearchCategory::transport);
             }
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_SHOPS)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::shop);
+                activeResearchTypes.set(ResearchCategory::shop);
             }
             if (_s4.ResearchPriority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMING)
             {
-                activeResearchTypes |= EnumToFlag(ResearchCategory::sceneryGroup);
+                activeResearchTypes.set(ResearchCategory::sceneryGroup);
             }
             gameState.researchPriorities = activeResearchTypes;
             gameState.researchFundingLevel = _s4.ResearchLevel;
