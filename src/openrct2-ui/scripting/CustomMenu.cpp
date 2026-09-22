@@ -18,6 +18,7 @@
     #include <openrct2/scripting/ScriptUtil.hpp>
     #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
+    #include <openrct2/world/TileElementsView.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -215,19 +216,14 @@ namespace OpenRCT2::Scripting
             }
             else if (info.Element != nullptr)
             {
-                auto el = MapGetFirstElementAt(info.Loc);
-                if (el != nullptr)
+                for (auto* el : TileElementsView(info.Loc))
                 {
                     int32_t index = 0;
-                    do
+                    if (el == info.Element)
                     {
-                        if (el == info.Element)
-                        {
-                            JS_SetPropertyStr(ctx, obj, "tileElementIndex", JS_NewInt32(ctx, index));
-                            break;
-                        }
-                        index++;
-                    } while (!(el++)->isLastForTile());
+                        JS_SetPropertyStr(ctx, obj, "tileElementIndex", JS_NewInt32(ctx, index));
+                        break;
+                    }
                 }
             }
 

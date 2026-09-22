@@ -47,6 +47,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>
+#include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/tile_element/BannerElement.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/LargeSceneryElement.h>
@@ -638,20 +639,16 @@ namespace OpenRCT2::Ui
         if (w != nullptr)
             FootpathUpdateProvisional();
 
-        TileElement* tileElement2 = MapGetFirstElementAt(mapCoords);
-        if (tileElement2 == nullptr)
-            return;
-
         auto z = pathElement.getBaseZ();
-        do
+        for (auto* pathElement2 : TileElementsView<PathElement>(mapCoords))
         {
-            if (tileElement2->getType() == TileElementType::path && tileElement2->getBaseZ() == z)
+            if (pathElement2->getBaseZ() == z)
             {
                 auto action = GameActions::FootpathRemoveAction({ mapCoords, z });
                 GameActions::Execute(&action, getGameState());
                 break;
             }
-        } while (!(tileElement2++)->isLastForTile());
+        }
     }
 
     /**
