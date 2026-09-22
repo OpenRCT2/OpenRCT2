@@ -17,6 +17,7 @@
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
+#include <openrct2-ui/interface/Chat.h>
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -24,7 +25,6 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ui/WindowManager.h>
