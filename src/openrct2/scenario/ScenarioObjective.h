@@ -68,7 +68,7 @@ namespace OpenRCT2::Scenario
             RideRating_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
         };
 
-        static const int kLowParkRatingThreshold = 700;
+        static constexpr uint16_t kLowParkRatingThreshold = 700;
 
         bool NeedsMoney() const
         {
