@@ -85,8 +85,8 @@ spritefile idx output
 spritefile output_directory
 .Op options
 .Nm
-.Ar sprite exportalldat
-dat_identifier output_directory
+.Ar sprite exportobject
+path_to_object output_directory
 .Op options
 .sp
 .Nm
@@ -123,6 +123,10 @@ cooperative multiplayer. It also re-introduces mechanics from RollerCoaster Tyco
 were not present in RollerCoaster Tycoon 2. Some of those include; mountain tool
 in-game, the \(lqhave fun\(rq objective, launched coasters (not passing-through the
 station) and several buttons on the toolbar.
+.sp
+.Sh ACTIONS
+.Ss sprite exportobject
+Extract the images from an object file into the specified output directory.
 .sp
 .Sh OPTIONS
 .Bl -tag -width "-openrct2-data-path path "

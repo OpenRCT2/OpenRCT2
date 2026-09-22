@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor kFoodStallRTD =
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::sellsFood, RtdFlag::listVehiclesSeparately,
                      RtdFlag::hasTrackColourMain),
-    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .rideModes = { RideMode::shopStall },
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_FOOD_STALL, STR_RIDE_DESCRIPTION_FOOD_STALL },
     .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },

@@ -54,14 +54,14 @@ void DrawWeather(RenderTarget& rt, IWeatherDrawer* weatherDrawer)
     if (!Config::Get().general.renderWeatherEffects)
         return;
 
-    uint32_t viewFlags = 0;
+    ViewportFlags viewFlags;
 
     const auto* viewport = WindowGetViewport(WindowGetMain());
     if (viewport != nullptr)
         viewFlags = viewport->flags;
 
     auto weatherLevel = getGameState().weatherCurrent.level;
-    if (weatherLevel == Weather::Level::none || gTrackDesignSaveMode || (viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (weatherLevel == Weather::Level::none || gTrackDesignSaveMode || viewFlags.has(ViewportFlag::highlightPathIssues))
         return;
 
     // Get weather draw function and draw weather

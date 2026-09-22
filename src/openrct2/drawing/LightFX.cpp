@@ -299,8 +299,8 @@ namespace OpenRCT2::Drawing::LightFx
 
                     ViewportInteractionItem interactionType = ViewportInteractionItem::none;
 
-                    // NOTE: When the flag VIEWPORT_FLAG_RENDERING_INHIBITED is set we can not create a paint graph.
-                    if ((vp.flags & VIEWPORT_FLAG_RENDERING_INHIBITED) == 0)
+                    // NOTE: When ViewportFlag::renderingInhibited is set we cannot create a paint graph.
+                    if (!vp.flags.has(ViewportFlag::renderingInhibited))
                     {
                         // based on GetMapCoordinatesFromPosWindow
                         RenderTarget rt;

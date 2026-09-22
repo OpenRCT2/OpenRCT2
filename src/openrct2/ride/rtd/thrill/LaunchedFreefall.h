@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor kLaunchedFreefallRTD =
                      RtdFlag::hasDataLogging, RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::guestsWillRideAgain,
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::upwardLaunch, RideMode::downwardLaunch),
+    .rideModes = { RideMode::upwardLaunch, RideMode::downwardLaunch },
     .DefaultMode = RideMode::upwardLaunch,
     .OperatingSettings = { 10, 40 },
     .Naming = { STR_RIDE_NAME_LAUNCHED_FREEFALL, STR_RIDE_DESCRIPTION_LAUNCHED_FREEFALL },

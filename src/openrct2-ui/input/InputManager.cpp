@@ -141,6 +141,9 @@ void InputManager::processAnalogueInput()
     _analogueScroll.x = 0;
     _analogueScroll.y = 0;
 
+    if (!ContextHasFocus())
+        return;
+
     const int32_t deadzone = Config::Get().general.gamepadDeadzone;
     const float sensitivity = Config::Get().general.gamepadSensitivity;
 
@@ -448,6 +451,11 @@ void InputManager::processChat(const InputEvent& e)
 
 void InputManager::processHoldEvents()
 {
+    _viewScroll = { 0, 0 };
+
+    if (!ContextHasFocus())
+        return;
+
     // Get mouse state
     _mouseState = SDL_GetMouseState(nullptr, nullptr);
 
@@ -458,9 +466,6 @@ void InputManager::processHoldEvents()
     std::memcpy(_keyboardState.data(), keys, numkeys);
 
     // Check view scroll shortcuts
-    _viewScroll.x = 0;
-    _viewScroll.y = 0;
-
     if (!hasTextInputFocus())
     {
         auto& shortcutManager = GetShortcutManager();

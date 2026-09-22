@@ -935,10 +935,11 @@ namespace OpenRCT2::RCT1
             }
 
             dst->numTrains = src->numTrains;
-            dst->numCarsPerTrain = src->numCarsPerTrain + rideEntry->zero_cars;
+            const auto additionalZeroCars = getAdditionalZeroCars(src->vehicleType);
+            dst->numCarsPerTrain = src->numCarsPerTrain + additionalZeroCars;
             dst->proposedNumTrains = src->numTrains;
             dst->maxTrains = src->maxTrains;
-            dst->proposedNumCarsPerTrain = src->numCarsPerTrain + rideEntry->zero_cars;
+            dst->proposedNumCarsPerTrain = src->numCarsPerTrain + additionalZeroCars;
             auto split = splitCombinedHelicesAndSpecialElements(src->specialTrackElements);
             dst->numHelices = split.first;
             dst->specialTrackElements = split.second;

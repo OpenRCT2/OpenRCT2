@@ -1157,7 +1157,6 @@ STR_1816    :A vendéglistában megjelenítendő információtípus kiválasztá
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Minden vendég
 STR_1819    :{WINDOW_COLOUR_2}Minden vendég (összegezve)
-STR_1820    :{WINDOW_COLOUR_2}{STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Akik ezt gondolják: {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Akik erre gondolnak: {POP16}{STRINGID}
 STR_1823    :A vendégek gondolatai erről a játékról/épületről
@@ -2447,9 +2446,6 @@ STR_5242    :Már létezik ilyen nevű téma
 STR_5243    :Érvénytelen karaktereket tartalmaz
 STR_5244    :Témák
 STR_5245    :Felső eszköztár
-STR_5246    :Alsó eszköztár
-STR_5247    :Játéktervező alsó eszköztára
-STR_5248    :Pályaszerkesztő alsó eszköztára
 STR_5249    :Főcím menü gombok
 STR_5250    :Főcím kilépés gomb
 STR_5251    :Főcím beállítások gomb
@@ -3178,7 +3174,6 @@ STR_6137    :OpenRCT2, a RollerCoaster Tycoon 2 ingyenes és nyílt forráskód�
 STR_6138    :Az OpenRCT2 számos szerző munkája, a teljes lista a „Közreműködők” gomb alatt található. További információkért látogass el ide: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Minden termék- és vállalatnév a vonatkozó tulajdonosok birtokában van. A használatuk nem jelent semmiféle kapcsolatot vagy jóváhagyást a részükről.
 STR_6140    :Változási napló…
-STR_6141    :RCT1 alsó eszköztár
 STR_6142    :{WINDOW_COLOUR_2}Pálya neve: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Játék típusa: {BLACK}{STRINGID}
 STR_6144    :Piszkos grafikák mutatása

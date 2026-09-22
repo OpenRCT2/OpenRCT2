@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor kCashMachineRTD =
     .flags = RtdFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .rideModes = { RideMode::shopStall },
     .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_CASH_MACHINE, STR_RIDE_DESCRIPTION_CASH_MACHINE },
     .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },

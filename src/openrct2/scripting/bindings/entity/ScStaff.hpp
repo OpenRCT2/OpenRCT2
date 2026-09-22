@@ -129,6 +129,19 @@ namespace OpenRCT2::Scripting
     class ScSecurity;
     extern ScSecurity gScSecurity;
 
+    class ScEntertainer final : public ScStaff
+    {
+    public:
+        static JSValue New(JSContext* ctx, EntityId entityId);
+        void Register(JSContext* ctx);
+
+    private:
+        static JSValue guestsEntertained_get(JSContext* ctx, JSValue thisVal);
+    };
+
+    class ScEntertainer;
+    extern ScEntertainer gScEntertainer;
+
 } // namespace OpenRCT2::Scripting
 
 #endif

@@ -1204,8 +1204,8 @@ namespace OpenRCT2
             }
 
             auto* pathAddEntry = tile_element->asPath()->getAdditionEntry();
-            if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN) || tile_element->asPath()->isBroken()
-                || tile_element->asPath()->additionIsGhost())
+            if (pathAddEntry == nullptr || !pathAddEntry->flags.has(PathAdditionFlag::isBin)
+                || tile_element->asPath()->isBroken() || tile_element->asPath()->additionIsGhost())
             {
                 stateReset();
                 return;
@@ -1574,7 +1574,7 @@ namespace OpenRCT2
         if (pathAddEntry == nullptr)
             return false;
 
-        if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
+        if (!pathAddEntry->flags.has(PathAdditionFlag::isBin))
             return false;
 
         if (tileElement->asPath()->isBroken())

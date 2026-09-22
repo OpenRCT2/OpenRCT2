@@ -554,7 +554,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(trackAndVehicle.rtdIndex);
     stream << DS_TAG(gameStateData.cost);
     stream << DS_TAG(operation.rideMode);
-    stream << DS_TAG(gameStateData.flags);
+    stream << DS_TAG(gameStateData.flags.holder);
     stream << DS_TAG(appearance.vehicleColourSettings);
     stream << DS_TAG(appearance.vehicleColours);
     stream << DS_TAG(appearance.stationObjectIdentifier);
@@ -1906,7 +1906,7 @@ static bool TrackDesignPlacePreview(
     TrackDesignState& tds, const TrackDesign& td, Ride** outRide, TrackDesignGameStateData& gameStateData, bool placeScenery)
 {
     *outRide = nullptr;
-    gameStateData.flags = 0;
+    gameStateData.flags.clearAll();
 
     auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
@@ -1958,13 +1958,13 @@ static bool TrackDesignPlacePreview(
 
     if (tds.hasScenery)
     {
-        gameStateData.setFlag(TrackDesignGameStateFlag::hasScenery, true);
+        gameStateData.flags.set(TrackDesignGameStateFlag::hasScenery);
     }
 
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        gameStateData.setFlag(TrackDesignGameStateFlag::sceneryUnavailable, true);
+        gameStateData.flags.set(TrackDesignGameStateFlag::sceneryUnavailable);
     }
 
     auto res = TrackDesignPlaceVirtual(
@@ -1976,11 +1976,11 @@ static bool TrackDesignPlacePreview(
     {
         if (entry_index == kObjectEntryIndexNull)
         {
-            gameStateData.setFlag(TrackDesignGameStateFlag::vehicleUnavailable, true);
+            gameStateData.flags.set(TrackDesignGameStateFlag::vehicleUnavailable);
         }
         else if (!RideEntryIsInvented(entry_index) && !getGameState().cheats.ignoreResearchStatus)
         {
-            gameStateData.setFlag(TrackDesignGameStateFlag::vehicleUnavailable, true);
+            gameStateData.flags.set(TrackDesignGameStateFlag::vehicleUnavailable);
         }
 
         _currentTrackPieceDirection = backup_rotation;
@@ -2146,7 +2146,7 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
     view.height = 217;
     view.pos = { 0, 0 };
     view.zoom = zoom_level;
-    view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
+    view.flags = ViewportFlags(ViewportFlag::hideBase, ViewportFlag::hideEntities);
 
     RenderTarget rt;
     rt.x = 0;
@@ -2215,19 +2215,6 @@ bool TrackDesignAreEntranceAndExitPlaced()
 }
 
 #pragma endregion
-
-bool TrackDesignGameStateData::hasFlag(TrackDesignGameStateFlag flag) const
-{
-    return flags & EnumToFlag(flag);
-}
-
-void TrackDesignGameStateData::setFlag(TrackDesignGameStateFlag flag, bool on)
-{
-    if (on)
-        flags |= EnumToFlag(flag);
-    else
-        flags &= ~EnumToFlag(flag);
-}
 
 u8string trackDesignGetExtension(RCT12::TD46Version version)
 {

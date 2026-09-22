@@ -3990,6 +3990,11 @@ declare global {
 
     interface Entertainer extends BaseStaff {
         staffType: "entertainer";
+
+        /**
+         * The number of guests entertained by the entertainer.
+         */
+        readonly guestsEntertained: number;
     }
 
     interface PatrolArea {

@@ -10,27 +10,20 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "../core/Money.hpp"
-#include "../localisation/StringIdType.h"
-#include "ObjectTypes.h"
 
 namespace OpenRCT2
 {
-    enum class BannerEntryFlag : uint8_t
+    enum class PathAdditionFlag
     {
-        hasPrimaryColour,
+        isBin = 0,
+        isBench = 1,
+        breakable = 2,
+        lamp = 3,
+        jumpingFountainWater = 4,
+        jumpingFountainSnow = 5,
+        dontAllowOnQueue = 6,
+        dontAllowOnSlope = 7,
+        isQueueScreen = 8
     };
-    using BannerEntryFlags = FlagHolder<uint8_t, BannerEntryFlag>;
-
-    struct BannerSceneryEntry
-    {
-        static constexpr auto kObjectType = ObjectType::banners;
-
-        StringId name;
-        uint32_t image;
-        uint8_t scrolling_mode;
-        BannerEntryFlags flags;
-        money64 price;
-        ObjectEntryIndex scenery_tab_id;
-    };
+    using PathAdditionFlags = FlagHolder<uint16_t, PathAdditionFlag>;
 } // namespace OpenRCT2

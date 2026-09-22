@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kMerryGoRoundRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately,
                      RtdFlag::requireExplicitListingInMusicObjects),
-    .RideModes = EnumsToFlags(RideMode::rotation),
+    .rideModes = { RideMode::rotation },
     .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 4, 25 },
     .Naming = { STR_RIDE_NAME_MERRY_GO_ROUND, STR_RIDE_DESCRIPTION_MERRY_GO_ROUND },

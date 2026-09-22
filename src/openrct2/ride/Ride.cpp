@@ -5031,7 +5031,7 @@ namespace OpenRCT2
             Viewport* viewport = WindowGetViewport(w);
             if (w != nullptr && viewport != nullptr)
             {
-                viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+                viewport->flags.set(ViewportFlag::soundOn);
             }
         }
 
@@ -5507,12 +5507,12 @@ namespace OpenRCT2
         }
     }
 
-    uint64_t Ride::getAvailableModes() const
+    RideModes Ride::getAvailableModes() const
     {
         if (getGameState().cheats.showAllOperatingModes)
             return kAllRideModesAvailable;
 
-        return getRideTypeDescriptor().RideModes;
+        return getRideTypeDescriptor().rideModes;
     }
 
     const RideTypeDescriptor& Ride::getRideTypeDescriptor() const

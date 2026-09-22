@@ -1873,29 +1873,23 @@ void TrackPaintUtilOnridePhotoPaint(
     }
 }
 
-static constexpr uint16_t RightVerticalLoopSegments[] = {
-    EnumsToFlags(
-        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-        PaintSegment::bottomRight),
-    EnumsToFlags(
-        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-        PaintSegment::bottomRight),
-    EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
-    EnumsToFlags(
-        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
-        PaintSegment::bottomRight),
-    0,
-    0,
-    EnumsToFlags(
-        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-        PaintSegment::bottomLeft),
-    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
-    EnumsToFlags(
-        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-        PaintSegment::bottomLeft),
-    EnumsToFlags(
-        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-        PaintSegment::bottomLeft),
+static constexpr PaintSegments RightVerticalLoopSegments[] = {
+    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+      PaintSegment::bottomRight },
+    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+      PaintSegment::bottomRight },
+    { PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight },
+    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+      PaintSegment::bottomRight },
+    {},
+    {},
+    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+      PaintSegment::bottomLeft },
+    { PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight },
+    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+      PaintSegment::bottomLeft },
+    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+      PaintSegment::bottomLeft },
 };
 
 void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence)
@@ -1917,9 +1911,8 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(
-                PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                PaintSegment::bottomLeft),
+            { PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+              PaintSegment::bottomLeft },
             direction),
         0xFFFF, 0);
 }
@@ -1965,13 +1958,13 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
     }
 
     if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex)
-        && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+        && !session.ViewFlags.has(ViewportFlag::highlightPathIssues))
     {
         auto trackType = trackElement.getTrackType();
         int32_t trackSequence = trackElement.getSequenceIndex();
         int32_t trackColourScheme = trackElement.getColourScheme();
 
-        if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_TRACK_HEIGHTS))
+        if (PaintShouldShowHeightMarkers(session, ViewportFlag::trackHeights))
         {
             session.InteractionType = ViewportInteractionItem::none;
             const auto& ted = GetTrackElementDescriptor(trackType);

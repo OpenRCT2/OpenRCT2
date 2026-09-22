@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor kMotionSimulatorRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::filmAvengingAviators, RideMode::filmThrillRiders),
+    .rideModes = { RideMode::filmAvengingAviators, RideMode::filmThrillRiders },
     .DefaultMode = RideMode::filmAvengingAviators,
     .Naming = { STR_RIDE_NAME_MOTION_SIMULATOR, STR_RIDE_DESCRIPTION_MOTION_SIMULATOR },
     .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },

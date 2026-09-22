@@ -44,7 +44,7 @@ namespace OpenRCT2
             explicit Painter(Ui::IUiContext& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
-            PaintSession* CreateSession(Drawing::RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
+            PaintSession* CreateSession(Drawing::RenderTarget& rt, ViewportFlags viewFlags, uint8_t rotation);
             void ReleaseSession(PaintSession* session);
             ~Painter();
 

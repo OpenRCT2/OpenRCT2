@@ -1186,8 +1186,8 @@ namespace OpenRCT2::Ui::Windows
             bool listen = false;
             if (newPage == WINDOW_RIDE_PAGE_MAIN && page == WINDOW_RIDE_PAGE_MAIN && viewport != nullptr)
             {
-                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
-                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
+                viewport->flags.flip(ViewportFlag::soundOn);
+                listen = viewport->flags.has(ViewportFlag::soundOn);
             }
 
             // Skip setting page if we're already on this page, unless we're initialising the window
@@ -1219,7 +1219,7 @@ namespace OpenRCT2::Ui::Windows
             invalidate();
 
             if (listen && viewport != nullptr)
-                viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+                viewport->flags.set(ViewportFlag::soundOn);
         }
 
         void setViewIndex(int16_t newIndex)
@@ -1592,7 +1592,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            uint16_t newViewportFlags = 0;
+            ViewportFlags newViewportFlags;
             if (viewport != nullptr)
             {
                 if (focus == newFocus)
@@ -1604,7 +1604,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (Config::Get().general.alwaysShowGridlines)
             {
-                newViewportFlags |= VIEWPORT_FLAG_GRIDLINES;
+                newViewportFlags.set(ViewportFlag::gridlines);
             }
 
             onPrepareDraw();
@@ -2633,7 +2633,7 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr)
             {
                 WindowDrawViewport(rt, *this);
-                if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+                if (viewport->flags.has(ViewportFlag::soundOn))
                     GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
 
@@ -3125,14 +3125,14 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
-            auto availableModes = ride->getAvailableModes();
+            RideModes availableModes = ride->getAvailableModes();
 
             // Create dropdown list
             auto numAvailableModes = 0;
             auto checkedIndex = -1;
             for (auto i = 0; i < static_cast<uint8_t>(RideMode::count); i++)
             {
-                if (availableModes & (1uLL << i))
+                if (availableModes.has(static_cast<RideMode>(i)))
                 {
                     gDropdown.items[numAvailableModes] = Dropdown::MenuLabel(kRideModeNames[i]);
 
@@ -3394,11 +3394,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MODE_DROPDOWN:
                 {
                     RideMode rideMode = RideMode::nullMode;
-                    auto availableModes = ride->getAvailableModes();
+                    RideModes availableModes = ride->getAvailableModes();
                     auto modeInDropdownIndex = -1;
                     for (RideMode rideModeIndex = RideMode::normal; rideModeIndex < RideMode::count; rideModeIndex++)
                     {
-                        if (availableModes & EnumToFlag(rideModeIndex))
+                        if (availableModes.has(rideModeIndex))
                         {
                             modeInDropdownIndex++;
                             if (modeInDropdownIndex == dropdownIndex)
@@ -5688,7 +5688,7 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* w_main = WindowGetMain();
             if (w_main != nullptr)
             {
-                w_main->viewport->flags |= (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+                w_main->viewport->flags.set(ViewportFlag::hideVertical, ViewportFlag::hideBase);
             }
 
             GfxInvalidateScreen();
@@ -6545,22 +6545,23 @@ namespace OpenRCT2::Ui::Windows
         static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
         {
             const auto& gameState = getGameState();
-            const auto existingFlags = gameState.park.samePriceThroughoutPark;
+            const auto existingFlags = ShopItems(gameState.park.samePriceThroughoutPark);
 
             auto newFlags = existingFlags;
             if (GetShopItemDescriptor(shop_item).IsPhoto())
             {
-                if (existingFlags & EnumToFlag(shop_item))
-                    newFlags &= ~EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
+                if (existingFlags.has(shop_item))
+                    newFlags.unset(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
                 else
-                    newFlags |= EnumsToFlags(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
+                    newFlags.set(ShopItem::photo, ShopItem::photo2, ShopItem::photo3, ShopItem::photo4);
             }
             else
             {
-                newFlags ^= EnumToFlag(shop_item);
+                newFlags.flip(shop_item);
             }
 
-            auto parkSetParameter = GameActions::ParkSetParameterAction(GameActions::ParkParameter::samePriceInPark, newFlags);
+            auto parkSetParameter = GameActions::ParkSetParameterAction(
+                GameActions::ParkParameter::samePriceInPark, newFlags.holder);
             GameActions::Execute(&parkSetParameter, getGameState());
         }
 
@@ -7473,7 +7474,7 @@ namespace OpenRCT2::Ui::Windows
         WindowBase* main_w = WindowGetMain();
         if (main_w != nullptr)
         {
-            main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+            main_w->viewport->flags.unset(ViewportFlag::hideVertical, ViewportFlag::hideBase);
         }
 
         GfxInvalidateScreen();

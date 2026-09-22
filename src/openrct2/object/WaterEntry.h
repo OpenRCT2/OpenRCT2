@@ -9,16 +9,18 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../drawing/ImageIndexType.h"
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
 namespace OpenRCT2
 {
-    enum
+    enum class WaterObjectFlag : uint8_t
     {
-        WATER_FLAGS_ALLOW_DUCKS = (1 << 0)
+        allowDucks,
     };
+    using WaterObjectFlags = FlagHolder<uint16_t, WaterObjectFlag>;
 
     struct WaterObjectEntry
     {
@@ -28,7 +30,7 @@ namespace OpenRCT2
         ImageIndex mainPalette;
         ImageIndex waterWavesPalette;
         ImageIndex waterSparklesPalette;
-        uint16_t flags;
+        WaterObjectFlags flags;
     };
 
     const WaterObjectEntry& getActiveWaterEntry();

@@ -254,7 +254,7 @@ namespace OpenRCT2::GameActions
 
     bool RideSetSettingAction::RideIsModeValid(const Ride& ride) const
     {
-        return ride.getRideTypeDescriptor().RideModes & (1uLL << _value);
+        return ride.getRideTypeDescriptor().rideModes.has(static_cast<RideMode>(_value));
     }
 
     bool RideSetSettingAction::RideIsValidLiftHillSpeed(GameState_t& gameState, const Ride& ride) const
