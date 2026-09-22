@@ -1027,11 +1027,11 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_SURFACE_COLOUR_1:
                     WindowDropdownShowColour(
-                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.surfaceColour1);
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.surfaceColour1, true);
                     break;
                 case WIDX_EDGE_COLOUR_1:
                     WindowDropdownShowColour(
-                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.edgeColour1);
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.edgeColour1, true);
                     break;
             }
         }
