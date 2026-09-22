@@ -19,14 +19,14 @@
 namespace OpenRCT2::GameActions
 {
     ParkSetResearchFundingAction::ParkSetResearchFundingAction(ResearchPriorities priorities, uint8_t fundingAmount)
-        : _priorities(priorities)
+        : _priorities(priorities.holder)
         , _fundingAmount(fundingAmount)
     {
     }
 
     void ParkSetResearchFundingAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        visitor.Visit("priorities", _priorities.holder);
+        visitor.Visit("priorities", _priorities);
         visitor.Visit("fundingAmount", _fundingAmount);
     }
 
@@ -38,7 +38,7 @@ namespace OpenRCT2::GameActions
     void ParkSetResearchFundingAction::Serialise(DataSerialiser& stream)
     {
         GameAction::Serialise(stream);
-        stream << DS_TAG(_priorities.holder) << DS_TAG(_fundingAmount);
+        stream << DS_TAG(_priorities) << DS_TAG(_fundingAmount);
     }
 
     Result ParkSetResearchFundingAction::Query(GameState_t& gameState, Park::ParkData& park) const
@@ -53,7 +53,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetResearchFundingAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        gameState.researchPriorities = _priorities;
+        gameState.researchPriorities = ResearchPriorities(static_cast<uint8_t>(_priorities));
         gameState.researchFundingLevel = _fundingAmount;
 
         auto windowManager = Ui::GetWindowManager();

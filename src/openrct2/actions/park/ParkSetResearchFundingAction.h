@@ -17,7 +17,7 @@ namespace OpenRCT2::GameActions
     {
     private:
         // TODO change to std::optional when C++17
-        ResearchPriorities _priorities{};
+        uint32_t _priorities{};
         uint8_t _fundingAmount{};
 
     public:
