@@ -1078,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         gLandToolTerrainSurface = type;
                         _settings.landTexture = type;
-                        LandTool::resetColourSelection(_settings.surfaceColour1, _settings.edgeColour1);
+                        LandTool::resetSurfaceColourSelection(type, _settings.surfaceColour1);
                     }
                     invalidate();
                     break;
@@ -1090,9 +1090,8 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_settings.edgeTexture != type)
                     {
-                        gLandToolTerrainEdge = type;
                         _settings.edgeTexture = type;
-                        LandTool::resetColourSelection(_settings.surfaceColour1, _settings.edgeColour1);
+                        LandTool::resetEdgeColourSelection(type, _settings.edgeColour1);
                     }
                     invalidate();
                     break;

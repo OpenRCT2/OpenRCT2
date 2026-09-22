@@ -214,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
                         gLandToolTerrainSurface = type;
                         _selectedFloorTexture = type;
                     }
-                    LandTool::resetColourSelection(_surfaceColour1, _edgeColour1);
+                    LandTool::resetSurfaceColourSelection(gLandToolTerrainSurface, _surfaceColour1);
                     invalidate();
                     break;
                 case WIDX_WALL:
@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
                         gLandToolTerrainEdge = type;
                         _selectedWallTexture = type;
                     }
-                    LandTool::resetColourSelection(_surfaceColour1, _edgeColour1);
+                    LandTool::resetEdgeColourSelection(gLandToolTerrainEdge, _edgeColour1);
                     invalidate();
                     break;
                 case WIDX_SURFACE_COLOUR_1:

@@ -151,18 +151,24 @@ ObjectEntryIndex LandTool::GetEdgeStyleFromDropdownIndex(size_t index)
     return kObjectEntryIndexNull;
 }
 
-void LandTool::resetColourSelection(Drawing::Colour& surfaceColour1, Drawing::Colour& edgeColour1)
+void LandTool::resetSurfaceColourSelection(ObjectEntryIndex selectedSurfaceIndex, Drawing::Colour& surfaceColour1)
 {
     surfaceColour1 = Drawing::Colour::black;
+
+    auto& objManager = GetContext()->GetObjectManager();
+
+    const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(selectedSurfaceIndex);
+    if (surfaceObject != nullptr && surfaceObject->Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+        surfaceColour1 = surfaceObject->Colour;
+}
+
+void LandTool::resetEdgeColourSelection(ObjectEntryIndex selectedEdgeIndex, Drawing::Colour& edgeColour1)
+{
     edgeColour1 = Drawing::Colour::black;
 
     auto& objManager = GetContext()->GetObjectManager();
 
-    const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(gLandToolTerrainSurface);
-    if (surfaceObject != nullptr && surfaceObject->Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
-        surfaceColour1 = surfaceObject->Colour;
-
-    const auto* edgeObject = objManager.GetLoadedObject<TerrainEdgeObject>(gLandToolTerrainEdge);
+    const auto* edgeObject = objManager.GetLoadedObject<TerrainEdgeObject>(selectedEdgeIndex);
     if (edgeObject != nullptr && edgeObject->flags.has(TerrainEdgeFlag::hasPrimaryColour))
         edgeColour1 = edgeObject->colour;
 }
