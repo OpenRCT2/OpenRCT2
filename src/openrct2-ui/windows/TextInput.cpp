@@ -222,8 +222,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fillInset(
                 rt,
                 { { windowPos.x + 10, screenCoords.y },
-                  { windowPos.x + kWindowSize.width - 10,
-                    screenCoords.y + 10 * wrappedString.metrics.lineCount + 3 } },
+                  { windowPos.x + kWindowSize.width - 10, screenCoords.y + 10 * wrappedString.metrics.lineCount + 3 } },
                 colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
                 Rectangle::FillMode::dontLightenWhenInset);
 

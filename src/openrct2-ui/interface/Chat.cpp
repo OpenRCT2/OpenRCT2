@@ -305,8 +305,7 @@ namespace OpenRCT2
         for (int32_t line = 0; line < lineCount; ++line)
         {
             drawText(
-                rt, { screenCoords.x, lineY - ((lineCount - 1) * lineHeight) }, bufferPtr,
-                { OpenRCT2::Drawing::kColourNull });
+                rt, { screenCoords.x, lineY - ((lineCount - 1) * lineHeight) }, bufferPtr, { OpenRCT2::Drawing::kColourNull });
             bufferPtr = GetStringEnd(bufferPtr) + 1;
             lineY += lineHeight;
         }

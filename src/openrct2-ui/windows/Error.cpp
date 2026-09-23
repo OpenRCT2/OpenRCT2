@@ -141,8 +141,7 @@ namespace OpenRCT2::Ui::Windows
         windowPosition.x = std::clamp(windowPosition.x, 0, ContextGetWidth() - width - 40);
         windowPosition.y = std::clamp(windowPosition.y, 22, ContextGetHeight() - height - 40);
 
-        auto errorWindow = std::make_unique<ErrorWindow>(
-            std::move(buffer), wrappedString.metrics.lineCount, autoClose);
+        auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), wrappedString.metrics.lineCount, autoClose);
 
         return windowMgr->Create(
             std::move(errorWindow), WindowClass::error, windowPosition, { width, height },

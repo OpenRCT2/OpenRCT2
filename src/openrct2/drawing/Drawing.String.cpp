@@ -137,8 +137,7 @@ namespace OpenRCT2::Drawing
     }
 
     template<typename TEmitLine>
-    static StringWrapMetrics processWrappedString(
-        u8string_view text, int32_t width, FontStyle fontStyle, TEmitLine&& emitLine)
+    static StringWrapMetrics processWrappedString(u8string_view text, int32_t width, FontStyle fontStyle, TEmitLine&& emitLine)
     {
         constexpr size_t kNullIndex = std::numeric_limits<size_t>::max();
         u8string currentLine;
@@ -230,8 +229,7 @@ namespace OpenRCT2::Drawing
      *
      *  rct2: 0x006C21E2
      */
-    static u8string getWrappedText(
-        u8string_view text, int32_t width, FontStyle fontStyle, StringWrapMetrics* outMetrics)
+    static u8string getWrappedText(u8string_view text, int32_t width, FontStyle fontStyle, StringWrapMetrics* outMetrics)
     {
         u8string result;
         result.reserve(text.size());

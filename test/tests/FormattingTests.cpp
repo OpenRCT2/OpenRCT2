@@ -641,10 +641,10 @@ TEST_F(FormattingTests, wrap_string_empty_input_is_one_line)
 
 TEST_F(FormattingTests, wrap_string_breaks_at_spaces_and_trims_the_next_line)
 {
-    constexpr auto fontStyle = FontStyle::medium;
-    const auto firstLineWidth = Drawing::getStringWidth("alpha", fontStyle);
+    constexpr auto kFontStyle = FontStyle::medium;
+    const auto firstLineWidth = Drawing::getStringWidth("alpha", kFontStyle);
 
-    const auto wrapped = Drawing::wrapString("alpha beta", firstLineWidth, fontStyle);
+    const auto wrapped = Drawing::wrapString("alpha beta", firstLineWidth, kFontStyle);
     const std::string expected{ "alpha\0beta", 10 };
 
     EXPECT_EQ(wrapped, expected);
@@ -652,10 +652,10 @@ TEST_F(FormattingTests, wrap_string_breaks_at_spaces_and_trims_the_next_line)
 
 TEST_F(FormattingTests, wrap_string_splits_an_unbreakable_word_on_codepoint_boundaries)
 {
-    constexpr auto fontStyle = FontStyle::medium;
-    const auto firstCodepointWidth = Drawing::getStringWidth(u8"é", fontStyle);
+    constexpr auto kFontStyle = FontStyle::medium;
+    const auto firstCodepointWidth = Drawing::getStringWidth(u8"é", kFontStyle);
 
-    const auto wrapped = Drawing::wrapString(u8"éé", firstCodepointWidth, fontStyle);
+    const auto wrapped = Drawing::wrapString(u8"éé", firstCodepointWidth, kFontStyle);
     const std::string expected{ u8"é\0é", 5 };
 
     EXPECT_EQ(wrapped, expected);
@@ -663,28 +663,29 @@ TEST_F(FormattingTests, wrap_string_splits_an_unbreakable_word_on_codepoint_boun
 
 TEST_F(FormattingTests, wrap_string_preserves_formatting_and_explicit_newlines)
 {
-    constexpr auto fontStyle = FontStyle::medium;
+    constexpr auto kFontStyle = FontStyle::medium;
     const auto formatted = FormatString("{RED}alpha{NEWLINE}beta");
 
-    const auto wrapped = Drawing::wrapString(formatted, 1000, fontStyle);
+    const auto wrapped = Drawing::wrapString(formatted, 1000, kFontStyle);
     auto expected = FormatString("{RED}alpha");
     expected.push_back('\0');
     expected.append("beta");
 
     EXPECT_EQ(wrapped, expected);
 
-    const auto metrics = Drawing::measureWrappedString(formatted, 1000, fontStyle);
-    EXPECT_EQ(metrics.maxWidth, std::max(Drawing::getStringWidth("alpha", fontStyle), Drawing::getStringWidth("beta", fontStyle)));
+    const auto metrics = Drawing::measureWrappedString(formatted, 1000, kFontStyle);
+    EXPECT_EQ(
+        metrics.maxWidth, std::max(Drawing::getStringWidth("alpha", kFontStyle), Drawing::getStringWidth("beta", kFontStyle)));
     EXPECT_EQ(metrics.lineCount, 2);
 }
 
 TEST_F(FormattingTests, measure_wrapped_string_reports_metrics_without_wrapping_text)
 {
-    constexpr auto fontStyle = FontStyle::medium;
-    const auto width = Drawing::getStringWidth("alpha", fontStyle);
-    constexpr auto text = "alpha beta beta";
+    constexpr auto kFontStyle = FontStyle::medium;
+    const auto width = Drawing::getStringWidth("alpha", kFontStyle);
+    constexpr auto kText = "alpha beta beta";
 
-    const auto measured = Drawing::measureWrappedString(text, width, fontStyle);
+    const auto measured = Drawing::measureWrappedString(kText, width, kFontStyle);
 
     EXPECT_EQ(measured.maxWidth, width);
     EXPECT_EQ(measured.lineCount, 3);
@@ -692,26 +693,26 @@ TEST_F(FormattingTests, measure_wrapped_string_reports_metrics_without_wrapping_
 
 TEST_F(FormattingTests, wrap_string_and_measure_returns_text_and_metrics)
 {
-    constexpr auto fontStyle = FontStyle::medium;
-    const auto width = Drawing::getStringWidth("alpha", fontStyle);
+    constexpr auto kFontStyle = FontStyle::medium;
+    const auto width = Drawing::getStringWidth("alpha", kFontStyle);
 
-    const auto wrapped = Drawing::wrapStringAndMeasure("alpha beta", width, fontStyle);
+    const auto wrapped = Drawing::wrapStringAndMeasure("alpha beta", width, kFontStyle);
     const std::string expected{ "alpha\0beta", 10 };
 
     EXPECT_EQ(wrapped.text, expected);
-    EXPECT_EQ(wrapped.metrics.maxWidth, std::max(width, Drawing::getStringWidth("beta", fontStyle)));
+    EXPECT_EQ(wrapped.metrics.maxWidth, std::max(width, Drawing::getStringWidth("beta", kFontStyle)));
     EXPECT_EQ(wrapped.metrics.lineCount, 2);
 }
 
 TEST_F(FormattingTests, wrap_string_and_measure_counts_empty_lines_from_explicit_newlines)
 {
-    constexpr auto fontStyle = FontStyle::medium;
+    constexpr auto kFontStyle = FontStyle::medium;
     const auto formatted = FormatString("alpha{NEWLINE}{NEWLINE}");
 
-    const auto wrapped = Drawing::wrapStringAndMeasure(formatted, 1000, fontStyle);
+    const auto wrapped = Drawing::wrapStringAndMeasure(formatted, 1000, kFontStyle);
     const std::string expected{ "alpha\0\0", 7 };
 
     EXPECT_EQ(wrapped.text, expected);
-    EXPECT_EQ(wrapped.metrics.maxWidth, Drawing::getStringWidth("alpha", fontStyle));
+    EXPECT_EQ(wrapped.metrics.maxWidth, Drawing::getStringWidth("alpha", kFontStyle));
     EXPECT_EQ(wrapped.metrics.lineCount, 3);
 }
