@@ -136,29 +136,16 @@ namespace OpenRCT2::Drawing
         return getStringWidth(text, fontStyle);
     }
 
-    /**
-     * Wrap the text in buffer to width, returns width of longest line.
-     *
-     * Inserts NULL where line should break (as \n is used for something else),
-     * so the number of lines is returned in num_lines. font_height seems to be
-     * a control character for line height.
-     *
-     *  rct2: 0x006C21E2
-     * buffer (esi)
-     * width (edi) - in
-     * num_lines (edi) - out
-     * font_height (ebx) - out
-     */
-    int32_t wrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines)
+    template<typename TEmitLine>
+    static StringWrapMetrics processWrappedString(
+        u8string_view text, int32_t width, FontStyle fontStyle, TEmitLine&& emitLine)
     {
         constexpr size_t kNullIndex = std::numeric_limits<size_t>::max();
-        u8string buffer;
+        u8string currentLine;
 
-        size_t currentLineIndex = 0;
         size_t splitIndex = kNullIndex;
         size_t bestSplitIndex = kNullIndex;
-        size_t numLines = 0;
-        int32_t maxWidth = 0;
+        StringWrapMetrics metrics{};
 
         FmtString fmt(text);
         for (const auto& token : fmt)
@@ -170,20 +157,20 @@ namespace OpenRCT2::Drawing
                 {
                     char cb[8]{};
                     UTF8WriteCodepoint(cb, codepoint);
-                    buffer.append(cb);
+                    currentLine.append(cb);
 
-                    auto lineWidth = getStringWidth(&buffer[currentLineIndex], fontStyle);
+                    auto lineWidth = getStringWidth(currentLine, fontStyle);
                     if (lineWidth <= width || (splitIndex == kNullIndex && bestSplitIndex == kNullIndex))
                     {
                         if (codepoint == ' ')
                         {
                             // Mark line split here
-                            splitIndex = buffer.size() - 1;
+                            splitIndex = currentLine.size() - 1;
                         }
                         else if (splitIndex == kNullIndex)
                         {
                             // Mark line split here (this is after first character of line)
-                            bestSplitIndex = buffer.size();
+                            bestSplitIndex = currentLine.size();
                         }
                     }
                     else
@@ -193,57 +180,93 @@ namespace OpenRCT2::Drawing
                         {
                             splitIndex = bestSplitIndex;
                         }
-                        buffer.insert(buffer.begin() + splitIndex, '\0');
 
-                        // Recalculate the line length after splitting
-                        lineWidth = getStringWidth(&buffer[currentLineIndex], fontStyle);
-                        maxWidth = std::max(maxWidth, lineWidth);
-                        numLines++;
+                        const auto completedLine = u8string_view{ currentLine.data(), splitIndex };
+                        lineWidth = getStringWidth(completedLine, fontStyle);
+                        metrics.maxWidth = std::max(metrics.maxWidth, lineWidth);
+                        metrics.lineCount++;
+                        emitLine(completedLine);
 
-                        currentLineIndex = splitIndex + 1;
+                        currentLine.erase(0, splitIndex);
                         splitIndex = kNullIndex;
                         bestSplitIndex = kNullIndex;
 
                         // Trim the beginning of the new line
-                        while (buffer[currentLineIndex] == ' ')
+                        while (!currentLine.empty() && currentLine.front() == ' ')
                         {
-                            buffer.erase(buffer.begin() + currentLineIndex);
+                            currentLine.erase(currentLine.begin());
                         }
                     }
                 }
             }
             else if (token.kind == FormatToken::newline)
             {
-                buffer.push_back('\0');
+                auto lineWidth = getStringWidth(currentLine, fontStyle);
+                metrics.maxWidth = std::max(metrics.maxWidth, lineWidth);
+                metrics.lineCount++;
+                emitLine(currentLine);
 
-                auto lineWidth = getStringWidth(&buffer[currentLineIndex], fontStyle);
-                maxWidth = std::max(maxWidth, lineWidth);
-                numLines++;
-
-                currentLineIndex = buffer.size();
+                currentLine.clear();
                 splitIndex = kNullIndex;
                 bestSplitIndex = kNullIndex;
             }
             else
             {
-                buffer.append(token.text);
+                currentLine.append(token.text);
             }
         }
-        {
-            // Final line width calculation
-            auto lineWidth = getStringWidth(&buffer[currentLineIndex], fontStyle);
-            maxWidth = std::max(maxWidth, lineWidth);
-        }
 
-        if (outWrappedText != nullptr)
+        const auto lineWidth = getStringWidth(currentLine, fontStyle);
+        metrics.maxWidth = std::max(metrics.maxWidth, lineWidth);
+        metrics.lineCount++;
+        emitLine(currentLine);
+
+        return metrics;
+    }
+
+    /**
+     * Wraps text to the given width. Lines are separated by NULL because \n is
+     * used for a formatting control code.
+     *
+     *  rct2: 0x006C21E2
+     */
+    static u8string getWrappedText(
+        u8string_view text, int32_t width, FontStyle fontStyle, StringWrapMetrics* outMetrics)
+    {
+        u8string result;
+        result.reserve(text.size());
+
+        bool isFirstLine = true;
+        const auto metrics = processWrappedString(text, width, fontStyle, [&result, &isFirstLine](u8string_view line) {
+            if (!isFirstLine)
+            {
+                result.push_back('\0');
+            }
+            result.append(line);
+            isFirstLine = false;
+        });
+        if (outMetrics != nullptr)
         {
-            *outWrappedText = std::move(buffer);
+            *outMetrics = metrics;
         }
-        if (outNumLines != nullptr)
-        {
-            *outNumLines = static_cast<int32_t>(numLines);
-        }
-        return maxWidth;
+        return result;
+    }
+
+    u8string wrapString(u8string_view text, int32_t width, FontStyle fontStyle)
+    {
+        return getWrappedText(text, width, fontStyle, nullptr);
+    }
+
+    StringWrapMetrics measureWrappedString(u8string_view text, int32_t width, FontStyle fontStyle)
+    {
+        return processWrappedString(text, width, fontStyle, [](u8string_view) {});
+    }
+
+    WrappedString wrapStringAndMeasure(u8string_view text, int32_t width, FontStyle fontStyle)
+    {
+        WrappedString result;
+        result.text = getWrappedText(text, width, fontStyle, &result.metrics);
+        return result;
     }
 
     /**
@@ -392,21 +415,21 @@ namespace OpenRCT2::Drawing
         RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, OpenRCT2::Drawing::Colour colour, StringId format,
         u8string_view args, int32_t ticks)
     {
-        int32_t numLines, lineHeight, lineY;
+        int32_t lineHeight, lineY;
         ScreenCoordsXY screenCoords(rt.x, rt.y);
 
         drawText(rt, screenCoords, "", { colour });
 
-        u8string wrappedString;
-        wrapString(FormatStringID(format, args), width, FontStyle::small, &wrappedString, &numLines);
+        auto wrappedString = wrapStringAndMeasure(FormatStringID(format, args), width, FontStyle::small);
+        const auto lineCount = wrappedString.metrics.lineCount;
         lineHeight = FontGetLineHeight(FontStyle::small);
 
         int32_t numCharactersDrawn = 0;
         int32_t numCharactersToDraw = ticks;
 
-        const utf8* buffer = wrappedString.data();
-        lineY = coords.y - ((numLines * lineHeight) / 2);
-        for (int32_t line = 0; line <= numLines; line++)
+        const utf8* buffer = wrappedString.text.data();
+        lineY = coords.y - (((lineCount - 1) * lineHeight) / 2);
+        for (int32_t line = 0; line < lineCount; line++)
         {
             int32_t halfWidth = getStringWidth(buffer, FontStyle::small) / 2;
 
