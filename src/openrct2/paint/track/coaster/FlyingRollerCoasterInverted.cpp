@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/TwisterRollerCoaster.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/TrackElement.h"
@@ -9000,6 +9001,8 @@ TrackPaintFunction GetTrackPaintFunctionFlyingRCInverted(TrackElemType trackType
             return InvertedFlyingRCTrackRightFlyerTwistDown;
         case TrackElemType::flyerHalfLoopInvertedDown:
             return FlyingRCTrackFlyerHalfLoopDown;
+        case TrackElemType::multiDimInvertedFlatToDown90QuarterLoop:
+            return TwisterRCTrackInvertedFlatTo90DegQuarterLoopDown;
         // OpenRCT2-specific paint code
         case TrackElemType::booster:
             return InvertedFlyingRCTrackBooster;
