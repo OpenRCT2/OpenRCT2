@@ -3833,7 +3833,7 @@ STR_7050    :Bezoekers die rondlopen
 STR_7051    :Bezoekers op weg naar {STRINGID}
 STR_7052    :Bezoekers in de rij voor {STRINGID}
 STR_7053    :Bezoekers die verdrinken
-STR_7054    :Bezoekers op {STRINGID}
+STR_7054    :Bezoekers in {STRINGID}
 STR_7055    :Bezoekers in {STRINGID}
 STR_7056    :Bezoekers bij {STRINGID}
 STR_7057    :Bezoekers die zitten
