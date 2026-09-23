@@ -37,6 +37,7 @@ namespace OpenRCT2
         ObjectType::peepNames,
         ObjectType::peepAnimations,
         ObjectType::climate,
+        ObjectType::campaign,
     };
 
     static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::count));
@@ -54,6 +55,7 @@ namespace OpenRCT2
     static constexpr std::array<const ObjectType, kNumIntransientObjectTypes> kIntransientObjectTypes = {
         ObjectType::scenarioMeta,
         ObjectType::audio,
+        ObjectType::campaign,
     };
 
     static_assert(kNumTransientObjectTypes + kNumIntransientObjectTypes == static_cast<size_t>(ObjectType::count));
@@ -67,6 +69,11 @@ namespace OpenRCT2
     {
         return std::find(kIntransientObjectTypes.begin(), kIntransientObjectTypes.end(), type)
             != std::end(kIntransientObjectTypes);
+    }
+
+    bool ShouldFreeObjectType(ObjectType type)
+    {
+        return ObjectTypeIsTransient(type) || type == ObjectType::scenarioMeta;
     }
 
     std::span<const ObjectType> getAllObjectTypes()

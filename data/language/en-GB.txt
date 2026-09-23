@@ -3854,3 +3854,14 @@ STR_7060    :Guests watching construction of {STRINGID}
 STR_7061    :Guests looking at scenery
 STR_7062    :Guests leaving the park
 STR_7063    :Guests watching new ride being constructed
+STR_7064    :Bonus parks
+STR_7065    :Graphite Group
+STR_7066    :Emerald Group
+STR_7067    :Ruby Group
+STR_7068    :Sapphire Group
+STR_7069    :Amethyst Group
+STR_7070    :Coral Group
+STR_7071    :Ivory Group
+STR_7072    :Bronze Group
+STR_7073    :Silver Group
+STR_7074    :Gold Group
