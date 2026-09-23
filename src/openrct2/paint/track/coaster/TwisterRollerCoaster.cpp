@@ -13047,7 +13047,7 @@ void TwisterRCTrackRightLargeHalfLoopDown(
     TwisterRCTrackLeftLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement, supportType);
 }
 
-static void TwisterRCTrack90DegToInvertedFlatQuarterLoopUp(
+void TwisterRCTrack90DegToInvertedFlatQuarterLoopUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
