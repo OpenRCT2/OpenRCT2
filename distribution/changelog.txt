@@ -12,8 +12,8 @@
 - Fix: [#17409] When reading system settings, non-US dollar currencies are not recognised correctly. 
 - Fix: [#18151] Park value and company value are out of date after loading a save.
 - Fix: [#19754, #27109] Some rides in RCT1 saves have a wrong number of cars per train.
+- Fix: [#19755, #21320] RCT1 allows more cars per train on some rides than OpenRCT2.
 - Fix: [#20882] When setting rides with preservation status in the Scenario Editor, some rides are not shown.
-- Fix: [#21320] RCT1 allows more cars per train on some rides than OpenRCT2.
 - Fix: [#21576] RCT1 Wooden wild mouse track designs with 2-car trains are not imported correctly.
 - Fix: [#22298] [Plugin] Crash when changing a large scenery element whose object is not loaded.
 - Fix: [#24457] Yellow is always rendered as third remap in Ride window.
