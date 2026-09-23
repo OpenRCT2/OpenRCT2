@@ -1935,7 +1935,13 @@ namespace OpenRCT2::RCT2
             // If an rct1 surface or edge then load all the Hybrid surfaces and edges
             if (hasRCT1Terrain)
             {
-                _terrainSurfaceEntries.AddRange(OpenRCT2HybridTerrainSurfaces);
+                const auto numRegularEntries = std::size(kDefaultTerrainSurfaces);
+                for (size_t i = 0; i < std::size(kOpenRCT2HybridTerrainSurfaces); i++)
+                {
+                    _terrainSurfaceTypeToEntryMap[numRegularEntries + i] = _terrainSurfaceEntries.GetOrAddEntry(
+                        kOpenRCT2HybridTerrainSurfaces[i]);
+                }
+
                 _terrainEdgeEntries.AddRange(OpenRCT2HybridTerrainEdges);
             }
 
