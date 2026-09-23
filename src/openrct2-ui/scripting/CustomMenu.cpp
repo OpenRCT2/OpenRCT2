@@ -216,14 +216,15 @@ namespace OpenRCT2::Scripting
             }
             else if (info.Element != nullptr)
             {
+                int32_t index = 0;
                 for (auto* el : TileElementsView(info.Loc))
                 {
-                    int32_t index = 0;
                     if (el == info.Element)
                     {
                         JS_SetPropertyStr(ctx, obj, "tileElementIndex", JS_NewInt32(ctx, index));
                         break;
                     }
+                    index++;
                 }
             }
 
