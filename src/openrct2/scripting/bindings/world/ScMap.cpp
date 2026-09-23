@@ -338,10 +338,9 @@ namespace OpenRCT2::Scripting
     template<typename TEntityType, typename TScriptType>
     JSValue createEntityType(JSContext* ctx, JSValue initializer)
     {
-        TEntityType* entity = getGameState().entities.createEntity<TEntityType>();
+        TEntityType* entity = getGameState().entities.createEntity<TEntityType>(true);
         if (entity == nullptr)
         {
-            // Probably no more space for entities for this specified entity type.
             return JS_UNDEFINED;
         }
 

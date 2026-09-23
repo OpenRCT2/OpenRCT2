@@ -110,12 +110,12 @@ namespace OpenRCT2
 
         const std::vector<EntityId>& getEntityTileList(const CoordsXY& spritePos);
 
-        EntityBase* createEntity(EntityType type);
+        EntityBase* createEntity(EntityType type, bool ignoreMiscLimit = false);
 
         template<typename T>
-        T* createEntity()
+        T* createEntity(bool ignoreMiscLimit = false)
         {
-            return static_cast<T*>(createEntity(T::kEntityType));
+            return static_cast<T*>(createEntity(T::kEntityType, ignoreMiscLimit));
         }
 
         // Use only with imports that must happen at a specified index

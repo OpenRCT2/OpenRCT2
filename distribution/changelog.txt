@@ -1,6 +1,7 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
 - Feature: [#27153] [Plugin] Add `guestsEntertained` to `Entertainer` interface.
+- Feature: [#27184] [Plugin] Remove misc. entity limit for scripting createEntity calls.
 - Improved: [#21400] The selector for setting staff patrol areas is now drawn on the water as well as on the surface under water.
 - Improved: [#26947] Rain is now drawn next to the bottom info panels (in RCT2 style).
 - Improved: [#27097] On Linux, Flatpak Steam RCTC/RCT2 paths are now auto-detected.
