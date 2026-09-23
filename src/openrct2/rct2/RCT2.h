@@ -1079,7 +1079,7 @@ namespace OpenRCT2::RCT2
     };
 
     // Additional surface styles added to OpenRCT2 as a feature if RCT1 linked
-    static constexpr std::string_view OpenRCT2HybridTerrainSurfaces[] = {
+    static constexpr std::string_view kOpenRCT2HybridTerrainSurfaces[] = {
         "rct1aa.terrain_surface.roof_red",
         "rct1ll.terrain_surface.roof_grey",
         "rct1ll.terrain_surface.rust",
@@ -1107,7 +1107,7 @@ namespace OpenRCT2::RCT2
         Drawing::Colour::black,        // wood
     });
     static_assert(
-        std::size(kTerrainSurfaceColours) == std::size(kDefaultTerrainSurfaces) + std::size(OpenRCT2HybridTerrainSurfaces));
+        std::size(kTerrainSurfaceColours) == std::size(kDefaultTerrainSurfaces) + std::size(kOpenRCT2HybridTerrainSurfaces));
 
     static constexpr std::string_view DefaultTerrainEdges[] = {
         "rct2.terrain_edge.rock",
