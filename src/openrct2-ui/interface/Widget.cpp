@@ -1034,9 +1034,7 @@ namespace OpenRCT2::Ui
             if (widget.text != 0)
             {
                 auto wrappedString = wrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::medium);
-                drawText(
-                    rt, { topLeft.x + 2, topLeft.y }, wrappedString,
-                    { w.colours[1], { TextPaintFlag::noFormatting } });
+                drawText(rt, { topLeft.x + 2, topLeft.y }, wrappedString, { w.colours[1], { TextPaintFlag::noFormatting } });
             }
             return;
         }
@@ -1050,8 +1048,7 @@ namespace OpenRCT2::Ui
         // Make a trimmed view of the string for measuring the width.
         int32_t curX = topLeft.x
             + getStringWidth(
-                           u8string_view{
-                               wrappedString.c_str(), std::min(wrappedString.length(), textInput->SelectionStart) },
+                           u8string_view{ wrappedString.c_str(), std::min(wrappedString.length(), textInput->SelectionStart) },
                            FontStyle::medium, true)
             + 3;
 
