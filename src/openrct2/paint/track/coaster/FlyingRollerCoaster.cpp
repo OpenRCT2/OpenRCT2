@@ -61,14 +61,6 @@ static void FlyingRCTrackStation(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-static void FlyingRCTrackInvertedFlatTo90DegQuarterLoopDown(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement, SupportType supportType)
-{
-    TwisterRCTrack90DegToInvertedFlatQuarterLoopUp(
-        session, ride, 2 - trackSequence, direction, height, trackElement, supportType);
-}
-
 static void FlyingRCTrackHalfLoopInvertedUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -731,8 +723,6 @@ TrackPaintFunction GetTrackPaintFunctionFlyingRC(TrackElemType trackType)
         case TrackElemType::middleStation:
             return FlyingRCTrackStation;
         // OpenRCT2-specific paint code
-        case TrackElemType::multiDimInvertedFlatToDown90QuarterLoop:
-            return FlyingRCTrackInvertedFlatTo90DegQuarterLoopDown;
         case TrackElemType::multiDimUp90ToInvertedFlatQuarterLoop:
             return TwisterRCTrack90DegToInvertedFlatQuarterLoopUp;
             // OpenRCT2-specific track elements
