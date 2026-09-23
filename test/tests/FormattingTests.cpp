@@ -632,8 +632,11 @@ TEST_F(FormattingTests, buffer_storage_swap)
 TEST_F(FormattingTests, wrap_string_empty_input_is_one_line)
 {
     const auto wrapped = Drawing::wrapString("", 100, FontStyle::medium);
+    const auto metrics = Drawing::measureWrappedString("", 100, FontStyle::medium);
 
     EXPECT_TRUE(wrapped.empty());
+    EXPECT_EQ(metrics.maxWidth, 0);
+    EXPECT_EQ(metrics.lineCount, 1);
 }
 
 TEST_F(FormattingTests, wrap_string_breaks_at_spaces_and_trims_the_next_line)
@@ -669,6 +672,10 @@ TEST_F(FormattingTests, wrap_string_preserves_formatting_and_explicit_newlines)
     expected.append("beta");
 
     EXPECT_EQ(wrapped, expected);
+
+    const auto metrics = Drawing::measureWrappedString(formatted, 1000, fontStyle);
+    EXPECT_EQ(metrics.maxWidth, std::max(Drawing::getStringWidth("alpha", fontStyle), Drawing::getStringWidth("beta", fontStyle)));
+    EXPECT_EQ(metrics.lineCount, 2);
 }
 
 TEST_F(FormattingTests, measure_wrapped_string_reports_metrics_without_wrapping_text)
@@ -694,4 +701,17 @@ TEST_F(FormattingTests, wrap_string_and_measure_returns_text_and_metrics)
     EXPECT_EQ(wrapped.text, expected);
     EXPECT_EQ(wrapped.metrics.maxWidth, std::max(width, Drawing::getStringWidth("beta", fontStyle)));
     EXPECT_EQ(wrapped.metrics.lineCount, 2);
+}
+
+TEST_F(FormattingTests, wrap_string_and_measure_counts_empty_lines_from_explicit_newlines)
+{
+    constexpr auto fontStyle = FontStyle::medium;
+    const auto formatted = FormatString("alpha{NEWLINE}{NEWLINE}");
+
+    const auto wrapped = Drawing::wrapStringAndMeasure(formatted, 1000, fontStyle);
+    const std::string expected{ "alpha\0\0", 7 };
+
+    EXPECT_EQ(wrapped.text, expected);
+    EXPECT_EQ(wrapped.metrics.maxWidth, Drawing::getStringWidth("alpha", fontStyle));
+    EXPECT_EQ(wrapped.metrics.lineCount, 3);
 }
