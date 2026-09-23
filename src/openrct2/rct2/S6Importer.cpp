@@ -522,7 +522,7 @@ namespace OpenRCT2::RCT2
             park.samePriceThroughoutPark = _s6.SamePriceThroughout
                 | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
             park.suggestedGuestMaximum = _s6.SuggestedMaxGuests;
-            gameState.scenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
+            park.scenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
             gameState.lastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour
             // Pad01358842

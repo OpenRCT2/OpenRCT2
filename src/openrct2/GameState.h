@@ -48,7 +48,6 @@ namespace OpenRCT2
 
         uint32_t nextGuestNumber;
 
-        uint16_t scenarioParkRatingWarningDays;
         money64 scenarioCompletedCompanyValue;
         money64 scenarioCompanyValueRecord;
         random_engine_t scenarioRand;

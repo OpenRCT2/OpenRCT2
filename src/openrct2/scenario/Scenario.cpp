@@ -268,12 +268,12 @@ static void scenarioUpdateLowRatingDayCount(Park::ParkData& park, GameState_t& g
 {
     if (park.rating < Scenario::Objective::kLowParkRatingThreshold && gameState.date.monthsElapsed >= 1)
     {
-        gameState.scenarioParkRatingWarningDays++;
+        park.scenarioParkRatingWarningDays++;
 
         if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating
             && Config::Get().notifications.parkRatingWarnings)
         {
-            switch (gameState.scenarioParkRatingWarningDays)
+            switch (park.scenarioParkRatingWarningDays)
             {
                 case 1:
                     News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
@@ -292,7 +292,7 @@ static void scenarioUpdateLowRatingDayCount(Park::ParkData& park, GameState_t& g
     }
     else if (gameState.scenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
     {
-        gameState.scenarioParkRatingWarningDays = 0;
+        park.scenarioParkRatingWarningDays = 0;
     }
 }
 

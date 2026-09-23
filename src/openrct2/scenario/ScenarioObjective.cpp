@@ -105,7 +105,7 @@ namespace OpenRCT2::Scenario
         if (park.rating >= kLowParkRatingThreshold && park.numGuestsInPark >= NumGuests)
             return ObjectiveStatus::success;
 
-        if (gameState.scenarioParkRatingWarningDays == 29)
+        if (park.scenarioParkRatingWarningDays == 29)
             return ObjectiveStatus::failure;
 
         return ObjectiveStatus::undecided;

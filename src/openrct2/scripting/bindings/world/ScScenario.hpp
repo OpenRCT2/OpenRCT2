@@ -278,14 +278,14 @@ namespace OpenRCT2::Scripting
 
         static JSValue parkRatingWarningDays_get(JSContext* ctx, JSValue)
         {
-            return JS_NewUint32(ctx, getGameState().scenarioParkRatingWarningDays);
+            return JS_NewUint32(ctx, getGameState().park.scenarioParkRatingWarningDays);
         }
 
         static JSValue parkRatingWarningDays_set(JSContext* ctx, JSValue, JSValue jsValue)
         {
             JS_UNPACK_UINT32(value, ctx, jsValue);
             JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-            getGameState().scenarioParkRatingWarningDays = value;
+            getGameState().park.scenarioParkRatingWarningDays = value;
             return JS_UNDEFINED;
         }
 
