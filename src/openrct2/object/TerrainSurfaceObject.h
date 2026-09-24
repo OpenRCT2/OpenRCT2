@@ -23,13 +23,21 @@ namespace OpenRCT2
 
     constexpr auto kDefaultTerrainSurfaceColour1 = Drawing::Colour::brightPurple;
 
+    enum class MapColourType : uint8_t
+    {
+        paletteIndex,
+        fixedColour,
+        primaryColour,
+    };
+
     struct MapColour
     {
-        uint8_t isOffset = 0;
+        MapColourType type = MapColourType::paletteIndex;
+        Drawing::Colour fixedColour{};
         union
         {
             Drawing::PaletteIndex paletteIndex{};
-            uint8_t mapOffset;
+            uint8_t shadeOffset;
         };
     };
 
@@ -90,6 +98,8 @@ namespace OpenRCT2
 
         void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
+        void readColourSettingsProperty(const json_t& colourSettings);
+        void readOldColourSettings(json_t& colourSettings);
         ImageId GetImageId(
             const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground,
             Drawing::Colour selectedColour1) const;

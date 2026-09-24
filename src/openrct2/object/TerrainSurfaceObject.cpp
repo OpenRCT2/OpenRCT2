@@ -29,23 +29,8 @@ using OpenRCT2::Drawing::PaletteMap;
 
 namespace OpenRCT2
 {
-    static constexpr MapColour kInvalidMapColour = { 0, PaletteIndex::transparent };
-
-    struct ShadeMapping
-    {
-        u8string_view name;
-        MapColour mapColour;
-    };
-    static constexpr std::array<ShadeMapping, 8> kShadeToMapColour = { {
-        { "darkest", { .isOffset = 1, .mapOffset = 2 } },
-        { "darker", { .isOffset = 1, .mapOffset = 3 } },
-        { "dark", { .isOffset = 1, .mapOffset = 4 } },
-        { "midDark", { .isOffset = 1, .mapOffset = 5 } },
-        { "midLight", { .isOffset = 1, .mapOffset = 6 } },
-        { "midLight", { .isOffset = 1, .mapOffset = 7 } },
-        { "lighter", { .isOffset = 1, .mapOffset = 8 } },
-        { "lightest", { .isOffset = 1, .mapOffset = 9 } },
-    } };
+    static constexpr MapColour kInvalidMapColour = { MapColourType::paletteIndex, Drawing::Colour::black,
+                                                     PaletteIndex::transparent };
 
     void TerrainSurfaceObject::precolourPatternImages()
     {
@@ -53,6 +38,9 @@ namespace OpenRCT2
         {
             for (uint8_t patternOffset = 0; patternOffset < kNumSmoothingPatternImages; patternOffset++)
             {
+                // TODO (as requested by Aaron): this is a lot of ceremony for what on the face of it should be a
+                // simple task: applying a colour to the primary remap and saving that in a G1Element. Especially the need
+                // to get 3 structures (G1Element, RenderTarget and ImageId) involved.
                 G1Element newElement = *(GfxGetG1Element(PatternBaseImageId + patternOffset));
                 size_t numPixels = newElement.width * newElement.height;
                 auto pixels8 = new uint8_t[numPixels];
@@ -149,24 +137,6 @@ namespace OpenRCT2
         }
     }
 
-    static MapColour processMapColour(const json_t& mapColour)
-    {
-        auto asNumber = Json::GetNumber<int32_t>(mapColour, -1);
-        if (asNumber >= EnumValue(PaletteIndex::transparent) && asNumber <= EnumValue(PaletteIndex::pi255))
-        {
-            return { 0, static_cast<PaletteIndex>(asNumber) };
-        }
-
-        auto asString = Json::GetString(mapColour);
-        for (const auto& mapping : kShadeToMapColour)
-        {
-            if (asString == mapping.name)
-                return mapping.mapColour;
-        }
-
-        return kInvalidMapColour;
-    }
-
     void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         Guard::Assert(root.is_object(), "TerrainSurfaceObject::ReadJson expects parameter root to be object");
@@ -175,7 +145,6 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            Colour = colourFromString(Json::GetString(properties["colour"]), Drawing::kColourNull);
             Rotations = Json::GetNumber<int8_t>(properties["rotations"], 1);
             Price = Json::GetNumber<money64>(properties["price"]);
             Flags = Json::GetFlagHolder<TerrainSurfaceFlags, TerrainSurfaceFlag>(
@@ -185,17 +154,18 @@ namespace OpenRCT2
                   { "canGrow", TerrainSurfaceFlag::canGrow },
                   { "hasPrimaryColour", TerrainSurfaceFlag::hasPrimaryColour } });
 
-            if (Flags.has(TerrainSurfaceFlag::hasPrimaryColour) && Colour == Drawing::kColourNull)
-                throw std::runtime_error("Terrain surface object is recolourable, but does not set a default colour.");
-
-            const auto mapColours = properties["mapColours"];
-            const bool mapColoursAreValid = mapColours.is_array() && mapColours.size() == std::size(MapColours);
-            for (size_t i = 0; i < std::size(MapColours); i++)
+            const auto colourSettings = properties["colourSettings"];
+            if (colourSettings.is_object() && colourSettings["parkMap"].is_array())
             {
-                if (mapColoursAreValid)
-                    MapColours[i] = processMapColour(mapColours[i]);
-                else
-                    MapColours[i] = kInvalidMapColour;
+                readColourSettingsProperty(colourSettings);
+            }
+            else
+            {
+                if (Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+                    throw std::runtime_error(
+                        "Recolourable terrain surface objects need to have a valid colourSettings property!");
+
+                readOldColourSettings(properties);
             }
 
             for (auto& el : properties["special"])
@@ -233,6 +203,70 @@ namespace OpenRCT2
         }
 
         PopulateTablesFromJson(context, root);
+    }
+
+    void TerrainSurfaceObject::readColourSettingsProperty(const json_t& colourSettings)
+    {
+        Colour = Drawing::kColourNull;
+        if (Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+        {
+            const auto primary = colourSettings["defaultPrimary"];
+            Colour = colourFromString(Json::GetString(primary), Drawing::kColourNull);
+            if (Colour == Drawing::kColourNull)
+                throw std::runtime_error(
+                    "Recolourable terrain surface object need to have a valid colourSettings property and set a default "
+                    "primary colour.");
+        }
+
+        const auto mapColours = colourSettings["parkMap"];
+        const auto mapColoursAreValid = mapColours.is_array() && mapColours.size() == std::size(MapColours);
+        if (!mapColoursAreValid)
+            throw std::runtime_error("colourSettings.parkMap is not valid!");
+
+        for (size_t i = 0; i < std::size(MapColours); i++)
+        {
+            const auto& mapColour = mapColours[i];
+            if (!mapColour.is_object())
+                throw std::runtime_error("Park map colour entry is not a valid object!");
+
+            const auto shadeOffset = Json::GetNumber(mapColour["shade"], -1);
+            if (shadeOffset < 0 || shadeOffset > 11)
+                throw std::runtime_error("Park map colour shade must be between 0 and 11!");
+
+            MapColour entry{};
+            entry.shadeOffset = shadeOffset;
+
+            const auto parkMapColour = Json::GetString(mapColour["colour"]);
+            if (parkMapColour == "primary")
+            {
+                entry.type = MapColourType::primaryColour;
+            }
+            else
+            {
+                const auto converted = Drawing::colourFromString(parkMapColour, Drawing::kColourNull);
+                if (converted == Drawing::kColourNull)
+                    throw std::runtime_error("Park map colour is not valid!");
+
+                entry.fixedColour = converted;
+            }
+
+            MapColours[i] = entry;
+        }
+    }
+
+    void TerrainSurfaceObject::readOldColourSettings(json_t& properties)
+    {
+        Colour = colourFromString(Json::GetString(properties["colour"]), Drawing::kColourNull);
+        const auto mapColours = properties["mapColours"];
+        const auto mapColoursAreValid = mapColours.is_array() && mapColours.size() == std::size(MapColours);
+        for (size_t i = 0; i < std::size(MapColours); i++)
+        {
+            if (mapColoursAreValid && mapColours[i].is_number_integer())
+                MapColours[i] = { .type = MapColourType::paletteIndex,
+                                  .paletteIndex = static_cast<PaletteIndex>(mapColours[i]) };
+            else
+                MapColours[i] = kInvalidMapColour;
+        }
     }
 
     ImageId TerrainSurfaceObject::GetImageId(
@@ -298,16 +332,17 @@ namespace OpenRCT2
 
         for (size_t i = 0; i < result.size(); i++)
         {
-            if (MapColours[i].isOffset)
+            switch (MapColours[i].type)
             {
-                assert(MapColours[i].mapOffset < 12);
-                const auto& map = Drawing::getColourMap(selectedColour);
-                const auto* pointer = &map.colour0;
-                result[i] = *(pointer + MapColours[i].mapOffset);
-            }
-            else
-            {
-                result[i] = MapColours[i].paletteIndex;
+                case MapColourType::paletteIndex:
+                    result[i] = MapColours[i].paletteIndex;
+                    break;
+                case MapColourType::fixedColour:
+                    result[i] = Drawing::getColourMapShade(MapColours[i].fixedColour, MapColours[i].shadeOffset);
+                    break;
+                case MapColourType::primaryColour:
+                    result[i] = Drawing::getColourMapShade(selectedColour, MapColours[i].shadeOffset);
+                    break;
             }
         }
 
