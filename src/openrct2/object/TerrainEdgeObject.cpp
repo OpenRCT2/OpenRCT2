@@ -61,15 +61,23 @@ namespace OpenRCT2
                 doorSound = static_cast<Audio::DoorSoundType>(doorSoundNumber);
             }
 
-            colour = colourFromString(Json::GetString(properties["colour"]), Drawing::kColourNull);
             flags = Json::GetFlagHolder<TerrainEdgeFlags, TerrainEdgeFlag>(
                 properties,
                 {
                     { "hasDoors", TerrainEdgeFlag::hasDoors },
                     { "hasPrimaryColour", TerrainEdgeFlag::hasPrimaryColour },
                 });
-            if (flags.has(TerrainEdgeFlag::hasPrimaryColour) && colour == Drawing::kColourNull)
-                throw std::runtime_error("Terrain edge object is recolourable, but does not set a default colour.");
+            if (flags.has(TerrainEdgeFlag::hasPrimaryColour))
+            {
+                const auto colourSettings = properties["colourSettings"];
+                if (!colourSettings.is_object())
+                    throw std::runtime_error(
+                        "Terrain edge object is recolourable, but does not have a colourSettings property!");
+
+                colour = colourFromString(Json::GetString(colourSettings["defaultPrimary"]), Drawing::kColourNull);
+                if (colour == Drawing::kColourNull)
+                    throw std::runtime_error("Terrain edge object is recolourable, but does not set a default colour.");
+            }
         }
 
         PopulateTablesFromJson(context, root);
