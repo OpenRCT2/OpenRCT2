@@ -12,7 +12,6 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/StringTypes.h"
 
-#include <algorithm>
 #include <cstdint>
 
 /**
@@ -93,15 +92,8 @@ namespace OpenRCT2::Drawing
         return EnumValue(colour) < kColourNumTotal;
     }
 
-    constexpr Colour clampColour(uint8_t colour)
-    {
-        return static_cast<Colour>(std::clamp<uint8_t>(colour, 0, kColourNumTotal - 1));
-    }
-
-    constexpr Colour clampColour(Colour colour)
-    {
-        return clampColour(EnumValue(colour));
-    }
+    Colour clampColour(uint8_t colour);
+    Colour clampColour(Colour colour);
 
     Colour colourFromString(u8string s, Colour defaultValue = Colour::black);
     u8string colourToString(Colour colour);

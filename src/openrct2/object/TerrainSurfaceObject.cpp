@@ -38,9 +38,9 @@ namespace OpenRCT2
         {
             for (uint8_t patternOffset = 0; patternOffset < kNumSmoothingPatternImages; patternOffset++)
             {
-                // TODO (as requested by Aaron): this is a lot of ceremony for what on the face of it should be a
-                // simple task: applying a colour to the primary remap and saving that in a G1Element. Especially the need
-                // to get 3 structures (G1Element, RenderTarget and ImageId) involved.
+                // TODO: this is a lot of ceremony for what on the face of it should be a simple task: applying a colour to the
+                // primary remap and saving that in a G1Element. Especially the need to get 3 structures (G1Element,
+                // RenderTarget and ImageId) involved.
                 G1Element newElement = *(GfxGetG1Element(PatternBaseImageId + patternOffset));
                 size_t numPixels = newElement.width * newElement.height;
                 auto pixels8 = new uint8_t[numPixels];
