@@ -83,7 +83,7 @@ constexpr RideTypeDescriptor kLIMLaunchedRollerCoasterRTD =
             { RatingsModifierType::bonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::requirementDropHeight, 10,               2, 2, 2 },
             { RatingsModifierType::requirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::requirementNegativeGs, 10,               2, 2, 2 },
+            { RatingsModifierType::requirementNegativeGs, MakeFixed16_2dp(0, 10), 2, 2, 2 },
             { RatingsModifierType::requirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::penaltyLateralGs,      0,                24576, 35746, 49648 },
         },

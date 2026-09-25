@@ -271,6 +271,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Ray (RayKoopa)
 * (itu-itis24-iyigun24)
 * James Cranston (jcranston)
+* Yoshi Tacke (YoshKoz)
 
 ## Toolchain
 * (Balletie) - macOS
