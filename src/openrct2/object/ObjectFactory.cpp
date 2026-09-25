@@ -547,6 +547,7 @@ namespace OpenRCT2::ObjectFactory
         LOG_VERBOSE("CreateObjectFromJson(...)");
 
         std::unique_ptr<Object> result;
+
         auto lookup = kObjectTypeMap.find(Json::GetString(jRoot["objectType"]));
         if (lookup != kObjectTypeMap.end())
         {
