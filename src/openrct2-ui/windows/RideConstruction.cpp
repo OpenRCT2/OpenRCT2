@@ -1291,6 +1291,12 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
+                    // If this button was already active, toggle the state
+                    if (widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
+                        _alternateClick = !_alternateClick;
+                    else
+                        _alternateClick = false;
+
                     UpdateLiftHillSelected(TrackPitch::down60);
                     break;
                 case WIDX_SLOPE_DOWN:
