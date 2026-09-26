@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_DATE:
-                    gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
+                    gTooltipCloseTimeout = gCurrentRealTimeTicks + GameTicks{ 2000 };
                     break;
             }
             return cursorId;

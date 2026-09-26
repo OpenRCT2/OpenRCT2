@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../core/GameTicks.hpp"
 
 #include <functional>
 #include <memory>
@@ -46,7 +47,7 @@ namespace OpenRCT2
 
     extern WindowBase* gWindowAudioExclusive;
 
-    extern uint32_t gWindowUpdateTicks;
+    extern GameTicks gWindowUpdateTicks;
 
     std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
     void WindowVisitEach(std::function<void(WindowBase*)> func);

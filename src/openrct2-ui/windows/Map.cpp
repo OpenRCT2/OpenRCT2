@@ -369,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
             // the flickering frequency is reduced by 4, compared to the original
             // it was done due to inability to reproduce original frequency
             // and decision that the original one looks too fast
-            if (gCurrentRealTimeTicks % 4 == 0)
+            if (gCurrentRealTimeTicks.Value % 4 == 0)
                 _flashingFlags ^= MapFlashingFlags::SwitchColour;
 
             // Handle guest map flashing

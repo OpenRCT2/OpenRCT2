@@ -216,6 +216,7 @@
     <ClInclude Include="core\FileWatcher.h" />
     <ClInclude Include="core\FixedPoint.hpp" />
     <ClInclude Include="core\FlagHolder.hpp" />
+    <ClInclude Include="core\GameTicks.hpp" />
     <ClInclude Include="core\GroupVector.hpp" />
     <ClInclude Include="core\Guard.hpp" />
     <ClInclude Include="core\Http.h" />
