@@ -20,9 +20,14 @@ namespace OpenRCT2
     struct IObjectManager;
 
     /**
-     * Used by all editor modes: Scenario Editor, Track Designer and Track Designs Manager.
+     * Used by Scenario Editor, Track Designer and Track Designs Manager.
      */
     extern const std::array<std::string_view, 3> kMinimumRequiredObjects;
+
+    /**
+     * Used by Track Designer and Track Designs Manager.
+     */
+    extern const std::array<std::string_view, 3> kMinimumRequiredObjectsDesigner;
 
     /**
      * Used by the Scenario Editor and Track Designer.

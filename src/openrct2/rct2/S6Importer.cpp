@@ -87,6 +87,7 @@ namespace OpenRCT2::RCT2
         bool _isSV7 = false;
         bool _isScenario = false;
         OpenRCT2::BitSet<Limits::kMaxRidesInPark> _isFlatRide{};
+        ObjectEntryIndex _terrainSurfaceTypeToEntryMap[32]{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];
@@ -623,7 +624,10 @@ namespace OpenRCT2::RCT2
         void AddDefaultEntries()
         {
             // Add default surfaces
-            _terrainSurfaceEntries.AddRange(DefaultTerrainSurfaces);
+            for (size_t i = 0; i < std::size(kDefaultTerrainSurfaces); i++)
+            {
+                _terrainSurfaceTypeToEntryMap[i] = _terrainSurfaceEntries.GetOrAddEntry(kDefaultTerrainSurfaces[i]);
+            }
 
             // Add default edges
             _terrainEdgeEntries.AddRange(DefaultTerrainEdges);
@@ -1334,7 +1338,7 @@ namespace OpenRCT2::RCT2
 
                     dst2->setSlope(src2->GetSlope());
 
-                    dst2->setSurfaceObjectIndex(src2->GetSurfaceStyle());
+                    dst2->setSurfaceObjectIndex(_terrainSurfaceTypeToEntryMap[src2->GetSurfaceStyle()]);
                     dst2->setEdgeObjectIndex(src2->GetEdgeStyle());
 
                     dst2->setGrassLength(src2->GetGrassLength());
@@ -1342,6 +1346,8 @@ namespace OpenRCT2::RCT2
                     dst2->setParkFences(src2->GetParkFences());
                     dst2->setWaterHeight(src2->GetWaterHeight());
                     dst2->setHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
+                    dst2->setPrimarySurfaceColour(kTerrainSurfaceColours[src2->GetSurfaceStyle()]);
+                    dst2->setPrimaryEdgeColour(kTerrainEdgeColours[src2->GetEdgeStyle()]);
 
                     break;
                 }
@@ -1915,7 +1921,7 @@ namespace OpenRCT2::RCT2
                     {
                         return false;
                     }
-                    if (surface->GetSurfaceStyle() >= std::size(DefaultTerrainSurfaces))
+                    if (surface->GetSurfaceStyle() >= std::size(kDefaultTerrainSurfaces))
                     {
                         return true;
                     }
@@ -1929,7 +1935,13 @@ namespace OpenRCT2::RCT2
             // If an rct1 surface or edge then load all the Hybrid surfaces and edges
             if (hasRCT1Terrain)
             {
-                _terrainSurfaceEntries.AddRange(OpenRCT2HybridTerrainSurfaces);
+                const auto numRegularEntries = std::size(kDefaultTerrainSurfaces);
+                for (size_t i = 0; i < std::size(kOpenRCT2HybridTerrainSurfaces); i++)
+                {
+                    _terrainSurfaceTypeToEntryMap[numRegularEntries + i] = _terrainSurfaceEntries.GetOrAddEntry(
+                        kOpenRCT2HybridTerrainSurfaces[i]);
+                }
+
                 _terrainEdgeEntries.AddRange(OpenRCT2HybridTerrainEdges);
             }
 
