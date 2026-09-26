@@ -11,6 +11,7 @@
 
 #include "../../Diagnostic.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../ride/Ride.h"
@@ -76,8 +77,8 @@ namespace OpenRCT2::GameActions
 
         res.errorTitle = _StatusErrorTitles[EnumValue(_status)];
 
-        Formatter ft(res.errorMessageArgs.data());
-        ride->formatNameTo(ft);
+        Formatter formatter;
+        ride->formatNameTo(formatter);
         if (_status != ride->status)
         {
             if (_status == RideStatus::simulating && ride->flags.has(RideFlag::brokenDown))
@@ -85,6 +86,7 @@ namespace OpenRCT2::GameActions
                 // Simulating will force clear the track, so make sure player can't cheat around a break down
                 res.error = Status::disallowed;
                 res.errorMessage = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
+                res.errorMessageText = FormatStringIDLegacy(STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING, formatter.Data());
                 return res;
             }
 
@@ -108,6 +110,7 @@ namespace OpenRCT2::GameActions
             {
                 res.error = Status::unknown;
                 res.errorMessage = modeSwitchResult.Message;
+                res.errorMessageText = FormatStringIDLegacy(modeSwitchResult.Message, formatter.Data());
                 return res;
             }
         }
@@ -131,9 +134,9 @@ namespace OpenRCT2::GameActions
 
         res.errorTitle = _StatusErrorTitles[EnumValue(_status)];
 
-        Formatter ft(res.errorMessageArgs.data());
-        ft.Increment(6);
-        ride->formatNameTo(ft);
+        Formatter formatter;
+        formatter.Increment(6);
+        ride->formatNameTo(formatter);
         if (!ride->overallView.isNull())
         {
             auto location = ride->overallView.toTileCentre();
@@ -172,6 +175,7 @@ namespace OpenRCT2::GameActions
                 {
                     res.error = Status::unknown;
                     res.errorMessage = modeSwitchResult.Message;
+                    res.errorMessageText = FormatStringIDLegacy(modeSwitchResult.Message, formatter.Data());
                     return res;
                 }
 
@@ -215,6 +219,7 @@ namespace OpenRCT2::GameActions
                     {
                         res.error = Status::unknown;
                         res.errorMessage = modeSwitchResult.Message;
+                        res.errorMessageText = FormatStringIDLegacy(modeSwitchResult.Message, formatter.Data());
                         return res;
                     }
                 }
@@ -225,6 +230,7 @@ namespace OpenRCT2::GameActions
                     {
                         res.error = Status::unknown;
                         res.errorMessage = modeSwitchResult.Message;
+                        res.errorMessageText = FormatStringIDLegacy(modeSwitchResult.Message, formatter.Data());
                         return res;
                     }
                 }
