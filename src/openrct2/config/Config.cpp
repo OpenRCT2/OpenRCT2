@@ -225,6 +225,11 @@ namespace OpenRCT2::Config
                 "default_inspection_interval", RideInspection::every30Minutes, Enum_RideInspectionInterval);
             model->lastRunVersion = reader->GetString("last_run_version", "");
             model->invertViewportDrag = reader->GetBoolean("invert_viewport_drag", false);
+#ifdef __APPLE__
+            model->nativeMacOSControls = reader->GetBoolean("native_macos_controls", false);
+#else
+            model->nativeMacOSControls = false;
+#endif
             model->loadSaveSort = reader->GetEnum<FileBrowserSort>(
                 "load_save_sort", FileBrowserSort::nameAscending, Enum_FileBrowserSort);
             model->minimizeFullscreenFocusLoss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
@@ -331,6 +336,7 @@ namespace OpenRCT2::Config
             "default_inspection_interval", model->defaultInspectionInterval, Enum_RideInspectionInterval);
         writer->WriteString("last_run_version", model->lastRunVersion);
         writer->WriteBoolean("invert_viewport_drag", model->invertViewportDrag);
+        writer->WriteBoolean("native_macos_controls", model->nativeMacOSControls);
         writer->WriteEnum<FileBrowserSort>("load_save_sort", model->loadSaveSort, Enum_FileBrowserSort);
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimizeFullscreenFocusLoss);
         writer->WriteBoolean("disable_screensaver", model->disableScreensaver);
