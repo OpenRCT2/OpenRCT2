@@ -171,7 +171,8 @@ namespace OpenRCT2
                 UpdateTrackElementsRideType();
             }
 
-            // Initial cash will eventually be removed
+            // Initial cash is currently a legacy variable. However, it should be reworked
+            // so parks that share a map can start with the same amount.
             gameState.scenarioOptions.initialCash = gameState.park.cash;
         }
 
