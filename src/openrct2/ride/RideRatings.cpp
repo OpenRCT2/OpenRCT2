@@ -1433,7 +1433,10 @@ namespace OpenRCT2
         CoordsXYE input = { startCoords, originElement };
         do
         {
-            if (TrackGetIsSheltered({ input, input.element->getBaseZ() }))
+            const auto trackHeight = input.element->getBaseZ();
+            const auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ input });
+            const bool terrainIsAboveTrack = surfaceElement != nullptr && surfaceElement->getBaseZ() > trackHeight;
+            if (terrainIsAboveTrack || TrackGetIsSheltered({ input, trackHeight }))
             {
                 shelteredCount++;
             }
