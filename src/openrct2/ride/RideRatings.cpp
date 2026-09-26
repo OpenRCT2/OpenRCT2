@@ -27,7 +27,10 @@
 #include "RideData.h"
 #include "RideManager.hpp"
 #include "Station.h"
+#include "Track.h"
+#include "TrackData.h"
 #include "TrackIteration.h"
+#include "ted/TrackElementDescriptor.h"
 
 #include <iterator>
 
@@ -106,6 +109,7 @@ namespace OpenRCT2
     static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, TileElement* inputTileElement);
     static void RideRatingsAdd(RideRating::Tuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea);
 
+    static void FlatRideShelterCalculate(Ride& ride);
     static ShelteredEights GetNumOfShelteredEighths(const Ride& ride);
     static money64 RideComputeUpkeep(RideRating::UpdateState& state, const Ride& ride);
     static void SetUnreliabilityFactor(Ride& ride);
@@ -876,7 +880,8 @@ namespace OpenRCT2
 
     static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
     {
-        const auto& rrd = ride.getRideTypeDescriptor().RatingsData;
+        const auto& ted = ride.getRideTypeDescriptor();
+        const auto& rrd = ted.RatingsData;
 
         switch (rrd.Type)
         {
@@ -885,8 +890,15 @@ namespace OpenRCT2
                     return;
                 break;
             case RatingsCalculationType::flatRide:
+            {
+                const bool wasTested = ride.flags.has(RideFlag::tested);
+                if (ted.flags.has(RtdFlag::isFlatRide) && rrd.RideShelter == kDynamicRideShelterRating && !wasTested)
+                {
+                    FlatRideShelterCalculate(ride);
+                }
                 ride.flags.set(RideFlag::tested, RideFlag::noRawStats);
                 break;
+            }
             case RatingsCalculationType::stall:
                 ride.upkeepCost = RideComputeUpkeep(state, ride);
                 ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
@@ -896,7 +908,6 @@ namespace OpenRCT2
 
         ride.unreliabilityFactor = rrd.Unreliability;
         SetUnreliabilityFactor(ride);
-
         const auto shelteredEighths = GetNumOfShelteredEighths(ride);
         ride.shelteredEighths = (rrd.RideShelter == kDynamicRideShelterRating) ? shelteredEighths.TotalShelteredEighths
                                                                                : rrd.RideShelter;
@@ -1412,23 +1423,54 @@ namespace OpenRCT2
         return result;
     }
 
+    static void FlatRideShelterCalculate(Ride& ride)
+    {
+        auto stationIndex = RideGetFirstValidStationStart(ride);
+        auto startCoords = ride.getStation(stationIndex).getStart();
+        auto* originElement = MapGetTrackElementAtFromRide(startCoords, ride.id);
+
+        uint16_t shelteredCount = 0;
+        CoordsXYE input = { startCoords, originElement };
+        do
+        {
+            const auto trackHeight = input.element->getBaseZ();
+            const auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ input });
+            const bool terrainIsAboveTrack = surfaceElement != nullptr && surfaceElement->getBaseZ() > trackHeight;
+            if (terrainIsAboveTrack || TrackGetIsSheltered({ input, trackHeight }))
+            {
+                shelteredCount++;
+            }
+        } while (TrackSequenceGetNext(input, &input));
+
+        ride.shelteredLength = shelteredCount;
+    }
+
     /**
      * Calculates how much of the track is sheltered in eighths.
      *  rct2: 0x0065E72D
      */
     static ShelteredEights GetNumOfShelteredEighths(const Ride& ride)
     {
-        int32_t totalLength = ride.getTotalLength();
         int32_t shelteredLength = ride.shelteredLength;
-        int32_t lengthEighth = totalLength / 8;
-        int32_t lengthCounter = lengthEighth;
         uint8_t numShelteredEighths = 0;
-        for (int32_t i = 0; i < 7; i++)
+        const auto& rtd = ride.getRideTypeDescriptor();
+        if (rtd.flags.has(RtdFlag::isFlatRide))
         {
-            if (shelteredLength >= lengthCounter)
+            uint8_t length = GetTrackElementDescriptor(rtd.StartTrackPiece).sequenceData.numSequences;
+            numShelteredEighths = (shelteredLength * 10) / (length * 10 / 8);
+        }
+        else
+        {
+            int32_t totalLength = ride.getTotalLength();
+            int32_t lengthEighth = totalLength / 8;
+            int32_t lengthCounter = lengthEighth;
+            for (int32_t i = 0; i < 7; i++)
             {
-                lengthCounter += lengthEighth;
-                numShelteredEighths++;
+                if (shelteredLength >= lengthCounter)
+                {
+                    lengthCounter += lengthEighth;
+                    numShelteredEighths++;
+                }
             }
         }
 
