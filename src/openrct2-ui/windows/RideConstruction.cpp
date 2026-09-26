@@ -210,6 +210,8 @@ namespace OpenRCT2::Ui::Windows
     static StringId _trackPlaceErrorMessage;
     static bool _autoRotatingShop;
     static bool _gotoStartPlacementMode = false;
+    // Allows toggling between variations of the same element. Currently used for long vs. short base flat-to-steep pieces.
+    static bool _alternateClick = false;
 
     static constexpr StringId kSeatAngleRotationStrings[] = {
         STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
@@ -290,6 +292,7 @@ namespace OpenRCT2::Ui::Windows
             _autoRotatingShop = true;
             _trackPlaceCtrlState = false;
             _trackPlaceShiftState = false;
+            _alternateClick = false;
 
             UpdateTrackPieceWidgets();
         }
@@ -1288,6 +1291,12 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
+                    // If this button was already active, toggle the state
+                    if (widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
+                        _alternateClick = !_alternateClick;
+                    else
+                        _alternateClick = false;
+
                     UpdateLiftHillSelected(TrackPitch::down60);
                     break;
                 case WIDX_SLOPE_DOWN:
@@ -1299,6 +1308,12 @@ namespace OpenRCT2::Ui::Windows
                     UpdateLiftHillSelected(TrackPitch::down25);
                     break;
                 case WIDX_LEVEL:
+                    // If this button was already active, toggle the state
+                    if (widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
+                        _alternateClick = !_alternateClick;
+                    else
+                        _alternateClick = false;
+
                     RideConstructionInvalidateCurrentTrack();
                     if (_rideConstructionState == RideConstructionState::front && _previousTrackPitchEnd == TrackPitch::down25)
                     {
@@ -1416,6 +1431,12 @@ namespace OpenRCT2::Ui::Windows
                             }
                         }
                     }
+
+                    // If this button was already active, toggle the state
+                    if (widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
+                        _alternateClick = !_alternateClick;
+                    else
+                        _alternateClick = false;
 
                     UpdateLiftHillSelected(TrackPitch::up60);
                     break;
@@ -4786,6 +4807,40 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
+    static TrackElemType shortBaseToLongBaseOrthogonal(TrackElemType trackType)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::flatToUp60:
+                return TrackElemType::flatToUp60LongBase;
+            case TrackElemType::up60ToFlat:
+                return TrackElemType::up60ToFlatLongBase;
+            case TrackElemType::flatToDown60:
+                return TrackElemType::flatToDown60LongBase;
+            case TrackElemType::down60ToFlat:
+                return TrackElemType::down60ToFlatLongBase;
+            default:
+                return trackType;
+        }
+    }
+
+    static TrackElemType shortBaseToLongBaseDiagonal(TrackElemType trackType)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::diagFlatToUp60:
+                return TrackElemType::diagFlatToUp60LongBase;
+            case TrackElemType::diagUp60ToFlat:
+                return TrackElemType::diagUp60ToFlatLongBase;
+            case TrackElemType::diagFlatToDown60:
+                return TrackElemType::diagFlatToDown60LongBase;
+            case TrackElemType::diagDown60ToFlat:
+                return TrackElemType::diagDown60ToFlatLongBase;
+            default:
+                return trackType;
+        }
+    }
+
     /**
      * rct2: 0x006CA2DF
      *
@@ -4834,52 +4889,22 @@ namespace OpenRCT2::Ui::Windows
 
         if (IsTrackEnabled(TrackGroup::slopeSteepLong))
         {
-            switch (trackType)
-            {
-                case TrackElemType::flatToUp60:
-                    trackType = TrackElemType::flatToUp60LongBase;
-                    break;
+            // This allows toggling between short and long base
+            const auto shortBaseSupported = IsTrackEnabled(TrackGroup::flatToSteepSlope);
+            const auto useShortBase = shortBaseSupported && _alternateClick;
 
-                case TrackElemType::up60ToFlat:
-                    trackType = TrackElemType::up60ToFlatLongBase;
-                    break;
-
-                case TrackElemType::flatToDown60:
-                    trackType = TrackElemType::flatToDown60LongBase;
-                    break;
-
-                case TrackElemType::down60ToFlat:
-                    trackType = TrackElemType::down60ToFlatLongBase;
-                    break;
-
-                default:
-                    break;
-            }
+            if (!useShortBase)
+                trackType = shortBaseToLongBaseOrthogonal(trackType);
         }
 
         if (IsTrackEnabled(TrackGroup::diagSlopeSteepLong))
         {
-            switch (trackType)
-            {
-                case TrackElemType::diagFlatToUp60:
-                    trackType = TrackElemType::diagFlatToUp60LongBase;
-                    break;
+            // This allows toggling between short and long base
+            const auto shortBaseSupported = IsTrackEnabled(TrackGroup::flatToSteepSlope);
+            const auto useShortBase = shortBaseSupported && _alternateClick;
 
-                case TrackElemType::diagUp60ToFlat:
-                    trackType = TrackElemType::diagUp60ToFlatLongBase;
-                    break;
-
-                case TrackElemType::diagFlatToDown60:
-                    trackType = TrackElemType::diagFlatToDown60LongBase;
-                    break;
-
-                case TrackElemType::diagDown60ToFlat:
-                    trackType = TrackElemType::diagDown60ToFlatLongBase;
-                    break;
-
-                default:
-                    break;
-            }
+            if (!useShortBase)
+                trackType = shortBaseToLongBaseDiagonal(trackType);
         }
 
         const auto& rtd = ride->getRideTypeDescriptor();
@@ -4987,8 +5012,8 @@ namespace OpenRCT2::Ui::Windows
         if (_currentTrackSelectionFlags.has(TrackSelectionFlag::track))
         {
             RideId rideIndex;
-            int32_t direction;
-            TrackElemType type;
+            int32_t direction{};
+            TrackElemType type{};
             SelectedLiftAndInverted liftHillAndAlternativeState{};
             CoordsXYZ trackPos;
             if (WindowRideConstructionUpdateState(
