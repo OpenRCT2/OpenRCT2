@@ -492,7 +492,7 @@ namespace OpenRCT2
                 cs.readWrite(gameState.scenarioOptions.objective.NumGuests);
                 cs.readWrite(gameState.scenarioOptions.objective.Currency);
 
-                cs.readWrite(gameState.scenarioParkRatingWarningDays);
+                cs.readWrite(gameState.park.scenarioParkRatingWarningDays);
 
                 cs.readWrite(gameState.scenarioCompletedCompanyValue);
                 if (gameState.scenarioCompletedCompanyValue == kMoney64Undefined

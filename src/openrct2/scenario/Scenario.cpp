@@ -160,6 +160,7 @@ static void ScenarioEnd()
 void ScenarioFailure(GameState_t& gameState)
 {
     gameState.scenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
+    gameState.scenarioOptions.objective.onFailure(gameState.park, gameState);
     ScenarioEnd();
 }
 
@@ -259,10 +260,44 @@ void ScenarioAutosaveCheck()
     }
 }
 
+static void scenarioUpdateLowRatingDayCount(Park::ParkData& park, GameState_t& gameState)
+{
+    if (park.rating < Scenario::Objective::kLowParkRatingThreshold && gameState.date.monthsElapsed >= 1)
+    {
+        park.scenarioParkRatingWarningDays++;
+
+        if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating
+            && Config::Get().notifications.parkRatingWarnings)
+        {
+            switch (park.scenarioParkRatingWarningDays)
+            {
+                case 1:
+                    News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
+                    break;
+                case 8:
+                    News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
+                    break;
+                case 15:
+                    News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
+                    break;
+                case 22:
+                    News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
+                    break;
+            }
+        }
+    }
+    else if (gameState.scenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
+    {
+        park.scenarioParkRatingWarningDays = 0;
+    }
+}
+
 static void ScenarioDayUpdate(GameState_t& gameState)
 {
     FinanceUpdateDailyProfit();
     PeepUpdateDaysInQueue();
+    scenarioUpdateLowRatingDayCount(gameState.park, gameState);
+
     switch (gameState.scenarioOptions.objective.Type)
     {
         case ObjectiveType::tenRollercoasters:
