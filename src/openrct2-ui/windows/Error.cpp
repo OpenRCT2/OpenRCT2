@@ -41,14 +41,14 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         std::string _text;
-        uint16_t _numLines;
+        uint16_t _lineCount;
         uint8_t _staleCount;
         bool _autoClose;
 
     public:
-        ErrorWindow(std::string text, uint16_t numLines, bool autoClose)
+        ErrorWindow(std::string text, uint16_t lineCount, bool autoClose)
             : _text(std::move(text))
-            , _numLines(numLines)
+            , _lineCount(lineCount)
             , _autoClose(autoClose)
         {
         }
@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui::Windows
             WindowDrawWidgets(*this, rt);
 
             auto screenCoords = windowPos + ScreenCoordsXY{ (width + 1) / 2 - 1, kPadding - 1 };
-            drawStringCentredRaw(rt, screenCoords, _numLines, _text.data(), FontStyle::medium);
+            drawStringCentredRaw(rt, screenCoords, _lineCount - 1, _text.data(), FontStyle::medium);
         }
 
         void onPeriodicUpdate() override
@@ -131,9 +131,9 @@ namespace OpenRCT2::Ui::Windows
         width = std::clamp(width + 2 * kPadding, kMinWidth, kMaxWidth);
 
         // How high is the error string?
-        int32_t numLines{};
-        Drawing::wrapString(buffer, width + 1, FontStyle::medium, &buffer, &numLines);
-        int32_t height = (numLines + 1) * FontGetLineHeight(FontStyle::medium) + (2 * kPadding);
+        auto wrappedString = Drawing::wrapStringAndMeasure(buffer, width + 1, FontStyle::medium);
+        buffer = std::move(wrappedString.text);
+        int32_t height = wrappedString.metrics.lineCount * FontGetLineHeight(FontStyle::medium) + (2 * kPadding);
 
         // Position error message around the cursor
         const CursorState* state = ContextGetCursorState();
@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
         windowPosition.x = std::clamp(windowPosition.x, 0, ContextGetWidth() - width - 40);
         windowPosition.y = std::clamp(windowPosition.y, 22, ContextGetHeight() - height - 40);
 
-        auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
+        auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), wrappedString.metrics.lineCount, autoClose);
 
         return windowMgr->Create(
             std::move(errorWindow), WindowClass::error, windowPosition, { width, height },
