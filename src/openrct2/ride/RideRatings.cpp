@@ -890,8 +890,15 @@ namespace OpenRCT2
                     return;
                 break;
             case RatingsCalculationType::flatRide:
+            {
+                const bool wasTested = ride.flags.has(RideFlag::tested);
+                if (ted.flags.has(RtdFlag::isFlatRide) && rrd.RideShelter == kDynamicRideShelterRating && !wasTested)
+                {
+                    FlatRideShelterCalculate(ride);
+                }
                 ride.flags.set(RideFlag::tested, RideFlag::noRawStats);
                 break;
+            }
             case RatingsCalculationType::stall:
                 ride.upkeepCost = RideComputeUpkeep(state, ride);
                 ride.windowInvalidateFlags.set(RideInvalidateFlag::income);
@@ -901,12 +908,6 @@ namespace OpenRCT2
 
         ride.unreliabilityFactor = rrd.Unreliability;
         SetUnreliabilityFactor(ride);
-
-        if (ted.flags.has(RtdFlag::isFlatRide) && rrd.RideShelter == kDynamicRideShelterRating)
-        {
-            FlatRideShelterCalculate(ride);
-        }
-
         const auto shelteredEighths = GetNumOfShelteredEighths(ride);
         ride.shelteredEighths = (rrd.RideShelter == kDynamicRideShelterRating) ? shelteredEighths.TotalShelteredEighths
                                                                                : rrd.RideShelter;
