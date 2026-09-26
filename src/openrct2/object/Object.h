@@ -13,8 +13,8 @@
 #include "../core/StringTypes.h"
 #include "../drawing/ImageIndexType.h"
 #include "ImageTable.h"
-#include "ObjectAsset.h"
 #include "ObjectSourceGame.h"
+#include "ObjectAsset.h"
 #include "ObjectTypes.h"
 #include "StringTable.h"
 

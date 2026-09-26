@@ -17,6 +17,15 @@ namespace OpenRCT2
 {
     struct IStream;
 
+    /**
+     * A wrapper for an object held in a file or as a file within a zip 
+     * archive.
+     *
+     * If only a `path` is provided, GetStream() and GetData() will return the
+     * content of the file directly. If a `zipPath` and `path` are provided, 
+     * GetStream() and GetData() will return the content of the file at `path`
+     * within the zip archive at `zipPath`.
+     */
     class ObjectAsset
     {
     private:
