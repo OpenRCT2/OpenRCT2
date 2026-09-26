@@ -171,9 +171,8 @@ namespace OpenRCT2
                 UpdateTrackElementsRideType();
             }
 
-            // Initial cash will eventually be removed
-            // TODO: above comment was introduced with the NSF on 27 Oct 2021. What's the status?
-            //       (commit 34128dc262cefd38911b7833ecc2ec5ea40dee69)
+            // Initial cash is currently a legacy variable. However, it should be reworked
+            // so parks that share a map can start with the same amount.
             gameState.scenarioOptions.initialCash = gameState.park.cash;
         }
 
