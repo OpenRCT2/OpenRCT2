@@ -80,7 +80,7 @@ namespace OpenRCT2
     // TODO: make part of EntityList unit?
     uint16_t EntityRegistry::getEntityListCount(EntityType type)
     {
-        return static_cast<uint16_t>(gEntityLists[EnumValue(type)].size());
+        return static_cast<uint16_t>(_entityLists[EnumValue(type)].size());
     }
 
     // TODO: make part of EntityList unit?
@@ -112,12 +112,12 @@ namespace OpenRCT2
 
     const std::vector<EntityId>& EntityRegistry::getEntityTileList(const CoordsXY& spritePos)
     {
-        return gEntitySpatialIndex[ComputeSpatialIndex(spritePos)];
+        return _entitySpatialIndex[ComputeSpatialIndex(spritePos)];
     }
 
     void EntityRegistry::resetEntityLists()
     {
-        for (auto& list : gEntityLists)
+        for (auto& list : _entityLists)
         {
             list.clear();
         }
@@ -138,7 +138,7 @@ namespace OpenRCT2
 
     const std::list<EntityId>& EntityRegistry::getEntityList(const EntityType id)
     {
-        return gEntityLists[EnumValue(id)];
+        return _entityLists[EnumValue(id)];
     }
 
     /**
@@ -186,7 +186,7 @@ namespace OpenRCT2
      */
     void EntityRegistry::resetEntitySpatialIndices()
     {
-        for (auto& vec : gEntitySpatialIndex)
+        for (auto& vec : _entitySpatialIndex)
         {
             vec.clear();
         }
@@ -233,7 +233,7 @@ namespace OpenRCT2
 
     void EntityRegistry::addToEntityList(EntityBase& entity)
     {
-        auto& list = gEntityLists[EnumValue(entity.type)];
+        auto& list = _entityLists[EnumValue(entity.type)];
 
         // Entity list is sorted by id to prevent desyncs.
         Algorithm::sortedInsert(list, entity.id);
@@ -247,7 +247,7 @@ namespace OpenRCT2
 
     void EntityRegistry::removeFromEntityList(EntityBase& entity)
     {
-        auto& list = gEntityLists[EnumValue(entity.type)];
+        auto& list = _entityLists[EnumValue(entity.type)];
         auto ptr = Algorithm::binaryFind(std::begin(list), std::end(list), entity.id);
         if (ptr != std::end(list))
         {
@@ -366,7 +366,7 @@ namespace OpenRCT2
     {
         const auto newIndex = ComputeSpatialIndex(newLoc);
 
-        auto& spatialVector = gEntitySpatialIndex[newIndex];
+        auto& spatialVector = _entitySpatialIndex[newIndex];
 
         Algorithm::sortedInsert(spatialVector, entity.id);
 
@@ -377,7 +377,7 @@ namespace OpenRCT2
     {
         const auto currentIndex = GetSpatialIndex(entity);
 
-        auto& spatialVector = gEntitySpatialIndex[currentIndex];
+        auto& spatialVector = _entitySpatialIndex[currentIndex];
         auto index = Algorithm::binaryFind(std::begin(spatialVector), std::end(spatialVector), entity.id);
         if (index != std::end(spatialVector))
         {
@@ -406,7 +406,7 @@ namespace OpenRCT2
 
     void EntityRegistry::updateEntitiesSpatialIndex()
     {
-        for (auto& entityList : gEntityLists)
+        for (auto& entityList : _entityLists)
         {
             for (auto& entityId : entityList)
             {

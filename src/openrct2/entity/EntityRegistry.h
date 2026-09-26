@@ -57,12 +57,12 @@ namespace OpenRCT2
     {
     private:
         Entity_t entities[kMaxEntities]{};
-        std::array<std::list<EntityId>, EnumValue(EntityType::count)> gEntityLists;
+        std::array<std::list<EntityId>, EnumValue(EntityType::count)> _entityLists;
         std::vector<EntityId> _freeIdList;
 
         bool _entityFlashingList[kMaxEntities];
 
-        std::array<std::vector<EntityId>, kSpatialIndexSize> gEntitySpatialIndex;
+        std::array<std::vector<EntityId>, kSpatialIndexSize> _entitySpatialIndex;
 
     public:
         uint16_t getEntityListCount(EntityType type);
