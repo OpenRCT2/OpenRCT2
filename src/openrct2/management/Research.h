@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../localisation/StringIdType.h"
 #include "../object/ObjectTypes.h"
 #include "../ride/RideTypes.h"
@@ -27,7 +28,7 @@ namespace OpenRCT2::Research
         scenery = 0,
         ride = 1,
     };
-}
+} // namespace OpenRCT2::Research
 
 enum
 {
@@ -46,6 +47,7 @@ enum class ResearchCategory : uint8_t
     shop = 5,
     sceneryGroup = 6,
 };
+using ResearchPriorities = FlagHolder<uint8_t, ResearchCategory>;
 
 struct ResearchItem
 {

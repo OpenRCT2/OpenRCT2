@@ -80,7 +80,7 @@ namespace OpenRCT2
         CoordsXY widePathTileLoopPosition;
 
         uint8_t researchFundingLevel;
-        uint8_t researchPriorities;
+        ResearchPriorities researchPriorities;
         uint16_t researchProgress;
         uint8_t researchProgressStage;
         uint8_t researchExpectedMonth;

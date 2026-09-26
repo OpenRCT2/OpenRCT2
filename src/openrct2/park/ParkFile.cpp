@@ -1082,7 +1082,7 @@ namespace OpenRCT2
             os.readWriteChunk(ParkFileChunkType::research, [&gameState](OrcaStream::ChunkStream& cs) {
                 // Research status
                 cs.readWrite(gameState.researchFundingLevel);
-                cs.readWrite(gameState.researchPriorities);
+                cs.readWrite(gameState.researchPriorities.holder);
                 cs.readWrite(gameState.researchProgressStage);
                 cs.readWrite(gameState.researchProgress);
                 cs.readWrite(gameState.researchExpectedMonth);
