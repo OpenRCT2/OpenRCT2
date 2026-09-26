@@ -129,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
             Rectangle::fillInset(
                 rt, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, colours[0],
                 Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
-            if (!blink || GameIsPaused() || (gCurrentRealTimeTicks & 8))
+            if (!blink || GameIsPaused() || (gCurrentRealTimeTicks.Value & 8))
             {
                 if (bar_width > 2)
                 {
@@ -241,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MONEY:
                 case WIDX_GUESTS:
                 case WIDX_PARK_RATING:
-                    gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
+                    gTooltipCloseTimeout = gCurrentRealTimeTicks + GameTicks{ 2000 };
                     break;
             }
             return cursorId;

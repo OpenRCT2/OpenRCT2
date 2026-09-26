@@ -554,7 +554,7 @@ namespace OpenRCT2::RCT2
                 gameState.scenarioFileName = std::string(
                     String::toStringView(_s6.ScenarioFilename, std::size(_s6.ScenarioFilename)));
             }
-            gCurrentRealTimeTicks = 0;
+            gCurrentRealTimeTicks = {};
 
             ImportRides();
 

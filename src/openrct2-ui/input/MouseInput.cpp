@@ -49,7 +49,7 @@ namespace OpenRCT2
     static uint8_t _mouseInputQueueReadIndex = 0;
     static uint8_t _mouseInputQueueWriteIndex = 0;
 
-    static std::optional<uint32_t> _ticksSinceDragStart;
+    static std::optional<GameTicks> _ticksSinceDragStart;
     static WidgetRef _dragWidget;
     static uint8_t _dragScrollIndex;
     static int32_t _originalWindowWidth;
@@ -60,11 +60,11 @@ namespace OpenRCT2
 
     ScreenCoordsXY gInputDragLast;
 
-    uint32_t gTooltipCloseTimeout;
+    GameTicks gTooltipCloseTimeout;
     WidgetRef gTooltipWidget;
     ScreenCoordsXY gTooltipCursor;
 
-    static std::optional<uint32_t> _clickRepeatTicks;
+    static std::optional<GameTicks> _clickRepeatTicks;
 
     static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords);
     static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex);
@@ -360,7 +360,7 @@ namespace OpenRCT2
                 else if (state == MouseState::rightRelease)
                 {
                     InputViewportDragEnd();
-                    if (_ticksSinceDragStart.has_value() && gCurrentRealTimeTicks - _ticksSinceDragStart.value() < 500)
+                    if (_ticksSinceDragStart.has_value() && (gCurrentRealTimeTicks - _ticksSinceDragStart.value()).Value < 500)
                     {
                         // If the user pressed the right mouse button for less than 500 ticks, interpret as right click
                         ViewportInteractionRightClick(screenCoords);
@@ -495,7 +495,7 @@ namespace OpenRCT2
     static void InputWindowPositionEnd(WindowBase& w, const ScreenCoordsXY& screenCoords)
     {
         _inputState = InputState::normal;
-        gTooltipCloseTimeout = 0;
+        gTooltipCloseTimeout = {};
         gTooltipWidget = _dragWidget;
         w.onMoved(screenCoords);
     }
@@ -526,7 +526,7 @@ namespace OpenRCT2
     static void InputWindowResizeEnd()
     {
         _inputState = InputState::normal;
-        gTooltipCloseTimeout = 0;
+        gTooltipCloseTimeout = {};
         gTooltipWidget = _dragWidget;
     }
 
@@ -1310,7 +1310,7 @@ namespace OpenRCT2
                     constexpr auto kEventDelayInTicks = 3u;
 
                     // The amount of ticks since the last click repeat.
-                    const auto clickRepeatsDelta = gCurrentRealTimeTicks - _clickRepeatTicks.value();
+                    const auto clickRepeatsDelta = (gCurrentRealTimeTicks - _clickRepeatTicks.value()).Value;
 
                     // Handle click repeat, only start this when at least 16 ticks elapsed.
                     if (clickRepeatsDelta >= kTicksUntilRepeats && (clickRepeatsDelta & kEventDelayInTicks) == 0)
@@ -1321,7 +1321,7 @@ namespace OpenRCT2
                         }
 
                         // Subtract initial delay from here on we want the event each third tick.
-                        _clickRepeatTicks = gCurrentRealTimeTicks - kTicksUntilRepeats;
+                        _clickRepeatTicks = gCurrentRealTimeTicks - GameTicks{ kTicksUntilRepeats };
                     }
                 }
 
@@ -1395,7 +1395,7 @@ namespace OpenRCT2
                             }
 
                             _inputState = InputState::normal;
-                            gTooltipCloseTimeout = 0;
+                            gTooltipCloseTimeout = {};
                             gTooltipWidget.widgetIndex = cursor_widgetIndex;
                             gTooltipWidget.windowClassification = cursor_w_class;
                             gTooltipWidget.windowNumber = cursor_w_number;
@@ -1424,7 +1424,7 @@ namespace OpenRCT2
                     return;
                 }
 
-                gTooltipCloseTimeout = 0;
+                gTooltipCloseTimeout = {};
                 gTooltipWidget.widgetIndex = cursor_widgetIndex;
 
                 if (w == nullptr)
@@ -1525,7 +1525,7 @@ namespace OpenRCT2
                 if (gCurrentRealTimeTicks >= _tooltipNotShownTimeout && w != nullptr && widgetIndex != kWidgetIndexNull
                     && widgetIsVisible(*w, widgetIndex))
                 {
-                    gTooltipCloseTimeout = gCurrentRealTimeTicks + 8000;
+                    gTooltipCloseTimeout = gCurrentRealTimeTicks + GameTicks{ 8000 };
                     WindowTooltipOpen(w, widgetIndex, screenCoords);
                 }
             }
@@ -1534,7 +1534,7 @@ namespace OpenRCT2
                 ResetTooltipNotShown();
             }
 
-            gTooltipCloseTimeout = gCurrentRealTimeTicks + 8000;
+            gTooltipCloseTimeout = gCurrentRealTimeTicks + GameTicks{ 8000 };
             gTooltipCursor = screenCoords;
         }
         else

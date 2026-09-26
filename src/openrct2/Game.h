@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "core/GameTicks.hpp"
 #include "core/StringTypes.h"
 
 #include <memory>
@@ -49,7 +50,7 @@ enum
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-extern uint32_t gCurrentRealTimeTicks;
+extern OpenRCT2::GameTicks gCurrentRealTimeTicks;
 
 extern uint16_t gCurrentDeltaTime;
 extern uint8_t gGamePaused;

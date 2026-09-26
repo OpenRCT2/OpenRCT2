@@ -249,7 +249,7 @@ namespace OpenRCT2::Ui::Windows
 
         CursorID onCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
         {
-            gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
+            gTooltipCloseTimeout = gCurrentRealTimeTicks + GameTicks{ 2000 };
             return cursorId;
         }
 

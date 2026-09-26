@@ -1210,7 +1210,7 @@ namespace OpenRCT2::Ui
             Rectangle::FillMode::none);
         if (isBlinking)
         {
-            if (GameIsNotPaused() && (gCurrentRealTimeTicks & 8))
+            if (GameIsNotPaused() && (gCurrentRealTimeTicks.Value & 8))
                 return;
         }
 

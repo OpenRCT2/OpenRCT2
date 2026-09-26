@@ -41,7 +41,7 @@ namespace OpenRCT2
 
     WindowCloseModifier gLastCloseModifier = { { WindowClass::null, 0 }, CloseWindowModifier::none };
 
-    uint32_t gWindowUpdateTicks;
+    GameTicks gWindowUpdateTicks;
 
     Tool gCurrentToolId;
     WidgetRef gCurrentToolWidget;
@@ -178,7 +178,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         // Periodic update happens every second so 40 ticks.
         if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
         {
-            gWindowUpdateTicks = gCurrentRealTimeTicks + kGameUpdateFPS;
+            gWindowUpdateTicks = gCurrentRealTimeTicks + GameTicks{ kGameUpdateFPS };
 
             WindowVisitEach([](WindowBase* w) { w->onPeriodicUpdate(); });
         }

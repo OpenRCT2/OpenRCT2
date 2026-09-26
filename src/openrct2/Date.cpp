@@ -158,5 +158,5 @@ void ResetDate()
 {
     auto& gameState = getGameState();
     gameState.date = {};
-    gCurrentRealTimeTicks = 0;
+    gCurrentRealTimeTicks = {};
 }
