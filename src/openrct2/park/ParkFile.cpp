@@ -120,11 +120,6 @@ namespace OpenRCT2
         ObjectEntryIndex _pathToQueueSurfaceMap[kMaxPathObjects];
         ObjectEntryIndex _pathToRailingsMap[kMaxPathObjects];
 
-        struct TerrainSurfaceMapping
-        {
-            ObjectEntryIndex newEntryIndex;
-            Drawing::Colour colour;
-        };
         std::array<TerrainSurfaceMapping, kMaxTerrainSurfaceObjects> _terrainSurfaceMap{};
         std::array<Drawing::Colour, kMaxTerrainEdgeObjects> _terrainEdgeMap{};
 
@@ -191,7 +186,7 @@ namespace OpenRCT2
             }
             if (targetVersion < kColourableTerrainVersion)
             {
-                UpdateSurfaceElementsColour(gameState);
+                updateSurfaceElementsColour(gameState, _terrainSurfaceMap, _terrainEdgeMap);
             }
 
             // Initial cash is currently a legacy variable. However, it should be reworked
@@ -1363,26 +1358,6 @@ namespace OpenRCT2
                         {
                             trackElement->setRideType(ride->type);
                         }
-                    }
-                }
-            }
-        }
-
-        void UpdateSurfaceElementsColour(GameState_t& gameState)
-        {
-            for (int32_t y = 0; y < gameState.mapSize.y; y++)
-            {
-                for (int32_t x = 0; x < gameState.mapSize.x; x++)
-                {
-                    for (auto* surfaceElement : TileElementsView<SurfaceElement>(TileCoordsXY{ x, y }))
-                    {
-                        const auto originalSurfaceIndex = surfaceElement->getSurfaceObjectIndex();
-                        const auto& surfaceMapping = _terrainSurfaceMap[originalSurfaceIndex];
-                        surfaceElement->setSurfaceObjectIndex(surfaceMapping.newEntryIndex);
-                        surfaceElement->setPrimarySurfaceColour(surfaceMapping.colour);
-
-                        const auto edgeIndex = surfaceElement->getEdgeObjectIndex();
-                        surfaceElement->setPrimaryEdgeColour(_terrainEdgeMap[edgeIndex]);
                     }
                 }
             }

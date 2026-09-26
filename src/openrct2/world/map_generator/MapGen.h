@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include "../../object/TerrainEdgeObject.h"
-#include "../../object/TerrainSurfaceObject.h"
+#include "../../drawing/Colour.h"
 #include "../Location.hpp"
 
 namespace OpenRCT2::Drawing
