@@ -8,12 +8,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ObjectAsset.h"
-
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Zip.h"
 #include "../core/ZipStream.hpp"
+#include "ObjectAsset.h"
 
 namespace OpenRCT2
 {
@@ -107,4 +106,4 @@ namespace OpenRCT2
         // Combine the hashes based on example from https://en.cppreference.com/w/cpp/utility/hash.html
         return h1 ^ (h2 << 1);
     }
-}
+} // namespace OpenRCT2

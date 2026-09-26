@@ -18,7 +18,7 @@ namespace OpenRCT2
     struct IStream;
 
     /**
-     * A wrapper for an object held in a file or as a file within a zip 
+     * A wrapper for an object held in a file or as a file within a zip
      * archive.
      *
      * If only a `path` is provided, GetStream() and GetData() will return the
