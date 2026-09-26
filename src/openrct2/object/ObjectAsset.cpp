@@ -17,7 +17,7 @@
 
 namespace OpenRCT2
 {
-     bool ObjectAsset::IsAvailable() const
+    bool ObjectAsset::IsAvailable() const
     {
         if (_zipPath.empty())
         {

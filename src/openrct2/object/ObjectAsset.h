@@ -22,7 +22,7 @@ namespace OpenRCT2
      * archive.
      *
      * If only a `path` is provided, GetStream() and GetData() will return the
-     * content of the file directly. If a `zipPath` and `path` are provided, 
+     * content of the file directly. If a `zipPath` and `path` are provided,
      * GetStream() and GetData() will return the content of the file at `path`
      * within the zip archive at `zipPath`.
      */
