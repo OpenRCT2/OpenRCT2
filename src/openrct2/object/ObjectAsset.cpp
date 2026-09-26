@@ -8,11 +8,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ObjectAsset.h"
+
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Zip.h"
 #include "../core/ZipStream.hpp"
-#include "ObjectAsset.h"
 
 namespace OpenRCT2
 {
