@@ -148,7 +148,7 @@ libzip           | BSD 3 clause licence.
 nlohmann-json    | MIT licence.
 OpenSSL          | OpenSSL licence.
 QuickJS          | MIT licence.
-SDL2             | zlib licence.
+SDL3             | zlib licence.
 zlib             | zlib licence.
 Google Test      | BSD 3 clause licence.
 Google Benchmark | Apache 2.0 licence.

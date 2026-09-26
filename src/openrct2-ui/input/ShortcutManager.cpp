@@ -11,7 +11,7 @@
 
 #include "ShortcutIds.h"
 
-#include <SDL_keyboard.h>
+#include <SDL3/SDL.h>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/Console.hpp>
@@ -242,14 +242,14 @@ std::optional<ShortcutInput> ShortcutManager::convertLegacyBinding(uint16_t bind
     ShortcutInput result;
     result.kind = InputDeviceKind::keyboard;
     if (binding & kShift)
-        result.modifiers |= KMOD_SHIFT;
+        result.modifiers |= SDL_KMOD_SHIFT;
     if (binding & kCtrl)
-        result.modifiers |= KMOD_CTRL;
+        result.modifiers |= SDL_KMOD_CTRL;
     if (binding & kAlt)
-        result.modifiers |= KMOD_ALT;
+        result.modifiers |= SDL_KMOD_ALT;
     if (binding & kCmd)
-        result.modifiers |= KMOD_GUI;
-    result.button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
+        result.modifiers |= SDL_KMOD_GUI;
+    result.button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF), SDL_KMOD_NONE, false);
     return result;
 }
 

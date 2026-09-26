@@ -9,6 +9,7 @@
 
 #include "../UiStringIds.h"
 
+#include <SDL3/SDL_clipboard.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>

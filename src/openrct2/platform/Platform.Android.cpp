@@ -19,7 +19,7 @@
     #include "../drawing/Font.h"
     #include "../localisation/Language.h"
 
-    #include <SDL_system.h>
+    #include <SDL3/SDL_system.h>
     #include <algorithm>
     #include <android/asset_manager.h>
     #include <android/asset_manager_jni.h>
@@ -29,7 +29,7 @@
 
 AndroidClassLoader::~AndroidClassLoader()
 {
-    JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+    JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
     env->DeleteGlobalRef(_classLoader);
 }
 
@@ -96,9 +96,9 @@ namespace OpenRCT2::Platform
 
     uint16_t GetLocaleLanguage()
     {
-        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_GetAndroidJNIEnv());
 
-        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jobject activity = static_cast<jobject>(SDL_GetAndroidActivity());
         jclass activityClass = env->GetObjectClass(activity);
         jmethodID getDefaultLocale = env->GetMethodID(
             activityClass, "getDefaultLocale", "([Ljava/lang/String;)Ljava/lang/String;");
@@ -132,9 +132,9 @@ namespace OpenRCT2::Platform
 
     CurrencyType GetLocaleCurrency()
     {
-        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_GetAndroidJNIEnv());
 
-        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jobject activity = static_cast<jobject>(SDL_GetAndroidActivity());
         jclass activityClass = env->GetObjectClass(activity);
         jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getLocaleCurrency", "()Ljava/lang/String;");
 
@@ -152,9 +152,9 @@ namespace OpenRCT2::Platform
 
     MeasurementFormat GetLocaleMeasurementFormat()
     {
-        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_GetAndroidJNIEnv());
 
-        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jobject activity = static_cast<jobject>(SDL_GetAndroidActivity());
         jclass activityClass = env->GetObjectClass(activity);
         jmethodID getIsImperialLocaleMeasurementFormat = env->GetMethodID(
             activityClass, "isImperialLocaleMeasurementFormat", "()Z");
@@ -231,9 +231,9 @@ namespace OpenRCT2::Platform
 
     float GetDefaultScale()
     {
-        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_GetAndroidJNIEnv());
 
-        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jobject activity = static_cast<jobject>(SDL_GetAndroidActivity());
         jclass activityClass = env->GetObjectClass(activity);
         jmethodID getDefaultScale = env->GetMethodID(activityClass, "getDefaultScale", "()F");
 
@@ -255,8 +255,8 @@ namespace OpenRCT2::Platform
     void* GetAssetManager()
     {
         std::call_once(_assetManagerInitialized, []() {
-            JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
-            jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+            JNIEnv* env = static_cast<JNIEnv*>(SDL_GetAndroidJNIEnv());
+            jobject activity = static_cast<jobject>(SDL_GetAndroidActivity());
             jclass activityClass = env->GetObjectClass(activity);
             jmethodID getAssetsMethod = env->GetMethodID(activityClass, "getAssets", "()Landroid/content/res/AssetManager;");
             jobject assetManagerObj = env->CallObjectMethod(activity, getAssetsMethod);
@@ -528,7 +528,7 @@ AndroidClassLoader::AndroidClassLoader()
     // getClassLoader() on it to create a reference that way.
 
     // If we're here, SDL's JNI_OnLoad has already been called and set env
-    JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+    JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 
     // Take an arbitrary class. While the class does not really matter, it
     // makes sense to use one that's most likely already loaded and is unlikely

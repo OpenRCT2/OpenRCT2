@@ -14,9 +14,9 @@ if (EMSCRIPTEN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USE_FLAGS} ${SHARED_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_LDFLAGS} --bind ${SHARED_FLAGS} -sEXPORTED_FUNCTIONS=${EMSCRIPTEN_EXPORTED_FUNCTIONS} --js-library ${ROOT_DIR}/emscripten/deps.js")
 elseif (MSVC)
-    find_package(SDL2 REQUIRED)
+    find_package(SDL3 REQUIRED CONFIG)
 else ()
-    PKG_CHECK_MODULES(SDL2 REQUIRED IMPORTED_TARGET sdl2)
+    PKG_CHECK_MODULES(SDL3 REQUIRED IMPORTED_TARGET sdl3)
     if (NOT DISABLE_FLAC)
         PKG_CHECK_MODULES(FLAC REQUIRED IMPORTED_TARGET flac)
     endif ()
@@ -61,10 +61,10 @@ if (EMSCRIPTEN)
                                     ${ICU_DT_LIBRARY_RELEASE})
 elseif (NOT MSVC AND NOT WIN32)
     target_link_libraries(openrct2 "libopenrct2"
-                                    PkgConfig::SDL2)
+                                    PkgConfig::SDL3)
 else ()
     target_link_libraries(openrct2 "libopenrct2"
-                                    ${SDL2_LDFLAGS})
+                                    ${SDL3_LDFLAGS})
 endif ()
 target_link_platform_libraries(openrct2)
 
@@ -99,7 +99,7 @@ target_include_directories(openrct2 PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
                                               ${OGG_INCLUDE_DIRS}
                                               ${VORBIS_INCLUDE_DIRS}
                                               ${FLAC_INCLUDE_DIRS})
-target_include_directories(openrct2 SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS}
+target_include_directories(openrct2 SYSTEM PRIVATE ${SDL3_INCLUDE_DIRS}
                                                      "${CMAKE_CURRENT_LIST_DIR}/../thirdparty")
 
 # Compiler flags
@@ -109,15 +109,15 @@ if (WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
     target_link_libraries(openrct2 comdlg32)
     if (MSVC)
-        target_link_libraries(openrct2 SDL2::SDL2-static)
-        target_include_directories(openrct2 SYSTEM PRIVATE SDL2::SDL2-static)
+        target_link_libraries(openrct2 SDL3::SDL3-static)
+        target_include_directories(openrct2 SYSTEM PRIVATE SDL3::SDL3-static)
     else ()
         # mingw does not provide proper CMake information like other configurations
-        find_path(SDL2_INCLUDE_DIRS SDL2/SDL.h)
+        find_path(SDL3_INCLUDE_DIRS SDL3/SDL.h)
         if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-            find_library(SDL2_LDFLAGS sdl2d)
+            find_library(SDL3_LDFLAGS SDL3d)
         else ()
-            find_library(SDL2_LDFLAGS sdl2)
+            find_library(SDL3_LDFLAGS SDL3)
         endif ()
         # Hardcode some of the libraries used by mingw builds
         target_link_libraries(openrct2 imm32 winmm setupapi version)
