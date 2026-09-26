@@ -61,6 +61,7 @@ namespace OpenRCT2
         gInMapInitCode = true;
         gameState.currentTicks = 0;
 
+        GameActions::ClearQueue();
         MapInit(mapSize);
         Park::Initialise(gameState.park, gameState);
         FinanceInit();
