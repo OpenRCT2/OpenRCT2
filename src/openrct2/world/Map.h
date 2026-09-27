@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../drawing/Colour.h"
 #include "Location.hpp"
 #include "MapOwnership.h"
 #include "tile_element/TileElement.h"
@@ -62,7 +61,10 @@ namespace OpenRCT2
     void UnstashMap();
     std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
 
-    void MapInit(const TileCoordsXY& size, Drawing::Colour surfaceColour1 = Drawing::Colour::black);
+    /**
+     * @param surfaceColour1 Should always be Drawing::Colour::black, unless we’re in the Track Designer.
+     */
+    void MapInit(const TileCoordsXY& size, Drawing::Colour surfaceColour1);
 
     void MapCountRemainingLandRights();
     void MapStripGhostFlagFromElements();

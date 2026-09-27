@@ -55,7 +55,7 @@ namespace OpenRCT2::World::MapGenerator
     void resetSurfaces(Settings* settings)
     {
         MapClearAllElements();
-        MapInit(settings->mapSize);
+        MapInit(settings->mapSize, Drawing::Colour::black);
 
         const auto surfaceTextureId = generateSurfaceTextureId(settings);
         const auto edgeTextureId = generateEdgeTextureId(settings, surfaceTextureId);
