@@ -1,6 +1,8 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
+- Feature: [#16014] Land surfaces and edges can now be recoloured.
 - Feature: [#27153] [Plugin] Add `guestsEntertained` to `Entertainer` interface.
+- Feature: [objects#447] Track designer grid can now be used outside the Track Designer.
 - Improved: [#21400] The selector for setting staff patrol areas is now drawn on the water as well as on the surface under water.
 - Improved: [#26947] Rain is now drawn next to the bottom info panels (in RCT2 style).
 - Improved: [#27097] On Linux, Flatpak Steam RCTC/RCT2 paths are now auto-detected.

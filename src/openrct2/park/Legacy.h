@@ -38,9 +38,22 @@ namespace OpenRCT2
 
     enum class SpecialElement : uint8_t;
     using SpecialElements = FlagHolder<uint8_t, SpecialElement>;
+
+    using ObjectEntryIndex = uint16_t;
+
+    namespace Drawing
+    {
+        enum class Colour : uint8_t;
+    }
 } // namespace OpenRCT2
 
 using ride_type_t = uint16_t;
+
+struct TerrainSurfaceMapping
+{
+    OpenRCT2::ObjectEntryIndex newEntryIndex;
+    OpenRCT2::Drawing::Colour colour;
+};
 
 std::string_view MapToNewObjectIdentifier(std::string_view s);
 std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
@@ -69,3 +82,6 @@ bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, in
 
 std::pair<uint8_t, OpenRCT2::SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
 std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue);
+void updateSurfaceElementsColour(
+    OpenRCT2::GameState_t& gameState, std::span<const TerrainSurfaceMapping> terrainSurfaceMap,
+    std::span<const OpenRCT2::Drawing::Colour> terrainEdgeMap);

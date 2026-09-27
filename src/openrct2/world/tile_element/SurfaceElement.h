@@ -15,6 +15,11 @@
 
 namespace OpenRCT2
 {
+    namespace Drawing
+    {
+        enum class Colour : uint8_t;
+    }
+
     enum
     {
         SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
@@ -49,9 +54,11 @@ namespace OpenRCT2
         uint8_t ownership;
         uint8_t surfaceStyle;
         uint8_t edgeObjectIndex;
+        Drawing::Colour surfaceColour1;
+        Drawing::Colour edgeColour1;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t pad0B[5];
+        uint8_t pad0D[3];
 #pragma clang diagnostic pop
 
     public:
@@ -84,6 +91,12 @@ namespace OpenRCT2
 
         bool hasTrackThatNeedsWater() const;
         void setHasTrackThatNeedsWater(bool on);
+
+        Drawing::Colour getPrimarySurfaceColour() const;
+        void setPrimarySurfaceColour(Drawing::Colour newColour);
+
+        Drawing::Colour getPrimaryEdgeColour() const;
+        void setPrimaryEdgeColour(Drawing::Colour newColour);
     };
     static_assert(sizeof(SurfaceElement) == kTileElementSize);
 #pragma pack(pop)
