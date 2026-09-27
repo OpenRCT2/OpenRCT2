@@ -34,6 +34,7 @@
 - Fix: [#27133] [Plugin] Dropdown and spinner are not fully hidden with isVisible on creation.
 - Fix: [#27134] Viewing track designs may cause network desyncs.
 - Fix: [#27136] Guests keep waiting at a level crossing after the train has passed, due to faulty iteration over the track the train has vacated.
+- Fix: [#27212] Chain lifts are blue in screenshots taken from the command line.
 
 0.5.5 (2026-09-06)
 ------------------------------------------------------------------------
