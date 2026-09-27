@@ -563,6 +563,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
 
         rt = CreateRT(viewport);
 
+        UpdatePaletteEffects();
         RenderViewport(nullptr, viewport, rt);
         WriteRTToFile(outputPath, rt, gPalette);
     }
