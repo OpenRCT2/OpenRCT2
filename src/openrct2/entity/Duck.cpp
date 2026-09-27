@@ -104,10 +104,7 @@ namespace OpenRCT2
     });
     // clang-format on
 
-    struct DuckAnimationInfo
-    {
-        std::span<const uint8_t> duckAnimationFrames;
-    };
+    using DuckAnimationInfo = std::span<const uint8_t>;
 
     static constexpr std::array kDuckAnimations = std::to_array<DuckAnimationInfo>({
         { kDuckAnimationFlyToWater },
@@ -142,7 +139,7 @@ namespace OpenRCT2
             return;
 
         frame++;
-        if (frame >= kDuckAnimations[EnumValue(state)].duckAnimationFrames.size())
+        if (frame >= kDuckAnimations[EnumValue(state)].size())
         {
             frame = 0;
         }
@@ -303,7 +300,7 @@ namespace OpenRCT2
         if ((getGameState().currentTicks & 3) == 0)
         {
             frame++;
-            if (frame >= kDuckAnimations[EnumValue(state)].duckAnimationFrames.size())
+            if (frame >= kDuckAnimations[EnumValue(state)].size())
             {
                 frame = 0;
             }
@@ -333,8 +330,7 @@ namespace OpenRCT2
         uint32_t imageId = 0;
         if (EnumValue(getState()) < kDuckMaxStates)
         {
-            // TODO: Check frame is in range
-            uint8_t imageOffset = kDuckAnimations[EnumValue(getState())].duckAnimationFrames[frame];
+            uint8_t imageOffset = kDuckAnimations[EnumValue(getState())][frame];
             imageId = SPR_DUCK + (imageOffset * 4) + (direction / 8);
         }
         return imageId;
