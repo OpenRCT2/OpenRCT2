@@ -23,7 +23,7 @@ struct CoordsXY;
 namespace OpenRCT2
 {
     constexpr uint16_t kMaxEntities = 65535;
-    constexpr uint16_t kMaxMiscEntities = 3200;
+    constexpr uint16_t kMaxMiscEntities = 6400;
 
     constexpr const uint32_t kSpatialIndexSize = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
     constexpr uint32_t kSpatialIndexNullBucket = kSpatialIndexSize - 1;
@@ -110,12 +110,12 @@ namespace OpenRCT2
 
         const std::vector<EntityId>& getEntityTileList(const CoordsXY& spritePos);
 
-        EntityBase* createEntity(EntityType type, bool ignoreMiscLimit = false);
+        EntityBase* createEntity(EntityType type);
 
         template<typename T>
-        T* createEntity(bool ignoreMiscLimit = false)
+        T* createEntity()
         {
-            return static_cast<T*>(createEntity(T::kEntityType, ignoreMiscLimit));
+            return static_cast<T*>(createEntity(T::kEntityType));
         }
 
         // Use only with imports that must happen at a specified index

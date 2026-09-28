@@ -288,7 +288,7 @@ namespace OpenRCT2
         entitySpatialInsert(base, { kLocationNull, 0 });
     }
 
-    EntityBase* EntityRegistry::createEntity(EntityType type, bool ignoreMiscLimit)
+    EntityBase* EntityRegistry::createEntity(EntityType type)
     {
         if (_freeIdList.empty())
         {
@@ -296,7 +296,7 @@ namespace OpenRCT2
             return nullptr;
         }
 
-        if (!ignoreMiscLimit && EntityTypeIsMiscEntity(type))
+        if (EntityTypeIsMiscEntity(type))
         {
             // Misc sprites are commonly used for effects, give other entity types higher priority.
             if (getMiscEntityCount() >= kMaxMiscEntities)
