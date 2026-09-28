@@ -13,6 +13,8 @@
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 
+#include <algorithm>
+
 namespace OpenRCT2::Drawing
 {
     static const EnumMap<Colour> kLookupTable{
@@ -102,5 +104,15 @@ namespace OpenRCT2::Drawing
     Colour getCycleColour(uint32_t ticks)
     {
         return Colour((ticks / 32) % kColourNumNormal);
+    }
+
+    Colour clampColour(uint8_t colour)
+    {
+        return static_cast<Colour>(std::clamp<uint8_t>(colour, 0, kColourNumTotal - 1));
+    }
+
+    Colour clampColour(Colour colour)
+    {
+        return clampColour(EnumValue(colour));
     }
 } // namespace OpenRCT2::Drawing

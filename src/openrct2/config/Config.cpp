@@ -250,7 +250,7 @@ namespace OpenRCT2::Config
             model->autoOpenShops = reader->GetBoolean("auto_open_shops", false);
 
             // Gamepad settings
-            model->gamepadDeadzone = reader->GetInt32("gamepad_deadzone", 3600);
+            model->gamepadDeadzone = reader->GetInt32("gamepad_deadzone", 8192);
             model->gamepadSensitivity = reader->GetFloat("gamepad_sensitivity", 1.5f);
             model->scenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->scenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
