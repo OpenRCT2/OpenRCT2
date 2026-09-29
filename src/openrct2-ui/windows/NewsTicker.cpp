@@ -274,6 +274,10 @@ namespace OpenRCT2::Ui::Windows
         if (sceneMgr->getActiveScene() != sceneMgr->getGameScene())
             return nullptr;
 
+        auto* windowMgr = GetWindowManager();
+        if (windowMgr->FindByClass(WindowClass::topToolbar) == nullptr)
+            return nullptr;
+
         // TODO: query ParkInfoPanel, DateInfoPanel
         constexpr auto kPanelWidth = 142;
 
@@ -285,7 +289,6 @@ namespace OpenRCT2::Ui::Windows
         uint32_t lineHeight = FontGetLineHeight(FontStyle::medium);
         int32_t toolbarHeight = lineHeight * 2 + 12;
 
-        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<NewsTicker>(
             WindowClass::newsTicker, ScreenCoordsXY(kPanelWidth, ContextGetHeight() - toolbarHeight),
             { toolbarWidth, toolbarHeight },
