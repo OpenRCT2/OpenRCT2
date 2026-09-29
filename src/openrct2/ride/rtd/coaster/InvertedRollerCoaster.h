@@ -25,7 +25,7 @@ constexpr RideTypeDescriptor kInvertedRollerCoasterRTD =
         .trackStyle = TrackStyle::invertedRollerCoaster,
         .supportType = MetalSupportType::boxed,
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::twist, TrackGroup::halfLoop, TrackGroup::corkscrew, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::halfLoopLarge, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown,  TrackGroup::halfLoopMedium, TrackGroup::corkscrewLarge, TrackGroup::diveLoop, TrackGroup::slopeSteepLong,  TrackGroup::slopeVertical, TrackGroup::curveVertical,TrackGroup::quarterLoop, TrackGroup::diagSlopeSteepLong, TrackGroup::slopeCurveBanked, TrackGroup::slopeRollBanking,TrackGroup::slopeCurveLarge, TrackGroup::slopeCurveLargeBanked, TrackGroup::helixUpUnbankedQuarter, TrackGroup::helixDownUnbankedQuarter },
-        .extraTrackGroups = { TrackGroup::booster, TrackGroup::barrelRoll, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge },
+        .extraTrackGroups = { TrackGroup::booster, TrackGroup::barrelRoll, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::flatToSteepSlope },
     }),
     .InvertedTrackPaintFunctions = {},
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
