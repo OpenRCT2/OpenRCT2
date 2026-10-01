@@ -315,7 +315,7 @@ namespace OpenRCT2::RCT2
                 if (src.Type == 0)
                     break;
 
-                if (src.Type >= News::ItemTypeCount)
+                if (src.Type >= News::kItemTypeCount)
                 {
                     LOG_ERROR("Invalid news type 0x%x for news item %d, ignoring remaining news items", src.Type, index);
                     break;

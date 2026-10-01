@@ -44,7 +44,7 @@ const News::Item& News::ItemQueues::current() const
 
 bool News::IsValidIndex(int32_t index)
 {
-    if (index >= MaxItems)
+    if (index >= kMaxItems)
     {
         LOG_ERROR("Tried to get news item past MAX_NEWS.");
         return false;
@@ -466,14 +466,14 @@ void News::AddItemToQueue(ItemQueues& queues, Item* newNewsItem)
 
 void News::RemoveItem(ItemQueues& queues, int32_t index)
 {
-    if (index < 0 || index >= MaxItems)
+    if (index < 0 || index >= kMaxItems)
         return;
 
     // News item is already null, no need to remove it
     if (queues[index].type == ItemType::null)
         return;
 
-    size_t newsBoundary = index < ItemHistoryStart ? ItemHistoryStart : MaxItems;
+    size_t newsBoundary = index < kItemHistoryStart ? kItemHistoryStart : kMaxItems;
     for (size_t i = index; i < newsBoundary - 1; i++)
     {
         queues[i] = queues[i + 1];
@@ -485,12 +485,12 @@ void News::importNewsItems(ItemQueues& queues, const std::span<const Item> recen
 {
     queues.clear();
 
-    for (size_t i = 0; i < std::min<size_t>(recent.size(), ItemHistoryStart); i++)
+    for (size_t i = 0; i < std::min<size_t>(recent.size(), kItemHistoryStart); i++)
     {
         queues[i] = recent[i];
     }
-    for (size_t i = 0; i < std::min<size_t>(archived.size(), MaxItemsArchive); i++)
+    for (size_t i = 0; i < std::min<size_t>(archived.size(), kMaxItemsArchive); i++)
     {
-        queues[ItemHistoryStart + i] = archived[i];
+        queues[kItemHistoryStart + i] = archived[i];
     }
 }

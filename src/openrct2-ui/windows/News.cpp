@@ -511,7 +511,7 @@ namespace OpenRCT2::Ui::Windows
                     auto borderStyle = Rectangle::BorderStyle::outset;
                     if (_pressedNewsItemIndex != -1)
                     {
-                        News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
+                        News::IsValidIndex(_pressedNewsItemIndex + News::kItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 1)
                         {
                             borderStyle = Rectangle::BorderStyle::inset;
@@ -593,7 +593,7 @@ namespace OpenRCT2::Ui::Windows
                     auto borderStyle = Rectangle::BorderStyle::outset;
                     if (_pressedNewsItemIndex != -1)
                     {
-                        News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
+                        News::IsValidIndex(_pressedNewsItemIndex + News::kItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                             borderStyle = Rectangle::BorderStyle::inset;
                     }

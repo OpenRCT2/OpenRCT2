@@ -50,7 +50,7 @@ namespace OpenRCT2::News
         count
     };
 
-    constexpr size_t ItemTypeCount = static_cast<size_t>(ItemType::count);
+    constexpr size_t kItemTypeCount = static_cast<size_t>(ItemType::count);
 
     enum ItemTypeProperty : uint8_t
     {
@@ -126,9 +126,9 @@ namespace OpenRCT2::News
         }
     };
 
-    constexpr int32_t ItemHistoryStart = 11;
-    constexpr int32_t MaxItemsArchive = 50;
-    constexpr int32_t MaxItems = ItemHistoryStart + MaxItemsArchive;
+    constexpr int32_t kItemHistoryStart = 11;
+    constexpr int32_t kMaxItemsArchive = 50;
+    constexpr int32_t kMaxItems = kItemHistoryStart + kMaxItemsArchive;
 
     template<std::size_t N>
     class ItemQueue
@@ -296,8 +296,8 @@ namespace OpenRCT2::News
     private:
         int32_t removeTime() const;
 
-        ItemQueue<ItemHistoryStart> _recent;
-        ItemQueue<MaxItemsArchive> _archived;
+        ItemQueue<kItemHistoryStart> _recent;
+        ItemQueue<kMaxItemsArchive> _archived;
     };
 
     void InitQueue(Park::ParkData& park);
