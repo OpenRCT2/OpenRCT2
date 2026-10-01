@@ -242,7 +242,7 @@ namespace OpenRCT2::Ui::Windows
         money64 _windowFootpathCost;
         uint32_t _footpathConstructionNextArrowPulse = 0;
         uint8_t _lastUpdatedCameraRotation = UINT8_MAX;
-        bool _footpathErrorOccured = false;
+        bool _footpathErrorOccurred = false;
 
         bool _footpathPlaceCtrlState;
         int32_t _footpathPlaceCtrlZ;
@@ -271,7 +271,7 @@ namespace OpenRCT2::Ui::Windows
             _footpathConstructionMode = PathConstructionMode::onLand;
             ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
             gInputFlags.set(InputFlag::allowRightMouseRemoval);
-            _footpathErrorOccured = false;
+            _footpathErrorOccurred = false;
             WindowFootpathSetEnabledAndPressedWidgets();
 
             _footpathPlaceCtrlState = false;
@@ -376,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
             _footpathConstructionMode = PathConstructionMode::dragArea;
             ToolSet(*this, WIDX_CONSTRUCT_DRAG_AREA, Tool::pathDown);
             gInputFlags.set(InputFlag::allowRightMouseRemoval);
-            _footpathErrorOccured = false;
+            _footpathErrorOccurred = false;
             WindowFootpathSetEnabledAndPressedWidgets();
         }
 
@@ -400,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
                     _footpathConstructionMode = PathConstructionMode::onLand;
                     ToolSet(*this, WIDX_CONSTRUCT_ON_LAND, Tool::pathDown);
                     gInputFlags.set(InputFlag::allowRightMouseRemoval);
-                    _footpathErrorOccured = false;
+                    _footpathErrorOccurred = false;
                     WindowFootpathSetEnabledAndPressedWidgets();
                     break;
                 case WIDX_CONSTRUCT_DRAG_AREA:
@@ -424,7 +424,7 @@ namespace OpenRCT2::Ui::Windows
                     _footpathConstructionMode = PathConstructionMode::bridgeOrTunnelPick;
                     ToolSet(*this, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::crosshair);
                     gInputFlags.set(InputFlag::allowRightMouseRemoval);
-                    _footpathErrorOccured = false;
+                    _footpathErrorOccurred = false;
                     WindowFootpathSetEnabledAndPressedWidgets();
                     break;
             }
@@ -496,12 +496,12 @@ namespace OpenRCT2::Ui::Windows
         {
             if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
             {
-                _footpathErrorOccured = false;
+                _footpathErrorOccurred = false;
             }
             else if (widgetIndex == WIDX_CONSTRUCT_DRAG_AREA)
             {
                 WindowFootpathPlacePath();
-                _footpathErrorOccured = false;
+                _footpathErrorOccurred = false;
             }
         }
 
@@ -543,7 +543,7 @@ namespace OpenRCT2::Ui::Windows
                 enableDragAreaMode();
                 // When this tool is aborted, the mouse button is still down.
                 // Set this to prevent a stray piece of path from being placed under the mouse pointer.
-                _footpathErrorOccured = true;
+                _footpathErrorOccurred = true;
             }
         }
 
@@ -1263,7 +1263,7 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowFootpathPlaceDragAreaSetStart(const ScreenCoordsXY& screenCoords)
         {
-            if (_footpathErrorOccured)
+            if (_footpathErrorOccurred)
             {
                 return;
             }
@@ -1287,7 +1287,7 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowFootpathPlaceDragAreaSetEnd(const ScreenCoordsXY& screenCoords)
         {
-            if (_footpathErrorOccured)
+            if (_footpathErrorOccurred)
             {
                 return;
             }
@@ -1336,7 +1336,7 @@ namespace OpenRCT2::Ui::Windows
 
         void WindowFootpathPlacePath()
         {
-            if (_footpathErrorOccured)
+            if (_footpathErrorOccurred)
             {
                 return;
             }
@@ -1351,7 +1351,7 @@ namespace OpenRCT2::Ui::Windows
                     windowManager->ShowError(
                         _provisionalFootpath.lastError.getErrorTitle(), _provisionalFootpath.lastError.getErrorMessage());
                 }
-                _footpathErrorOccured = true;
+                _footpathErrorOccurred = true;
                 return;
             }
 
@@ -1383,7 +1383,7 @@ namespace OpenRCT2::Ui::Windows
             if (anyQueryFailed)
             {
                 Audio::Play3D(Audio::SoundId::error, lastLocation);
-                _footpathErrorOccured = true;
+                _footpathErrorOccurred = true;
 
                 // Show error with accumulated cost for insufficient funds
                 auto* windowMgr = GetWindowManager();
@@ -1403,7 +1403,7 @@ namespace OpenRCT2::Ui::Windows
             if (!getGameState().park.flags.has(ParkFlag::noMoney) && totalCost > getGameState().park.cash)
             {
                 Audio::Play3D(Audio::SoundId::error, lastLocation);
-                _footpathErrorOccured = true;
+                _footpathErrorOccurred = true;
 
                 auto* windowMgr = GetWindowManager();
                 Formatter ft;
@@ -1447,7 +1447,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Play error sound once for the entire failed operation
                 Audio::Play3D(Audio::SoundId::error, lastLocation);
-                _footpathErrorOccured = true;
+                _footpathErrorOccurred = true;
             }
         }
 
@@ -1457,7 +1457,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void WindowFootpathPlacePathAtPoint(const ScreenCoordsXY& screenCoords)
         {
-            if (_footpathErrorOccured)
+            if (_footpathErrorOccurred)
             {
                 return;
             }
@@ -1488,7 +1488,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    _footpathErrorOccured = true;
+                    _footpathErrorOccurred = true;
                 }
             });
             GameActions::Execute(&footpathPlaceAction, getGameState());
