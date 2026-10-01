@@ -348,12 +348,12 @@ namespace OpenRCT2
         Drawing::Colour hatColour;
         RideId favouriteRide;
         uint8_t favouriteRideRating;
-        uint64_t itemFlags;
+        ShopItems itemFlags;
 
         void update();
         void tick128UpdateGuest(uint32_t index);
-        uint64_t getFoodOrDrinkFlags() const;
-        uint64_t getEmptyContainerFlags() const;
+        ShopItems getFoodOrDrinkFlags() const;
+        ShopItems getEmptyContainerFlags() const;
         bool hasDrink() const;
         bool hasFoodOrDrink() const;
         bool hasEmptyContainer() const;
@@ -383,7 +383,7 @@ namespace OpenRCT2
         bool updateQueuePosition(PeepActionType previous_action);
         void removeFromQueue();
 
-        uint64_t getItemFlags() const;
+        ShopItems getItemFlags() const;
         void setItemFlags(uint64_t value);
         void removeAllItems();
         void removeItem(ShopItem item);

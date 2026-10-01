@@ -198,9 +198,7 @@ static void DinghySlideTrackCoveredFlat(
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -237,9 +235,7 @@ static void DinghySlideTrackCovered25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -276,9 +272,7 @@ static void DinghySlideTrackCovered60DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -315,9 +309,7 @@ static void DinghySlideTrackCoveredFlatTo25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -354,9 +346,7 @@ static void DinghySlideTrackCovered25DegUpTo60DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -393,9 +383,7 @@ static void DinghySlideTrackCovered60DegUpTo25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -432,9 +420,7 @@ static void DinghySlideTrackCovered25DegUpToFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -574,17 +560,15 @@ static void DinghySlideTrackCoveredRightQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
-                    direction),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                        PaintSegment::bottom, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                      PaintSegment::bottom, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -592,17 +576,15 @@ static void DinghySlideTrackCoveredRightQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
-                    direction),
+                    { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -610,8 +592,7 @@ static void DinghySlideTrackCoveredRightQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
-                    direction),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left }, direction),
                 0xFFFF, 0);
             break;
     }
@@ -673,8 +654,7 @@ static void DinghySlideTrackCoveredSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
+                    { PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft }, direction),
                 0xFFFF, 0);
             break;
         case 1:
@@ -686,9 +666,8 @@ static void DinghySlideTrackCoveredSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::topRight, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -701,9 +680,8 @@ static void DinghySlideTrackCoveredSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                      PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -715,7 +693,7 @@ static void DinghySlideTrackCoveredSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
+                    { PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -784,8 +762,7 @@ static void DinghySlideTrackCoveredSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
+                    { PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft }, direction),
                 0xFFFF, 0);
             break;
         case 1:
@@ -797,9 +774,8 @@ static void DinghySlideTrackCoveredSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                      PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -812,9 +788,8 @@ static void DinghySlideTrackCoveredSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::topRight, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -826,8 +801,7 @@ static void DinghySlideTrackCoveredSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
-                    direction),
+                    { PaintSegment::left, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft }, direction),
                 0xFFFF, 0);
             break;
     }
@@ -911,20 +885,18 @@ static void DinghySlideTrackCoveredRightQuarterTurn3(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight,
+                                PaintSegment::bottom };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);

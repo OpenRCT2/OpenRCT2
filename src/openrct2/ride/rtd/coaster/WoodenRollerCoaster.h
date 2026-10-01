@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor kWoodenRollerCoasterRTD =
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle),
+    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 7, 27 },
     .BoosterSettings = { 0, 68 },

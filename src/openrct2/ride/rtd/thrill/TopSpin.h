@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kTopSpinRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::beginners, RideMode::intense, RideMode::berserk),
+    .rideModes = { RideMode::beginners, RideMode::intense, RideMode::berserk },
     .DefaultMode = RideMode::beginners,
     .Naming = { STR_RIDE_NAME_TOP_SPIN, STR_RIDE_DESCRIPTION_TOP_SPIN },
     .NameConvention = { RideComponentType::car, RideComponentType::structure, RideComponentType::station },

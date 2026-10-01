@@ -230,7 +230,6 @@ STR_0820    :Lis
 STR_0821    :Gru
 STR_0822    :Nie można otworzyć pliku danych grafiki
 STR_0823    :Plik danych grafiki nie istnieje lub jest niedostępny
-STR_0824    :{BLACK}❌
 STR_0825    :Wybrana nazwa jest już w użyciu
 STR_0826    :Zdefiniowano za dużo nazw
 STR_0827    :Za mało pieniędzy - potrzeba {CURRENCY2DP}
@@ -1158,7 +1157,6 @@ STR_1816    :Wybierz typ informacji wyświetlany na liście gości
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Wszyscy goście
 STR_1819    :{WINDOW_COLOUR_2}Wszyscy goście (pogrupowani)
-STR_1820    :{WINDOW_COLOUR_2}Goście {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Goście którzy myślą {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Goście myślący o {POP16}{STRINGID}
 STR_1823    :Pokaż gości myślących o tej atrakcji
@@ -2448,9 +2446,6 @@ STR_5242    :Już istnieje taka nazwa motywu
 STR_5243    :Użyto nieprawidłowego znaku
 STR_5244    :Motywy
 STR_5245    :Górny pasek narzędzi
-STR_5246    :Dolny pasek narzędzi
-STR_5247    :Dolny pasek narzędzi generatora tras
-STR_5248    :Dolny pasek narzędzi generatora scenariuszy
 STR_5249    :Tytuł przycisku menu
 STR_5250    :Tytuł przycisku wyjścia
 STR_5251    :Tytuł przycisku opcji
@@ -3179,7 +3174,6 @@ STR_6137    :OpenRCT2, darmowe i open-source’owe odtworzenie oraz rozszerzenie
 STR_6138    :OpenRCT2 to wynik pracy wielu autorów, pełną listę można znaleźć wybierając opcję „Współautorzy”. Po więcej informacji odwiedź: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Wszystkie nazwy produktów i firm należą do ich właścicieli. Użycie ich nie oznacza powiązania z nimi ani ich poparcia.
 STR_6140    :Lista zmian…
-STR_6141    :Dolny pasek narzędziowy z RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nazwa toru: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Typ przejażdżki: {BLACK}{STRINGID}
 STR_6144    :Pokaż odrysowane kafelki
@@ -3200,7 +3194,6 @@ STR_6160    :{WINDOW_COLOUR_2}Dostępne pojazdy: {BLACK}{STRING}
 STR_6161    :Przełącz widok siatki
 STR_6162    :Wirująca szalona mysz
 STR_6163    :Wagoniki w kształcie myszy pokonujące ostre zakręty i krótkie zjazdy, wirujące łagodnie w celu zdezorientowania pasażerów
-STR_6164    :{WHITE}❌
 STR_6165    :Synchronizacja pionowa
 STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością odświeżania monitora, zapobiegając rozrywaniu ekranu
 STR_6167    :Zaawansowane

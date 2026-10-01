@@ -26,7 +26,7 @@ constexpr RideTypeDescriptor kFlyingRollerCoasterRTD =
         .trackStyle = TrackStyle::flyingRollerCoaster,
         .supportType = MetalSupportType::tubesInverted,
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::quarterLoopUninvertedUp, TrackGroup::flyingLargeHalfLoopUninvertedUp, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeCurveLarge, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown, TrackGroup::helixUpUnbankedQuarter, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::helixDownBankedQuarter },
-        .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong, TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::stationEnd, TrackGroup::verticalLoop, TrackGroup::poweredLift},
+        .extraTrackGroups = {TrackGroup::booster, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong, TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::stationEnd, TrackGroup::verticalLoop, TrackGroup::poweredLift, TrackGroup::flatToSteepSlope},
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::flyingRollerCoasterInverted,
@@ -37,7 +37,7 @@ constexpr RideTypeDescriptor kFlyingRollerCoasterRTD =
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::startConstructionInverted),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
@@ -112,7 +112,7 @@ constexpr RideTypeDescriptor kFlyingRollerCoasterAltRTD =
     }),
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::startConstructionInverted, RtdFlag::isDummyType),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },

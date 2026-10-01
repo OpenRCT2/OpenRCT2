@@ -10,7 +10,7 @@
 #include "StaffSetColourAction.h"
 
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/Staff.h"
 #include "../../localisation/StringIds.h"
@@ -70,7 +70,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
         return Result();
     }
 } // namespace OpenRCT2::GameActions

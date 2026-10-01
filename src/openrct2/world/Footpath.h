@@ -11,6 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
+#include "../core/FlagHolder.hpp"
 #include "../drawing/Colour.h"
 #include "../drawing/ImageIndexType.h"
 #include "../drawing/ScrollingText.h"
@@ -42,6 +43,14 @@ namespace OpenRCT2
         count
     };
 
+    enum class RailingEntryFlag : uint8_t
+    {
+        hasSupportBaseSprite,
+        drawPathOverSupports, // When elevated
+        noQueueBanner,
+    };
+    using RailingEntryFlags = FlagHolder<uint8_t, RailingEntryFlag>;
+
     struct PathSurfaceDescriptor
     {
         StringId name = kStringIdNone;
@@ -58,7 +67,7 @@ namespace OpenRCT2
         ImageIndex railingsImage{};
         RailingEntrySupportType supportType{};
         Drawing::Colour supportColour = Drawing::kColourNull;
-        uint8_t flags{};
+        RailingEntryFlags flags{};
         uint8_t scrollingMode = kScrollingModeNone;
     };
 
@@ -118,13 +127,6 @@ namespace OpenRCT2
         {
             return baseZ > 0;
         }
-    };
-
-    enum
-    {
-        RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
-        RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS = (1 << 1), // When elevated
-        RAILING_ENTRY_FLAG_NO_QUEUE_BANNER = (1 << 2),
     };
 
     enum

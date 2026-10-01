@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::unknown, STR_CANT_REMOVE_THIS, STR_UNKNOWN_OBJECT_TYPE);
         }
 
-        auto rotatedOffsets = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
+        auto rotatedOffsets = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.rotate(_loc.direction),
                                          sceneryEntry->tiles[_tileIndex].offset.z };
 
         auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedOffsets;
@@ -81,7 +81,7 @@ namespace OpenRCT2::GameActions
         bool calculate_cost = true;
         for (auto& tile : sceneryEntry->tiles)
         {
-            auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
+            auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ tile.offset }.rotate(_loc.direction), tile.offset.z };
 
             auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
@@ -153,14 +153,14 @@ namespace OpenRCT2::GameActions
 
         tileElement->removeBannerEntry();
 
-        auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
+        auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.rotate(_loc.direction),
                                            sceneryEntry->tiles[_tileIndex].offset.z };
 
         auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedFirstTile;
 
         for (auto& tile : sceneryEntry->tiles)
         {
-            auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
+            auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.rotate(_loc.direction), tile.offset.z };
 
             auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 

@@ -528,8 +528,7 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
         case 1:
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
+                PaintUtilRotateSegments({ PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight }, direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -570,9 +569,8 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::topRight, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -614,9 +612,8 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
-                        PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -624,8 +621,7 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
         case 4:
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
+                PaintUtilRotateSegments({ PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight }, direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -666,9 +662,8 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -824,9 +819,8 @@ static void SideFrictionRCTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::topRight, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -872,9 +866,8 @@ static void SideFrictionRCTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                      PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1025,9 +1018,8 @@ static void SideFrictionRCTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                      PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1073,9 +1065,8 @@ static void SideFrictionRCTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::topRight, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1227,8 +1218,7 @@ static void SideFrictionRCTrackLeftQuarterTurn3(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-                    direction),
+                    { PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft }, direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;

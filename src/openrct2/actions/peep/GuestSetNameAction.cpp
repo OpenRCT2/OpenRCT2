@@ -12,7 +12,7 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../localisation/StringIds.h"
 #include "../../windows/Intent.h"
@@ -93,7 +93,7 @@ namespace OpenRCT2::GameActions
         // Easter egg functions are for guests only
         guest->handleEasterEggName();
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
 
         auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
         ContextBroadcastIntent(&intent);

@@ -127,7 +127,7 @@ static void PathAdditionBinsPaint(
         height += 8;
 
     bool binsAreVandalised = pathElement.isBroken();
-    auto highlightPathIssues = (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) != 0;
+    auto highlightPathIssues = session.ViewFlags.has(ViewportFlag::highlightPathIssues);
 
     if (edges & EDGE_NE)
     {
@@ -211,9 +211,9 @@ static void PathAdditionJumpingFountainsPaint(
     PaintAddImageAsParent(session, imageId.WithIndexOffset(4), { 0, 0, height }, { { 8, 6, height + 2 }, { 1, 1, 2 } });
 }
 
-inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathAdditionEntry& pathAdditionEntry, bool isBroken)
+inline bool PathAdditionIsVisible(ViewportFlags viewFlags, const PathAdditionEntry& pathAdditionEntry, bool isBroken)
 {
-    if (!(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (!viewFlags.has(ViewportFlag::highlightPathIssues))
         return true;
 
     if (isBroken)
@@ -278,7 +278,7 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
         if (pathEl.hasAddition() && !(pathEl.isBroken()))
         {
             auto* pathAddEntry = pathEl.getAdditionEntry();
-            if (pathAddEntry != nullptr && pathAddEntry->flags & PATH_ADDITION_FLAG_LAMP)
+            if (pathAddEntry != nullptr && pathAddEntry->flags.has(PathAdditionFlag::lamp))
             {
                 if (!(pathEl.getEdges() & EDGE_NE))
                 {

@@ -13,8 +13,9 @@ BUILDDIR=build_dir
 # Reference OpenRCT2 bug reports: 
 # https://github.com/OpenRCT2/OpenRCT2/issues/16691 (-Wno-stringop-overflow)
 # https://github.com/OpenRCT2/OpenRCT2/issues/17371 (-Wno-maybe-uninitialized -Wno-error=null-dereference)
-export DEB_CFLAGS_MAINT_APPEND   = -Wno-stringop-overflow -Wno-maybe-uninitialized -Wno-error=null-dereference
-export DEB_CXXFLAGS_MAINT_APPEND = -Wno-stringop-overflow -Wno-maybe-uninitialized -Wno-error=null-dereference
+# https://github.com/OpenRCT2/OpenRCT2/issues/24509 (-Wno-error=free-nonheap-object)
+export DEB_CFLAGS_MAINT_APPEND   = -Wno-stringop-overflow -Wno-maybe-uninitialized -Wno-error=null-dereference -Wno-error=free-nonheap-object
+export DEB_CXXFLAGS_MAINT_APPEND = -Wno-stringop-overflow -Wno-maybe-uninitialized -Wno-error=null-dereference -Wno-error=free-nonheap-object
 
 # https://manpages.debian.org/testing/dpkg-dev/dpkg-architecture.1.en.html#Usage_in_debian/rules
 DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)

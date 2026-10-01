@@ -21,12 +21,12 @@ namespace OpenRCT2
         {
         }
 
-        const char* Name() const
+        const char* name() const
         {
             return _name;
         }
 
-        T& Data() const
+        T& data() const
         {
             return _data;
         }
@@ -37,11 +37,11 @@ namespace OpenRCT2
     };
 
     template<typename T>
-    inline DataSerialiserTag<T> CreateDataSerialiserTag(const char* name, T& data)
+    inline DataSerialiserTag<T> createDataSerialiserTag(const char* name, T& data)
     {
         DataSerialiserTag<T> r(name, data);
         return r;
     }
 
-#define DS_TAG(var) CreateDataSerialiserTag(#var, var)
+#define DS_TAG(var) createDataSerialiserTag(#var, var)
 } // namespace OpenRCT2

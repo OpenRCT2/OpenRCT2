@@ -363,7 +363,7 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
-    inline CoordsXY JSToCoordsXY(JSContext* ctx, JSValue obj)
+    inline CoordsXY JStoCoordsXY(JSContext* ctx, JSValue obj)
     {
         return { AsOrDefault(ctx, obj, "x", 0), AsOrDefault(ctx, obj, "y", 0) };
     }
@@ -371,12 +371,12 @@ namespace OpenRCT2::Scripting
     inline CoordsXY JSToCoordXY(JSContext* ctx, JSValue obj, const char* property)
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
-        CoordsXY output = JSToCoordsXY(ctx, val);
+        CoordsXY output = JStoCoordsXY(ctx, val);
         JS_FreeValue(ctx, val);
         return output;
     }
 
-    inline CoordsXYZ JSToCoordsXYZ(JSContext* ctx, JSValue obj)
+    inline CoordsXYZ JStoCoordsXYZ(JSContext* ctx, JSValue obj)
     {
         CoordsXYZ result;
         if (JS_IsObject(obj))
@@ -387,21 +387,21 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            result.SetNull();
+            result.setNull();
         }
         return result;
     }
 
-    inline CoordsXYZD JSToCoordsXYZD(JSContext* ctx, JSValue obj)
+    inline CoordsXYZD JStoCoordsXYZD(JSContext* ctx, JSValue obj)
     {
         CoordsXYZD result;
         if (JS_IsObject(obj))
         {
-            result = CoordsXYZD(JSToCoordsXYZ(ctx, obj), AsOrDefault(ctx, obj, "direction", 0));
+            result = CoordsXYZD(JStoCoordsXYZ(ctx, obj), AsOrDefault(ctx, obj, "direction", 0));
         }
         else
         {
-            result.SetNull();
+            result.setNull();
         }
         return result;
     }
@@ -445,7 +445,7 @@ namespace OpenRCT2::Scripting
 
     inline JSValue ToJSValue(JSContext* ctx, const CoordsXYZ& value)
     {
-        if (value.IsNull())
+        if (value.isNull())
         {
             return JS_NULL;
         }
@@ -459,7 +459,7 @@ namespace OpenRCT2::Scripting
 
     inline JSValue ToJSValue(JSContext* ctx, const CoordsXYZD& value)
     {
-        if (value.IsNull())
+        if (value.isNull())
         {
             return JS_NULL;
         }

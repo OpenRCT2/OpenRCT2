@@ -14,5 +14,21 @@
                 [ 64, 97 ]
             ]
         }
-    }
+    },
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "7 Hole Golf"
+        },
+        {
+            "id": 2,
+            "operation": "set_name",
+            "name": "Rings of Fun"
+        },
+        {
+            "id": [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 22, 23, 24, 25, 26, 27, 28, 29, 30 ],
+            "operation": "clear_name"
+        }
+    ]
 }

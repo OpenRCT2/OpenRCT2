@@ -197,7 +197,7 @@ namespace OpenRCT2::RCT2
             tempStream.WriteValue<uint8_t>(
                 entranceElement.location.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.location.z);
             tempStream.WriteValue<uint8_t>(entranceElement.location.direction | (entranceElement.isExit << 7));
-            auto xy = entranceElement.location.ToCoordsXY();
+            auto xy = entranceElement.location.toCoordsXY();
             tempStream.WriteValue<int16_t>(xy.x);
             tempStream.WriteValue<int16_t>(xy.y);
         }

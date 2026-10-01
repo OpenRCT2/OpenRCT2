@@ -379,7 +379,7 @@ namespace OpenRCT2::GameActions
                         Network::AddPlayerMoneySpent(playerIndex, result.cost);
                     }
 
-                    if (!result.position.IsNull())
+                    if (!result.position.isNull())
                     {
                         Network::SetPlayerLastActionCoord(playerIndex, result.position);
                     }

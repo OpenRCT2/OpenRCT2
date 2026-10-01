@@ -130,7 +130,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep(thisVal);
             if (peep != nullptr)
             {
-                auto pos = JSToCoordsXY(ctx, value);
+                auto pos = JStoCoordsXY(ctx, value);
                 peep->setDestination(pos);
                 peep->invalidate();
             }

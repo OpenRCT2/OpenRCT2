@@ -1,0 +1,10 @@
+{
+    "scenario_name": "Fungus Woods",
+    "sha256": "1552df559cf9fa8cf6959dba5142642eb4c6881c87ee8c6dba888a0839c59090",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "clear_name"
+        }
+    ]
+}

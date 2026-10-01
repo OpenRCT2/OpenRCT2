@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor kFerrisWheelRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::forwardRotation, RideMode::backwardRotation),
+    .rideModes = { RideMode::forwardRotation, RideMode::backwardRotation },
     .DefaultMode = RideMode::forwardRotation,
     .OperatingSettings = { 1, 3 },
     .Naming = { STR_RIDE_NAME_FERRIS_WHEEL, STR_RIDE_DESCRIPTION_FERRIS_WHEEL },

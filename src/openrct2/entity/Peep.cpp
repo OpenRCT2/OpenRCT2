@@ -21,7 +21,7 @@
 #include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../drawing/PickupPeep.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
@@ -37,6 +37,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
 #include "../peep/GuestPathfinding.h"
+#include "../peep/PeepActionFormat.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -667,7 +668,7 @@ namespace OpenRCT2
 
         // Set the coordinate of destination to be exactly
         // in the middle of a tile.
-        CoordsXYZ destination = { location.ToCoordsXY().ToTileCentre(), tileElement->getBaseZ() + 16 };
+        CoordsXYZ destination = { location.toCoordsXY().toTileCentre(), tileElement->getBaseZ() + 16 };
 
         if (!MapIsLocationOwned(destination))
         {
@@ -869,7 +870,7 @@ namespace OpenRCT2
 
         moveTo({ x, y, saved_height });
 
-        nextLoc = { CoordsXY{ x, y }.ToTileStart(), saved_map->getBaseZ() };
+        nextLoc = { CoordsXY{ x, y }.toTileStart(), saved_map->getBaseZ() };
 
         if (saved_map->getType() != TileElementType::path)
         {
@@ -1184,13 +1185,13 @@ namespace OpenRCT2
         {
             if (peep->x == kLocationNull)
                 continue;
-            if (viewport->viewPos.x > peep->spriteData.spriteRect.GetRight())
+            if (viewport->viewPos.x > peep->spriteData.spriteRect.getRight())
                 continue;
-            if (viewport->viewPos.x + viewport->ViewWidth() < peep->spriteData.spriteRect.GetLeft())
+            if (viewport->viewPos.x + viewport->ViewWidth() < peep->spriteData.spriteRect.getLeft())
                 continue;
-            if (viewport->viewPos.y > peep->spriteData.spriteRect.GetBottom())
+            if (viewport->viewPos.y > peep->spriteData.spriteRect.getBottom())
                 continue;
-            if (viewport->viewPos.y + viewport->ViewHeight() < peep->spriteData.spriteRect.GetTop())
+            if (viewport->viewPos.y + viewport->ViewHeight() < peep->spriteData.spriteRect.getTop())
                 continue;
 
             visiblePeeps += peep->state == PeepState::queuing ? 1 : 2;
@@ -1278,47 +1279,31 @@ namespace OpenRCT2
         }
     }
 
-    void Peep::formatActionTo(Formatter& ft) const
+    PeepActionDescription Peep::getActionDescription() const
     {
         switch (state)
         {
             case PeepState::falling:
-                ft.Add<StringId>(action == PeepActionType::drowning ? STR_DROWNING : STR_WALKING);
-                break;
+                if (action == PeepActionType::drowning)
+                    return { PeepActionDescriptionType::drowning };
+
+                return { PeepActionDescriptionType::walking };
             case PeepState::one:
-                ft.Add<StringId>(STR_WALKING);
-                break;
+                return { PeepActionDescriptionType::walking };
             case PeepState::onRide:
             case PeepState::leavingRide:
             case PeepState::enteringRide:
             {
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
+                const auto ride = GetRide(currentRide);
+                if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside))
                 {
-                    ft.Add<StringId>(
-                        ride->getRideTypeDescriptor().flags.has(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
-                    ride->formatNameTo(ft);
+                    return { PeepActionDescriptionType::inRide, currentRide };
                 }
-                else
-                {
-                    ft.Add<StringId>(STR_ON_RIDE).Add<StringId>(kStringIdNone);
-                }
-                break;
+
+                return { PeepActionDescriptionType::onRide, currentRide };
             }
             case PeepState::buying:
-            {
-                ft.Add<StringId>(STR_AT_RIDE);
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ride->formatNameTo(ft);
-                }
-                else
-                {
-                    ft.Add<StringId>(kStringIdNone);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::atShop, currentRide };
             case PeepState::walking:
             case PeepState::usingBin:
             {
@@ -1326,135 +1311,68 @@ namespace OpenRCT2
                 {
                     if (!guest->guestHeadingToRideId.IsNull())
                     {
-                        auto ride = GetRide(guest->guestHeadingToRideId);
-                        if (ride != nullptr)
-                        {
-                            ft.Add<StringId>(STR_HEADING_FOR);
-                            ride->formatNameTo(ft);
-                        }
-                    }
-                    else
-                    {
-                        ft.Add<StringId>(peepFlags.has(PeepFlag::leavingPark) ? STR_LEAVING_PARK : STR_WALKING);
+                        return { PeepActionDescriptionType::headingFor, guest->guestHeadingToRideId };
                     }
                 }
-                break;
+
+                if (peepFlags.has(PeepFlag::leavingPark))
+                    return { PeepActionDescriptionType::leavingPark };
+
+                return { PeepActionDescriptionType::walking };
             }
             case PeepState::queuingFront:
             case PeepState::queuing:
-            {
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ft.Add<StringId>(STR_QUEUING_FOR);
-                    ride->formatNameTo(ft);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::queuingFor, currentRide };
             case PeepState::sitting:
-                ft.Add<StringId>(STR_SITTING);
-                break;
+                return { PeepActionDescriptionType::sitting };
             case PeepState::watching:
                 if (!currentRide.IsNull())
                 {
                     auto ride = GetRide(currentRide);
                     if (ride != nullptr)
                     {
-                        ft.Add<StringId>((standingFlags & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
-                        ride->formatNameTo(ft);
+                        auto baseType = (standingFlags & 0x1) ? PeepActionDescriptionType::watchingRideConstruction
+                                                              : PeepActionDescriptionType::watchingRide;
+                        return { baseType, currentRide };
                     }
                 }
-                else
-                {
-                    ft.Add<StringId>((standingFlags & 0x1) ? STR_WATCHING_NEW_RIDE_BEING_CONSTRUCTED : STR_LOOKING_AT_SCENERY);
-                }
-                break;
+
+                return { (standingFlags & 0x1) ? PeepActionDescriptionType::watchingRideConstructionUnspecific
+                                               : PeepActionDescriptionType::watchingScenery };
             case PeepState::picked:
-                ft.Add<StringId>(STR_SELECT_LOCATION);
-                break;
+                return { PeepActionDescriptionType::pickedUp };
             case PeepState::patrolling:
             case PeepState::enteringPark:
             case PeepState::leavingPark:
-                ft.Add<StringId>(STR_WALKING);
-                break;
+                return { PeepActionDescriptionType::walking };
             case PeepState::mowing:
-                ft.Add<StringId>(STR_MOWING_GRASS);
-                break;
+                return { PeepActionDescriptionType::mowingGrass };
             case PeepState::sweeping:
-                ft.Add<StringId>(STR_SWEEPING_FOOTPATH);
-                break;
+                return { PeepActionDescriptionType::sweepingFootpath };
             case PeepState::watering:
-                ft.Add<StringId>(STR_WATERING_GARDENS);
-                break;
+                return { PeepActionDescriptionType::wateringGardens };
             case PeepState::emptyingBin:
-                ft.Add<StringId>(STR_EMPTYING_LITTER_BIN);
-                break;
+                return { PeepActionDescriptionType::emptyingBin };
             case PeepState::answering:
                 if (subState == 0)
                 {
-                    ft.Add<StringId>(STR_WALKING);
+                    return { PeepActionDescriptionType::walking };
                 }
-                else if (subState == 1)
+                if (subState == 1)
                 {
-                    ft.Add<StringId>(STR_ANSWERING_RADIO_CALL);
+                    return { PeepActionDescriptionType::answeringRadioCall };
                 }
-                else
-                {
-                    ft.Add<StringId>(STR_RESPONDING_TO_RIDE_BREAKDOWN_CALL);
-                    auto ride = GetRide(currentRide);
-                    if (ride != nullptr)
-                    {
-                        ride->formatNameTo(ft);
-                    }
-                    else
-                    {
-                        ft.Add<StringId>(kStringIdNone);
-                    }
-                }
-                break;
+
+                return { PeepActionDescriptionType::respondingToBreakdownCall, currentRide };
             case PeepState::fixing:
-            {
-                ft.Add<StringId>(STR_FIXING_RIDE);
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ride->formatNameTo(ft);
-                }
-                else
-                {
-                    ft.Add<StringId>(kStringIdNone);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::fixingRide, currentRide };
             case PeepState::headingToInspection:
-            {
-                ft.Add<StringId>(STR_HEADING_TO_RIDE_FOR_INSPECTION);
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ride->formatNameTo(ft);
-                }
-                else
-                {
-                    ft.Add<StringId>(kStringIdNone);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::headingToInspectRide, currentRide };
             case PeepState::inspecting:
-            {
-                ft.Add<StringId>(STR_INSPECTING_RIDE);
-                auto ride = GetRide(currentRide);
-                if (ride != nullptr)
-                {
-                    ride->formatNameTo(ft);
-                }
-                else
-                {
-                    ft.Add<StringId>(kStringIdNone);
-                }
-                break;
-            }
+                return { PeepActionDescriptionType::inspectingRide, currentRide };
         }
+
+        return { PeepActionDescriptionType::walking };
     }
 
     static constexpr StringId kStaffNames[] = {
@@ -1569,13 +1487,13 @@ namespace OpenRCT2
             ft.Add<StringId>(peep->peepFlags.has(PeepFlag::tracking) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
             ft.Add<uint32_t>(GetPeepFaceSpriteSmall(guest));
             guest->formatNameTo(ft);
-            guest->formatActionTo(ft);
+            formatPeepActionTo(*peep, ft);
         }
         else
         {
             ft.Add<StringId>(STR_STAFF_MAP_TIP);
             peep->formatNameTo(ft);
-            peep->formatActionTo(ft);
+            formatPeepActionTo(*peep, ft);
         }
 
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
@@ -1612,7 +1530,7 @@ namespace OpenRCT2
     static void PeepReturnToCentreOfTile(Peep* peep)
     {
         peep->peepDirection = DirectionReverse(peep->peepDirection);
-        auto destination = peep->getLocation().ToTileCentre();
+        auto destination = peep->getLocation().toTileCentre();
         peep->setDestination(destination, 5);
     }
 
@@ -1712,10 +1630,10 @@ namespace OpenRCT2
             guest->interactionRideIndex = rideIndex;
 
             auto& station = ride->getStation(stationNum);
-            auto previous_last = station.LastPeepInQueue;
-            station.LastPeepInQueue = guest->id;
+            auto previous_last = station.lastPeepInQueue;
+            station.lastPeepInQueue = guest->id;
             guest->guestNextInQueue = previous_last;
-            station.QueueLength++;
+            station.queueLength++;
 
             guest->currentRide = rideIndex;
             guest->currentRideStation = stationNum;
@@ -1817,12 +1735,12 @@ namespace OpenRCT2
             bool found = false;
             auto entrance = std::find_if(
                 gameState.park.entrances.begin(), gameState.park.entrances.end(),
-                [coords](const auto& e) { return coords.ToTileStart() == e; });
+                [coords](const auto& e) { return coords.toTileStart() == e; });
             if (entrance != gameState.park.entrances.end())
             {
                 int16_t z = entrance->z / 8;
                 entranceDirection = entrance->direction;
-                auto nextLoc = coords.ToTileStart() + CoordsDirectionDelta[entranceDirection];
+                auto nextLoc = coords.toTileStart() + CoordsDirectionDelta[entranceDirection];
 
                 // Make sure there is a path right behind the entrance, otherwise turn around
                 TileElement* nextTileElement = MapGetFirstElementAt(nextLoc);
@@ -1934,7 +1852,7 @@ namespace OpenRCT2
         const auto* pathElement = coords.element->asPath();
         assert(pathElement != nullptr);
 
-        peep->nextLoc = { coords.ToTileStart(), pathElement->getBaseZ() };
+        peep->nextLoc = { coords.toTileStart(), pathElement->getBaseZ() };
         peep->setNextFlags(pathElement->getSlopeDirection(), pathElement->isSloped(), false);
 
         int16_t z = peep->getZOnSlope(coords.x, coords.y);
@@ -2160,10 +2078,10 @@ namespace OpenRCT2
 
                         // Add the peep to the ride queue.
                         auto& station = ride->getStation(stationNum);
-                        auto old_last_peep = station.LastPeepInQueue;
-                        station.LastPeepInQueue = guest->id;
+                        auto old_last_peep = station.lastPeepInQueue;
+                        station.lastPeepInQueue = guest->id;
                         guest->guestNextInQueue = old_last_peep;
-                        station.QueueLength++;
+                        station.queueLength++;
 
                         PeepDecrementNumRiders(guest);
                         guest->currentRide = rideIndex;
@@ -2190,7 +2108,7 @@ namespace OpenRCT2
                         // Force set centre of tile to prevent issues with guests accidentally skipping the queue
                         auto queueTileCentre = CoordsXY{ CoordsXY{ guest->nextLoc }
                                                          + CoordsDirectionDelta[guest->peepDirection] }
-                                                   .ToTileCentre();
+                                                   .toTileCentre();
                         guest->setDestination(queueTileCentre);
 
                         PeepFootpathMoveForward(guest, coords, vandalismPresent);
@@ -2283,7 +2201,7 @@ namespace OpenRCT2
                 guest->spendMoney(cost, ExpenditureType::shopSales);
             }
 
-            auto coordsCentre = coords.ToTileCentre();
+            auto coordsCentre = coords.toTileCentre();
             guest->setDestination(coordsCentre, 3);
             guest->currentRide = rideIndex;
             guest->setState(PeepState::enteringRide);
@@ -2365,7 +2283,7 @@ namespace OpenRCT2
         }
 
         auto newLoc = *loc;
-        CoordsXY truncatedNewLoc = newLoc.ToTileStart();
+        CoordsXY truncatedNewLoc = newLoc.toTileStart();
         if (truncatedNewLoc == CoordsXY{ nextLoc })
         {
             int16_t height = getZOnSlope(newLoc.x, newLoc.y);
@@ -2581,7 +2499,7 @@ namespace OpenRCT2
 
         auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
         ContextBroadcastIntent(&intent);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void IncrementGuestsInPark()
@@ -2686,7 +2604,7 @@ namespace OpenRCT2
     void Peep::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
-        if (stream.IsLoading())
+        if (stream.isLoading())
         {
             name = nullptr;
         }
@@ -2733,7 +2651,7 @@ namespace OpenRCT2
      */
     void Peep::resetPathfindGoal()
     {
-        pathfindGoal.SetNull();
+        pathfindGoal.setNull();
         pathfindGoal.direction = kInvalidDirection;
     }
 } // namespace OpenRCT2

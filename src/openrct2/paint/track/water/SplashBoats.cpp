@@ -801,17 +801,15 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
         case 1:
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
+                PaintUtilRotateSegments({ PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top,
-                        PaintSegment::left, PaintSegment::bottomLeft),
+                    { PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top,
+                      PaintSegment::left, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -819,26 +817,23 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right, PaintSegment::centre,
-                        PaintSegment::top, PaintSegment::bottom, PaintSegment::topLeft, PaintSegment::bottomLeft),
+                    { PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right, PaintSegment::centre,
+                      PaintSegment::top, PaintSegment::bottom, PaintSegment::topLeft, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             break;
         case 4:
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
+                PaintUtilRotateSegments({ PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottomLeft,
-                        PaintSegment::bottom, PaintSegment::left),
+                    { PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottomLeft,
+                      PaintSegment::bottom, PaintSegment::left },
                     direction),
                 0xFFFF, 0);
             break;
@@ -887,17 +882,15 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
         case 1:
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
+                PaintUtilRotateSegments({ PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                        PaintSegment::bottom, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                      PaintSegment::bottom, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -905,26 +898,23 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre,
-                        PaintSegment::left, PaintSegment::right, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre,
+                      PaintSegment::left, PaintSegment::right, PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             break;
         case 4:
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
+                PaintUtilRotateSegments({ PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -1010,9 +1000,8 @@ static void PaintSplashBoatsTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::topRight, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -1028,9 +1017,8 @@ static void PaintSplashBoatsTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                      PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -1120,9 +1108,8 @@ static void PaintSplashBoatsTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
+                    { PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                      PaintSegment::bottomLeft, PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -1138,9 +1125,8 @@ static void PaintSplashBoatsTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::topRight, PaintSegment::bottomLeft),
+                    { PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::topRight, PaintSegment::bottomLeft },
                     direction),
                 0xFFFF, 0);
             break;

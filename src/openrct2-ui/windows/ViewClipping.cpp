@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Viewport.h>
@@ -99,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowBase* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
                     {
-                        mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW;
+                        mainWindow->viewport->flags.flip(ViewportFlag::clipView);
                         mainWindow->invalidate();
                     }
                     this->invalidate();
@@ -128,7 +129,7 @@ namespace OpenRCT2::Ui::Windows
                     _previousClipSelectionB = gClipSelectionB;
                     gClipSelectionA = { 0, 0 };
                     gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
                 case WIDX_CLIP_CLEAR:
                     if (IsActive())
@@ -138,14 +139,14 @@ namespace OpenRCT2::Ui::Windows
                     }
                     gClipSelectionA = { 0, 0 };
                     gClipSelectionB = { kMaximumMapSizeBig - 1, kMaximumMapSizeBig - 1 };
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
                 case WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE:
                 {
                     // Toggle height clipping see-through.
                     if (auto mainWindow = WindowGetMain(); mainWindow != nullptr)
                     {
-                        mainWindow->viewport->flags ^= VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH;
+                        mainWindow->viewport->flags.flip(ViewportFlag::clipViewSeeThrough);
                         mainWindow->invalidate();
                     }
                     invalidate();
@@ -263,7 +264,7 @@ namespace OpenRCT2::Ui::Windows
             gClipSelectionB = gMapSelectPositionB;
             _toolActive = false;
             ToolCancel();
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
         void onPrepareDraw() override
@@ -273,9 +274,9 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                setCheckboxValue(WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+                setCheckboxValue(WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags.has(ViewportFlag::clipView));
                 setCheckboxValue(
-                    WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
+                    WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE, mainWindow->viewport->flags.has(ViewportFlag::clipViewSeeThrough));
             }
 
             setWidgetPressed(WIDX_CLIP_SELECTOR, IsActive());
@@ -375,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
             // Turn on view clipping when the window is opened.
             if (mainWindow != nullptr)
             {
-                mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
+                mainWindow->viewport->flags.set(ViewportFlag::clipView);
                 mainWindow->invalidate();
             }
         }
@@ -387,7 +388,7 @@ namespace OpenRCT2::Ui::Windows
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CLIP_VIEW;
+                mainWindow->viewport->flags.unset(ViewportFlag::clipView);
                 mainWindow->invalidate();
             }
         }

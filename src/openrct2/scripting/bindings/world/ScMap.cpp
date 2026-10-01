@@ -84,7 +84,7 @@ namespace OpenRCT2::Scripting
     {
         JS_UNPACK_INT32(x, ctx, argv[0]);
         JS_UNPACK_INT32(y, ctx, argv[1]);
-        auto coords = TileCoordsXY(x, y).ToCoordsXY();
+        auto coords = TileCoordsXY(x, y).toCoordsXY();
         return gScTile.New(ctx, coords);
     }
 
@@ -200,6 +200,9 @@ namespace OpenRCT2::Scripting
                         case StaffType::security:
                             JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->id));
                             break;
+                        case StaffType::entertainer:
+                            JS_SetPropertyInt64(ctx, result, idx++, ScEntertainer::New(ctx, sprite->id));
+                            break;
                         default:
                             JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
                             break;
@@ -233,7 +236,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_STR(type, ctx, argv[0]);
 
         // Get the tile position
-        const auto pos = JSToCoordsXY(ctx, argv[1]);
+        const auto pos = JStoCoordsXY(ctx, argv[1]);
 
         // Declare an array that will hold the result to return
         JSValue result = JS_NewArray(ctx);
@@ -299,6 +302,9 @@ namespace OpenRCT2::Scripting
                             break;
                         case StaffType::security:
                             JS_SetPropertyInt64(ctx, result, idx++, ScSecurity::New(ctx, sprite->id));
+                            break;
+                        case StaffType::entertainer:
+                            JS_SetPropertyInt64(ctx, result, idx++, ScEntertainer::New(ctx, sprite->id));
                             break;
                         default:
                             JS_SetPropertyInt64(ctx, result, idx++, ScStaff::New(ctx, sprite->id));
@@ -375,7 +381,7 @@ namespace OpenRCT2::Scripting
                 {
                     entity->peep[i] = EntityId::GetNull();
                 }
-                entity->BoatLocation.SetNull();
+                entity->BoatLocation.setNull();
 
                 res = ScVehicle::New(ctx, entity->id);
             }
@@ -442,7 +448,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_OBJECT(pos, ctx, argv[0]);
         JS_UNPACK_UINT32(elementIndex, ctx, argv[1]);
 
-        const auto position = JSToCoordsXY(ctx, pos);
+        const auto position = JStoCoordsXY(ctx, pos);
         return ScTrackIterator::FromElement(ctx, position, elementIndex);
     }
 
@@ -490,11 +496,11 @@ namespace OpenRCT2::Scripting
 
         if (hasElementIndex)
         {
-            const auto position = JSToCoordsXY(ctx, pos);
+            const auto position = JStoCoordsXY(ctx, pos);
             return ScPathNavigator::fromElement(ctx, position, elementIndex, options);
         }
 
-        const auto position = JSToCoordsXYZ(ctx, pos);
+        const auto position = JStoCoordsXYZ(ctx, pos);
         return ScPathNavigator::fromPosition(ctx, position, options);
     }
 
@@ -542,6 +548,8 @@ namespace OpenRCT2::Scripting
                             return ScMechanic::New(ctx, spriteId);
                         case StaffType::security:
                             return ScSecurity::New(ctx, spriteId);
+                        case StaffType::entertainer:
+                            return ScEntertainer::New(ctx, spriteId);
                         default:
                             return ScStaff::New(ctx, spriteId);
                     }

@@ -20,9 +20,10 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.String.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/FilterPaletteIds.h>
+#include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
@@ -280,7 +281,7 @@ void InGameConsole::Update()
                 {
                     _lastMainViewport = mainViewport->viewPos;
 
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                 }
             }
         }

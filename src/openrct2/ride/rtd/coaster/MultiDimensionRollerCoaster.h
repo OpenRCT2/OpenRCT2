@@ -37,7 +37,7 @@ constexpr RideTypeDescriptor kMultiDimensionRollerCoasterRTD =
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasInvertedVariant,
                      RtdFlag::checkGForces, RtdFlag::allowMultipleCircuits, RtdFlag::hasSeatRotation,
                      RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
@@ -111,7 +111,7 @@ constexpr RideTypeDescriptor kMultiDimensionRollerCoasterAltRTD =
     }),
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster |
         RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasSeatRotation, RtdFlag::isDummyType),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .rideModes = { RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },

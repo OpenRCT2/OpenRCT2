@@ -374,7 +374,7 @@ namespace OpenRCT2
         CoordsXYZD entranceExitCoords{};
         gRideEntranceExitPlaceDirection = kInvalidDirection;
         // determine if the mouse is hovering over a station - that's the station to add the entrance to
-        auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::ride));
+        auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItem::ride);
         if (info.interactionType != ViewportInteractionItem::none)
         {
             if (info.Element->getType() == TileElementType::track)
@@ -401,31 +401,31 @@ namespace OpenRCT2
         auto ride = GetRide(gRideEntranceExitPlaceRideIndex);
         if (ride == nullptr)
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
-        auto stationBaseZ = ride->getStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
+        auto stationBaseZ = ride->getStation(gRideEntranceExitPlaceStationIndex).getBaseZ();
 
         auto coordsAtHeight = ScreenGetMapXYWithZ(screenCoords, stationBaseZ);
         if (!coordsAtHeight.has_value())
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
-        entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, kInvalidDirection };
+        entranceExitCoords = { coordsAtHeight->toTileStart(), stationBaseZ, kInvalidDirection };
 
         if (ride->type == kRideTypeNull)
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
-        auto stationStart = ride->getStation(gRideEntranceExitPlaceStationIndex).Start;
-        if (stationStart.IsNull())
+        auto stationStart = ride->getStation(gRideEntranceExitPlaceStationIndex).start;
+        if (stationStart.isNull())
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 

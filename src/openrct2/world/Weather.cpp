@@ -18,7 +18,7 @@
 #include "../audio/AudioChannel.h"
 #include "../config/Config.h"
 #include "../core/EnumUtils.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../drawing/FilterPaletteIds.h"
 #include "../object/ClimateObject.h"
 #include "../object/ObjectManager.h"
@@ -189,7 +189,7 @@ namespace OpenRCT2::Weather
                     {
                         gameState.weatherCurrent.weatherGloom = stepWeatherLevel(
                             gameState.weatherCurrent.weatherGloom, gameState.weatherNext.weatherGloom);
-                        GfxInvalidateScreen();
+                        Drawing::GfxInvalidateScreen();
                     }
                 }
                 else

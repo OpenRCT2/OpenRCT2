@@ -145,13 +145,13 @@ namespace OpenRCT2::Ui::Windows
             CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, kInvalidDirection };
             const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
             parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, kInvalidDirection };
-            if (parkEntranceMapPosition.IsNull())
+            if (parkEntranceMapPosition.isNull())
                 return parkEntranceMapPosition;
 
             auto surfaceElement = MapGetSurfaceElementAt(mapCoords);
             if (surfaceElement == nullptr)
             {
-                parkEntranceMapPosition.SetNull();
+                parkEntranceMapPosition.setNull();
                 return parkEntranceMapPosition;
             }
 
@@ -181,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
 
             gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow, MapSelectFlag::enableConstruct);
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
-            if (parkEntrancePosition.IsNull())
+            if (parkEntrancePosition.isNull())
             {
                 ParkEntranceRemoveGhost();
                 return;
@@ -229,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
             ParkEntranceRemoveGhost();
 
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
-            if (!parkEntrancePosition.IsNull())
+            if (!parkEntrancePosition.isNull())
             {
                 bool isLegacyPath = (gFootpathSelection.legacyPath != kObjectEntryIndexNull);
                 auto pathIndex = isLegacyPath ? gFootpathSelection.legacyPath : gFootpathSelection.normalSurface;

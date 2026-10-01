@@ -2092,7 +2092,7 @@ namespace OpenRCT2::Scripting
             return JS_NULL;
 
         const auto* additionEntry = el->getAdditionEntry();
-        if (additionEntry == nullptr || !(additionEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
+        if (additionEntry == nullptr || !additionEntry->flags.has(PathAdditionFlag::isBin))
             return JS_NULL;
 
         // Each path edge has a 2-bit slot (0 = full, 3 = empty); a bin is only "full" once a
@@ -2272,7 +2272,7 @@ namespace OpenRCT2::Scripting
             if (element->getType() != TileElementType::banner)
             {
                 if (value.empty())
-                    banner->rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
+                    banner->rideIndex = BannerGetClosestRideIndex({ banner->position.toCoordsXY(), 16 });
                 else
                     banner->rideIndex = RideId::GetNull();
 
@@ -2309,19 +2309,25 @@ namespace OpenRCT2::Scripting
         const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
     {
         const auto* const largeEntry = largeScenery->getEntry();
+        if (largeEntry == nullptr)
+            return nullptr;
+
         const auto direction = largeScenery->getDirection();
         const auto sequenceIndex = largeScenery->getSequenceIndex();
         const auto& tiles = largeEntry->tiles;
+        if (sequenceIndex >= tiles.size())
+            return nullptr;
+
         const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
-            CoordsXY{ initialTile.offset }.Rotate(direction),
+            CoordsXY{ initialTile.offset }.rotate(direction),
             initialTile.offset.z,
         };
 
         const auto firstTile = CoordsXYZ{ loc, largeScenery->getBaseZ() } - rotatedFirstTile;
         for (auto& tile : tiles)
         {
-            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(direction), tile.offset.z };
+            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.rotate(direction), tile.offset.z };
 
             const auto currentTile = firstTile + rotatedCurrentTile;
 
@@ -2354,8 +2360,10 @@ namespace OpenRCT2::Scripting
     void ScTileElement::RemoveBannerEntryIfNeeded(TileElement* element, CoordsXY& coords)
     {
         // check if other element still uses the banner entry
-        if (element->getType() == TileElementType::largeScenery
-            && element->asLargeScenery()->getEntry()->scrolling_mode != kScrollingModeNone
+        const auto* largeSceneryEntry = element->getType() == TileElementType::largeScenery
+            ? element->asLargeScenery()->getEntry()
+            : nullptr;
+        if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != kScrollingModeNone
             && GetOtherLargeSceneryElement(coords, element->asLargeScenery()) != nullptr)
             return;
         // remove banner entry (if one exists)

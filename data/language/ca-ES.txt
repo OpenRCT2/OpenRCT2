@@ -230,7 +230,6 @@ STR_0820    :Nov.
 STR_0821    :Des.
 STR_0822    :No s’ha pogut accedir al fitxer de gràfics.
 STR_0823    :Falta o no es pot accedir al fitxer de dades.
-STR_0824    :{BLACK}❌
 STR_0825    :El nom ja està en ús.
 STR_0826    :S’estan usant massa noms.
 STR_0827    :No hi ha prou diners - fan falta {CURRENCY2DP}.
@@ -1159,7 +1158,6 @@ STR_1816    :Seleccioneu el tipus d’informació per a mostrar en la llista de 
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tots els visitants
 STR_1819    :{WINDOW_COLOUR_2}Tots els visitants (resum)
-STR_1820    :{WINDOW_COLOUR_2}Visitants {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Visitants que pensen {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitants pensant en {POP16}{STRINGID}
 STR_1823    :Mostra els pensaments dels visitants sobre aquesta atracció
@@ -2453,9 +2451,6 @@ STR_5242    :Ja existeix un tema amb aquest nom.
 STR_5243    :S’empren caràcters no vàlids.
 STR_5244    :Temes
 STR_5245    :Barra d’eines superior
-STR_5246    :Barra d’eines inferior
-STR_5247    :Barra d’eines de l’editor de vies inferior
-STR_5248    :Barra d’eines de l’editor d’escenaris inferior
 STR_5249    :Botons del menú principal
 STR_5250    :Botó del títol de sortida
 STR_5251    :Botó del títol d’opcions
@@ -3184,7 +3179,6 @@ STR_6137    :OpenRCT2, una recreació lliure i de codi obert d’una expansió d
 STR_6138    :L’OpenRCT2 és obra de molts autors. En trobareu una llista completa amb el botó «Col·laboradors». Per a més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tots els noms de productes i de noms de companyies pertanyen als seus propietaris. L’ús d’aquests noms no n’implica cap tipus d’afiliació o promoció.
 STR_6140    :Registre de canvis…
-STR_6141    :Barra d’eines inferior del RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nom de la via: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipus d’atracció: {BLACK}{STRINGID}
 STR_6144    :Mostra el redibuixat
@@ -3205,7 +3199,6 @@ STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori
 STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument que desorienten els passatgers.
-STR_6164    :{WHITE}❌
 STR_6165    :Sincronització vertical
 STR_6166    :Sincronitza cada fotograma amb la freqüència del monitor, evitant l’efecte de pantalla partida.
 STR_6167    :Avançat

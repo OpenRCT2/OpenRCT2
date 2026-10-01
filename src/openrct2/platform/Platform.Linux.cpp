@@ -383,6 +383,13 @@ namespace OpenRCT2::Platform
             {
                 ret.roots.emplace_back(snapLocalShareSteamPath);
             }
+
+            // The Flatpak build of Steam keeps its data in the app's sandboxed home directory.
+            auto flatpakSteamPath = Path::Combine(homeDir, u8".var/app/com.valvesoftware.Steam/.local/share/Steam");
+            if (Path::DirectoryExists(flatpakSteamPath))
+            {
+                ret.roots.emplace_back(flatpakSteamPath);
+            }
         }
 
         return ret;

@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
             // Move to tool bottom left
             mapTile->x -= (tool_size - 1) * 16;
             mapTile->y -= (tool_size - 1) * 16;
-            mapTile = mapTile->ToTileStart();
+            mapTile = mapTile->toTileStart();
 
             if (gMapSelectPositionA.x != mapTile->x)
             {

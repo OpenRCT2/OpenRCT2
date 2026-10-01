@@ -91,12 +91,12 @@ namespace OpenRCT2
             SupportType = ParseSupportType(Json::GetString(properties["supportType"]));
             ScrollingMode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
             Colour = Drawing::colourFromString(Json::GetString(properties["colour"]), Drawing::kColourNull);
-            Flags = Json::GetFlags<uint8_t>(
+            Flags = Json::GetFlagHolder<RailingEntryFlags, RailingEntryFlag>(
                 properties,
                 {
-                    { "hasSupportImages", RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
-                    { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
-                    { "noQueueBanner", RAILING_ENTRY_FLAG_NO_QUEUE_BANNER },
+                    { "hasSupportImages", RailingEntryFlag::hasSupportBaseSprite },
+                    { "hasElevatedPathImages", RailingEntryFlag::drawPathOverSupports },
+                    { "noQueueBanner", RailingEntryFlag::noQueueBanner },
                 });
         }
 

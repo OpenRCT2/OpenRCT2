@@ -21,7 +21,7 @@ namespace OpenRCT2
     void PathAdditionObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         stream->Seek(6, STREAM_SEEK_CURRENT);
-        _legacyType.flags = stream->ReadValue<uint16_t>();
+        _legacyType.flags = stream->ReadValue<PathAdditionFlags>();
         _legacyType.draw_type = static_cast<PathAdditionDrawType>(stream->ReadValue<uint8_t>());
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
         _legacyType.price = stream->ReadValue<money16>();
@@ -103,18 +103,18 @@ namespace OpenRCT2
             SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
 
             // clang-format off
-        _legacyType.flags = Json::GetFlags<uint16_t>(
+        _legacyType.flags = Json::GetFlagHolder<PathAdditionFlags, PathAdditionFlag>(
             properties,
             {
-                { "isBin",                  PATH_ADDITION_FLAG_IS_BIN,                   Json::FlagType::normal },
-                { "isBench",                PATH_ADDITION_FLAG_IS_BENCH,                 Json::FlagType::normal },
-                { "isBreakable",            PATH_ADDITION_FLAG_BREAKABLE,                Json::FlagType::normal },
-                { "isLamp",                 PATH_ADDITION_FLAG_LAMP,                     Json::FlagType::normal },
-                { "isJumpingFountainWater", PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER,   Json::FlagType::normal },
-                { "isJumpingFountainSnow",  PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW,    Json::FlagType::normal },
-                { "isAllowedOnQueue",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE,      Json::FlagType::inverted },
-                { "isAllowedOnSlope",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE,      Json::FlagType::inverted },
-                { "isTelevision",           PATH_ADDITION_FLAG_IS_QUEUE_SCREEN,          Json::FlagType::normal },
+                { "isBin",                  PathAdditionFlag::isBin,                   Json::FlagType::normal },
+                { "isBench",                PathAdditionFlag::isBench,                 Json::FlagType::normal },
+                { "isBreakable",            PathAdditionFlag::breakable,                Json::FlagType::normal },
+                { "isLamp",                 PathAdditionFlag::lamp,                     Json::FlagType::normal },
+                { "isJumpingFountainWater", PathAdditionFlag::jumpingFountainWater,   Json::FlagType::normal },
+                { "isJumpingFountainSnow",  PathAdditionFlag::jumpingFountainSnow,    Json::FlagType::normal },
+                { "isAllowedOnQueue",       PathAdditionFlag::dontAllowOnQueue,      Json::FlagType::inverted },
+                { "isAllowedOnSlope",       PathAdditionFlag::dontAllowOnSlope,      Json::FlagType::inverted },
+                { "isTelevision",           PathAdditionFlag::isQueueScreen,          Json::FlagType::normal },
             });
             // clang-format on
         }

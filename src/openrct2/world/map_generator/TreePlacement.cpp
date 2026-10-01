@@ -69,7 +69,7 @@ namespace OpenRCT2::World::MapGenerator
             return;
         }
 
-        int32_t surfaceZ = TileElementHeight(loc.ToTileCentre());
+        int32_t surfaceZ = TileElementHeight(loc.toTileCentre());
 
         auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
         Guard::Assert(sceneryElement != nullptr);

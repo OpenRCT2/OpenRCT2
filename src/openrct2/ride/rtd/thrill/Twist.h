@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor kTwistRTD =
                      RtdFlag::vehicleIsIntegral, RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide,
                      RtdFlag::hasVehicleColours, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::singleSession, RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::rotation),
+    .rideModes = { RideMode::rotation },
     .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 3, 6, 3 },
     .Naming = { STR_RIDE_NAME_TWIST, STR_RIDE_DESCRIPTION_TWIST },

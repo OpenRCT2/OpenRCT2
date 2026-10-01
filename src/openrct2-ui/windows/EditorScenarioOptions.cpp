@@ -493,7 +493,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES)
             {
-                return RidesOnScrollGetSize(scrollIndex);
+                return RidesOnScrollGetSize();
             }
 
             return {};
@@ -2219,10 +2219,10 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006724BF
          */
-        ScreenSize RidesOnScrollGetSize(int32_t scrollIndex)
+        ScreenSize RidesOnScrollGetSize()
         {
-            ScreenSize newSize;
-            newSize.height = static_cast<int32_t>(_rideableRides.size()) * 10;
+            ScreenSize newSize{};
+            newSize.height = static_cast<int32_t>(_rideableRides.size()) * kScrollableRowHeight;
 
             return newSize;
         }
@@ -2296,9 +2296,9 @@ namespace OpenRCT2::Ui::Windows
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
             {
-                int32_t y = i * 12;
+                int32_t y = i * kScrollableRowHeight;
 
-                if (y + 12 < rt.y || y >= rt.y + rt.height)
+                if (y + kScrollableRowHeight < rt.y || y >= rt.y + rt.height)
                     continue;
 
                 // Checkbox

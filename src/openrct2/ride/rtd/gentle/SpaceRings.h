@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor kSpaceRingsRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::spaceRings),
+    .rideModes = { RideMode::spaceRings },
     .DefaultMode = RideMode::spaceRings,
     .Naming = { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS },
     .NameConvention = { RideComponentType::ring, RideComponentType::structure, RideComponentType::station },

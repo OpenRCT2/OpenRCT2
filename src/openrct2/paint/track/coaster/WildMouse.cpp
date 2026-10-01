@@ -538,20 +538,18 @@ static void WildMouseTrackRightQuarterTurn3(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft);
+            blockedSegments = { PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft,
+                                PaintSegment::bottomRight };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -602,16 +600,14 @@ static void WildMouseTrackRightQuarterTurn325DegDown(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft);
+            blockedSegments = { PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -683,16 +679,14 @@ static void WildMouseTrackRightQuarterTurn325DegUp(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft);
+            blockedSegments = { PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -751,7 +745,7 @@ static void WildMouseTrackLeftQuarterTurn1(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft), direction),
+            { PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }

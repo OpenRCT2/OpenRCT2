@@ -91,7 +91,8 @@ namespace OpenRCT2
                         const auto* surfaceObject = surfaceElement->getSurfaceObject();
                         if (surfaceObject != nullptr)
                         {
-                            surfaceColour = paletteIndex = surfaceObject->MapColours[_tileColourIndex];
+                            auto mapColours = surfaceObject->getMapColours(surfaceElement->getPrimarySurfaceColour());
+                            surfaceColour = paletteIndex = mapColours[_tileColourIndex];
                         }
                     }
 
@@ -215,7 +216,7 @@ namespace OpenRCT2
         Viewport saveVp{
             .width = image.width,
             .height = image.height,
-            .flags = 0,
+            .flags = {},
             .zoom = ZoomLevel{ 1 },
             .rotation = mapPosXYZD.direction,
         };

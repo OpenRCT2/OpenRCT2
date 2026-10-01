@@ -231,7 +231,6 @@ STR_0820    :nov
 STR_0821    :dec
 STR_0822    :Kan inte komma åt grafikfilen
 STR_0823    :Saknad eller otillgänglig datafil
-STR_0824    :{BLACK}❌
 STR_0825    :Det valda namnet används redan
 STR_0826    :För många namn är definierade
 STR_0827    :Inte tillräckligt med pengar – {CURRENCY2DP} behövs
@@ -1159,7 +1158,6 @@ STR_1816    :Välj informationstyp som ska visas i besökarlistan
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alla besökare
 STR_1819    :{WINDOW_COLOUR_2}Alla besökare (sammanfattat)
-STR_1820    :{WINDOW_COLOUR_2}Besökare {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Besökare som tänker {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Besökare som tänker på {POP16}{STRINGID}
 STR_1823    :Visa besökares tankar om den här åkturen eller attraktionen
@@ -2453,9 +2451,6 @@ STR_5242    :Temats namn finns redan
 STR_5243    :Ogiltiga tecken använda
 STR_5244    :Teman
 STR_5245    :Toppens verktygsfält
-STR_5246    :Bottens verktygsfält
-STR_5247    :Spårredigerarens verktygsfält
-STR_5248    :Dekorationsredigerarens verktygsfält
 STR_5249    :Titelmenyns knappar
 STR_5250    :Titelradens avsluta-knapp
 STR_5251    :Titelradens inställningsknapp
@@ -3184,7 +3179,6 @@ STR_6137    :OpenRCT2, en gratis klon av Roller Coaster Tycoon 2 med öppen käl
 STR_6138    :OpenRCT2 är ett samarbete med flera deltagare, en lista med alla deltagare kan hittas i ”contributors.md”. För mer information, besök http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alla produkter och företagsnamn tillhör deras respektive innehavare och ägare. Användningen av dem är ingen anknytning eller bekräftelse från respektive innehavare.
 STR_6140    :Ändringslogg…
-STR_6141    :RCT1s nedre verktygsfält
 STR_6142    :{WINDOW_COLOUR_2}Namn: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID}
 STR_6144    :Visa visuella uppdateringar
@@ -3205,7 +3199,6 @@ STR_6160    :{WINDOW_COLOUR_2}Tillgängliga fordon: {BLACK}{STRING}
 STR_6161    :Växla rutmönster på terräng
 STR_6162    :Snurrande vildmus
 STR_6163    :Musformade vagnar susar förbi snäva kurvor och korta stup medan vagnen försiktigt snurrar för att desorientera passagerarna
-STR_6164    :{WHITE}❌
 STR_6165    :Använd vertikal synk
 STR_6166    :Synkroniserar varje bild som ritas med skärmens uppdateringshastighet, vilket förhindrar så kallad ’screen tearing’.
 STR_6167    :Avancerat

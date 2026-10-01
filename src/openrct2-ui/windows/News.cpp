@@ -501,7 +501,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<const char*>(newsItem.text.c_str());
                     drawTextWrapped(
-                        rt, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
+                        rt, { 2, y + lineHeight }, 325, STR_NEWS_ITEM_TEXT, ft,
                         { Drawing::Colour::brightGreen, FontStyle::small });
                 }
                 // Subject button

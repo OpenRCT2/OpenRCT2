@@ -13,6 +13,7 @@
 
 #include <functional>
 #include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/interface/Chat.h>
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -30,8 +31,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/interface/Chat.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/WidgetIndexGlobals.h>
@@ -66,14 +66,14 @@ static void RotateCamera(int32_t direction)
     }
 }
 
-static void ToggleViewFlag(int32_t viewportFlag)
+static void ToggleViewFlag(ViewportFlag viewportFlag)
 {
     if (gLegacyScene != LegacyScene::titleSequence)
     {
         auto window = WindowGetMain();
         if (window != nullptr)
         {
-            window->viewport->flags ^= viewportFlag;
+            window->viewport->flags.flip(viewportFlag);
             window->invalidate();
         }
     }
@@ -170,14 +170,15 @@ static void ShortcutRemoveTopBottomToolbarToggle()
         {
             windowMgr->CloseByClass(WindowClass::dropdown);
             windowMgr->CloseByClass(WindowClass::topToolbar);
-            windowMgr->CloseByClass(WindowClass::bottomToolbar);
+            windowMgr->CloseByClass(WindowClass::gameStatusBar);
+            windowMgr->CloseByClass(WindowClass::newsTicker);
             windowMgr->CloseByClass(WindowClass::parkInfoPanel);
             windowMgr->CloseByClass(WindowClass::dateInfoPanel);
         }
         else if (gLegacyScene == LegacyScene::playing)
         {
             ContextOpenWindow(WindowClass::topToolbar);
-            ContextOpenWindow(WindowClass::bottomToolbar);
+            ContextOpenWindow(WindowClass::gameStatusBar);
             ContextOpenWindow(WindowClass::parkInfoPanel);
             ContextOpenWindow(WindowClass::dateInfoPanel);
         }
@@ -189,7 +190,7 @@ static void ShortcutRemoveTopBottomToolbarToggle()
             ContextOpenWindow(WindowClass::editorStepController); // next step
         }
     }
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 }
 
 static void ShortcutAdjustLand()
@@ -459,7 +460,7 @@ static void ShortcutScaleUp()
 {
     Config::Get().general.windowScale += 0.25f;
     Config::Save();
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
 }
@@ -469,7 +470,7 @@ static void ShortcutScaleDown()
     Config::Get().general.windowScale -= 0.25f;
     Config::Get().general.windowScale = std::max(0.5f, Config::Get().general.windowScale);
     Config::Save();
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
     ContextTriggerResize();
     ContextUpdateCursorScale();
 }
@@ -523,7 +524,7 @@ static void ShortcutToggleWallSlope()
 
     extern TileCoordsXY windowTileInspectorTile;
     auto modifyTile = GameActions::TileModifyAction(
-        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
+        windowTileInspectorTile.toCoordsXY(), GameActions::TileModifyType::wallSetSlope, windowTileInspectorSelectedIndex,
         newSlopeValue);
     GameActions::Execute(&modifyTile, getGameState());
 }
@@ -739,7 +740,7 @@ static void ShortcutToggleTransparentWater()
 
     Config::Get().general.transparentWater ^= 1;
     Config::Save();
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 }
 
 #pragma endregion
@@ -805,7 +806,7 @@ void ShortcutManager::registerDefaultShortcuts()
             ChatToggle();
         }
     });
-    registerShortcut(ShortcutId::kInterfaceScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", ToggleWindowedMode);
+    registerShortcut(ShortcutId::kInterfaceScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", Drawing::ToggleWindowedMode);
     registerShortcut(ShortcutId::kInterfaceScaleIncrease, STR_SHORTCUT_SCALE_UP, ShortcutScaleUp);
     registerShortcut(ShortcutId::kInterfaceScaleDecrease, STR_SHORTCUT_SCALE_DOWN, ShortcutScaleDown);
     registerShortcut(ShortcutId::kInterfaceOpenLand, STR_SHORTCUT_ADJUST_LAND, "F1", ShortcutAdjustLand);
@@ -848,24 +849,24 @@ void ShortcutManager::registerDefaultShortcuts()
     registerShortcut(ShortcutId::kViewScrollLeft, STR_SHORTCUT_SCROLL_MAP_LEFT, "LEFT", []() {});
     registerShortcut(ShortcutId::kViewScrollRight, STR_SHORTCUT_SCROLL_MAP_RIGHT, "RIGHT", []() {});
     registerShortcut(ShortcutId::kViewScrollDown, STR_SHORTCUT_SCROLL_MAP_DOWN, "DOWN", []() {});
-    registerShortcut(ShortcutId::kViewToggleUnderground, STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE, "1", std::bind(ToggleViewFlag, VIEWPORT_FLAG_UNDERGROUND_INSIDE));
+    registerShortcut(ShortcutId::kViewToggleUnderground, STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE, "1", std::bind(ToggleViewFlag, ViewportFlag::undergroundInside));
     registerShortcut(ShortcutId::kViewToggleTransparentWater, STR_VIEWPORT_TRANSPARENT_WATER, "2", ShortcutToggleTransparentWater);
-    registerShortcut(ShortcutId::kViewToggleBaseLand, STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE, "H", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_BASE));
-    registerShortcut(ShortcutId::kViewToggleVerticalLand, STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE, "V", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VERTICAL));
-    registerShortcut(ShortcutId::kViewToggleRides, STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE, "3", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_RIDES));
-    registerShortcut(ShortcutId::kViewToggleVehicles, STR_SHORTCUT_SEE_THROUGH_VEHICLES_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VEHICLES));
-    registerShortcut(ShortcutId::kViewToggleVegetation, STR_SHORTCUT_SEE_THROUGH_VEGETATION_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_VEGETATION));
-    registerShortcut(ShortcutId::kViewToggleScenery, STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE, "4", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_SCENERY));
-    registerShortcut(ShortcutId::kViewToggleFootpaths, STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_PATHS));
-    registerShortcut(ShortcutId::kViewToggleSupports, STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE, "5", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_SUPPORTS));
-    registerShortcut(ShortcutId::kViewToggleGuests, STR_SHORTCUT_SEE_THROUGH_GUESTS_TOGGLE, "6", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_GUESTS));
-    registerShortcut(ShortcutId::kViewToggleStaff, STR_SHORTCUT_SEE_THROUGH_STAFF_TOGGLE, std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIDE_STAFF));
-    registerShortcut(ShortcutId::kViewToggleLandHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE, "8", std::bind(ToggleViewFlag, VIEWPORT_FLAG_LAND_HEIGHTS));
-    registerShortcut(ShortcutId::kViewToggleTrackHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE, "9", std::bind(ToggleViewFlag, VIEWPORT_FLAG_TRACK_HEIGHTS));
-    registerShortcut(ShortcutId::kViewToggleFootpathHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE, "0", std::bind(ToggleViewFlag, VIEWPORT_FLAG_PATH_HEIGHTS));
-    registerShortcut(ShortcutId::kViewToggleGridlines, STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", std::bind(ToggleViewFlag, VIEWPORT_FLAG_GRIDLINES));
+    registerShortcut(ShortcutId::kViewToggleBaseLand, STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE, "H", std::bind(ToggleViewFlag, ViewportFlag::hideBase));
+    registerShortcut(ShortcutId::kViewToggleVerticalLand, STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE, "V", std::bind(ToggleViewFlag, ViewportFlag::hideVertical));
+    registerShortcut(ShortcutId::kViewToggleRides, STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE, "3", std::bind(ToggleViewFlag, ViewportFlag::hideRides));
+    registerShortcut(ShortcutId::kViewToggleVehicles, STR_SHORTCUT_SEE_THROUGH_VEHICLES_TOGGLE, std::bind(ToggleViewFlag, ViewportFlag::hideVehicles));
+    registerShortcut(ShortcutId::kViewToggleVegetation, STR_SHORTCUT_SEE_THROUGH_VEGETATION_TOGGLE, std::bind(ToggleViewFlag, ViewportFlag::hideVegetation));
+    registerShortcut(ShortcutId::kViewToggleScenery, STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE, "4", std::bind(ToggleViewFlag, ViewportFlag::hideScenery));
+    registerShortcut(ShortcutId::kViewToggleFootpaths, STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE, std::bind(ToggleViewFlag, ViewportFlag::hidePaths));
+    registerShortcut(ShortcutId::kViewToggleSupports, STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE, "5", std::bind(ToggleViewFlag, ViewportFlag::hideSupports));
+    registerShortcut(ShortcutId::kViewToggleGuests, STR_SHORTCUT_SEE_THROUGH_GUESTS_TOGGLE, "6", std::bind(ToggleViewFlag, ViewportFlag::hideGuests));
+    registerShortcut(ShortcutId::kViewToggleStaff, STR_SHORTCUT_SEE_THROUGH_STAFF_TOGGLE, std::bind(ToggleViewFlag, ViewportFlag::hideStaff));
+    registerShortcut(ShortcutId::kViewToggleLandHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE, "8", std::bind(ToggleViewFlag, ViewportFlag::landHeights));
+    registerShortcut(ShortcutId::kViewToggleTrackHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE, "9", std::bind(ToggleViewFlag, ViewportFlag::trackHeights));
+    registerShortcut(ShortcutId::kViewToggleFootpathHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE, "0", std::bind(ToggleViewFlag, ViewportFlag::pathHeights));
+    registerShortcut(ShortcutId::kViewToggleGridlines, STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", std::bind(ToggleViewFlag, ViewportFlag::gridlines));
     registerShortcut(ShortcutId::kViewToggleCutAway, STR_SHORTCUT_VIEW_CLIPPING, std::bind(OpenWindow, WindowClass::viewClipping));
-    registerShortcut(ShortcutId::kViewToggleFootpathIssues, STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE, "I", std::bind(ToggleViewFlag, VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES));
+    registerShortcut(ShortcutId::kViewToggleFootpathIssues, STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE, "I", std::bind(ToggleViewFlag, ViewportFlag::highlightPathIssues));
 
     // Window
     registerShortcut(ShortcutId::kWindowRideConstructionTurnLeft, STR_SHORTCUT_CONSTRUCTION_TURN_LEFT, "NUMPAD 4", ShortcutConstructionTurnLeft);

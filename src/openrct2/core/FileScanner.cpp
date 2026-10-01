@@ -39,25 +39,25 @@ enum class DirectoryChildType
 
 struct DirectoryChild
 {
-    DirectoryChildType Type;
-    std::string Name;
+    DirectoryChildType type;
+    std::string name;
 
     // Files only
-    uint64_t Size = 0;
-    uint64_t LastModified = 0;
+    uint64_t size = 0;
+    uint64_t lastModified = 0;
 };
 
-static uint32_t GetPathChecksum(u8string_view path);
-static bool MatchWildcard(const utf8* fileName, const utf8* pattern);
+static uint32_t getPathChecksum(u8string_view path);
+static bool matchWildcard(const utf8* fileName, const utf8* pattern);
 
 class FileScannerBase : public IFileScanner
 {
 private:
     struct DirectoryState
     {
-        u8string Path;
-        std::vector<DirectoryChild> Listing;
-        int32_t Index = 0;
+        u8string path;
+        std::vector<DirectoryChild> listing;
+        int32_t index = 0;
     };
 
     // Options
@@ -76,69 +76,69 @@ private:
 public:
     FileScannerBase(u8string_view pattern, bool recurse)
         : _rootPath(Path::GetDirectory(pattern))
-        , _patterns(GetPatterns(Path::GetFileName(pattern)))
+        , _patterns(getPatterns(Path::GetFileName(pattern)))
         , _recurse(recurse)
     {
     }
 
     ~FileScannerBase() override = default;
 
-    const FileScanner::FileInfo& GetFileInfo() const override
+    const FileScanner::FileInfo& getFileInfo() const override
     {
         return _currentFileInfo;
     }
 
-    const u8string& GetPath() const override
+    const u8string& getPath() const override
     {
         return _currentPath;
     }
 
-    u8string GetPathRelative() const override
+    u8string getPathRelative() const override
     {
         return Path::GetRelative(_currentPath, _rootPath);
     }
 
-    void Reset() override
+    void reset() override
     {
         _started = false;
         _directoryStack = {};
         _currentPath.clear();
     }
 
-    bool Next() override
+    bool next() override
     {
         if (!_started)
         {
             _started = true;
-            PushState(_rootPath);
+            pushState(_rootPath);
         }
 
         while (!_directoryStack.empty())
         {
             DirectoryState* state = &_directoryStack.top();
-            state->Index++;
-            if (state->Index >= static_cast<int32_t>(state->Listing.size()))
+            state->index++;
+            if (state->index >= static_cast<int32_t>(state->listing.size()))
             {
                 _directoryStack.pop();
             }
             else
             {
-                const DirectoryChild* child = &state->Listing[state->Index];
-                if (child->Type == DirectoryChildType::directory)
+                const DirectoryChild* child = &state->listing[state->index];
+                if (child->type == DirectoryChildType::directory)
                 {
                     if (_recurse)
                     {
-                        auto childPath = Path::Combine(state->Path, child->Name);
-                        PushState(childPath);
+                        auto childPath = Path::Combine(state->path, child->name);
+                        pushState(childPath);
                     }
                 }
-                else if (PatternMatch(child->Name))
+                else if (patternMatch(child->name))
                 {
-                    _currentPath = Path::Combine(state->Path, child->Name);
+                    _currentPath = Path::Combine(state->path, child->name);
 
-                    _currentFileInfo.Name = child->Name;
-                    _currentFileInfo.Size = child->Size;
-                    _currentFileInfo.LastModified = child->LastModified;
+                    _currentFileInfo.name = child->name;
+                    _currentFileInfo.size = child->size;
+                    _currentFileInfo.lastModified = child->lastModified;
                     return true;
                 }
             }
@@ -146,23 +146,23 @@ public:
         return false;
     }
 
-    virtual void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) = 0;
+    virtual void getDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) = 0;
 
 private:
-    void PushState(const std::string& directory)
+    void pushState(const std::string& directory)
     {
         DirectoryState newState;
-        newState.Path = directory;
-        newState.Index = -1;
-        GetDirectoryChildren(newState.Listing, directory);
+        newState.path = directory;
+        newState.index = -1;
+        getDirectoryChildren(newState.listing, directory);
         _directoryStack.push(newState);
     }
 
-    bool PatternMatch(const std::string& fileName)
+    bool patternMatch(const std::string& fileName)
     {
         for (const auto& pattern : _patterns)
         {
-            if (MatchWildcard(fileName.c_str(), pattern.c_str()))
+            if (matchWildcard(fileName.c_str(), pattern.c_str()))
             {
                 return true;
             }
@@ -170,7 +170,7 @@ private:
         return false;
     }
 
-    static std::vector<std::string> GetPatterns(const std::string& delimitedPatterns)
+    static std::vector<std::string> getPatterns(const std::string& delimitedPatterns)
     {
         std::vector<std::string> patterns;
 
@@ -207,7 +207,7 @@ public:
     {
     }
 
-    void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
+    void getDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
     {
         auto pattern = path + "\\*";
         auto wPattern = String::toWideChar(pattern.c_str());
@@ -220,7 +220,7 @@ public:
             {
                 if (lstrcmpW(findData.cFileName, L".") != 0 && lstrcmpW(findData.cFileName, L"..") != 0)
                 {
-                    children.push_back(CreateChild(&findData));
+                    children.push_back(createChild(&findData));
                 }
             } while (FindNextFileW(hFile, &findData));
             FindClose(hFile);
@@ -228,20 +228,20 @@ public:
     }
 
 private:
-    static DirectoryChild CreateChild(const WIN32_FIND_DATAW* child)
+    static DirectoryChild createChild(const WIN32_FIND_DATAW* child)
     {
         DirectoryChild result;
 
-        result.Name = String::toUtf8(child->cFileName);
+        result.name = String::toUtf8(child->cFileName);
         if (child->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
         {
-            result.Type = DirectoryChildType::directory;
+            result.type = DirectoryChildType::directory;
         }
         else
         {
-            result.Type = DirectoryChildType::file;
-            result.Size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32uLL) | static_cast<uint64_t>(child->nFileSizeLow);
-            result.LastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32uLL)
+            result.type = DirectoryChildType::file;
+            result.size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32uLL) | static_cast<uint64_t>(child->nFileSizeLow);
+            result.lastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32uLL)
                 | static_cast<uint64_t>(child->ftLastWriteTime.dwLowDateTime);
         }
         return result;
@@ -260,7 +260,7 @@ public:
     {
     }
 
-    void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
+    void getDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
     {
         const auto& assetList = Platform::GetAssetList();
         std::string prefix = path.substr(Platform::kAndroidAssetPathPrefix.length());
@@ -283,8 +283,8 @@ public:
                     if (seen.insert(dirName).second)
                     {
                         DirectoryChild child;
-                        child.Name = dirName;
-                        child.Type = DirectoryChildType::directory;
+                        child.name = dirName;
+                        child.type = DirectoryChildType::directory;
                         children.push_back(child);
                     }
                 }
@@ -294,9 +294,9 @@ public:
                     if (seen.insert(fileName).second)
                     {
                         DirectoryChild child;
-                        child.Name = fileName;
-                        child.Type = DirectoryChildType::file;
-                        child.Size = entry.size;
+                        child.name = fileName;
+                        child.type = DirectoryChildType::file;
+                        child.size = entry.size;
 
                         children.push_back(child);
                     }
@@ -317,10 +317,10 @@ public:
     {
     }
 
-    void GetDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
+    void getDirectoryChildren(std::vector<DirectoryChild>& children, const std::string& path) override
     {
         struct dirent** namelist;
-        int32_t count = scandir(path.c_str(), &namelist, FilterFunc, alphasort);
+        int32_t count = scandir(path.c_str(), &namelist, filterFunc, alphasort);
         if (count > 0)
         {
             for (int32_t i = 0; i < count; i++)
@@ -328,7 +328,7 @@ public:
                 const struct dirent* node = namelist[i];
                 if (!String::equals(node->d_name, ".") && !String::equals(node->d_name, ".."))
                 {
-                    children.push_back(CreateChild(path.c_str(), node));
+                    children.push_back(createChild(path.c_str(), node));
                 }
                 free(namelist[i]);
             }
@@ -337,15 +337,15 @@ public:
     }
 
 private:
-    static int32_t FilterFunc(const struct dirent* d)
+    static int32_t filterFunc(const struct dirent* d)
     {
         return 1;
     }
 
-    static DirectoryChild CreateChild(const utf8* directory, const struct dirent* node)
+    static DirectoryChild createChild(const utf8* directory, const struct dirent* node)
     {
         DirectoryChild result;
-        result.Name = std::string(node->d_name);
+        result.name = std::string(node->d_name);
     #ifdef __HAIKU__
         struct stat stbuf;
         stat(node->d_name, &stbuf);
@@ -354,11 +354,11 @@ private:
         if (node->d_type == DT_DIR)
     #endif
         {
-            result.Type = DirectoryChildType::directory;
+            result.type = DirectoryChildType::directory;
         }
         else
         {
-            result.Type = DirectoryChildType::file;
+            result.type = DirectoryChildType::file;
 
             // Get the full path of the file
             auto path = Path::Combine(directory, node->d_name);
@@ -367,12 +367,12 @@ private:
             int32_t statRes = stat(path.c_str(), &statInfo);
             if (statRes != -1)
             {
-                result.Size = statInfo.st_size;
-                result.LastModified = statInfo.st_mtime;
+                result.size = statInfo.st_size;
+                result.lastModified = statInfo.st_mtime;
 
                 if (S_ISDIR(statInfo.st_mode))
                 {
-                    result.Type = DirectoryChildType::directory;
+                    result.type = DirectoryChildType::directory;
                 }
             }
         }
@@ -382,7 +382,7 @@ private:
 
 #endif // defined(__unix__) || defined(__HAIKU__) || (defined(__APPLE__) && defined(__MACH__))
 
-std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bool recurse)
+std::unique_ptr<IFileScanner> Path::scanDirectory(const std::string& pattern, bool recurse)
 {
 #ifdef __ANDROID__
     if (String::startsWith(pattern, Platform::kAndroidAssetPathPrefix))
@@ -397,43 +397,43 @@ std::unique_ptr<IFileScanner> Path::ScanDirectory(const std::string& pattern, bo
 #endif
 }
 
-void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& pattern)
+void Path::queryDirectory(QueryDirectoryResult* result, const std::string& pattern)
 {
-    auto scanner = ScanDirectory(pattern, true);
-    while (scanner->Next())
+    auto scanner = scanDirectory(pattern, true);
+    while (scanner->next())
     {
-        const FileScanner::FileInfo& fileInfo = scanner->GetFileInfo();
-        const u8string& path = scanner->GetPath();
+        const FileScanner::FileInfo& fileInfo = scanner->getFileInfo();
+        const u8string& path = scanner->getPath();
 
-        result->TotalFiles++;
-        result->TotalFileSize += fileInfo.Size;
-        result->FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo.LastModified >> 32)
-            ^ static_cast<uint32_t>(fileInfo.LastModified & 0xFFFFFFFF);
-        result->FileDateModifiedChecksum = Numerics::ror32(result->FileDateModifiedChecksum, 5);
-        result->PathChecksum += GetPathChecksum(path);
+        result->totalFiles++;
+        result->totalFileSize += fileInfo.size;
+        result->fileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo.lastModified >> 32)
+            ^ static_cast<uint32_t>(fileInfo.lastModified & 0xFFFFFFFF);
+        result->fileDateModifiedChecksum = Numerics::ror32(result->fileDateModifiedChecksum, 5);
+        result->pathChecksum += getPathChecksum(path);
     }
 }
 
-std::vector<std::string> Path::GetDirectories(const std::string& path)
+std::vector<std::string> Path::getDirectories(const std::string& path)
 {
-    auto scanner = ScanDirectory(path, false);
+    auto scanner = scanDirectory(path, false);
     auto baseScanner = static_cast<FileScannerBase*>(scanner.get());
 
     std::vector<DirectoryChild> children;
-    baseScanner->GetDirectoryChildren(children, path);
+    baseScanner->getDirectoryChildren(children, path);
 
     std::vector<std::string> subDirectories;
     for (const auto& c : children)
     {
-        if (c.Type == DirectoryChildType::directory)
+        if (c.type == DirectoryChildType::directory)
         {
-            subDirectories.push_back(c.Name);
+            subDirectories.push_back(c.name);
         }
     }
     return subDirectories;
 }
 
-static uint32_t GetPathChecksum(u8string_view path)
+static uint32_t getPathChecksum(u8string_view path)
 {
     uint32_t hash = 0xD8430DED;
     for (const utf8 ch : path)
@@ -453,7 +453,7 @@ static uint32_t GetPathChecksum(u8string_view path)
  * specified. This will verify if a filename does indeed match the pattern we asked for.
  * @remarks Based on algorithm (http://xoomer.virgilio.it/acantato/dev/wildcard/wildmatch.html)
  */
-static bool MatchWildcard(const utf8* fileName, const utf8* pattern)
+static bool matchWildcard(const utf8* fileName, const utf8* pattern)
 {
     while (*fileName != '\0')
     {
@@ -476,7 +476,7 @@ static bool MatchWildcard(const utf8* fileName, const utf8* pattern)
                 }
                 while (*fileName != '\0')
                 {
-                    if (MatchWildcard(fileName++, pattern))
+                    if (matchWildcard(fileName++, pattern))
                     {
                         return true;
                     }

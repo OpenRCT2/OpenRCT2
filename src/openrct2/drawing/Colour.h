@@ -92,6 +92,9 @@ namespace OpenRCT2::Drawing
         return EnumValue(colour) < kColourNumTotal;
     }
 
+    Colour clampColour(uint8_t colour);
+    Colour clampColour(Colour colour);
+
     Colour colourFromString(u8string s, Colour defaultValue = Colour::black);
     u8string colourToString(Colour colour);
 

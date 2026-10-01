@@ -97,9 +97,9 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, kStringIdEmpty);
         }
 
-        if (!ride->overallView.IsNull())
+        if (!ride->overallView.isNull())
         {
-            auto location = ride->overallView.ToTileCentre();
+            auto location = ride->overallView.toTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
 

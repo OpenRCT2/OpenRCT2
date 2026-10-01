@@ -9,7 +9,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
@@ -111,7 +111,7 @@ void TrackDesignSaveSelectNearbyScenery(RideId rideIndex)
         }
     } while (TileElementIteratorNext(&it));
 
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 }
 
 /**
@@ -121,7 +121,7 @@ void TrackDesignSaveSelectNearbyScenery(RideId rideIndex)
 void TrackDesignSaveResetScenery()
 {
     TrackDesignSaveInit();
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 }
 
 bool TrackDesignSaveContainsTileElement(const TileElement* tileElement)
@@ -270,7 +270,7 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
         for (auto& tile : sceneryTiles)
         {
             CoordsXY offsetPos{ tile.offset };
-            auto rotatedOffsetPos = offsetPos.Rotate(direction);
+            auto rotatedOffsetPos = offsetPos.rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile.offset.z };
@@ -484,7 +484,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         for (auto& tile : sceneryTiles)
         {
             CoordsXY offsetPos{ tile.offset };
-            auto rotatedOffsetPos = offsetPos.Rotate(direction);
+            auto rotatedOffsetPos = offsetPos.rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                   sceneryOrigin->z + tile.offset.z };
@@ -616,7 +616,7 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
                 {
                     if (!TrackDesignSaveContainsTileElement(tileElement))
                     {
-                        TrackDesignSaveAddTileElement(TileCoordsXY(x, y).ToCoordsXY(), tileElement);
+                        TrackDesignSaveAddTileElement(TileCoordsXY(x, y).toCoordsXY(), tileElement);
                     }
                 }
             } while (!(tileElement++)->isLastForTile());

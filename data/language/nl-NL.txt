@@ -227,7 +227,6 @@ STR_0820    :nov
 STR_0821    :dec
 STR_0822    :Kan bestand met grafische gegevens niet openen
 STR_0823    :Ontbrekend of ontoegankelijk gegevensbestand
-STR_0824    :{BLACK}❌
 STR_0825    :Gekozen naam is al in gebruik
 STR_0826    :Te veel namen gedefinieerd
 STR_0827    :Onvoldoende geld - {CURRENCY2DP} benodigd
@@ -1157,7 +1156,6 @@ STR_1816    :Selecteer het type informatie dat je in de bezoekerslijst wilt zien
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
 STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
-STR_1820    :{WINDOW_COLOUR_2}Bezoekers met status: {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Bezoekers met gedachte: {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Bezoekers met gedachten over {POP16}{STRINGID}
 STR_1823    :Toon de gedachten van bezoekers over deze attractie
@@ -2449,9 +2447,6 @@ STR_5242    :Themanaam bestaat al.
 STR_5243    :Er zijn ongeldige tekens gebruikt.
 STR_5244    :Thema’s
 STR_5245    :Bovenste werkbalk
-STR_5246    :Onderste werkbalk
-STR_5247    :Onderste werkbalk baanontwerper/beheerder
-STR_5248    :Onderste werkbalk scenariobewerker
 STR_5249    :Menuknoppen titelscherm
 STR_5250    :Afsluitknop titelscherm
 STR_5251    :Optiesknop titelscherm
@@ -3178,7 +3173,6 @@ STR_6137    :OpenRCT2, een gratis en open source remake van Roller Coaster Tycoo
 STR_6138    :OpenRCT2 is het werk van velen, de volledige lijst kun je zien door op de knop ‘Deelnemers’ te klikken. Ga naar http://github.com/OpenRCT2/OpenRCT2 voor meer informatie.
 STR_6139    :Alle product- en bedrijfsnamen zijn eigendom van hun respectieve eigenaren. Het gebruik ervan impliceert geen overeenkomst of goedkeuring.
 STR_6140    :Wijzigingsoverzicht…
-STR_6141    :Onderste werkbalk in RCT1-stijl
 STR_6142    :{WINDOW_COLOUR_2}Naam ontwerp: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Attractietype: {BLACK}{STRINGID}
 STR_6144    :Markeer opnieuw te tekenen blokken
@@ -3199,7 +3193,6 @@ STR_6160    :{WINDOW_COLOUR_2}Beschikbare voertuigen: {BLACK}{STRING}
 STR_6161    :Rasterlijnen tonen
 STR_6162    :Draaiende wilde muis
 STR_6163    :Muisvormige karretjes rijden snel door scherpe bochten en korte afdalingen, en draaien daarbij zachtjes rond om de passagiers te desoriënteren.
-STR_6164    :{WHITE}❌
 STR_6165    :Verticale synchronisatie
 STR_6166    :Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
 STR_6167    :Geavanceerd
@@ -3829,3 +3822,24 @@ STR_7039    :Attractietype
 STR_7040    :Padmeubilair
 STR_7041    :Parkinfovak
 STR_7042    :Datum- en weerinfovak
+STR_7043    :Kan de hoogte van het landschap niet veranderen…
+STR_7044    :Nieuwsberichten
+STR_7045    :Statusbalk in RCT1-stijl
+STR_7046    :Statusbalk (RCT1-stijl)
+STR_7047    :Vorige/volgende (Baanontwerper)
+STR_7048    :Vorige/volgende (Scenariobewerker)
+STR_7049    :OpenRCT2
+STR_7050    :Bezoekers die rondlopen
+STR_7051    :Bezoekers op weg naar {STRINGID}
+STR_7052    :Bezoekers in de rij voor {STRINGID}
+STR_7053    :Bezoekers die verdrinken
+STR_7054    :Bezoekers in {STRINGID}
+STR_7055    :Bezoekers in {STRINGID}
+STR_7056    :Bezoekers bij {STRINGID}
+STR_7057    :Bezoekers die zitten
+STR_7058    :Bezoekers die zijn opgepakt
+STR_7059    :Bezoekers die naar {STRINGID} kijken
+STR_7060    :Bezoekers die naar de bouw van {STRINGID} kijken
+STR_7061    :Bezoekers die naar het decor kijken
+STR_7062    :Bezoekers op weg naar de uitgang
+STR_7063    :Bezoekers die naar de bouw van een nieuwe attractie kijken

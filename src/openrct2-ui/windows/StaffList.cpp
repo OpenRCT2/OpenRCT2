@@ -26,6 +26,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/RenderTarget.h>
@@ -39,6 +40,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/PeepAnimationsObject.h>
+#include <openrct2/peep/PeepActionFormat.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <vector>
@@ -412,7 +414,7 @@ namespace OpenRCT2::Ui::Windows
                     drawTextEllipsised(rt, { 0, y }, nameColumnSize, format, ft);
 
                     ft = Formatter();
-                    peep->formatActionTo(ft);
+                    formatPeepActionTo(*peep, ft);
                     drawTextEllipsised(rt, { actionOffset, y }, actionColumnSize, format, ft);
 
                     // True if a patrol path is set for the worker
@@ -555,7 +557,7 @@ namespace OpenRCT2::Ui::Windows
                 if (staff->state == PeepState::picked)
                 {
                     CoordsXYZ nullLoc{};
-                    nullLoc.SetNull();
+                    nullLoc.setNull();
 
                     GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::pickup, staff->id, nullLoc,
                                                                 Network::GetCurrentPlayerId() };
@@ -652,7 +654,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t direction{};
             TileElement* tileElement{};
             auto footpathCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
-            if (footpathCoords.IsNull())
+            if (footpathCoords.isNull())
                 return nullptr;
 
             auto isPatrolAreaSet = IsPatrolAreaSetForStaffType(GetSelectedStaffType(), footpathCoords);

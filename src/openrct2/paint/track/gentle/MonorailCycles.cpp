@@ -182,9 +182,7 @@ static void PaintMonorailCyclesTrackFlat(
         session, supportType.metal, MetalSupportPlace::centre, direction, -1, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -239,16 +237,14 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top),
-                    direction),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left),
-                    direction),
+                    { PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left }, direction),
                 0xFFFF, 0);
             break;
         case 3:
@@ -256,7 +252,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom),
+                    { PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom },
                     direction),
                 0xFFFF, 0);
             break;
@@ -357,17 +353,15 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
-                    direction),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                        PaintSegment::bottom, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                      PaintSegment::bottom, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -375,17 +369,15 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
-                    direction),
+                    { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -393,8 +385,7 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
-                    direction),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left }, direction),
                 0xFFFF, 0);
             break;
     }
@@ -463,7 +454,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top },
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -471,9 +462,8 @@ static void PaintMonorailCyclesTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                        PaintSegment::topLeft, PaintSegment::top),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                      PaintSegment::topLeft, PaintSegment::top },
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -481,9 +471,8 @@ static void PaintMonorailCyclesTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                        PaintSegment::bottomRight, PaintSegment::right),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                      PaintSegment::bottomRight, PaintSegment::right },
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -491,7 +480,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom },
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -550,7 +539,7 @@ static void PaintMonorailCyclesTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right },
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -558,9 +547,8 @@ static void PaintMonorailCyclesTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                        PaintSegment::bottomRight, PaintSegment::right),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                      PaintSegment::bottomRight, PaintSegment::right },
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -568,9 +556,8 @@ static void PaintMonorailCyclesTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                        PaintSegment::topLeft, PaintSegment::top),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                      PaintSegment::topLeft, PaintSegment::top },
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -578,7 +565,7 @@ static void PaintMonorailCyclesTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left },
                     direction & 1),
                 0xFFFF, 0);
             break;

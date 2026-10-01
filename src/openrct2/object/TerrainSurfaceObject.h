@@ -19,11 +19,34 @@ struct ImageId;
 
 namespace OpenRCT2
 {
+    constexpr auto kNumSmoothingPatternImages = 6;
+
+    constexpr auto kDefaultTerrainSurfaceColour1 = Drawing::Colour::brightPurple;
+
+    enum class MapColourType : uint8_t
+    {
+        paletteIndex,
+        fixedColour,
+        primaryColour,
+    };
+
+    struct MapColour
+    {
+        MapColourType type = MapColourType::paletteIndex;
+        Drawing::Colour fixedColour{};
+        union
+        {
+            Drawing::PaletteIndex paletteIndex{};
+            uint8_t shadeOffset;
+        };
+    };
+
     enum class TerrainSurfaceFlag : uint8_t
     {
         smoothWithSelf,
         smoothWithOther,
         canGrow,
+        hasPrimaryColour,
     };
     using TerrainSurfaceFlags = FlagHolder<uint8_t, TerrainSurfaceFlag>;
 
@@ -40,6 +63,9 @@ namespace OpenRCT2
 
         static constexpr auto kNumImagesInEntry = 19;
 
+        void precolourPatternImages();
+        void unloadPrecolouredPatternImages();
+
     public:
         static constexpr ObjectType kObjectType = ObjectType::terrainSurface;
 
@@ -47,6 +73,7 @@ namespace OpenRCT2
         StringId NameStringId{};
         uint32_t IconImageId{};
         uint32_t PatternBaseImageId{};
+        ImageIndex precolouredPatternImageId{};
         uint32_t EntryBaseImageId{};
 
         uint32_t NumEntries{};
@@ -61,7 +88,9 @@ namespace OpenRCT2
         uint8_t Rotations{};
         money64 Price{};
         TerrainSurfaceFlags Flags{};
-        Drawing::PaletteIndex MapColours[2]{};
+        MapColour MapColours[2]{};
+
+        ImageTable precolouredPatternImages{};
 
         void ReadJson(IReadObjectContext* context, json_t& root) override;
         void Load() override;
@@ -69,9 +98,19 @@ namespace OpenRCT2
 
         void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
+        void readColourSettingsProperty(const json_t& colourSettings);
+        void readOldColourSettings(json_t& colourSettings);
         ImageId GetImageId(
-            const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground) const;
+            const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground,
+            Drawing::Colour selectedColour1) const;
+        Drawing::Colour getPrimaryColour(Drawing::Colour selectedColour) const;
+        /**
+         * Returns a colour suitable for use in previews, like the Object Selection and the land surfaces selector.
+         */
+        Drawing::Colour getPreviewColour() const;
+        std::array<Drawing::PaletteIndex, 2> getMapColours(Drawing::Colour selectedColour) const;
 
         static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
+        ImageIndex getPatternImage(Drawing::Colour selectedColour, uint8_t offset) const;
     };
 } // namespace OpenRCT2

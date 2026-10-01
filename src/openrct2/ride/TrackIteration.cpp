@@ -289,8 +289,8 @@ namespace OpenRCT2
         CoordsXY coords = { x, y };
         CoordsXY trackCoordOffset = { trackCoordinate.x, trackCoordinate.y };
         CoordsXY trackBlockOffset = { trackBlock.x, trackBlock.y };
-        coords += trackCoordOffset.Rotate(rotation);
-        coords += trackBlockOffset.Rotate(DirectionReverse(rotation));
+        coords += trackCoordOffset.rotate(rotation);
+        coords += trackBlockOffset.rotate(DirectionReverse(rotation));
 
         OriginZ -= trackBlock.z;
         OriginZ += trackCoordinate.zEnd;
@@ -371,7 +371,7 @@ namespace OpenRCT2
 
             CoordsXY coords = { outTrackBeginEnd->begin_x, outTrackBeginEnd->begin_y };
             CoordsXY offsets = { nextTrackCoordinate.x, nextTrackCoordinate.y };
-            coords += offsets.Rotate(DirectionReverse(nextRotation));
+            coords += offsets.rotate(DirectionReverse(nextRotation));
             outTrackBeginEnd->begin_x = coords.x;
             outTrackBeginEnd->begin_y = coords.y;
 
@@ -428,7 +428,7 @@ namespace OpenRCT2
         uint8_t rotation = trackElement->getDirection();
         CoordsXY coords = CoordsXY{ trackPos };
         CoordsXY offsets = { trackBlock.x, trackBlock.y };
-        coords += offsets.Rotate(DirectionReverse(rotation));
+        coords += offsets.rotate(DirectionReverse(rotation));
 
         z -= trackBlock.z;
         z += trackCoordinate.zBegin;

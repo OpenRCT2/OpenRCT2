@@ -18,6 +18,7 @@
 #include "../../ride/RideConstruction.h"
 #include "../../ride/TrackDesign.h"
 #include "../../scenario/Scenario.h"
+#include "../../util/Util.h"
 #include "../GameActionRunner.h"
 #include "../ride/RideCreateAction.h"
 #include "../ride/RideDemolishAction.h"
@@ -223,8 +224,9 @@ namespace OpenRCT2::GameActions
 
         if (entryIndex != kObjectEntryIndexNull)
         {
-            // This runs inside a networked game action's Execute, and therefore needs to use ScenarioRand
-            auto colour = RideGetUnusedPresetVehicleColour(entryIndex, ScenarioRand());
+            // Local previews must not advance the shared simulation RNG.
+            auto randomValue = (GetActionFlags() & Flags::ClientOnly) ? UtilRand() : ScenarioRand();
+            auto colour = RideGetUnusedPresetVehicleColour(entryIndex, randomValue);
             auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::rideEntry, entryIndex, colour);
             ExecuteNested(&rideSetVehicleAction, gameState);
         }

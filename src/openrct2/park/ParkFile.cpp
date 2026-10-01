@@ -23,7 +23,7 @@
 #include "../core/OrcaStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
@@ -57,6 +57,7 @@
 #include "../world/Weather.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Legacy.h"
 #include "ParkPreview.h"
@@ -99,6 +100,13 @@ namespace OpenRCT2
         // clang-format on
     };
 
+    constexpr auto kGridMap = std::to_array<std::pair<u8string_view, Drawing::Colour>>({
+        { "#RCT2SIR", Drawing::Colour::brightRed },
+        { "#RCT2SIY", Drawing::Colour::yellow },
+        { "#RCT2SIG", Drawing::Colour::brightGreen },
+        { "#RCT2SIP", Drawing::Colour::brightPurple },
+    });
+
     class ParkFile
     {
     public:
@@ -111,6 +119,9 @@ namespace OpenRCT2
         ObjectEntryIndex _pathToSurfaceMap[kMaxPathObjects];
         ObjectEntryIndex _pathToQueueSurfaceMap[kMaxPathObjects];
         ObjectEntryIndex _pathToRailingsMap[kMaxPathObjects];
+
+        std::array<TerrainSurfaceMapping, kMaxTerrainSurfaceObjects> _terrainSurfaceMap{};
+        std::array<Drawing::Colour, kMaxTerrainEdgeObjects> _terrainEdgeMap{};
 
         void ThrowIfIncompatibleVersion()
         {
@@ -166,12 +177,20 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
-            if (os.getHeader().targetVersion < 0x4)
+
+            auto targetVersion = os.getHeader().targetVersion;
+
+            if (targetVersion < 0x4)
             {
                 UpdateTrackElementsRideType();
             }
+            if (targetVersion < kColourableTerrainVersion)
+            {
+                updateSurfaceElementsColour(gameState, _terrainSurfaceMap, _terrainEdgeMap);
+            }
 
-            // Initial cash will eventually be removed
+            // Initial cash is currently a legacy variable. However, it should be reworked
+            // so parks that share a map can start with the same amount.
             gameState.scenarioOptions.initialCash = gameState.park.cash;
         }
 
@@ -318,8 +337,20 @@ namespace OpenRCT2
                     const RCT2::FootpathMapping& mapping;
                 };
                 std::vector<LegacyFootpathMapping> legacyPathMappings;
+
+                for (ObjectEntryIndex i = 0; i < _terrainSurfaceMap.size(); i++)
+                {
+                    _terrainSurfaceMap[i] = { i, Drawing::Colour::black };
+                }
+                std::fill(_terrainEdgeMap.begin(), _terrainEdgeMap.end(), Drawing::Colour::black);
+                ObjectEntryIndex newGridIndex = kObjectEntryIndexNull;
+                auto& terrainSurfaceMap = _terrainSurfaceMap;
+                auto& terrainEdgeMap = _terrainEdgeMap;
+
                 os.readWriteChunk(
-                    ParkFileChunkType::objects, [&requiredObjects, version, &legacyPathMappings](OrcaStream::ChunkStream& cs) {
+                    ParkFileChunkType::objects,
+                    [&requiredObjects, version, &legacyPathMappings, &terrainSurfaceMap, &terrainEdgeMap,
+                     &newGridIndex](OrcaStream::ChunkStream& cs) {
                         auto numSubLists = cs.read<uint16_t>();
                         for (size_t i = 0; i < numSubLists; i++)
                         {
@@ -347,6 +378,45 @@ namespace OpenRCT2
                                                 continue;
                                             }
                                         }
+                                        // Void surface and edges are not handled specifically as the default colour is black
+                                        // anyway. This saves us some cycles.
+                                        if (version < kColourableTerrainVersion)
+                                        {
+                                            auto datName = u8string(datEntry.GetName());
+                                            // Grey sandstone
+                                            if (datName == "#RCT1ESG")
+                                            {
+                                                terrainEdgeMap[j] = Drawing::Colour::grey;
+                                            }
+                                            else if (datName.starts_with("#RCT2SI"))
+                                            {
+                                                // There were four grid objects. Make sure we only try to allocate one.
+                                                auto skip = false;
+
+                                                for (const auto& pair : kGridMap)
+                                                {
+                                                    if (datName == pair.first)
+                                                    {
+                                                        if (newGridIndex == kObjectEntryIndexNull)
+                                                            newGridIndex = j;
+                                                        else
+                                                            skip = true;
+
+                                                        terrainSurfaceMap[j] = { newGridIndex, pair.second };
+
+                                                        desc = ObjectEntryDescriptor();
+                                                        desc.Type = objectType;
+                                                        desc.Identifier = "rct2.terrain_surface.grid";
+                                                        desc.Version = std::make_tuple(1, 0, 0);
+
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (skip)
+                                                    continue;
+                                            }
+                                        }
 
                                         requiredObjects.SetObject(j, desc);
                                         break;
@@ -364,7 +434,7 @@ namespace OpenRCT2
                                                 identifier = newIdentifier;
                                             }
                                         }
-                                        else if (version <= 12)
+                                        if (version <= 12)
                                         {
                                             if (identifier == "openrct2.ride.rmct1")
                                             {
@@ -375,13 +445,20 @@ namespace OpenRCT2
                                                 identifier = "openrct2.ride.single_rail_coaster";
                                             }
                                         }
-                                        else if (version <= 14)
+                                        if (version <= 14)
                                         {
                                             if (identifier == "openrct2.ride.alp1")
                                             {
                                                 identifier = "openrct2.ride.alpine_coaster";
                                             }
                                         }
+
+                                        if (identifier == "rct1beta.terrain_edge.brick"
+                                            || identifier == "rct1beta.terrain_edge.rock")
+                                        {
+                                            terrainEdgeMap[j] = Drawing::Colour::lightBrown;
+                                        }
+
                                         desc.Identifier = identifier;
                                         desc.Version = VersionTuple(cs.read<std::string>());
 
@@ -1456,18 +1533,18 @@ namespace OpenRCT2
                     // Stations
                     cs.readWrite(ride.numStations);
                     cs.readWriteArray(ride.getStations(), [&cs](RideStation& station) {
-                        cs.readWrite(station.Start);
-                        cs.readWrite(station.Height);
-                        cs.readWrite(station.Length);
-                        cs.readWrite(station.Depart);
-                        cs.readWrite(station.TrainAtStation);
-                        cs.readWrite(station.Entrance);
-                        cs.readWrite(station.Exit);
-                        cs.readWrite(station.SegmentLength);
-                        cs.readWrite(station.SegmentTime);
-                        cs.readWrite(station.QueueTime);
-                        cs.readWrite(station.QueueLength);
-                        cs.readWrite(station.LastPeepInQueue);
+                        cs.readWrite(station.start);
+                        cs.readWrite(station.height);
+                        cs.readWrite(station.length);
+                        cs.readWrite(station.depart);
+                        cs.readWrite(station.trainAtStation);
+                        cs.readWrite(station.entrance);
+                        cs.readWrite(station.exit);
+                        cs.readWrite(station.segmentLength);
+                        cs.readWrite(station.segmentTime);
+                        cs.readWrite(station.queueTime);
+                        cs.readWrite(station.queueLength);
+                        cs.readWrite(station.lastPeepInQueue);
                         return true;
                     });
 
@@ -1917,7 +1994,7 @@ namespace OpenRCT2
                         return true;
                     });
                     RideUse::GetTypeHistory().Set(guest->id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
-                    cs.readWrite(guest->itemFlags);
+                    cs.readWrite(guest->itemFlags.holder);
                     cs.readWrite(guest->photo2RideRef);
                     cs.readWrite(guest->photo3RideRef);
                     cs.readWrite(guest->photo4RideRef);
@@ -2471,7 +2548,7 @@ namespace OpenRCT2
         cs.readWrite(guest.hatColour);
         cs.readWrite(guest.favouriteRide);
         cs.readWrite(guest.favouriteRideRating);
-        cs.readWrite(guest.itemFlags);
+        cs.readWrite(guest.itemFlags.holder);
     }
 
     template<>
@@ -2482,7 +2559,7 @@ namespace OpenRCT2
         std::vector<TileCoordsXY> patrolArea;
         if (cs.getMode() == OrcaStream::Mode::writing && entity.patrolInfo != nullptr)
         {
-            patrolArea = entity.patrolInfo->ToVector();
+            patrolArea = entity.patrolInfo->toVector();
         }
         cs.readWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.readWrite(value); });
         if (cs.getMode() == OrcaStream::Mode::reading)
@@ -2496,8 +2573,8 @@ namespace OpenRCT2
                 if (entity.patrolInfo == nullptr)
                     entity.patrolInfo = new PatrolArea();
                 else
-                    entity.patrolInfo->Clear();
-                entity.patrolInfo->Union(patrolArea);
+                    entity.patrolInfo->clear();
+                entity.patrolInfo->unify(patrolArea);
             }
         }
 
@@ -2721,16 +2798,9 @@ namespace OpenRCT2
     }
 } // namespace OpenRCT2
 
-enum : uint32_t
+int32_t ScenarioSave(GameState_t& gameState, u8string_view path, SaveFlags flags)
 {
-    S6_SAVE_FLAG_EXPORT = 1 << 0,
-    S6_SAVE_FLAG_SCENARIO = 1 << 1,
-    S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
-};
-
-int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
-{
-    if (flags & S6_SAVE_FLAG_SCENARIO)
+    if (flags.has(SaveFlag::scenario))
     {
         LOG_VERBOSE("saving scenario");
     }
@@ -2739,7 +2809,7 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         LOG_VERBOSE("saving game");
     }
 
-    gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
+    gIsAutosave = flags.has(SaveFlag::automatic);
     if (!gIsAutosave)
     {
         auto* windowMgr = Ui::GetWindowManager();
@@ -2752,13 +2822,13 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
     auto parkFile = std::make_unique<ParkFile>();
     try
     {
-        if (flags & S6_SAVE_FLAG_EXPORT)
+        if (flags.has(SaveFlag::exportObjects))
         {
             auto& objManager = GetContext()->GetObjectManager();
             parkFile->ExportObjectsList = objManager.GetPackableObjects();
         }
         parkFile->OmitTracklessRides = true;
-        if (flags & S6_SAVE_FLAG_SCENARIO)
+        if (flags.has(SaveFlag::scenario))
         {
             // s6exporter->SaveScenario(path);
         }
@@ -2776,12 +2846,12 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         Formatter ft;
         ft.Add<const char*>(e.what());
         ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 
-    if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
+    if (result && !flags.has(SaveFlag::automatic))
     {
         gScreenAge = 0;
     }

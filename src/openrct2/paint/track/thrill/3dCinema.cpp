@@ -93,29 +93,29 @@ static void Paint3dCinema(
             break;
     }
 
-    int32_t cornerSegments = 0;
+    PaintSegments cornerSegments = {};
     switch (trackSequence)
     {
         case 1:
             // top
-            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
+            cornerSegments = { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight };
             break;
         case 3:
             // right
-            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
+            cornerSegments = { PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight };
             break;
         case 6:
             // left
-            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
+            cornerSegments = { PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft };
             break;
         case 7:
             // bottom
-            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
+            cornerSegments = { PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight };
             break;
     }
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll.without(cornerSegments), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 128);
 }
 

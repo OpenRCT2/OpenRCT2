@@ -574,6 +574,34 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    ScEntertainer gScEntertainer;
+
+    JSValue ScEntertainer::New(JSContext* ctx, EntityId entityId)
+    {
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScEntertainer.GetProto());
+    }
+
+    void ScEntertainer::Register(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry kFuncs[] = {
+            JS_CGETSET_DEF("guestsEntertained", &ScEntertainer::guestsEntertained_get, nullptr),
+        };
+        gScEntertainer.RegisterDerived(ctx, gScStaff, kFuncs);
+    }
+
+    JSValue ScEntertainer::guestsEntertained_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto peep = GetStaff(thisVal);
+        if (peep != nullptr && peep->isEntertainer())
+        {
+            return JS_NewUint32(ctx, peep->staffGuestsEntertained);
+        }
+        else
+        {
+            return JS_NULL;
+        }
+    }
+
     using OpaquePatrolAreaData = struct
     {
         EntityId staffId;
@@ -617,7 +645,7 @@ namespace OpenRCT2::Scripting
             if (JS_IsArray(coordsOrRange))
             {
                 JSIterateArray(ctx, coordsOrRange, [staff, reset](JSContext* ctx2, JSValue v) {
-                    auto coord = JSToCoordsXY(ctx2, v);
+                    auto coord = JStoCoordsXY(ctx2, v);
                     staff->setPatrolArea(coord, reset);
                     MapInvalidateTileFull(coord);
                 });
@@ -626,9 +654,9 @@ namespace OpenRCT2::Scripting
             {
                 MapRange mapRange = { JSToCoordXY(ctx, coordsOrRange, "leftTop"),
                                       JSToCoordXY(ctx, coordsOrRange, "rightBottom") };
-                for (int32_t y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+                for (int32_t y = mapRange.getY1(); y <= mapRange.getY2(); y += kCoordsXYStep)
                 {
-                    for (int32_t x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
+                    for (int32_t x = mapRange.getX1(); x <= mapRange.getX2(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
                         staff->setPatrolArea(coord, reset);
@@ -647,7 +675,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr && staff->patrolInfo != nullptr)
         {
-            auto tiles = staff->patrolInfo->ToVector();
+            auto tiles = staff->patrolInfo->toVector();
 
             auto index = 0;
             for (const auto& tile : tiles)
@@ -712,7 +740,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr)
         {
-            auto pos = JSToCoordsXY(ctx, coord);
+            auto pos = JStoCoordsXY(ctx, coord);
             return JS_NewBool(ctx, staff->isLocationInPatrol(pos));
         }
         return JS_NewBool(ctx, false);

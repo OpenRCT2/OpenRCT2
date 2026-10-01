@@ -16,7 +16,8 @@
 #include "../../actions/ResultWithMessage.h"
 #include "../../audio/Audio.h"
 #include "../../core/EnumUtils.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
+#include "../../drawing/Palette.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/Guest.h"
 #include "../../entity/Staff.h"
@@ -80,7 +81,8 @@ namespace OpenRCT2::Editor
 
         // Reset loaded objects to just defaults
         // Load minimum required objects (like surface and edge)
-        for (const auto& entry : kMinimumRequiredObjects)
+        const auto& objectList = isInTrackDesignerOrManager() ? kMinimumRequiredObjectsDesigner : kMinimumRequiredObjects;
+        for (const auto& entry : objectList)
         {
             objectManager.LoadObject(entry);
         }
@@ -673,7 +675,7 @@ namespace OpenRCT2::Editor
         auto newPaletteEntry = ObjectEntryDescriptor(*item);
         if (objectManager.GetLoadedObject(newPaletteEntry) != nullptr || objectManager.LoadObject(newPaletteEntry) != nullptr)
         {
-            LoadPalette();
+            Drawing::LoadPalette();
         }
         else
         {
@@ -713,14 +715,10 @@ namespace OpenRCT2::Editor
             SetEveryRideEntryInvented();
 
             auto& objManager = GetContext()->GetObjectManager();
-            gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-            if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
-            {
-                gameState.lastEntranceStyle = 0;
-            }
+            gameState.lastEntranceStyle = GetDefaultStationObject(objManager);
 
             gameState.editorStep = Editor::Step::rollerCoasterDesigner;
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
         else
         {
@@ -730,7 +728,7 @@ namespace OpenRCT2::Editor
             ContextBroadcastIntent(&intent);
 
             gameState.editorStep = Editor::Step::landscapeEditor;
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
     }
 

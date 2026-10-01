@@ -621,7 +621,7 @@ namespace OpenRCT2::Scripting
         if (vehicle == nullptr)
             return JS_UNDEFINED;
 
-        CoordsXY coords = TileCoordsXY(x, y).ToCoordsXY();
+        CoordsXY coords = TileCoordsXY(x, y).toCoordsXY();
         auto el = MapGetNthElementAt(coords, elementIndex);
         if (el == nullptr)
             return JS_UNDEFINED;

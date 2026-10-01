@@ -62,7 +62,7 @@ namespace OpenRCT2
     void MoneyEffect::create(money64 value, const CoordsXYZ& loc)
     {
         auto offsetLoc = loc;
-        if (loc.IsNull())
+        if (loc.isNull())
         {
             // If game actions return no valid location of the action we can not use the screen
             // coordinates as every client will have different ones.

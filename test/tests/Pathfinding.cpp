@@ -71,7 +71,7 @@ protected:
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
         // Add 16 so the peep spawns in the centre of the tile.
-        auto* peep = Guest::generate(pos->ToCoordsXYZ().ToTileCentre());
+        auto* peep = Guest::generate(pos->toCoordsXYZ().toTileCentre());
 
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
@@ -115,7 +115,7 @@ protected:
 
             // Check that the peep is still on a footpath. Use next_z instead of pos->z here because pos->z will change
             // when the peep is halfway up a slope, but next_z will not change until they move to the next tile.
-            EXPECT_NE(MapGetFootpathElement({ pos->ToCoordsXY(), peep->nextLoc.z }), nullptr);
+            EXPECT_NE(MapGetFootpathElement({ pos->toCoordsXY(), peep->nextLoc.z }), nullptr);
         }
 
         // Clean up the peep, because we're reusing this loaded context for all tests.
@@ -133,13 +133,13 @@ protected:
 
     static testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
-        const uint32_t expectedSurfaceStyle = 11u;
-        const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->getSurfaceObjectIndex();
+        const auto expectedSurfaceColour = EnumValue(Drawing::Colour::brightGreen);
+        const auto colour = EnumValue(MapGetSurfaceElementAt(location.toCoordsXYZ())->getPrimarySurfaceColour());
 
-        if (style != expectedSurfaceStyle)
+        if (colour != expectedSurfaceColour)
             return testing::AssertionFailure()
-                << "Start location " << location << " should have surface style " << expectedSurfaceStyle
-                << " but actually has style " << style
+                << "Start location " << location << " should have surface colour " << expectedSurfaceColour
+                << " but actually has style " << colour
                 << ". Either the test map is not set up correctly, or you got the coordinates wrong.";
 
         return testing::AssertionSuccess();
@@ -147,14 +147,13 @@ protected:
 
     static testing::AssertionResult AssertIsNotForbiddenPosition(const char*, const TileCoordsXYZ& location)
     {
-        const uint32_t forbiddenSurfaceStyle = 8u;
+        const uint32_t forbiddenSurfaceColour = EnumValue(Drawing::Colour::brightRed);
+        const auto colour = EnumValue(MapGetSurfaceElementAt(location.toCoordsXYZ())->getPrimarySurfaceColour());
 
-        const uint32_t style = MapGetSurfaceElementAt(location.ToCoordsXYZ())->getSurfaceObjectIndex();
-
-        if (style == forbiddenSurfaceStyle)
+        if (colour == forbiddenSurfaceColour)
             return testing::AssertionFailure()
-                << "Path traversed location " << location << ", but it is marked as a forbidden location (surface style "
-                << forbiddenSurfaceStyle << "). Either the map is set up incorrectly, or the pathfinder went the wrong way.";
+                << "Path traversed location " << location << ", but it is marked as a forbidden location (surface colour "
+                << forbiddenSurfaceColour << "). Either the map is set up incorrectly, or the pathfinder went the wrong way.";
 
         return testing::AssertionSuccess();
     }
@@ -198,7 +197,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
-    auto entrancePos = ride->getStation().Entrance;
+    auto entrancePos = ride->getStation().entrance;
     TileCoordsXYZ goal = TileCoordsXYZ(
         entrancePos.x - TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y - TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
@@ -236,7 +235,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
-    auto entrancePos = ride->getStation().Entrance;
+    auto entrancePos = ride->getStation().entrance;
     TileCoordsXYZ goal = TileCoordsXYZ(
         entrancePos.x + TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y + TileDirectionDelta[entrancePos.direction].y, entrancePos.z);

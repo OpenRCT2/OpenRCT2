@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor kEnterpriseRTD =
                      RtdFlag::isFlatRide, RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::rotation),
+    .rideModes = { RideMode::rotation },
     .DefaultMode = RideMode::rotation,
     .OperatingSettings = { 10, 20 },
     .Naming = { STR_RIDE_NAME_ENTERPRISE, STR_RIDE_DESCRIPTION_ENTERPRISE },
@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor kEnterpriseRTD =
         3,
         false,
         {
-            { RatingsModifierType::bonusOperationOption, 0, 1, 16, 16 }, 
+            { RatingsModifierType::bonusOperationOption, 0, 1, 16, 16 },
             { RatingsModifierType::bonusScenery,         0, 19521, 0, 0 },
         },
     },

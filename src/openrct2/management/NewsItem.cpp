@@ -116,7 +116,7 @@ void News::InitQueue(GameState_t& gameState)
         warningThrottle = 0;
     }
 
-    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
     ContextBroadcastIntent(&intent);
 }
 
@@ -163,7 +163,7 @@ void News::UpdateCurrentItem()
     if (gameState.newsItems.isEmpty())
         return;
 
-    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
     ContextBroadcastIntent(&intent);
 
     // Update the current news item
@@ -199,7 +199,7 @@ void News::ItemQueues::archiveCurrent()
     _recent.pop_front();
 
     // Invalidate current news item bar
-    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
     ContextBroadcastIntent(&intent);
 }
 
@@ -220,11 +220,11 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
         case ItemType::ride:
         {
             Ride* ride = GetRide(RideId::FromUnderlying(subject));
-            if (ride == nullptr || ride->overallView.IsNull())
+            if (ride == nullptr || ride->overallView.isNull())
             {
                 break;
             }
-            auto rideViewCentre = ride->overallView.ToTileCentre();
+            auto rideViewCentre = ride->overallView.toTileCentre();
             subjectLoc = CoordsXYZ{ rideViewCentre, TileElementHeight(rideViewCentre) };
             break;
         }
@@ -279,7 +279,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
             auto subjectUnsigned = static_cast<uint32_t>(subject);
             auto subjectXY = CoordsXY{ static_cast<int16_t>(subjectUnsigned & 0xFFFF),
                                        static_cast<int16_t>(subjectUnsigned >> 16) };
-            if (!subjectXY.IsNull())
+            if (!subjectXY.isNull())
             {
                 subjectLoc = CoordsXYZ{ subjectXY, TileElementHeight(subjectXY) };
             }
@@ -447,7 +447,7 @@ void News::DisableNewsItems(ItemType type, uint32_t assoc)
             newsItem.setFlags(ItemFlags::hasButton);
             if (&newsItem == &gameState.newsItems.current())
             {
-                auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+                auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
                 ContextBroadcastIntent(&intent);
             }
         }

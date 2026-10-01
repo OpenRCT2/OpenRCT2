@@ -28,7 +28,7 @@
 #include "core/FileSystem.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "drawing/Drawing.h"
+#include "drawing/Palette.h"
 #include "drawing/ScrollingText.h"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
@@ -119,7 +119,7 @@ void GameCreateWindows()
 {
     ContextOpenWindow(WindowClass::mainWindow);
     ContextOpenWindow(WindowClass::topToolbar);
-    ContextOpenWindow(WindowClass::bottomToolbar);
+    ContextOpenWindow(WindowClass::gameStatusBar);
     ContextOpenWindow(WindowClass::parkInfoPanel);
     ContextOpenWindow(WindowClass::dateInfoPanel);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
@@ -280,7 +280,7 @@ static void FixInvalidSurfaces()
             if (surfaceElement == nullptr)
             {
                 LOG_ERROR("Null map element at x = %d and y = %d. Fixing...", x, y);
-                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
+                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.toCoordsXYZ(), 0b0000);
                 if (surfaceElement == nullptr)
                 {
                     LOG_ERROR("Unable to fix: Map element limit reached.");
@@ -349,6 +349,7 @@ void GameLoadInit()
     // being displayed due to pointer value reuse in the cache matching logic
     Drawing::ScrollingText::invalidate();
 
+    // TODO: move relevant UI calls to UI subproject
     if (!gLoadKeepWindowsOpen)
     {
         ContextResetSubsystems();
@@ -374,7 +375,7 @@ void GameLoadInit()
     gWindowUpdateTicks = 0;
     gCurrentRealTimeTicks = 0;
 
-    LoadPalette();
+    Drawing::LoadPalette();
 
     if (!gOpenRCT2Headless)
     {
@@ -499,7 +500,9 @@ void SaveGameWithName(u8string_view name)
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
 
     auto& gameState = getGameState();
-    if (ScenarioSave(gameState, name, Config::Get().general.savePluginData ? 1 : 0))
+    SaveFlags saveFlags{};
+    saveFlags.set(SaveFlag::exportObjects, Config::Get().general.savePluginData);
+    if (ScenarioSave(gameState, name, saveFlags))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -548,8 +551,8 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
     // At first, count how many autosaves there are
     {
-        auto scanner = Path::ScanDirectory(filter, false);
-        while (scanner->Next())
+        auto scanner = Path::scanDirectory(filter, false);
+        while (scanner->next())
         {
             autosavesCount++;
         }
@@ -563,12 +566,12 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
 
     std::vector<u8string> autosaveFiles;
     {
-        auto scanner = Path::ScanDirectory(filter, false);
+        auto scanner = Path::scanDirectory(filter, false);
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            if (scanner->Next())
+            if (scanner->next())
             {
-                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->GetPathRelative()));
+                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->getPathRelative()));
             }
         }
     }
@@ -593,12 +596,12 @@ void GameAutosave()
 {
     auto subDirectory = DirId::saves;
     const char* fileExtension = ".park";
-    uint32_t saveFlags = 0x80000000;
+    SaveFlags saveFlags = { SaveFlag::automatic };
     if (isInEditorMode())
     {
         subDirectory = DirId::landscapes;
         fileExtension = ".park";
-        saveFlags |= 2;
+        saveFlags.set(SaveFlag::scenario);
     }
 
     // Retrieve current time

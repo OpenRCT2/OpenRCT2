@@ -1,0 +1,10 @@
+{
+    "scenario_name": "Dusty Greens",
+    "sha256": "26c34bf61dc95b68d8fbe24fa6c7b66ea94ce27af8f2a1e4f858145703ea08dc",
+    "rides": [
+        {
+            "id": [ 0, 1 ],
+            "operation": "clear_name"
+        }
+    ]
+}

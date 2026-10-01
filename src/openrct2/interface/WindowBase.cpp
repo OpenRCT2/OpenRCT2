@@ -1,7 +1,7 @@
 #include "WindowBase.h"
 
 #include "../config/Config.h"
-#include "../drawing/Drawing.h"
+#include "../drawing/NewDrawing.h"
 #include "Cursors.h"
 #include "Viewport.h"
 

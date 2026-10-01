@@ -47,10 +47,10 @@
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
+#include "drawing/Palette.h"
 #include "drawing/PickupPeep.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
-#include "interface/Chat.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
@@ -78,6 +78,7 @@
 #include "ui/WindowManager.h"
 #include "world/MapAnimation.h"
 #include "world/MapSelection.h"
+#include "world/Park.h"
 
 #include <chrono>
 #include <cmath>
@@ -468,7 +469,8 @@ namespace OpenRCT2
                 Audio::gGameSoundsOff = !Config::Get().sound.masterSoundEnabled;
             }
 
-            ChatInit();
+            auto intent = Intent(INTENT_ACTION_INIT_CHAT);
+            _uiContext->GetWindowManager()->BroadcastIntent(intent);
             CopyOriginalUserFilesOver();
 
             if (!gOpenRCT2NoGraphics)
@@ -763,7 +765,7 @@ namespace OpenRCT2
                 }
 
                 // Inhibit viewport rendering while we're loading
-                WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+                WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, true);
 
                 OpenProgress(asScenario ? STR_LOADING_SCENARIO : STR_LOADING_SAVED_GAME);
                 SetProgress(0, 100, STR_STRING_M_PERCENT);
@@ -786,7 +788,7 @@ namespace OpenRCT2
                 SetProgress(100, 100, STR_STRING_M_PERCENT);
 
                 // Reset viewport rendering inhibition
-                WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
+                WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
 
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
@@ -809,6 +811,10 @@ namespace OpenRCT2
                     }
 #endif
                     GameLoadInit(); // NB: calls `setActiveScene`
+
+                    // Park::Update only recalculates these every ~13 seconds, so a save can hold a value that
+                    // predates this park being loaded. Scenarios get the same treatment from ScenarioReset.
+                    Park::updateValuations(gameState.park, gameState);
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == Network::Mode::server)
                     {
@@ -938,7 +944,7 @@ namespace OpenRCT2
             }
 
             CloseProgress();
-            WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
+            WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
             return false;
         }
 
@@ -1390,7 +1396,7 @@ namespace OpenRCT2
 
             if (GameIsNotPaused())
             {
-                gPaletteEffectFrame += gCurrentDeltaTime;
+                Drawing::gPaletteEffectFrame += gCurrentDeltaTime;
             }
 
             DateUpdateRealTimeOfDay();
@@ -1405,7 +1411,8 @@ namespace OpenRCT2
             }
 #endif
 
-            ChatUpdate();
+            auto intent = Intent(INTENT_ACTION_UPDATE_CHAT);
+            _uiContext->GetWindowManager()->BroadcastIntent(intent);
 #ifdef ENABLE_SCRIPTING
             if (auto* activeScene = _sceneManager->getActiveScene(); activeScene != _sceneManager->getPreloaderScene())
             {
@@ -1470,11 +1477,11 @@ namespace OpenRCT2
             LOG_VERBOSE("CopyOriginalUserFilesOver('%s', '%s', '%s')", srcRoot.c_str(), dstRoot.c_str(), pattern.c_str());
 
             auto scanPattern = Path::Combine(srcRoot, pattern);
-            auto scanner = Path::ScanDirectory(scanPattern, true);
-            while (scanner->Next())
+            auto scanner = Path::scanDirectory(scanPattern, true);
+            while (scanner->next())
             {
-                auto src = std::string(scanner->GetPath());
-                auto dst = Path::Combine(dstRoot, scanner->GetPathRelative());
+                auto src = std::string(scanner->getPath());
+                auto dst = Path::Combine(dstRoot, scanner->getPathRelative());
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary
