@@ -1078,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         gLandToolTerrainSurface = type;
                         _settings.landTexture = type;
-                        LandTool::resetSurfaceColourSelection(type, _settings.surfaceColour1);
+                        LandTool::resetSurfaceColourSelection(type, _settings.surfaceColour1, _surfaceColour1Enabled);
                     }
                     invalidate();
                     break;
@@ -1091,7 +1091,7 @@ namespace OpenRCT2::Ui::Windows
                     if (_settings.edgeTexture != type)
                     {
                         _settings.edgeTexture = type;
-                        LandTool::resetEdgeColourSelection(type, _settings.edgeColour1);
+                        LandTool::resetEdgeColourSelection(type, _settings.edgeColour1, _edgeColour1Enabled);
                     }
                     invalidate();
                     break;
@@ -1145,12 +1145,6 @@ namespace OpenRCT2::Ui::Windows
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
-                auto surfaceColour1ShouldBeEnabled = surfaceObj->Flags.has(TerrainSurfaceFlag::hasPrimaryColour);
-                if (_surfaceColour1Enabled != surfaceColour1ShouldBeEnabled)
-                {
-                    _surfaceColour1Enabled = surfaceColour1ShouldBeEnabled;
-                    invalidate();
-                }
                 auto colour = widgets[WIDX_SURFACE_COLOUR_1].isVisible()
                     ? surfaceObj->getPrimaryColour(_settings.surfaceColour1)
                     : surfaceObj->getPreviewColour();
@@ -1161,13 +1155,6 @@ namespace OpenRCT2::Ui::Windows
             const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_settings.edgeTexture);
             if (edgeObj != nullptr)
             {
-                auto edgeColour1ShouldBeEnabled = edgeObj->flags.has(TerrainEdgeFlag::hasPrimaryColour);
-                if (_edgeColour1Enabled != edgeColour1ShouldBeEnabled)
-                {
-                    _edgeColour1Enabled = edgeColour1ShouldBeEnabled;
-                    invalidate();
-                }
-
                 auto colour = widgets[WIDX_EDGE_COLOUR_1].isVisible() ? _settings.edgeColour1 : edgeObj->getPreviewColour();
                 edgeImage = ImageId(edgeObj->IconImageId, colour);
             }
@@ -1336,6 +1323,9 @@ namespace OpenRCT2::Ui::Windows
             initScrollWidgets();
 
             _heightmapLoaded = false;
+
+            LandTool::resetSurfaceColourSelection(_settings.landTexture, _settings.surfaceColour1, _surfaceColour1Enabled);
+            LandTool::resetEdgeColourSelection(_settings.edgeTexture, _settings.edgeColour1, _edgeColour1Enabled);
         }
 
         void onClose() override
