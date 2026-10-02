@@ -38,6 +38,6 @@ namespace OpenRCT2::LandTool
     ObjectEntryIndex GetSurfaceStyleFromDropdownIndex(size_t index);
     void ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType);
     ObjectEntryIndex GetEdgeStyleFromDropdownIndex(size_t index);
-    void resetSurfaceColourSelection(ObjectEntryIndex selectedSurfaceIndex, Drawing::Colour& surfaceColour1);
-    void resetEdgeColourSelection(ObjectEntryIndex selectedEdgeIndex, Drawing::Colour& edgeColour1);
+    void resetSurfaceColourSelection(ObjectEntryIndex selectedSurfaceIndex, Drawing::Colour& surfaceColour1, bool& hasColour);
+    void resetEdgeColourSelection(ObjectEntryIndex selectedEdgeIndex, Drawing::Colour& edgeColour1, bool& hasColour);
 } // namespace OpenRCT2::LandTool

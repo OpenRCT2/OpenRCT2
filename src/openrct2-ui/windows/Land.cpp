@@ -122,6 +122,9 @@ namespace OpenRCT2::Ui::Windows
 
             _selectedFloorTexture = LandTool::GetSurfaceStyleFromDropdownIndex(0);
             _selectedWallTexture = LandTool::GetEdgeStyleFromDropdownIndex(0);
+
+            LandTool::resetSurfaceColourSelection(_selectedFloorTexture, _surfaceColour1, _surfaceColour1Enabled);
+            LandTool::resetEdgeColourSelection(_selectedWallTexture, _edgeColour1, _edgeColour1Enabled);
         }
 
         void onClose() override
@@ -216,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
                         gLandToolTerrainSurface = type;
                         _selectedFloorTexture = type;
                     }
-                    LandTool::resetSurfaceColourSelection(gLandToolTerrainSurface, _surfaceColour1);
+                    LandTool::resetSurfaceColourSelection(gLandToolTerrainSurface, _surfaceColour1, _surfaceColour1Enabled);
                     invalidate();
                     break;
                 case WIDX_WALL:
@@ -235,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
                         gLandToolTerrainEdge = type;
                         _selectedWallTexture = type;
                     }
-                    LandTool::resetEdgeColourSelection(gLandToolTerrainEdge, _edgeColour1);
+                    LandTool::resetEdgeColourSelection(gLandToolTerrainEdge, _edgeColour1, _edgeColour1Enabled);
                     invalidate();
                     break;
                 case WIDX_SURFACE_COLOUR_1:
@@ -900,29 +903,15 @@ namespace OpenRCT2::Ui::Windows
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
-                auto surfaceColour1ShouldBeEnabled = surfaceObj->Flags.has(TerrainSurfaceFlag::hasPrimaryColour);
-                if (_surfaceColour1Enabled != surfaceColour1ShouldBeEnabled)
-                {
-                    _surfaceColour1Enabled = surfaceColour1ShouldBeEnabled;
-                    invalidate();
-                }
-
                 auto colour = widgets[WIDX_SURFACE_COLOUR_1].isVisible() ? surfaceObj->getPrimaryColour(_surfaceColour1)
                                                                          : surfaceObj->getPreviewColour();
                 surfaceImage = ImageId(surfaceObj->IconImageId, colour);
             }
 
-            const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_selectedWallTexture);
+            const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_selectedWallTexture);
             ImageId edgeImage;
             if (edgeObj != nullptr)
             {
-                auto edgeColour1ShouldBeEnabled = edgeObj->flags.has(TerrainEdgeFlag::hasPrimaryColour);
-                if (_edgeColour1Enabled != edgeColour1ShouldBeEnabled)
-                {
-                    _edgeColour1Enabled = edgeColour1ShouldBeEnabled;
-                    invalidate();
-                }
-
                 auto colour = widgets[WIDX_EDGE_COLOUR_1].isVisible() ? _edgeColour1 : edgeObj->getPreviewColour();
                 edgeImage = ImageId(edgeObj->IconImageId, colour);
             }
