@@ -1361,10 +1361,12 @@ namespace OpenRCT2
                                 if (targetVersion < kExtendedColoursGoldVersion)
                                 {
                                     auto* sceneryElement = it.element->asSmallScenery();
-                                    sceneryElement->setPrimaryColour(convertPre63Colour(sceneryElement->getPrimaryColour()));
+                                    sceneryElement->setPrimaryColour(
+                                        convertPre63Colour(sceneryElement->getPrimaryColour()), true);
                                     sceneryElement->setSecondaryColour(
-                                        convertPre63Colour(sceneryElement->getSecondaryColour()));
-                                    sceneryElement->setTertiaryColour(convertPre63Colour(sceneryElement->getTertiaryColour()));
+                                        convertPre63Colour(sceneryElement->getSecondaryColour()), true);
+                                    sceneryElement->setTertiaryColour(
+                                        convertPre63Colour(sceneryElement->getTertiaryColour()), true);
                                 }
                                 break;
                             }
