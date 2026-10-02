@@ -38,6 +38,7 @@
 - Fix: [#27136] Guests keep waiting at a level crossing after the train has passed, due to faulty iteration over the track the train has vacated.
 - Fix: [#27212] Chain lifts are blue in screenshots taken from the command line.
 - Fix: [#27218] Tile inspector coordinate spinners are too short for coordinate 1000.
+- Fix: [#27226] Crash Particles are not visible when zoomed out.
 
 0.5.5 (2026-09-06)
 ------------------------------------------------------------------------
