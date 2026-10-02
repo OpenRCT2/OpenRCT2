@@ -18,6 +18,7 @@
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../object/ObjectRepository.h"
+#include "../rct1/Rct1TrackDesignNames.h"
 #include "../ride/RideData.h"
 #include "TrackDesign.h"
 
@@ -46,6 +47,14 @@ std::string GetNameFromTrackPath(const std::string& path)
     std::string name = Path::GetFileNameWithoutExtension(path);
     // The track name should be the file name until the first instance of a dot
     name = name.substr(0, name.find_first_of('.'));
+
+    // RollerCoaster Tycoon: Deluxe bundles a large set of fan-made track designs under anonymous
+    // placeholder filenames (e.g. "u(0010)"); substitute their recovered real names where known.
+    if (auto deluxeName = RCT1::GetDeluxeTrackDesignName(name); deluxeName.has_value())
+    {
+        return std::string(*deluxeName);
+    }
+
     return name;
 }
 
