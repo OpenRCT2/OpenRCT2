@@ -33,8 +33,6 @@ namespace OpenRCT2
             case EntityType::vehicle:
             case EntityType::guest:
             case EntityType::staff:
-                maxZoom = ZoomLevel{ 2 };
-                break;
             case EntityType::crashedVehicleParticle:
                 maxZoom = ZoomLevel{ 2 };
                 break;
