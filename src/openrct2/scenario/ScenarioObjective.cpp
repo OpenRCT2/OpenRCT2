@@ -20,7 +20,7 @@
 
 namespace OpenRCT2::Scenario
 {
-    ObjectiveStatus Objective::CheckGuestsBy(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::CheckGuestsBy(const Park::ParkData& park, const GameState_t& gameState) const
     {
         auto parkRating = park.rating;
         int32_t currentMonthYear = GetDate().GetMonthsElapsed();
@@ -41,7 +41,7 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::undecided;
     }
 
-    ObjectiveStatus Objective::CheckParkValueBy(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::CheckParkValueBy(const Park::ParkData& park, const GameState_t& gameState) const
     {
         int32_t currentMonthYear = GetDate().GetMonthsElapsed();
         money64 objectiveParkValue = Currency;
@@ -68,7 +68,7 @@ namespace OpenRCT2::Scenario
      * excitement >= 600 .
      * rct2:
      **/
-    ObjectiveStatus Objective::Check10RollerCoasters(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::Check10RollerCoasters(const Park::ParkData& park, const GameState_t& gameState) const
     {
         auto rcs = 0;
         BitSet<kMaxRideObjects> type_already_counted;
@@ -100,61 +100,18 @@ namespace OpenRCT2::Scenario
      *
      *  rct2: 0x0066A13C
      */
-    ObjectiveStatus Objective::CheckGuestsAndRating(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::CheckGuestsAndRating(const Park::ParkData& park, const GameState_t& gameState) const
     {
-        // TODO: make park-specific
-        if (park.rating < 700 && GetDate().GetMonthsElapsed() >= 1)
-        {
-            gameState.scenarioParkRatingWarningDays++;
-            if (gameState.scenarioParkRatingWarningDays == 1)
-            {
-                if (Config::Get().notifications.parkRatingWarnings)
-                {
-                    News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
-                }
-            }
-            else if (gameState.scenarioParkRatingWarningDays == 8)
-            {
-                if (Config::Get().notifications.parkRatingWarnings)
-                {
-                    News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
-                }
-            }
-            else if (gameState.scenarioParkRatingWarningDays == 15)
-            {
-                if (Config::Get().notifications.parkRatingWarnings)
-                {
-                    News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
-                }
-            }
-            else if (gameState.scenarioParkRatingWarningDays == 22)
-            {
-                if (Config::Get().notifications.parkRatingWarnings)
-                {
-                    News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
-                }
-            }
-            else if (gameState.scenarioParkRatingWarningDays == 29)
-            {
-                News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-                park.flags.unset(ParkFlag::parkOpen);
-                gameState.scenarioOptions.guestInitialHappiness = 50;
-                return ObjectiveStatus::failure;
-            }
-        }
-        else if (gameState.scenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
-        {
-            gameState.scenarioParkRatingWarningDays = 0;
-        }
+        if (park.rating >= kLowParkRatingThreshold && park.numGuestsInPark >= NumGuests)
+            return ObjectiveStatus::success;
 
-        if (park.rating >= 700)
-            if (park.numGuestsInPark >= NumGuests)
-                return ObjectiveStatus::success;
+        if (park.scenarioParkRatingWarningDays == 29)
+            return ObjectiveStatus::failure;
 
         return ObjectiveStatus::undecided;
     }
 
-    ObjectiveStatus Objective::CheckMonthlyRideIncome(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::CheckMonthlyRideIncome(const Park::ParkData& park, const GameState_t& gameState) const
     {
         money64 lastMonthRideIncome = park.expenditureTable[1][EnumValue(ExpenditureType::parkRideTickets)];
         if (lastMonthRideIncome >= Currency)
@@ -170,7 +127,7 @@ namespace OpenRCT2::Scenario
      * excitement > 700 and a minimum length;
      *  rct2: 0x0066A6B5
      */
-    ObjectiveStatus Objective::Check10RollerCoastersLength(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::Check10RollerCoastersLength(const Park::ParkData& park, const GameState_t& gameState) const
     {
         BitSet<kMaxRideObjects> type_already_counted;
         auto rcs = 0;
@@ -201,7 +158,7 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::undecided;
     }
 
-    ObjectiveStatus Objective::CheckFinish5RollerCoasters(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::CheckFinish5RollerCoasters(const Park::ParkData& park, const GameState_t& gameState) const
     {
         // Originally, this did not check for null rides, neither did it check if
         // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
@@ -229,7 +186,7 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::undecided;
     }
 
-    ObjectiveStatus Objective::CheckRepayLoanAndParkValue(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::CheckRepayLoanAndParkValue(const Park::ParkData& park, const GameState_t& gameState) const
     {
         money64 parkValue = park.value;
         money64 currentLoan = park.bankLoan;
@@ -242,7 +199,7 @@ namespace OpenRCT2::Scenario
         return ObjectiveStatus::undecided;
     }
 
-    ObjectiveStatus Objective::CheckMonthlyFoodIncome(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::CheckMonthlyFoodIncome(const Park::ParkData& park, const GameState_t& gameState) const
     {
         const auto* lastMonthExpenditure = park.expenditureTable[1];
         auto lastMonthProfit = lastMonthExpenditure[EnumValue(ExpenditureType::shopSales)]
@@ -262,7 +219,7 @@ namespace OpenRCT2::Scenario
      * Checks the win/lose conditions of the current objective.
      *  rct2: 0x0066A4B2
      */
-    ObjectiveStatus Objective::Check(Park::ParkData& park, GameState_t& gameState) const
+    ObjectiveStatus Objective::Check(const Park::ParkData& park, const GameState_t& gameState) const
     {
         if (gameState.scenarioCompletedCompanyValue != kMoney64Undefined)
         {
@@ -291,6 +248,22 @@ namespace OpenRCT2::Scenario
                 return CheckMonthlyFoodIncome(park, gameState);
             default:
                 return ObjectiveStatus::undecided;
+        }
+    }
+
+    void Objective::onFailure(Park::ParkData& park, GameState_t& gameState) const
+    {
+        switch (Type)
+        {
+            case ObjectiveType::guestsAndRating:
+            {
+                News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
+                park.flags.unset(ParkFlag::parkOpen);
+                gameState.scenarioOptions.guestInitialHappiness = 50;
+                break;
+            }
+            default:
+                break;
         }
     }
 
