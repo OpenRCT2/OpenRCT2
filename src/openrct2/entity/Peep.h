@@ -242,18 +242,20 @@ namespace OpenRCT2
 
     enum class PeepNextFlag
     {
-         // bits 0 and 1 are used for direction
+        // bits 0 and 1 are used for direction
         isSloped = 2,
         isSurface = 3
     };
     struct PeepNextFlags : public FlagHolder<uint8_t, PeepNextFlag>
     {
         static constexpr uint8_t kDirectionMask = 0x03;
-        uint8_t getDirection() const { return holder & kDirectionMask; }
-        void setDirection(uint8_t direction) 
-        { 
-            holder = (holder & ~kDirectionMask)
-                   | (direction & kDirectionMask);
+        uint8_t getDirection() const
+        {
+            return holder & kDirectionMask;
+        }
+        void setDirection(uint8_t direction)
+        {
+            holder = (holder & ~kDirectionMask) | (direction & kDirectionMask);
         }
     };
 
