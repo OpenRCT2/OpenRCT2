@@ -73,6 +73,7 @@
 #include "../world/tile_element/TrackElement.h"
 #include "../world/tile_element/WallElement.h"
 #include "RCT1.h"
+#include "RCT1File.h"
 #include "Tables.h"
 
 #include <cassert>
@@ -100,7 +101,7 @@ namespace OpenRCT2::RCT1
 
         std::string _s4Path;
         S4 _s4 = {};
-        uint8_t _gameVersion = 0;
+        RCT1Version _gameVersion = RCT1Version::baseGame;
         uint8_t _parkValueConversionFactor = kDefaultParkValueConversionFactor;
         bool _isScenario = false;
 
@@ -176,7 +177,7 @@ namespace OpenRCT2::RCT1
             _s4 = *ReadAndDecodeS4(stream, isScenario);
             _s4Path = path;
             _isScenario = isScenario;
-            _gameVersion = DetectRCT1Version(_s4.GameVersion) & FILE_VERSION_MASK;
+            _gameVersion = detectRCT1Version(_s4.GameVersion).version;
 
             // Only determine what objects we required to import this saved game
             InitialiseEntryMaps();
@@ -320,8 +321,8 @@ namespace OpenRCT2::RCT1
             auto decodedData = std::make_unique<uint8_t[]>(sizeof(S4));
 
             size_t decodedSize;
-            int32_t fileType = DetectFileType(data.get(), dataSize);
-            if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
+            auto fileType = detectFileType(data.get(), dataSize);
+            if (isScenario && fileType.version != RCT1Version::baseGame)
             {
                 decodedSize = DecodeSC4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
@@ -625,14 +626,11 @@ namespace OpenRCT2::RCT1
         void AddEntryForWater()
         {
             std::string_view entryName;
-            if (_gameVersion < FILE_VERSION_RCT1_LL)
-            {
-                entryName = GetWaterObject(RCT1_WATER_CYAN);
-            }
-            else
-            {
+            if (_gameVersion == RCT1Version::loopyLandscapes)
                 entryName = GetWaterObject(_s4.WaterColour);
-            }
+            else
+                entryName = GetWaterObject(RCT1_WATER_CYAN);
+
             _waterEntry.GetOrAddEntry(entryName);
         }
 
@@ -642,7 +640,7 @@ namespace OpenRCT2::RCT1
 
             if (_rideTypeToRideEntryMap[EnumValue(rideType)] == kObjectEntryIndexNull)
             {
-                auto entryName = GetRideTypeObject(rideType, _gameVersion == FILE_VERSION_RCT1_LL);
+                auto entryName = GetRideTypeObject(rideType, _gameVersion == RCT1Version::loopyLandscapes);
                 if (!entryName.empty())
                 {
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
@@ -859,7 +857,7 @@ namespace OpenRCT2::RCT1
             // Flags
             dst->flags.holder = src->flags;
             // These flags were not in the base game
-            if (_gameVersion == FILE_VERSION_RCT1)
+            if (_gameVersion == RCT1Version::baseGame)
             {
                 dst->flags.unset(RideFlag::music, RideFlag::indestructible, RideFlag::indestructibleTrack);
             }
@@ -964,7 +962,7 @@ namespace OpenRCT2::RCT1
             dst->music = kObjectEntryIndexNull;
             if (GetRideTypeDescriptor(dst->type).flags.has(RtdFlag::allowMusic))
             {
-                if (_gameVersion == FILE_VERSION_RCT1)
+                if (_gameVersion == RCT1Version::baseGame)
                 {
                     // Original RCT had no music settings, take default style
                     auto style = GetStyleFromMusicIdentifier(GetRideTypeDescriptor(dst->type).DefaultMusic);
@@ -1102,7 +1100,7 @@ namespace OpenRCT2::RCT1
         {
             // Colours
             dst->vehicleColourSettings = src->vehicleColourSettings;
-            if (_gameVersion == FILE_VERSION_RCT1)
+            if (_gameVersion == RCT1Version::baseGame)
             {
                 dst->trackColours[0].main = GetColour(src->trackPrimaryColour);
                 dst->trackColours[0].additional = GetColour(src->trackSecondaryColour);
@@ -1132,7 +1130,7 @@ namespace OpenRCT2::RCT1
             if (dst->getRideTypeDescriptor().flags.has(RtdFlag::hasEntranceAndExit))
             {
                 // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
-                if (_gameVersion == FILE_VERSION_RCT1)
+                if (_gameVersion == RCT1Version::baseGame)
                 {
                     dst->entranceStyle = 0; // plain entrance
                 }
@@ -1142,7 +1140,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            if (_gameVersion < FILE_VERSION_RCT1_LL && src->type == RideType::merryGoRound)
+            if (_gameVersion != RCT1Version::loopyLandscapes && src->type == RideType::merryGoRound)
             {
                 // The merry-go-round in pre-LL versions was always yellow with red
                 dst->vehicleColours[0].Body = Drawing::Colour::yellow;
@@ -1199,7 +1197,7 @@ namespace OpenRCT2::RCT1
             // LL has 4 types, like RCT2. For LL, only guard against invalid values.
             if (src->type == RideType::hedgeMaze)
             {
-                if (_gameVersion < FILE_VERSION_RCT1_LL || src->trackColourSupports[0] > 3)
+                if (_gameVersion != RCT1Version::loopyLandscapes || src->trackColourSupports[0] > 3)
                     dst->trackColours[0].supports = static_cast<Drawing::Colour>(hedges);
                 else
                     dst->trackColours[0].supports = static_cast<Drawing::Colour>(src->trackColourSupports[0]);
@@ -1708,7 +1706,7 @@ namespace OpenRCT2::RCT1
                     }
 
                     uint8_t railingsType = RCT1_PATH_SUPPORT_TYPE_TRUSS;
-                    if (_gameVersion == FILE_VERSION_RCT1_LL)
+                    if (_gameVersion == RCT1Version::loopyLandscapes)
                     {
                         railingsType = src2->GetRCT1SupportType();
                     }
@@ -2066,7 +2064,7 @@ namespace OpenRCT2::RCT1
                         {
                             InsertResearchVehicle(researchItem, researched);
                         }
-                        else if (!rideTypeInResearch[researchItem.RelatedRide] && _gameVersion == FILE_VERSION_RCT1_LL)
+                        else if (!rideTypeInResearch[researchItem.RelatedRide] && _gameVersion == RCT1Version::loopyLandscapes)
                         {
                             vehiclesWithMissingRideTypes.push_back(researchItem);
                         }
@@ -2322,7 +2320,7 @@ namespace OpenRCT2::RCT1
             park.size = _s4.ParkSize;
             park.totalRideValueForMoney = _s4.TotalRideValueForMoney;
             park.samePriceThroughoutPark = 0;
-            if (_gameVersion == FILE_VERSION_RCT1_LL)
+            if (_gameVersion == RCT1Version::loopyLandscapes)
             {
                 park.samePriceThroughoutPark = _s4.SamePriceThroughout;
             }
@@ -2618,7 +2616,7 @@ namespace OpenRCT2::RCT1
         const ResearchItem* GetResearchList(size_t* count)
         {
             // Loopy Landscapes stores research items in a different place
-            if (_gameVersion == FILE_VERSION_RCT1_LL)
+            if (_gameVersion == RCT1Version::loopyLandscapes)
             {
                 *count = std::size(_s4.ResearchItemsLL);
                 return _s4.ResearchItemsLL;
@@ -2931,7 +2929,7 @@ namespace OpenRCT2::RCT1
         dst->vandalismSeen = src->VandalismSeen;
 
         // Balloons were always blue in RCT1 without AA/LL, umbrellas always red
-        if (_gameVersion == FILE_VERSION_RCT1)
+        if (_gameVersion == RCT1Version::baseGame)
         {
             dst->umbrellaColour = Drawing::Colour::brightRed;
             dst->balloonColour = Drawing::Colour::lightBlue;
@@ -2978,7 +2976,7 @@ namespace OpenRCT2::RCT1
         RideUse::GetTypeHistory().Set(dst->id, RCT12GetRideTypesBeenOn(src));
 
         dst->photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
-        dst->peepFlags.holder = src->getPeepFlags(_gameVersion == FILE_VERSION_RCT1_LL);
+        dst->peepFlags.holder = src->getPeepFlags(_gameVersion == RCT1Version::loopyLandscapes);
 
         for (size_t i = 0; i < std::size(src->Thoughts); i++)
         {
@@ -3000,7 +2998,7 @@ namespace OpenRCT2::RCT1
         dst->guestNextInQueue = EntityId::FromUnderlying(src->NextInQueue);
         // Guests' favourite ride was only saved in LL.
         // Set it to N/A if the save comes from the original or AA.
-        if (_gameVersion == FILE_VERSION_RCT1_LL)
+        if (_gameVersion == RCT1Version::loopyLandscapes)
         {
             dst->favouriteRide = RCT12RideIdToOpenRCT2RideId(src->FavouriteRide);
             dst->favouriteRideRating = src->FavouriteRideRating;
@@ -3011,7 +3009,7 @@ namespace OpenRCT2::RCT1
             dst->favouriteRideRating = 0;
         }
 
-        dst->setItemFlags(src->GetItemFlags(_gameVersion == FILE_VERSION_RCT1));
+        dst->setItemFlags(src->GetItemFlags(_gameVersion == RCT1Version::baseGame));
     }
 
     template<>
@@ -3147,7 +3145,7 @@ namespace OpenRCT2::RCT1
         dst->popped = src->Popped;
         dst->timeToMove = src->TimeToMove;
         // Balloons were always blue in RCT1 without AA/LL
-        if (_gameVersion == FILE_VERSION_RCT1)
+        if (_gameVersion == RCT1Version::baseGame)
         {
             dst->colour = Drawing::Colour::lightBlue;
         }
