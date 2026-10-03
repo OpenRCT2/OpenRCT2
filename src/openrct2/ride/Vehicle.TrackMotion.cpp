@@ -55,9 +55,9 @@ namespace OpenRCT2
     constexpr int16_t kVehicleMaxSpinSpeedWaterRide = 512;
     constexpr int16_t kVehicleMinSpinSpeedWaterRide = -kVehicleMaxSpinSpeedWaterRide;
 
-    // The vertical holding brake catches the train at the crest of the spike and lets go again three quarters of a
-    // second later, unlike the holding brake for drop which holds for over two seconds.
-    constexpr int8_t kVerticalHoldingBrakeHoldTicks = kGameUpdateFPS * 3 / 4;
+    // The vertical holding brake catches the train at the crest of the spike and lets go again a second later,
+    // unlike the holding brake for drop which holds for over two seconds.
+    constexpr int8_t kVerticalHoldingBrakeHoldTicks = kGameUpdateFPS;
     // How slow the train has to get before the brake counts it as stalled.
     constexpr int32_t kVerticalHoldingBrakeStallVelocity = 1.0_mph;
 
