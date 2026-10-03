@@ -595,7 +595,7 @@ namespace OpenRCT2::RCT2
             // News items
             auto recentMessages = convertNewsQueue(_s6.recentMessages);
             auto archivedMessages = convertNewsQueue(_s6.archivedMessages);
-            News::importNewsItems(gameState, recentMessages, archivedMessages);
+            News::importNewsItems(park.newsItems, recentMessages, archivedMessages);
 
             // Pad13CE730
             // rct1_scenario_flags

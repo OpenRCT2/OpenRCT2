@@ -2292,7 +2292,7 @@ namespace OpenRCT2::RCT1
             // News items
             auto recentMessages = convertNewsQueue(_s4.recentMessages);
             auto archivedMessages = convertNewsQueue(_s4.archivedMessages);
-            News::importNewsItems(gameState, recentMessages, archivedMessages);
+            News::importNewsItems(park.newsItems, recentMessages, archivedMessages);
 
             // Initial guest status
             gameState.scenarioOptions.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
