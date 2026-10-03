@@ -214,9 +214,10 @@ namespace OpenRCT2
         // sound throughout instead lets the one scream play out across the hold and the drop that follows, since
         // ProduceScreamSound only picks a new one when none is playing.
         //
-        // Deliberately narrow: heldByVerticalHoldingBrake is only set on a train this brake has caught, and is
-        // cleared as soon as the train is clear of the brake, so this cannot add screaming anywhere else.
-        if (flags.has(VehicleFlag::heldByVerticalHoldingBrake))
+        // Deliberately narrow: this needs both a train the brake has stopped and a car still on the brake, so it
+        // cannot add screaming anywhere else. stoppedOnHoldingBrake alone would also catch the holding brake for
+        // drop on the vertical drop coaster.
+        if (flags.has(VehicleFlag::stoppedOnHoldingBrake) && isAnyCarOnVerticalHoldingBrake())
             return ProduceScreamSound(totalNumPeeps);
 
         if (velocity < 0)
