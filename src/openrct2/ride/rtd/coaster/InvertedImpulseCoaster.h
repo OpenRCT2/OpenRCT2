@@ -25,7 +25,7 @@ constexpr RideTypeDescriptor kInvertedImpulseCoasterRTD =
         .trackStyle = TrackStyle::invertedImpulseCoaster,
         .supportType = MetalSupportType::tubesInverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeVertical, TrackGroup::curveVertical},
-        .extraTrackGroups = {},
+        .extraTrackGroups = {TrackGroup::verticalHoldingBrake},
     }),
     .InvertedTrackPaintFunctions = {},
     .flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |

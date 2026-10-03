@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
@@ -753,6 +754,39 @@ static void InvertedImpulseRCTrackRightQuarterTurn190DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
+static void InvertedImpulseRCTrackVerticalHoldingBrakeMotors(
+    PaintSession& session, uint8_t direction, int32_t height)
+{
+    // Placeholder graphic: the piece is drawn as ordinary vertical track with the brake's linear induction motors
+    // added, so that it can be told apart from plain vertical track until proper sprites exist.
+    //
+    // This is a parent rather than a child of the track so that it carries its own bounding box: a slim column
+    // standing on the rail, spanning the height of the piece. A child would inherit the track's sort position and
+    // always paint last, which drew the motors over the top of the track and train from every rotation.
+    PaintAddImageAsParentRotated(
+        session, direction,
+        session.TrackColours.WithIndex(SPR_TRACKS_INVERTED_IMPULSE_VERTICAL_HOLDING_BRAKE + direction),
+        { 0, 0, height + 29 }, { { 14, 14, height + 29 }, { 4, 4, 32 } });
+}
+
+static void InvertedImpulseRCTrackVerticalHoldingBrakeUp(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    InvertedImpulseRCTrack90DegUp(session, ride, trackSequence, direction, height, trackElement, supportType);
+
+    if (trackSequence == 0)
+        InvertedImpulseRCTrackVerticalHoldingBrakeMotors(session, direction, height);
+}
+
+static void InvertedImpulseRCTrackVerticalHoldingBrakeDown(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, SupportType supportType)
+{
+    InvertedImpulseRCTrackVerticalHoldingBrakeUp(
+        session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
+}
+
 TrackPaintFunction GetTrackPaintFunctionInvertedImpulseRC(TrackElemType trackType)
 {
     switch (trackType)
@@ -807,6 +841,10 @@ TrackPaintFunction GetTrackPaintFunctionInvertedImpulseRC(TrackElemType trackTyp
             return InvertedImpulseRCTrackLeftQuarterTurn190DegDown;
         case TrackElemType::rightQuarterTurn1TileDown90:
             return InvertedImpulseRCTrackRightQuarterTurn190DegDown;
+        case TrackElemType::verticalHoldingBrakeDown:
+            return InvertedImpulseRCTrackVerticalHoldingBrakeDown;
+        case TrackElemType::verticalHoldingBrakeUp:
+            return InvertedImpulseRCTrackVerticalHoldingBrakeUp;
         default:
             return TrackPaintFunctionDummy;
     }

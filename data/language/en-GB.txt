@@ -3854,3 +3854,4 @@ STR_7060    :Guests watching construction of {STRINGID}
 STR_7061    :Guests looking at scenery
 STR_7062    :Guests leaving the park
 STR_7063    :Guests watching new ride being constructed
+STR_7064    :Vertical holding brake
