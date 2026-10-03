@@ -5309,7 +5309,7 @@ namespace OpenRCT2
      * Used by entering_ride and queueing_front */
     void Guest::updateRide()
     {
-        nextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
+        nextFlags.unset(PeepNextFlag::isSloped);
 
         switch (rideSubState)
         {

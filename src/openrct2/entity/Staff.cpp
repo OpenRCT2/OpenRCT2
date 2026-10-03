@@ -2024,7 +2024,7 @@ namespace OpenRCT2
             switch (subState)
             {
                 case PEEP_FIXING_ENTER_STATION:
-                    nextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
+                    nextFlags.unset(PeepNextFlag::isSloped);
                     progressToNextSubstate = updateFixingEnterStation(*ride);
                     break;
 

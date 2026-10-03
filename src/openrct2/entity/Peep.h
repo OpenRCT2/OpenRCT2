@@ -240,12 +240,21 @@ namespace OpenRCT2
     };
     using PeepFlags = FlagHolder<uint32_t, PeepFlag>;
 
-    enum PeepNextFlags
+    enum class PeepNextFlag
     {
-        PEEP_NEXT_FLAG_DIRECTION_MASK = 0x3,
-        PEEP_NEXT_FLAG_IS_SLOPED = (1 << 2),
-        PEEP_NEXT_FLAG_IS_SURFACE = (1 << 3),
-        PEEP_NEXT_FLAG_UNUSED = (1 << 4),
+         // bits 0 and 1 are used for direction
+        isSloped = 2,
+        isSurface = 3
+    };
+    struct PeepNextFlags : public FlagHolder<uint8_t, PeepNextFlag>
+    {
+        static constexpr uint8_t kDirectionMask = 0x03;
+        uint8_t getDirection() const { return holder & kDirectionMask; }
+        void setDirection(uint8_t direction) 
+        { 
+            holder = (holder & ~kDirectionMask)
+                   | (direction & kDirectionMask);
+        }
     };
 
     enum class PeepAnimationGroup : uint8_t
@@ -346,7 +355,7 @@ namespace OpenRCT2
     {
         char* name;
         CoordsXYZ nextLoc;
-        uint8_t nextFlags;
+        PeepNextFlags nextFlags;
         PeepState state;
         union
         {

@@ -1361,7 +1361,7 @@ namespace OpenRCT2::RCT1
             dst->state = static_cast<PeepState>(src->State);
             dst->subState = src->SubState;
             dst->nextLoc = { src->NextX, src->NextY, src->NextZ * Limits::kCoordsZStep };
-            dst->nextFlags = src->NextFlags;
+            dst->nextFlags.holder = src->NextFlags;
             dst->var37 = src->Var37;
             dst->stepProgress = src->StepProgress;
             dst->tShirtColour = GetColour(src->TshirtColour);
