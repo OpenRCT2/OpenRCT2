@@ -999,6 +999,7 @@
     <ClCompile Include="object\LargeSceneryObject.cpp" />
     <ClCompile Include="object\MusicObject.cpp" />
     <ClCompile Include="object\Object.cpp" />
+    <ClCompile Include="object\ObjectAsset.cpp" />
     <ClCompile Include="object\ObjectEntryManager.cpp" />
     <ClCompile Include="object\ObjectFactory.cpp" />
     <ClCompile Include="object\ObjectList.cpp" />
