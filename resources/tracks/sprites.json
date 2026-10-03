@@ -27208,13 +27208,13 @@
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_0_0.png",
-        "x": -23,
+        "x": -22,
         "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_0_1.png",
-        "x": -31,
+        "x": -30,
         "y": -24,
         "palette": "keep"
     },
@@ -27256,7 +27256,7 @@
     },
     {
         "path": "track/lim/large_turn_left_to_diag_gentle_2_0.png",
-        "x": -4,
+        "x": -3,
         "y": 0,
         "palette": "keep"
     },
@@ -27304,7 +27304,7 @@
     },
     {
         "path": "track/lim/large_turn_right_to_diag_gentle_0_0.png",
-        "x": -23,
+        "x": -22,
         "y": -16,
         "palette": "keep"
     },
@@ -27401,7 +27401,7 @@
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_0_0.png",
         "x": 0,
-        "y": -8,
+        "y": -9,
         "palette": "keep"
     },
     {
@@ -27484,14 +27484,14 @@
     },
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_3_2.png",
-        "x": -24,
+        "x": -25,
         "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_left_to_orthogonal_gentle_3_3.png",
-        "x": -23,
-        "y": -15,
+        "x": -24,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -27556,14 +27556,14 @@
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_2_2.png",
-        "x": -11,
+        "x": -12,
         "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_2_3.png",
-        "x": -23,
-        "y": -15,
+        "x": -24,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -27580,13 +27580,13 @@
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_3_2.png",
-        "x": -8,
+        "x": -7,
         "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lim/large_turn_right_to_orthogonal_gentle_3_3.png",
-        "x": -24,
+        "x": -23,
         "y": -16,
         "palette": "keep"
     },
