@@ -562,6 +562,7 @@ namespace OpenRCT2
         void removePeeps();
 
         int32_t getTotalLength() const;
+        uint8_t getTrackShelteredEighths() const;
         int32_t getTotalTime() const;
 
         const StationObject* getStationObject() const;
