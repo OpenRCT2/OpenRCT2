@@ -42,8 +42,6 @@
 #include "../object/ScenarioMetaObject.h"
 #include "../park/Legacy.h"
 #include "../peep/RideUseSystem.h"
-#include "../rct1/RCT1.h"
-#include "../rct1/Tables.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
 #include "../rct12/ScenarioPatcher.h"
