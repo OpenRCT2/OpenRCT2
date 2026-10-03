@@ -13,6 +13,8 @@
 #include <iterator>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
+#include <utility>
 
 using namespace OpenRCT2::Audio;
 
@@ -27,33 +29,56 @@ void AudioMixer::Init(const char* device)
 
     SDL_AudioSpec want = {};
     want.freq = 22050;
-    want.format = AUDIO_S16SYS;
+    want.format = SDL_AUDIO_S16;
     want.channels = 2;
-    want.samples = 2048;
-    want.callback = [](void* arg, uint8_t* dst, int32_t length) -> void {
-        auto* mixer = static_cast<AudioMixer*>(arg);
-        mixer->GetNextAudioChunk(dst, static_cast<size_t>(length));
-        mixer->RemoveReleasedSources();
-    };
-    want.userdata = this;
 
-    SDL_AudioSpec have;
-    _deviceId = SDL_OpenAudioDevice(device, 0, &want, &have, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_SAMPLES_CHANGE);
-    _outputFormat.format = have.format;
-    _outputFormat.channels = have.channels;
-    _outputFormat.freq = have.freq;
+    SDL_AudioDeviceID devId = SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK;
+    if (device != nullptr)
+    {
+        int numDevices = 0;
+        auto* deviceIds = SDL_GetAudioPlaybackDevices(&numDevices);
+        if (deviceIds != nullptr)
+        {
+            for (int i = 0; i < numDevices; i++)
+            {
+                if (String::equals(SDL_GetAudioDeviceName(deviceIds[i]), device))
+                {
+                    devId = deviceIds[i];
+                    break;
+                }
+            }
+            SDL_free(deviceIds);
+        }
+    }
 
-    SDL_PauseAudioDevice(_deviceId, 0);
+    _deviceStream = SDL_OpenAudioDeviceStream(devId, &want, AudioStreamCallback, this);
+
+    // PutAudioStreamData is always fed in `want` format; SDL resamples to the device's native format internally.
+    _outputFormat.format = want.format;
+    _outputFormat.channels = want.channels;
+    _outputFormat.freq = want.freq;
+    _deviceId = _deviceStream != nullptr ? SDL_GetAudioStreamDevice(_deviceStream) : 0;
+
+    if (_deviceStream != nullptr)
+    {
+        SDL_ResumeAudioStreamDevice(_deviceStream);
+    }
 }
 
 void AudioMixer::Close()
 {
-    // Free channels
-    Lock();
-    _channels.clear();
-    Unlock();
+    // Destroy the stream first: SDL_DestroyAudioStream synchronously stops the device thread,
+    // so once it returns the audio callback can no longer be running and it's safe to touch
+    // mixer state below without locking against it.
+    SDL_AudioStream* stream = std::exchange(_deviceStream, nullptr);
+    if (stream != nullptr)
+    {
+        SDL_DestroyAudioStream(stream);
+    }
+    _deviceId = 0;
 
-    SDL_CloseAudioDevice(_deviceId);
+    // Free channels
+    _channels.clear();
 
     // Free buffers
     _channelBuffer.clear();
@@ -66,12 +91,27 @@ void AudioMixer::Close()
 
 void AudioMixer::Lock()
 {
-    SDL_LockAudioDevice(_deviceId);
+    if (_deviceStream != nullptr)
+    {
+        SDL_LockAudioStream(_deviceStream);
+    }
 }
 
 void AudioMixer::Unlock()
 {
-    SDL_UnlockAudioDevice(_deviceId);
+    if (_deviceStream != nullptr)
+    {
+        SDL_UnlockAudioStream(_deviceStream);
+    }
+}
+
+void AudioMixer::AudioStreamCallback(void* userdata, SDL_AudioStream* stream, int additionalAmount, int totalAmount)
+{
+    auto* mixer = static_cast<AudioMixer*>(userdata);
+    std::vector<uint8_t> buffer(static_cast<size_t>(additionalAmount));
+    mixer->GetNextAudioChunk(buffer.data(), buffer.size());
+    mixer->RemoveReleasedSources();
+    SDL_PutAudioStreamData(stream, buffer.data(), additionalAmount);
 }
 
 std::shared_ptr<IAudioChannel> AudioMixer::Play(IAudioSource* source, int32_t loop, bool deleteondone)
@@ -178,31 +218,25 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
     int32_t outputByteRate = _outputFormat.GetByteRate();
     auto numSamples = static_cast<int32_t>(length / outputByteRate);
     double rate = 1;
-    if (_outputFormat.format == AUDIO_S16SYS)
+    if (_outputFormat.format == SDL_AUDIO_S16)
     {
         rate = channel->GetRate();
     }
 
     bool mustConvert = false;
-    SDL_AudioCVT cvt;
-    cvt.len_ratio = 1;
+    double lenRatio = 1;
     AudioFormat streamformat = channel->GetFormat();
     if (streamformat != _outputFormat)
     {
-        if (SDL_BuildAudioCVT(
-                &cvt, streamformat.format, streamformat.channels, streamformat.freq, _outputFormat.format,
-                _outputFormat.channels, _outputFormat.freq)
-            == -1)
-        {
-            // Unable to convert channel data
-            return;
-        }
+        lenRatio = (static_cast<double>(_outputFormat.freq) / streamformat.freq)
+            * (static_cast<double>(_outputFormat.channels) / streamformat.channels)
+            * (static_cast<double>(SDL_AUDIO_BYTESIZE(_outputFormat.format)) / SDL_AUDIO_BYTESIZE(streamformat.format));
         mustConvert = true;
     }
 
     // Read raw PCM from channel
     int32_t readSamples = numSamples * rate;
-    auto readLength = static_cast<size_t>(ceil(readSamples / cvt.len_ratio)) * outputByteRate;
+    auto readLength = static_cast<size_t>(ceil(readSamples / lenRatio)) * outputByteRate;
     _channelBuffer.resize(readLength);
     size_t bytesRead = channel->Read(_channelBuffer.data(), readLength);
 
@@ -211,12 +245,7 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
     size_t bufferLen = 0;
     if (mustConvert)
     {
-        if (Convert(&cvt, _channelBuffer.data(), bytesRead))
-        {
-            buffer = cvt.buf;
-            bufferLen = cvt.len_cvt;
-        }
-        else
+        if (!Convert(streamformat, _channelBuffer.data(), bytesRead, &buffer, &bufferLen))
         {
             return;
         }
@@ -248,8 +277,9 @@ void AudioMixer::MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t len
 
     // Finally mix on to destination buffer
     size_t dstLength = std::min(length, bufferLen);
-    SDL_MixAudioFormat(
-        data, static_cast<const uint8_t*>(buffer), _outputFormat.format, static_cast<uint32_t>(dstLength), mixVolume);
+    SDL_MixAudio(
+        data, static_cast<const uint8_t*>(buffer), _outputFormat.format, static_cast<uint32_t>(dstLength),
+        static_cast<float>(mixVolume) / kMixerVolumeMax);
 
     channel->UpdateOldVolume();
 }
@@ -317,11 +347,13 @@ void AudioMixer::ApplyPan(const IAudioChannel* channel, void* buffer, size_t len
     {
         switch (_outputFormat.format)
         {
-            case AUDIO_S16SYS:
+            case SDL_AUDIO_S16:
                 EffectPanS16(channel, static_cast<int16_t*>(buffer), static_cast<int32_t>(len / sampleSize));
                 break;
-            case AUDIO_U8:
+            case SDL_AUDIO_U8:
                 EffectPanU8(channel, static_cast<uint8_t*>(buffer), static_cast<int32_t>(len / sampleSize));
+                break;
+            default:
                 break;
         }
     }
@@ -368,11 +400,13 @@ int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size
         int32_t fadeLength = static_cast<int32_t>(len) / _outputFormat.BytesPerSample();
         switch (_outputFormat.format)
         {
-            case AUDIO_S16SYS:
+            case SDL_AUDIO_S16:
                 EffectFadeS16(static_cast<int16_t*>(buffer), fadeLength, startVolume, endVolume);
                 break;
-            case AUDIO_U8:
+            case SDL_AUDIO_U8:
                 EffectFadeU8(static_cast<uint8_t*>(buffer), fadeLength, startVolume, endVolume);
+                break;
+            default:
                 break;
         }
     }
@@ -416,10 +450,8 @@ void AudioMixer::EffectPanU8(const IAudioChannel* channel, uint8_t* data, int32_
 // TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectFadeS16(int16_t* data, int32_t length, int32_t startvolume, int32_t endvolume)
 {
-    static_assert(SDL_MIX_MAXVOLUME == kMixerVolumeMax, "Max volume differs between OpenRCT2 and SDL2");
-
-    float startvolume_f = static_cast<float>(startvolume) / SDL_MIX_MAXVOLUME;
-    float endvolume_f = static_cast<float>(endvolume) / SDL_MIX_MAXVOLUME;
+    float startvolume_f = static_cast<float>(startvolume) / kMixerVolumeMax;
+    float endvolume_f = static_cast<float>(endvolume) / kMixerVolumeMax;
     for (int32_t i = 0; i < length; i++)
     {
         float t = static_cast<float>(i) / length;
@@ -430,10 +462,8 @@ void AudioMixer::EffectFadeS16(int16_t* data, int32_t length, int32_t startvolum
 // TODO: investigate replacing this with OpenAL (#26035)
 void AudioMixer::EffectFadeU8(uint8_t* data, int32_t length, int32_t startvolume, int32_t endvolume)
 {
-    static_assert(SDL_MIX_MAXVOLUME == kMixerVolumeMax, "Max volume differs between OpenRCT2 and SDL2");
-
-    float startvolume_f = static_cast<float>(startvolume) / SDL_MIX_MAXVOLUME;
-    float endvolume_f = static_cast<float>(endvolume) / SDL_MIX_MAXVOLUME;
+    float startvolume_f = static_cast<float>(startvolume) / kMixerVolumeMax;
+    float endvolume_f = static_cast<float>(endvolume) / kMixerVolumeMax;
     for (int32_t i = 0; i < length; i++)
     {
         float t = static_cast<float>(i) / length;
@@ -441,23 +471,29 @@ void AudioMixer::EffectFadeU8(uint8_t* data, int32_t length, int32_t startvolume
     }
 }
 
-bool AudioMixer::Convert(SDL_AudioCVT* cvt, const void* src, size_t len)
+bool AudioMixer::Convert(const AudioFormat& srcFormat, const void* src, size_t len, void** outBuf, size_t* outLen)
 {
-    // tofix: there seems to be an issue with converting audio using SDL_ConvertAudio in the callback vs preconverted,
-    // can cause pops and static depending on sample rate and channels
-    bool result = false;
-    if (len != 0 && cvt->len_mult != 0)
+    // tofix: there seems to be an issue with converting audio using SDL_ConvertAudioSamples in the callback vs
+    // preconverted, can cause pops and static depending on sample rate and channels
+    if (len == 0)
     {
-        size_t reqConvertBufferCapacity = len * cvt->len_mult;
-        _convertBuffer.resize(reqConvertBufferCapacity);
-        std::copy_n(static_cast<const uint8_t*>(src), len, _convertBuffer.data());
-
-        cvt->len = static_cast<int32_t>(len);
-        cvt->buf = static_cast<uint8_t*>(_convertBuffer.data());
-        if (SDL_ConvertAudio(cvt) >= 0)
-        {
-            result = true;
-        }
+        return false;
     }
-    return result;
+
+    SDL_AudioSpec srcSpec{ srcFormat.format, srcFormat.channels, srcFormat.freq };
+    SDL_AudioSpec dstSpec{ _outputFormat.format, _outputFormat.channels, _outputFormat.freq };
+
+    Uint8* dstData = nullptr;
+    int dstLen = 0;
+    if (!SDL_ConvertAudioSamples(&srcSpec, static_cast<const Uint8*>(src), static_cast<int>(len), &dstSpec, &dstData, &dstLen))
+    {
+        return false;
+    }
+
+    _convertBuffer.assign(dstData, dstData + dstLen);
+    SDL_free(dstData);
+
+    *outBuf = _convertBuffer.data();
+    *outLen = _convertBuffer.size();
+    return true;
 }
