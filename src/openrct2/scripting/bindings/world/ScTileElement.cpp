@@ -1100,7 +1100,7 @@ namespace OpenRCT2::Scripting
         }
 
         const auto& rtd = ride->getRideTypeDescriptor();
-        if (rtd.specialType != RtdSpecialType::maze)
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.LogPluginInfo("Cannot set 'seatRotation' property, TrackElement belongs to a maze.");
