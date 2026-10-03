@@ -513,7 +513,7 @@ namespace OpenRCT2
 
                 peep->happiness = std::min(peep->happiness, peep->happinessTarget) / 2;
                 peep->happinessTarget = peep->happiness;
-                peep->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
+                peep->windowInvalidateFlags.set(PeepInvalidateFlag::peepStats);
             }
         }
         // Place all the staff at exit
@@ -541,7 +541,7 @@ namespace OpenRCT2
                 peep->state = PeepState::falling;
                 peep->switchToSpecialSprite(0);
 
-                peep->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
+                peep->windowInvalidateFlags.set(PeepInvalidateFlag::peepStats);
             }
         }
         numRiders = 0;

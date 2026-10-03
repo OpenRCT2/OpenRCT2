@@ -907,9 +907,9 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_1);
             invalidateWidget(WIDX_TAB_2);
 
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::peepAction))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::peepAction);
                 invalidateWidget(WIDX_ACTION_LBL);
             }
 
@@ -1091,7 +1091,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_STATS;
+            peep->windowInvalidateFlags.unset(PeepInvalidateFlag::peepStats);
 
             invalidate();
         }
@@ -1546,9 +1546,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_THOUGHTS)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::peepThoughts))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::peepThoughts);
                 invalidate();
             }
         }
@@ -1617,9 +1617,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_INVENTORY)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::peepInventory))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::peepInventory);
                 invalidate();
             }
         }
