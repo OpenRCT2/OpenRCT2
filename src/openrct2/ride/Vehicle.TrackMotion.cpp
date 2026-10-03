@@ -86,25 +86,19 @@ namespace OpenRCT2
      */
     static void applyVerticalHoldingBrake(Vehicle& train)
     {
-        if (!train.isAnyCarOnVerticalHoldingBrake())
-        {
-            // Clear of the brake, so it is free to catch this train again next time round
-            train.flags.unset(VehicleFlag::heldByVerticalHoldingBrake);
-            return;
-        }
-
-        // One catch per visit. Just after being let go the train is still barely moving and still sitting on the
-        // brake, so without this the brake would immediately grab it again and never release it.
-        if (train.flags.has(VehicleFlag::heldByVerticalHoldingBrake))
-            return;
-
+        // stoppedOnHoldingBrake stays set until the head reaches a new piece, which is what stops the brake catching
+        // the train again in the moment after it lets go, while the train is back at a standstill and still sitting
+        // on the brake. Beyond that there is nothing to guard against: a train only stalls once per pass over the
+        // spike, and from then on gravity is taking it away from the brake.
         if (train.flags.has(VehicleFlag::stoppedOnHoldingBrake))
             return;
 
         if (std::abs(train.velocity) >= kVerticalHoldingBrakeStallVelocity)
             return;
 
-        train.flags.set(VehicleFlag::heldByVerticalHoldingBrake);
+        if (!train.isAnyCarOnVerticalHoldingBrake())
+            return;
+
         train.flags.set(VehicleFlag::stoppedOnHoldingBrake);
         train.vertical_drop_countdown = kVerticalHoldingBrakeHoldTicks;
     }
