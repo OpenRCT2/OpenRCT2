@@ -293,15 +293,16 @@ namespace OpenRCT2
     };
 
     // Flags used by peep->WindowInvalidateFlags
-    enum PeepInvalidate
+    enum class PeepInvalidateFlag
     {
-        PEEP_INVALIDATE_PEEP_THOUGHTS = 1,
-        PEEP_INVALIDATE_PEEP_STATS = 1 << 1,
-        PEEP_INVALIDATE_PEEP_2 = 1 << 2,
-        PEEP_INVALIDATE_PEEP_INVENTORY = 1 << 3,
-        PEEP_INVALIDATE_STAFF_STATS = 1 << 4,
-        PEEP_INVALIDATE_PEEP_ACTION = 1 << 5, // Currently set only when guestHeadingToRideId is changed
+        peepThoughts = 0,
+        peepStats = 1,
+        peep2 = 2,
+        peepInventory = 3,
+        staffStats = 4,
+        peepAction = 5, // Currently set only when guestHeadingToRideId is changed
     };
+    using PeepInvalidateFlags = FlagHolder<uint8_t, PeepInvalidateFlag>;
 
     enum class PeepActionDescriptionType : uint8_t
     {
@@ -373,7 +374,7 @@ namespace OpenRCT2
         uint8_t energy;
         uint8_t energyTarget;
         uint8_t mass;
-        uint8_t windowInvalidateFlags;
+        PeepInvalidateFlags windowInvalidateFlags;
         RideId currentRide;
         StationIndex currentRideStation;
         uint8_t currentTrain;

@@ -918,14 +918,14 @@ namespace OpenRCT2
                     {
                         guest->happinessTarget = std::min(guest->happinessTarget + 4, kPeepMaxHappiness);
                         staffGuestsEntertained = AddClamp(staffGuestsEntertained, 1u);
-                        windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                        windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
                     }
                     else if (guest->state == PeepState::queuing)
                     {
                         guest->timeInQueue = std::max(0, guest->timeInQueue - 200);
                         guest->happinessTarget = std::min(guest->happinessTarget + 3, kPeepMaxHappiness);
                         staffGuestsEntertained = AddClamp(staffGuestsEntertained, 1u);
-                        windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                        windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
                     }
                 }
             }
@@ -1074,7 +1074,7 @@ namespace OpenRCT2
                 MapInvalidateTileZoom0({ nextLoc, surfaceElement->getBaseZ(), surfaceElement->getBaseZ() + 16 });
             }
             staffLawnsMown = AddClamp(staffLawnsMown, 1u);
-            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
         }
     }
 
@@ -1133,7 +1133,7 @@ namespace OpenRCT2
                 tile_element->asSmallScenery()->setAge(0);
                 MapInvalidateTileZoom0({ actionLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
                 staffGardensWatered = AddClamp(staffGardensWatered, 1u);
-                windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
             } while (!(tile_element++)->isLastForTile());
 
             stateReset();
@@ -1216,7 +1216,7 @@ namespace OpenRCT2
 
             MapInvalidateTileZoom0({ nextLoc, tile_element->getBaseZ(), tile_element->getClearanceZ() });
             staffBinsEmptied = AddClamp(staffBinsEmptied, 1u);
-            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
         }
     }
 
@@ -1235,7 +1235,7 @@ namespace OpenRCT2
             // Remove sick at this location
             Litter::removeAt(getLocation());
             staffLitterSwept = AddClamp(staffLitterSwept, 1u);
-            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
         }
         if (auto loc = updateAction(); loc.has_value())
         {
@@ -2552,13 +2552,13 @@ namespace OpenRCT2
                 updateRideInspected(currentRide);
 
                 staffRidesInspected = AddClamp(staffRidesInspected, 1u);
-                windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
                 ride.mechanicStatus = MechanicStatus::undefined;
                 return true;
             }
 
             staffRidesFixed = AddClamp(staffRidesFixed, 1u);
-            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
 
             orientation = peepDirection << 3;
             action = PeepActionType::staffAnswerCall2;

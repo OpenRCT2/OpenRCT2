@@ -1979,7 +1979,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.windowInvalidateFlags);
+            cs.readWrite(entity.windowInvalidateFlags.holder);
 
             if (version <= 1)
             {

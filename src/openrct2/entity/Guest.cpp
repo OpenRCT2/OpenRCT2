@@ -757,7 +757,7 @@ namespace OpenRCT2
                         giveItem(discardContainer);
                     }
 
-                    windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                    windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
                     updateAnimationGroup();
                 }
             }
@@ -784,7 +784,7 @@ namespace OpenRCT2
         if (newEnergy != energy)
         {
             energy = newEnergy;
-            windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+            windowInvalidateFlags.set(PeepInvalidateFlag::peep2);
         }
 
         uint8_t newHappiness = happiness;
@@ -805,7 +805,7 @@ namespace OpenRCT2
         if (newHappiness != happiness)
         {
             happiness = newHappiness;
-            windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+            windowInvalidateFlags.set(PeepInvalidateFlag::peep2);
         }
 
         uint8_t newNausea = nausea;
@@ -826,7 +826,7 @@ namespace OpenRCT2
         if (newNausea != nausea)
         {
             nausea = newNausea;
-            windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+            windowInvalidateFlags.set(PeepInvalidateFlag::peep2);
         }
     }
 
@@ -1610,7 +1610,7 @@ namespace OpenRCT2
                 break;
         }
 
-        guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+        guest.windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
         guest.updateAnimationGroup();
         if (guest.peepFlags.has(PeepFlag::tracking))
         {
@@ -1651,7 +1651,7 @@ namespace OpenRCT2
         if (hasVoucher)
         {
             guest.removeItem(ShopItem::voucher);
-            guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+            guest.windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
         }
         else if (!gameState.park.flags.has(ParkFlag::noMoney))
         {
@@ -1708,11 +1708,11 @@ namespace OpenRCT2
             peepFlags.unset(PeepFlag::rideShouldBeMarkedAsFavourite);
             favouriteRide = ride.id;
             // TODO fix this flag name or add another one
-            windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+            windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
         }
         happiness = happinessTarget;
         nausea = nauseaTarget;
-        windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
+        windowInvalidateFlags.set(PeepInvalidateFlag::peepStats);
 
         if (peepFlags.has(PeepFlag::leavingPark))
             peepFlags.unset(PeepFlag::parkEntranceChosen);
@@ -1722,7 +1722,7 @@ namespace OpenRCT2
             guestHeadingToRideId = ride.id;
             guestIsLostCountdown = 200;
             resetPathfindGoal();
-            windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
+            windowInvalidateFlags.set(PeepInvalidateFlag::peepAction);
         }
 
         if (GuestShouldPreferredIntensityIncrease(*this))
@@ -1777,7 +1777,7 @@ namespace OpenRCT2
             guest.guestHeadingToRideId = ride->id;
             guest.guestIsLostCountdown = 200;
             guest.resetPathfindGoal();
-            guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
+            guest.windowInvalidateFlags.set(PeepInvalidateFlag::peepAction);
 
             // Make peep look at their map if they have one
             if (guest.hasItem(ShopItem::map))
@@ -2375,7 +2375,7 @@ namespace OpenRCT2
     static void GuestResetRideHeading(Guest& guest)
     {
         guest.guestHeadingToRideId = RideId::GetNull();
-        guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
+        guest.windowInvalidateFlags.set(PeepInvalidateFlag::peepAction);
     }
 
     static void GuestRideIsTooIntense(Guest& guest, Ride& ride, bool peepAtRide)
@@ -3188,7 +3188,7 @@ namespace OpenRCT2
             guest.guestHeadingToRideId = closestRide->id;
             guest.guestIsLostCountdown = 200;
             guest.resetPathfindGoal();
-            guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
+            guest.windowInvalidateFlags.set(PeepInvalidateFlag::peepAction);
             guest.timeLost = 0;
         }
     }
@@ -3258,7 +3258,7 @@ namespace OpenRCT2
 
             guest.thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::none;
 
-            guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+            guest.windowInvalidateFlags.set(PeepInvalidateFlag::peepThoughts);
             i--;
         }
     }
@@ -3819,7 +3819,7 @@ namespace OpenRCT2
             if ((hasItem(ShopItem::voucher)) && (voucherType == VOUCHER_TYPE_RIDE_FREE) && (voucherRideId == currentRide))
             {
                 removeItem(ShopItem::voucher);
-                windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
             }
             else
             {
@@ -5173,7 +5173,7 @@ namespace OpenRCT2
                     // When thought is older than ~6900 ticks remove it
                     if (++guest.thoughts[i].freshness >= 28)
                     {
-                        guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+                        guest.windowInvalidateFlags.set(PeepInvalidateFlag::peepThoughts);
 
                         // Clear top thought, push others up
                         if (i < kPeepMaxThoughts - 2)
@@ -5196,7 +5196,7 @@ namespace OpenRCT2
         if (add_fresh && fresh_thought != -1)
         {
             guest.thoughts[fresh_thought].freshness = 1;
-            guest.windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+            guest.windowInvalidateFlags.set(PeepInvalidateFlag::peepThoughts);
         }
     }
 
@@ -5448,7 +5448,7 @@ namespace OpenRCT2
                     litterType = Litter::Type(GetShopItemDescriptor(item).Type);
                 }
 
-                windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
                 updateAnimationGroup();
 
                 const auto loc = getLocation();
@@ -5979,7 +5979,7 @@ namespace OpenRCT2
                         if ((ScenarioRand() & 7) == 0)
                             spaceLeftInBin--;
                         removeItem(item);
-                        windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                        windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
                         updateAnimationGroup();
                         continue;
                     }
@@ -5991,7 +5991,7 @@ namespace OpenRCT2
 
                     Litter::create({ litterX, litterY, z, static_cast<Direction>(ScenarioRand() & 3) }, litterType);
                     removeItem(item);
-                    windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                    windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
 
                     updateAnimationGroup();
                 }
@@ -6291,7 +6291,7 @@ namespace OpenRCT2
             if (std::max(xDist, yDist) < 224)
             {
                 innerPeep->staffVandalsStopped = AddClamp(innerPeep->staffVandalsStopped, 1u);
-                innerPeep->windowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
+                innerPeep->windowInvalidateFlags.set(PeepInvalidateFlag::staffStats);
                 return;
             }
         }
@@ -6863,7 +6863,7 @@ namespace OpenRCT2
                 Balloon::create({ x, y, z + 9 }, balloonColour, isBalloonPopped);
             }
             removeItem(ShopItem::balloon);
-            windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+            windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
         }
 
         if (Weather::isPrecipitating() && (hasItem(ShopItem::umbrella)) && x != kLocationNull)
@@ -7036,7 +7036,7 @@ namespace OpenRCT2
         thought.freshness = 0;
         thought.fresh_timeout = 0;
 
-        windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+        windowInvalidateFlags.set(PeepInvalidateFlag::peepThoughts);
     }
 
     // clang-format off
@@ -7181,7 +7181,7 @@ namespace OpenRCT2
         peep->interactionRideIndex = RideId::GetNull();
         peep->previousRide = RideId::GetNull();
         std::get<0>(peep->thoughts).type = PeepThoughtType::none;
-        peep->windowInvalidateFlags = 0;
+        peep->windowInvalidateFlags = {};
 
         uint8_t intensityHighest = (ScenarioRand() & 0x7) + 3;
         uint8_t intensityLowest = std::min(intensityHighest, static_cast<uint8_t>(7)) - 3;
@@ -7695,7 +7695,7 @@ namespace OpenRCT2
         else
             nausea -= 30;
 
-        windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+        windowInvalidateFlags.set(PeepInvalidateFlag::peep2);
 
         const auto curLoc = getLocation();
         Litter::create({ curLoc, orientation }, (id.ToUnderlying() & 1) ? Litter::Type::vomitAlt : Litter::Type::vomit);

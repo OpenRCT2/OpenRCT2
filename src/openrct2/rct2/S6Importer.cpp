@@ -1711,7 +1711,7 @@ namespace OpenRCT2::RCT2
             dst->energy = src->Energy;
             dst->energyTarget = src->EnergyTarget;
             dst->mass = src->Mass;
-            dst->windowInvalidateFlags = src->WindowInvalidateFlags;
+            dst->windowInvalidateFlags.holder = src->WindowInvalidateFlags;
             dst->currentRide = RCT12RideIdToOpenRCT2RideId(src->CurrentRide);
             dst->currentRideStation = StationIndex::FromUnderlying(src->CurrentRideStation);
             dst->currentTrain = src->CurrentTrain;
