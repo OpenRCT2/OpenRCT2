@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
+#include "../core/OrcaStream.hpp"
 #include "../object/ObjectTypes.h"
 
 #include <cstdint>
@@ -85,3 +86,6 @@ std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedVa
 void updateSurfaceElementsColour(
     OpenRCT2::GameState_t& gameState, std::span<const TerrainSurfaceMapping> terrainSurfaceMap,
     std::span<const OpenRCT2::Drawing::Colour> terrainEdgeMap);
+OpenRCT2::Drawing::Colour convertPre63Colour(uint8_t colour);
+OpenRCT2::Drawing::Colour convertPre63Colour(OpenRCT2::Drawing::Colour colour);
+void readWriteColour(OpenRCT2::OrcaStream::ChunkStream& cs, OpenRCT2::Drawing::Colour& colourField, uint32_t parkFileVersion);

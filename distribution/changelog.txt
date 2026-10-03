@@ -1,6 +1,7 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
 - Feature: [#16014] Land surfaces and edges can now be recoloured.
+- Feature: [#26894] Added 18 additional colours, including 5 from the base version of RCT1 (which were removed in later versions).
 - Feature: [#27153] [Plugin] Add `guestsEntertained` to `Entertainer` interface.
 - Feature: [#27184] [Plugin] Double limit of miscellaneous entities (e.g. crash particles, steam plumes and balloons) to 6400.
 - Feature: [objects#447] Track designer grid can now be used outside the Track Designer.

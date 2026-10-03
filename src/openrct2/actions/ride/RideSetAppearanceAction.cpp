@@ -99,27 +99,27 @@ namespace OpenRCT2::GameActions
         switch (_type)
         {
             case RideSetAppearanceType::trackColourMain:
-                ride->trackColours[_index].main = static_cast<Drawing::Colour>(_value);
+                ride->trackColours[_index].main = Drawing::clampColour(_value);
                 Drawing::GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::trackColourAdditional:
-                ride->trackColours[_index].additional = static_cast<Drawing::Colour>(_value);
+                ride->trackColours[_index].additional = Drawing::clampColour(_value);
                 Drawing::GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::trackColourSupports:
-                ride->trackColours[_index].supports = static_cast<Drawing::Colour>(_value);
+                ride->trackColours[_index].supports = Drawing::clampColour(_value);
                 Drawing::GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::vehicleColourBody:
-                ride->vehicleColours[_index].Body = static_cast<Drawing::Colour>(_value);
+                ride->vehicleColours[_index].Body = Drawing::clampColour(_value);
                 RideUpdateVehicleColours(*ride);
                 break;
             case RideSetAppearanceType::vehicleColourTrim:
-                ride->vehicleColours[_index].Trim = static_cast<Drawing::Colour>(_value);
+                ride->vehicleColours[_index].Trim = Drawing::clampColour(_value);
                 RideUpdateVehicleColours(*ride);
                 break;
             case RideSetAppearanceType::vehicleColourTertiary:
-                ride->vehicleColours[_index].Tertiary = static_cast<Drawing::Colour>(_value);
+                ride->vehicleColours[_index].Tertiary = Drawing::clampColour(_value);
                 RideUpdateVehicleColours(*ride);
                 break;
             case RideSetAppearanceType::vehicleColourScheme:
