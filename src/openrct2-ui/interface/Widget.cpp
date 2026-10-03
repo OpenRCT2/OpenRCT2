@@ -1153,8 +1153,7 @@ namespace OpenRCT2::Ui
         {
             if (widget.text != 0)
             {
-                u8string wrappedString;
-                wrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::medium, &wrappedString, nullptr);
+                auto wrappedString = wrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::medium);
                 drawText(rt, { topLeft.x + 2, topLeft.y }, wrappedString, { w.colours[1], { TextPaintFlag::noFormatting } });
             }
             return;
@@ -1162,8 +1161,7 @@ namespace OpenRCT2::Ui
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
-        u8string wrappedString;
-        wrapString(*textInput->Buffer, bottomRight.x - topLeft.x - 5 - 6, FontStyle::medium, &wrappedString, nullptr);
+        auto wrappedString = wrapString(*textInput->Buffer, bottomRight.x - topLeft.x - 5 - 6, FontStyle::medium);
 
         drawText(rt, { topLeft.x + 2, topLeft.y }, wrappedString, { w.colours[1], { TextPaintFlag::noFormatting } });
 

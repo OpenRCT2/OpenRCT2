@@ -290,22 +290,22 @@ namespace OpenRCT2
     // But this adjusts the initial Y coordinate depending of the number of lines.
     static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
     {
-        int32_t numLines;
-        u8string wrappedString;
-        wrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::medium, &wrappedString, &numLines);
+        auto wrappedString = wrapStringAndMeasure(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::medium);
+        const auto lineCount = wrappedString.metrics.lineCount;
         auto lineHeight = FontGetLineHeight(FontStyle::medium);
 
-        int32_t expectedY = screenCoords.y - (numLines * lineHeight);
+        int32_t expectedY = screenCoords.y - ((lineCount - 1) * lineHeight);
         if (expectedY < 50)
         {
-            return (numLines * lineHeight); // Skip drawing, return total height.
+            return ((lineCount - 1) * lineHeight); // Skip drawing, return total height.
         }
 
-        const utf8* bufferPtr = wrappedString.data();
+        const utf8* bufferPtr = wrappedString.text.data();
         int32_t lineY = screenCoords.y;
-        for (int32_t line = 0; line <= numLines; ++line)
+        for (int32_t line = 0; line < lineCount; ++line)
         {
-            drawText(rt, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { OpenRCT2::Drawing::kColourNull });
+            drawText(
+                rt, { screenCoords.x, lineY - ((lineCount - 1) * lineHeight) }, bufferPtr, { OpenRCT2::Drawing::kColourNull });
             bufferPtr = GetStringEnd(bufferPtr) + 1;
             lineY += lineHeight;
         }
@@ -316,9 +316,8 @@ namespace OpenRCT2
     // Almost the same as gfx_draw_string_left_wrapped
     int32_t ChatStringWrappedGetHeight(u8string_view args, int32_t width)
     {
-        int32_t numLines;
-        wrapString(FormatStringID(STR_STRING, args), width, FontStyle::medium, nullptr, &numLines);
+        const auto metrics = measureWrappedString(FormatStringID(STR_STRING, args), width, FontStyle::medium);
         const int32_t lineHeight = FontGetLineHeight(FontStyle::medium);
-        return lineHeight * (numLines + 1);
+        return lineHeight * metrics.lineCount;
     }
 } // namespace OpenRCT2
