@@ -19,7 +19,7 @@ namespace OpenRCT2
     struct ObjectRepositoryItem;
 
     // Current version that is saved.
-    constexpr uint32_t kParkFileCurrentVersion = 62;
+    constexpr uint32_t kParkFileCurrentVersion = 63;
 
     // The minimum version that is forwards compatible with the current version.
     constexpr uint32_t kParkFileMinVersion = 57;
@@ -62,6 +62,7 @@ namespace OpenRCT2
     constexpr uint16_t kParkFileVersionUprightQuarterHelices = 60;
     constexpr uint16_t kExtendedInvertedRollerCoasterVersion = 61;
     constexpr uint16_t kColourableTerrainVersion = 62;
+    constexpr uint16_t kExtendedLimRollerCoasterVersion = 63;
 
     class ParkFileExporter
     {
