@@ -32,7 +32,9 @@
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
 
 using OpenRCT2::GameActions::CommandFlag;
 
@@ -51,6 +53,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CLOSE,
         WIDX_MOUNTAINMODE,
         WIDX_PAINTMODE,
+        WIDX_PICKMODE,
         WIDX_PREVIEW,
         WIDX_DECREMENT,
         WIDX_INCREMENT,
@@ -69,15 +72,16 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_land_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget     ({19,  19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
-        makeWidget     ({55,  19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
-        makeWidget     ({27,  48}, {44, 32}, WidgetType::imgBtn,    WindowColour::primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                // preview box
+        makeWidget     ({ 7,  19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
+        makeWidget     ({37,  19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
+        makeWidget     ({67,  19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_EYEDROPPER),              STR_STYLE_EYEDROPPER_TIP),     // picker
+        makeWidget     ({27,  48}, {44, 32}, WidgetType::imgBtn,    WindowColour::primary,   ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                // preview box
         makeRemapWidget({28,  49}, {16, 16}, WidgetType::trnBtn,    WindowColour::secondary, SPR_LAND_TOOL_DECREASE,                  STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
         makeRemapWidget({54,  63}, {16, 16}, WidgetType::trnBtn,    WindowColour::secondary, SPR_LAND_TOOL_INCREASE,                  STR_ADJUST_LARGER_LAND_TIP),   // increment size
         makeWidget     ({ 2, 106}, {47, 36}, WidgetType::flatBtn,   WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_BASE_LAND_TIP),     // floor texture
-        makeWidget     ({49, 106}, {47, 36}, WidgetType::flatBtn,   WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_VERTICAL_LAND_TIP),  // wall texture
-        makeWidget     ({20, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR), // surface colour 1
-        makeWidget     ({67, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR) // edge colour 1
+        makeWidget     ({49, 106}, {47, 36}, WidgetType::flatBtn,   WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_VERTICAL_LAND_TIP), // wall texture
+        makeWidget     ({20, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR),            // surface colour 1
+        makeWidget     ({67, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR)             // edge colour 1
     );
     // clang-format on
 
@@ -87,6 +91,7 @@ namespace OpenRCT2::Ui::Windows
         bool _landToolBlocked = false;
         bool _landToolMountainMode = false;
         bool _landToolPaintMode = false;
+        bool _landToolPickMode = false;
 
         money64 _landToolRaiseCost = kMoney64Undefined;
         money64 _landToolLowerCost = kMoney64Undefined;
@@ -144,16 +149,30 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MOUNTAINMODE:
                     _landToolMountainMode ^= 1;
                     _landToolPaintMode = false;
+                    _landToolPickMode = false;
                     invalidate();
                     break;
                 case WIDX_PAINTMODE:
                     _landToolMountainMode = false;
                     _landToolPaintMode ^= 1;
+                    _landToolPickMode = false;
+                    invalidate();
+                    break;
+                case WIDX_PICKMODE:
+                    _landToolPickMode ^= 1;
+                    gCurrentToolId = _landToolPickMode ? Tool::crosshair : Tool::digDown;
                     invalidate();
                     break;
                 case WIDX_PREVIEW:
                     InputSize();
                     break;
+            }
+
+            // Disable picking when interacting with any other terraforming widget
+            if (widgetIndex != WIDX_PICKMODE)
+            {
+                _landToolPickMode = false;
+                gCurrentToolId = Tool::digDown;
             }
         }
 
@@ -294,6 +313,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_WALL, gLandToolTerrainEdge != kObjectEntryIndexNull);
             setWidgetPressed(WIDX_MOUNTAINMODE, _landToolMountainMode);
             setWidgetPressed(WIDX_PAINTMODE, _landToolPaintMode);
+            setWidgetPressed(WIDX_PICKMODE, _landToolPickMode);
 
             widgets[WIDX_SURFACE_COLOUR_1].setVisible(_surfaceColour1Enabled && surfaceButtonSelected);
             widgets[WIDX_EDGE_COLOUR_1].setVisible(_edgeColour1Enabled && edgeButtonSelected);
@@ -570,7 +590,9 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (_landToolPaintMode)
+                    if (_landToolPickMode)
+                        ToolUpdateLandPick(screenCoords);
+                    else if (_landToolPaintMode)
                         ToolUpdateLandPaint(screenCoords);
                     else
                         ToolUpdateLand(screenCoords);
@@ -583,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
-                    if (gMapSelectFlags.has(MapSelectFlag::enable))
+                    if (!_landToolPickMode && gMapSelectFlags.has(MapSelectFlag::enable))
                     {
                         auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
@@ -607,8 +629,39 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_BACKGROUND:
                 {
+                    if (_landToolPickMode)
+                    {
+                        if (_landToolBlocked && gMapSelectFlags.has(MapSelectFlag::enable))
+                        {
+                            // While holding down mouse and dragging over terrain, continuously pick styles under pointer
+                            const auto surfaceElement = MapGetSurfaceElementAt(gMapSelectPositionA);
+                            if (surfaceElement)
+                            {
+                                // Update surface / floor style
+                                gLandToolTerrainSurface = surfaceElement->getSurfaceObjectIndex();
+                                _selectedFloorTexture = gLandToolTerrainSurface;
+                                LandTool::resetSurfaceColourSelection(
+                                    _selectedFloorTexture, _surfaceColour1, _surfaceColour1Enabled);
+                                if (_surfaceColour1Enabled)
+                                {
+                                    _surfaceColour1 = surfaceElement->getPrimarySurfaceColour();
+                                }
+
+                                // Update edge / wall style
+                                gLandToolTerrainEdge = surfaceElement->getEdgeObjectIndex();
+                                _selectedWallTexture = gLandToolTerrainEdge;
+                                LandTool::resetEdgeColourSelection(_selectedWallTexture, _edgeColour1, _edgeColour1Enabled);
+                                if (_edgeColour1Enabled)
+                                {
+                                    _edgeColour1 = surfaceElement->getPrimaryEdgeColour();
+                                }
+
+                                invalidate();
+                            }
+                        }
+                    }
                     // Custom setting to only change land style instead of raising or lowering land
-                    if (_landToolPaintMode)
+                    else if (_landToolPaintMode)
                     {
                         if (gMapSelectFlags.has(MapSelectFlag::enable))
                         {
@@ -641,8 +694,10 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_BACKGROUND:
+                    _landToolPickMode = false;
                     gMapSelectFlags.unset(MapSelectFlag::enable);
                     gCurrentToolId = Tool::digDown;
+                    invalidate();
                     break;
             }
         }
@@ -893,6 +948,22 @@ namespace OpenRCT2::Ui::Windows
                 _landToolRaiseCost = raise_cost;
                 _landToolLowerCost = lower_cost;
                 windowMgr->InvalidateByClass(WindowClass::land);
+            }
+        }
+
+        void ToolUpdateLandPick(const ScreenCoordsXY& screenPos)
+        {
+            // Get map coordinates from mouse x,y position
+            std::optional<CoordsXY> mapPos = ScreenPosToMapPos(screenPos, nullptr);
+
+            // Update selection
+            gMapSelectFlags.unset(MapSelectFlag::enable);
+            if (mapPos.has_value())
+            {
+                gMapSelectFlags.set(MapSelectFlag::enable);
+                gMapSelectPositionA = mapPos.value();
+                gMapSelectPositionB = mapPos.value();
+                gMapSelectType = MapSelectType::full;
             }
         }
 
