@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
@@ -109,8 +110,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PANEL_OUTSET].right = width - 1;
             widgets[WIDX_PANEL_INSET].right = width - 3;
 
-            bool useFullToolbar = News::IsQueueEmpty() && (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR)
-                && gLegacyScene == LegacyScene::playing;
+            bool useFullToolbar = getGameState().park.newsItems.isEmpty()
+                && (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR) && gLegacyScene == LegacyScene::playing;
 
             widgets[WIDX_PANEL_OUTSET].setVisible(useFullToolbar);
             widgets[WIDX_PANEL_INSET].setVisible(useFullToolbar);
