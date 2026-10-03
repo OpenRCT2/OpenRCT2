@@ -1270,7 +1270,7 @@ namespace OpenRCT2
             {
                 _variableFrame = useVariableFrame;
 
-                // Switching from variable to fixed frame requires reseting
+                // Switching from variable to fixed frame requires resetting
                 // of entity positions back to end of tick positions
                 auto& tweener = EntityTweener::get();
                 tweener.restore();
