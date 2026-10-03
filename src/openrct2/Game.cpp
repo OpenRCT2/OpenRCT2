@@ -77,7 +77,7 @@ bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
-uint32_t gCurrentRealTimeTicks;
+OpenRCT2::GameTicks gCurrentRealTimeTicks;
 
 #ifdef ENABLE_SCRIPTING
 static bool _mapChangedExpected;
@@ -372,8 +372,8 @@ void GameLoadInit()
     getGameState().entities.resetEntitySpatialIndices();
     ResetAllSpriteQuadrantPlacements();
 
-    gWindowUpdateTicks = 0;
-    gCurrentRealTimeTicks = 0;
+    gWindowUpdateTicks = {};
+    gCurrentRealTimeTicks = {};
 
     Drawing::LoadPalette();
 

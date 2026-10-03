@@ -226,7 +226,8 @@ protected:
             {
                 for (uint32_t x = 0; x < columns; x++)
                 {
-                    SetDirtyVisualTime(firstColumn + x, firstRow + y, gCurrentRealTimeTicks + kDirtyVisualTime);
+                    SetDirtyVisualTime(
+                        firstColumn + x, firstRow + y, (gCurrentRealTimeTicks + GameTicks{ kDirtyVisualTime }).Value);
                 }
             }
         }
@@ -362,7 +363,7 @@ private:
             for (uint32_t x = 0; x < _invalidationGrid.getColumnCount(); x++)
             {
                 const auto timeEnd = GetDirtyVisualTime(x, y);
-                const auto timeLeft = gCurrentRealTimeTicks < timeEnd ? timeEnd - gCurrentRealTimeTicks : 0;
+                const auto timeLeft = gCurrentRealTimeTicks.Value < timeEnd ? timeEnd - gCurrentRealTimeTicks.Value : 0;
                 if (timeLeft > 0)
                 {
                     uint8_t alpha = timeLeft * kDirtyRegionAlpha / kDirtyVisualTime;

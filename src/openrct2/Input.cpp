@@ -21,7 +21,7 @@ namespace OpenRCT2
     WidgetRef gHoverWidget;
     WidgetRef gPressedWidget;
 
-    uint32_t _tooltipNotShownTimeout;
+    GameTicks _tooltipNotShownTimeout;
 
     /**
      *
@@ -53,6 +53,6 @@ namespace OpenRCT2
 
     void ResetTooltipNotShown()
     {
-        _tooltipNotShownTimeout = gCurrentRealTimeTicks + 50;
+        _tooltipNotShownTimeout = gCurrentRealTimeTicks + GameTicks{ 50 };
     }
 } // namespace OpenRCT2

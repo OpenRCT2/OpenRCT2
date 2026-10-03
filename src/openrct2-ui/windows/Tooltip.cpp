@@ -158,7 +158,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
     {
         gTooltipCursor = screenCoords;
-        gTooltipCloseTimeout = 0;
+        gTooltipCloseTimeout = {};
         gTooltipWidget.windowClassification = WindowClass::null;
         InputSetState(InputState::normal);
         gInputFlags.unset(InputFlag::leftMousePressed);
@@ -219,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::tooltip);
 
-        gTooltipCloseTimeout = 0;
+        gTooltipCloseTimeout = {};
         gTooltipWidget.windowClassification = WindowClass::null;
     }
 } // namespace OpenRCT2::Ui::Windows
