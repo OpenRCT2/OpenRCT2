@@ -14,6 +14,7 @@
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
+#include "../management/NewsItem.h"
 #include "Location.hpp"
 
 #include <string>
@@ -130,5 +131,7 @@ namespace OpenRCT2::Park
 
         std::vector<Award> currentAwards;
         std::vector<MarketingCampaign> marketingCampaigns;
+
+        News::ItemQueues newsItems;
     };
 } // namespace OpenRCT2::Park

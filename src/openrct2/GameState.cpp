@@ -70,7 +70,7 @@ namespace OpenRCT2
         UpdateConsolidatedPatrolAreas();
         ResetDate();
         Weather::reset();
-        News::InitQueue(gameState);
+        News::InitQueue(gameState.park);
 
         gInMapInitCode = false;
 
@@ -322,17 +322,17 @@ namespace OpenRCT2
         VehicleUpdateAll();
         gameState.entities.updateAllMiscEntities();
         Ride::updateAll();
+        auto& park = gameState.park;
 
         if (!isInEditorMode())
         {
-            auto& park = gameState.park;
             Park::Update(park, gameState);
         }
 
         ResearchUpdate();
         RideRating::UpdateAll();
         RideMeasurementsUpdate();
-        News::UpdateCurrentItem();
+        News::UpdateCurrentItem(park.newsItems);
 
         MapAnimations::InvalidateAndUpdateAll();
         VehicleSoundsUpdate();

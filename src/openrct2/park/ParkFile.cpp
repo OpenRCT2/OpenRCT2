@@ -172,7 +172,7 @@ namespace OpenRCT2
             ReadWriteParkChunk(gameState, os);
             ReadWriteClimateChunk(gameState, os);
             ReadWriteResearchChunk(gameState, os);
-            ReadWriteNotificationsChunk(gameState, os);
+            ReadWriteNotificationsChunk(gameState.park.newsItems, os);
             ReadWriteInterfaceChunk(gameState, os);
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
@@ -214,7 +214,7 @@ namespace OpenRCT2
             ReadWriteParkChunk(gameState, os);
             ReadWriteClimateChunk(gameState, os);
             ReadWriteResearchChunk(gameState, os);
-            ReadWriteNotificationsChunk(gameState, os);
+            ReadWriteNotificationsChunk(gameState.park.newsItems, os);
             ReadWriteInterfaceChunk(gameState, os);
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
@@ -1209,9 +1209,9 @@ namespace OpenRCT2
             cs.readWrite(item.category);
         }
 
-        void ReadWriteNotificationsChunk(GameState_t& gameState, OrcaStream& os)
+        void ReadWriteNotificationsChunk(News::ItemQueues& queues, OrcaStream& os)
         {
-            os.readWriteChunk(ParkFileChunkType::notifications, [&gameState](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(ParkFileChunkType::notifications, [&queues](OrcaStream::ChunkStream& cs) {
                 if (cs.getMode() == OrcaStream::Mode::reading)
                 {
                     std::vector<News::Item> recent;
@@ -1220,16 +1220,14 @@ namespace OpenRCT2
                     std::vector<News::Item> archived;
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
-                    News::importNewsItems(gameState, recent, archived);
+                    News::importNewsItems(queues, recent, archived);
                 }
                 else
                 {
-                    std::vector<News::Item> recent(
-                        std::begin(gameState.newsItems.getRecent()), std::end(gameState.newsItems.getRecent()));
+                    std::vector<News::Item> recent(std::begin(queues.getRecent()), std::end(queues.getRecent()));
                     cs.readWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
-                    std::vector<News::Item> archived(
-                        std::begin(gameState.newsItems.getArchived()), std::end(gameState.newsItems.getArchived()));
+                    std::vector<News::Item> archived(std::begin(queues.getArchived()), std::end(queues.getArchived()));
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });
