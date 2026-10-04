@@ -68,12 +68,6 @@ namespace OpenRCT2::Drawing
             gPalette[i].alpha = 0;
         }
 
-        // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
-        gPalette[255].blue = 255;
-        gPalette[255].green = 255;
-        gPalette[255].red = 255;
-        gPalette[255].alpha = 0;
-
         if (!gOpenRCT2Headless)
         {
             DrawingEngineSetPalette(gPalette);
@@ -279,6 +273,13 @@ namespace OpenRCT2::Drawing
                 index++;
             }
         }
+
+        // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
+        gPalette[255].blue = 255;
+        gPalette[255].green = 255;
+        gPalette[255].red = 255;
+        gPalette[255].alpha = 0;
+
         UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
         GfxInvalidateScreen();
     }
