@@ -189,6 +189,7 @@ namespace OpenRCT2::RCT1
             }
             assert(!vehicleObject.empty());
             td->trackAndVehicle.vehicleObject = ObjectEntryDescriptor(vehicleObject);
+            td->version = static_cast<TD46Version>(td4Base.VersionAndColourScheme >> 2);
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td4Base.VersionAndColourScheme & 0x3);
 
             auto gameVersion = (td->version == TD46Version::td4) ? RCT1Version::baseGame : RCT1Version::loopyLandscapes;
