@@ -62,7 +62,7 @@ namespace OpenRCT2
         uint8_t additions;              // 9 (0 means no addition)
         uint8_t edgesAndCorners;        // 10 (edges in lower 4 bits, corners in upper 4)
         FootpathElementFlags flags2;    // 11
-        Direction slopeDirection;         // 12
+        Direction slopeDirection;       // 12
         union
         {
             uint8_t additionStatus; // 13, only used for litter bins

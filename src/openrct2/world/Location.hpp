@@ -11,8 +11,8 @@
 
 #include "../core/CoordsRange.hpp"
 #include "../core/Numerics.hpp"
-#include "../world/MapLimits.h"
 #include "../world/Direction.hpp"
+#include "../world/MapLimits.h"
 
 #include <cstdint>
 
@@ -521,7 +521,7 @@ struct CoordsXYZD : public CoordsXYZ
 
     constexpr CoordsXYZD toTileCentre() const
     {
-        return toTileStart() + CoordsXYZ{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0 };
+        return toTileStart() + CoordsXY{ kCoordsXYHalfTile, kCoordsXYHalfTile };
     }
 };
 

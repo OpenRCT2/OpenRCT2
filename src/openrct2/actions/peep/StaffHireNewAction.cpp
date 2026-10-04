@@ -279,7 +279,7 @@ namespace OpenRCT2::GameActions
             {
                 auto rand = ScenarioRandMax(static_cast<uint32_t>(park.entrances.size()));
                 const auto& entrance = park.entrances[rand];
-                newLocation = entrance + CoordsDirectionDelta[entrance.direction] + CoordsXY{16, 16};
+                newLocation = entrance + CoordsDirectionDelta[entrance.direction] + CoordsXY{ 16, 16 };
             }
             else
             {

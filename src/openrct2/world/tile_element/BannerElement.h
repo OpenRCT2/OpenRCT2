@@ -23,7 +23,7 @@ namespace OpenRCT2
 
     private:
         BannerIndex index;    // 5
-        Direction position;     // 7
+        Direction position;   // 7
         uint8_t allowedEdges; // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"

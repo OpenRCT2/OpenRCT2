@@ -83,4 +83,3 @@ inline constexpr Direction DirectionFlipXAxis(Direction direction)
 {
     return (direction * 3) % 4;
 }
-
