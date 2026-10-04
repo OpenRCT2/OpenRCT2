@@ -2162,7 +2162,7 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
     drawingEngine->BeginDraw();
 
     const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
-    for (Direction direction = 0; direction < kNumOrthogonalDirections; direction++)
+    for (Direction direction : kAllDirections)
     {
         view.viewPos = Translate3DTo2DWithZ(direction, centre) - offset;
         view.rotation = direction;

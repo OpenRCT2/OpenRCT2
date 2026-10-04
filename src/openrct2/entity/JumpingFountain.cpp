@@ -98,7 +98,7 @@ namespace OpenRCT2
         {
             case Pattern::cyclicSquares:
                 // 0, 1, 2, 3
-                for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
+                for (Direction i : kAllDirections)
                 {
                     create(
                         newType, { newLoc + _fountainDirectionsPositive[i], newZ }, _fountainDirections[i],
