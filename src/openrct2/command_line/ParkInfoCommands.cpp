@@ -9,6 +9,7 @@
 
 #include "../Context.h"
 #include "../FileClassifier.h"
+#include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
@@ -55,6 +56,8 @@ namespace OpenRCT2
         auto sourcePath = Path::GetAbsolute(rawSourcePath);
 
         auto context = CreateContext();
+        // Needed for Context::Initialise(), because it will try and load the game proper otherwise, and crash.
+        gOpenRCT2Headless = true;
         context->Initialise();
 
         auto stream = FileStream(sourcePath, FileMode::open);
@@ -132,7 +135,10 @@ namespace OpenRCT2
                     continue;
                 }
                 auto* ori = GetContext()->GetObjectRepository().FindObject(obj);
-                Console::WriteFormat("%s Object: ", sourceGameToName[EnumValue(ori->GetFirstSourceGame())]);
+                auto sourceGame = ObjectSourceGame::custom;
+                if (ori != nullptr)
+                    sourceGame = ori->GetFirstSourceGame();
+                Console::WriteFormat("%s Object: ", sourceGameToName[EnumValue(sourceGame)]);
 
                 std::string name{ obj.GetName() };
                 if (obj.Generation == ObjectGeneration::dat)
