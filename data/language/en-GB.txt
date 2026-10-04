@@ -2682,7 +2682,7 @@ STR_5583    :{COMMA1DP16} m/s
 STR_5584    :SI
 STR_5585    :Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Automatically open and close shops and stalls
-STR_5587    :Shops and stalls will be automatically opened after building them
+STR_5587    :Shops and stalls will be automatically opened after building them, and automatically closed before construction.
 STR_5588    :Play with other players
 STR_5589    :Notification Settings
 STR_5590    :Park awards
