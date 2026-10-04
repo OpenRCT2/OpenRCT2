@@ -95,11 +95,14 @@ namespace OpenRCT2
         Console::WriteLine("File contains the following objects: ");
         Console::WriteLine();
 
-        constexpr std::array typeToName = {
-            "Ride",          "SmallScenery", "LargeScenery", "Walls",           "Banners",          "Paths",
-            "PathAdditions", "SceneryGroup", "ParkEntrance", "Water",           "ScenarioMeta",     "TerrainSurface",
-            "TerrainEdge",   "Station",      "Music",        "FootpathSurface", "FootpathRailings",
+        constexpr std::array kTypeToName = {
+            "Ride",          "SmallScenery",   "LargeScenery", "Walls",           "Banners",          "Paths",
+            "PathAdditions", "SceneryGroup",   "ParkEntrance", "Water",           "ScenarioMeta",     "TerrainSurface",
+            "TerrainEdge",   "Station",        "Music",        "FootpathSurface", "FootpathRailings", "Audio",
+            "PeepNames",     "PeepAnimations", "Climate",
         };
+        static_assert(kTypeToName.size() == static_cast<size_t>(ObjectType::count));
+
         constexpr std::array sourceGameToName = {
             "Custom", "WackyWorlds", "TimeTwister", "OpenRCT2Official", "RCT1", "AddedAttractions", "LoopyLandscapes",
             "",       "RCT2",
@@ -123,10 +126,13 @@ namespace OpenRCT2
                  ObjectType::music,
                  ObjectType::footpathSurface,
                  ObjectType::footpathRailings,
+                 ObjectType::peepNames,
+                 ObjectType::peepAnimations,
+                 ObjectType::climate,
              })
         {
             auto& list = loadResult.RequiredObjects.GetList(objType);
-            Console::WriteLine("ObjectType: %s, Number of Objects: %d", typeToName[EnumValue(objType)], list.size());
+            Console::WriteLine("ObjectType: %s, Number of Objects: %d", kTypeToName[EnumValue(objType)], list.size());
             for (auto& obj : list)
             {
                 if (obj.Generation == ObjectGeneration::json && obj.Identifier.empty())
