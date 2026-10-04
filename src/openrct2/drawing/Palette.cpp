@@ -35,7 +35,7 @@ namespace OpenRCT2::Drawing
     static constexpr uint8_t kPaletteLengthAnimated = 16;
 
     GamePalette gPalette;
-    GamePalette gGamePalette;
+    static GamePalette _gamePalette;
     uint32_t gPaletteEffectFrame;
 
     void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex, int32_t numColours)
@@ -68,16 +68,15 @@ namespace OpenRCT2::Drawing
             gPalette[i].alpha = 0;
         }
 
-        // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
-        gPalette[255].blue = 255;
-        gPalette[255].green = 255;
-        gPalette[255].red = 255;
-        gPalette[255].alpha = 0;
-
         if (!gOpenRCT2Headless)
         {
             DrawingEngineSetPalette(gPalette);
         }
+    }
+
+    void updateStandardPalette()
+    {
+        UpdatePalette(_gamePalette, PaletteIndex::pi10, 236);
     }
 
     /**
@@ -99,14 +98,14 @@ namespace OpenRCT2::Drawing
 
                 for (int32_t i = 0; i < g1->numColours; i++)
                 {
-                    auto& paletteOffset = gGamePalette[startIndex + i];
+                    auto& paletteOffset = _gamePalette[startIndex + i];
                     const auto& g1PaletteEntry = g1->palette[i];
                     paletteOffset.blue = -((0xFF - g1PaletteEntry.blue) / 2) - 1;
                     paletteOffset.green = -((0xFF - g1PaletteEntry.green) / 2) - 1;
                     paletteOffset.red = -((0xFF - g1PaletteEntry.red) / 2) - 1;
                 }
 
-                UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
+                UpdatePalette(_gamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
             }
             Weather::gLightningFlash++;
         }
@@ -123,7 +122,7 @@ namespace OpenRCT2::Drawing
 
                     for (int32_t i = 0; i < g1->numColours; i++)
                     {
-                        auto& paletteOffset = gGamePalette[startIndex + i];
+                        auto& paletteOffset = _gamePalette[startIndex + i];
                         const auto& g1PaletteEntry = g1->palette[i];
                         paletteOffset.blue = g1PaletteEntry.blue;
                         paletteOffset.green = g1PaletteEntry.green;
@@ -157,7 +156,7 @@ namespace OpenRCT2::Drawing
                 int32_t n = kPaletteLengthWaterWaves;
                 for (int32_t i = 0; i < n; i++)
                 {
-                    auto& vd = gGamePalette[EnumValue(PaletteIndex::waterWaves0) + i];
+                    auto& vd = _gamePalette[EnumValue(PaletteIndex::waterWaves0) + i];
                     vd.blue = g1PaletteEntry->blue;
                     vd.green = g1PaletteEntry->green;
                     vd.red = g1PaletteEntry->red;
@@ -177,7 +176,7 @@ namespace OpenRCT2::Drawing
                 int32_t n = kPaletteLengthWaterSparkles;
                 for (int32_t i = 0; i < n; i++)
                 {
-                    auto& vd = gGamePalette[EnumValue(PaletteIndex::waterSparkles0) + i];
+                    auto& vd = _gamePalette[EnumValue(PaletteIndex::waterSparkles0) + i];
                     vd.blue = src->blue;
                     vd.green = src->green;
                     vd.red = src->red;
@@ -198,7 +197,7 @@ namespace OpenRCT2::Drawing
                 const int32_t n = 3;
                 for (int32_t i = 0; i < n; i++)
                 {
-                    auto& vd = gGamePalette[EnumValue(PaletteIndex::primaryRemap0) + i];
+                    auto& vd = _gamePalette[EnumValue(PaletteIndex::primaryRemap0) + i];
                     vd.blue = src->blue;
                     vd.green = src->green;
                     vd.red = src->red;
@@ -210,10 +209,10 @@ namespace OpenRCT2::Drawing
                 }
             }
 
-            UpdatePalette(gGamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
+            UpdatePalette(_gamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
             if (Weather::gLightningFlash == 2)
             {
-                UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
+                UpdatePalette(_gamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
                 Weather::gLightningFlash = 0;
             }
         }
@@ -236,7 +235,7 @@ namespace OpenRCT2::Drawing
 
         for (auto numColours = g1->numColours; numColours > 0; numColours--)
         {
-            auto& dst = gGamePalette[index];
+            auto& dst = _gamePalette[index];
             // Make sure the image never gets darker than the void colour (not-quite-black), to avoid the background colour
             // jumping between void and 100% black.
             dst.blue = std::max<uint8_t>(35, ((src->blue * product) >> 8));
@@ -246,7 +245,7 @@ namespace OpenRCT2::Drawing
 
             index++;
         }
-        UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
+        UpdatePalette(_gamePalette, PaletteIndex::pi10, 236);
     }
 
     /**
@@ -271,7 +270,7 @@ namespace OpenRCT2::Drawing
             auto* src = g1->palette;
             for (auto numColours = g1->numColours; numColours > 0; numColours--)
             {
-                auto& dst = gGamePalette[index];
+                auto& dst = _gamePalette[index];
                 dst.blue = src->blue;
                 dst.green = src->green;
                 dst.red = src->red;
@@ -279,7 +278,14 @@ namespace OpenRCT2::Drawing
                 index++;
             }
         }
-        UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
+
+        // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
+        gPalette[255].blue = 255;
+        gPalette[255].green = 255;
+        gPalette[255].red = 255;
+        gPalette[255].alpha = 0;
+
+        UpdatePalette(_gamePalette, PaletteIndex::pi10, 236);
         GfxInvalidateScreen();
     }
 } // namespace OpenRCT2::Drawing

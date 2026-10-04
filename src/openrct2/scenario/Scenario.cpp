@@ -397,7 +397,7 @@ static void ScenarioUpdateDayNightCycle()
     // Only update palette if day / night cycle has changed
     if (gDayNightCycle != currentDayNightCycle)
     {
-        Drawing::UpdatePalette(Drawing::gGamePalette, Drawing::PaletteIndex::pi10, 236);
+        Drawing::updateStandardPalette();
     }
 }
 
