@@ -52,11 +52,20 @@ inline constexpr bool DirectionValid(Direction dir)
 }
 
 /**
+ * Rotate a direction by the given number of 90-degree increments. Positive values
+ * rotate clockwise, negative values rotate counterclockwise.
+ */
+inline constexpr Direction DirectionRotate(Direction dir, int rotations)
+{
+    return (dir + rotations) & 0x03;
+}
+
+/**
  * Given a direction, return the next clockwise cardinal direction, wrapping around if necessary.
  */
 inline constexpr Direction DirectionNext(Direction dir)
 {
-    return (dir + 1) & 0x03;
+    return DirectionRotate(dir, 1);
 }
 
 /**
@@ -64,7 +73,7 @@ inline constexpr Direction DirectionNext(Direction dir)
  */
 inline constexpr Direction DirectionPrev(Direction dir)
 {
-    return (dir - 1) & 0x03;
+    return DirectionRotate(dir, -1);
 }
 
 /*
