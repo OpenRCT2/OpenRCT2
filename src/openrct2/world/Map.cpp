@@ -1268,7 +1268,9 @@ namespace OpenRCT2
         const SurfaceElement& sourceTile, SurfaceElement& destTile, const Direction direction)
     {
         destTile.setSurfaceObjectIndex(sourceTile.getSurfaceObjectIndex());
+        destTile.setPrimarySurfaceColour(sourceTile.getPrimarySurfaceColour());
         destTile.setEdgeObjectIndex(sourceTile.getEdgeObjectIndex());
+        destTile.setPrimaryEdgeColour(sourceTile.getPrimaryEdgeColour());
         destTile.setGrassLength(sourceTile.getGrassLength());
         destTile.setOwnership(kUnowned);
         destTile.setWaterHeight(sourceTile.getWaterHeight());
