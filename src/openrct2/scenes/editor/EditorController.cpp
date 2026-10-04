@@ -183,7 +183,7 @@ namespace OpenRCT2::Editor
 
         for (const auto& parkEntrance : gameState.park.entrances)
         {
-            int32_t direction = DirectionReverse(parkEntrance.direction);
+            Direction direction = DirectionReverse(parkEntrance.direction);
 
             switch (FootpathIsConnectedToMapEdge(parkEntrance, direction, 0))
             {

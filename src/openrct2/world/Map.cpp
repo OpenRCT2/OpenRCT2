@@ -700,7 +700,7 @@ namespace OpenRCT2
             if (tileElement->getType() != TileElementType::path)
                 continue;
 
-            uint8_t slopeDirection = tileElement->asPath()->getSlopeDirection();
+            Direction slopeDirection = tileElement->asPath()->getSlopeDirection();
 
             if (tileElement->asPath()->isSloped())
             {

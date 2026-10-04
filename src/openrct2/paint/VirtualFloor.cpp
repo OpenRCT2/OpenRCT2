@@ -318,7 +318,7 @@ void VirtualFloorPaint(PaintSession& session)
     //  if our parameters differ we set an edge towards that tile
     for (Direction i : kAllDirections)
     {
-        uint8_t effectiveRotation = (kNumOrthogonalDirections + i - direction) % kNumOrthogonalDirections;
+        Direction effectiveRotation = (kNumOrthogonalDirections + i - direction) % kNumOrthogonalDirections;
         CoordsXY theirLocation = session.MapPosition + scenery_half_tile_offsets[effectiveRotation];
 
         bool theyAreOccupied;
