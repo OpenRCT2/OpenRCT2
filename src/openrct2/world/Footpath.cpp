@@ -1890,7 +1890,7 @@ namespace OpenRCT2
         return ride->getRideTypeDescriptor().flags.has(RtdFlag::supportsLevelCrossings);
     }
 
-    bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t currentZ, int32_t currentDirection)
+    bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t currentZ, Direction currentDirection)
     {
         if (pathElement.isSloped())
         {

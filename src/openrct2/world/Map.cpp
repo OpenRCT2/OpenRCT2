@@ -418,7 +418,7 @@ namespace OpenRCT2
         return nullptr;
     }
 
-    BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t position)
+    BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, Direction position)
     {
         const auto bannerTilePos = TileCoordsXYZ{ bannerPos };
         for (auto* element : TileElementsView<BannerElement>(bannerPos))
@@ -688,7 +688,7 @@ namespace OpenRCT2
      * Checks if the tile at coordinate at height counts as connected.
      * @return 1 if connected, 0 otherwise
      */
-    bool MapCoordIsConnected(const TileCoordsXYZ& loc, uint8_t faceDirection)
+    bool MapCoordIsConnected(const TileCoordsXYZ& loc, Direction faceDirection)
     {
         TileElement* tileElement = MapGetFirstElementAt(loc);
 

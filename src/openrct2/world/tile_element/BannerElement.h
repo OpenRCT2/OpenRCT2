@@ -36,8 +36,8 @@ namespace OpenRCT2
         BannerIndex getIndex() const;
         void setIndex(BannerIndex newIndex);
 
-        uint8_t getPosition() const;
-        void setPosition(uint8_t newPosition);
+        Direction getPosition() const;
+        void setPosition(Direction newPosition);
 
         uint8_t getAllowedEdges() const;
         void setAllowedEdges(uint8_t newEdges);

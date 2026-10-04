@@ -39,7 +39,7 @@ void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height)
     session.VerticalTunnelHeight = height / 16;
 }
 
-void PaintUtilPushTunnelRotated(PaintSession& session, uint8_t direction, uint16_t height, TunnelType type)
+void PaintUtilPushTunnelRotated(PaintSession& session, Direction direction, uint16_t height, TunnelType type)
 {
     if (direction & 1)
     {
