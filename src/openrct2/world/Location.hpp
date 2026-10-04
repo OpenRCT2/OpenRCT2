@@ -521,7 +521,7 @@ struct CoordsXYZD : public CoordsXYZ
 
     constexpr CoordsXYZD toTileCentre() const
     {
-        return toTileStart() + CoordsXYZD{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0, 0 };
+        return toTileStart() + CoordsXYZ{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0 };
     }
 };
 
