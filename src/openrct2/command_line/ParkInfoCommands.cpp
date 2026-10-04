@@ -90,7 +90,7 @@ namespace OpenRCT2
             // Save is an S6 (RCT2 format)
             parkImporter = ParkImporter::CreateS6(objectRepository);
         }
-        auto loadResult = parkImporter->LoadSavedGame(sourcePath.c_str());
+        auto loadResult = parkImporter->Load(sourcePath.c_str(), false);
 
         Console::WriteLine("File contains the following objects: ");
         Console::WriteLine();
