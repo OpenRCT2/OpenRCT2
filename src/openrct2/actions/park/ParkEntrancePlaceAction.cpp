@@ -94,12 +94,12 @@ namespace OpenRCT2::GameActions
         {
             if (index == 1)
             {
-                entranceLoc += CoordsDirectionDelta[(_loc.direction - 1) & 0x3];
+                entranceLoc += CoordsDirectionDelta[DirectionPrev(_loc.direction)];
             }
             else if (index == 2)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
-                entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[DirectionNext(_loc.direction)].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[DirectionNext(_loc.direction)].y * 2;
             }
 
             if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2.error != Status::ok)
@@ -143,13 +143,13 @@ namespace OpenRCT2::GameActions
         {
             if (index == ParkEntranceSequence::left)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].x;
-                entranceLoc.y += CoordsDirectionDelta[(_loc.direction - 1) & 0x3].y;
+                entranceLoc.x += CoordsDirectionDelta[DirectionPrev(_loc.direction)].x;
+                entranceLoc.y += CoordsDirectionDelta[DirectionPrev(_loc.direction)].y;
             }
             else if (index == ParkEntranceSequence::right)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
-                entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[DirectionNext(_loc.direction)].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[DirectionNext(_loc.direction)].y * 2;
             }
 
             if (!flags.has(CommandFlag::ghost))
@@ -208,12 +208,12 @@ namespace OpenRCT2::GameActions
         {
             if (index == 1)
             {
-                entranceLoc += CoordsDirectionDelta[(_loc.direction - 1) & 0x3];
+                entranceLoc += CoordsDirectionDelta[DirectionPrev(_loc.direction)];
             }
             else if (index == 2)
             {
-                entranceLoc.x += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].x * 2;
-                entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
+                entranceLoc.x += CoordsDirectionDelta[DirectionNext(_loc.direction)].x * 2;
+                entranceLoc.y += CoordsDirectionDelta[DirectionNext(_loc.direction)].y * 2;
             }
             if (!MapCheckCapacityAndReorganise(entranceLoc, numTiles))
             {

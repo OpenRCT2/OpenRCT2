@@ -219,7 +219,7 @@ namespace OpenRCT2::TileInspector
                 case TileElementType::path:
                     if (tileElement->asPath()->isSloped())
                     {
-                        newRotation = (tileElement->asPath()->getSlopeDirection() + 1) & kTileElementDirectionMask;
+                        newRotation = DirectionNext(tileElement->asPath()->getSlopeDirection());
                         tileElement->asPath()->setSlopeDirection(newRotation);
                     }
                     pathEdges = tileElement->asPath()->getEdges();
