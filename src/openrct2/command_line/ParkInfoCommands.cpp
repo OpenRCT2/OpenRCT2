@@ -137,7 +137,7 @@ namespace OpenRCT2
             {
                 if (obj.Generation == ObjectGeneration::json && obj.Identifier.empty())
                 {
-                    // Empty object slot don't output anything
+                    // Empty object slot, don't output anything
                     continue;
                 }
                 auto* ori = GetContext()->GetObjectRepository().FindObject(obj);
