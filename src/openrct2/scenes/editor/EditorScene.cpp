@@ -198,7 +198,7 @@ void EditorScene::clearMapForEditing()
 
     Weather::reset();
 
-    News::InitQueue(gameState);
+    News::InitQueue(park);
 }
 
 // NB: only called by LoadLandscape

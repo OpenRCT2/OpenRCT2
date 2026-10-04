@@ -297,8 +297,8 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
         {
             ride.formatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
-                ride.id.ToUnderlying(), ft);
+                getGameState().park.newsItems, News::ItemType::ride,
+                numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride.id.ToUnderlying(), ft);
         }
 
         // TODO: get park id from ride/vehicle

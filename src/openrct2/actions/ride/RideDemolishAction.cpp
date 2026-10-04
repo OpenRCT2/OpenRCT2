@@ -132,7 +132,7 @@ namespace OpenRCT2::GameActions
         RideClearLeftoverEntrances(ride);
 
         const auto rideId = ride.id;
-        News::DisableNewsItems(News::ItemType::ride, rideId.ToUnderlying());
+        News::DisableNewsItems(park.newsItems, News::ItemType::ride, rideId.ToUnderlying());
 
         UnlinkAllBannersForRide(ride.id);
 
