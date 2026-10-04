@@ -217,9 +217,13 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainSurface = type;
-                        _selectedFloorTexture = type;
+                        if (_selectedFloorTexture != type)
+                        {
+                            _selectedFloorTexture = type;
+                            LandTool::resetSurfaceColourSelection(
+                                gLandToolTerrainSurface, _surfaceColour1, _surfaceColour1Enabled);
+                        }
                     }
-                    LandTool::resetSurfaceColourSelection(gLandToolTerrainSurface, _surfaceColour1, _surfaceColour1Enabled);
                     invalidate();
                     break;
                 case WIDX_WALL:
@@ -236,9 +240,12 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainEdge = type;
-                        _selectedWallTexture = type;
+                        if (_selectedWallTexture != type)
+                        {
+                            _selectedWallTexture = type;
+                            LandTool::resetEdgeColourSelection(gLandToolTerrainEdge, _edgeColour1, _edgeColour1Enabled);
+                        }
                     }
-                    LandTool::resetEdgeColourSelection(gLandToolTerrainEdge, _edgeColour1, _edgeColour1Enabled);
                     invalidate();
                     break;
                 case WIDX_SURFACE_COLOUR_1:
@@ -291,7 +298,7 @@ namespace OpenRCT2::Ui::Windows
             auto surfaceButtonSelected = gLandToolTerrainSurface != kObjectEntryIndexNull;
             auto edgeButtonSelected = gLandToolTerrainEdge != kObjectEntryIndexNull;
             setWidgetPressed(WIDX_FLOOR, surfaceButtonSelected);
-            setWidgetPressed(WIDX_WALL, gLandToolTerrainEdge != kObjectEntryIndexNull);
+            setWidgetPressed(WIDX_WALL, edgeButtonSelected);
             setWidgetPressed(WIDX_MOUNTAINMODE, _landToolMountainMode);
             setWidgetPressed(WIDX_PAINTMODE, _landToolPaintMode);
 
@@ -903,17 +910,14 @@ namespace OpenRCT2::Ui::Windows
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
-                auto colour = widgets[WIDX_SURFACE_COLOUR_1].isVisible() ? surfaceObj->getPrimaryColour(_surfaceColour1)
-                                                                         : surfaceObj->getPreviewColour();
-                surfaceImage = ImageId(surfaceObj->IconImageId, colour);
+                surfaceImage = ImageId(surfaceObj->IconImageId, surfaceObj->getPrimaryColour(_surfaceColour1));
             }
 
             const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_selectedWallTexture);
             ImageId edgeImage;
             if (edgeObj != nullptr)
             {
-                auto colour = widgets[WIDX_EDGE_COLOUR_1].isVisible() ? _edgeColour1 : edgeObj->getPreviewColour();
-                edgeImage = ImageId(edgeObj->IconImageId, colour);
+                edgeImage = ImageId(edgeObj->IconImageId, _edgeColour1);
             }
 
             DrawDropdownButton(rt, WIDX_FLOOR, surfaceImage);
