@@ -23,6 +23,7 @@
 - Fix: [#25400] The Inverted Flying RollerCoaster draws upright Twister track pieces for pieces it doesn’t have.
 - Fix: [#26222] ‘Follow this on Main View’ follows the invisible first car on ride types that have one, making the view turn too early.
 - Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
+- Fix: [#26957] The frame 0 image is skipped when changing the state from `swim` to `flyAway`.
 - Fix: [#26998] Crash when generating a `Simplex Height Map` with a higher width than height.
 - Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
 - Fix: [#27056] [Plugin] Loading water palettes from plugin does not update the palette correctly.
