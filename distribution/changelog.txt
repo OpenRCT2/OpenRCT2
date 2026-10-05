@@ -1,6 +1,7 @@
 0.5.6 (in development)
 ------------------------------------------------------------------------
 - Feature: [#16014] Land surfaces and edges can now be recoloured.
+- Feature: [#26894] Added 18 additional colours, including 5 from the base version of RCT1 (which were removed in later versions).
 - Feature: [#27153] [Plugin] Add `guestsEntertained` to `Entertainer` interface.
 - Feature: [#27184] [Plugin] Double limit of miscellaneous entities (e.g. crash particles, steam plumes and balloons) to 6400.
 - Feature: [objects#447] Track designer grid can now be used outside the Track Designer.
@@ -38,6 +39,7 @@
 - Fix: [#27136] Guests keep waiting at a level crossing after the train has passed, due to faulty iteration over the track the train has vacated.
 - Fix: [#27212] Chain lifts are blue in screenshots taken from the command line.
 - Fix: [#27218] Tile inspector coordinate spinners are too short for coordinate 1000.
+- Fix: [#27234] [Plugin] Setting `TrackElement.seatRotation` fails on every ride except mazes, where it does not apply.
 
 0.5.5 (2026-09-06)
 ------------------------------------------------------------------------

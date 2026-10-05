@@ -11,6 +11,7 @@
 
 #include "../drawing/Colour.h"
 #include "../rct12/RCT12.h"
+#include "RCT1File.h"
 
 #include <vector>
 
@@ -31,7 +32,7 @@ namespace OpenRCT2::RCT1
     enum class RideType : uint8_t;
     enum class VehicleType : uint8_t;
 
-    Drawing::Colour GetColour(uint8_t colour);
+    Drawing::Colour getColour(uint8_t colour, RCT1Version version);
     RCT12PeepAnimationGroup GetPeepAnimationGroup(PeepAnimationGroup rct1AnimationGroup);
 
     uint8_t GetRideType(RideType rideType, VehicleType vehicleType);

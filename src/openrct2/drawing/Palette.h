@@ -20,10 +20,10 @@ namespace OpenRCT2::Drawing
     enum class PaletteIndex : uint8_t;
 
     extern GamePalette gPalette;
-    extern GamePalette gGamePalette;
     extern uint32_t gPaletteEffectFrame;
 
     void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex, int32_t numColours);
+    void updateStandardPalette();
     void UpdatePaletteEffects();
     void GfxTransposePalette(ImageIndex pal, uint8_t product);
     void LoadPalette();

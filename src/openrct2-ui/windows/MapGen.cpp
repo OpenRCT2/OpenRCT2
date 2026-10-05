@@ -1076,7 +1076,6 @@ namespace OpenRCT2::Ui::Windows
 
                     if (_settings.landTexture != type)
                     {
-                        gLandToolTerrainSurface = type;
                         _settings.landTexture = type;
                         LandTool::resetSurfaceColourSelection(type, _settings.surfaceColour1, _surfaceColour1Enabled);
                     }

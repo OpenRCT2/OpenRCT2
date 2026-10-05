@@ -42,8 +42,6 @@
 #include "../object/ScenarioMetaObject.h"
 #include "../park/Legacy.h"
 #include "../peep/RideUseSystem.h"
-#include "../rct1/RCT1.h"
-#include "../rct1/Tables.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
 #include "../rct12/ScenarioPatcher.h"
@@ -75,6 +73,7 @@
 #include "../world/tile_element/TrackElement.h"
 #include "../world/tile_element/WallElement.h"
 #include "RCT1.h"
+#include "RCT1File.h"
 #include "Tables.h"
 
 #include <cassert>
@@ -102,7 +101,7 @@ namespace OpenRCT2::RCT1
 
         std::string _s4Path;
         S4 _s4 = {};
-        uint8_t _gameVersion = 0;
+        RCT1Version _gameVersion = RCT1Version::baseGame;
         uint8_t _parkValueConversionFactor = kDefaultParkValueConversionFactor;
         bool _isScenario = false;
 
@@ -178,7 +177,7 @@ namespace OpenRCT2::RCT1
             _s4 = *ReadAndDecodeS4(stream, isScenario);
             _s4Path = path;
             _isScenario = isScenario;
-            _gameVersion = DetectRCT1Version(_s4.GameVersion) & FILE_VERSION_MASK;
+            _gameVersion = detectRCT1Version(_s4.GameVersion).version;
 
             // Only determine what objects we required to import this saved game
             InitialiseEntryMaps();
@@ -322,8 +321,8 @@ namespace OpenRCT2::RCT1
             auto decodedData = std::make_unique<uint8_t[]>(sizeof(S4));
 
             size_t decodedSize;
-            int32_t fileType = DetectFileType(data.get(), dataSize);
-            if (isScenario && (fileType & FILE_VERSION_MASK) != FILE_VERSION_RCT1)
+            auto fileType = detectFileType(data.get(), dataSize);
+            if (isScenario && fileType.version != RCT1Version::baseGame)
             {
                 decodedSize = DecodeSC4(data.get(), decodedData.get(), dataSize, sizeof(S4));
             }
@@ -627,14 +626,11 @@ namespace OpenRCT2::RCT1
         void AddEntryForWater()
         {
             std::string_view entryName;
-            if (_gameVersion < FILE_VERSION_RCT1_LL)
-            {
-                entryName = GetWaterObject(RCT1_WATER_CYAN);
-            }
-            else
-            {
+            if (_gameVersion == RCT1Version::loopyLandscapes)
                 entryName = GetWaterObject(_s4.WaterColour);
-            }
+            else
+                entryName = GetWaterObject(RCT1_WATER_CYAN);
+
             _waterEntry.GetOrAddEntry(entryName);
         }
 
@@ -644,7 +640,7 @@ namespace OpenRCT2::RCT1
 
             if (_rideTypeToRideEntryMap[EnumValue(rideType)] == kObjectEntryIndexNull)
             {
-                auto entryName = GetRideTypeObject(rideType, _gameVersion == FILE_VERSION_RCT1_LL);
+                auto entryName = GetRideTypeObject(rideType, _gameVersion == RCT1Version::loopyLandscapes);
                 if (!entryName.empty())
                 {
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
@@ -861,7 +857,7 @@ namespace OpenRCT2::RCT1
             // Flags
             dst->flags.holder = src->flags;
             // These flags were not in the base game
-            if (_gameVersion == FILE_VERSION_RCT1)
+            if (_gameVersion == RCT1Version::baseGame)
             {
                 dst->flags.unset(RideFlag::music, RideFlag::indestructible, RideFlag::indestructibleTrack);
             }
@@ -966,7 +962,7 @@ namespace OpenRCT2::RCT1
             dst->music = kObjectEntryIndexNull;
             if (GetRideTypeDescriptor(dst->type).flags.has(RtdFlag::allowMusic))
             {
-                if (_gameVersion == FILE_VERSION_RCT1)
+                if (_gameVersion == RCT1Version::baseGame)
                 {
                     // Original RCT had no music settings, take default style
                     auto style = GetStyleFromMusicIdentifier(GetRideTypeDescriptor(dst->type).DefaultMusic);
@@ -1069,7 +1065,7 @@ namespace OpenRCT2::RCT1
             dst->currentTestStation = StationIndex::GetNull();
             dst->averageSpeedTestTimeout = src->averageSpeedTestTimeout;
             dst->slideInUse = src->slideInUse;
-            dst->slidePeepTShirtColour = GetColour(src->slidePeepTshirtColour);
+            dst->slidePeepTShirtColour = getColour(src->slidePeepTshirtColour, _gameVersion);
             dst->spiralSlideProgress = src->spiralSlideProgress;
             // Doubles as slidePeep
             dst->mazeTiles = src->mazeTiles;
@@ -1104,11 +1100,11 @@ namespace OpenRCT2::RCT1
         {
             // Colours
             dst->vehicleColourSettings = src->vehicleColourSettings;
-            if (_gameVersion == FILE_VERSION_RCT1)
+            if (_gameVersion == RCT1Version::baseGame)
             {
-                dst->trackColours[0].main = GetColour(src->trackPrimaryColour);
-                dst->trackColours[0].additional = GetColour(src->trackSecondaryColour);
-                dst->trackColours[0].supports = GetColour(src->trackSupportColour);
+                dst->trackColours[0].main = getColour(src->trackPrimaryColour, _gameVersion);
+                dst->trackColours[0].additional = getColour(src->trackSecondaryColour, _gameVersion);
+                dst->trackColours[0].supports = getColour(src->trackSupportColour, _gameVersion);
 
                 // Balloons were always blue in the original RCT.
                 if (src->type == RideType::balloonStall)
@@ -1124,9 +1120,9 @@ namespace OpenRCT2::RCT1
             {
                 for (int i = 0; i < Limits::kNumColourSchemes; i++)
                 {
-                    dst->trackColours[i].main = GetColour(src->trackColourMain[i]);
-                    dst->trackColours[i].additional = GetColour(src->trackColourAdditional[i]);
-                    dst->trackColours[i].supports = GetColour(src->trackColourSupports[i]);
+                    dst->trackColours[i].main = getColour(src->trackColourMain[i], _gameVersion);
+                    dst->trackColours[i].additional = getColour(src->trackColourAdditional[i], _gameVersion);
+                    dst->trackColours[i].supports = getColour(src->trackColourSupports[i], _gameVersion);
                 }
             }
 
@@ -1134,7 +1130,7 @@ namespace OpenRCT2::RCT1
             if (dst->getRideTypeDescriptor().flags.has(RtdFlag::hasEntranceAndExit))
             {
                 // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
-                if (_gameVersion == FILE_VERSION_RCT1)
+                if (_gameVersion == RCT1Version::baseGame)
                 {
                     dst->entranceStyle = 0; // plain entrance
                 }
@@ -1144,7 +1140,7 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            if (_gameVersion < FILE_VERSION_RCT1_LL && src->type == RideType::merryGoRound)
+            if (_gameVersion != RCT1Version::loopyLandscapes && src->type == RideType::merryGoRound)
             {
                 // The merry-go-round in pre-LL versions was always yellow with red
                 dst->vehicleColours[0].Body = Drawing::Colour::yellow;
@@ -1158,11 +1154,11 @@ namespace OpenRCT2::RCT1
                     const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->vehicleType);
                     if (colourSchemeCopyDescriptor.colour1 == kCopyColour1)
                     {
-                        dst->vehicleColours[i].Body = GetColour(src->vehicleColours[i].body);
+                        dst->vehicleColours[i].Body = getColour(src->vehicleColours[i].body, _gameVersion);
                     }
                     else if (colourSchemeCopyDescriptor.colour1 == kCopyColour2)
                     {
-                        dst->vehicleColours[i].Body = GetColour(src->vehicleColours[i].trim);
+                        dst->vehicleColours[i].Body = getColour(src->vehicleColours[i].trim, _gameVersion);
                     }
                     else
                     {
@@ -1171,11 +1167,11 @@ namespace OpenRCT2::RCT1
 
                     if (colourSchemeCopyDescriptor.colour2 == kCopyColour1)
                     {
-                        dst->vehicleColours[i].Trim = GetColour(src->vehicleColours[i].body);
+                        dst->vehicleColours[i].Trim = getColour(src->vehicleColours[i].body, _gameVersion);
                     }
                     else if (colourSchemeCopyDescriptor.colour2 == kCopyColour2)
                     {
-                        dst->vehicleColours[i].Trim = GetColour(src->vehicleColours[i].trim);
+                        dst->vehicleColours[i].Trim = getColour(src->vehicleColours[i].trim, _gameVersion);
                     }
                     else
                     {
@@ -1184,11 +1180,11 @@ namespace OpenRCT2::RCT1
 
                     if (colourSchemeCopyDescriptor.colour3 == kCopyColour1)
                     {
-                        dst->vehicleColours[i].Tertiary = GetColour(src->vehicleColours[i].body);
+                        dst->vehicleColours[i].Tertiary = getColour(src->vehicleColours[i].body, _gameVersion);
                     }
                     else if (colourSchemeCopyDescriptor.colour3 == kCopyColour2)
                     {
-                        dst->vehicleColours[i].Tertiary = GetColour(src->vehicleColours[i].trim);
+                        dst->vehicleColours[i].Tertiary = getColour(src->vehicleColours[i].trim, _gameVersion);
                     }
                     else
                     {
@@ -1201,7 +1197,7 @@ namespace OpenRCT2::RCT1
             // LL has 4 types, like RCT2. For LL, only guard against invalid values.
             if (src->type == RideType::hedgeMaze)
             {
-                if (_gameVersion < FILE_VERSION_RCT1_LL || src->trackColourSupports[0] > 3)
+                if (_gameVersion != RCT1Version::loopyLandscapes || src->trackColourSupports[0] > 3)
                     dst->trackColours[0].supports = static_cast<Drawing::Colour>(hedges);
                 else
                     dst->trackColours[0].supports = static_cast<Drawing::Colour>(src->trackColourSupports[0]);
@@ -1288,11 +1284,11 @@ namespace OpenRCT2::RCT1
             // RCT1 had no third colour
             if (colourSchemeCopyDescriptor.colour1 == kCopyColour1)
             {
-                dst->colours.Body = GetColour(src->Colours.BodyColour);
+                dst->colours.Body = getColour(src->Colours.BodyColour, _gameVersion);
             }
             else if (colourSchemeCopyDescriptor.colour1 == kCopyColour2)
             {
-                dst->colours.Body = GetColour(src->Colours.TrimColour);
+                dst->colours.Body = getColour(src->Colours.TrimColour, _gameVersion);
             }
             else
             {
@@ -1301,11 +1297,11 @@ namespace OpenRCT2::RCT1
 
             if (colourSchemeCopyDescriptor.colour2 == kCopyColour1)
             {
-                dst->colours.Trim = GetColour(src->Colours.BodyColour);
+                dst->colours.Trim = getColour(src->Colours.BodyColour, _gameVersion);
             }
             else if (colourSchemeCopyDescriptor.colour2 == kCopyColour2)
             {
-                dst->colours.Trim = GetColour(src->Colours.TrimColour);
+                dst->colours.Trim = getColour(src->Colours.TrimColour, _gameVersion);
             }
             else
             {
@@ -1314,11 +1310,11 @@ namespace OpenRCT2::RCT1
 
             if (colourSchemeCopyDescriptor.colour3 == kCopyColour1)
             {
-                dst->colours.Tertiary = GetColour(src->Colours.BodyColour);
+                dst->colours.Tertiary = getColour(src->Colours.BodyColour, _gameVersion);
             }
             else if (colourSchemeCopyDescriptor.colour3 == kCopyColour2)
             {
-                dst->colours.Tertiary = GetColour(src->Colours.TrimColour);
+                dst->colours.Tertiary = getColour(src->Colours.TrimColour, _gameVersion);
             }
             else
             {
@@ -1364,8 +1360,8 @@ namespace OpenRCT2::RCT1
             dst->nextFlags = src->NextFlags;
             dst->var37 = src->Var37;
             dst->stepProgress = src->StepProgress;
-            dst->tShirtColour = GetColour(src->TshirtColour);
-            dst->trousersColour = GetColour(src->TrousersColour);
+            dst->tShirtColour = getColour(src->TshirtColour, _gameVersion);
+            dst->trousersColour = getColour(src->TrousersColour, _gameVersion);
             dst->destinationX = src->DestinationX;
             dst->destinationY = src->DestinationY;
             dst->destinationTolerance = src->DestinationTolerance;
@@ -1710,7 +1706,7 @@ namespace OpenRCT2::RCT1
                     }
 
                     uint8_t railingsType = RCT1_PATH_SUPPORT_TYPE_TRUSS;
-                    if (_gameVersion == FILE_VERSION_RCT1_LL)
+                    if (_gameVersion == RCT1Version::loopyLandscapes)
                     {
                         railingsType = src2->GetRCT1SupportType();
                     }
@@ -1795,7 +1791,7 @@ namespace OpenRCT2::RCT1
                     dst2->setEntryIndex(entryIndex);
                     dst2->setAge(src2->GetAge());
                     dst2->setSceneryQuadrant(src2->GetSceneryQuadrant());
-                    dst2->setPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
+                    dst2->setPrimaryColour(getColour(EnumValue(src2->GetPrimaryColour()), _gameVersion));
                     if (src2->NeedsSupports())
                         dst2->setNeedsSupports();
 
@@ -1856,7 +1852,7 @@ namespace OpenRCT2::RCT1
                         if (type == -1)
                             continue;
 
-                        Drawing::Colour colourA = GetColour(EnumValue(src2->GetRCT1WallColour()));
+                        Drawing::Colour colourA = getColour(EnumValue(src2->GetRCT1WallColour()), _gameVersion);
                         Drawing::Colour colourB = Drawing::Colour::black;
                         Drawing::Colour colourC = Drawing::Colour::black;
                         ConvertWall(type, &colourA, &colourB);
@@ -1907,8 +1903,8 @@ namespace OpenRCT2::RCT1
                     auto type = src2->GetEntryIndex();
                     dst2->setEntryIndex(_largeSceneryTypeToEntryMap[type]);
                     dst2->setSequenceIndex(src2->GetSequenceIndex());
-                    dst2->setPrimaryColour(GetColour(EnumValue(src2->GetPrimaryColour())));
-                    dst2->setSecondaryColour(GetColour(EnumValue(src2->GetSecondaryColour())));
+                    dst2->setPrimaryColour(getColour(EnumValue(src2->GetPrimaryColour()), _gameVersion));
+                    dst2->setSecondaryColour(getColour(EnumValue(src2->GetSecondaryColour()), _gameVersion));
 
                     return 1;
                 }
@@ -2068,7 +2064,7 @@ namespace OpenRCT2::RCT1
                         {
                             InsertResearchVehicle(researchItem, researched);
                         }
-                        else if (!rideTypeInResearch[researchItem.RelatedRide] && _gameVersion == FILE_VERSION_RCT1_LL)
+                        else if (!rideTypeInResearch[researchItem.RelatedRide] && _gameVersion == RCT1Version::loopyLandscapes)
                         {
                             vehiclesWithMissingRideTypes.push_back(researchItem);
                         }
@@ -2296,7 +2292,7 @@ namespace OpenRCT2::RCT1
             // News items
             auto recentMessages = convertNewsQueue(_s4.recentMessages);
             auto archivedMessages = convertNewsQueue(_s4.archivedMessages);
-            News::importNewsItems(gameState, recentMessages, archivedMessages);
+            News::importNewsItems(park.newsItems, recentMessages, archivedMessages);
 
             // Initial guest status
             gameState.scenarioOptions.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
@@ -2307,9 +2303,9 @@ namespace OpenRCT2::RCT1
             park.guestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
-            park.staffHandymanColour = GetColour(_s4.HandymanColour);
-            park.staffMechanicColour = GetColour(_s4.MechanicColour);
-            park.staffSecurityColour = GetColour(_s4.SecurityGuardColour);
+            park.staffHandymanColour = getColour(_s4.HandymanColour, _gameVersion);
+            park.staffMechanicColour = getColour(_s4.MechanicColour, _gameVersion);
+            park.staffSecurityColour = getColour(_s4.SecurityGuardColour, _gameVersion);
 
             // Flags
             park.flags.holder = _s4.parkFlags.without(ParkFlag::antiCheatDeprecated).holder;
@@ -2324,7 +2320,7 @@ namespace OpenRCT2::RCT1
             park.size = _s4.ParkSize;
             park.totalRideValueForMoney = _s4.TotalRideValueForMoney;
             park.samePriceThroughoutPark = 0;
-            if (_gameVersion == FILE_VERSION_RCT1_LL)
+            if (_gameVersion == RCT1Version::loopyLandscapes)
             {
                 park.samePriceThroughoutPark = _s4.SamePriceThroughout;
             }
@@ -2526,7 +2522,7 @@ namespace OpenRCT2::RCT1
                 dst->text = GetUserString(src->StringID);
             }
 
-            dst->colour = GetColour(src->Colour);
+            dst->colour = getColour(src->Colour, _gameVersion);
             dst->textColour = src->textColour;
             dst->position.x = src->x;
             dst->position.y = src->y;
@@ -2620,7 +2616,7 @@ namespace OpenRCT2::RCT1
         const ResearchItem* GetResearchList(size_t* count)
         {
             // Loopy Landscapes stores research items in a different place
-            if (_gameVersion == FILE_VERSION_RCT1_LL)
+            if (_gameVersion == RCT1Version::loopyLandscapes)
             {
                 *count = std::size(_s4.ResearchItemsLL);
                 return _s4.ResearchItemsLL;
@@ -2801,7 +2797,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<::Vehicle>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const Vehicle*>(&srcBase);
         const auto* ride = GetRide(RideId::FromUnderlying(src->Ride));
         if (ride == nullptr)
@@ -2870,7 +2866,7 @@ namespace OpenRCT2::RCT1
             dst->peep[i] = spriteIndex;
             if (!spriteIndex.IsNull())
             {
-                dst->peep_tshirt_colours[i] = GetColour(src->PeepTshirtColours[i]);
+                dst->peep_tshirt_colours[i] = getColour(src->PeepTshirtColours[i], _gameVersion);
             }
         }
 
@@ -2924,7 +2920,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<Guest>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<Guest>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<Guest>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const Peep*>(&srcBase);
         ImportPeep(dst, src);
 
@@ -2932,18 +2928,19 @@ namespace OpenRCT2::RCT1
         dst->timeToConsume = src->TimeToConsume;
         dst->vandalismSeen = src->VandalismSeen;
 
-        // Balloons were always blue in RCT1 without AA/LL, umbrellas always red
-        if (_gameVersion == FILE_VERSION_RCT1)
+        // Balloons were always blue in RCT1 without AA/LL, umbrellas always red. Hats were only introduced in AA.
+        if (_gameVersion == RCT1Version::baseGame)
         {
             dst->umbrellaColour = Drawing::Colour::brightRed;
             dst->balloonColour = Drawing::Colour::lightBlue;
+            dst->hatColour = Drawing::Colour::brightRed;
         }
         else
         {
-            dst->umbrellaColour = GetColour(src->UmbrellaColour);
-            dst->balloonColour = GetColour(src->BalloonColour);
+            dst->umbrellaColour = getColour(src->UmbrellaColour, _gameVersion);
+            dst->balloonColour = getColour(src->BalloonColour, _gameVersion);
+            dst->hatColour = getColour(src->HatColour, _gameVersion);
         }
-        dst->hatColour = GetColour(src->HatColour);
 
         dst->happiness = src->Happiness;
         dst->happinessTarget = src->HappinessTarget;
@@ -2980,7 +2977,7 @@ namespace OpenRCT2::RCT1
         RideUse::GetTypeHistory().Set(dst->id, RCT12GetRideTypesBeenOn(src));
 
         dst->photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->Photo1RideRef);
-        dst->peepFlags.holder = src->getPeepFlags(_gameVersion == FILE_VERSION_RCT1_LL);
+        dst->peepFlags.holder = src->getPeepFlags(_gameVersion == RCT1Version::loopyLandscapes);
 
         for (size_t i = 0; i < std::size(src->Thoughts); i++)
         {
@@ -3002,7 +2999,7 @@ namespace OpenRCT2::RCT1
         dst->guestNextInQueue = EntityId::FromUnderlying(src->NextInQueue);
         // Guests' favourite ride was only saved in LL.
         // Set it to N/A if the save comes from the original or AA.
-        if (_gameVersion == FILE_VERSION_RCT1_LL)
+        if (_gameVersion == RCT1Version::loopyLandscapes)
         {
             dst->favouriteRide = RCT12RideIdToOpenRCT2RideId(src->FavouriteRide);
             dst->favouriteRideRating = src->FavouriteRideRating;
@@ -3013,13 +3010,13 @@ namespace OpenRCT2::RCT1
             dst->favouriteRideRating = 0;
         }
 
-        dst->setItemFlags(src->GetItemFlags(_gameVersion == FILE_VERSION_RCT1));
+        dst->setItemFlags(src->GetItemFlags(_gameVersion == RCT1Version::baseGame));
     }
 
     template<>
     void S4Importer::ImportEntity<Staff>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<Staff>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<Staff>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const Peep*>(&srcBase);
         ImportPeep(dst, src);
         dst->assignedStaffType = StaffType(src->StaffType);
@@ -3038,7 +3035,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<Litter>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<Litter>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<Litter>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityLitter*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
 
@@ -3049,7 +3046,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<SteamParticle>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<SteamParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<SteamParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntitySteamParticle*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3060,7 +3057,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<MoneyEffect>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<MoneyEffect>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<MoneyEffect>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityMoneyEffect*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3075,13 +3072,13 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<VehicleCrashParticle>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityCrashedVehicleParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
         dst->timeToLive = src->TimeToLive;
-        dst->colour[0] = GetColour(src->Colour[0]);
-        dst->colour[1] = GetColour(src->Colour[1]);
+        dst->colour[0] = getColour(src->Colour[0], _gameVersion);
+        dst->colour[1] = getColour(src->Colour[1], _gameVersion);
         dst->crashedSpriteBase = src->CrashedEntityBase;
         dst->velocityX = src->VelocityX;
         dst->velocityY = src->VelocityY;
@@ -3094,7 +3091,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<ExplosionCloud>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
@@ -3103,7 +3100,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<ExplosionFlare>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
@@ -3112,7 +3109,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<CrashSplashParticle>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->Frame;
@@ -3121,7 +3118,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<JumpingFountain>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityJumpingFountain*>(&srcBase);
 
         auto fountainType = JumpingFountainType::water;
@@ -3141,7 +3138,7 @@ namespace OpenRCT2::RCT1
     template<>
     void S4Importer::ImportEntity<Balloon>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<Balloon>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<Balloon>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityBalloon*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3149,20 +3146,20 @@ namespace OpenRCT2::RCT1
         dst->popped = src->Popped;
         dst->timeToMove = src->TimeToMove;
         // Balloons were always blue in RCT1 without AA/LL
-        if (_gameVersion == FILE_VERSION_RCT1)
+        if (_gameVersion == RCT1Version::baseGame)
         {
             dst->colour = Drawing::Colour::lightBlue;
         }
         else
         {
-            dst->colour = GetColour(src->Colour);
+            dst->colour = getColour(src->Colour, _gameVersion);
         }
     }
 
     template<>
     void S4Importer::ImportEntity<Duck>(GameState_t& gameState, const RCT12EntityBase& srcBase)
     {
-        auto* dst = getGameState().entities.createEntityAt<Duck>(EntityId::FromUnderlying(srcBase.EntityIndex));
+        auto* dst = gameState.entities.createEntityAt<Duck>(EntityId::FromUnderlying(srcBase.EntityIndex));
         auto* src = static_cast<const RCT12EntityDuck*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);

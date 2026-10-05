@@ -39,7 +39,8 @@ namespace OpenRCT2::Drawing
     };
 } // namespace OpenRCT2::Drawing
 
-constexpr uint8_t kPaletteTotalOffsets = 192;
+// Every colour is represented two times as a FilterPaletteID, once as a regular colour and once as a glass colour.
+constexpr uint16_t kPaletteTotalOffsets = 80 + (2 * OpenRCT2::Drawing::kColourNumTotal);
 
 extern const OpenRCT2::Drawing::TranslucentWindowPalette kTranslucentWindowPalettes[OpenRCT2::Drawing::kColourNumTotal];
 

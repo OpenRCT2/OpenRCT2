@@ -62,7 +62,9 @@ namespace OpenRCT2
     constexpr uint16_t kParkFileVersionUprightQuarterHelices = 60;
     constexpr uint16_t kExtendedInvertedRollerCoasterVersion = 61;
     constexpr uint16_t kColourableTerrainVersion = 62;
-    constexpr uint16_t kExtendedLimRollerCoasterVersion = 63;
+    // Added 18 additional colours, including some removed colours from the RCT1 base game and betas.
+    constexpr uint16_t kExtendedColoursGoldVersion = 63;
+    constexpr uint16_t kExtendedLimRollerCoasterVersion = 64;
 
     class ParkFileExporter
     {

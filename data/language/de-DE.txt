@@ -3821,3 +3821,23 @@ STR_7040    :Fußwegextras
 STR_7041    :Parkinfotafel
 STR_7042    :Datumsinfotafel
 STR_7043    :Landhöhe kann hier nicht geändert werden …
+STR_7044    :Nachrichenticker
+STR_7045    :Statusleiste im RCT1-Stil
+STR_7046    :Statusleiste (RCT1-Stil)
+STR_7047    :Schrittsteuerung (Streckenentwurf-Designer)
+STR_7048    :Schrittsteuerung (Szenario-Editor)
+STR_7049    :OpenRCT2
+STR_7050    :Gehende Besucher
+STR_7051    :Besucher auf dem Weg nach {STRINGID}
+STR_7052    :Besucher, die für {STRINGID} anstehen
+STR_7053    :Ertrinkende Besucher
+STR_7054    :Besucher auf {STRINGID}
+STR_7055    :Besucher in {STRINGID}
+STR_7056    :Besucher bei {STRINGID}
+STR_7057    :Sitzende Besucher
+STR_7058    :Aufgesammelte Besucher
+STR_7059    :Besucher, die {STRINGID} beobachten
+STR_7060    :Besucher, die beim Bau von {STRINGID} zuschauen
+STR_7061    :Besucher, die die Landschaft betrachten
+STR_7062    :Besucher, die den Park verlassen
+STR_7063    :Besucher, die beim Bau eines neuen Fahrgeschäfts zuschauen

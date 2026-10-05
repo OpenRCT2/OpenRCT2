@@ -257,7 +257,7 @@ namespace OpenRCT2::Scenario
         {
             case ObjectiveType::guestsAndRating:
             {
-                News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
+                News::AddItemToQueue(park.newsItems, News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
                 park.flags.unset(ParkFlag::parkOpen);
                 gameState.scenarioOptions.guestInitialHappiness = 50;
                 break;

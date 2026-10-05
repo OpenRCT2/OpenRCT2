@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../core/OrcaStream.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -31,6 +32,7 @@
 #include <unordered_map>
 
 using namespace OpenRCT2;
+using OpenRCT2::Drawing::Colour;
 
 static const std::unordered_map<std::string_view, std::string_view> kOldObjectIds = {
     { "official.scgpanda", "rct2dlc.scenery_group.scgpanda" },
@@ -3236,4 +3238,37 @@ void updateSurfaceElementsColour(
             }
         }
     }
+}
+
+Colour convertPre63Colour(uint8_t colour)
+{
+    // In many cases, colours are interpreted as FilterPaletteId. Of course, this has been abused to render rides
+    // using e.g. water effects (which start right after the last valid colour). Account for this by shifting the
+    // number by the number of newly added colours.
+    constexpr auto kOldNumColours = 56;
+    constexpr auto kNumNewColours = 18;
+    if (colour >= kOldNumColours)
+    {
+        colour += kNumNewColours;
+    }
+
+    return static_cast<Colour>(colour);
+}
+
+Colour convertPre63Colour(Colour colour)
+{
+    return convertPre63Colour(EnumValue(colour));
+}
+
+void readWriteColour(OrcaStream::ChunkStream& cs, Colour& colourField, uint32_t parkFileVersion)
+{
+    if (parkFileVersion >= kExtendedColoursGoldVersion)
+    {
+        cs.readWrite(colourField);
+        return;
+    }
+
+    uint8_t tempColour{};
+    cs.readWrite(tempColour);
+    colourField = convertPre63Colour(tempColour);
 }
