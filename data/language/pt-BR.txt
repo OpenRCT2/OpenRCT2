@@ -3844,3 +3844,21 @@ STR_7060    :Visitantes observando a construção de {STRINGID}
 STR_7061    :Visitantes observando a paisagem
 STR_7062    :Visitantes saindo do parque
 STR_7063    :Visitantes observando uma nova atração ser construída
+STR_7064    :Dourado
+STR_7065    :Âmbar
+STR_7066    :Ametista
+STR_7067    :Aspargo
+STR_7068    :Marrom
+STR_7069    :Rosa queimado
+STR_7070    :Cacto
+STR_7071    :Caramelo
+STR_7072    :Cobre
+STR_7073    :Carmesim
+STR_7074    :Água mais esscura
+STR_7075    :Esmeralda
+STR_7076    :Índigo
+STR_7077    :Pesto
+STR_7078    :Verde-pinho
+STR_7079    :Rubi
+STR_7080    :Azul escuro
+STR_7081    :Prateado
