@@ -36421,187 +36421,187 @@
     {
         "path": "track/rmc/barrel_roll_left_1_1.png",
         "x": -34,
-        "y": -76,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_2.png",
-        "x": -34,
-        "y": -76,
+        "x": -33,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_3.png",
-        "x": -66,
-        "y": -60,
+        "x": -34,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_4.png",
-        "x": -66,
-        "y": -60,
+        "x": -21,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -1,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -34,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_2_1.png",
-        "x": -34,
+        "x": -24,
         "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_2_2.png",
         "x": -34,
-        "y": -12,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_2_3.png",
-        "x": -66,
-        "y": -28,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/barrel_roll_left_2_4.png",
-        "x": -66,
-        "y": -28,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/barrel_roll_left_2_5.png",
-        "x": -98,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/barrel_roll_left_2_6.png",
-        "x": -98,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/barrel_roll_left_3_1.png",
-        "x": -98,
+        "x": -28,
         "y": -15,
         "palette": "keep"
     },
     {
+        "path": "track/rmc/barrel_roll_left_2_4.png",
+        "x": -28,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/barrel_roll_left_2_5.png",
+        "x": -32,
+        "y": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/barrel_roll_left_2_6.png",
+        "x": -32,
+        "y": -42,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/barrel_roll_left_3_1.png",
+        "x": -30,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
         "path": "track/rmc/barrel_roll_left_3_2.png",
-        "x": -98,
+        "x": -32,
         "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_3.png",
-        "x": -66,
-        "y": -31,
+        "x": -25,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_4.png",
-        "x": -66,
+        "x": -30,
         "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_5.png",
         "x": -34,
-        "y": -47,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_6.png",
         "x": -34,
-        "y": -47,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_1.png",
-        "x": -98,
-        "y": -76,
+        "x": -19,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_2.png",
-        "x": -98,
-        "y": -76,
+        "x": -26,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_3.png",
-        "x": -66,
-        "y": -60,
+        "x": -31,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_4.png",
         "x": -66,
-        "y": -60,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_5.png",
-        "x": -34,
-        "y": -44,
+        "x": -26,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_1.png",
         "x": -34,
-        "y": -76,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_2.png",
-        "x": -34,
-        "y": -76,
+        "x": -33,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_3.png",
-        "x": -66,
-        "y": -60,
+        "x": -32,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_4.png",
-        "x": -66,
-        "y": -60,
+        "x": -34,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -21,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -27,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_1.png",
-        "x": -34,
-        "y": -15,
+        "x": -23,
+        "y": -12,
         "palette": "keep"
     },
     {
@@ -36612,98 +36612,98 @@
     },
     {
         "path": "track/rmc/barrel_roll_right_2_3.png",
-        "x": -66,
-        "y": -31,
+        "x": -9,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_4.png",
-        "x": -66,
+        "x": -15,
         "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_5.png",
-        "x": -98,
-        "y": -47,
+        "x": -11,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_6.png",
-        "x": -98,
-        "y": -47,
+        "x": -12,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_1.png",
-        "x": -98,
+        "x": -4,
         "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_2.png",
-        "x": -98,
-        "y": -12,
+        "x": -4,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_3.png",
-        "x": -66,
-        "y": -28,
+        "x": 0,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_4.png",
-        "x": -66,
-        "y": -28,
+        "x": 0,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_5.png",
         "x": -34,
-        "y": -44,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_1.png",
-        "x": -98,
-        "y": -76,
+        "x": -10,
+        "y": -6,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_2.png",
-        "x": -98,
-        "y": -76,
+        "x": -40,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_3.png",
-        "x": -66,
-        "y": -60,
+        "x": -26,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_4.png",
-        "x": -66,
-        "y": -60,
+        "x": -29,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_5.png",
-        "x": -34,
-        "y": -44,
+        "x": -26,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
@@ -36899,147 +36899,147 @@
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_1_1.png",
-        "x": -98,
-        "y": -99,
+        "path": "track/rmc/quarter_loop_1_1.png",
+        "x": -30,
+        "y": -52,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_1_2.png",
-        "x": -98,
-        "y": -99,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_1_3.png",
-        "x": -66,
-        "y": -59,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_1_4.png",
-        "x": -66,
-        "y": -59,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_1_5.png",
-        "x": -34,
-        "y": -35,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_1_6.png",
-        "x": -34,
-        "y": -35,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_1.png",
-        "x": -98,
-        "y": -172,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_2.png",
-        "x": -98,
-        "y": -172,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_3.png",
-        "x": -66,
-        "y": -100,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_4.png",
-        "x": -66,
-        "y": -100,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_5.png",
-        "x": -34,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_6.png",
-        "x": -34,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_3_1.png",
+        "path": "track/rmc/quarter_loop_1_2.png",
         "x": -32,
-        "y": -172,
+        "y": -63,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_3_2.png",
+        "path": "track/rmc/quarter_loop_1_3.png",
+        "x": 2,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_1_4.png",
+        "x": 0,
+        "y": -42,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_1_5.png",
+        "x": -34,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_1_6.png",
+        "x": -34,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_2_1.png",
+        "x": -30,
+        "y": -75,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_2_2.png",
         "x": -32,
-        "y": -172,
+        "y": -84,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_3_3.png",
-        "x": -64,
-        "y": -100,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_3_4.png",
-        "x": -64,
-        "y": -100,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_3_5.png",
-        "x": -96,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_3_6.png",
-        "x": -96,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_4_1.png",
+        "path": "track/rmc/quarter_loop_2_3.png",
         "x": -32,
-        "y": -99,
+        "y": -66,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_2.png",
+        "path": "track/rmc/quarter_loop_2_4.png",
         "x": -32,
-        "y": -99,
+        "y": -66,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_3.png",
-        "x": -64,
-        "y": -59,
+        "path": "track/rmc/quarter_loop_2_5.png",
+        "x": -26,
+        "y": -18,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_4.png",
-        "x": -64,
-        "y": -59,
+        "path": "track/rmc/quarter_loop_2_6.png",
+        "x": -34,
+        "y": -42,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_5.png",
-        "x": -96,
-        "y": -35,
+        "path": "track/rmc/quarter_loop_3_1.png",
+        "x": -2,
+        "y": -75,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_6.png",
-        "x": -96,
-        "y": -35,
+        "path": "track/rmc/quarter_loop_3_2.png",
+        "x": -32,
+        "y": -83,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_3_3.png",
+        "x": -14,
+        "y": -68,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_3_4.png",
+        "x": -33,
+        "y": -68,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_3_5.png",
+        "x": -1,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_3_6.png",
+        "x": -34,
+        "y": -42,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_1.png",
+        "x": -8,
+        "y": -53,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_2.png",
+        "x": -32,
+        "y": -63,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_3.png",
+        "x": -22,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_4.png",
+        "x": -32,
+        "y": -42,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_5.png",
+        "x": -30,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_6.png",
+        "x": -32,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -37177,589 +37177,589 @@
     {
         "path": "track/rmc/zero_g_roll_left_1_1.png",
         "x": -34,
-        "y": -100,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_2.png",
-        "x": -34,
-        "y": -100,
+        "x": -33,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_3.png",
-        "x": -66,
-        "y": -76,
+        "x": -20,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_4.png",
-        "x": -66,
-        "y": -76,
+        "x": -11,
+        "y": -57,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -14,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_1.png",
-        "x": -34,
-        "y": -36,
+        "x": -12,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_2.png",
         "x": -34,
-        "y": -36,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_3.png",
-        "x": -66,
-        "y": -44,
+        "x": -16,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_4.png",
-        "x": -66,
-        "y": -44,
+        "x": -23,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -25,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -26,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_3_1.png",
-        "x": -98,
-        "y": -36,
+        "x": -21,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_3_2.png",
-        "x": -66,
-        "y": -44,
+        "x": -23,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_3_3.png",
         "x": -34,
-        "y": -44,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_3_4.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_4_1.png",
-        "x": -98,
-        "y": -100,
+        "x": -24,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_4_2.png",
-        "x": -66,
-        "y": -76,
+        "x": -32,
+        "y": -58,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_4_3.png",
-        "x": -34,
-        "y": -44,
+        "x": -27,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_4_4.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_1_1.png",
         "x": -34,
-        "y": -100,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_1_2.png",
-        "x": -66,
-        "y": -76,
+        "x": -32,
+        "y": -58,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_1_3.png",
-        "x": -98,
-        "y": -44,
+        "x": -21,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_1_4.png",
-        "x": -98,
-        "y": -44,
+        "x": -31,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_2_1.png",
         "x": -34,
-        "y": -36,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_2_2.png",
-        "x": -66,
-        "y": -44,
+        "x": -22,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_2_3.png",
-        "x": -98,
-        "y": -44,
+        "x": -19,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_2_4.png",
-        "x": -98,
-        "y": -44,
+        "x": -22,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_1.png",
-        "x": -98,
-        "y": -36,
+        "x": -1,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_2.png",
-        "x": -98,
-        "y": -36,
+        "x": -9,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_3.png",
-        "x": -66,
-        "y": -44,
+        "x": 1,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_4.png",
-        "x": -66,
-        "y": -44,
+        "x": -6,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_5.png",
         "x": -34,
-        "y": -44,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_1.png",
-        "x": -98,
-        "y": -100,
+        "x": -19,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_2.png",
-        "x": -98,
-        "y": -100,
+        "x": -32,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_3.png",
-        "x": -66,
-        "y": -76,
+        "x": -22,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_4.png",
-        "x": -66,
-        "y": -76,
+        "x": -54,
+        "y": -57,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_5.png",
-        "x": -34,
-        "y": -44,
+        "x": -26,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_1.png",
         "x": -34,
-        "y": -212,
+        "y": -58,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_2.png",
-        "x": -66,
-        "y": -140,
+        "x": -34,
+        "y": -62,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_3.png",
-        "x": -66,
-        "y": -140,
+        "x": -16,
+        "y": -57,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_4.png",
-        "x": -98,
-        "y": -84,
+        "x": -25,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_5.png",
-        "x": -98,
-        "y": -84,
+        "x": -14,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_6.png",
-        "x": -130,
-        "y": -44,
+        "x": -7,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_7.png",
-        "x": -130,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_1.png",
-        "x": -34,
-        "y": -117,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_2.png",
         "x": -34,
-        "y": -117,
+        "y": -52,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_3.png",
-        "x": -66,
-        "y": -77,
+        "x": 5,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_4.png",
-        "x": -66,
-        "y": -77,
+        "x": -26,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_5.png",
-        "x": -98,
-        "y": -53,
+        "x": -11,
+        "y": -5,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_6.png",
-        "x": -98,
-        "y": -53,
+        "x": -32,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_7.png",
-        "x": -130,
-        "y": -45,
+        "x": -30,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_8.png",
-        "x": -130,
-        "y": -45,
+        "x": -30,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_1.png",
-        "x": -130,
-        "y": -117,
+        "x": -9,
+        "y": -37,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_2.png",
-        "x": -130,
-        "y": -117,
+        "x": -32,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_3.png",
-        "x": -98,
-        "y": -77,
+        "x": -32,
+        "y": -45,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_4.png",
-        "x": -98,
-        "y": -77,
+        "x": -32,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_5.png",
-        "x": -66,
-        "y": -53,
+        "x": -24,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_6.png",
-        "x": -66,
-        "y": -53,
+        "x": -24,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_7.png",
         "x": -34,
-        "y": -45,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_8.png",
         "x": -34,
-        "y": -45,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_1.png",
-        "x": -130,
-        "y": -212,
+        "x": -32,
+        "y": -82,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_2.png",
-        "x": -98,
-        "y": -140,
+        "x": -32,
+        "y": -52,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_3.png",
-        "x": -66,
-        "y": -84,
+        "x": -30,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_4.png",
-        "x": -66,
-        "y": -84,
+        "x": -32,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_5.png",
-        "x": -34,
-        "y": -44,
+        "x": -26,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_1.png",
         "x": -34,
-        "y": -212,
+        "y": -82,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_2.png",
-        "x": -66,
-        "y": -140,
+        "x": -32,
+        "y": -52,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_3.png",
-        "x": -98,
-        "y": -84,
+        "x": -30,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_4.png",
-        "x": -98,
-        "y": -84,
+        "x": -31,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_5.png",
-        "x": -130,
-        "y": -44,
+        "x": -17,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_6.png",
-        "x": -130,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_1.png",
-        "x": -34,
-        "y": -117,
+        "x": 6,
+        "y": -37,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_2.png",
         "x": -34,
-        "y": -117,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_3.png",
-        "x": -66,
-        "y": -77,
+        "x": -24,
+        "y": -45,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_4.png",
-        "x": -66,
-        "y": -77,
+        "x": -22,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_5.png",
-        "x": -98,
-        "y": -53,
+        "x": -17,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_6.png",
-        "x": -98,
-        "y": -53,
+        "x": -3,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_7.png",
-        "x": -130,
-        "y": -45,
+        "x": -8,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_8.png",
-        "x": -130,
-        "y": -45,
+        "x": -8,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_1.png",
-        "x": -130,
-        "y": -117,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_2.png",
-        "x": -130,
-        "y": -117,
+        "x": -32,
+        "y": -52,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_3.png",
-        "x": -98,
-        "y": -77,
+        "x": -15,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_4.png",
-        "x": -98,
-        "y": -77,
+        "x": -24,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_5.png",
-        "x": -66,
-        "y": -53,
+        "x": 2,
+        "y": -5,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_6.png",
-        "x": -66,
-        "y": -53,
+        "x": -5,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_7.png",
         "x": -34,
-        "y": -45,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_8.png",
         "x": -34,
-        "y": -45,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_1.png",
-        "x": -130,
-        "y": -212,
+        "x": -32,
+        "y": -58,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_2.png",
-        "x": -98,
-        "y": -140,
+        "x": -26,
+        "y": -62,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_3.png",
-        "x": -98,
-        "y": -140,
+        "x": -32,
+        "y": -57,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_4.png",
-        "x": -66,
-        "y": -84,
+        "x": -22,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_5.png",
-        "x": -66,
-        "y": -84,
+        "x": -32,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_6.png",
-        "x": -34,
-        "y": -44,
+        "x": -26,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_7.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
