@@ -36421,37 +36421,37 @@
     {
         "path": "track/rmc/barrel_roll_left_1_1.png",
         "x": -34,
-        "y": -76,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_2.png",
-        "x": -34,
-        "y": -76,
+        "x": -11,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_3.png",
-        "x": -66,
-        "y": -60,
+        "x": -32,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_4.png",
-        "x": -66,
-        "y": -60,
+        "x": 0,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_1_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -25,
+        "y": -42,
         "palette": "keep"
     },
     {
@@ -36462,248 +36462,248 @@
     },
     {
         "path": "track/rmc/barrel_roll_left_2_2.png",
-        "x": -34,
-        "y": -12,
+        "x": -23,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_2_3.png",
-        "x": -66,
-        "y": -28,
+        "x": -32,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_2_4.png",
-        "x": -66,
-        "y": -28,
+        "x": -32,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_2_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_2_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_1.png",
-        "x": -98,
-        "y": -15,
+        "x": -32,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_2.png",
-        "x": -98,
-        "y": -15,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_3.png",
-        "x": -66,
-        "y": -31,
+        "x": -32,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_4.png",
-        "x": -66,
-        "y": -31,
+        "x": 0,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_5.png",
         "x": -34,
-        "y": -47,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_3_6.png",
         "x": -34,
-        "y": -47,
+        "y": -49,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_1.png",
-        "x": -98,
-        "y": -76,
+        "x": -32,
+        "y": -33,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_2.png",
-        "x": -98,
-        "y": -76,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_3.png",
-        "x": -66,
-        "y": -60,
+        "x": -32,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_4.png",
-        "x": -66,
-        "y": -60,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_5.png",
         "x": -34,
-        "y": -44,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_left_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_1.png",
         "x": -34,
-        "y": -76,
+        "y": -33,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_2.png",
-        "x": -34,
-        "y": -76,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_3.png",
-        "x": -66,
-        "y": -60,
+        "x": -32,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_4.png",
-        "x": -66,
-        "y": -60,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_1_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_1.png",
         "x": -34,
-        "y": -15,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_2.png",
-        "x": -34,
-        "y": -15,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_3.png",
-        "x": -66,
-        "y": -31,
+        "x": -32,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_4.png",
-        "x": -66,
-        "y": -31,
+        "x": -2,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_5.png",
-        "x": -98,
-        "y": -47,
+        "x": -32,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_2_6.png",
-        "x": -98,
-        "y": -47,
+        "x": -32,
+        "y": -49,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_1.png",
-        "x": -98,
+        "x": -30,
         "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_2.png",
-        "x": -98,
-        "y": -12,
+        "x": 0,
+        "y": -2,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_3.png",
-        "x": -66,
-        "y": -28,
+        "x": -24,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_4.png",
-        "x": -66,
-        "y": -28,
+        "x": 0,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_5.png",
         "x": -34,
-        "y": -44,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_3_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_1.png",
-        "x": -98,
-        "y": -76,
+        "x": -32,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_2.png",
-        "x": -98,
-        "y": -76,
+        "x": -31,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_3.png",
-        "x": -66,
-        "y": -60,
+        "x": -32,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_4.png",
-        "x": -66,
-        "y": -60,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_5.png",
         "x": -34,
-        "y": -44,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/rmc/barrel_roll_right_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
@@ -36899,147 +36899,147 @@
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_1_1.png",
-        "x": -98,
-        "y": -99,
+        "path": "track/rmc/quarter_loop_1_1.png",
+        "x": -30,
+        "y": -68,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_1_2.png",
-        "x": -98,
-        "y": -99,
+        "path": "track/rmc/quarter_loop_1_2.png",
+        "x": 0,
+        "y": -62,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_1_3.png",
-        "x": -66,
-        "y": -59,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_1_4.png",
-        "x": -66,
-        "y": -59,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_1_5.png",
-        "x": -34,
-        "y": -35,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_1_6.png",
-        "x": -34,
-        "y": -35,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_1.png",
-        "x": -98,
-        "y": -172,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_2.png",
-        "x": -98,
-        "y": -172,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_3.png",
-        "x": -66,
-        "y": -100,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_4.png",
-        "x": -66,
-        "y": -100,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_5.png",
-        "x": -34,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_2_6.png",
-        "x": -34,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_3_1.png",
+        "path": "track/rmc/quarter_loop_1_3.png",
         "x": -32,
-        "y": -172,
+        "y": -23,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_3_2.png",
+        "path": "track/rmc/quarter_loop_1_4.png",
+        "x": 0,
+        "y": -41,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_1_5.png",
+        "x": -34,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_1_6.png",
+        "x": -34,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_2_1.png",
+        "x": -2,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_2_2.png",
         "x": -32,
-        "y": -172,
+        "y": -95,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_3_3.png",
-        "x": -64,
-        "y": -100,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_3_4.png",
-        "x": -64,
-        "y": -100,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_3_5.png",
-        "x": -96,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_3_6.png",
-        "x": -96,
-        "y": -44,
-        "palette": "keep"
-    },
-    {
-        "path": "track/rmc/quarter_loop_up_4_1.png",
+        "path": "track/rmc/quarter_loop_2_3.png",
         "x": -32,
-        "y": -99,
+        "y": -72,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_2.png",
+        "path": "track/rmc/quarter_loop_2_4.png",
         "x": -32,
-        "y": -99,
+        "y": -71,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_3.png",
-        "x": -64,
-        "y": -59,
+        "path": "track/rmc/quarter_loop_2_5.png",
+        "x": -34,
+        "y": -33,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_4.png",
-        "x": -64,
-        "y": -59,
+        "path": "track/rmc/quarter_loop_2_6.png",
+        "x": -34,
+        "y": -42,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_5.png",
-        "x": -96,
-        "y": -35,
+        "path": "track/rmc/quarter_loop_3_1.png",
+        "x": -2,
+        "y": -32,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/quarter_loop_up_4_6.png",
-        "x": -96,
-        "y": -35,
+        "path": "track/rmc/quarter_loop_3_2.png",
+        "x": -32,
+        "y": -95,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_3_3.png",
+        "x": -29,
+        "y": -72,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_3_4.png",
+        "x": -32,
+        "y": -71,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_3_5.png",
+        "x": -31,
+        "y": -33,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_3_6.png",
+        "x": -28,
+        "y": -42,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_1.png",
+        "x": -8,
+        "y": -68,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_2.png",
+        "x": -32,
+        "y": -62,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_3.png",
+        "x": 0,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_4.png",
+        "x": -32,
+        "y": -41,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_5.png",
+        "x": -32,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/quarter_loop_4_6.png",
+        "x": -32,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -37177,589 +37177,589 @@
     {
         "path": "track/rmc/zero_g_roll_left_1_1.png",
         "x": -34,
-        "y": -100,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_2.png",
-        "x": -34,
-        "y": -100,
+        "x": -9,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_3.png",
-        "x": -66,
-        "y": -76,
+        "x": -20,
+        "y": -57,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_4.png",
-        "x": -66,
-        "y": -76,
+        "x": -10,
+        "y": -54,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_1_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_1.png",
         "x": -34,
-        "y": -36,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_2.png",
-        "x": -34,
-        "y": -36,
+        "x": -23,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_3.png",
-        "x": -66,
-        "y": -44,
+        "x": -32,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_4.png",
-        "x": -66,
-        "y": -44,
+        "x": -32,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_5.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_2_6.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_3_1.png",
-        "x": -98,
-        "y": -36,
+        "x": -31,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_3_2.png",
-        "x": -66,
-        "y": -44,
+        "x": -31,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_3_3.png",
         "x": -34,
-        "y": -44,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_3_4.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_4_1.png",
-        "x": -98,
-        "y": -100,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_4_2.png",
-        "x": -66,
-        "y": -76,
+        "x": -32,
+        "y": -58,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_4_3.png",
         "x": -34,
-        "y": -44,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_left_4_4.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_1_1.png",
         "x": -34,
-        "y": -100,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_1_2.png",
-        "x": -66,
-        "y": -76,
+        "x": -32,
+        "y": -58,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_1_3.png",
-        "x": -98,
-        "y": -44,
+        "x": -27,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_1_4.png",
-        "x": -98,
-        "y": -44,
+        "x": -31,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_2_1.png",
         "x": -34,
-        "y": -36,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_2_2.png",
-        "x": -66,
-        "y": -44,
+        "x": -32,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_2_3.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_2_4.png",
-        "x": -98,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_1.png",
-        "x": -98,
-        "y": -36,
+        "x": -27,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_2.png",
-        "x": -98,
-        "y": -36,
+        "x": 0,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_3.png",
-        "x": -66,
-        "y": -44,
+        "x": -31,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_4.png",
-        "x": -66,
-        "y": -44,
+        "x": 0,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_5.png",
         "x": -34,
-        "y": -44,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_3_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_1.png",
-        "x": -98,
-        "y": -100,
+        "x": -32,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_2.png",
-        "x": -98,
-        "y": -100,
+        "x": -32,
+        "y": -20,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_3.png",
-        "x": -66,
-        "y": -76,
+        "x": -32,
+        "y": -57,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_4.png",
-        "x": -66,
-        "y": -76,
+        "x": -32,
+        "y": -54,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_5.png",
         "x": -34,
-        "y": -44,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/rmc/zero_g_roll_right_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_1.png",
         "x": -34,
-        "y": -212,
+        "y": -62,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_2.png",
-        "x": -66,
-        "y": -140,
+        "x": -32,
+        "y": -61,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_3.png",
-        "x": -66,
-        "y": -140,
+        "x": -16,
+        "y": -81,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_4.png",
-        "x": -98,
-        "y": -84,
+        "x": -22,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_5.png",
-        "x": -98,
-        "y": -84,
+        "x": 0,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_6.png",
-        "x": -130,
-        "y": -44,
+        "x": -26,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_1_7.png",
-        "x": -130,
-        "y": -44,
+        "x": -11,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_1.png",
-        "x": -34,
-        "y": -117,
+        "x": -33,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_2.png",
         "x": -34,
-        "y": -117,
+        "y": -52,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_3.png",
-        "x": -66,
-        "y": -77,
+        "x": -32,
+        "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_4.png",
-        "x": -66,
-        "y": -77,
+        "x": -32,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_5.png",
-        "x": -98,
-        "y": -53,
+        "x": -32,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_6.png",
-        "x": -98,
-        "y": -53,
+        "x": -32,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_7.png",
-        "x": -130,
-        "y": -45,
+        "x": -32,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_2_8.png",
-        "x": -130,
-        "y": -45,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_1.png",
-        "x": -130,
-        "y": -117,
+        "x": -32,
+        "y": -69,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_2.png",
-        "x": -130,
-        "y": -117,
+        "x": 0,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_3.png",
-        "x": -98,
-        "y": -77,
+        "x": -31,
+        "y": -53,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_4.png",
-        "x": -98,
-        "y": -77,
+        "x": 0,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_5.png",
-        "x": -66,
-        "y": -53,
+        "x": -31,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_6.png",
-        "x": -66,
-        "y": -53,
+        "x": 0,
+        "y": -38,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_7.png",
         "x": -34,
-        "y": -45,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_3_8.png",
         "x": -34,
-        "y": -45,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_1.png",
-        "x": -130,
-        "y": -212,
+        "x": -32,
+        "y": -82,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_2.png",
-        "x": -98,
-        "y": -140,
+        "x": -32,
+        "y": -53,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_3.png",
-        "x": -66,
-        "y": -84,
+        "x": -32,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_4.png",
-        "x": -66,
-        "y": -84,
+        "x": -32,
+        "y": -49,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_5.png",
         "x": -34,
-        "y": -44,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_left_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_1.png",
         "x": -34,
-        "y": -212,
+        "y": -82,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_2.png",
-        "x": -66,
-        "y": -140,
+        "x": -32,
+        "y": -53,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_3.png",
-        "x": -98,
-        "y": -84,
+        "x": -35,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_4.png",
-        "x": -98,
-        "y": -84,
+        "x": -26,
+        "y": -49,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_5.png",
-        "x": -130,
-        "y": -44,
+        "x": -27,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_1_6.png",
-        "x": -130,
-        "y": -44,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_1.png",
-        "x": -34,
-        "y": -117,
+        "x": -33,
+        "y": -69,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_2.png",
         "x": -34,
-        "y": -117,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_3.png",
-        "x": -66,
-        "y": -77,
+        "x": -32,
+        "y": -53,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_4.png",
-        "x": -66,
-        "y": -77,
+        "x": -32,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_5.png",
-        "x": -98,
-        "y": -53,
+        "x": -32,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_6.png",
-        "x": -98,
-        "y": -53,
+        "x": -32,
+        "y": -38,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_7.png",
-        "x": -130,
-        "y": -45,
+        "x": -32,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_2_8.png",
-        "x": -130,
-        "y": -45,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_1.png",
-        "x": -130,
-        "y": -117,
+        "x": -32,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_2.png",
-        "x": -130,
-        "y": -117,
+        "x": 0,
+        "y": -52,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_3.png",
-        "x": -98,
-        "y": -77,
+        "x": -30,
+        "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_4.png",
-        "x": -98,
-        "y": -77,
+        "x": 0,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_5.png",
-        "x": -66,
-        "y": -53,
+        "x": -31,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_6.png",
-        "x": -66,
-        "y": -53,
+        "x": 0,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_7.png",
         "x": -34,
-        "y": -45,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_3_8.png",
         "x": -34,
-        "y": -45,
+        "y": -42,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_1.png",
-        "x": -130,
-        "y": -212,
+        "x": -32,
+        "y": -62,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_2.png",
-        "x": -98,
-        "y": -140,
+        "x": -32,
+        "y": -61,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_3.png",
-        "x": -98,
-        "y": -140,
+        "x": -32,
+        "y": -81,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_4.png",
-        "x": -66,
-        "y": -84,
+        "x": -32,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_5.png",
-        "x": -66,
-        "y": -84,
+        "x": -32,
+        "y": -65,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_6.png",
         "x": -34,
-        "y": -44,
+        "y": -34,
         "palette": "keep"
     },
     {
         "path": "track/rmc/large_zero_g_roll_right_4_7.png",
         "x": -34,
-        "y": -44,
+        "y": -42,
         "palette": "keep"
     },
     {
