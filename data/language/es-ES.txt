@@ -2637,9 +2637,9 @@ STR_5534    :Amarillo
 STR_5535    :Amarillo oscuro
 STR_5536    :Naranja claro
 STR_5537    :Naranja oscuro
-STR_5538    :Café claro
-STR_5539    :Café saturado
-STR_5540    :Café oscuro
+STR_5538    :Marrón claro
+STR_5539    :Marrón saturado
+STR_5540    :Marrón oscuro
 STR_5541    :Rosa salmón
 STR_5542    :Rojo bordó
 STR_5543    :Rojo saturado
@@ -3853,3 +3853,21 @@ STR_7060    :Visitantes mirando la construcción de {STRINGID}
 STR_7061    :Visitantes observando el decorado
 STR_7062    :Visitantes abandonando el parque
 STR_7063    :Visitantes viendo la construcción de una nueva atracción
+STR_7064    :Oro
+STR_7065    :Ámbar
+STR_7066    :Amatista
+STR_7067    :Verde espárrago
+STR_7068    :Marrón
+STR_7069    :Rosa quemado
+STR_7070    :Verde cactus
+STR_7071    :Caramelo
+STR_7072    :Cobre
+STR_7073    :Carmesí
+STR_7074    :Agua más oscura
+STR_7075    :Esmeralda
+STR_7076    :Índigo
+STR_7077    :Verde pesto
+STR_7078    :Verde pino
+STR_7079    :Rubí
+STR_7080    :Azul profundo
+STR_7081    :Plata
