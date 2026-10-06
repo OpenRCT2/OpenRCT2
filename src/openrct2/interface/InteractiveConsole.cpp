@@ -1113,7 +1113,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
     auto ridesIntent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
     ContextBroadcastIntent(&ridesIntent);
 
-    gWindowUpdateTicks = 0;
+    gWindowUpdateTicks = {};
     Drawing::GfxInvalidateScreen();
     console.WriteLine("Object file loaded.");
 }

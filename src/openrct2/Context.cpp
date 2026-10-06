@@ -1303,7 +1303,7 @@ namespace OpenRCT2
             _realtimeAccumulator = std::min(_realtimeAccumulator + deltaTime, kGameUpdateMaxThreshold);
             while (_realtimeAccumulator >= kGameUpdateTimeMS)
             {
-                gCurrentRealTimeTicks++;
+                ++gCurrentRealTimeTicks;
                 _realtimeAccumulator -= kGameUpdateTimeMS;
             }
         }

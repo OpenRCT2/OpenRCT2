@@ -10,6 +10,7 @@
 #pragma once
 
 #include "core/FlagHolder.hpp"
+#include "core/GameTicks.hpp"
 #include "core/StringTypes.h"
 #include "interface/ScreenCoords.hpp"
 
@@ -80,14 +81,14 @@ namespace OpenRCT2
     extern WidgetRef gHoverWidget;
     extern WidgetRef gPressedWidget;
 
-    extern uint32_t gTooltipCloseTimeout;
+    extern GameTicks gTooltipCloseTimeout;
     extern WidgetRef gTooltipWidget;
     extern ScreenCoordsXY gTooltipCursor;
 
     // TODO: Move to openrct2-ui and make static again
     extern InputState _inputState;
     extern InputFlags gInputFlags;
-    extern uint32_t _tooltipNotShownTimeout;
+    extern GameTicks _tooltipNotShownTimeout;
 
     void TitleHandleKeyboardInput();
     void GameHandleKeyboardInput();

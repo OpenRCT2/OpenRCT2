@@ -311,7 +311,7 @@ void EditorScene::FinaliseMainView()
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_NEW_RIDES));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
 
-    gWindowUpdateTicks = 0;
+    gWindowUpdateTicks = {};
     Drawing::LoadPalette();
 }
 
