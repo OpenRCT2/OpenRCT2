@@ -4,6 +4,7 @@
 - Feature: [#26894] Added 18 additional colours, including 5 from the base version of RCT1 (which were removed in later versions).
 - Feature: [#27153] [Plugin] Add `guestsEntertained` to `Entertainer` interface.
 - Feature: [#27184] [Plugin] Double limit of miscellaneous entities (e.g. crash particles, steam plumes and balloons) to 6400.
+- Feature: [#27254] New title sequence (see https://github.com/OpenRCT2/title-sequences/releases/tag/v0.5.6 for credits).
 - Feature: [objects#447] Track designer grid can now be used outside the Track Designer.
 - Improved: [#21400] The selector for setting staff patrol areas is now drawn on the water as well as on the surface under water.
 - Improved: [#22933] You can now toggle between long and short base flat-to-steep pieces if the ride has both available.
