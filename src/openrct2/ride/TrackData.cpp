@@ -10362,8 +10362,8 @@ namespace OpenRCT2::TrackMetadata
         .priceModifier = 147456,
         .mirrorElement = TrackElemType::verticalHoldingBrakeUp,
         .flags = { TrackElementFlag::up },
-        .definition = { TrackGroup::verticalHoldingBrake, TrackPitch::up90, TrackPitch::up90, TrackRoll::none,
-                        TrackRoll::none, 0 },
+        .definition = { TrackGroup::verticalHoldingBrake, TrackPitch::up90, TrackPitch::up90, TrackRoll::none, TrackRoll::none,
+                        0 },
         .sequenceData = { 2, { kUp90Seq0, kUp90Seq1 } },
     };
 

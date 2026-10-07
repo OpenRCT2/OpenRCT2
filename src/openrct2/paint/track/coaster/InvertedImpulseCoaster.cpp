@@ -754,8 +754,7 @@ static void InvertedImpulseRCTrackRightQuarterTurn190DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-static void InvertedImpulseRCTrackVerticalHoldingBrakeMotors(
-    PaintSession& session, uint8_t direction, int32_t height)
+static void InvertedImpulseRCTrackVerticalHoldingBrakeMotors(PaintSession& session, uint8_t direction, int32_t height)
 {
     // Placeholder graphic: the piece is drawn as ordinary vertical track with the brake's linear induction motors
     // added, so that it can be told apart from plain vertical track until proper sprites exist.
@@ -764,8 +763,7 @@ static void InvertedImpulseRCTrackVerticalHoldingBrakeMotors(
     // standing on the rail, spanning the height of the piece. A child would inherit the track's sort position and
     // always paint last, which drew the motors over the top of the track and train from every rotation.
     PaintAddImageAsParentRotated(
-        session, direction,
-        session.TrackColours.WithIndex(SPR_TRACKS_INVERTED_IMPULSE_VERTICAL_HOLDING_BRAKE + direction),
+        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_INVERTED_IMPULSE_VERTICAL_HOLDING_BRAKE + direction),
         { 0, 0, height + 29 }, { { 14, 14, height + 29 }, { 4, 4, 32 } });
 }
 
