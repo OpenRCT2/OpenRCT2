@@ -12,8 +12,8 @@
     "sha256": "06b90f3e19c216752df441d551b26a9e3e1ba7755bdd2102504b73bf993608be"
   },
   "title-sequences": {
-    "url": "https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.26/title-sequences.zip",
-    "sha256": "dabb9787b1576342fca4dd9f64b3f8cfa04a7e6ce9c2bb9610f47b762905c858"
+    "url": "https://github.com/OpenRCT2/title-sequences/releases/download/v0.5.6/title-sequences.zip",
+    "sha256": "37ac28985baf183bae27af72710613595f683dc24892c05989fb6bfd016bdb5d"
   },
   "replays": {
     "url": "https://github.com/OpenRCT2/replays/releases/download/v0.0.97/replays.zip",
