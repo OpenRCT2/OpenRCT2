@@ -2679,8 +2679,8 @@ STR_5582    :Manter ponteiro do mouse dentro da janela
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :Destrava limites de operação na atração, permitindo coisas como corrente de elevação com {VELOCITY}
-STR_5586    :Abrir automaticamente lojas e barracas
-STR_5587    :Lojas e barracas serão abertas automaticamente depois de construí-las
+STR_5586    :Abrir e fechar automaticamente lojas e barracas
+STR_5587    :Lojas e barracas serão abertas automaticamente depois de construí-las e automaticamente fechadas antes de construir
 STR_5588    :Jogar com outros jogadores
 STR_5589    :Configurações de Notificação
 STR_5590    :Prêmios do parque
