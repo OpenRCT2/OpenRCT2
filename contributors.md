@@ -132,6 +132,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Ben Spurlock (BenDaSpur) - Plugin API automation helpers
 * (frozensnowy) - Draggable path slopes, self-intersecting track designs, refactors, bug fixes, misc.
 * Arjan van Dijk (Manticore-007) - Added guests entertained to API.
+* Steven Miller (yourgamesbeover) - Plugin API improvements
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)
