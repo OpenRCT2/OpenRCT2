@@ -2522,7 +2522,7 @@ static void LimLaunchedRCTrackFlatTo60DegUpLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 10, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 11, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -2555,7 +2555,7 @@ static void LimLaunchedRCTrackFlatTo60DegUpLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 19, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 21, height, session.SupportColours);
             }
             switch (direction)
             {
@@ -2605,7 +2605,7 @@ static void LimLaunchedRCTrack60DegUpToFlatLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 24, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 25, height, session.SupportColours);
             }
             if (direction == 0 || direction == 3)
             {
@@ -2642,7 +2642,7 @@ static void LimLaunchedRCTrack60DegUpToFlatLongBase(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::centre, 18, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, 19, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
