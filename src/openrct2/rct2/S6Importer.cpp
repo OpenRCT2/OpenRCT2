@@ -435,7 +435,7 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            gameState.researchPriorities = _s6.ActiveResearchTypes;
+            gameState.researchPriorities.holder = _s6.ActiveResearchTypes;
             gameState.researchProgressStage = _s6.ResearchProgressStage;
             if (_s6.LastResearchedItemSubject != kRCT12ResearchedItemsSeparator)
                 gameState.researchLastItem = RCT12ResearchItem{ _s6.LastResearchedItemSubject,
