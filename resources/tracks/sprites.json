@@ -594,19 +594,19 @@
     {
         "path": "track/lattice_triangle/barrel_roll_left_1_2.png",
         "x": -17,
-        "y": 4,
+        "y": 5,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_1_3.png",
-        "x": -22,
-        "y": 3,
+        "x": -21,
+        "y": 10,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_1_4.png",
         "x": -20,
-        "y": -21,
+        "y": -19,
         "palette": "keep"
     },
     {
@@ -618,7 +618,7 @@
     {
         "path": "track/lattice_triangle/barrel_roll_left_1_6.png",
         "x": -11,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -635,26 +635,26 @@
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_2_3.png",
-        "x": -28,
-        "y": -5,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_2_4.png",
         "x": -28,
-        "y": -8,
+        "y": -7,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_2_5.png",
-        "x": 10,
-        "y": -1,
+        "x": 0,
+        "y": 0,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_2_6.png",
         "x": -32,
-        "y": -21,
+        "y": -20,
         "palette": "keep"
     },
     {
@@ -665,32 +665,32 @@
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_3_2.png",
-        "x": 10,
-        "y": 8,
+        "x": 11,
+        "y": 9,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_3_3.png",
-        "x": -26,
-        "y": -16,
+        "x": -25,
+        "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_3_4.png",
         "x": -28,
-        "y": -13,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_3_5.png",
-        "x": -1,
+        "x": -10,
         "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_3_6.png",
         "x": -22,
-        "y": -29,
+        "y": -27,
         "palette": "keep"
     },
     {
@@ -707,26 +707,26 @@
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_4_3.png",
-        "x": -12,
-        "y": -23,
+        "x": -13,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_4_4.png",
         "x": -10,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_4_5.png",
-        "x": -12,
-        "y": -16,
+        "x": -14,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_left_4_6.png",
         "x": -22,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -738,31 +738,31 @@
     {
         "path": "track/lattice_triangle/barrel_roll_right_1_2.png",
         "x": -17,
-        "y": 22,
+        "y": 23,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_right_1_3.png",
         "x": -26,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_right_1_4.png",
         "x": -15,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_right_1_5.png",
-        "x": -22,
-        "y": -12,
+        "x": -21,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_right_1_6.png",
-        "x": -26,
-        "y": -31,
+        "x": -25,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -798,12 +798,12 @@
     {
         "path": "track/lattice_triangle/barrel_roll_right_2_6.png",
         "x": -6,
-        "y": -28,
+        "y": -27,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_right_3_1.png",
-        "x": -2,
+        "x": -1,
         "y": -4,
         "palette": "keep"
     },
@@ -822,7 +822,7 @@
     {
         "path": "track/lattice_triangle/barrel_roll_right_3_4.png",
         "x": 0,
-        "y": -8,
+        "y": -7,
         "palette": "keep"
     },
     {
@@ -834,7 +834,7 @@
     {
         "path": "track/lattice_triangle/barrel_roll_right_3_6.png",
         "x": -22,
-        "y": -21,
+        "y": -20,
         "palette": "keep"
     },
     {
@@ -851,14 +851,14 @@
     },
     {
         "path": "track/lattice_triangle/barrel_roll_right_4_3.png",
-        "x": 8,
+        "x": 14,
         "y": 14,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/barrel_roll_right_4_4.png",
         "x": -28,
-        "y": -21,
+        "y": -20,
         "palette": "keep"
     },
     {
@@ -870,12 +870,12 @@
     {
         "path": "track/lattice_triangle/barrel_roll_right_4_6.png",
         "x": -22,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/half_loop_1_1.png",
-        "x": -28,
+        "x": -27,
         "y": -22,
         "palette": "keep"
     },
@@ -887,8 +887,8 @@
     },
     {
         "path": "track/lattice_triangle/half_loop_1_3.png",
-        "x": -13,
-        "y": -92,
+        "x": -17,
+        "y": -93,
         "palette": "keep"
     },
     {
@@ -899,14 +899,14 @@
     },
     {
         "path": "track/lattice_triangle/half_loop_2_1.png",
-        "x": -16,
-        "y": -18,
+        "x": -15,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/half_loop_2_2.png",
         "x": 1,
-        "y": -37,
+        "y": -35,
         "palette": "keep"
     },
     {
@@ -918,31 +918,31 @@
     {
         "path": "track/lattice_triangle/half_loop_2_4.png",
         "x": -22,
-        "y": 1,
+        "y": 2,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/half_loop_3_1.png",
-        "x": -29,
-        "y": -9,
+        "x": -47,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/half_loop_3_2.png",
-        "x": -30,
-        "y": -33,
+        "x": -31,
+        "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/half_loop_3_3.png",
-        "x": -2,
+        "x": -3,
         "y": -121,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/half_loop_3_4.png",
         "x": -29,
-        "y": -7,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -953,20 +953,20 @@
     },
     {
         "path": "track/lattice_triangle/half_loop_4_2.png",
-        "x": -14,
-        "y": -44,
+        "x": -15,
+        "y": -43,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/half_loop_4_3.png",
-        "x": 4,
-        "y": -101,
+        "x": 3,
+        "y": -102,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/half_loop_4_4.png",
         "x": 1,
-        "y": 4,
+        "y": 5,
         "palette": "keep"
     },
     {
@@ -1162,93 +1162,93 @@
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_1_1.png",
-        "x": -18,
-        "y": -55,
+        "path": "track/lattice_triangle/quarter_loop_1_1.png",
+        "x": -17,
+        "y": -56,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_1_2.png",
+        "path": "track/lattice_triangle/quarter_loop_1_2.png",
         "x": 0,
-        "y": -43,
+        "y": -42,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_1_3.png",
+        "path": "track/lattice_triangle/quarter_loop_1_3.png",
         "x": -22,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_2_1.png",
+        "path": "track/lattice_triangle/quarter_loop_2_1.png",
         "x": -24,
         "y": -79,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_2_2.png",
+        "path": "track/lattice_triangle/quarter_loop_2_2.png",
         "x": -32,
         "y": -66,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_2_3.png",
+        "path": "track/lattice_triangle/quarter_loop_2_3.png",
         "x": -22,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_3_1.png",
-        "x": -10,
+        "path": "track/lattice_triangle/quarter_loop_3_1.png",
+        "x": -11,
         "y": -78,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_3_2.png",
+        "path": "track/lattice_triangle/quarter_loop_3_2.png",
         "x": -21,
         "y": -68,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_3_3.png",
-        "x": -11,
-        "y": -31,
-        "palette": "keep"
-    },
-    {
-        "path": "track/lattice_triangle/quarter_loop_up_4_1.png",
+        "path": "track/lattice_triangle/quarter_loop_3_3.png",
         "x": -10,
-        "y": -56,
+        "y": -30,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_4_2.png",
+        "path": "track/lattice_triangle/quarter_loop_4_1.png",
+        "x": -11,
+        "y": -57,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lattice_triangle/quarter_loop_4_2.png",
         "x": -28,
-        "y": -43,
+        "y": -42,
         "palette": "keep"
     },
     {
-        "path": "track/lattice_triangle/quarter_loop_up_4_3.png",
+        "path": "track/lattice_triangle/quarter_loop_4_3.png",
         "x": -32,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_1_1.png",
         "x": -22,
-        "y": -71,
+        "y": -70,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_1_2.png",
-        "x": -20,
+        "x": -19,
         "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_1_3.png",
         "x": -22,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -1260,31 +1260,31 @@
     {
         "path": "track/lattice_triangle/corkscrew_left_2_2.png",
         "x": -32,
-        "y": -36,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_2_3.png",
-        "x": -21,
-        "y": -31,
+        "x": -20,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_3_1.png",
-        "x": -31,
-        "y": -9,
+        "x": -32,
+        "y": -8,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_3_2.png",
-        "x": -3,
-        "y": -24,
+        "x": -5,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_3_3.png",
         "x": -19,
-        "y": -19,
+        "y": -18,
         "palette": "keep"
     },
     {
@@ -1295,14 +1295,14 @@
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_4_2.png",
-        "x": -34,
+        "x": -31,
         "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_left_4_3.png",
         "x": -22,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
@@ -1314,85 +1314,85 @@
     {
         "path": "track/lattice_triangle/corkscrew_right_1_2.png",
         "x": -8,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_1_3.png",
         "x": -20,
-        "y": -22,
+        "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_2_1.png",
         "x": -22,
-        "y": -9,
+        "y": -8,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_2_2.png",
         "x": -13,
-        "y": -24,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_2_3.png",
         "x": -22,
-        "y": -19,
+        "y": -18,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_3_1.png",
-        "x": -7,
+        "x": -5,
         "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_3_2.png",
         "x": -22,
-        "y": -36,
+        "y": -35,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_3_3.png",
         "x": -22,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_4_1.png",
-        "x": -27,
-        "y": -65,
+        "x": -28,
+        "y": -56,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_4_2.png",
-        "x": -3,
+        "x": -5,
         "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/corkscrew_right_4_3.png",
         "x": -26,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_1_1.png",
         "x": -22,
-        "y": -12,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_1_2.png",
-        "x": -21,
-        "y": -72,
+        "x": -20,
+        "y": -69,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_1_3.png",
-        "x": -28,
-        "y": -40,
+        "x": -27,
+        "y": -41,
         "palette": "keep"
     },
     {
@@ -1404,7 +1404,7 @@
     {
         "path": "track/lattice_triangle/large_corkscrew_left_1_5.png",
         "x": -22,
-        "y": -39,
+        "y": -38,
         "palette": "keep"
     },
     {
@@ -1416,25 +1416,25 @@
     {
         "path": "track/lattice_triangle/large_corkscrew_left_2_2.png",
         "x": -32,
-        "y": -15,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_2_3.png",
-        "x": -23,
+        "x": -22,
         "y": -50,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_2_4.png",
-        "x": -18,
+        "x": -17,
         "y": -56,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_2_5.png",
-        "x": -14,
-        "y": -39,
+        "x": -13,
+        "y": -38,
         "palette": "keep"
     },
     {
@@ -1445,31 +1445,31 @@
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_3_2.png",
-        "x": -19,
-        "y": -17,
+        "x": -20,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_3_3.png",
-        "x": 10,
-        "y": -33,
+        "x": 8,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_3_4.png",
         "x": -8,
-        "y": -38,
+        "y": -37,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_3_5.png",
         "x": -16,
-        "y": -30,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_4_1.png",
-        "x": -24,
+        "x": -23,
         "y": -11,
         "palette": "keep"
     },
@@ -1487,14 +1487,14 @@
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_4_4.png",
-        "x": -29,
+        "x": -26,
         "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_left_4_5.png",
         "x": -22,
-        "y": -33,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -1518,13 +1518,13 @@
     {
         "path": "track/lattice_triangle/large_corkscrew_right_1_4.png",
         "x": -28,
-        "y": -37,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_1_5.png",
         "x": -32,
-        "y": -33,
+        "y": -32,
         "palette": "keep"
     },
     {
@@ -1536,7 +1536,7 @@
     {
         "path": "track/lattice_triangle/large_corkscrew_right_2_2.png",
         "x": -16,
-        "y": -17,
+        "y": -16,
         "palette": "keep"
     },
     {
@@ -1548,73 +1548,73 @@
     {
         "path": "track/lattice_triangle/large_corkscrew_right_2_4.png",
         "x": -16,
-        "y": -38,
+        "y": -37,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_2_5.png",
         "x": -22,
-        "y": -30,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_3_1.png",
-        "x": -29,
+        "x": -19,
         "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_3_2.png",
         "x": -16,
-        "y": -15,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_3_3.png",
-        "x": -25,
+        "x": -26,
         "y": -50,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_3_4.png",
-        "x": -28,
+        "x": -29,
         "y": -56,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_3_5.png",
         "x": -22,
-        "y": -39,
+        "y": -38,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_4_1.png",
         "x": -26,
-        "y": -12,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_4_2.png",
-        "x": -11,
-        "y": -68,
+        "x": -14,
+        "y": -69,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_4_3.png",
-        "x": 10,
-        "y": -40,
+        "x": 8,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_4_4.png",
-        "x": -17,
+        "x": -18,
         "y": -52,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_corkscrew_right_4_5.png",
-        "x": -24,
-        "y": -39,
+        "x": -23,
+        "y": -38,
         "palette": "keep"
     },
     {
@@ -1727,8 +1727,8 @@
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_1_1.png",
-        "x": -22,
-        "y": -34,
+        "x": -21,
+        "y": -33,
         "palette": "keep"
     },
     {
@@ -1740,31 +1740,31 @@
     {
         "path": "track/lattice_triangle/medium_half_loop_left_1_3.png",
         "x": -29,
-        "y": -100,
+        "y": -105,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_1_4.png",
-        "x": -44,
+        "x": -38,
         "y": -128,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_1_5.png",
         "x": -21,
-        "y": -37,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_2_1.png",
-        "x": -22,
-        "y": -12,
+        "x": -21,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_2_2.png",
-        "x": 0,
-        "y": -34,
+        "x": -16,
+        "y": -33,
         "palette": "keep"
     },
     {
@@ -1775,32 +1775,32 @@
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_2_4.png",
-        "x": -30,
+        "x": -31,
         "y": -148,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_2_5.png",
         "x": -22,
-        "y": -47,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_3_1.png",
-        "x": -23,
-        "y": -7,
+        "x": -32,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_3_2.png",
         "x": 0,
-        "y": -13,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_3_3.png",
-        "x": -3,
-        "y": -59,
+        "x": -4,
+        "y": -63,
         "palette": "keep"
     },
     {
@@ -1812,13 +1812,13 @@
     {
         "path": "track/lattice_triangle/medium_half_loop_left_3_5.png",
         "x": -17,
-        "y": -47,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_4_1.png",
         "x": -23,
-        "y": -19,
+        "y": -18,
         "palette": "keep"
     },
     {
@@ -1829,26 +1829,26 @@
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_4_3.png",
-        "x": -30,
+        "x": -31,
         "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_4_4.png",
-        "x": -10,
+        "x": -11,
         "y": -129,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_left_4_5.png",
-        "x": -28,
-        "y": -40,
+        "x": -29,
+        "y": -39,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_1_1.png",
-        "x": -22,
-        "y": -19,
+        "x": -21,
+        "y": -18,
         "palette": "keep"
     },
     {
@@ -1865,32 +1865,32 @@
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_1_4.png",
-        "x": -26,
+        "x": -44,
         "y": -129,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_1_5.png",
         "x": -22,
-        "y": -40,
+        "y": -39,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_2_1.png",
-        "x": -22,
-        "y": -7,
+        "x": -21,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_2_2.png",
         "x": -32,
-        "y": -13,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_2_3.png",
         "x": -32,
-        "y": -59,
+        "y": -63,
         "palette": "keep"
     },
     {
@@ -1902,19 +1902,19 @@
     {
         "path": "track/lattice_triangle/medium_half_loop_right_2_5.png",
         "x": -21,
-        "y": -47,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_3_1.png",
-        "x": -32,
-        "y": -12,
+        "x": -52,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_3_2.png",
         "x": -32,
-        "y": -34,
+        "y": -33,
         "palette": "keep"
     },
     {
@@ -1925,20 +1925,20 @@
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_3_4.png",
-        "x": -10,
+        "x": -11,
         "y": -148,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_3_5.png",
         "x": -12,
-        "y": -47,
+        "y": -46,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_4_1.png",
         "x": -23,
-        "y": -34,
+        "y": -33,
         "palette": "keep"
     },
     {
@@ -1949,8 +1949,8 @@
     },
     {
         "path": "track/lattice_triangle/medium_half_loop_right_4_3.png",
-        "x": -3,
-        "y": -100,
+        "x": -4,
+        "y": -105,
         "palette": "keep"
     },
     {
@@ -1962,12 +1962,12 @@
     {
         "path": "track/lattice_triangle/medium_half_loop_right_4_5.png",
         "x": -32,
-        "y": -37,
+        "y": -36,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_1_1.png",
-        "x": -22,
+        "x": -21,
         "y": -29,
         "palette": "keep"
     },
@@ -1980,19 +1980,19 @@
     {
         "path": "track/lattice_triangle/large_half_loop_left_1_3.png",
         "x": -19,
-        "y": -70,
+        "y": -69,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_1_4.png",
-        "x": -24,
+        "x": -23,
         "y": -85,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_1_5.png",
-        "x": -16,
-        "y": -70,
+        "x": -15,
+        "y": -73,
         "palette": "keep"
     },
     {
@@ -2004,13 +2004,13 @@
     {
         "path": "track/lattice_triangle/large_half_loop_left_1_7.png",
         "x": -21,
-        "y": -20,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_2_1.png",
-        "x": -22,
-        "y": -5,
+        "x": -21,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -2028,13 +2028,13 @@
     {
         "path": "track/lattice_triangle/large_half_loop_left_2_4.png",
         "x": -8,
-        "y": -94,
+        "y": -85,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_2_5.png",
         "x": -32,
-        "y": -130,
+        "y": -132,
         "palette": "keep"
     },
     {
@@ -2046,13 +2046,13 @@
     {
         "path": "track/lattice_triangle/large_half_loop_left_2_7.png",
         "x": -22,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_3_1.png",
         "x": -24,
-        "y": -3,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -2063,19 +2063,19 @@
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_3_3.png",
-        "x": -29,
+        "x": -30,
         "y": -38,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_3_4.png",
-        "x": -7,
-        "y": -61,
+        "x": -8,
+        "y": -60,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_3_5.png",
-        "x": -7,
+        "x": -8,
         "y": -117,
         "palette": "keep"
     },
@@ -2087,14 +2087,14 @@
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_3_7.png",
-        "x": -28,
-        "y": -32,
+        "x": -27,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_4_1.png",
-        "x": -24,
-        "y": -18,
+        "x": -25,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -2106,7 +2106,7 @@
     {
         "path": "track/lattice_triangle/large_half_loop_left_4_3.png",
         "x": -32,
-        "y": -52,
+        "y": -51,
         "palette": "keep"
     },
     {
@@ -2117,26 +2117,26 @@
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_4_5.png",
-        "x": 16,
+        "x": 15,
         "y": -62,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_4_6.png",
-        "x": -16,
+        "x": -17,
         "y": -186,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_left_4_7.png",
-        "x": -24,
+        "x": -25,
         "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_1_1.png",
-        "x": -22,
-        "y": -18,
+        "x": -21,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -2147,8 +2147,8 @@
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_1_3.png",
-        "x": -13,
-        "y": -52,
+        "x": -12,
+        "y": -51,
         "palette": "keep"
     },
     {
@@ -2177,8 +2177,8 @@
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_2_1.png",
-        "x": -22,
-        "y": -3,
+        "x": -21,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -2195,8 +2195,8 @@
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_2_4.png",
-        "x": -16,
-        "y": -61,
+        "x": -15,
+        "y": -60,
         "palette": "keep"
     },
     {
@@ -2214,13 +2214,13 @@
     {
         "path": "track/lattice_triangle/large_half_loop_right_2_7.png",
         "x": -21,
-        "y": -32,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_3_1.png",
         "x": -26,
-        "y": -5,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -2238,13 +2238,13 @@
     {
         "path": "track/lattice_triangle/large_half_loop_right_3_4.png",
         "x": -32,
-        "y": -94,
+        "y": -85,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_3_5.png",
-        "x": 16,
-        "y": -130,
+        "x": 15,
+        "y": -132,
         "palette": "keep"
     },
     {
@@ -2256,7 +2256,7 @@
     {
         "path": "track/lattice_triangle/large_half_loop_right_3_7.png",
         "x": -17,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -2273,20 +2273,20 @@
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_4_3.png",
-        "x": -21,
-        "y": -70,
+        "x": -22,
+        "y": -69,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_4_4.png",
-        "x": -5,
+        "x": -6,
         "y": -85,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_half_loop_right_4_5.png",
-        "x": -7,
-        "y": -70,
+        "x": -8,
+        "y": -73,
         "palette": "keep"
     },
     {
@@ -2298,157 +2298,157 @@
     {
         "path": "track/lattice_triangle/large_half_loop_right_4_7.png",
         "x": -31,
-        "y": -20,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_1_1.png",
-        "x": -22,
-        "y": -15,
+        "x": -21,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_1_2.png",
-        "x": -10,
+        "x": -8,
         "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_1_3.png",
         "x": -11,
-        "y": -26,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_1_4.png",
         "x": -19,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_2_1.png",
-        "x": -22,
-        "y": -3,
+        "x": -21,
+        "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_2_2.png",
-        "x": -22,
+        "x": -21,
         "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_2_3.png",
         "x": -23,
-        "y": -18,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_2_4.png",
-        "x": -21,
-        "y": -18,
+        "x": -26,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_3_1.png",
-        "x": -20,
-        "y": -11,
+        "x": -32,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_3_2.png",
-        "x": -22,
-        "y": -25,
+        "x": -39,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_3_3.png",
-        "x": -11,
-        "y": -18,
+        "x": -22,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_3_4.png",
-        "x": -23,
-        "y": -27,
+        "x": -22,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_4_1.png",
-        "x": -15,
-        "y": -27,
+        "x": -11,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_4_2.png",
-        "x": -11,
-        "y": -45,
+        "x": -12,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_4_3.png",
-        "x": -3,
-        "y": -12,
+        "x": -15,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_left_4_4.png",
         "x": -21,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_1_1.png",
-        "x": -22,
-        "y": -27,
+        "x": -21,
+        "y": -19,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_1_2.png",
-        "x": -27,
-        "y": -45,
+        "x": -32,
+        "y": -44,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_1_3.png",
         "x": -22,
-        "y": -16,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_1_4.png",
-        "x": -27,
-        "y": -31,
+        "x": -26,
+        "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_2_1.png",
-        "x": -22,
-        "y": -11,
+        "x": -21,
+        "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_2_2.png",
-        "x": -17,
-        "y": -25,
+        "x": 0,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_2_3.png",
-        "x": -13,
-        "y": -18,
+        "x": 0,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_2_4.png",
-        "x": -11,
-        "y": -27,
+        "x": -19,
+        "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_3_1.png",
-        "x": 3,
-        "y": -3,
+        "x": -8,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -2459,38 +2459,38 @@
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_3_3.png",
-        "x": -11,
-        "y": -18,
+        "x": -6,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_3_4.png",
         "x": -21,
-        "y": -18,
+        "y": -17,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_4_1.png",
-        "x": -20,
-        "y": -15,
+        "x": -21,
+        "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_4_2.png",
-        "x": -35,
+        "x": -32,
         "y": -16,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_4_3.png",
         "x": -24,
-        "y": -26,
+        "y": -25,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/zero_g_roll_right_4_4.png",
         "x": -22,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -2502,7 +2502,7 @@
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_1_2.png",
         "x": -23,
-        "y": -36,
+        "y": -35,
         "palette": "keep"
     },
     {
@@ -2519,8 +2519,8 @@
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_1_5.png",
-        "x": -17,
-        "y": -31,
+        "x": -16,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -2537,14 +2537,14 @@
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_2_3.png",
-        "x": -32,
-        "y": -24,
+        "x": -31,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_2_4.png",
         "x": -29,
-        "y": -19,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -2561,26 +2561,26 @@
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_3_3.png",
-        "x": -27,
-        "y": -40,
+        "x": -28,
+        "y": -39,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_3_4.png",
         "x": -24,
-        "y": -33,
+        "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_3_5.png",
-        "x": 1,
-        "y": -12,
+        "x": -8,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_3_6.png",
         "x": -22,
-        "y": -25,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -2591,26 +2591,26 @@
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_4_2.png",
-        "x": -14,
+        "x": -15,
         "y": -48,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_4_3.png",
-        "x": -10,
-        "y": -33,
+        "x": -11,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_4_4.png",
-        "x": -9,
-        "y": -42,
+        "x": -10,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_left_4_5.png",
         "x": -21,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -2628,19 +2628,19 @@
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_1_3.png",
         "x": -31,
-        "y": -33,
+        "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_1_4.png",
-        "x": -30,
-        "y": -42,
+        "x": -29,
+        "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_1_5.png",
-        "x": -32,
-        "y": -31,
+        "x": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -2658,25 +2658,25 @@
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_2_3.png",
         "x": -24,
-        "y": -40,
+        "y": -39,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_2_4.png",
         "x": -15,
-        "y": -33,
+        "y": -31,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_2_5.png",
         "x": -8,
-        "y": -11,
+        "y": -10,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_2_6.png",
         "x": -8,
-        "y": -25,
+        "y": -24,
         "palette": "keep"
     },
     {
@@ -2687,20 +2687,20 @@
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_3_2.png",
-        "x": -11,
+        "x": -12,
         "y": -30,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_3_3.png",
-        "x": -5,
-        "y": -24,
+        "x": -4,
+        "y": -22,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_3_4.png",
         "x": -21,
-        "y": -19,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -2711,8 +2711,8 @@
     },
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_4_2.png",
-        "x": -6,
-        "y": -26,
+        "x": -7,
+        "y": -27,
         "palette": "keep"
     },
     {
@@ -2730,7 +2730,7 @@
     {
         "path": "track/lattice_triangle/large_zero_g_roll_right_4_5.png",
         "x": -22,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -4152,7 +4152,7 @@
     {
         "path": "track/lattice_triangle/dive_loop_45_left_1_1.png",
         "x": -32,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -4163,14 +4163,14 @@
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_1_3.png",
-        "x": -31,
+        "x": -30,
         "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_1_4.png",
-        "x": -18,
-        "y": -23,
+        "x": -17,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -4187,14 +4187,14 @@
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_2_3.png",
-        "x": -25,
-        "y": -25,
+        "x": -26,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_2_4.png",
-        "x": -28,
-        "y": -13,
+        "x": -27,
+        "y": -12,
         "palette": "keep"
     },
     {
@@ -4206,43 +4206,43 @@
     {
         "path": "track/lattice_triangle/dive_loop_45_left_3_2.png",
         "x": -14,
-        "y": -27,
+        "y": -28,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_3_3.png",
-        "x": -24,
+        "x": -16,
         "y": -21,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_3_4.png",
         "x": -22,
-        "y": -14,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_4_1.png",
-        "x": -11,
+        "x": -10,
         "y": -32,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_4_2.png",
-        "x": -45,
-        "y": -83,
+        "x": -24,
+        "y": -49,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_4_3.png",
-        "x": -24,
+        "x": -25,
         "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_left_4_4.png",
         "x": -22,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -4254,7 +4254,7 @@
     {
         "path": "track/lattice_triangle/dive_loop_45_right_1_2.png",
         "x": -32,
-        "y": -27,
+        "y": -28,
         "palette": "keep"
     },
     {
@@ -4266,7 +4266,7 @@
     {
         "path": "track/lattice_triangle/dive_loop_45_right_1_4.png",
         "x": -32,
-        "y": -14,
+        "y": -13,
         "palette": "keep"
     },
     {
@@ -4284,19 +4284,19 @@
     {
         "path": "track/lattice_triangle/dive_loop_45_right_2_3.png",
         "x": -11,
-        "y": -25,
+        "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_right_2_4.png",
         "x": -22,
-        "y": -13,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_right_3_1.png",
         "x": 0,
-        "y": -31,
+        "y": -30,
         "palette": "keep"
     },
     {
@@ -4307,14 +4307,14 @@
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_right_3_3.png",
-        "x": -24,
+        "x": -25,
         "y": -41,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_right_3_4.png",
         "x": -22,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
@@ -4325,20 +4325,20 @@
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_right_4_2.png",
-        "x": -4,
-        "y": -83,
+        "x": -5,
+        "y": -49,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_right_4_3.png",
-        "x": -30,
+        "x": -31,
         "y": -40,
         "palette": "keep"
     },
     {
         "path": "track/lattice_triangle/dive_loop_45_right_4_4.png",
         "x": -23,
-        "y": -23,
+        "y": -22,
         "palette": "keep"
     },
     {
