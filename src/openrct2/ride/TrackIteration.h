@@ -51,4 +51,7 @@ namespace OpenRCT2
         const CoordsXYZ& startPos, const Ride& ride, uint8_t direction, TrackBeginEnd* outTrackBeginEnd);
 
     bool findTrackGap(const Ride& ride, const CoordsXYE& input, CoordsXYE* output);
+
+    bool TrackSequenceGetNext(const CoordsXYE& input, CoordsXYE* output);
+
 } // namespace OpenRCT2
