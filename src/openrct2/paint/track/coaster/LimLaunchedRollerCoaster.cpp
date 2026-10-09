@@ -6056,7 +6056,7 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 32)),
-                        { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 11, height, session.SupportColours);
                     break;
@@ -6064,7 +6064,7 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 36)),
-                        { 0, 0, height }, { { 16, 16, height }, { 16, 18, 3 } });
+                        { 0, 0, height }, { { 16, 16, height }, { 16, 18, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 10, height, session.SupportColours);
                     break;
@@ -6072,7 +6072,7 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 40)),
-                        { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 8, height, session.SupportColours);
                     break;
@@ -6080,7 +6080,7 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 44)),
-                        { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 5, height, session.SupportColours);
                     break;
@@ -6231,7 +6231,7 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 48)),
-                        { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::rightCorner, 10, height, session.SupportColours);
                     break;
@@ -6239,7 +6239,7 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 52)),
-                        { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::bottomCorner, 11, height, session.SupportColours);
                     break;
@@ -6247,7 +6247,7 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 56)),
-                        { 0, 0, height }, { { 16, 0, height }, { 16, 18, 3 } });
+                        { 0, 0, height }, { { 16, 0, height }, { 16, 18, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::leftCorner, 12, height, session.SupportColours);
                     break;
@@ -6255,7 +6255,7 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 60)),
-                        { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topCorner, 6, height, session.SupportColours);
                     break;
