@@ -7115,7 +7115,7 @@ static void LimLaunchedRCTrackRightEighthBankToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE_BANKED + 115)),
-                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 10 } });
+                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::centre, 8, height, session.SupportColours);
                     break;
