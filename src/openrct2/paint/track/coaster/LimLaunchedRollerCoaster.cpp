@@ -6146,7 +6146,7 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 34)),
-                        { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 32, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -6158,13 +6158,13 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 42)),
-                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 46)),
-                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
+                        { 0, 0, height }, { { 0, 16, height }, { 32, 16, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6183,25 +6183,25 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 35)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 39)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { -6, 6, height }, { 32, 20, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 43)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 47)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 6, height, session.SupportColours);
@@ -6322,7 +6322,7 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 50)),
-                        { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
+                        { 0, 0, height }, { { 16, 0, height }, { 16, 32, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -6340,7 +6340,7 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 62)),
-                        { 0, 0, height }, { { 16, 0, height }, { 16, 32, 3 } });
+                        { 0, 0, height }, { { 16, 0, height }, { 16, 32, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6359,25 +6359,25 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 51)),
-                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
+                        { 0, 0, height }, { { 6, -6, height }, { 20, 32, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 55)),
-                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
+                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 59)),
-                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
+                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 63)),
-                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
+                        { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
                     break;
             }
             MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 6, height, session.SupportColours);
@@ -8733,7 +8733,7 @@ static void LimLaunchedRCTrackLeftEighthDiveLoopUpToOrthogonal(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_DIVE_LOOP + 13)),
                         { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 4, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 0, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -8900,7 +8900,7 @@ static void LimLaunchedRCTrackRightEighthDiveLoopUpToOrthogonal(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_DIVE_LOOP + 21)),
                         { -16, -16, height }, { { 31, 0, height + 0 }, { 1, 32, 64 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::topCorner, 4, height + 0, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height - 12, session.SupportColours);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -8914,7 +8914,7 @@ static void LimLaunchedRCTrackRightEighthDiveLoopUpToOrthogonal(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_DIVE_LOOP + 29)),
                         { -16, -16, height }, { { 2, 2, height + 12 }, { 28, 28, 1 } });
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height - 12, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height, session.SupportColours);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
