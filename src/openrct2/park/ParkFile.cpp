@@ -1934,7 +1934,7 @@ namespace OpenRCT2
             }
 
             cs.readWrite(entity.nextLoc);
-            cs.readWrite(entity.nextFlags);
+            cs.readWrite(entity.nextFlags.holder);
 
             if (version <= 1)
             {
@@ -2039,7 +2039,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.windowInvalidateFlags);
+            cs.readWrite(entity.windowInvalidateFlags.holder);
 
             if (version <= 1)
             {

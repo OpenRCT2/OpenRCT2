@@ -1694,7 +1694,7 @@ namespace OpenRCT2::RCT2
                 dst->setName(GetUserString(src->NameStringIdx));
             }
             dst->nextLoc = { src->NextX, src->NextY, src->NextZ * kCoordsZStep };
-            dst->nextFlags = src->NextFlags;
+            dst->nextFlags.holder = src->NextFlags;
             dst->state = static_cast<PeepState>(src->State);
             dst->subState = src->SubState;
 
@@ -1711,7 +1711,7 @@ namespace OpenRCT2::RCT2
             dst->energy = src->Energy;
             dst->energyTarget = src->EnergyTarget;
             dst->mass = src->Mass;
-            dst->windowInvalidateFlags = src->WindowInvalidateFlags;
+            dst->windowInvalidateFlags.holder = src->WindowInvalidateFlags;
             dst->currentRide = RCT12RideIdToOpenRCT2RideId(src->CurrentRide);
             dst->currentRideStation = StationIndex::FromUnderlying(src->CurrentRideStation);
             dst->currentTrain = src->CurrentTrain;
