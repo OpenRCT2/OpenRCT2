@@ -2679,8 +2679,8 @@ STR_5582    :Manter ponteiro do mouse dentro da janela
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :Destrava limites de operação na atração, permitindo coisas como corrente de elevação com {VELOCITY}
-STR_5586    :Abrir automaticamente lojas e barracas
-STR_5587    :Lojas e barracas serão abertas automaticamente depois de construí-las
+STR_5586    :Abrir e fechar automaticamente lojas e barracas
+STR_5587    :Lojas e barracas serão abertas automaticamente depois de construí-las e automaticamente fechadas antes de construir
 STR_5588    :Jogar com outros jogadores
 STR_5589    :Configurações de Notificação
 STR_5590    :Prêmios do parque
@@ -3844,3 +3844,21 @@ STR_7060    :Visitantes observando a construção de {STRINGID}
 STR_7061    :Visitantes observando a paisagem
 STR_7062    :Visitantes saindo do parque
 STR_7063    :Visitantes observando uma nova atração ser construída
+STR_7064    :Dourado
+STR_7065    :Âmbar
+STR_7066    :Ametista
+STR_7067    :Aspargo
+STR_7068    :Marrom
+STR_7069    :Rosa queimado
+STR_7070    :Cacto
+STR_7071    :Caramelo
+STR_7072    :Cobre
+STR_7073    :Carmesim
+STR_7074    :Água mais esscura
+STR_7075    :Esmeralda
+STR_7076    :Índigo
+STR_7077    :Pesto
+STR_7078    :Verde-pinho
+STR_7079    :Rubi
+STR_7080    :Azul escuro
+STR_7081    :Prateado

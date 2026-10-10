@@ -53,9 +53,11 @@ namespace OpenRCT2::Ui::Windows
     class NewsTicker final : public Window
     {
     private:
+        News::ItemQueues& _queues;
+
         void drawNewsItem(RenderTarget& rt)
         {
-            const auto* newsItem = News::GetItem(0);
+            const auto* newsItem = News::GetItem(_queues, 0);
             if (newsItem == nullptr)
                 return;
 
@@ -172,6 +174,7 @@ namespace OpenRCT2::Ui::Windows
 
     public:
         NewsTicker()
+            : _queues(getGameState().park.newsItems)
         {
             setWidgets(kNewsTickerWidgets);
 
@@ -181,14 +184,14 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseUp(WidgetIndex widgetIndex) override
         {
-            const auto* newsItem = News::GetItem(0);
+            const auto* newsItem = News::GetItem(_queues, 0);
             if (newsItem == nullptr)
                 return;
 
             switch (widgetIndex)
             {
                 case WIDX_PANEL_INSET:
-                    News::CloseCurrentItem();
+                    News::CloseCurrentItem(_queues);
                     break;
                 case WIDX_NEWS_SUBJECT:
                     News::OpenSubject(newsItem->type, newsItem->assoc);
@@ -227,7 +230,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEWS_LOCATE].right = width - 6;
             widgets[WIDX_NEWS_LOCATE].left = widgets[WIDX_NEWS_LOCATE].right - 24;
 
-            auto* newsItem = News::GetItem(0);
+            auto* newsItem = News::GetItem(_queues, 0);
             setWidgetDisabled(WIDX_NEWS_SUBJECT, false);
             setWidgetDisabled(WIDX_NEWS_LOCATE, false);
 
@@ -262,7 +265,7 @@ namespace OpenRCT2::Ui::Windows
             if (currentFrame >= 24)
                 currentFrame = 0;
 
-            if (News::IsQueueEmpty())
+            if (_queues.isEmpty())
                 close();
         }
     };
@@ -272,6 +275,10 @@ namespace OpenRCT2::Ui::Windows
         // Only show news ticker in-game
         auto* sceneMgr = GetContext()->GetSceneManager();
         if (sceneMgr->getActiveScene() != sceneMgr->getGameScene())
+            return nullptr;
+
+        auto* windowMgr = GetWindowManager();
+        if (windowMgr->FindByClass(WindowClass::topToolbar) == nullptr)
             return nullptr;
 
         // TODO: query ParkInfoPanel, DateInfoPanel
@@ -285,7 +292,6 @@ namespace OpenRCT2::Ui::Windows
         uint32_t lineHeight = FontGetLineHeight(FontStyle::medium);
         int32_t toolbarHeight = lineHeight * 2 + 12;
 
-        auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<NewsTicker>(
             WindowClass::newsTicker, ScreenCoordsXY(kPanelWidth, ContextGetHeight() - toolbarHeight),
             { toolbarWidth, toolbarHeight },

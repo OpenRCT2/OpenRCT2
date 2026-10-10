@@ -85,6 +85,24 @@ static constexpr FilterPaletteID kGlassPaletteIds[kColourNumTotal] = {
     FilterPaletteID::paletteGlassDullBrownLight,
     FilterPaletteID::paletteGlassInvisible,
     FilterPaletteID::paletteGlassVoid,
+    FilterPaletteID::paletteGlassGold,
+    FilterPaletteID::paletteGlassAmber,
+    FilterPaletteID::paletteGlassAmethyst,
+    FilterPaletteID::paletteGlassAsparagus,
+    FilterPaletteID::paletteGlassBrown,
+    FilterPaletteID::paletteGlassBurntPink,
+    FilterPaletteID::paletteGlassCactus,
+    FilterPaletteID::paletteGlassCaramel,
+    FilterPaletteID::paletteGlassCopper,
+    FilterPaletteID::paletteGlassCrimson,
+    FilterPaletteID::paletteGlassDarkerWater,
+    FilterPaletteID::paletteGlassEmerald,
+    FilterPaletteID::paletteGlassIndigo,
+    FilterPaletteID::paletteGlassPesto,
+    FilterPaletteID::paletteGlassPineGreen,
+    FilterPaletteID::paletteGlassRuby,
+    FilterPaletteID::paletteGlassDeepBlue,
+    FilterPaletteID::paletteGlassSilver,
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
@@ -149,6 +167,24 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_DULL_BROWN_LIGHT,
     SPR_PALETTE_INVISIBLE,
     SPR_PALETTE_VOID,
+    SPR_PALETTE_GOLD,
+    SPR_PALETTE_AMBER,
+    SPR_PALETTE_AMETHYST,
+    SPR_PALETTE_ASPARAGUS,
+    SPR_PALETTE_BROWN,
+    SPR_PALETTE_BURNT_PINK,
+    SPR_PALETTE_CACTUS,
+    SPR_PALETTE_CARAMEL,
+    SPR_PALETTE_COPPER,
+    SPR_PALETTE_CRIMSON,
+    SPR_PALETTE_DARKER_WATER,
+    SPR_PALETTE_EMERALD,
+    SPR_PALETTE_INDIGO,
+    SPR_PALETTE_PESTO,
+    SPR_PALETTE_PINE_GREEN,
+    SPR_PALETTE_RUBY,
+    SPR_PALETTE_DEEP_BLUE,
+    SPR_PALETTE_SILVER,
 
     // Additional palettes
     SPR_PALETTE_WATER,
@@ -293,6 +329,24 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_GLASS_DULL_BROWN_LIGHT,
     SPR_PALETTE_GLASS_INVISIBLE,
     SPR_PALETTE_GLASS_VOID,
+    SPR_PALETTE_GLASS_GOLD,
+    SPR_PALETTE_GLASS_AMBER,
+    SPR_PALETTE_GLASS_AMETHYST,
+    SPR_PALETTE_GLASS_ASPARAGUS,
+    SPR_PALETTE_GLASS_BROWN,
+    SPR_PALETTE_GLASS_BURNT_PINK,
+    SPR_PALETTE_GLASS_CACTUS,
+    SPR_PALETTE_GLASS_CARAMEL,
+    SPR_PALETTE_GLASS_COPPER,
+    SPR_PALETTE_GLASS_CRIMSON,
+    SPR_PALETTE_GLASS_DARKER_WATER,
+    SPR_PALETTE_GLASS_EMERALD,
+    SPR_PALETTE_GLASS_INDIGO,
+    SPR_PALETTE_GLASS_PESTO,
+    SPR_PALETTE_GLASS_PINE_GREEN,
+    SPR_PALETTE_GLASS_RUBY,
+    SPR_PALETTE_GLASS_DEEP_BLUE,
+    SPR_PALETTE_GLASS_SILVER,
 };
 
 static constexpr TranslucentWindowPalette kWindowPaletteGrey = { FilterPaletteID::paletteTranslucentGrey,                  FilterPaletteID::paletteTranslucentGreyHighlight,             FilterPaletteID::paletteTranslucentGreyShadow };
@@ -371,6 +425,24 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[kColourNumTotal] = {
     kWindowPaletteDarkBrown,              // Colour::beige
     { FilterPaletteID::paletteDarken1,           FilterPaletteID::paletteDarken1,      FilterPaletteID::paletteDarken1 },
     { FilterPaletteID::paletteDarken2,           FilterPaletteID::paletteDarken2,      FilterPaletteID::paletteDarken2 },
+    kWindowPaletteYellow,                 // Colour::gold
+    kWindowPaletteLightOrange,            // Colour::amber
+    kWindowPaletteBrightPurple,           // Colour::amethyst
+    kWindowPaletteOliveGreen,             // Colour::asparagus
+    kWindowPaletteDarkBrown,              // Colour::brown
+    kWindowPaletteBrightPink,             // Colour::burntPink
+    kWindowPaletteMossGreen,              // Colour::cactus
+    kWindowPaletteLightBrown,             // Colour::caramel
+    kWindowPaletteSalmonPink,             // Colour::copper
+    kWindowPaletteBordeauxRed,            // Colour::crimson
+    kWindowPaletteTeal,                   // Colour::darkerWater
+    kWindowPaletteBrightGreen,            // Colour::emerald
+    kWindowPaletteLightPurple,            // Colour::indigo
+    kWindowPaletteDarkOliveGreen,         // Colour::pesto
+    kWindowPaletteDarkGreen,              // Colour::pineGreen
+    kWindowPaletteBrightRed,              // Colour::ruby
+    kWindowPaletteLightBlue,              // Colour::deepBlue
+    kWindowPaletteGrey,                   // Colour::silver
 };
 // clang-format on
 

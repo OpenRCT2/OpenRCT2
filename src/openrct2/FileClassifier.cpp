@@ -15,6 +15,7 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "park/ParkFile.h"
+#include "rct1/RCT1File.h"
 #include "rct2/RCT2.h"
 #include "sawyer_coding/SawyerChunkReader.h"
 #include "sawyer_coding/SawyerCoding.h"
@@ -134,21 +135,18 @@ static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
         size_t dataLength = static_cast<size_t>(stream->GetLength());
         auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
-        int32_t fileTypeVersion = DetectFileType(data.get(), dataLength);
+        auto fileTypeVersion = RCT1::detectFileType(data.get(), dataLength);
 
-        int32_t type = fileTypeVersion & FILE_TYPE_MASK;
-        int32_t version = fileTypeVersion & FILE_VERSION_MASK;
-
-        if (type == FILE_TYPE_SV4)
+        if (fileTypeVersion.fileType == RCT1::RCT1FileType::sv4)
         {
             result->Type = FileType::savedGame;
-            result->Version = version;
+            result->Version = EnumValue(fileTypeVersion.version);
             success = true;
         }
-        else if (type == FILE_TYPE_SC4)
+        else if (fileTypeVersion.fileType == RCT1::RCT1FileType::sc4)
         {
             result->Type = FileType::scenario;
-            result->Version = version;
+            result->Version = EnumValue(fileTypeVersion.version);
             success = true;
         }
     }

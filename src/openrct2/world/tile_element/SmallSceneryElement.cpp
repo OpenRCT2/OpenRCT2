@@ -87,21 +87,27 @@ namespace OpenRCT2
         return colour[2];
     }
 
-    void SmallSceneryElement::setPrimaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::setPrimaryColour(Drawing::Colour newColour, bool fromImport)
     {
-        assert(Drawing::colourIsValid(newColour));
+        if (!fromImport)
+            newColour = Drawing::clampColour(newColour);
+
         colour[0] = newColour;
     }
 
-    void SmallSceneryElement::setSecondaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::setSecondaryColour(Drawing::Colour newColour, bool fromImport)
     {
-        assert(Drawing::colourIsValid(newColour));
+        if (!fromImport)
+            newColour = Drawing::clampColour(newColour);
+
         colour[1] = newColour;
     }
 
-    void SmallSceneryElement::setTertiaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::setTertiaryColour(Drawing::Colour newColour, bool fromImport)
     {
-        assert(Drawing::colourIsValid(newColour));
+        if (!fromImport)
+            newColour = Drawing::clampColour(newColour);
+
         colour[2] = newColour;
     }
 

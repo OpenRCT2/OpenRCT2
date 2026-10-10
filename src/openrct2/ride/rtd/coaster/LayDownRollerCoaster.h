@@ -26,7 +26,7 @@ constexpr RideTypeDescriptor kLayDownRollerCoasterRTD =
             .trackStyle = TrackStyle::corkscrewRollerCoaster,
             .supportType = MetalSupportType::tubesInverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::corkscrewUninverted, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeRollBanking, TrackGroup::slopeCurveBanked, TrackGroup::slopeCurveLarge, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown, TrackGroup::helixUpUnbankedQuarter, TrackGroup::helixDownUnbankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::helixDownBankedQuarter },
-            .extraTrackGroups = { TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::booster },
+            .extraTrackGroups = { TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::booster, TrackGroup::flatToSteepSlope },
         }
     ),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor(

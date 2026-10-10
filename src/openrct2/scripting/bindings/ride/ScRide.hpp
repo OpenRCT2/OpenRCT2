@@ -29,11 +29,10 @@ namespace OpenRCT2::Scripting
     inline VehicleColour JSToVehicleColours(JSContext* ctx, JSValue val)
     {
         VehicleColour result{};
-        result.Body = static_cast<Drawing::Colour>(AsOrDefault(ctx, val, "body", 0));
-        result.Trim = static_cast<Drawing::Colour>(AsOrDefault(ctx, val, "trim", 0));
-        result.Tertiary = static_cast<Drawing::Colour>(AsOrDefault(ctx, val, "ternary", 0));
-        result.Tertiary = static_cast<Drawing::Colour>(
-            AsOrDefault(ctx, val, "tertiary", static_cast<uint32_t>(result.Tertiary)));
+        result.Body = Drawing::clampColour(AsOrDefault(ctx, val, "body", 0));
+        result.Trim = Drawing::clampColour(AsOrDefault(ctx, val, "trim", 0));
+        result.Tertiary = Drawing::clampColour(AsOrDefault(ctx, val, "ternary", 0));
+        result.Tertiary = Drawing::clampColour(AsOrDefault(ctx, val, "tertiary", static_cast<uint32_t>(result.Tertiary)));
         return result;
     }
 
@@ -49,9 +48,9 @@ namespace OpenRCT2::Scripting
     inline TrackColour JSToTrackColour(JSContext* ctx, JSValue val)
     {
         TrackColour result{};
-        result.main = static_cast<Drawing::Colour>(AsOrDefault(ctx, val, "main", 0));
-        result.additional = static_cast<Drawing::Colour>(AsOrDefault(ctx, val, "additional", 0));
-        result.supports = static_cast<Drawing::Colour>(AsOrDefault(ctx, val, "supports", 0));
+        result.main = Drawing::clampColour(AsOrDefault(ctx, val, "main", 0));
+        result.additional = Drawing::clampColour(AsOrDefault(ctx, val, "additional", 0));
+        result.supports = Drawing::clampColour(AsOrDefault(ctx, val, "supports", 0));
         return result;
     }
 

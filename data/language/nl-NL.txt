@@ -2680,8 +2680,8 @@ STR_5582    :Aanwijzer in venster vasthouden
 STR_5583    :{COMMA1DP16} m/s
 STR_5584    :SI
 STR_5585    :Heft de limieten op het tabblad Bedrijfsopties van een attractie op, waardoor je bijvoorbeeld kettingsheuvels met snelheden tot {VELOCITY} kunt hebben.
-STR_5586    :Winkels en kraampjes automatisch openen
-STR_5587    :Als deze optie is ingeschakeld zullen winkels en kraampjes na plaatsing automatisch worden geopend.
+STR_5586    :Winkels en kraampjes automatisch openen en sluiten
+STR_5587    :Als deze optie is ingeschakeld zullen winkels en kraampjes na plaatsing automatisch worden geopend, en automatisch worden gesloten als je het bouwvenster ingaat.
 STR_5588    :Multiplayer
 STR_5589    :Berichtinstellingen
 STR_5590    :Als het park een prijs heeft gekregen
@@ -3833,7 +3833,7 @@ STR_7050    :Bezoekers die rondlopen
 STR_7051    :Bezoekers op weg naar {STRINGID}
 STR_7052    :Bezoekers in de rij voor {STRINGID}
 STR_7053    :Bezoekers die verdrinken
-STR_7054    :Bezoekers op {STRINGID}
+STR_7054    :Bezoekers in {STRINGID}
 STR_7055    :Bezoekers in {STRINGID}
 STR_7056    :Bezoekers bij {STRINGID}
 STR_7057    :Bezoekers die zitten
@@ -3843,3 +3843,21 @@ STR_7060    :Bezoekers die naar de bouw van {STRINGID} kijken
 STR_7061    :Bezoekers die naar het decor kijken
 STR_7062    :Bezoekers op weg naar de uitgang
 STR_7063    :Bezoekers die naar de bouw van een nieuwe attractie kijken
+STR_7064    :Goud
+STR_7065    :Amber
+STR_7066    :Amethist
+STR_7067    :Asperge
+STR_7068    :Bruin
+STR_7069    :Vurig roze
+STR_7070    :Cactus
+STR_7071    :Karamel
+STR_7072    :Koper
+STR_7073    :Karmozijn
+STR_7074    :Donkerder water
+STR_7075    :Smaragd
+STR_7076    :Indigo
+STR_7077    :Pesto
+STR_7078    :Dennengroen
+STR_7079    :Robijn
+STR_7080    :Diepblauw
+STR_7081    :Zilver

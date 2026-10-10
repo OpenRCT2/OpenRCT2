@@ -50,11 +50,11 @@ namespace OpenRCT2
         uint8_t getSceneryQuadrant() const;
         void setSceneryQuadrant(uint8_t newQuadrant);
         Drawing::Colour getPrimaryColour() const;
-        void setPrimaryColour(Drawing::Colour colour);
+        void setPrimaryColour(Drawing::Colour colour, bool fromImport = false);
         Drawing::Colour getSecondaryColour() const;
-        void setSecondaryColour(Drawing::Colour colour);
+        void setSecondaryColour(Drawing::Colour colour, bool fromImport = false);
         Drawing::Colour getTertiaryColour() const;
-        void setTertiaryColour(Drawing::Colour colour);
+        void setTertiaryColour(Drawing::Colour colour, bool fromImport = false);
         bool needsSupports() const;
         void setNeedsSupports();
         void updateAge(const CoordsXY& sceneryPos);

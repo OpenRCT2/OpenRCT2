@@ -278,9 +278,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({3, 57}, {kWindowSize.width - 6, kWindowSize.height - kBottomPadding - 58}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL), /* Element list */
         /* X and Y spinners */
         makeWidget                ({ 4, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_X_LABEL),
-        makeHoldableSpinnerWidgets({20, 23}, {51, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
-        makeWidget                ({74, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
-        makeHoldableSpinnerWidgets({90, 23}, {51, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
+        makeHoldableSpinnerWidgets({20, 23}, {58, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
+        makeWidget                ({81, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
+        makeHoldableSpinnerWidgets({97, 23}, {58, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
         /* Top buttons */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 0,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1,                     kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_UP,                    STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */
@@ -1046,18 +1046,18 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int32_t>(tileCoords.x);
                 drawText(
-                    rt, screenCoords + ScreenCoordsXY{ 43, yOffset }, STR_FORMAT_INTEGER, ft,
+                    rt, screenCoords + ScreenCoordsXY{ 50, yOffset }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::right });
                 ft = Formatter();
                 ft.Add<int32_t>(tileCoords.y);
                 drawText(
-                    rt, screenCoords + ScreenCoordsXY{ 113, yOffset }, STR_FORMAT_INTEGER, ft,
+                    rt, screenCoords + ScreenCoordsXY{ 127, yOffset }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::right });
             }
             else
             {
-                drawText(rt, screenCoords + ScreenCoordsXY(43 - 7, yOffset), "-", { colours[1] });
-                drawText(rt, screenCoords + ScreenCoordsXY(113 - 7, yOffset), "-", { colours[1] });
+                drawText(rt, screenCoords + ScreenCoordsXY(50 - 7, yOffset), "-", { colours[1] });
+                drawText(rt, screenCoords + ScreenCoordsXY(127 - 7, yOffset), "-", { colours[1] });
             }
 
             if (windowTileInspectorSelectedIndex != -1)

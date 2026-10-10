@@ -2682,7 +2682,7 @@ STR_5583    :{COMMA1DP16} m/s
 STR_5584    :SI
 STR_5585    :Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Automatically open and close shops and stalls
-STR_5587    :Shops and stalls will be automatically opened after building them
+STR_5587    :Shops and stalls will be automatically opened after building them, and automatically closed before construction.
 STR_5588    :Play with other players
 STR_5589    :Notification Settings
 STR_5590    :Park awards
@@ -3854,3 +3854,21 @@ STR_7060    :Guests watching construction of {STRINGID}
 STR_7061    :Guests looking at scenery
 STR_7062    :Guests leaving the park
 STR_7063    :Guests watching new ride being constructed
+STR_7064    :Gold
+STR_7065    :Amber
+STR_7066    :Amethyst
+STR_7067    :Asparagus
+STR_7068    :Brown
+STR_7069    :Burnt pink
+STR_7070    :Cactus
+STR_7071    :Caramel
+STR_7072    :Copper
+STR_7073    :Crimson
+STR_7074    :Darker water
+STR_7075    :Emerald
+STR_7076    :Indigo
+STR_7077    :Pesto
+STR_7078    :Pine green
+STR_7079    :Ruby
+STR_7080    :Deep blue
+STR_7081    :Silver

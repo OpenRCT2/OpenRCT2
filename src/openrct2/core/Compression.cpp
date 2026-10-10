@@ -61,7 +61,7 @@ namespace OpenRCT2::Compression
 
             do
             {
-                Guard::Assert(destBuf, "Compression Overruns Ouput Size");
+                Guard::Assert(destBuf, "Compression Overruns Output Size");
 
                 auto writeBlock = destBuf.WriteBlockStart(kZlibMaxChunkSize);
                 strm.next_out = static_cast<Bytef*>(writeBlock.first);
@@ -203,7 +203,7 @@ namespace OpenRCT2::Compression
 
             do
             {
-                Guard::Assert(destBuf, "Compression Overruns Ouput Size");
+                Guard::Assert(destBuf, "Compression Overruns Output Size");
 
                 auto writeBlock = destBuf.WriteBlockStart();
                 ZSTD_outBuffer output = { writeBlock.first, writeBlock.second, 0 };

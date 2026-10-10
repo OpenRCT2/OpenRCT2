@@ -42,7 +42,7 @@ namespace OpenRCT2
     {
         auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-        auto imageId = ImageId(BaseImageId + 5);
+        auto imageId = ImageId(BaseImageId + 5, getPreviewColour());
         GfxDrawSprite(rt, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
         GfxDrawSprite(rt, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
     }
@@ -55,11 +55,28 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            HasDoors = Json::GetBoolean(properties["hasDoors"]);
             const uint32_t doorSoundNumber = Json::GetNumber<uint32_t>(properties["doorSound"]);
             if (doorSoundNumber < Audio::kDoorSoundTypeCount)
             {
                 doorSound = static_cast<Audio::DoorSoundType>(doorSoundNumber);
+            }
+
+            flags = Json::GetFlagHolder<TerrainEdgeFlags, TerrainEdgeFlag>(
+                properties,
+                {
+                    { "hasDoors", TerrainEdgeFlag::hasDoors },
+                    { "hasPrimaryColour", TerrainEdgeFlag::hasPrimaryColour },
+                });
+            if (flags.has(TerrainEdgeFlag::hasPrimaryColour))
+            {
+                const auto colourSettings = properties["colourSettings"];
+                if (!colourSettings.is_object())
+                    throw std::runtime_error(
+                        "Terrain edge object is recolourable, but does not have a colourSettings property!");
+
+                colour = colourFromString(Json::GetString(colourSettings["defaultPrimary"]), Drawing::kColourNull);
+                if (colour == Drawing::kColourNull)
+                    throw std::runtime_error("Terrain edge object is recolourable, but does not set a default colour.");
             }
         }
 
@@ -70,5 +87,13 @@ namespace OpenRCT2
     {
         auto& objMgr = GetContext()->GetObjectManager();
         return objMgr.GetLoadedObject<TerrainEdgeObject>(entryIndex);
+    }
+
+    Drawing::Colour TerrainEdgeObject::getPreviewColour() const
+    {
+        if (colour != Drawing::kColourNull)
+            return colour;
+
+        return kDefaultTerrainEdgeColour1;
     }
 } // namespace OpenRCT2

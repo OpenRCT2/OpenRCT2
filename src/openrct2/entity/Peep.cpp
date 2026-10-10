@@ -730,14 +730,14 @@ namespace OpenRCT2
         bool wasGuest = staff == nullptr;
         if (wasGuest)
         {
-            News::DisableNewsItems(News::ItemType::peepOnRide, peep->id.ToUnderlying());
+            News::DisableNewsItems(getGameState().park.newsItems, News::ItemType::peepOnRide, peep->id.ToUnderlying());
         }
         else
         {
             staff->clearPatrolArea();
             UpdateConsolidatedPatrolAreas();
 
-            News::DisableNewsItems(News::ItemType::peep, staff->id.ToUnderlying());
+            News::DisableNewsItems(getGameState().park.newsItems, News::ItemType::peep, staff->id.ToUnderlying());
         }
         getGameState().entities.entityRemove(peep);
 
@@ -781,15 +781,16 @@ namespace OpenRCT2
             if (action == PeepActionType::drowning)
                 return;
 
+            auto& park = getGameState().park;
+
             if (Config::Get().notifications.guestDied)
             {
                 auto ft = Formatter();
                 formatNameTo(ft);
-                News::AddItemToQueue(News::ItemType::blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
+                News::AddItemToQueue(park.newsItems, News::ItemType::blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
             }
 
-            auto& gameState = getGameState();
-            gameState.park.ratingCasualtyPenalty = std::min(gameState.park.ratingCasualtyPenalty + 25, 1000);
+            park.ratingCasualtyPenalty = std::min(park.ratingCasualtyPenalty + 25, 1000);
             remove();
             return;
         }
@@ -955,12 +956,14 @@ namespace OpenRCT2
      */
     void PeepProblemWarningsUpdate()
     {
-        auto& gameState = getGameState();
+        // TODO: pass ParkData& as a parameter, rename to GuestProblemWarningsUpdate() and move to Guest.cpp
+        auto& park = getGameState().park;
+        auto& newsItems = park.newsItems;
 
         Ride* ride;
         uint32_t hungerCounter = 0, lostCounter = 0, noexitCounter = 0, thirstCounter = 0, litterCounter = 0,
                  disgustCounter = 0, toiletCounter = 0, vandalismCounter = 0;
-        uint8_t* warningThrottle = gameState.park.peepWarningThrottle;
+        uint8_t* warningThrottle = park.peepWarningThrottle;
 
         int32_t inQueueCounter = 0;
         int32_t tooLongQueueCounter = 0;
@@ -1040,73 +1043,73 @@ namespace OpenRCT2
         // could maybe be packed into a loop, would lose a lot of clarity though
         if (warningThrottle[0])
             --warningThrottle[0];
-        else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= gameState.park.numGuestsInPark / 16)
+        else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= park.numGuestsInPark / 16)
         {
             warningThrottle[0] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::hungry);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_HUNGRY, kThoughtId, {});
+                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_ARE_HUNGRY, kThoughtId, {});
             }
         }
 
         if (warningThrottle[1])
             --warningThrottle[1];
-        else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= gameState.park.numGuestsInPark / 16)
+        else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= park.numGuestsInPark / 16)
         {
             warningThrottle[1] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::thirsty);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_THIRSTY, kThoughtId, {});
+                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_ARE_THIRSTY, kThoughtId, {});
             }
         }
 
         if (warningThrottle[2])
             --warningThrottle[2];
-        else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= gameState.park.numGuestsInPark / 16)
+        else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= park.numGuestsInPark / 16)
         {
             warningThrottle[2] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::toilet);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_CANT_FIND_TOILET, kThoughtId, {});
+                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_CANT_FIND_TOILET, kThoughtId, {});
             }
         }
 
         if (warningThrottle[3])
             --warningThrottle[3];
-        else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= gameState.park.numGuestsInPark / 32)
+        else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= park.numGuestsInPark / 32)
         {
             warningThrottle[3] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::badLitter);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_LITTER, kThoughtId, {});
+                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_DISLIKE_LITTER, kThoughtId, {});
             }
         }
 
         if (warningThrottle[4])
             --warningThrottle[4];
-        else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= gameState.park.numGuestsInPark / 32)
+        else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= park.numGuestsInPark / 32)
         {
             warningThrottle[4] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::pathDisgusting);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISGUSTED_BY_PATHS, kThoughtId, {});
+                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_DISGUSTED_BY_PATHS, kThoughtId, {});
             }
         }
 
         if (warningThrottle[5])
             --warningThrottle[5];
-        else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= gameState.park.numGuestsInPark / 32)
+        else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= park.numGuestsInPark / 32)
         {
             warningThrottle[5] = 4;
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::vandalism);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_VANDALISM, kThoughtId, {});
+                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_DISLIKE_VANDALISM, kThoughtId, {});
             }
         }
 
@@ -1118,7 +1121,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::cantFindExit);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
+                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
             }
         }
         else if (lostCounter >= kPeepLostWarningThreshold)
@@ -1127,7 +1130,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::lost);
-                News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
+                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
             }
         }
 
@@ -1143,7 +1146,8 @@ namespace OpenRCT2
                     queueComplainingGuestsMap.begin(), queueComplainingGuestsMap.end(),
                     [](auto& lhs, auto& rhs) { return lhs.second < rhs.second; });
                 auto rideId = rideWithMostQueueComplaints->first.ToUnderlying();
-                News::AddItemToQueue(News::ItemType::ride, STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING, rideId, {});
+                News::AddItemToQueue(
+                    newsItems, News::ItemType::ride, STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING, rideId, {});
             }
         }
     }
@@ -1648,7 +1652,9 @@ namespace OpenRCT2
                 ride->formatNameTo(ft);
                 if (Config::Get().notifications.guestQueuingForRide)
                 {
-                    News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->id, ft);
+                    News::AddItemToQueue(
+                        getGameState().park.newsItems, News::ItemType::peepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X,
+                        guest->id, ft);
                 }
             }
         }
@@ -1708,7 +1714,9 @@ namespace OpenRCT2
                     guest->formatNameTo(ft);
                     if (Config::Get().notifications.guestLeftPark)
                     {
-                        News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->id, ft);
+                        News::AddItemToQueue(
+                            getGameState().park.newsItems, News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->id,
+                            ft);
                     }
                 }
                 return true;
@@ -2101,7 +2109,8 @@ namespace OpenRCT2
                             if (Config::Get().notifications.guestQueuingForRide)
                             {
                                 News::AddItemToQueue(
-                                    News::ItemType::peepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->id, ft);
+                                    getGameState().park.newsItems, News::ItemType::peepOnRide,
+                                    STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->id, ft);
                             }
                         }
 
@@ -2219,7 +2228,7 @@ namespace OpenRCT2
                     : STR_PEEP_TRACKING_PEEP_IS_ON_X;
                 if (Config::Get().notifications.guestUsedFacility)
                 {
-                    News::AddItemToQueue(News::ItemType::peepOnRide, string_id, guest->id, ft);
+                    News::AddItemToQueue(getGameState().park.newsItems, News::ItemType::peepOnRide, string_id, guest->id, ft);
                 }
             }
         }

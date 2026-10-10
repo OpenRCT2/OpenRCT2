@@ -2679,8 +2679,8 @@ STR_5582    :Kapti musmontrilon en fenestro
 STR_5583    :{COMMA1DP16} m/s
 STR_5584    :SI
 STR_5585    :Malŝlosas limojn de funkciado de atrakcioj por permesi aferojn kiel {VELOCITY} liftmontetoj
-STR_5586    :Malfermi aŭtomate vendejojn kaj budojn
-STR_5587    :Vendejoj kaj budoj estos aŭtomate malfermitaj post iliaj konstruoj
+STR_5586    :Malfermi kaj fermi aŭtomate vendejojn kaj budojn
+STR_5587    :Vendejoj kaj budoj estos aŭtomate malfermitaj post iliaj konstruoj, kaj aŭtomate fermitaj antaŭ ol konstruado.
 STR_5588    :Ludi kun aliaj ludantoj
 STR_5589    :Agordoj de sciigoj
 STR_5590    :Premioj de parko
@@ -3844,3 +3844,21 @@ STR_7060    :Gastoj spektas konstruadon de {STRINGID}
 STR_7061    :Gastoj rigardas pejzaĵon
 STR_7062    :Gastoj foriras la parkon
 STR_7063    :Gastoj spektas novan atrakcion konstruatan
+STR_7064    :Oro
+STR_7065    :Sukceno
+STR_7066    :Ametisto
+STR_7067    :Asparago
+STR_7068    :Bruno
+STR_7069    :Bruligita rozkoloro
+STR_7070    :Kakto
+STR_7071    :Karamelo
+STR_7072    :Kupro
+STR_7073    :Karmezino
+STR_7074    :Pli malhela akvo
+STR_7075    :Smeraldo
+STR_7076    :Indigokoloro
+STR_7077    :Pestokoloro
+STR_7078    :Pina verdo
+STR_7079    :Rubeno
+STR_7080    :Profunda bluo
+STR_7081    :Arĝento

@@ -133,13 +133,13 @@ protected:
 
     static testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
-        const uint32_t expectedSurfaceStyle = 11u;
-        const uint32_t style = MapGetSurfaceElementAt(location.toCoordsXYZ())->getSurfaceObjectIndex();
+        const auto expectedSurfaceColour = EnumValue(Drawing::Colour::brightGreen);
+        const auto colour = EnumValue(MapGetSurfaceElementAt(location.toCoordsXYZ())->getPrimarySurfaceColour());
 
-        if (style != expectedSurfaceStyle)
+        if (colour != expectedSurfaceColour)
             return testing::AssertionFailure()
-                << "Start location " << location << " should have surface style " << expectedSurfaceStyle
-                << " but actually has style " << style
+                << "Start location " << location << " should have surface colour " << expectedSurfaceColour
+                << " but actually has style " << colour
                 << ". Either the test map is not set up correctly, or you got the coordinates wrong.";
 
         return testing::AssertionSuccess();
@@ -147,14 +147,13 @@ protected:
 
     static testing::AssertionResult AssertIsNotForbiddenPosition(const char*, const TileCoordsXYZ& location)
     {
-        const uint32_t forbiddenSurfaceStyle = 8u;
+        const uint32_t forbiddenSurfaceColour = EnumValue(Drawing::Colour::brightRed);
+        const auto colour = EnumValue(MapGetSurfaceElementAt(location.toCoordsXYZ())->getPrimarySurfaceColour());
 
-        const uint32_t style = MapGetSurfaceElementAt(location.toCoordsXYZ())->getSurfaceObjectIndex();
-
-        if (style == forbiddenSurfaceStyle)
+        if (colour == forbiddenSurfaceColour)
             return testing::AssertionFailure()
-                << "Path traversed location " << location << ", but it is marked as a forbidden location (surface style "
-                << forbiddenSurfaceStyle << "). Either the map is set up incorrectly, or the pathfinder went the wrong way.";
+                << "Path traversed location " << location << ", but it is marked as a forbidden location (surface colour "
+                << forbiddenSurfaceColour << "). Either the map is set up incorrectly, or the pathfinder went the wrong way.";
 
         return testing::AssertionSuccess();
     }

@@ -9,7 +9,11 @@
 
 #include "MapGen.h"
 
+#include "../../Context.h"
 #include "../../GameState.h"
+#include "../../object/ObjectManager.h"
+#include "../../object/TerrainEdgeObject.h"
+#include "../../object/TerrainSurfaceObject.h"
 #include "../Map.h"
 #include "../tile_element/Slope.h"
 #include "../tile_element/SurfaceElement.h"
@@ -55,10 +59,26 @@ namespace OpenRCT2::World::MapGenerator
     void resetSurfaces(Settings* settings)
     {
         MapClearAllElements();
-        MapInit(settings->mapSize);
+        MapInit(settings->mapSize, Drawing::Colour::black);
 
         const auto surfaceTextureId = generateSurfaceTextureId(settings);
         const auto edgeTextureId = generateEdgeTextureId(settings, surfaceTextureId);
+
+        auto& objManager = GetContext()->GetObjectManager();
+
+        auto surfaceColour1 = Drawing::Colour::black;
+        const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(surfaceTextureId);
+        if (surfaceObject != nullptr && surfaceObject->Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+        {
+            surfaceColour1 = settings->surfaceColour1;
+        }
+
+        auto edgeColour1 = Drawing::Colour::black;
+        const auto* edgeObject = objManager.GetLoadedObject<TerrainEdgeObject>(edgeTextureId);
+        if (edgeObject != nullptr && edgeObject->flags.has(TerrainEdgeFlag::hasPrimaryColour))
+        {
+            edgeColour1 = settings->edgeColour1;
+        }
 
         for (auto y = 1; y < settings->mapSize.y - 1; y++)
         {
@@ -69,6 +89,8 @@ namespace OpenRCT2::World::MapGenerator
                 {
                     surfaceElement->setSurfaceObjectIndex(surfaceTextureId);
                     surfaceElement->setEdgeObjectIndex(edgeTextureId);
+                    surfaceElement->setPrimarySurfaceColour(surfaceColour1);
+                    surfaceElement->setPrimaryEdgeColour(edgeColour1);
                     surfaceElement->baseHeight = settings->heightmapLow;
                     surfaceElement->clearanceHeight = settings->heightmapLow;
                 }
