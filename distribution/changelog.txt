@@ -1,5 +1,6 @@
 0.5.7 (in development)
 ------------------------------------------------------------------------
+- Improved: [#26837] Selecting columns or rows of tiles by holding down Ctrl is now also supported by land paint and water tools.
 
 0.5.6 (2026-10-10)
 ------------------------------------------------------------------------
