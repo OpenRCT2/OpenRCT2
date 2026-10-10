@@ -1,3 +1,48 @@
+openrct2 (0.5.6-develop-1) unstable; urgency=medium
+
+ * Feature: [#16014] Land surfaces and edges can now be recoloured.
+ * Feature: [#26894] Added 18 additional colours, including 5 from the base version of RCT1 (which were removed in later versions).
+ * Feature: [#27153] [Plugin] Add `guestsEntertained` to `Entertainer` interface.
+ * Feature: [#27184] [Plugin] Double limit of miscellaneous entities (e.g. crash particles, steam plumes and balloons) to 6400.
+ * Feature: [#27254] New title sequence (see https://github.com/OpenRCT2/title-sequences/releases/tag/v0.5.6 for credits).
+ * Feature: [objects#447] Track designer grid can now be used outside the Track Designer.
+ * Improved: [#21400] The selector for setting staff patrol areas is now drawn on the water as well as on the surface under water.
+ * Improved: [#22933] You can now toggle between long and short base flat-to-steep pieces if the ride has both available.
+ * Improved: [#26947] Rain is now drawn next to the bottom info panels (in RCT2 style).
+ * Improved: [#27097] On Linux, Flatpak Steam RCTC/RCT2 paths are now auto-detected.
+ * Improved: [#27110] The option to automatically open shops after construction now also closes them before construction.
+ * Change: [#27071] The gamepad deadzone has been raised from 11% to 25% by default to compensate for stick drift.
+ * Change: [#27100] Negative G-forces no longer turn red in the stats window and graph when below -2.50.
+ * Fix: [#1514] Wrong capitalisation for strings in the Guest List window.
+ * Fix: [#12516] Sprites past 65,536 pixels are drawn in the wrong place by the software renderer, most visibly in long scenario lists.
+ * Fix: [#15423] Crash when a guest or handyman uses a bin whose path addition object is not loaded.
+ * Fix: [#17409] When reading system settings, non-US dollar currencies are not recognised correctly. 
+ * Fix: [#18151] Park value and company value are out of date after loading a save.
+ * Fix: [#19754, #27109] Some rides in RCT1 saves have a wrong number of cars per train.
+ * Fix: [#19755, #21320] RCT1 allows more cars per train on some rides than OpenRCT2.
+ * Fix: [#20882] When setting rides with preservation status in the Scenario Editor, some rides are not shown.
+ * Fix: [#21576] RCT1 Wooden wild mouse track designs with 2-car trains are not imported correctly.
+ * Fix: [#22298] [Plugin] Crash when changing a large scenery element whose object is not loaded.
+ * Fix: [#24457] Yellow is always rendered as third remap in Ride window.
+ * Fix: [#25400] The Inverted Flying RollerCoaster draws upright Twister track pieces for pieces it doesn’t have.
+ * Fix: [#26222] ‘Follow this on Main View’ follows the invisible first car on ride types that have one, making the view turn too early.
+ * Fix: [#26754] Switching window tabs by touch could crash the game on some Linux builds.
+ * Fix: [#26998] Crash when generating a `Simplex Height Map` with a higher width than height.
+ * Fix: [#27052] Unnamed rides in RCT2 base and Wacky Worlds scenarios have hardcoded English names.
+ * Fix: [#27056] [Plugin] Loading water palettes from plugin does not update the palette correctly.
+ * Fix: [#27070] The game keeps responding to input while the window is not focused (primarily gamepads).
+ * Fix: [#27084] [Plugin] `PermissionType` for `drag_path_area` is missing.
+ * Fix: [#27087] The ‘Update available’ widget is offset incorrectly.
+ * Fix: [#27093] Pause and fast forward buttons are shown in multiplayer.
+ * Fix: [#27113] Chat button is shown in editor mode.
+ * Fix: [#27133] [Plugin] Dropdown and spinner are not fully hidden with isVisible on creation.
+ * Fix: [#27134] Viewing track designs may cause network desyncs.
+ * Fix: [#27136] Guests keep waiting at a level crossing after the train has passed, due to faulty iteration over the track the train has vacated.
+ * Fix: [#27212] Chain lifts are blue in screenshots taken from the command line.
+ * Fix: [#27218] Tile inspector coordinate spinners are too short for coordinate 1000.
+ * Fix: [#27233] `openrct2 parkinfo objects` crashes when called with a scenario instead of save.
+ * Fix: [#27234] [Plugin] Setting `TrackElement.seatRotation` fails on every ride except mazes, where it does not apply.
+
 openrct2 (0.5.5-develop-1) unstable; urgency=medium
 
  * Feature: [#26423] [Plugin] Add `PathNavigator` and `PathConnection` for exploring the footpath network as a graph.
