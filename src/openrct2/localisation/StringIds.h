@@ -1795,6 +1795,9 @@ enum : StringId
     STR_GUESTS_LEAVING_PARK = 7062,
     STR_GUESTS_WATCHING_NEW_RIDE_BEING_CONSTRUCTED = 7063,
 
+    STR_STEEP_BOOSTER = 7082,
+    STR_VERTICAL_BOOSTER = 7083,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

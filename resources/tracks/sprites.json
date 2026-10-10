@@ -50405,5 +50405,53 @@
         "path": "track/raptor/brake_gentle_diag_4.png",
         "x": -3,
         "y": -22
+    },
+    {
+        "path": "track/lim/steep_booster_1.png",
+        "x": -25,
+        "y": -62,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_booster_2.png",
+        "x": -24,
+        "y": -48,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_booster_3.png",
+        "x": -22,
+        "y": -47,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_booster_4.png",
+        "x": -22,
+        "y": -62,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/vertical_booster_1.png",
+        "x": -7,
+        "y": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/vertical_booster_2.png",
+        "x": -7,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/vertical_booster_3.png",
+        "x": -9,
+        "y": -27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/vertical_booster_4.png",
+        "x": -9,
+        "y": -28,
+        "palette": "keep"
     }
 ]
