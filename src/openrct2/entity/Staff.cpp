@@ -38,6 +38,7 @@
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "../world/TileElementsView.h"
 #include "PatrolArea.h"
 #include "Peep.h"
 
@@ -146,24 +147,14 @@ namespace OpenRCT2
             }
 
             /* Search through all adjacent map elements */
-            TileElement* test_element = MapGetFirstElementAt(adjacPos);
-            if (test_element == nullptr)
-                return false;
             bool pathfound = false;
             bool widefound = false;
-            do
+            for (const auto* adjacentPathElement : TileElementsView<PathElement>(adjacPos))
             {
-                if (test_element->getType() != TileElementType::path)
-                {
-                    continue;
-                }
-
-                /* test_element is a path */
-                const auto* adjacentPathElement = test_element->asPath();
                 if (!FootpathIsZAndDirectionValid(*adjacentPathElement, adjacPos.z / kCoordsZStep, adjac_dir))
                     continue;
 
-                /* test_element is a connected path */
+                /* testElement is a connected path */
                 if (!pathfound)
                 {
                     pathfound = true;
@@ -178,7 +169,7 @@ namespace OpenRCT2
                         widecount++;
                     }
                 }
-            } while (!(test_element++)->isLastForTile());
+            }
         }
 
         switch (total)
@@ -1485,43 +1476,30 @@ namespace OpenRCT2
 
             auto chosenLoc = CoordsXY{ nextLoc } + CoordsDirectionDelta[chosen_position];
 
-            TileElement* tile_element = MapGetFirstElementAt(chosenLoc);
-
-            // This seems to happen in some SV4 files.
-            if (tile_element == nullptr)
+            for (const auto* smallSceneryElement : TileElementsView<SmallSceneryElement>(chosenLoc))
             {
-                continue;
-            }
-
-            do
-            {
-                if (tile_element->getType() != TileElementType::smallScenery)
-                {
-                    continue;
-                }
-
-                auto z_diff = abs(nextLoc.z - tile_element->getBaseZ());
+                auto z_diff = abs(nextLoc.z - smallSceneryElement->getBaseZ());
 
                 if (z_diff >= 4 * kCoordsZStep)
                 {
                     continue;
                 }
 
-                auto* sceneryEntry = tile_element->asSmallScenery()->getEntry();
+                auto* sceneryEntry = smallSceneryElement->getEntry();
 
                 if (sceneryEntry == nullptr || !sceneryEntry->flags.has(SmallSceneryFlag::canBeWatered))
                 {
                     continue;
                 }
 
-                if (tile_element->asSmallScenery()->getAge() < kSceneryWitherAgeThreshold2)
+                if (smallSceneryElement->getAge() < kSceneryWitherAgeThreshold2)
                 {
                     if (chosen_position >= 4)
                     {
                         continue;
                     }
 
-                    if (tile_element->asSmallScenery()->getAge() < kSceneryWitherAgeThreshold1)
+                    if (smallSceneryElement->getAge() < kSceneryWitherAgeThreshold1)
                     {
                         continue;
                     }
@@ -1538,7 +1516,7 @@ namespace OpenRCT2
                 setDestination(destination, 3);
 
                 return true;
-            } while (!(tile_element++)->isLastForTile());
+            }
         }
         return false;
     }
