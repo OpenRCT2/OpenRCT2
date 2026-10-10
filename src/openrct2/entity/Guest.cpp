@@ -6875,20 +6875,18 @@ namespace OpenRCT2
             CoordsXY loc = { x, y };
             if (MapIsLocationValid(loc.toTileStart()))
             {
-                TileElement* tileElement = MapGetFirstElementAt(loc);
-                while (true)
+                for (const auto* tileElement : TileElementsView(loc))
                 {
-                    if (tileElement == nullptr)
-                        break;
                     if (z < tileElement->getBaseZ())
+                    {
                         break;
+                    }
 
                     if (tileElement->isLastForTile())
                     {
                         setAnimationGroup(PeepAnimationGroup::umbrella);
                         return;
                     }
-                    tileElement++;
                 }
             }
         }
