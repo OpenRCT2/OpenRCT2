@@ -11,7 +11,7 @@
 
     #include "OpenGLFramebuffer.h"
 
-    #include <SDL_video.h>
+    #include <SDL3/SDL_video.h>
     #include <algorithm>
     #include <cassert>
     #include <memory>
@@ -26,7 +26,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window* window)
     _id = kBackBufferID;
     _texture = 0;
     _depth = 0;
-    SDL_GL_GetDrawableSize(window, &_width, &_height);
+    SDL_GetWindowSizeInPixels(window, &_width, &_height);
 }
 
 OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, bool integer, bool word)
