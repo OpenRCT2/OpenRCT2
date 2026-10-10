@@ -51,12 +51,12 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/QuarterTile.h"
+#include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
-#include "../world/TileElementsView.h"
 #include "PatrolArea.h"
 #include "Staff.h"
 

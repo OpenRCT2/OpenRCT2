@@ -15,8 +15,8 @@
 #include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
-#include "../world/tile_element/PathElement.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/PathElement.h"
 #include "EntityRegistry.h"
 
 namespace OpenRCT2
@@ -257,7 +257,7 @@ namespace OpenRCT2
             ? PathAdditionFlag::jumpingFountainSnow
             : PathAdditionFlag::jumpingFountainWater;
 
-        for (const auto* pathElement: TileElementsView<PathElement>(newLoc))
+        for (const auto* pathElement : TileElementsView<PathElement>(newLoc))
         {
             if (pathElement->getBaseZ() != newLoc.z)
                 continue;

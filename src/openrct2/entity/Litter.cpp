@@ -6,8 +6,8 @@
 #include "../localisation/StringIds.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
-#include "../world/tile_element/PathElement.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/PathElement.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
