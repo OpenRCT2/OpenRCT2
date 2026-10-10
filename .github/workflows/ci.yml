@@ -345,6 +345,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -490,6 +491,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -519,6 +521,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -574,6 +577,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -590,6 +594,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -738,6 +743,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
