@@ -74,6 +74,12 @@ namespace OpenRCT2
         TrackElemType::brakeForDrop,
         kSeparator,
 
+        // Vertical holding brake. Both directions share a description, so the dropdown collates them into the one
+        // entry, enabled whichever way the track is being built.
+        TrackElemType::verticalHoldingBrakeDown,
+        TrackElemType::verticalHoldingBrakeUp,
+        kSeparator,
+
         // Tower
         TrackElemType::towerBase,
         TrackElemType::towerSection,
@@ -223,7 +229,7 @@ namespace OpenRCT2
     };
 
     // Update the magic number with the current number of track elements to silence
-    static_assert(EnumValue(TrackElemType::count) == 350, "Reminder to add new track element to special dropdown list");
+    static_assert(EnumValue(TrackElemType::count) == 352, "Reminder to add new track element to special dropdown list");
 
     /**
      *
