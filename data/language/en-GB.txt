@@ -3872,3 +3872,5 @@ STR_7078    :Pine green
 STR_7079    :Ruby
 STR_7080    :Deep blue
 STR_7081    :Silver
+STR_7082    :Cars per train
+STR_7083    :Enter speed between {VELOCITY} and {VELOCITY}
