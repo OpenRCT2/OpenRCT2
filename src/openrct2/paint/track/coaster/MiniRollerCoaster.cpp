@@ -18584,6 +18584,7 @@ TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
         case TrackElemType::diagBlockBrakes:
             return MiniRCTrackDiagBlockBrakes;
 
+            // vertical
         case TrackElemType::up90:
             return MiniRCTrack90DegUp;
         case TrackElemType::down90:
@@ -18604,74 +18605,7 @@ TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
             return MiniRCTrackLeftQuarterTurn190DegDown;
         case TrackElemType::rightQuarterTurn1TileDown90:
             return MiniRCTrackRightQuarterTurn190DegDown;
-        case TrackElemType::leftBarrelRollUpToDown:
-            return MiniRCTrackLeftBarrelRollUpToDown;
-        case TrackElemType::rightBarrelRollUpToDown:
-            return MiniRCTrackRightBarrelRollUpToDown;
-        case TrackElemType::leftBarrelRollDownToUp:
-            return MiniRCTrackLeftBarrelRollDownToUp;
-        case TrackElemType::rightBarrelRollDownToUp:
-            return MiniRCTrackRightBarrelRollDownToUp;
-        case TrackElemType::leftTwistUpToDown:
-            return MiniRCTrackLeftTwistUpToDown;
-        case TrackElemType::rightTwistUpToDown:
-            return MiniRCTrackRightTwistUpToDown;
-        case TrackElemType::leftTwistDownToUp:
-            return MiniRCTrackLeftTwistDownToUp;
-        case TrackElemType::rightTwistDownToUp:
-            return MiniRCTrackRightTwistDownToUp;
-        case TrackElemType::halfLoopUp:
-            return MiniRCTrackHalfLoopUp;
-        case TrackElemType::halfLoopDown:
-            return MiniRCTrackHalfLoopDown;
-        case TrackElemType::leftVerticalLoop:
-            return MiniRCTrackLeftVerticalLoop;
-        case TrackElemType::rightVerticalLoop:
-            return MiniRCTrackRightVerticalLoop;
-        case TrackElemType::leftCorkscrewUp:
-            return MiniRCTrackLeftCorkscrewUp;
-        case TrackElemType::rightCorkscrewUp:
-            return MiniRCTrackRightCorkscrewUp;
-        case TrackElemType::leftCorkscrewDown:
-            return MiniRCTrackLeftCorkscrewDown;
-        case TrackElemType::rightCorkscrewDown:
-            return MiniRCTrackRightCorkscrewDown;
-        case TrackElemType::leftLargeCorkscrewUp:
-            return MiniRCTrackLeftLargeCorkscrewUp;
-        case TrackElemType::rightLargeCorkscrewUp:
-            return MiniRCTrackRightLargeCorkscrewUp;
-        case TrackElemType::leftLargeCorkscrewDown:
-            return MiniRCTrackLeftLargeCorkscrewDown;
-        case TrackElemType::rightLargeCorkscrewDown:
-            return MiniRCTrackRightLargeCorkscrewDown;
-        case TrackElemType::leftZeroGRollUp:
-            return MiniRCTrackLeftZeroGRollUp;
-        case TrackElemType::rightZeroGRollUp:
-            return MiniRCTrackRightZeroGRollUp;
-        case TrackElemType::leftZeroGRollDown:
-            return MiniRCTrackLeftZeroGRollDown;
-        case TrackElemType::rightZeroGRollDown:
-            return MiniRCTrackRightZeroGRollDown;
-        case TrackElemType::leftLargeZeroGRollUp:
-            return MiniRCTrackLeftLargeZeroGRollUp;
-        case TrackElemType::rightLargeZeroGRollUp:
-            return MiniRCTrackRightLargeZeroGRollUp;
-        case TrackElemType::leftLargeZeroGRollDown:
-            return MiniRCTrackLeftLargeZeroGRollDown;
-        case TrackElemType::rightLargeZeroGRollDown:
-            return MiniRCTrackRightLargeZeroGRollDown;
-        case TrackElemType::leftEighthDiveLoopUpToOrthogonal:
-            return MiniRCTrackLeftEighthDiveLoopUpToOrthogonal;
-        case TrackElemType::rightEighthDiveLoopUpToOrthogonal:
-            return MiniRCTrackRightEighthDiveLoopUpToOrthogonal;
-        case TrackElemType::leftEighthDiveLoopDownToDiag:
-            return MiniRCTrackLeftEighthDiveLoopDownToDiag;
-        case TrackElemType::rightEighthDiveLoopDownToDiag:
-            return MiniRCTrackRightEighthDiveLoopToDownOrthogonal;
-        case TrackElemType::up90ToInvertedFlatQuarterLoop:
-            return MiniRCTrack90DegToInvertedFlatQuarterLoopUp;
-        case TrackElemType::invertedFlatToDown90QuarterLoop:
-            return MiniRCTrackInvertedFlatTo90DegQuarterLoopDown;
+
         case TrackElemType::leftBankToLeftQuarterTurn3TilesUp25:
             return MiniRCTrackLeftBankToLeftQuarterTurn3Tile25DegUp;
         case TrackElemType::rightBankToRightQuarterTurn3TilesUp25:
@@ -18680,22 +18614,7 @@ TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
             return MiniRCTrackLeftQuarterTurn3Tile25DegDownToLeftBank;
         case TrackElemType::rightQuarterTurn3TilesDown25ToRightBank:
             return MiniRCTrackRightQuarterTurn3Tile25DegDownToRightBank;
-        case TrackElemType::leftMediumHalfLoopUp:
-            return MiniRCTrackLeftMediumHalfLoopUp;
-        case TrackElemType::rightMediumHalfLoopUp:
-            return MiniRCTrackRightMediumHalfLoopUp;
-        case TrackElemType::leftMediumHalfLoopDown:
-            return MiniRCTrackLeftMediumHalfLoopDown;
-        case TrackElemType::rightMediumHalfLoopDown:
-            return MiniRCTrackRightMediumHalfLoopDown;
-        case TrackElemType::leftLargeHalfLoopUp:
-            return MiniRCTrackLeftLargeHalfLoopUp;
-        case TrackElemType::rightLargeHalfLoopUp:
-            return MiniRCTrackRightLargeHalfLoopUp;
-        case TrackElemType::rightLargeHalfLoopDown:
-            return MiniRCTrackRightLargeHalfLoopDown;
-        case TrackElemType::leftLargeHalfLoopDown:
-            return MiniRCTrackLeftLargeHalfLoopDown;
+
         case TrackElemType::flatToUp60:
             return MiniRCTrackFlatTo60DegUp;
         case TrackElemType::up60ToFlat:
@@ -18816,6 +18735,93 @@ TrackPaintFunction GetTrackPaintFunctionMiniRC(TrackElemType trackType)
             return MiniRCTrackLeftEighthBankToOrthogonalDown25;
         case TrackElemType::rightEighthBankToOrthogonalDown25:
             return MiniRCTrackRightEighthBankToOrthogonalDown25;
+
+        // inversions
+        case TrackElemType::leftMediumHalfLoopUp:
+            return MiniRCTrackLeftMediumHalfLoopUp;
+        case TrackElemType::rightMediumHalfLoopUp:
+            return MiniRCTrackRightMediumHalfLoopUp;
+        case TrackElemType::leftMediumHalfLoopDown:
+            return MiniRCTrackLeftMediumHalfLoopDown;
+        case TrackElemType::rightMediumHalfLoopDown:
+            return MiniRCTrackRightMediumHalfLoopDown;
+        case TrackElemType::leftLargeHalfLoopUp:
+            return MiniRCTrackLeftLargeHalfLoopUp;
+        case TrackElemType::rightLargeHalfLoopUp:
+            return MiniRCTrackRightLargeHalfLoopUp;
+        case TrackElemType::rightLargeHalfLoopDown:
+            return MiniRCTrackRightLargeHalfLoopDown;
+        case TrackElemType::leftLargeHalfLoopDown:
+            return MiniRCTrackLeftLargeHalfLoopDown;
+        case TrackElemType::leftBarrelRollUpToDown:
+            return MiniRCTrackLeftBarrelRollUpToDown;
+        case TrackElemType::rightBarrelRollUpToDown:
+            return MiniRCTrackRightBarrelRollUpToDown;
+        case TrackElemType::leftBarrelRollDownToUp:
+            return MiniRCTrackLeftBarrelRollDownToUp;
+        case TrackElemType::rightBarrelRollDownToUp:
+            return MiniRCTrackRightBarrelRollDownToUp;
+        case TrackElemType::leftTwistUpToDown:
+            return MiniRCTrackLeftTwistUpToDown;
+        case TrackElemType::rightTwistUpToDown:
+            return MiniRCTrackRightTwistUpToDown;
+        case TrackElemType::leftTwistDownToUp:
+            return MiniRCTrackLeftTwistDownToUp;
+        case TrackElemType::rightTwistDownToUp:
+            return MiniRCTrackRightTwistDownToUp;
+        case TrackElemType::halfLoopUp:
+            return MiniRCTrackHalfLoopUp;
+        case TrackElemType::halfLoopDown:
+            return MiniRCTrackHalfLoopDown;
+        case TrackElemType::leftVerticalLoop:
+            return MiniRCTrackLeftVerticalLoop;
+        case TrackElemType::rightVerticalLoop:
+            return MiniRCTrackRightVerticalLoop;
+        case TrackElemType::leftCorkscrewUp:
+            return MiniRCTrackLeftCorkscrewUp;
+        case TrackElemType::rightCorkscrewUp:
+            return MiniRCTrackRightCorkscrewUp;
+        case TrackElemType::leftCorkscrewDown:
+            return MiniRCTrackLeftCorkscrewDown;
+        case TrackElemType::rightCorkscrewDown:
+            return MiniRCTrackRightCorkscrewDown;
+        case TrackElemType::leftLargeCorkscrewUp:
+            return MiniRCTrackLeftLargeCorkscrewUp;
+        case TrackElemType::rightLargeCorkscrewUp:
+            return MiniRCTrackRightLargeCorkscrewUp;
+        case TrackElemType::leftLargeCorkscrewDown:
+            return MiniRCTrackLeftLargeCorkscrewDown;
+        case TrackElemType::rightLargeCorkscrewDown:
+            return MiniRCTrackRightLargeCorkscrewDown;
+        case TrackElemType::leftZeroGRollUp:
+            return MiniRCTrackLeftZeroGRollUp;
+        case TrackElemType::rightZeroGRollUp:
+            return MiniRCTrackRightZeroGRollUp;
+        case TrackElemType::leftZeroGRollDown:
+            return MiniRCTrackLeftZeroGRollDown;
+        case TrackElemType::rightZeroGRollDown:
+            return MiniRCTrackRightZeroGRollDown;
+        case TrackElemType::leftLargeZeroGRollUp:
+            return MiniRCTrackLeftLargeZeroGRollUp;
+        case TrackElemType::rightLargeZeroGRollUp:
+            return MiniRCTrackRightLargeZeroGRollUp;
+        case TrackElemType::leftLargeZeroGRollDown:
+            return MiniRCTrackLeftLargeZeroGRollDown;
+        case TrackElemType::rightLargeZeroGRollDown:
+            return MiniRCTrackRightLargeZeroGRollDown;
+        case TrackElemType::leftEighthDiveLoopUpToOrthogonal:
+            return MiniRCTrackLeftEighthDiveLoopUpToOrthogonal;
+        case TrackElemType::rightEighthDiveLoopUpToOrthogonal:
+            return MiniRCTrackRightEighthDiveLoopUpToOrthogonal;
+        case TrackElemType::leftEighthDiveLoopDownToDiag:
+            return MiniRCTrackLeftEighthDiveLoopDownToDiag;
+        case TrackElemType::rightEighthDiveLoopDownToDiag:
+            return MiniRCTrackRightEighthDiveLoopToDownOrthogonal;
+        case TrackElemType::up90ToInvertedFlatQuarterLoop:
+            return MiniRCTrack90DegToInvertedFlatQuarterLoopUp;
+        case TrackElemType::invertedFlatToDown90QuarterLoop:
+            return MiniRCTrackInvertedFlatTo90DegQuarterLoopDown;
+
         default:
             return TrackPaintFunctionDummy;
     }
