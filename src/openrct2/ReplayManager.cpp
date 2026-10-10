@@ -317,7 +317,7 @@ namespace OpenRCT2
             // Serialise Body.
             DataSerialiser recSerialiser(true);
             Serialise(recSerialiser, *_currentRecording);
-            auto& stream = recSerialiser.GetStream();
+            auto& stream = recSerialiser.getStream();
 
             MemoryStream compressed;
             stream.SetPosition(0);
@@ -344,7 +344,8 @@ namespace OpenRCT2
 
             _currentRecording.reset();
 
-            News::Item* news = News::AddItemToQueue(News::ItemType::blank, "Replay recording stopped", 0);
+            News::Item* news = News::AddItemToQueue(
+                getGameState().park.newsItems, News::ItemType::blank, "Replay recording stopped", 0);
             news->setFlags(News::ItemFlags::hasButton); // Has no subject.
 
             return true;
@@ -470,7 +471,8 @@ namespace OpenRCT2
             // During normal playback we pause the game if stopped.
             if (_mode == ReplayMode::playing)
             {
-                News::Item* news = News::AddItemToQueue(News::ItemType::blank, "Replay playback complete", 0);
+                News::Item* news = News::AddItemToQueue(
+                    getGameState().park.newsItems, News::ItemType::blank, "Replay playback complete", 0);
                 news->setFlags(News::ItemFlags::hasButton); // Has no subject.
             }
 
@@ -685,7 +687,7 @@ namespace OpenRCT2
             serialiser << command.commandIndex;
 
             uint32_t actionType = 0;
-            if (serialiser.IsSaving())
+            if (serialiser.isSaving())
             {
                 if (!command.action)
                 {
@@ -695,7 +697,7 @@ namespace OpenRCT2
             }
             serialiser << actionType;
 
-            if (serialiser.IsLoading())
+            if (serialiser.isLoading())
             {
                 command.action = Create(static_cast<GameCommand>(actionType));
             }
@@ -748,7 +750,7 @@ namespace OpenRCT2
             uint32_t countCommands = static_cast<uint32_t>(data.commands.size());
             serialiser << countCommands;
 
-            if (serialiser.IsSaving())
+            if (serialiser.isSaving())
             {
                 for (auto& command : data.commands)
                 {
@@ -769,7 +771,7 @@ namespace OpenRCT2
             uint32_t countChecksums = static_cast<uint32_t>(data.checksums.size());
             serialiser << countChecksums;
 
-            if (serialiser.IsLoading())
+            if (serialiser.isLoading())
             {
                 data.checksums.resize(countChecksums);
             }
@@ -860,7 +862,7 @@ namespace OpenRCT2
                 }
 
                 // Focus camera on event.
-                if (!gSilentReplays && isPositionValid && !result.position.IsNull())
+                if (!gSilentReplays && isPositionValid && !result.position.isNull())
                 {
                     auto* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)

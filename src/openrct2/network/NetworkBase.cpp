@@ -24,7 +24,7 @@
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
 #include "../localisation/Formatter.h"
@@ -47,7 +47,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 0;
+constexpr uint8_t kStreamVersion = 2;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -73,7 +73,6 @@ static constexpr uint32_t kMaxPacketsPerTick = 100;
     #include "../core/MemoryStream.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
-    #include "../interface/Chat.h"
     #include "../object/ObjectManager.h"
     #include "../object/ObjectRepository.h"
     #include "../scenario/Scenario.h"
@@ -103,6 +102,13 @@ namespace OpenRCT2::Network
     static u8string GetKeysDirectory();
     static u8string GetPrivateKeyPath(u8string_view playerName);
     static u8string GetPublicKeyPath(u8string_view playerName, u8string_view hash);
+
+    static void ChatAddHistory(const u8string& text)
+    {
+        auto intent = Intent(INTENT_ACTION_CHAT_ADD_HISTORY);
+        intent.PutExtra(INTENT_EXTRA_MESSAGE, text);
+        ContextBroadcastIntent(&intent);
+    }
 
     NetworkBase::NetworkBase(IContext& context)
         : System(context)
@@ -204,7 +210,7 @@ namespace OpenRCT2::Network
             scriptEngine.RemoveNetworkPlugins();
     #endif
 
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
 
             _requireClose = false;
         }
@@ -3087,8 +3093,8 @@ namespace OpenRCT2::Network
 
         DataSerialiser stream(false);
         const size_t size = packet.header.size - packet.bytesRead;
-        stream.GetStream().WriteArray(packet.read(size), size);
-        stream.GetStream().SetPosition(0);
+        stream.getStream().WriteArray(packet.read(size), size);
+        stream.getStream().SetPosition(0);
 
         ga->Serialise(stream);
         // Set player to sender, should be 0 if sent from client.

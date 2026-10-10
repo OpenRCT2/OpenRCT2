@@ -224,7 +224,7 @@ RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
             continue;
 
         auto rideCoords = ride.overallView;
-        if (rideCoords.IsNull())
+        if (rideCoords.isNull())
             continue;
 
         int32_t distance = abs(mapPos.x - rideCoords.x) + abs(mapPos.y - rideCoords.y);
@@ -253,7 +253,7 @@ static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
         for (int x = 0; x < gameState.mapSize.x; x++)
         {
             const auto tilePos = TileCoordsXY{ x, y };
-            for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.ToCoordsXY()))
+            for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.toCoordsXY()))
             {
                 auto bannerIndex = bannerElement->getIndex();
                 if (bannerIndex == BannerIndex::GetNull())

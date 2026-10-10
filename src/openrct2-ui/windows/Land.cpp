@@ -38,8 +38,11 @@ using OpenRCT2::GameActions::CommandFlag;
 
 namespace OpenRCT2::Ui::Windows
 {
+    static Drawing::Colour _surfaceColour1 = Drawing::Colour::black;
+    static Drawing::Colour _edgeColour1 = Drawing::Colour::black;
+
     static constexpr StringId kWindowTitle = STR_LAND;
-    static constexpr ScreenSize kWindowSize = { 98, 160 };
+    static constexpr ScreenSize kWindowSize = { 98, 180 };
 
     enum WindowLandWidgetIdx : WidgetIndex
     {
@@ -53,6 +56,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_INCREMENT,
         WIDX_FLOOR,
         WIDX_WALL,
+        WIDX_SURFACE_COLOUR_1,
+        WIDX_EDGE_COLOUR_1,
     };
 
     enum class SelectionMode
@@ -64,13 +69,15 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_land_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget     ({19,  19}, {24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
-        makeWidget     ({55,  19}, {24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
-        makeWidget     ({27,  48}, {44, 32}, WidgetType::imgBtn,  WindowColour::primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                // preview box
-        makeRemapWidget({28,  49}, {16, 16}, WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,                  STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
-        makeRemapWidget({54,  63}, {16, 16}, WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,                  STR_ADJUST_LARGER_LAND_TIP),   // increment size
-        makeWidget     ({ 2, 106}, {47, 36}, WidgetType::flatBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_BASE_LAND_TIP),     // floor texture
-        makeWidget     ({49, 106}, {47, 36}, WidgetType::flatBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_VERTICAL_LAND_TIP)  // wall texture
+        makeWidget     ({19,  19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
+        makeWidget     ({55,  19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
+        makeWidget     ({27,  48}, {44, 32}, WidgetType::imgBtn,    WindowColour::primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                // preview box
+        makeRemapWidget({28,  49}, {16, 16}, WidgetType::trnBtn,    WindowColour::secondary, SPR_LAND_TOOL_DECREASE,                  STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
+        makeRemapWidget({54,  63}, {16, 16}, WidgetType::trnBtn,    WindowColour::secondary, SPR_LAND_TOOL_INCREASE,                  STR_ADJUST_LARGER_LAND_TIP),   // increment size
+        makeWidget     ({ 2, 106}, {47, 36}, WidgetType::flatBtn,   WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_BASE_LAND_TIP),     // floor texture
+        makeWidget     ({49, 106}, {47, 36}, WidgetType::flatBtn,   WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_VERTICAL_LAND_TIP),  // wall texture
+        makeWidget     ({20, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR), // surface colour 1
+        makeWidget     ({67, 146}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR) // edge colour 1
     );
     // clang-format on
 
@@ -86,6 +93,9 @@ namespace OpenRCT2::Ui::Windows
 
         ObjectEntryIndex _selectedFloorTexture = 0;
         ObjectEntryIndex _selectedWallTexture = 0;
+
+        bool _surfaceColour1Enabled = false;
+        bool _edgeColour1Enabled = false;
 
         void InputSize()
         {
@@ -112,6 +122,9 @@ namespace OpenRCT2::Ui::Windows
 
             _selectedFloorTexture = LandTool::GetSurfaceStyleFromDropdownIndex(0);
             _selectedWallTexture = LandTool::GetEdgeStyleFromDropdownIndex(0);
+
+            LandTool::resetSurfaceColourSelection(_selectedFloorTexture, _surfaceColour1, _surfaceColour1Enabled);
+            LandTool::resetEdgeColourSelection(_selectedWallTexture, _edgeColour1, _edgeColour1Enabled);
         }
 
         void onClose() override
@@ -155,6 +168,14 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_WALL:
                     LandTool::ShowEdgeStyleDropdown(this, widget, _selectedWallTexture);
                     break;
+                case WIDX_SURFACE_COLOUR_1:
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _surfaceColour1, true);
+                    break;
+                case WIDX_EDGE_COLOUR_1:
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _edgeColour1, true);
+                    break;
                 case WIDX_PREVIEW:
                     InputSize();
                     break;
@@ -196,7 +217,12 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainSurface = type;
-                        _selectedFloorTexture = type;
+                        if (_selectedFloorTexture != type)
+                        {
+                            _selectedFloorTexture = type;
+                            LandTool::resetSurfaceColourSelection(
+                                gLandToolTerrainSurface, _surfaceColour1, _surfaceColour1Enabled);
+                        }
                     }
                     invalidate();
                     break;
@@ -214,10 +240,32 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         gLandToolTerrainEdge = type;
-                        _selectedWallTexture = type;
+                        if (_selectedWallTexture != type)
+                        {
+                            _selectedWallTexture = type;
+                            LandTool::resetEdgeColourSelection(gLandToolTerrainEdge, _edgeColour1, _edgeColour1Enabled);
+                        }
                     }
                     invalidate();
                     break;
+                case WIDX_SURFACE_COLOUR_1:
+                {
+                    if (dropdownIndex == -1)
+                        break;
+
+                    _surfaceColour1 = ColourDropDownIndexToColour(dropdownIndex);
+                    invalidate();
+                    break;
+                }
+                case WIDX_EDGE_COLOUR_1:
+                {
+                    if (dropdownIndex == -1)
+                        break;
+
+                    _edgeColour1 = ColourDropDownIndexToColour(dropdownIndex);
+                    invalidate();
+                    break;
+                }
             }
         }
 
@@ -247,13 +295,21 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            setWidgetPressed(WIDX_FLOOR, gLandToolTerrainSurface != kObjectEntryIndexNull);
-            setWidgetPressed(WIDX_WALL, gLandToolTerrainEdge != kObjectEntryIndexNull);
+            auto surfaceButtonSelected = gLandToolTerrainSurface != kObjectEntryIndexNull;
+            auto edgeButtonSelected = gLandToolTerrainEdge != kObjectEntryIndexNull;
+            setWidgetPressed(WIDX_FLOOR, surfaceButtonSelected);
+            setWidgetPressed(WIDX_WALL, edgeButtonSelected);
             setWidgetPressed(WIDX_MOUNTAINMODE, _landToolMountainMode);
             setWidgetPressed(WIDX_PAINTMODE, _landToolPaintMode);
 
+            widgets[WIDX_SURFACE_COLOUR_1].setVisible(_surfaceColour1Enabled && surfaceButtonSelected);
+            widgets[WIDX_EDGE_COLOUR_1].setVisible(_edgeColour1Enabled && edgeButtonSelected);
+
             // Update the preview image (for tool sizes up to 7)
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
+
+            widgets[WIDX_SURFACE_COLOUR_1].image = getColourButtonImage(_surfaceColour1);
+            widgets[WIDX_EDGE_COLOUR_1].image = getColourButtonImage(_edgeColour1);
         }
 
         void onDraw(Drawing::RenderTarget& rt) override
@@ -303,7 +359,6 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<money64>(_landToolLowerCost);
                     drawText(rt, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::centre });
                 }
-                screenCoords.y += 50;
 
                 // Draw paint price
                 const bool mapCtrlPressed = GetInputManager().isModifierKeyPressed(ModifierKey::ctrl);
@@ -324,6 +379,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (price != 0)
                 {
+                    screenCoords.y = windowPos.y + height - 16;
                     auto ft = Formatter();
                     ft.Add<money64>(price);
                     drawText(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::centre });
@@ -483,7 +539,7 @@ namespace OpenRCT2::Ui::Windows
             // Move to tool bottom left
             mapTile->x -= (tool_size - 1) * 16;
             mapTile->y -= (tool_size - 1) * 16;
-            mapTile = mapTile->ToTileStart();
+            mapTile = mapTile->toTileStart();
 
             if (gMapSelectPositionA.x != mapTile->x)
             {
@@ -538,7 +594,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                            gLandToolTerrainSurface, gLandToolTerrainEdge);
+                            gLandToolTerrainSurface, gLandToolTerrainEdge, _surfaceColour1, _edgeColour1);
 
                         GameActions::Execute(&surfaceSetStyleAction, getGameState());
 
@@ -565,7 +621,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                                gLandToolTerrainSurface, gLandToolTerrainEdge);
+                                gLandToolTerrainSurface, gLandToolTerrainEdge, _surfaceColour1, _edgeColour1);
 
                             GameActions::Execute(&surfaceSetStyleAction, getGameState());
 
@@ -772,19 +828,19 @@ namespace OpenRCT2::Ui::Windows
                 case MapSelectType::edge2:
                     // Line
                     mapTile->y -= (tool_size - 1) * 16;
-                    mapTile->y = mapTile->ToTileStart().y;
+                    mapTile->y = mapTile->toTileStart().y;
                     break;
                 case MapSelectType::edge1:
                 case MapSelectType::edge3:
                     // Line
                     mapTile->x -= (tool_size - 1) * 16;
-                    mapTile->x = mapTile->ToTileStart().x;
+                    mapTile->x = mapTile->toTileStart().x;
                     break;
                 default:
                     // Move to tool bottom left
                     mapTile->x -= (tool_size - 1) * 16;
                     mapTile->y -= (tool_size - 1) * 16;
-                    mapTile = mapTile->ToTileStart();
+                    mapTile = mapTile->toTileStart();
                     break;
             }
 
@@ -854,16 +910,14 @@ namespace OpenRCT2::Ui::Windows
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
-                surfaceImage = ImageId(surfaceObj->IconImageId);
-                if (surfaceObj->Colour != Drawing::kColourNull)
-                    surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
+                surfaceImage = ImageId(surfaceObj->IconImageId, surfaceObj->getPrimaryColour(_surfaceColour1));
             }
 
-            const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_selectedWallTexture);
+            const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_selectedWallTexture);
             ImageId edgeImage;
             if (edgeObj != nullptr)
             {
-                edgeImage = ImageId(edgeObj->IconImageId);
+                edgeImage = ImageId(edgeObj->IconImageId, _edgeColour1);
             }
 
             DrawDropdownButton(rt, WIDX_FLOOR, surfaceImage);

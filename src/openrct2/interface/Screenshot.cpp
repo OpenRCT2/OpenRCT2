@@ -24,6 +24,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/NewDrawing.h"
+#include "../drawing/Palette.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
@@ -215,9 +216,9 @@ static int32_t GetTallestVisibleTileTop(
     {
         for (int32_t x = startCoords.x; x <= endCoords.x; x++)
         {
-            auto location = TileCoordsXY(x, y).ToCoordsXY();
+            auto location = TileCoordsXY(x, y).toCoordsXY();
             int32_t z = GetHighestBaseClearanceZ(location, useViewClipping);
-            int32_t viewY = Translate3DTo2DWithZ(rotation, CoordsXYZ(location.ToTileCentre(), z)).y;
+            int32_t viewY = Translate3DTo2DWithZ(rotation, CoordsXYZ(location.toTileCentre(), z)).y;
             minViewY = std::min(minViewY, viewY);
         }
     }
@@ -239,7 +240,7 @@ static RenderTarget CreateRT(const Viewport& viewport)
         throw std::runtime_error("Giant screenshot failed, unable to allocate memory for image.");
     }
 
-    if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
+    if (viewport.flags.has(ViewportFlag::transparentBackground))
     {
         std::memset(rt.bits, EnumValue(PaletteIndex::transparent), static_cast<size_t>(rt.width) * rt.height);
     }
@@ -282,14 +283,14 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 
     auto* const mainWindow = WindowGetMain();
     const auto* const mainViewport = WindowGetViewport(mainWindow);
-    const bool useViewClipping = (mainViewport != nullptr && mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+    const bool useViewClipping = (mainViewport != nullptr && mainViewport->flags.has(ViewportFlag::clipView));
 
     // Calculate the viewport bounds
     auto corners = cornerCoords[useViewClipping ? 1 : 0];
-    auto screenCoords1 = Translate3DTo2DWithZ(rotation, { corners[0].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords2 = Translate3DTo2DWithZ(rotation, { corners[1].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords3 = Translate3DTo2DWithZ(rotation, { corners[2].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords4 = Translate3DTo2DWithZ(rotation, { corners[3].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords1 = Translate3DTo2DWithZ(rotation, { corners[0].toCoordsXY().toTileCentre(), 0 });
+    auto screenCoords2 = Translate3DTo2DWithZ(rotation, { corners[1].toCoordsXY().toTileCentre(), 0 });
+    auto screenCoords3 = Translate3DTo2DWithZ(rotation, { corners[2].toCoordsXY().toTileCentre(), 0 });
+    auto screenCoords4 = Translate3DTo2DWithZ(rotation, { corners[3].toCoordsXY().toTileCentre(), 0 });
 
     auto left = std::min({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) - 32;
     auto top = GetTallestVisibleTileTop(rotation, corners[0], corners[1], useViewClipping);
@@ -353,7 +354,7 @@ void ScreenshotGiant()
         }
         if (Config::Get().general.transparentScreenshot)
         {
-            viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+            viewport.flags.set(ViewportFlag::transparentBackground);
         }
 
         rt = CreateRT(viewport);
@@ -386,12 +387,12 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 
     if (options->hide_guests)
     {
-        viewport.flags |= VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF;
+        viewport.flags.set(ViewportFlag::hideGuests, ViewportFlag::hideStaff);
     }
 
     if (options->hide_sprites)
     {
-        viewport.flags |= VIEWPORT_FLAG_HIDE_ENTITIES;
+        viewport.flags.set(ViewportFlag::hideEntities);
     }
 
     if (options->mowed_grass)
@@ -421,7 +422,7 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 
     if (options->transparent || Config::Get().general.transparentScreenshot)
     {
-        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+        viewport.flags.set(ViewportFlag::transparentBackground);
     }
 
     if (options->draw_bounding_boxes)
@@ -562,6 +563,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
 
         rt = CreateRT(viewport);
 
+        UpdatePaletteEffects();
         RenderViewport(nullptr, viewport, rt);
         WriteRTToFile(outputPath, rt, gPalette);
     }
@@ -649,7 +651,7 @@ void CaptureImage(const CaptureOptions& options)
 
     if (options.Transparent)
     {
-        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+        viewport.flags.set(ViewportFlag::transparentBackground);
     }
 
     auto outputPath = ResolveFilenameForCapture(options.Filename);

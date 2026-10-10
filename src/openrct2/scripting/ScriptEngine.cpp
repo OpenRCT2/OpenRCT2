@@ -599,6 +599,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScHandyman.Register(ctx);
     gScMechanic.Register(ctx);
     gScSecurity.Register(ctx);
+    gScEntertainer.Register(ctx);
     gScBalloon.Register(ctx);
     gScLitter.Register(ctx);
     gScMoneyEffect.Register(ctx);
@@ -660,6 +661,7 @@ void ScriptEngine::UnregisterClasses()
     gScHandyman.Unregister();
     gScMechanic.Unregister();
     gScSecurity.Unregister();
+    gScEntertainer.Unregister();
     gScBalloon.Unregister();
     gScLitter.Unregister();
     gScMoneyEffect.Unregister();
@@ -842,10 +844,10 @@ std::vector<std::string> ScriptEngine::GetPluginFiles() const
     if (Path::DirectoryExists(base))
     {
         auto pattern = Path::Combine(base, u8"*.js");
-        auto scanner = Path::ScanDirectory(pattern, true);
-        while (scanner->Next())
+        auto scanner = Path::scanDirectory(pattern, true);
+        while (scanner->next())
         {
-            auto path = std::string(scanner->GetPath());
+            auto path = std::string(scanner->getPath());
             if (ShouldLoadScript(path))
             {
                 pluginFiles.push_back(path);
@@ -1502,7 +1504,7 @@ JSValue ScriptEngine::GameActionResultToJS(
     {
         JS_SetPropertyStr(ctx, obj, "cost", JS_NewInt64(ctx, result.cost));
     }
-    if (!result.position.IsNull())
+    if (!result.position.isNull())
     {
         JS_SetPropertyStr(ctx, obj, "position", ToJSValue(ctx, result.position));
     }

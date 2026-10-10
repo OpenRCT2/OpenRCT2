@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor kChairliftRTD =
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::isSuspended, RtdFlag::runningSpeedAffectsReliability),
-    .RideModes = EnumsToFlags(RideMode::stationToStation),
+    .rideModes = { RideMode::stationToStation },
     .DefaultMode = RideMode::stationToStation,
     .OperatingSettings = { 1, 4 },
     .Naming = { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT },

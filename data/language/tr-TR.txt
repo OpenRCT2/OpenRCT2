@@ -1145,7 +1145,6 @@ STR_1816    :Müşteri bilgisinde{NEWLINE}görmek istediğiniz{NEWLINE}bilgizi s
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tüm müşteriler
 STR_1819    :{WINDOW_COLOUR_2}Tüm müşteriler (özetli)
-STR_1820    :{WINDOW_COLOUR_2}Müşteri {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Düşünce: {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Müşterilerin {POP16}{STRINGID} hakkında düşündükleri
 STR_1823    :Müşterilerin bu alet{NEWLINE}üzerine düşünceleri
@@ -2435,9 +2434,6 @@ STR_5242    :Bu tema ismi kullanılmakta
 STR_5243    :Olumsuz harfler/semboller içeriyor
 STR_5244    :Temalar
 STR_5245    :Üst araç çubuğu
-STR_5246    :Alt araç çubuğu
-STR_5247    :Alet Tasarımcısı üst araç çubuğu
-STR_5248    :Senaryo Editörü üst araç çubuğu
 STR_5249    :Ana ekran seçenekleri
 STR_5250    :Ana ekran oyundan çıkış
 STR_5251    :Ana ekran seçenekler butonu
@@ -3165,7 +3161,6 @@ STR_6137    :OpenRCT2, ücretsiz ve kaynağı açık olan Roller Coaster Tycoon 
 STR_6138    :OpenRCT2 bir çok kişinin yardımı ile oluşturulan bir proje. Tüm kişiler listesi “contributors.md” dosyasında bulunmakta. Daha fazla bilgi için http://github.com/OpenRCT2/OpenRCT2 sayfasına giriniz
 STR_6139    :Tüm ürün ve şirket isimleri kendi sahiplerine aittir. Bunların kullanımı, onlar tarafından herhangi bir bağlılık veya onaylama anlamına gelmez.
 STR_6140    :Değişiklikler…
-STR_6141    :RCT1 tarzı alt araç cubuğu
 STR_6142    :{WINDOW_COLOUR_2}Alet ismi: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Alet türü: {BLACK}{STRINGID}
 STR_6144    :Kullanılan bölümleri göster

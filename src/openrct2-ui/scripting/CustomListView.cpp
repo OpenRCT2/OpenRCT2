@@ -19,6 +19,7 @@
     #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/drawing/FilterPaletteIds.h>
+    #include <openrct2/drawing/Line.h>
     #include <openrct2/drawing/Rectangle.h>
     #include <openrct2/drawing/RenderTarget.h>
     #include <openrct2/drawing/Text.h>

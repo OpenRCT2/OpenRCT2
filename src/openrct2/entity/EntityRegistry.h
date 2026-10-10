@@ -23,7 +23,7 @@ struct CoordsXY;
 namespace OpenRCT2
 {
     constexpr uint16_t kMaxEntities = 65535;
-    constexpr uint16_t kMaxMiscEntities = 3200;
+    constexpr uint16_t kMaxMiscEntities = 6400;
 
     constexpr const uint32_t kSpatialIndexSize = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
     constexpr uint32_t kSpatialIndexNullBucket = kSpatialIndexSize - 1;
@@ -57,12 +57,12 @@ namespace OpenRCT2
     {
     private:
         Entity_t entities[kMaxEntities]{};
-        std::array<std::list<EntityId>, EnumValue(EntityType::count)> gEntityLists;
+        std::array<std::list<EntityId>, EnumValue(EntityType::count)> _entityLists;
         std::vector<EntityId> _freeIdList;
 
         bool _entityFlashingList[kMaxEntities];
 
-        std::array<std::vector<EntityId>, kSpatialIndexSize> gEntitySpatialIndex;
+        std::array<std::vector<EntityId>, kSpatialIndexSize> _entitySpatialIndex;
 
     public:
         uint16_t getEntityListCount(EntityType type);

@@ -134,9 +134,9 @@ namespace OpenRCT2::GameActions
         Formatter ft(res.errorMessageArgs.data());
         ft.Increment(6);
         ride->formatNameTo(ft);
-        if (!ride->overallView.IsNull())
+        if (!ride->overallView.isNull())
         {
-            auto location = ride->overallView.ToTileCentre();
+            auto location = ride->overallView.toTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
 

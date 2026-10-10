@@ -458,7 +458,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement* tileElement;
             gMapSelectFlags.unset(MapSelectFlag::enable, MapSelectFlag::enableArrow);
             auto mapCoords = FootpathBridgeGetInfoFromPos(screenCoords, &direction, &tileElement);
-            if (mapCoords.IsNull())
+            if (mapCoords.isNull())
                 return;
 
             int32_t mapZ = tileElement->getBaseZ();
@@ -484,7 +484,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement* tileElement;
             int32_t direction;
             auto mapCoords = FootpathGetCoordinatesFromPos(screenCoords, &direction, &tileElement);
-            if (mapCoords.IsNull())
+            if (mapCoords.isNull())
                 return;
 
             int32_t mapZ = tileElement->getBaseZ();
@@ -853,7 +853,10 @@ namespace OpenRCT2::Ui::Windows
             auto colour = ColourPair(PaletteIndex::transparent);
             const auto* surfaceObject = surfaceElement->getSurfaceObject();
             if (surfaceObject != nullptr)
-                colour = ColourPair(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
+            {
+                auto mapColour = surfaceObject->getMapColours(surfaceElement->getPrimarySurfaceColour());
+                colour = ColourPair(mapColour[0], mapColour[1]);
+            }
 
             if (surfaceElement->getWaterHeight() > 0)
                 colour = kWaterColour;
@@ -1138,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
         {
             screenCoords.x = ((screenCoords.x + 8) - getPracticalMapSize()) / 2;
             screenCoords.y = ((screenCoords.y + 8)) / 2;
-            auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).ToCoordsXY();
+            auto location = TileCoordsXY(screenCoords.y - screenCoords.x, screenCoords.x + screenCoords.y).toCoordsXY();
 
             switch (GetCurrentRotation())
             {

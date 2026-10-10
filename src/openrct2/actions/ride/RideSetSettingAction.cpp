@@ -12,7 +12,7 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../object/MusicObject.h"
 #include "../../object/ObjectManager.h"
 #include "../../ride/Ride.h"
@@ -237,14 +237,14 @@ namespace OpenRCT2::GameActions
             case RideSetSetting::rideType:
                 ride->type = _value;
                 ride->updateRideTypeForAllPieces();
-                GfxInvalidateScreen();
+                Drawing::GfxInvalidateScreen();
                 break;
         }
 
         auto res = Result();
-        if (!ride->overallView.IsNull())
+        if (!ride->overallView.isNull())
         {
-            auto location = ride->overallView.ToTileCentre();
+            auto location = ride->overallView.toTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
         auto* windowMgr = Ui::GetWindowManager();
@@ -254,7 +254,7 @@ namespace OpenRCT2::GameActions
 
     bool RideSetSettingAction::RideIsModeValid(const Ride& ride) const
     {
-        return ride.getRideTypeDescriptor().RideModes & (1uLL << _value);
+        return ride.getRideTypeDescriptor().rideModes.has(static_cast<RideMode>(_value));
     }
 
     bool RideSetSettingAction::RideIsValidLiftHillSpeed(GameState_t& gameState, const Ride& ride) const

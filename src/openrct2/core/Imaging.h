@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../drawing/ColourPalette.h"
+#include "../drawing/PaletteType.h"
 
 #include <functional>
 #include <istream>

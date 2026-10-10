@@ -68,6 +68,8 @@ namespace OpenRCT2::Scenario
             RideRating_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
         };
 
+        static constexpr uint16_t kLowParkRatingThreshold = 700;
+
         bool NeedsMoney() const
         {
             return ObjectiveNeedsMoney(Type);
@@ -81,17 +83,18 @@ namespace OpenRCT2::Scenario
             return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
         }
 
-        ObjectiveStatus Check(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus Check(const Park::ParkData& park, const GameState_t& gameState) const;
+        void onFailure(Park::ParkData& park, GameState_t& gameState) const;
 
     private:
-        ObjectiveStatus CheckGuestsBy(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckParkValueBy(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus Check10RollerCoasters(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckGuestsAndRating(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckMonthlyRideIncome(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus Check10RollerCoastersLength(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckFinish5RollerCoasters(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckRepayLoanAndParkValue(Park::ParkData& park, GameState_t& gameState) const;
-        ObjectiveStatus CheckMonthlyFoodIncome(Park::ParkData& park, GameState_t& gameState) const;
+        ObjectiveStatus CheckGuestsBy(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckParkValueBy(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus Check10RollerCoasters(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckGuestsAndRating(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckMonthlyRideIncome(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus Check10RollerCoastersLength(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckFinish5RollerCoasters(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckRepayLoanAndParkValue(const Park::ParkData& park, const GameState_t& gameState) const;
+        ObjectiveStatus CheckMonthlyFoodIncome(const Park::ParkData& park, const GameState_t& gameState) const;
     };
 } // namespace OpenRCT2::Scenario

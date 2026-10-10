@@ -14,7 +14,7 @@
     #include "../../../Context.h"
     #include "../../../GameState.h"
     #include "../../../core/EnumMap.hpp"
-    #include "../../../drawing/Drawing.h"
+    #include "../../../drawing/Drawing.Screen.h"
     #include "../../../ui/WindowManager.h"
     #include "../../../windows/Intent.h"
     #include "../../../world/Park.h"
@@ -322,7 +322,7 @@ namespace OpenRCT2::Scripting
         if (park.name != valueStr)
         {
             park.name = std::move(valueStr);
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
         return JS_UNDEFINED;
     }
@@ -343,7 +343,7 @@ namespace OpenRCT2::Scripting
         const auto flag = kParkFlagMap[key];
         auto& gameState = getGameState();
         gameState.park.flags.set(flag, value);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
         return JS_UNDEFINED;
     }
 
@@ -356,12 +356,12 @@ namespace OpenRCT2::Scripting
     {
         JSValue result = JS_NewArray(ctx);
         int64_t resultIdx = 0;
-        auto& gameState = getGameState();
-        for (size_t i = 0, newsSize = gameState.newsItems.getRecent().size(); i < newsSize; i++)
+        auto& newsItems = getGameState().park.newsItems;
+        for (size_t i = 0, newsSize = newsItems.getRecent().size(); i < newsSize; i++)
         {
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, i));
         }
-        for (size_t i = 0, newsSize = gameState.newsItems.getArchived().size(); i < newsSize; i++)
+        for (size_t i = 0, newsSize = newsItems.getArchived().size(); i < newsSize; i++)
         {
             auto offset = i + News::ItemHistoryStart;
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, offset));
@@ -373,15 +373,15 @@ namespace OpenRCT2::Scripting
     {
         int32_t index = 0;
         int32_t archiveIndex = News::ItemHistoryStart;
-        auto& gameState = getGameState();
-        JSIterateArray(ctx, value, [&index, &archiveIndex, &gameState](JSContext* ctx2, JSValue item) {
+        auto& newsItems = getGameState().park.newsItems;
+        JSIterateArray(ctx, value, [&index, &archiveIndex, &newsItems](JSContext* ctx2, JSValue item) {
             auto isArchived = AsOrDefault(ctx2, item, "isArchived", false);
             auto newsItem = NewsItemFromJS(ctx2, item);
             if (isArchived)
             {
                 if (archiveIndex < News::MaxItems)
                 {
-                    gameState.newsItems[archiveIndex] = newsItem;
+                    newsItems[archiveIndex] = newsItem;
                     archiveIndex++;
                 }
             }
@@ -389,7 +389,7 @@ namespace OpenRCT2::Scripting
             {
                 if (index < News::ItemHistoryStart)
                 {
-                    gameState.newsItems[index] = newsItem;
+                    newsItems[index] = newsItem;
                     index++;
                 }
             }
@@ -398,11 +398,11 @@ namespace OpenRCT2::Scripting
         // End the lists by setting next item to null
         if (index < News::ItemHistoryStart)
         {
-            gameState.newsItems[index].type = News::ItemType::null;
+            newsItems[index].type = News::ItemType::null;
         }
         if (archiveIndex < News::MaxItems)
         {
-            gameState.newsItems[archiveIndex].type = News::ItemType::null;
+            newsItems[archiveIndex].type = News::ItemType::null;
         }
         return JS_UNDEFINED;
     }
@@ -440,7 +440,7 @@ namespace OpenRCT2::Scripting
                 assoc = JSToUint(ctx, subject);
             }
         }
-        News::AddItemToQueue(type, text.c_str(), assoc);
+        News::AddItemToQueue(getGameState().park.newsItems, type, text.c_str(), assoc);
         return JS_UNDEFINED;
     }
 

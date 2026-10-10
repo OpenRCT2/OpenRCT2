@@ -84,7 +84,7 @@ namespace OpenRCT2::TileInspector
         // Return true for everyone who has the window open and tile selected
         auto* windowMgr = Ui::GetWindowManager();
         auto* window = windowMgr->FindByClass(WindowClass::tileInspector);
-        return window != nullptr && loc == windowTileInspectorTile.ToCoordsXY();
+        return window != nullptr && loc == windowTileInspectorTile.toCoordsXY();
     }
 
     static int32_t NumLargeScenerySequences(const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
@@ -95,7 +95,7 @@ namespace OpenRCT2::TileInspector
         const auto& tiles = largeEntry->tiles;
         const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
-            CoordsXY{ initialTile.offset }.Rotate(direction),
+            CoordsXY{ initialTile.offset }.rotate(direction),
             initialTile.offset.z,
         };
 
@@ -103,7 +103,7 @@ namespace OpenRCT2::TileInspector
         auto numFoundElements = 0;
         for (auto& tile : tiles)
         {
-            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(direction), tile.offset.z };
+            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.rotate(direction), tile.offset.z };
 
             const auto currentTile = firstTile + rotatedCurrentTile;
 
@@ -239,8 +239,8 @@ namespace OpenRCT2::TileInspector
                     {
                         auto stationIndex = tileElement->asEntrance()->getStationIndex();
                         auto& station = ride->getStation(stationIndex);
-                        auto entrance = station.Entrance;
-                        auto exit = station.Exit;
+                        auto entrance = station.entrance;
+                        auto exit = station.exit;
                         auto entranceType = tileElement->asEntrance()->getEntranceType();
                         uint8_t z = tileElement->baseHeight;
 
@@ -248,13 +248,13 @@ namespace OpenRCT2::TileInspector
                         if (entranceType == EntranceType::rideEntrance && entrance.x == loc.x / kCoordsXYStep
                             && entrance.y == loc.y / kCoordsXYStep && entrance.z == z)
                         {
-                            station.Entrance = { entrance, newRotation };
+                            station.entrance = { entrance, newRotation };
                         }
                         else if (
                             entranceType == EntranceType::rideExit && exit.x == loc.x / kCoordsXYStep
                             && exit.y == loc.y / kCoordsXYStep && exit.z == z)
                         {
-                            station.Exit = { exit, newRotation };
+                            station.exit = { exit, newRotation };
                         }
                     }
                     break;
@@ -469,15 +469,15 @@ namespace OpenRCT2::TileInspector
                     {
                         auto entranceIndex = tileElement->asEntrance()->getStationIndex();
                         auto& station = ride->getStation(entranceIndex);
-                        const auto& entranceLoc = station.Entrance;
-                        const auto& exitLoc = station.Exit;
+                        const auto& entranceLoc = station.entrance;
+                        const auto& exitLoc = station.exit;
                         uint8_t z = tileElement->baseHeight;
 
                         // Make sure this is the correct entrance or exit
                         if (entranceType == EntranceType::rideEntrance && entranceLoc == TileCoordsXYZ{ loc, z })
-                            station.Entrance = { entranceLoc, z + heightOffset, entranceLoc.direction };
+                            station.entrance = { entranceLoc, z + heightOffset, entranceLoc.direction };
                         else if (entranceType == EntranceType::rideExit && exitLoc == TileCoordsXYZ{ loc, z })
-                            station.Exit = { exitLoc, z + heightOffset, exitLoc.direction };
+                            station.exit = { exitLoc, z + heightOffset, exitLoc.direction };
                     }
                 }
             }
@@ -656,10 +656,10 @@ namespace OpenRCT2::TileInspector
             switch (entranceElement->asEntrance()->getEntranceType())
             {
                 case EntranceType::rideEntrance:
-                    station.Entrance = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
+                    station.entrance = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
                     break;
                 case EntranceType::rideExit:
-                    station.Exit = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
+                    station.exit = { loc, entranceElement->baseHeight, entranceElement->getDirection() };
                     break;
                 default:
                     break;
@@ -737,7 +737,7 @@ namespace OpenRCT2::TileInspector
             uint8_t originDirection = trackElement->getDirection();
             CoordsXY offsets = { trackBlock.x, trackBlock.y };
             CoordsXY coords = { originX, originY };
-            coords += offsets.Rotate(DirectionReverse(originDirection));
+            coords += offsets.rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);
@@ -749,7 +749,7 @@ namespace OpenRCT2::TileInspector
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock2.z, rotation };
                 offsets.x = trackBlock2.x;
                 offsets.y = trackBlock2.y;
-                elem += offsets.Rotate(originDirection);
+                elem += offsets.rotate(originDirection);
 
                 TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, i);
                 if (nextTrackElement == nullptr)
@@ -821,7 +821,7 @@ namespace OpenRCT2::TileInspector
             uint8_t originDirection = trackElement->getDirection();
             CoordsXY offsets = { trackBlock.x, trackBlock.y };
             CoordsXY coords = { originX, originY };
-            coords += offsets.Rotate(DirectionReverse(originDirection));
+            coords += offsets.rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);
@@ -833,7 +833,7 @@ namespace OpenRCT2::TileInspector
                 CoordsXYZD elem = { originX, originY, originZ + trackBlock2.z, rotation };
                 offsets.x = trackBlock2.x;
                 offsets.y = trackBlock2.y;
-                elem += offsets.Rotate(originDirection);
+                elem += offsets.rotate(originDirection);
 
                 TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, i);
                 if (nextTrackElement == nullptr)
@@ -972,6 +972,6 @@ namespace OpenRCT2::TileInspector
         Guard::Assert(
             windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
             "Selected list item out of range");
-        return MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
+        return MapGetNthElementAt(windowTileInspectorTile.toCoordsXY(), windowTileInspectorSelectedIndex);
     }
 } // namespace OpenRCT2::TileInspector

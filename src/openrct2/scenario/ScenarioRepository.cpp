@@ -152,7 +152,7 @@ protected:
     void Serialise(DataSerialiser& ds, const ScenarioIndexEntry& item) const override
     {
         ds << item.Path;
-        if (ds.IsLoading())
+        if (ds.isLoading())
         {
             // Field used to be fixed size length, remove the 0 padding.
             const auto pos = item.Path.find('\0');

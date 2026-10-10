@@ -20,7 +20,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Palette.h"
 #include "../drawing/PaletteIndex.h"
 #include "../entity/Duck.h"
 #include "../entity/Staff.h"
@@ -31,6 +31,7 @@
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/Network.h"
+#include "../object/DefaultObjects.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectManager.h"
 #include "../object/ScenarioMetaObject.h"
@@ -83,12 +84,11 @@ void ScenarioReset(GameState_t& gameState)
     auto intent = Intent(INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG);
     ContextBroadcastIntent(&intent);
 
-    News::InitQueue(gameState);
-
     auto& park = gameState.park;
+    News::InitQueue(park);
+
     park.rating = Park::CalculateParkRating(park, gameState);
-    park.value = Park::CalculateParkValue(park, gameState);
-    park.companyValue = Park::CalculateCompanyValue(park);
+    Park::updateValuations(park, gameState);
     park.historicalProfit = gameState.scenarioOptions.initialCash - park.bankLoan;
     park.cash = gameState.scenarioOptions.initialCash;
 
@@ -126,12 +126,7 @@ void ScenarioReset(GameState_t& gameState)
     MapCountRemainingLandRights();
     Staff::resetStats();
 
-    gameState.lastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
-    if (gameState.lastEntranceStyle == kObjectEntryIndexNull)
-    {
-        // Fall back to first entrance object
-        gameState.lastEntranceStyle = 0;
-    }
+    gameState.lastEntranceStyle = GetDefaultStationObject(objManager);
 
     park.marketingCampaigns.clear();
     park.ratingCasualtyPenalty = 0;
@@ -165,6 +160,7 @@ static void ScenarioEnd()
 void ScenarioFailure(GameState_t& gameState)
 {
     gameState.scenarioCompletedCompanyValue = kCompanyValueOnFailedObjective;
+    gameState.scenarioOptions.objective.onFailure(gameState.park, gameState);
     ScenarioEnd();
 }
 
@@ -207,7 +203,7 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
  */
 static void ScenarioCheckEntranceFeeTooHigh()
 {
-    const auto& park = getGameState().park;
+    auto& park = getGameState().park;
     const auto max_fee = AddClamp(park.totalRideValueForMoney, park.totalRideValueForMoney / 2);
 
     if (park.flags.has(ParkFlag::parkOpen) && Park::GetEntranceFee(park) > max_fee)
@@ -221,7 +217,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
             uint32_t packed_xy = (y << 16) | x;
             if (Config::Get().notifications.parkWarnings)
             {
-                News::AddItemToQueue(News::ItemType::blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy, {});
+                News::AddItemToQueue(park.newsItems, News::ItemType::blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy, {});
             }
         }
     }
@@ -264,10 +260,48 @@ void ScenarioAutosaveCheck()
     }
 }
 
+static void scenarioUpdateLowRatingDayCount(Park::ParkData& park, GameState_t& gameState)
+{
+    if (park.rating < Scenario::Objective::kLowParkRatingThreshold && gameState.date.monthsElapsed >= 1)
+    {
+        park.scenarioParkRatingWarningDays++;
+
+        if (gameState.scenarioOptions.objective.Type == ObjectiveType::guestsAndRating
+            && Config::Get().notifications.parkRatingWarnings)
+        {
+            switch (park.scenarioParkRatingWarningDays)
+            {
+                case 1:
+                    News::AddItemToQueue(
+                        park.newsItems, News::ItemType::graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
+                    break;
+                case 8:
+                    News::AddItemToQueue(
+                        park.newsItems, News::ItemType::graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
+                    break;
+                case 15:
+                    News::AddItemToQueue(
+                        park.newsItems, News::ItemType::graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
+                    break;
+                case 22:
+                    News::AddItemToQueue(
+                        park.newsItems, News::ItemType::graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
+                    break;
+            }
+        }
+    }
+    else if (gameState.scenarioCompletedCompanyValue != kCompanyValueOnFailedObjective)
+    {
+        park.scenarioParkRatingWarningDays = 0;
+    }
+}
+
 static void ScenarioDayUpdate(GameState_t& gameState)
 {
     FinanceUpdateDailyProfit();
     PeepUpdateDaysInQueue();
+    scenarioUpdateLowRatingDayCount(gameState.park, gameState);
+
     switch (gameState.scenarioOptions.objective.Type)
     {
         case ObjectiveType::tenRollercoasters:
@@ -305,9 +339,8 @@ static void ScenarioWeekUpdate()
     RideCheckAllReachable();
     RideUpdateFavouritedStat();
 
-    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
-
-    if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
+    const auto& waterEntry = getActiveWaterEntry();
+    if (month <= MONTH_APRIL && waterEntry.flags.has(WaterObjectFlag::allowDucks))
     {
         // 100 attempts at finding some water to create a few ducks at
         for (int32_t i = 0; i < 100; i++)
@@ -364,7 +397,7 @@ static void ScenarioUpdateDayNightCycle()
     // Only update palette if day / night cycle has changed
     if (gDayNightCycle != currentDayNightCycle)
     {
-        UpdatePalette(gGamePalette, Drawing::PaletteIndex::pi10, 236);
+        Drawing::updateStandardPalette();
     }
 }
 

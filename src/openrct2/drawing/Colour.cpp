@@ -13,6 +13,8 @@
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 
+#include <algorithm>
+
 namespace OpenRCT2::Drawing
 {
     static const EnumMap<Colour> kLookupTable{
@@ -72,6 +74,24 @@ namespace OpenRCT2::Drawing
         { "dull_brown_light", Colour::beige },
         { "invisible", Colour::invisible },
         { "void", Colour::voidBackground },
+        { "gold", Colour::gold },
+        { "amber", Colour::amber },
+        { "amethyst", Colour::amethyst },
+        { "asparagus", Colour::asparagus },
+        { "brown", Colour::brown },
+        { "burnt_pink", Colour::burntPink },
+        { "cactus", Colour::cactus },
+        { "caramel", Colour::caramel },
+        { "copper", Colour::copper },
+        { "crimson", Colour::crimson },
+        { "darker_water", Colour::darkerWater },
+        { "emerald", Colour::emerald },
+        { "indigo", Colour::indigo },
+        { "pesto", Colour::pesto },
+        { "pine_green", Colour::pineGreen },
+        { "ruby", Colour::ruby },
+        { "deep_blue", Colour::deepBlue },
+        { "silver", Colour::silver },
     };
 
     Colour colourFromString(u8string s, Colour defaultValue)
@@ -89,18 +109,36 @@ namespace OpenRCT2::Drawing
         return "black";
     }
 
+    static Colour skipNonNormalColour(uint8_t input)
+    {
+        if (input >= EnumValue(Colour::invisible))
+            return static_cast<Colour>(input + 2);
+
+        return static_cast<Colour>(input);
+    }
+
     Colour getRandomColour()
     {
-        return static_cast<Colour>(UtilRand() % kColourNumNormal);
+        return skipNonNormalColour(UtilRand() % kColourNumNormal);
     }
 
     Colour getRandomColourNetworkSafe()
     {
-        return static_cast<Colour>(ScenarioRandMax(kColourNumNormal));
+        return skipNonNormalColour(ScenarioRandMax(kColourNumNormal));
     }
 
     Colour getCycleColour(uint32_t ticks)
     {
-        return Colour((ticks / 32) % kColourNumNormal);
+        return skipNonNormalColour((ticks / 32) % kColourNumNormal);
+    }
+
+    Colour clampColour(uint8_t colour)
+    {
+        return static_cast<Colour>(std::clamp<uint8_t>(colour, 0, kColourNumTotal - 1));
+    }
+
+    Colour clampColour(Colour colour)
+    {
+        return clampColour(EnumValue(colour));
     }
 } // namespace OpenRCT2::Drawing

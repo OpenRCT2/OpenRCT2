@@ -39,7 +39,7 @@ namespace OpenRCT2::Scripting
     JSValue ScPathNavigator::fromPosition(JSContext* ctx, const CoordsXYZ& position, const PathNavigationOptions& options)
     {
         TileCoordsXYZ tilePos(position);
-        auto coords = tilePos.ToCoordsXY();
+        auto coords = tilePos.toCoordsXY();
         TileElement* tileElement = MapGetFirstElementAt(coords);
         if (tileElement == nullptr)
             return JS_NULL;
@@ -93,7 +93,7 @@ namespace OpenRCT2::Scripting
     const PathElement* ScPathNavigator::findPathElement(const PathNavigatorData* data)
     {
         const bool includeGhost = data->options.includeGhosts;
-        auto coords = data->position.ToCoordsXY();
+        auto coords = data->position.toCoordsXY();
         auto* el = MapGetNthElementAt(coords, data->elementIndex);
         if (el != nullptr && el->getType() == TileElementType::path && el->baseHeight == data->position.z
             && (includeGhost || !el->isGhost()))
@@ -223,7 +223,7 @@ namespace OpenRCT2::Scripting
             neighborPos.x += TileDirectionDelta[direction].x;
             neighborPos.y += TileDirectionDelta[direction].y;
 
-            auto neighborCoords = neighborPos.ToCoordsXY();
+            auto neighborCoords = neighborPos.toCoordsXY();
             TileElement* nextEl = MapGetFirstElementAt(neighborCoords);
             if (nextEl == nullptr)
                 continue;
@@ -289,7 +289,7 @@ namespace OpenRCT2::Scripting
         neighborPos.x += TileDirectionDelta[direction].x;
         neighborPos.y += TileDirectionDelta[direction].y;
 
-        auto neighborCoords = neighborPos.ToCoordsXY();
+        auto neighborCoords = neighborPos.toCoordsXY();
         TileElement* nextEl = MapGetFirstElementAt(neighborCoords);
         if (nextEl == nullptr)
             return JS_NewBool(ctx, false);

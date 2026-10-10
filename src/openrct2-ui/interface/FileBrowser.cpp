@@ -19,7 +19,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/interface/WindowTypes.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
@@ -286,7 +286,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         {
                             InvokeCallback(ModalResult::ok, pathBuffer);
                             windowMgr->CloseByClass(WindowClass::loadsave);
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
                         }
                         else
                         {
@@ -310,7 +310,7 @@ namespace OpenRCT2::Ui::FileBrowser
                         if (editorScene->LoadLandscape(pathBuffer))
                         {
                             gCurrentLoadedPath = pathBuffer;
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
                             InvokeCallback(ModalResult::ok, pathBuffer);
                         }
                         else
@@ -328,7 +328,9 @@ namespace OpenRCT2::Ui::FileBrowser
                         gameState.park.flags.unset(ParkFlag::spritesInitialised);
                         gameState.editorStep = Editor::Step::invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
-                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
+                        SaveFlags saveFlags = { SaveFlag::scenario };
+                        saveFlags.set(SaveFlag::exportObjects, Config::Get().general.savePluginData);
+                        int32_t success = ScenarioSave(gameState, pathBuffer, saveFlags);
                         gameState.park.flags = parkFlagsBackup;
 
                         if (success)
@@ -373,7 +375,9 @@ namespace OpenRCT2::Ui::FileBrowser
                     case LoadSaveType::park:
                     {
                         SetAndSaveConfigPath(Config::Get().general.lastSaveGameDirectory, pathBuffer);
-                        if (ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 1 : 0))
+                        SaveFlags saveFlags{};
+                        saveFlags.set(SaveFlag::exportObjects, Config::Get().general.savePluginData);
+                        if (ScenarioSave(gameState, pathBuffer, saveFlags))
                         {
                             gScenarioSavePath = pathBuffer;
                             gCurrentLoadedPath = pathBuffer;
@@ -381,7 +385,7 @@ namespace OpenRCT2::Ui::FileBrowser
                             gFirstTimeSaving = false;
 
                             windowMgr->CloseByClass(WindowClass::loadsave);
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
 
                             InvokeCallback(ModalResult::ok, pathBuffer);
                         }
@@ -396,11 +400,13 @@ namespace OpenRCT2::Ui::FileBrowser
                     {
                         SetAndSaveConfigPath(Config::Get().general.lastSaveLandscapeDirectory, pathBuffer);
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
-                        if (ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2))
+                        SaveFlags saveFlags = { SaveFlag::scenario };
+                        saveFlags.set(SaveFlag::exportObjects, Config::Get().general.savePluginData);
+                        if (ScenarioSave(gameState, pathBuffer, saveFlags))
                         {
                             gCurrentLoadedPath = pathBuffer;
                             windowMgr->CloseByClass(WindowClass::loadsave);
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
                             InvokeCallback(ModalResult::ok, pathBuffer);
                         }
                         else
@@ -417,7 +423,9 @@ namespace OpenRCT2::Ui::FileBrowser
                         gameState.park.flags.unset(ParkFlag::spritesInitialised);
                         gameState.editorStep = Editor::Step::invalid;
                         gameState.scenarioFileName = std::string(String::toStringView(pathBuffer, std::size(pathBuffer)));
-                        int32_t success = ScenarioSave(gameState, pathBuffer, Config::Get().general.savePluginData ? 3 : 2);
+                        SaveFlags saveFlags = { SaveFlag::scenario };
+                        saveFlags.set(SaveFlag::exportObjects, Config::Get().general.savePluginData);
+                        int32_t success = ScenarioSave(gameState, pathBuffer, saveFlags);
                         gameState.park.flags = parkFlagsBackup;
 
                         if (success)

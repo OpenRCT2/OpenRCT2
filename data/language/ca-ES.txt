@@ -1158,7 +1158,6 @@ STR_1816    :Seleccioneu el tipus d’informació per a mostrar en la llista de 
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tots els visitants
 STR_1819    :{WINDOW_COLOUR_2}Tots els visitants (resum)
-STR_1820    :{WINDOW_COLOUR_2}Visitants {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Visitants que pensen {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitants pensant en {POP16}{STRINGID}
 STR_1823    :Mostra els pensaments dels visitants sobre aquesta atracció
@@ -2452,9 +2451,6 @@ STR_5242    :Ja existeix un tema amb aquest nom.
 STR_5243    :S’empren caràcters no vàlids.
 STR_5244    :Temes
 STR_5245    :Barra d’eines superior
-STR_5246    :Barra d’eines inferior
-STR_5247    :Barra d’eines de l’editor de vies inferior
-STR_5248    :Barra d’eines de l’editor d’escenaris inferior
 STR_5249    :Botons del menú principal
 STR_5250    :Botó del títol de sortida
 STR_5251    :Botó del títol d’opcions
@@ -3183,7 +3179,6 @@ STR_6137    :OpenRCT2, una recreació lliure i de codi obert d’una expansió d
 STR_6138    :L’OpenRCT2 és obra de molts autors. En trobareu una llista completa amb el botó «Col·laboradors». Per a més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tots els noms de productes i de noms de companyies pertanyen als seus propietaris. L’ús d’aquests noms no n’implica cap tipus d’afiliació o promoció.
 STR_6140    :Registre de canvis…
-STR_6141    :Barra d’eines inferior del RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nom de la via: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipus d’atracció: {BLACK}{STRINGID}
 STR_6144    :Mostra el redibuixat

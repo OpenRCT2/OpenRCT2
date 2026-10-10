@@ -11,7 +11,7 @@
 
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Staff.h"
 #include "../../ui/WindowManager.h"
@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
 
         PeepEntityRemove(staff);
         // Due to patrol areas best to invalidate the whole screen on removal of staff
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
 
         return Result();
     }

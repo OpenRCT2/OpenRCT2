@@ -252,8 +252,9 @@ namespace OpenRCT2
 
     bool JumpingFountain::isJumpingFountain(const JumpingFountainType newType, const CoordsXYZ& newLoc)
     {
-        const int32_t pathAdditionFlagMask = newType == JumpingFountainType::snow ? PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW
-                                                                                  : PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER;
+        const PathAdditionFlag jumpingFountainFlag = newType == JumpingFountainType::snow
+            ? PathAdditionFlag::jumpingFountainSnow
+            : PathAdditionFlag::jumpingFountainWater;
 
         TileElement* tileElement = MapGetFirstElementAt(newLoc);
         if (tileElement == nullptr)
@@ -270,7 +271,7 @@ namespace OpenRCT2
                 continue;
 
             auto* pathAdditionEntry = tileElement->asPath()->getAdditionEntry();
-            if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & pathAdditionFlagMask)
+            if (pathAdditionEntry != nullptr && pathAdditionEntry->flags.has(jumpingFountainFlag))
             {
                 return true;
             }

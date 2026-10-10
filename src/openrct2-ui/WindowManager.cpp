@@ -9,6 +9,7 @@
 
 #include "WindowManager.h"
 
+#include "interface/Chat.h"
 #include "interface/FileBrowser.h"
 #include "interface/Theme.h"
 #include "interface/Window.h"
@@ -27,7 +28,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
@@ -64,8 +65,8 @@ public:
         {
             case WindowClass::about:
                 return AboutOpen();
-            case WindowClass::bottomToolbar:
-                return GameBottomToolbarOpen();
+            case WindowClass::gameStatusBar:
+                return gameStatusBarOpen();
             case WindowClass::changelog:
                 return openView(WindowView::changelog);
             case WindowClass::cheats:
@@ -470,8 +471,8 @@ public:
                 WindowSceneryResetSelectedSceneryItems();
                 break;
 
-            case INTENT_ACTION_INVALIDATE_TICKER_NEWS:
-                WindowGameBottomToolbarInvalidateNewsItem();
+            case INTENT_ACTION_UPDATE_NEWS_TICKER:
+                newsTickerInvalidateNewsItem();
                 break;
 
             case INTENT_ACTION_REFRESH_GUEST_LIST:
@@ -582,6 +583,18 @@ public:
             case INTENT_ACTION_REFRESH_PLAYER_LIST:
                 MultiplayerRefreshList();
                 break;
+            case INTENT_ACTION_INIT_CHAT:
+                ChatInit();
+                break;
+            case INTENT_ACTION_UPDATE_CHAT:
+                ChatUpdate();
+                break;
+            case INTENT_ACTION_CHAT_ADD_HISTORY:
+            {
+                auto message = intent.GetStringExtra(INTENT_EXTRA_MESSAGE);
+                ChatAddHistory(message);
+                break;
+            }
             default:
                 break;
         }

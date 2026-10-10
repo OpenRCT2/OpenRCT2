@@ -25,7 +25,11 @@ struct CoordsXYZ;
 namespace OpenRCT2
 {
     class Formatter;
-    struct GameState_t;
+
+    namespace Park
+    {
+        struct ParkData;
+    }
 } // namespace OpenRCT2
 
 namespace OpenRCT2::News
@@ -296,31 +300,29 @@ namespace OpenRCT2::News
         ItemQueue<MaxItemsArchive> _archived;
     };
 
-    void InitQueue(GameState_t& gameState);
+    void InitQueue(Park::ParkData& park);
 
-    void UpdateCurrentItem();
-    void CloseCurrentItem();
+    void UpdateCurrentItem(ItemQueues& queues);
+    void CloseCurrentItem(ItemQueues& queues);
 
     std::optional<CoordsXYZ> GetSubjectLocation(ItemType type, int32_t subject);
 
-    Item* AddItemToQueue(ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter);
-    Item* AddItemToQueue(ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter);
-    Item* AddItemToQueue(ItemType type, const utf8* text, uint32_t assoc);
+    Item* AddItemToQueue(ItemQueues& queues, ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter);
+    Item* AddItemToQueue(ItemQueues& queues, ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter);
+    Item* AddItemToQueue(ItemQueues& queues, ItemType type, const utf8* text, uint32_t assoc);
 
     bool CheckIfItemRequiresAssoc(ItemType type);
 
     void OpenSubject(ItemType type, int32_t subject);
 
-    void DisableNewsItems(ItemType type, uint32_t assoc);
+    void DisableNewsItems(ItemQueues& queues, ItemType type, uint32_t assoc);
 
-    Item* GetItem(int32_t index);
-
-    bool IsQueueEmpty();
+    Item* GetItem(ItemQueues& queues, int32_t index);
 
     bool IsValidIndex(int32_t index);
 
-    void AddItemToQueue(Item* newNewsItem);
-    void RemoveItem(int32_t index);
+    void AddItemToQueue(ItemQueues& queues, Item* newNewsItem);
+    void RemoveItem(ItemQueues& queues, int32_t index);
 
-    void importNewsItems(GameState_t& gameState, std::span<const Item> recent, std::span<const Item> archived);
+    void importNewsItems(ItemQueues& queues, std::span<const Item> recent, std::span<const Item> archived);
 } // namespace OpenRCT2::News

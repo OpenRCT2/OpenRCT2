@@ -69,7 +69,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         res.cost = 0;
         res.expenditure = ExpenditureType::landscaping;
-        res.position = _loc.ToTileCentre();
+        res.position = _loc.toTileCentre();
 
         gFootpathGroundFlags = 0;
 
@@ -101,7 +101,7 @@ namespace OpenRCT2::GameActions
         auto res = Result();
         res.cost = 0;
         res.expenditure = ExpenditureType::landscaping;
-        res.position = _loc.ToTileCentre();
+        res.position = _loc.toTileCentre();
 
         if (!GetFlags().has(CommandFlag::ghost))
         {

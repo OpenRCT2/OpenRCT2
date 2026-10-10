@@ -9,16 +9,18 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
 namespace OpenRCT2
 {
-    enum
+    enum class BannerEntryFlag : uint8_t
     {
-        BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
+        hasPrimaryColour,
     };
+    using BannerEntryFlags = FlagHolder<uint8_t, BannerEntryFlag>;
 
     struct BannerSceneryEntry
     {
@@ -27,7 +29,7 @@ namespace OpenRCT2
         StringId name;
         uint32_t image;
         uint8_t scrolling_mode;
-        uint8_t flags;
+        BannerEntryFlags flags;
         money64 price;
         ObjectEntryIndex scenery_tab_id;
     };

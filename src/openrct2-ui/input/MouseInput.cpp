@@ -1024,6 +1024,11 @@ namespace OpenRCT2
         if (w != nullptr)
         {
             w->onPrepareDraw();
+
+            // Switching a window to another page can leave the remembered index out of range.
+            if (static_cast<size_t>(gHoverWidget.widgetIndex) >= w->widgets.size())
+                return;
+
             if (w->widgets[gHoverWidget.widgetIndex].type == WidgetType::flatBtn
                 || w->widgets[gHoverWidget.widgetIndex].type == WidgetType::hiddenButton)
             {

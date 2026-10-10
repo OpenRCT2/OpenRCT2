@@ -1153,7 +1153,6 @@ STR_1816    :来園客のリストで表示したい情報の種類を選択
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}全てのゲスト
 STR_1819    :{WINDOW_COLOUR_2}全てのゲスト (要約)
-STR_1820    :{WINDOW_COLOUR_2}{STRINGID}のゲスト
 STR_1821    :{WINDOW_COLOUR_2}{SMALLFONT}{STRINGID}{MEDIUMFONT}を考えるのゲスト
 STR_1822    :{WINDOW_COLOUR_2}{POP16}{STRINGID}を考えるのゲスト
 STR_1823    :この乗物/施設についての来園客の感想を表示
@@ -2443,9 +2442,6 @@ STR_5242    :スタイルの名はもう存在します。
 STR_5243    :無効な文字が使用されました
 STR_5244    :スタイル
 STR_5245    :上のツールバー
-STR_5246    :下のツールバー
-STR_5247    :トラックエディターの下のツールバー
-STR_5248    :シナリオエディターの下のツールバー
 STR_5249    :タイトルメニューのボタン
 STR_5250    :タイトルの終了ボタン
 STR_5251    :タイトルの設定ボタン
@@ -3174,7 +3170,6 @@ STR_6137    :OpenRCT2は、RollerCoaster Tycoon 2の無料かつオープンソ�
 STR_6138    :OpenRCT2は多くの著者の作品であり、完全なリストは「contributors.md」にあります。詳細については、https://github.com/OpenRCT2/OpenRCT2 を訪れてください。
 STR_6139    :すべての製品名および会社名はそれぞれの権利者に属します。これらの使用は、いかなる提携や承認を示すものではありません。
 STR_6140    :変更履歴…
-STR_6141    :RCT1の下のツールバー
 STR_6142    :{WINDOW_COLOUR_2}トラックの名: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}ラウドの名: {BLACK}{STRINGID}
 STR_6144    :汚いビジュアルを表示する

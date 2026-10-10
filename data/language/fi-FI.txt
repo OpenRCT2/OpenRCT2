@@ -1157,7 +1157,6 @@ STR_1816    :Valitse kävijälistan näyttämä tietotyyppi
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Kaikki kävijät
 STR_1819    :{WINDOW_COLOUR_2}Kaikki kävijät (yhteenvetona)
-STR_1820    :{WINDOW_COLOUR_2}Kävijät: {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Kävijät, jotka ajattelevat {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Kävijöiden ajatukset kohteesta {POP16}{STRINGID}
 STR_1823    :Näytä kävijöiden ajatukset tästä laitteesta/kohteesta
@@ -2450,9 +2449,6 @@ STR_5242    :Teeman nimi on jo olemassa
 STR_5243    :Virheellisiä merkkejä käytetty
 STR_5244    :Teemat
 STR_5245    :Yläreunan työkalupalkki
-STR_5246    :Alareunan työkalupalkki
-STR_5247    :Ratamuokkaimen työkalupalkki
-STR_5248    :Skenaariomuokkaimen työkalupalkki
 STR_5249    :Päävalikon painikkeet
 STR_5250    :Päävalikon lopetuspainike
 STR_5251    :Päävalikon asetukset-painike
@@ -3182,7 +3178,6 @@ STR_6137    :OpenRCT2: ilmainen, avoimen lähdekoodin Roller Coaster Tycoon 2:n 
 STR_6138    :OpenRCT2 on monen eri tekijän yhteistyötä. Lista heidän nimistään löytyy “Osallistujat” -painikkeen takaa. Lisätietoja osoitteessa http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Kaikki tuote- ja yritysnimet kuuluvat kullekin oikeudenomistajalleen. Niiden käyttö ei tarkoita minkäänlaista yhteistyötä tai hyväksyntää.
 STR_6140    :Muutosloki…
-STR_6141    :RCT1:n alapalkkityyli
 STR_6142    :{WINDOW_COLOUR_2}Radan nimi: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Laitteen tyyppi: {BLACK}{STRINGID}
 STR_6144    :Näytä likaiset grafiikat

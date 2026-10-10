@@ -83,9 +83,9 @@ namespace OpenRCT2::GameActions
         uint8_t maxHeight = MapGetHighestLandHeight(validRange);
         bool withinOwnership = false;
 
-        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
+        for (int32_t y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
+            for (int32_t x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;

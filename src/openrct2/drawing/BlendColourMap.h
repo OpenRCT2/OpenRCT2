@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "ColourPalette.h"
+#include "PaletteType.h"
 
 #include <cstdint>
 

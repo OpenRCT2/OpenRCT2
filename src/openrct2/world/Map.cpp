@@ -133,7 +133,7 @@ namespace OpenRCT2
         _tileElementsInUse = gameState.tileElements.size();
     }
 
-    static TileElement GetDefaultSurfaceElement()
+    static TileElement GetDefaultSurfaceElement(Drawing::Colour colour = Drawing::Colour::black)
     {
         TileElement el;
         el.clearAs(TileElementType::surface);
@@ -147,6 +147,7 @@ namespace OpenRCT2
         el.asSurface()->setParkFences(0);
         el.asSurface()->setSurfaceObjectIndex(0);
         el.asSurface()->setEdgeObjectIndex(0);
+        el.asSurface()->setPrimarySurfaceColour(colour);
         return el;
     }
 
@@ -384,7 +385,7 @@ namespace OpenRCT2
 
     void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements)
     {
-        if (!MapIsLocationValid(tilePos.ToCoordsXY()))
+        if (!MapIsLocationValid(tilePos.toCoordsXY()))
         {
             LOG_ERROR("Trying to access element outside of range");
             return;
@@ -406,7 +407,7 @@ namespace OpenRCT2
 
     PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc)
     {
-        for (auto* element : TileElementsView<PathElement>(loc.ToCoordsXY()))
+        for (auto* element : TileElementsView<PathElement>(loc.toCoordsXY()))
         {
             if (element->isGhost())
                 continue;
@@ -435,12 +436,12 @@ namespace OpenRCT2
      *
      *  rct2: 0x0068AB4C
      */
-    void MapInit(const TileCoordsXY& size)
+    void MapInit(const TileCoordsXY& size, Drawing::Colour surfaceColour1)
     {
         auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
         auto& gameState = getGameState();
-        SetTileElements(gameState, std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
+        SetTileElements(gameState, std::vector<TileElement>(numTiles, GetDefaultSurfaceElement(surfaceColour1)));
 
         gameState.grassSceneryTileLoopPosition = 0;
         gameState.widePathTileLoopPosition = {};
@@ -943,7 +944,7 @@ namespace OpenRCT2
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
-                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                if (!MapIsLocationInPark(tileCoords.toCoordsXY()))
                     continue;
             }
 
@@ -963,7 +964,7 @@ namespace OpenRCT2
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
-                if (!MapIsLocationInPark(tileCoords.ToCoordsXY()))
+                if (!MapIsLocationInPark(tileCoords.toCoordsXY()))
                     continue;
             }
 
@@ -1033,7 +1034,7 @@ namespace OpenRCT2
                     [[fallthrough]];
                 case TileElementType::track:
                     FootpathQueueChainReset();
-                    FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
+                    FootpathRemoveEdgesAt(TileCoordsXY{ it.x, it.y }.toCoordsXY(), it.element);
                     TileElementRemove(it.element);
                     TileElementIteratorRestartForTile(&it);
                     break;
@@ -1047,10 +1048,10 @@ namespace OpenRCT2
     {
         uint32_t rotation = GetCurrentRotation();
         const std::array corners{
-            CoordsXY{ _range.GetX1(), _range.GetY1() },
-            CoordsXY{ _range.GetX2(), _range.GetY1() },
-            CoordsXY{ _range.GetX2(), _range.GetY2() },
-            CoordsXY{ _range.GetX1(), _range.GetY2() },
+            CoordsXY{ _range.getX1(), _range.getY1() },
+            CoordsXY{ _range.getX2(), _range.getY1() },
+            CoordsXY{ _range.getX2(), _range.getY2() },
+            CoordsXY{ _range.getX1(), _range.getY2() },
         };
 
         *left = std::numeric_limits<int32_t>::max();
@@ -1207,7 +1208,7 @@ namespace OpenRCT2
             {
                 for (int32_t blockX = 0; blockX < gameState.mapSize.x; blockX += 256)
                 {
-                    auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
+                    auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.toCoordsXY();
                     if (MapIsEdge(mapPos))
                         continue;
 
@@ -1267,7 +1268,9 @@ namespace OpenRCT2
         const SurfaceElement& sourceTile, SurfaceElement& destTile, const Direction direction)
     {
         destTile.setSurfaceObjectIndex(sourceTile.getSurfaceObjectIndex());
+        destTile.setPrimarySurfaceColour(sourceTile.getPrimarySurfaceColour());
         destTile.setEdgeObjectIndex(sourceTile.getEdgeObjectIndex());
+        destTile.setPrimaryEdgeColour(sourceTile.getPrimaryEdgeColour());
         destTile.setGrassLength(sourceTile.getGrassLength());
         destTile.setOwnership(kUnowned);
         destTile.setWaterHeight(sourceTile.getWaterHeight());
@@ -1353,7 +1356,7 @@ namespace OpenRCT2
                 {
                     MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 1);
                 }
-                Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
+                Park::UpdateFences(TileCoordsXY{ x, y }.toCoordsXY());
             }
         }
     }
@@ -1370,7 +1373,7 @@ namespace OpenRCT2
                 {
                     MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 2);
                 }
-                Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
+                Park::UpdateFences(TileCoordsXY{ x, y }.toCoordsXY());
             }
         }
     }
@@ -1479,7 +1482,7 @@ namespace OpenRCT2
         gameState.peepSpawns.erase(
             std::remove_if(
                 gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
-                [loc](const CoordsXY& spawn) { return spawn.ToTileStart() == loc.ToTileStart(); }),
+                [loc](const CoordsXY& spawn) { return spawn.toTileStart() == loc.toTileStart(); }),
             gameState.peepSpawns.end());
 
         TileElement* tileElement = MapGetFirstElementAt(loc);
@@ -1648,7 +1651,7 @@ namespace OpenRCT2
         auto& tile = sceneryEntry->tiles[sequence];
 
         CoordsXY offsetPos{ tile.offset };
-        auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
+        auto rotatedOffsetPos = offsetPos.rotate(sceneryPos.direction);
 
         auto origin = CoordsXYZ{ sceneryPos.x - rotatedOffsetPos.x, sceneryPos.y - rotatedOffsetPos.y,
                                  sceneryPos.z - tile.offset.z };
@@ -1678,7 +1681,7 @@ namespace OpenRCT2
         for (auto& tile : sceneryEntry->tiles)
         {
             CoordsXY offsetPos{ tile.offset };
-            auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);
+            auto rotatedOffsetPos = offsetPos.rotate(signPos.direction);
 
             auto tmpSignPos = CoordsXYZD{ sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
                                           sceneryOrigin->z + tile.offset.z, signPos.direction };
@@ -2117,23 +2120,23 @@ namespace OpenRCT2
     MapRange ClampRangeWithinMap(const MapRange& range)
     {
         auto mapSizeMax = GetMapSizeMaxXY();
-        auto aX = std::max<decltype(range.GetX1())>(kCoordsXYStep, range.GetX1());
-        auto bX = std::min<decltype(range.GetX2())>(mapSizeMax.x, range.GetX2());
-        auto aY = std::max<decltype(range.GetY1())>(kCoordsXYStep, range.GetY1());
-        auto bY = std::min<decltype(range.GetY2())>(mapSizeMax.y, range.GetY2());
+        auto aX = std::max<decltype(range.getX1())>(kCoordsXYStep, range.getX1());
+        auto bX = std::min<decltype(range.getX2())>(mapSizeMax.x, range.getX2());
+        auto aY = std::max<decltype(range.getY1())>(kCoordsXYStep, range.getY1());
+        auto bY = std::min<decltype(range.getY2())>(mapSizeMax.y, range.getY2());
         MapRange validRange = MapRange{ aX, aY, bX, bY };
         return validRange;
     }
 
     static inline void shiftIfNotNull(TileCoordsXY& coords, const TileCoordsXY& amount)
     {
-        if (!coords.IsNull())
+        if (!coords.isNull())
             coords += amount;
     }
 
     static inline void shiftIfNotNull(CoordsXY& coords, const CoordsXY& amount)
     {
-        if (!coords.IsNull())
+        if (!coords.isNull())
             coords += amount;
     }
 
@@ -2142,7 +2145,7 @@ namespace OpenRCT2
         if (amount.x == 0 && amount.y == 0)
             return;
 
-        auto amountToMove = amount.ToCoordsXY();
+        auto amountToMove = amount.toCoordsXY();
         auto& gameState = getGameState();
 
         // Tile elements
@@ -2265,11 +2268,11 @@ namespace OpenRCT2
                         auto patrol = staff->patrolInfo;
                         if (patrol != nullptr)
                         {
-                            auto positions = patrol->ToVector();
+                            auto positions = patrol->toVector();
                             for (auto& p : positions)
                                 shiftIfNotNull(p, amount);
-                            patrol->Clear();
-                            patrol->Union(positions);
+                            patrol->clear();
+                            patrol->unify(positions);
                         }
                     }
                 }
@@ -2283,9 +2286,9 @@ namespace OpenRCT2
             auto stations = ride.getStations();
             for (auto& station : stations)
             {
-                shiftIfNotNull(station.Start, amountToMove);
-                shiftIfNotNull(station.Entrance, amount);
-                shiftIfNotNull(station.Exit, amount);
+                shiftIfNotNull(station.start, amountToMove);
+                shiftIfNotNull(station.entrance, amount);
+                shiftIfNotNull(station.exit, amount);
             }
 
             shiftIfNotNull(ride.overallView, amountToMove);

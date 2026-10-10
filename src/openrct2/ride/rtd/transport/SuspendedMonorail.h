@@ -35,7 +35,7 @@ constexpr RideTypeDescriptor kSuspendedMonorailRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::allowMultipleCircuits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::isSuspended),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::shuttle),
+    .rideModes = { RideMode::continuousCircuit, RideMode::shuttle },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_SUSPENDED_MONORAIL, STR_RIDE_DESCRIPTION_SUSPENDED_MONORAIL },

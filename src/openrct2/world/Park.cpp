@@ -124,7 +124,7 @@ namespace OpenRCT2::Park
                     continue;
                 if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasDataLogging))
                     continue;
-                if (ride.getStation().SegmentLength < (600 << 16))
+                if (ride.getStation().segmentLength < (600 << 16))
                     continue;
                 if (ride.ratings.excitement < RideRating::make(6, 00))
                     continue;
@@ -311,6 +311,12 @@ namespace OpenRCT2::Park
         gameState.scenarioOptions.details = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
     }
 
+    void updateValuations(ParkData& park, const GameState_t& gameState)
+    {
+        park.value = CalculateParkValue(park, gameState);
+        park.companyValue = CalculateCompanyValue(park);
+    }
+
     void Update(ParkData& park, GameState_t& gameState)
     {
         PROFILED_FUNCTION();
@@ -328,8 +334,7 @@ namespace OpenRCT2::Park
         if (currentTicks % 512 == 0)
         {
             park.rating = CalculateParkRating(park, gameState);
-            park.value = CalculateParkValue(park, gameState);
-            park.companyValue = CalculateCompanyValue(park);
+            updateValuations(park, gameState);
             park.totalRideValueForMoney = calculateTotalRideValueForMoney(park, gameState);
             park.suggestedGuestMaximum = calculateSuggestedMaxGuests(park, gameState);
             park.guestGenerationProbability = calculateGuestGenerationProbability(park);
@@ -542,7 +547,7 @@ namespace OpenRCT2::Park
             {
                 peep->orientation = direction << 3;
 
-                auto destination = peep->getLocation().ToTileCentre();
+                auto destination = peep->getLocation().toTileCentre();
                 peep->setDestination(destination, 5);
                 peep->peepDirection = direction;
                 peep->var37 = 0;

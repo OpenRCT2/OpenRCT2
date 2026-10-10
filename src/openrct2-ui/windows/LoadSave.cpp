@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
                 setWidgetDisabled(WIDX_NEW_FOLDER, false);
 
                 // List all directories
-                auto subDirectories = Path::GetDirectories(absoluteDirectory);
+                auto subDirectories = Path::getDirectories(absoluteDirectory);
                 for (const auto& sdName : subDirectories)
                 {
                     auto subDir = sdName + PATH_SEPARATOR;
@@ -242,11 +242,11 @@ namespace OpenRCT2::Ui::Windows
                 for (const u8string_view extToken : String::split(extensionPattern, ";"))
                 {
                     const u8string filter = Path::Combine(directory, extToken);
-                    auto scanner = Path::ScanDirectory(filter, false);
-                    while (scanner->Next())
+                    auto scanner = Path::scanDirectory(filter, false);
+                    while (scanner->next())
                     {
                         LoadSaveListItem newListItem;
-                        newListItem.path = scanner->GetPath();
+                        newListItem.path = scanner->getPath();
                         newListItem.type = FileType::file;
                         newListItem.dateModified = Platform::FileGetModifiedTime(newListItem.path.c_str());
 

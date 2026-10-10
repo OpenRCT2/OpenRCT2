@@ -15,6 +15,7 @@
 #include "WindowManager.h"
 #include "drawing/engines/DrawingEngineFactory.hpp"
 #include "input/ShortcutManager.h"
+#include "interface/Chat.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
 #include "scripting/UiExtensions.h"
@@ -35,11 +36,11 @@
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/NewDrawing.h>
 #include <openrct2/drawing/RenderTarget.h>
-#include <openrct2/interface/Chat.h>
 #include <openrct2/interface/ScreenCoords.hpp>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>

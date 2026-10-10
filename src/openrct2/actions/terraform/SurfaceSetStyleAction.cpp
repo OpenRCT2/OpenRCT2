@@ -23,10 +23,14 @@
 
 namespace OpenRCT2::GameActions
 {
-    SurfaceSetStyleAction::SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
+    SurfaceSetStyleAction::SurfaceSetStyleAction(
+        MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle, Drawing::Colour surfaceColour1,
+        Drawing::Colour edgeColour1)
         : _range(range)
         , _surfaceStyle(surfaceStyle)
         , _edgeStyle(edgeStyle)
+        , _surfaceColour1(surfaceColour1)
+        , _edgeColour1(edgeColour1)
     {
     }
 
@@ -35,13 +39,34 @@ namespace OpenRCT2::GameActions
         visitor.Visit(_range);
         visitor.Visit("surfaceStyle", _surfaceStyle);
         visitor.Visit("edgeStyle", _edgeStyle);
+        visitor.Visit("surfaceColour1", _surfaceColour1);
+        visitor.Visit("edgeColour1", _edgeColour1);
     }
 
     void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
+        stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle) << DS_TAG(_surfaceColour1)
+               << DS_TAG(_edgeColour1);
+    }
+
+    bool SurfaceSetStyleAction::surfaceColour1NeedsRecolour(
+        const SurfaceElement& surfaceElement, const TerrainSurfaceObject& surfaceObject) const
+    {
+        if (!surfaceObject.Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+            return false;
+
+        return _surfaceColour1 != surfaceElement.getPrimarySurfaceColour();
+    }
+
+    bool SurfaceSetStyleAction::edgeColour1NeedsRecolour(
+        const SurfaceElement& surfaceElement, const TerrainEdgeObject& edgeObject) const
+    {
+        if (!edgeObject.flags.has(TerrainEdgeFlag::hasPrimaryColour))
+            return false;
+
+        return _edgeColour1 != surfaceElement.getPrimaryEdgeColour();
     }
 
     Result SurfaceSetStyleAction::Query(GameState_t& gameState, Park::ParkData& park) const
@@ -50,7 +75,7 @@ namespace OpenRCT2::GameActions
         res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
         res.expenditure = ExpenditureType::landscaping;
 
-        auto validRange = ClampRangeWithinMap(_range.Normalise());
+        auto validRange = ClampRangeWithinMap(_range.normalise());
         auto& objManager = GetContext()->GetObjectManager();
         if (_surfaceStyle != kObjectEntryIndexNull)
         {
@@ -74,8 +99,8 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
-        auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
+        auto xMid = (validRange.getX1() + validRange.getX2()) / 2 + 16;
+        auto yMid = (validRange.getY1() + validRange.getY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
         res.position.x = xMid;
@@ -91,10 +116,10 @@ namespace OpenRCT2::GameActions
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
-        for (CoordsXY coords = { validRange.GetX1(), validRange.GetY1() }; coords.x <= validRange.GetX2();
+        for (CoordsXY coords = { validRange.getX1(), validRange.getY1() }; coords.x <= validRange.getX2();
              coords.x += kCoordsXYStep)
         {
-            for (coords.y = validRange.GetY1(); coords.y <= validRange.GetY2(); coords.y += kCoordsXYStep)
+            for (coords.y = validRange.getY1(); coords.y <= validRange.getY2(); coords.y += kCoordsXYStep)
             {
                 if (!LocationValid(coords))
                     continue;
@@ -113,12 +138,11 @@ namespace OpenRCT2::GameActions
 
                 if (_surfaceStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
-
-                    if (_surfaceStyle != curSurfaceStyle)
+                    const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
+                    if (surfaceObject != nullptr)
                     {
-                        const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
-                        if (surfaceObject != nullptr)
+                        auto curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
+                        if (_surfaceStyle != curSurfaceStyle || surfaceColour1NeedsRecolour(*surfaceElement, *surfaceObject))
                         {
                             surfaceCost += surfaceObject->Price;
                         }
@@ -127,11 +151,14 @@ namespace OpenRCT2::GameActions
 
                 if (_edgeStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curEdgeStyle = surfaceElement->getEdgeObjectIndex();
-
-                    if (_edgeStyle != curEdgeStyle)
+                    const auto* edgeObject = objManager.GetLoadedObject<TerrainEdgeObject>(_edgeStyle);
+                    if (edgeObject != nullptr)
                     {
-                        edgeCost += 100;
+                        auto curEdgeStyle = surfaceElement->getEdgeObjectIndex();
+                        if (_edgeStyle != curEdgeStyle || edgeColour1NeedsRecolour(*surfaceElement, *edgeObject))
+                        {
+                            edgeCost += 100;
+                        }
                     }
                 }
             }
@@ -147,9 +174,9 @@ namespace OpenRCT2::GameActions
         res.errorTitle = STR_CANT_CHANGE_LAND_TYPE;
         res.expenditure = ExpenditureType::landscaping;
 
-        auto validRange = ClampRangeWithinMap(_range.Normalise());
-        auto xMid = (validRange.GetX1() + validRange.GetX2()) / 2 + 16;
-        auto yMid = (validRange.GetY1() + validRange.GetY2()) / 2 + 16;
+        auto validRange = ClampRangeWithinMap(_range.normalise());
+        auto xMid = (validRange.getX1() + validRange.getX2()) / 2 + 16;
+        auto yMid = (validRange.getY1() + validRange.getY2()) / 2 + 16;
         auto heightMid = TileElementHeight({ xMid, yMid });
 
         res.position.x = xMid;
@@ -158,10 +185,10 @@ namespace OpenRCT2::GameActions
 
         money64 surfaceCost = 0;
         money64 edgeCost = 0;
-        for (CoordsXY coords = { validRange.GetX1(), validRange.GetY1() }; coords.x <= validRange.GetX2();
+        for (CoordsXY coords = { validRange.getX1(), validRange.getY1() }; coords.x <= validRange.getX2();
              coords.x += kCoordsXYStep)
         {
-            for (coords.y = validRange.GetY1(); coords.y <= validRange.GetY2(); coords.y += kCoordsXYStep)
+            for (coords.y = validRange.getY1(); coords.y <= validRange.getY2(); coords.y += kCoordsXYStep)
             {
                 if (!LocationValid(coords))
                     continue;
@@ -180,17 +207,20 @@ namespace OpenRCT2::GameActions
 
                 if (_surfaceStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
-
-                    if (_surfaceStyle != curSurfaceStyle)
+                    auto& objManager = GetContext()->GetObjectManager();
+                    const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
+                    if (surfaceObject != nullptr)
                     {
-                        auto& objManager = GetContext()->GetObjectManager();
-                        const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
-                        if (surfaceObject != nullptr)
+                        auto curSurfaceStyle = surfaceElement->getSurfaceObjectIndex();
+                        if (_surfaceStyle != curSurfaceStyle || surfaceColour1NeedsRecolour(*surfaceElement, *surfaceObject))
                         {
                             surfaceCost += surfaceObject->Price;
 
                             surfaceElement->setSurfaceObjectIndex(_surfaceStyle);
+                            if (surfaceObject->Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+                                surfaceElement->setPrimarySurfaceColour(surfaceObject->getPrimaryColour(_surfaceColour1));
+                            else
+                                surfaceElement->setPrimarySurfaceColour(Drawing::Colour::black);
 
                             MapInvalidateTileFull(coords);
                             FootpathRemoveLitter({ coords, TileElementHeight(coords) });
@@ -200,14 +230,23 @@ namespace OpenRCT2::GameActions
 
                 if (_edgeStyle != kObjectEntryIndexNull)
                 {
-                    uint8_t curEdgeStyle = surfaceElement->getEdgeObjectIndex();
-
-                    if (_edgeStyle != curEdgeStyle)
+                    auto& objManager = GetContext()->GetObjectManager();
+                    const auto* edgeObject = objManager.GetLoadedObject<TerrainEdgeObject>(_edgeStyle);
+                    if (edgeObject != nullptr)
                     {
-                        edgeCost += 100;
+                        auto curEdgeStyle = surfaceElement->getEdgeObjectIndex();
+                        if (_edgeStyle != curEdgeStyle || edgeColour1NeedsRecolour(*surfaceElement, *edgeObject))
+                        {
+                            edgeCost += 100;
 
-                        surfaceElement->setEdgeObjectIndex(_edgeStyle);
-                        MapInvalidateTileFull(coords);
+                            surfaceElement->setEdgeObjectIndex(_edgeStyle);
+                            if (edgeObject->flags.has(TerrainEdgeFlag::hasPrimaryColour))
+                                surfaceElement->setPrimaryEdgeColour(_edgeColour1);
+                            else
+                                surfaceElement->setPrimaryEdgeColour(Drawing::Colour::black);
+
+                            MapInvalidateTileFull(coords);
+                        }
                     }
                 }
 

@@ -161,7 +161,7 @@ namespace OpenRCT2::World::MapGenerator
 
         // The x and y axis are flipped in the world, so this uses y for x and x for y.
         TileCoordsXY flippedMapSize{ mapHeight, mapWidth };
-        MapInit(flippedMapSize);
+        MapInit(flippedMapSize, Drawing::Colour::black);
 
         if (settings->smooth_height_map)
         {

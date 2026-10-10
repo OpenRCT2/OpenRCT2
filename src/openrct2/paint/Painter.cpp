@@ -16,6 +16,8 @@
 #include "../drawing/Drawing.String.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/NewDrawing.h"
+#include "../drawing/Palette.h"
 #include "../drawing/PickupPeep.h"
 #include "../drawing/Text.h"
 #include "../interface/Viewport.h"
@@ -153,7 +155,7 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation)
+PaintSession* Painter::CreateSession(RenderTarget& rt, ViewportFlags viewFlags, uint8_t rotation)
 {
     PROFILED_FUNCTION();
 

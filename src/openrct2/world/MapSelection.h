@@ -35,7 +35,7 @@ enum class MapSelectType : uint8_t
     corner3,
     full,
     fullWater,
-    fullLandRights,
+    fullTerrainAndWater,
     quarter0,
     quarter1,
     quarter2,

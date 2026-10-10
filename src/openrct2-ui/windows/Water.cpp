@@ -327,7 +327,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
-                screenPos, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
+                screenPos, { ViewportInteractionItem::terrain, ViewportInteractionItem::water });
 
             if (info.interactionType == ViewportInteractionItem::none)
             {
@@ -362,7 +362,7 @@ namespace OpenRCT2::Ui::Windows
             // Move to tool bottom left
             mapTile.x -= tool_length / 2;
             mapTile.y -= tool_length / 2;
-            mapTile = mapTile.ToTileStart();
+            mapTile = mapTile.toTileStart();
 
             if (gMapSelectPositionA.x != mapTile.x)
             {

@@ -212,7 +212,7 @@ static void FixLandOwnershipTilesWithOwnership(const std::span<const TileCoordsX
         if (surfaceElement != nullptr)
         {
             surfaceElement->setOwnership(ownership);
-            Park::UpdateFencesAroundTile(tile.ToCoordsXY());
+            Park::UpdateFencesAroundTile(tile.toCoordsXY());
         }
     }
 }
@@ -487,7 +487,7 @@ static void RemoveTileElements(const json_t& scenarioPatch)
 
         for (const auto& tile : coordinatesVector)
         {
-            auto tileElement = MapGetNthElementAt(tile.ToCoordsXY(), elementIndex);
+            auto tileElement = MapGetNthElementAt(tile.toCoordsXY(), elementIndex);
             if (tileElement == nullptr)
             {
                 Guard::Assert(false, "Invalid Nth element at tile");
@@ -495,7 +495,7 @@ static void RemoveTileElements(const json_t& scenarioPatch)
             }
             else
             {
-                ClearElementAt(tile.ToCoordsXY(), &tileElement);
+                ClearElementAt(tile.toCoordsXY(), &tileElement);
             }
         }
     }
@@ -525,20 +525,20 @@ static void SwapRideEntranceAndExit(RideId rideId)
     if (ride != nullptr)
     {
         auto& station = ride->getStation();
-        auto entranceCoords = station.Exit;
-        auto exitCoords = station.Entrance;
-        station.Entrance = entranceCoords;
-        station.Exit = exitCoords;
+        auto entranceCoords = station.exit;
+        auto exitCoords = station.entrance;
+        station.entrance = entranceCoords;
+        station.exit = exitCoords;
 
-        auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
+        auto entranceElement = MapGetRideExitElementAt(entranceCoords.toCoordsXYZD(), false);
         entranceElement->setEntranceType(EntranceType::rideEntrance);
-        auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
+        auto exitElement = MapGetRideEntranceElementAt(exitCoords.toCoordsXYZD(), false);
         exitElement->setEntranceType(EntranceType::rideExit);
 
         // Trigger footpath update
         FootpathQueueChainReset();
         FootpathConnectEdges(
-            entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
+            entranceCoords.toCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
             { CommandFlag::apply, CommandFlag::allowDuringPaused });
         FootpathUpdateQueueChains();
     }
@@ -620,7 +620,18 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
             return;
         }
 
-        RideId rideId = RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey]));
+        std::vector<RideId> rideIds{};
+        if (rideFixes[i][_rideIdKey].is_array())
+        {
+            for (size_t j = 0; j < rideFixes[i][_rideIdKey].size(); j++)
+            {
+                rideIds.push_back(RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey][j])));
+            }
+        }
+        else
+        {
+            rideIds.push_back(RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey])));
+        }
         auto operation = Json::GetString(rideFixes[i][_operationKey]);
 
         if (_dryRun)
@@ -628,29 +639,32 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
             continue;
         }
 
-        if (operation == "swap_entrance_exit")
+        for (auto rideId : rideIds)
         {
-            SwapRideEntranceAndExit(rideId);
-        }
-        else if (operation == "open_ride")
-        {
-            OpenRide(rideId);
-        }
-        else if (operation == "set_name")
-        {
-            auto newName = Json::GetString(rideFixes[i][_nameKey]);
-            if (newName.empty())
-                Guard::Assert(false, "Need to specify a new name for ride id %d", rideId);
+            if (operation == "swap_entrance_exit")
+            {
+                SwapRideEntranceAndExit(rideId);
+            }
+            else if (operation == "open_ride")
+            {
+                OpenRide(rideId);
+            }
+            else if (operation == "set_name")
+            {
+                auto newName = Json::GetString(rideFixes[i][_nameKey]);
+                if (newName.empty())
+                    Guard::Assert(false, "Need to specify a new name for ride id %d", rideId);
+                else
+                    renameRide(rideId, newName);
+            }
+            else if (operation == "clear_name")
+            {
+                clearRideName(rideId);
+            }
             else
-                renameRide(rideId, newName);
-        }
-        else if (operation == "clear_name")
-        {
-            clearRideName(rideId);
-        }
-        else
-        {
-            Guard::Assert(false, "Unsupported ride fix operation");
+            {
+                Guard::Assert(false, "Unsupported ride fix operation");
+            }
         }
     }
 }
@@ -725,7 +739,7 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
             if (direction != kInvalidDirection)
                 slope = { FootpathSlopeType::sloped, direction };
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
-                coordinate.ToCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
+                coordinate.toCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
             auto& gameState = getGameState();
             auto result = footpathPlaceAction.Execute(gameState, gameState.park);
             if (result.error != GameActions::Status::ok)

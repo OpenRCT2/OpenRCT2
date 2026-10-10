@@ -137,7 +137,7 @@ namespace OpenRCT2::Ui::Windows
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide != nullptr)
             {
-                if (currentRide->overallView.IsNull())
+                if (currentRide->overallView.isNull())
                 {
                     auto gameAction = GameActions::RideDemolishAction(currentRide->id, GameActions::RideModifyType::demolish);
                     gameAction.SetFlags({ CommandFlag::allowDuringPaused });
@@ -350,7 +350,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enableArrow);
 
             CoordsXYZD entranceOrExitCoords = RideGetEntranceOrExitPositionFromScreenPosition(screenCoords);
-            if (entranceOrExitCoords.IsNull())
+            if (entranceOrExitCoords.isNull())
                 return;
 
             if (gRideEntranceExitPlaceDirection == kInvalidDirection)

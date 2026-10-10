@@ -48,7 +48,6 @@ namespace OpenRCT2
     struct TrackElement;
 
     enum class EntranceType : uint8_t;
-    enum class RideMode : uint8_t;
     enum class RideStatus : uint8_t;
 
     constexpr uint8_t kRideAdjacencyCheckDistance = 5;
@@ -164,26 +163,72 @@ namespace OpenRCT2
         });
     constexpr auto kBreakdownCount = kAllBreakdownTypes.size();
 
+    enum class RideMode : uint8_t
+    {
+        normal,
+        continuousCircuit,
+        reverseInclineLaunchedShuttle,
+        poweredLaunchPassthrough, // RCT2 style, pass through station
+        shuttle,
+        boatHire,
+        upwardLaunch,
+        rotatingLift,
+        stationToStation,
+        singleRidePerAdmission,
+        unlimitedRidesPerAdmission = 10,
+        maze,
+        race,
+        dodgems,
+        swing,
+        shopStall,
+        rotation,
+        forwardRotation,
+        backwardRotation,
+        filmAvengingAviators,
+        mouseTails3DFilm = 20,
+        spaceRings,
+        beginners,
+        limPoweredLaunch,
+        filmThrillRiders,
+        stormChasers3DFilm,
+        spaceRaiders3DFilm,
+        intense,
+        berserk,
+        hauntedHouse,
+        circus = 30,
+        downwardLaunch,
+        crookedHouse,
+        freefallDrop,
+        continuousCircuitBlockSectioned,
+        poweredLaunch, // RCT1 style, don't pass through station
+        poweredLaunchBlockSectioned,
+
+        count,
+        nullMode = 255,
+    };
+    RideMode& operator++(RideMode& d, int);
+    using RideModes = FlagHolder<uint64_t, RideMode>;
+
     struct RideStation
     {
         static constexpr uint8_t kNoTrain = std::numeric_limits<uint8_t>::max();
 
-        CoordsXY Start;
-        uint8_t Height{};
-        uint8_t Length{};
-        uint8_t Depart{};
-        uint8_t TrainAtStation{ kNoTrain };
-        TileCoordsXYZD Entrance;
-        TileCoordsXYZD Exit;
-        int32_t SegmentLength{}; // Length of track between this station and the next.
-        uint16_t SegmentTime{};  // Time for train to reach the next station from this station.
-        uint8_t QueueTime{};
-        uint16_t QueueLength{};
-        EntityId LastPeepInQueue{ EntityId::GetNull() };
+        CoordsXY start;
+        uint8_t height{};
+        uint8_t length{};
+        uint8_t depart{};
+        uint8_t trainAtStation{ kNoTrain };
+        TileCoordsXYZD entrance;
+        TileCoordsXYZD exit;
+        int32_t segmentLength{}; // Length of track between this station and the next.
+        uint16_t segmentTime{};  // Time for train to reach the next station from this station.
+        uint8_t queueTime{};
+        uint16_t queueLength{};
+        EntityId lastPeepInQueue{ EntityId::GetNull() };
 
-        int32_t GetBaseZ() const;
-        void SetBaseZ(int32_t newZ);
-        CoordsXYZ GetStart() const;
+        int32_t getBaseZ() const;
+        void setBaseZ(int32_t newZ);
+        CoordsXYZ getStart() const;
     };
 
     struct RideMeasurement
@@ -495,7 +540,7 @@ namespace OpenRCT2
 
         [[nodiscard]] std::unique_ptr<TrackDesign> saveToTrackDesign(TrackDesignState& tds) const;
 
-        uint64_t getAvailableModes() const;
+        RideModes getAvailableModes() const;
         const RideTypeDescriptor& getRideTypeDescriptor() const;
         RideNaming getTypeNaming() const;
         TrackElement* getOriginElement(StationIndex stationIndex) const;
@@ -649,52 +694,6 @@ namespace OpenRCT2
         simulating,
         count,
     };
-
-    enum class RideMode : uint8_t
-    {
-        normal,
-        continuousCircuit,
-        reverseInclineLaunchedShuttle,
-        poweredLaunchPassthrough, // RCT2 style, pass through station
-        shuttle,
-        boatHire,
-        upwardLaunch,
-        rotatingLift,
-        stationToStation,
-        singleRidePerAdmission,
-        unlimitedRidesPerAdmission = 10,
-        maze,
-        race,
-        dodgems,
-        swing,
-        shopStall,
-        rotation,
-        forwardRotation,
-        backwardRotation,
-        filmAvengingAviators,
-        mouseTails3DFilm = 20,
-        spaceRings,
-        beginners,
-        limPoweredLaunch,
-        filmThrillRiders,
-        stormChasers3DFilm,
-        spaceRaiders3DFilm,
-        intense,
-        berserk,
-        hauntedHouse,
-        circus = 30,
-        downwardLaunch,
-        crookedHouse,
-        freefallDrop,
-        continuousCircuitBlockSectioned,
-        poweredLaunch, // RCT1 style, don't pass through station
-        poweredLaunchBlockSectioned,
-
-        count,
-        nullMode = 255,
-    };
-
-    RideMode& operator++(RideMode& d, int);
 
     enum class RideCategory : uint8_t
     {

@@ -16,7 +16,7 @@
 #include "ReplayManager.h"
 #include "actions/GameActionRunner.h"
 #include "config/Config.h"
-#include "drawing/Drawing.h"
+#include "drawing/Palette.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
 #include "interface/Screenshot.h"
@@ -61,7 +61,7 @@ namespace OpenRCT2
         gInMapInitCode = true;
         gameState.currentTicks = 0;
 
-        MapInit(mapSize);
+        MapInit(mapSize, isInTrackDesignerOrManager() ? Drawing::Colour::darkBlue : Drawing::Colour::black);
         Park::Initialise(gameState.park, gameState);
         FinanceInit();
         BannerInit(gameState);
@@ -70,7 +70,7 @@ namespace OpenRCT2
         UpdateConsolidatedPatrolAreas();
         ResetDate();
         Weather::reset();
-        News::InitQueue(gameState);
+        News::InitQueue(gameState.park);
 
         gInMapInitCode = false;
 
@@ -84,7 +84,7 @@ namespace OpenRCT2
         auto clipboardIntent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
         ContextBroadcastIntent(&clipboardIntent);
 
-        LoadPalette();
+        Drawing::LoadPalette();
 
         CheatsReset();
         ClearRestrictedScenery();
@@ -322,17 +322,17 @@ namespace OpenRCT2
         VehicleUpdateAll();
         gameState.entities.updateAllMiscEntities();
         Ride::updateAll();
+        auto& park = gameState.park;
 
         if (!isInEditorMode())
         {
-            auto& park = gameState.park;
             Park::Update(park, gameState);
         }
 
         ResearchUpdate();
         RideRating::UpdateAll();
         RideMeasurementsUpdate();
-        News::UpdateCurrentItem();
+        News::UpdateCurrentItem(park.newsItems);
 
         MapAnimations::InvalidateAndUpdateAll();
         VehicleSoundsUpdate();

@@ -100,7 +100,8 @@ static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign
             ft.Add<StringId>(GetShopItemDescriptor(campaign.shopItemType).Naming.Plural);
         }
 
-        News::AddItemToQueue(News::ItemType::campaign, kMarketingCampaignNames[campaign.type][2], 0, ft);
+        News::AddItemToQueue(
+            getGameState().park.newsItems, News::ItemType::campaign, kMarketingCampaignNames[campaign.type][2], 0, ft);
     }
 }
 

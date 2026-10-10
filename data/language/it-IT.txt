@@ -1156,7 +1156,6 @@ STR_1816    :Scegli il tipo di informazioni da mostrare nella lista dei visitato
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tutti i visitatori
 STR_1819    :{WINDOW_COLOUR_2}Tutti i visitatori (riassunto)
-STR_1820    :{WINDOW_COLOUR_2}Visitatori {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Pensiero dei visitatori {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Pensiero dei visitatori su {POP16}{STRINGID}
 STR_1823    :Mostra i pensieri dei visitatori relativi a quest’attrazione
@@ -2450,10 +2449,7 @@ STR_5242    :Un tema con questo nome esiste già
 STR_5243    :Caratteri non validi
 STR_5244    :Temi
 STR_5245    :Barra degli strumenti superiore
-STR_5246    :Barra degli strumenti inferiore
 # TODO from here
-STR_5247    :Track Editor Bottom Toolbar
-STR_5248    :Scenario Editor Bottom Toolbar
 STR_5249    :Pulsante Menu Titolo
 STR_5250    :Pulsante Titolo Uscita
 STR_5251    :Pulsante Opzioni Titolo
@@ -3182,7 +3178,6 @@ STR_6137    :OpenRCT2, un remake con aggiunte gratuito e open-source di Roller C
 STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare cliccando il pulsante “Collaboratori”. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tutti i nomi di prodotti e aziende appartengono ai rispettivi proprietari. Il loro uso non implica alcuna affiliazione o approvazione da parte di essi.
 STR_6140    :Storico delle modifiche…
-STR_6141    :Barra degli strumenti inferiore alla RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nome percorso: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo attrazione: {BLACK}{STRINGID}
 STR_6144    :Mostra visuali sporche

@@ -34,6 +34,7 @@ namespace OpenRCT2
 
     enum class Tool;
     enum class WindowClass : uint8_t;
+    enum class ViewportFlag : uint32_t;
 
     extern WindowCloseModifier gLastCloseModifier;
     extern Tool gCurrentToolId;
@@ -50,7 +51,7 @@ namespace OpenRCT2
     std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
     void WindowVisitEach(std::function<void(WindowBase*)> func);
 
-    void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled);
+    void WindowSetFlagForAllViewports(OpenRCT2::ViewportFlag viewportFlag, bool enabled);
 
     void WindowDispatchUpdateAll();
     void WindowUpdateAllViewports();

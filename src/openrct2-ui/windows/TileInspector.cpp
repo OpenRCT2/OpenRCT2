@@ -278,9 +278,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({3, 57}, {kWindowSize.width - 6, kWindowSize.height - kBottomPadding - 58}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL), /* Element list */
         /* X and Y spinners */
         makeWidget                ({ 4, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_X_LABEL),
-        makeHoldableSpinnerWidgets({20, 23}, {51, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
-        makeWidget                ({74, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
-        makeHoldableSpinnerWidgets({90, 23}, {51, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
+        makeHoldableSpinnerWidgets({20, 23}, {58, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
+        makeWidget                ({81, 24}, {38, 12}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
+        makeHoldableSpinnerWidgets({97, 23}, {58, 14}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
         /* Top buttons */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 0,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1,                     kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_UP,                    STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */
@@ -463,10 +463,11 @@ namespace OpenRCT2::Ui::Windows
         MakeGroupboxSettings(kBannerDetailsHeight, kBannerPropertiesHeight, STR_TILE_INSPECTOR_GROUPBOX_BANNER_INFO),
     };
 
-    static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
-        ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
+    static constexpr ViewportInteractionItems kViewportInteractionFlags{
+        ViewportInteractionItem::terrain,  ViewportInteractionItem::ride,         ViewportInteractionItem::scenery,
         ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition, ViewportInteractionItem::parkEntrance,
-        ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery, ViewportInteractionItem::banner);
+        ViewportInteractionItem::wall,     ViewportInteractionItem::largeScenery, ViewportInteractionItem::banner
+    };
 
     static constexpr WidgetIndex kDisabledWidgetsDefault[] = {
         WIDX_BUTTON_MOVE_UP, WIDX_BUTTON_MOVE_DOWN, WIDX_BUTTON_REMOVE, WIDX_BUTTON_ROTATE, WIDX_BUTTON_COPY,
@@ -964,7 +965,7 @@ namespace OpenRCT2::Ui::Windows
             bool mouseOnViewport = false;
             if (GetInputManager().isModifierKeyPressed(ModifierKey::ctrl))
             {
-                auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionFlags);
                 clickedElement = info.Element;
                 mapCoords = info.Loc;
             }
@@ -1012,7 +1013,7 @@ namespace OpenRCT2::Ui::Windows
             // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
             const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / kScrollableRowHeight - 1;
             const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
-            if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
+            if (index >= 0 && checkboxColumnRect.contains(screenCoords))
             { // Checkbox was clicked
                 ToggleInvisibility(index);
             }
@@ -1045,18 +1046,18 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int32_t>(tileCoords.x);
                 drawText(
-                    rt, screenCoords + ScreenCoordsXY{ 43, yOffset }, STR_FORMAT_INTEGER, ft,
+                    rt, screenCoords + ScreenCoordsXY{ 50, yOffset }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::right });
                 ft = Formatter();
                 ft.Add<int32_t>(tileCoords.y);
                 drawText(
-                    rt, screenCoords + ScreenCoordsXY{ 113, yOffset }, STR_FORMAT_INTEGER, ft,
+                    rt, screenCoords + ScreenCoordsXY{ 127, yOffset }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::right });
             }
             else
             {
-                drawText(rt, screenCoords + ScreenCoordsXY(43 - 7, yOffset), "-", { colours[1] });
-                drawText(rt, screenCoords + ScreenCoordsXY(113 - 7, yOffset), "-", { colours[1] });
+                drawText(rt, screenCoords + ScreenCoordsXY(50 - 7, yOffset), "-", { colours[1] });
+                drawText(rt, screenCoords + ScreenCoordsXY(127 - 7, yOffset), "-", { colours[1] });
             }
 
             if (windowTileInspectorSelectedIndex != -1)
@@ -1801,7 +1802,7 @@ namespace OpenRCT2::Ui::Windows
             TileElement* clickedElement = nullptr;
             if (ctrlIsHeldDown)
             {
-                auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionFlags);
+                auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionFlags);
                 clickedElement = info.Element;
                 mapCoords = info.Loc;
             }
@@ -1822,7 +1823,7 @@ namespace OpenRCT2::Ui::Windows
             // Invalidate the previous selection
             if (auto* elem = OpenRCT2::TileInspector::GetSelectedElement(); elem != nullptr)
             {
-                MapInvalidateElement(windowTileInspectorTile.ToCoordsXY(), elem);
+                MapInvalidateElement(windowTileInspectorTile.toCoordsXY(), elem);
             }
 
             _tileSelected = true;
@@ -1850,17 +1851,15 @@ namespace OpenRCT2::Ui::Windows
             windowTileInspectorSelectedIndex = -1;
             scrolls[0].contentOffsetY = 0;
 
-            TileElement* element = MapGetFirstElementAt(_toolMap);
             int16_t numItems = 0;
-            do
+            for (auto* element : TileElementsView(_toolMap))
             {
-                if (element == nullptr)
-                    break;
                 if (element == elementToSelect)
                     windowTileInspectorSelectedIndex = numItems;
 
                 numItems++;
-            } while (!(element++)->isLastForTile());
+            }
+
             windowTileInspectorElementCount = numItems;
             invalidate();
             MapInvalidateTileFull(_toolMap);

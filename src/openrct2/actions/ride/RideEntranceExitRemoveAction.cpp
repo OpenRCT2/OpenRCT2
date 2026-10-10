@@ -156,11 +156,11 @@ namespace OpenRCT2::GameActions
         auto& station = ride->getStation(_stationNum);
         if (_isExit)
         {
-            station.Exit.SetNull();
+            station.exit.setNull();
         }
         else
         {
-            station.Entrance.SetNull();
+            station.entrance.setNull();
         }
 
         FootpathUpdateQueueChains();

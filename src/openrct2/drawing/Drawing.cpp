@@ -9,47 +9,22 @@
 
 #include "Drawing.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
-#include "../OpenRCT2.h"
 #include "../SpriteIds.h"
-#include "../config/Config.h"
-#include "../core/Guard.hpp"
 #include "../interface/ScreenCoords.hpp"
-#include "../object/ObjectEntryManager.h"
-#include "../object/WaterEntry.h"
-#include "../util/Util.h"
-#include "../world/Weather.h"
 #include "Drawing.Sprite.h"
 #include "FilterPaletteIds.h"
 #include "Font.h"
-#include "LightFX.h"
-#include "NewDrawing.h"
+#include "Line.h"
 #include "Rectangle.h"
 #include "RenderTarget.h"
 #include "Text.h"
 
-#include <array>
 #include <cassert>
-#include <cstring>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-
-static constexpr auto kPaletteOffsetDynamic = PaletteIndex::pi10;
-static constexpr uint8_t kPaletteLengthDynamic = 236;
-
-static constexpr uint8_t kPaletteLengthWaterWaves = 5;
-static constexpr uint8_t kPaletteLengthWaterSparkles = 5;
-
-static constexpr auto kPaletteOffsetAnimated = PaletteIndex::waterWaves0;
-static constexpr uint8_t kPaletteLengthAnimated = 16;
-
-GamePalette gPalette;
-GamePalette gGamePalette;
-uint32_t gPaletteEffectFrame;
 
 bool gPaintForceRedraw{ false };
 
@@ -110,6 +85,24 @@ static constexpr FilterPaletteID kGlassPaletteIds[kColourNumTotal] = {
     FilterPaletteID::paletteGlassDullBrownLight,
     FilterPaletteID::paletteGlassInvisible,
     FilterPaletteID::paletteGlassVoid,
+    FilterPaletteID::paletteGlassGold,
+    FilterPaletteID::paletteGlassAmber,
+    FilterPaletteID::paletteGlassAmethyst,
+    FilterPaletteID::paletteGlassAsparagus,
+    FilterPaletteID::paletteGlassBrown,
+    FilterPaletteID::paletteGlassBurntPink,
+    FilterPaletteID::paletteGlassCactus,
+    FilterPaletteID::paletteGlassCaramel,
+    FilterPaletteID::paletteGlassCopper,
+    FilterPaletteID::paletteGlassCrimson,
+    FilterPaletteID::paletteGlassDarkerWater,
+    FilterPaletteID::paletteGlassEmerald,
+    FilterPaletteID::paletteGlassIndigo,
+    FilterPaletteID::paletteGlassPesto,
+    FilterPaletteID::paletteGlassPineGreen,
+    FilterPaletteID::paletteGlassRuby,
+    FilterPaletteID::paletteGlassDeepBlue,
+    FilterPaletteID::paletteGlassSilver,
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
@@ -174,6 +167,24 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_DULL_BROWN_LIGHT,
     SPR_PALETTE_INVISIBLE,
     SPR_PALETTE_VOID,
+    SPR_PALETTE_GOLD,
+    SPR_PALETTE_AMBER,
+    SPR_PALETTE_AMETHYST,
+    SPR_PALETTE_ASPARAGUS,
+    SPR_PALETTE_BROWN,
+    SPR_PALETTE_BURNT_PINK,
+    SPR_PALETTE_CACTUS,
+    SPR_PALETTE_CARAMEL,
+    SPR_PALETTE_COPPER,
+    SPR_PALETTE_CRIMSON,
+    SPR_PALETTE_DARKER_WATER,
+    SPR_PALETTE_EMERALD,
+    SPR_PALETTE_INDIGO,
+    SPR_PALETTE_PESTO,
+    SPR_PALETTE_PINE_GREEN,
+    SPR_PALETTE_RUBY,
+    SPR_PALETTE_DEEP_BLUE,
+    SPR_PALETTE_SILVER,
 
     // Additional palettes
     SPR_PALETTE_WATER,
@@ -318,6 +329,24 @@ static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_GLASS_DULL_BROWN_LIGHT,
     SPR_PALETTE_GLASS_INVISIBLE,
     SPR_PALETTE_GLASS_VOID,
+    SPR_PALETTE_GLASS_GOLD,
+    SPR_PALETTE_GLASS_AMBER,
+    SPR_PALETTE_GLASS_AMETHYST,
+    SPR_PALETTE_GLASS_ASPARAGUS,
+    SPR_PALETTE_GLASS_BROWN,
+    SPR_PALETTE_GLASS_BURNT_PINK,
+    SPR_PALETTE_GLASS_CACTUS,
+    SPR_PALETTE_GLASS_CARAMEL,
+    SPR_PALETTE_GLASS_COPPER,
+    SPR_PALETTE_GLASS_CRIMSON,
+    SPR_PALETTE_GLASS_DARKER_WATER,
+    SPR_PALETTE_GLASS_EMERALD,
+    SPR_PALETTE_GLASS_INDIGO,
+    SPR_PALETTE_GLASS_PESTO,
+    SPR_PALETTE_GLASS_PINE_GREEN,
+    SPR_PALETTE_GLASS_RUBY,
+    SPR_PALETTE_GLASS_DEEP_BLUE,
+    SPR_PALETTE_GLASS_SILVER,
 };
 
 static constexpr TranslucentWindowPalette kWindowPaletteGrey = { FilterPaletteID::paletteTranslucentGrey,                  FilterPaletteID::paletteTranslucentGreyHighlight,             FilterPaletteID::paletteTranslucentGreyShadow };
@@ -396,117 +425,26 @@ const TranslucentWindowPalette kTranslucentWindowPalettes[kColourNumTotal] = {
     kWindowPaletteDarkBrown,              // Colour::beige
     { FilterPaletteID::paletteDarken1,           FilterPaletteID::paletteDarken1,      FilterPaletteID::paletteDarken1 },
     { FilterPaletteID::paletteDarken2,           FilterPaletteID::paletteDarken2,      FilterPaletteID::paletteDarken2 },
+    kWindowPaletteYellow,                 // Colour::gold
+    kWindowPaletteLightOrange,            // Colour::amber
+    kWindowPaletteBrightPurple,           // Colour::amethyst
+    kWindowPaletteOliveGreen,             // Colour::asparagus
+    kWindowPaletteDarkBrown,              // Colour::brown
+    kWindowPaletteBrightPink,             // Colour::burntPink
+    kWindowPaletteMossGreen,              // Colour::cactus
+    kWindowPaletteLightBrown,             // Colour::caramel
+    kWindowPaletteSalmonPink,             // Colour::copper
+    kWindowPaletteBordeauxRed,            // Colour::crimson
+    kWindowPaletteTeal,                   // Colour::darkerWater
+    kWindowPaletteBrightGreen,            // Colour::emerald
+    kWindowPaletteLightPurple,            // Colour::indigo
+    kWindowPaletteDarkOliveGreen,         // Colour::pesto
+    kWindowPaletteDarkGreen,              // Colour::pineGreen
+    kWindowPaletteBrightRed,              // Colour::ruby
+    kWindowPaletteLightBlue,              // Colour::deepBlue
+    kWindowPaletteGrey,                   // Colour::silver
 };
 // clang-format on
-
-ImageCatalogue ImageId::GetCatalogue() const
-{
-    auto index = GetIndex();
-    if (index >= SPR_TEMP_BEGIN && index < SPR_TEMP_END)
-    {
-        return ImageCatalogue::temporary;
-    }
-    if (index < SPR_RCTC_G1_END)
-    {
-        return ImageCatalogue::g1;
-    }
-    if (index < SPR_G2_END)
-    {
-        return ImageCatalogue::g2;
-    }
-    if (index < SPR_CSG_END)
-    {
-        return ImageCatalogue::csg;
-    }
-    if (index < SPR_IMAGE_LIST_END)
-    {
-        return ImageCatalogue::object;
-    }
-    return ImageCatalogue::unknown;
-}
-
-void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
-{
-    Rectangle::filter(rt, { coords, coords }, palette);
-}
-
-/**
- *
- *  rct2: 0x00683854
- * a1 (ebx)
- * product (cl)
- */
-void GfxTransposePalette(ImageIndex pal, uint8_t product)
-{
-    const auto* g1 = GfxGetG1Palette(pal);
-    if (g1 == nullptr)
-        return;
-
-    auto index = g1->startIndex;
-    auto* src = g1->palette;
-
-    for (auto numColours = g1->numColours; numColours > 0; numColours--)
-    {
-        auto& dst = gGamePalette[index];
-        // Make sure the image never gets darker than the void colour (not-quite-black), to avoid the background colour
-        // jumping between void and 100% black.
-        dst.blue = std::max<uint8_t>(35, ((src->blue * product) >> 8));
-        dst.green = std::max<uint8_t>(35, ((src->green * product) >> 8));
-        dst.red = std::max<uint8_t>(23, ((src->red * product) >> 8));
-        src++;
-
-        index++;
-    }
-    UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
-}
-
-/**
- *
- *  rct2: 0x006837E3
- */
-void LoadPalette()
-{
-    if (gOpenRCT2NoGraphics)
-    {
-        return;
-    }
-
-    uint32_t palette = SPR_GAME_DEFAULT_PALETTE;
-
-    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
-    if (water_type != nullptr)
-    {
-        Guard::Assert(water_type->mainPalette != kImageIndexUndefined, "Failed to load water palette");
-        palette = water_type->mainPalette;
-    }
-
-    const auto* g1 = GfxGetG1Palette(palette);
-    if (g1 != nullptr)
-    {
-        auto index = g1->startIndex;
-        auto* src = g1->palette;
-        for (auto numColours = g1->numColours; numColours > 0; numColours--)
-        {
-            auto& dst = gGamePalette[index];
-            dst.blue = src->blue;
-            dst.green = src->green;
-            dst.red = src->red;
-            src++;
-            index++;
-        }
-    }
-    UpdatePalette(gGamePalette, PaletteIndex::pi10, 236);
-    GfxInvalidateScreen();
-}
-
-/**
- *
- *  rct2: 0x006ED7E5
- */
-void GfxInvalidateScreen()
-{
-    GfxSetDirtyBlocks({ { 0, 0 }, { ContextGetWidth(), ContextGetHeight() } });
-}
 
 /*
  *
@@ -593,221 +531,6 @@ std::optional<PaletteMap> GetPaletteMapForColour(FilterPaletteID paletteId)
 FilterPaletteID GetGlassPaletteId(Colour c)
 {
     return kGlassPaletteIds[EnumValue(c)];
-}
-
-void UpdatePalette(std::span<const BGRAColour> palette, PaletteIndex startIndex, int32_t numColours)
-{
-    for (int32_t i = EnumValue(startIndex); i < numColours + EnumValue(startIndex); i++)
-    {
-        const auto& colour = palette[i];
-        uint8_t b = colour.blue;
-        uint8_t g = colour.green;
-        uint8_t r = colour.red;
-
-        if (LightFx::IsAvailable())
-        {
-            LightFx::ApplyPaletteFilter(i, &r, &g, &b);
-        }
-        else
-        {
-            float night = gDayNightCycle;
-            if (night >= 0 && Weather::gLightningFlash == 0)
-            {
-                r = Lerp(r, SoftLight(r, 8), night);
-                g = Lerp(g, SoftLight(g, 8), night);
-                b = Lerp(b, SoftLight(b, 128), night);
-            }
-        }
-
-        gPalette[i].blue = b;
-        gPalette[i].green = g;
-        gPalette[i].red = r;
-        gPalette[i].alpha = 0;
-    }
-
-    // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
-    gPalette[255].blue = 255;
-    gPalette[255].green = 255;
-    gPalette[255].red = 255;
-    gPalette[255].alpha = 0;
-
-    if (!gOpenRCT2Headless)
-    {
-        DrawingEngineSetPalette(gPalette);
-    }
-}
-
-/**
- *
- *  rct2: 0x006838BD
- */
-void UpdatePaletteEffects()
-{
-    auto water_type = OpenRCT2::ObjectEntryManager::GetObjectEntry<WaterObjectEntry>(0);
-
-    if (Weather::gLightningFlash == 1)
-    {
-        // Change palette to lighter colour during lightning
-        int32_t palette = SPR_GAME_DEFAULT_PALETTE;
-
-        if (water_type != nullptr)
-        {
-            palette = water_type->mainPalette;
-        }
-        const auto* g1 = GfxGetG1Palette(palette);
-        if (g1 != nullptr)
-        {
-            auto startIndex = g1->startIndex;
-
-            for (int32_t i = 0; i < g1->numColours; i++)
-            {
-                auto& paletteOffset = gGamePalette[startIndex + i];
-                const auto& g1PaletteEntry = g1->palette[i];
-                paletteOffset.blue = -((0xFF - g1PaletteEntry.blue) / 2) - 1;
-                paletteOffset.green = -((0xFF - g1PaletteEntry.green) / 2) - 1;
-                paletteOffset.red = -((0xFF - g1PaletteEntry.red) / 2) - 1;
-            }
-
-            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
-        }
-        Weather::gLightningFlash++;
-    }
-    else
-    {
-        if (Weather::gLightningFlash == 2)
-        {
-            // Change palette back to normal after lightning
-            int32_t palette = SPR_GAME_DEFAULT_PALETTE;
-
-            if (water_type != nullptr)
-            {
-                palette = water_type->mainPalette;
-            }
-
-            const auto* g1 = GfxGetG1Palette(palette);
-            if (g1 != nullptr)
-            {
-                auto startIndex = g1->startIndex;
-
-                for (int32_t i = 0; i < g1->numColours; i++)
-                {
-                    auto& paletteOffset = gGamePalette[startIndex + i];
-                    const auto& g1PaletteEntry = g1->palette[i];
-                    paletteOffset.blue = g1PaletteEntry.blue;
-                    paletteOffset.green = g1PaletteEntry.green;
-                    paletteOffset.red = g1PaletteEntry.red;
-                }
-            }
-        }
-
-        // Animate the water/lava/chain movement palette
-        uint32_t shade = 0;
-        if (Config::Get().general.renderWeatherGloom)
-        {
-            auto paletteId = Weather::getWeatherGloomPaletteId(getGameState().weatherCurrent);
-            if (paletteId != FilterPaletteID::paletteNull)
-            {
-                shade = 1;
-                if (paletteId != FilterPaletteID::paletteDarken1)
-                {
-                    shade = 2;
-                }
-            }
-        }
-        uint32_t j = gPaletteEffectFrame;
-        j = ((static_cast<uint16_t>((~j / 2) * 128) * 15) >> 16);
-        uint32_t waterId = SPR_GAME_PALETTE_WATER;
-        if (water_type != nullptr)
-        {
-            waterId = water_type->waterWavesPalette;
-        }
-        const auto* g1 = GfxGetG1Palette(shade + waterId);
-        if (g1 != nullptr)
-        {
-            const auto* g1PaletteEntry = &g1->palette[j];
-            int32_t n = kPaletteLengthWaterWaves;
-            for (int32_t i = 0; i < n; i++)
-            {
-                auto& vd = gGamePalette[EnumValue(PaletteIndex::waterWaves0) + i];
-                vd.blue = g1PaletteEntry->blue;
-                vd.green = g1PaletteEntry->green;
-                vd.red = g1PaletteEntry->red;
-                g1PaletteEntry += 3;
-                if (g1PaletteEntry >= &g1->palette[3 * n])
-                {
-                    g1PaletteEntry -= 3 * n;
-                }
-            }
-        }
-
-        waterId = SPR_GAME_PALETTE_3;
-        if (water_type != nullptr)
-        {
-            waterId = water_type->waterSparklesPalette;
-        }
-
-        g1 = GfxGetG1Palette(shade + waterId);
-        if (g1 != nullptr)
-        {
-            auto* src = &g1->palette[j];
-            int32_t n = kPaletteLengthWaterSparkles;
-            for (int32_t i = 0; i < n; i++)
-            {
-                auto& vd = gGamePalette[EnumValue(PaletteIndex::waterSparkles0) + i];
-                vd.blue = src->blue;
-                vd.green = src->green;
-                vd.red = src->red;
-                src += 3;
-                if (src >= &g1->palette[3 * n])
-                {
-                    src -= 3 * n;
-                }
-            }
-        }
-
-        j = (static_cast<uint16_t>(gPaletteEffectFrame * -960) * 3) >> 16;
-        waterId = SPR_GAME_PALETTE_4;
-        g1 = GfxGetG1Palette(shade + waterId);
-        if (g1 != nullptr)
-        {
-            auto* src = &g1->palette[j];
-            const int32_t n = 3;
-            for (int32_t i = 0; i < n; i++)
-            {
-                auto& vd = gGamePalette[EnumValue(PaletteIndex::primaryRemap0) + i];
-                vd.blue = src->blue;
-                vd.green = src->green;
-                vd.red = src->red;
-                src++;
-                if (src >= &g1->palette[3])
-                {
-                    src -= n;
-                }
-            }
-        }
-
-        UpdatePalette(gGamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
-        if (Weather::gLightningFlash == 2)
-        {
-            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
-            Weather::gLightningFlash = 0;
-        }
-    }
-}
-
-void RefreshVideo()
-{
-    ContextRecreateWindow();
-    DrawingEngineSetPalette(gPalette);
-    GfxInvalidateScreen();
-}
-
-void ToggleWindowedMode()
-{
-    int32_t rt = Config::Get().general.fullscreenMode == 0 ? 2 : 0;
-    ContextSetFullscreenMode(rt);
-    Config::Get().general.fullscreenMode = rt;
-    Config::Save();
 }
 
 void DebugRT(RenderTarget& rt)

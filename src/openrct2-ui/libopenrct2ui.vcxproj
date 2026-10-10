@@ -68,6 +68,7 @@
     <ClInclude Include="input\MouseInput.h" />
     <ClInclude Include="input\ShortcutIds.h" />
     <ClInclude Include="input\ShortcutManager.h" />
+    <ClInclude Include="interface\Chat.h" />
     <ClInclude Include="interface\Dropdown.h" />
     <ClInclude Include="interface\Graph.h" />
     <ClInclude Include="interface\FileBrowser.h" />
@@ -136,6 +137,7 @@
     <ClCompile Include="input\MouseInput.cpp" />
     <ClCompile Include="input\ShortcutInput.cpp" />
     <ClCompile Include="input\ShortcutManager.cpp" />
+    <ClCompile Include="interface\Chat.cpp" />
     <ClCompile Include="interface\Graph.cpp" />
     <ClCompile Include="interface\FileBrowser.cpp" />
     <ClCompile Include="interface\InGameConsole.cpp" />
@@ -187,7 +189,7 @@
     <ClCompile Include="windows\Error.cpp" />
     <ClCompile Include="windows\Finances.cpp" />
     <ClCompile Include="windows\Footpath.cpp" />
-    <ClCompile Include="windows\GameBottomToolbar.cpp" />
+    <ClCompile Include="windows\GameStatusBar.cpp" />
     <ClCompile Include="windows\Guest.cpp" />
     <ClCompile Include="windows\GuestList.cpp" />
     <ClCompile Include="windows\InstallTrack.cpp" />
@@ -204,6 +206,7 @@
     <ClCompile Include="windows\NewCampaign.cpp" />
     <ClCompile Include="windows\NewRide.cpp" />
     <ClCompile Include="windows\News.cpp" />
+    <ClCompile Include="windows\NewsTicker.cpp" />
     <ClCompile Include="windows\ObjectLoadError.cpp" />
     <ClCompile Include="windows\Options.cpp" />
     <ClCompile Include="windows\OverwritePrompt.cpp" />

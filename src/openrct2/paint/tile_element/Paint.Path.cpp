@@ -345,7 +345,7 @@ static void PathPaintFencesAndQueueBannersQueue(
         }
     }
 
-    if (pathElement.hasQueueBanner() && !(railings.flags & RAILING_ENTRY_FLAG_NO_QUEUE_BANNER))
+    if (pathElement.hasQueueBanner() && !railings.flags.has(RailingEntryFlag::noQueueBanner))
     {
         PathPaintQueueBanner(session, pathElement, height, railings, imageTemplate);
     }
@@ -360,7 +360,7 @@ static void PathPaintFencesAndQueueBannersNonQueue(
     uint32_t drawnCorners = 0;
     // If the path is not drawn over the supports, then no corner sprites will be drawn (making double-width paths
     // look like connected series of intersections).
-    if (pathPaintInfo.railings.flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS)
+    if (pathPaintInfo.railings.flags.has(RailingEntryFlag::drawPathOverSupports))
     {
         drawnCorners = (connectedEdges & FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK) >> 4;
     }
@@ -708,7 +708,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
 {
     PROFILED_FUNCTION();
 
-    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
+    if (PaintShouldShowHeightMarkers(session, ViewportFlag::pathHeights))
     {
         uint16_t heightMarkerBaseZ = pathEl.getBaseZ() + 3;
         if (pathEl.isSloped())
@@ -749,7 +749,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
         }
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session.ViewFlags.has(ViewportFlag::highlightPathIssues))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::palette46);
     }
@@ -884,32 +884,31 @@ static void PathPaintSegmentSupportHeight(
     if (pathElement.getEdgesAndCorners() == 0xFF)
     {
         PaintUtilSetSegmentSupportHeight(
-            session,
-            EnumsToFlags(PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+            session, { PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight },
             0xFFFF, 0);
         return;
     }
 
-    PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, PaintSegment::centre, 0xFFFF, 0);
 
     if (edges & EDGE_NE)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::topRight), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::topRight, 0xFFFF, 0);
     }
 
     if (edges & EDGE_SE)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottomRight), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::bottomRight, 0xFFFF, 0);
     }
 
     if (edges & EDGE_SW)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::bottomLeft), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::bottomLeft, 0xFFFF, 0);
     }
 
     if (edges & EDGE_NW)
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::topLeft), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::topLeft, 0xFFFF, 0);
     }
 }
 
@@ -945,7 +944,7 @@ static void PathPaintBoxSupport(
 
         PaintAddImageAsParent(session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, boundbox);
 
-        if (pathElement.isQueue() || (pathPaintInfo.railings.flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
+        if (pathElement.isQueue() || pathPaintInfo.railings.flags.has(RailingEntryFlag::drawPathOverSupports))
         {
             PaintAddImageAsChild(session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, boundbox);
         }
@@ -1000,7 +999,7 @@ static void PathPaintPoleSupport(
 
         PaintAddImageAsParent(session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, boundbox);
 
-        if (pathElement.isQueue() || (pathPaintInfo.railings.flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
+        if (pathElement.isQueue() || pathPaintInfo.railings.flags.has(RailingEntryFlag::drawPathOverSupports))
         {
             PaintAddImageAsChild(session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, boundbox);
         }

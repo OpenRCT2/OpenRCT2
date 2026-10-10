@@ -198,7 +198,7 @@ namespace OpenRCT2::PathFinding
     static int32_t PeepMoveOneTile(Direction direction, Peep& peep)
     {
         assert(DirectionValid(direction));
-        auto newTile = CoordsXY{ CoordsXY{ peep.nextLoc } + CoordsDirectionDelta[direction] }.ToTileCentre();
+        auto newTile = CoordsXY{ CoordsXY{ peep.nextLoc } + CoordsDirectionDelta[direction] }.toTileCentre();
 
         if (newTile.x >= kMaximumMapSizeBig || newTile.y >= kMaximumMapSizeBig)
         {
@@ -723,7 +723,7 @@ namespace OpenRCT2::PathFinding
         if (currentElementIsWide)
         {
             const Staff* staff = peep.as<Staff>();
-            if (staff != nullptr && staff->canIgnoreWideFlag(loc.ToCoordsXYZ(), currentTileElement))
+            if (staff != nullptr && staff->canIgnoreWideFlag(loc.toCoordsXYZ(), currentTileElement))
                 currentElementIsWide = false;
         }
 
@@ -745,7 +745,7 @@ namespace OpenRCT2::PathFinding
         auto* staff = peep.as<Staff>();
         if (staff != nullptr && staff->isMechanic())
         {
-            nextInPatrolArea = staff->isLocationInPatrol(loc.ToCoordsXY());
+            nextInPatrolArea = staff->isLocationInPatrol(loc.toCoordsXY());
             if (inPatrolArea && !nextInPatrolArea)
             {
                 /* The mechanic will leave his patrol area by taking
@@ -850,7 +850,7 @@ namespace OpenRCT2::PathFinding
                     if (pathElement->isWide())
                     {
                         /* Check if staff can ignore this wide flag. */
-                        if (staff == nullptr || !staff->canIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
+                        if (staff == nullptr || !staff->canIgnoreWideFlag(loc.toCoordsXYZ(), tileElement))
                         {
                             searchResult = PathSearchResult::wide;
                             found = true;
@@ -1356,7 +1356,7 @@ namespace OpenRCT2::PathFinding
 
             // Clear pathfinding history
             TileCoordsXYZD nullPos;
-            nullPos.SetNull();
+            nullPos.setNull();
 
             std::fill(std::begin(peep.pathfindHistory), std::end(peep.pathfindHistory), nullPos);
 
@@ -1408,7 +1408,7 @@ namespace OpenRCT2::PathFinding
 
                 for (auto& entry : state.history)
                 {
-                    entry.location.SetNull();
+                    entry.location.setNull();
                     entry.direction = kInvalidDirection;
                 }
 
@@ -1635,7 +1635,7 @@ namespace OpenRCT2::PathFinding
         if (chosenSpawn == 0xFF)
             return GuestPathfindAimless(peep, edges);
 
-        const auto peepSpawnLoc = getGameState().peepSpawns[chosenSpawn].ToTileStart();
+        const auto peepSpawnLoc = getGameState().peepSpawns[chosenSpawn].toTileStart();
         Direction direction = peepSpawnLoc.direction;
 
         if (peepSpawnLoc.x == peep.nextLoc.x && peepSpawnLoc.y == peep.nextLoc.y)
@@ -1661,7 +1661,7 @@ namespace OpenRCT2::PathFinding
         if (peep.peepFlags.has(PeepFlag::parkEntranceChosen))
         {
             entranceGoal = peep.pathfindGoal;
-            auto* entranceElement = MapGetParkEntranceElementAt(entranceGoal.ToCoordsXYZ(), false);
+            auto* entranceElement = MapGetParkEntranceElementAt(entranceGoal.toCoordsXYZ(), false);
             // If entrance no longer exists, choose a new one
             if (entranceElement == nullptr)
             {
@@ -2051,7 +2051,7 @@ namespace OpenRCT2::PathFinding
         for (const auto& station : ride->getStations())
         {
             // Skip if stationNum has no entrance (so presumably an exit only station)
-            if (station.Entrance.IsNull())
+            if (station.entrance.isNull())
                 continue;
 
             const auto stationIndex = ride->getStationIndex(&station);
@@ -2059,7 +2059,7 @@ namespace OpenRCT2::PathFinding
             numEntranceStations++;
             entranceStations[stationIndex.ToUnderlying()] = true;
 
-            TileCoordsXYZD entranceLocation = station.Entrance;
+            TileCoordsXYZD entranceLocation = station.entrance;
             auto score = CalculateHeuristicPathingScore(entranceLocation, TileCoordsXYZ{ peep.nextLoc });
             if (score < bestScore)
             {
@@ -2081,14 +2081,14 @@ namespace OpenRCT2::PathFinding
         {
             // closestStationNum is always 0 here.
             const auto& closestStation = ride->getStation(closestStationNum);
-            auto entranceXY = TileCoordsXY(closestStation.Start);
+            auto entranceXY = TileCoordsXY(closestStation.start);
             loc.x = entranceXY.x;
             loc.y = entranceXY.y;
-            loc.z = closestStation.Height;
+            loc.z = closestStation.height;
         }
         else
         {
-            TileCoordsXYZD entranceXYZD = ride->getStation(closestStationNum).Entrance;
+            TileCoordsXYZD entranceXYZD = ride->getStation(closestStationNum).entrance;
             loc.x = entranceXYZD.x;
             loc.y = entranceXYZD.y;
             loc.z = entranceXYZD.z;

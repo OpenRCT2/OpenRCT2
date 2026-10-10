@@ -94,7 +94,7 @@ namespace OpenRCT2::Platform
 
     struct SteamPaths
     {
-        sfl::static_vector<u8string, 5> roots{};
+        sfl::static_vector<u8string, 6> roots{};
         /**
          * Used by native applications and applications installed through Steam Play.
          */
