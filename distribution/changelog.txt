@@ -13,6 +13,7 @@
 - Improved: [#22933] You can now toggle between long and short base flat-to-steep pieces if the ride has both available.
 - Improved: [#26791] Cheat date can be set via text input.
 - Improved: [#26791] Tile inspector coordinates can be set via text input.
+- Improved: [#26791] Ride window train and car counts can be set via text input.
 - Improved: [#26947] Rain is now drawn next to the bottom info panels (in RCT2 style).
 - Improved: [#27097] On Linux, Flatpak Steam RCTC/RCT2 paths are now auto-detected.
 - Improved: [#27110] The option to automatically open shops after construction now also closes them before construction.
