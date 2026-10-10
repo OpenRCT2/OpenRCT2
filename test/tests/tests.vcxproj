@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BitSetTests.cpp" />
+    <ClCompile Include="WorkerTests.cpp" />
     <ClCompile Include="CircularBuffer.cpp" />
     <ClCompile Include="CLITests.cpp" />
     <ClCompile Include="CryptTests.cpp" />

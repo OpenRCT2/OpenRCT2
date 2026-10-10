@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../config/Config.h"
+
 #include <algorithm>
 #include <atomic>
 #include <condition_variable>
@@ -178,6 +180,11 @@ namespace OpenRCT2
     public:
         BackgroundWorker()
         {
+            if (!Config::Get().general.multiThreading)
+            {
+                return;
+            }
+
             const auto threadsAvailable = std::max(std::thread::hardware_concurrency(), 1u);
 
             // NOTE: We don't want to use all available threads, this is for background work only.
@@ -238,6 +245,15 @@ namespace OpenRCT2
 
             auto job = std::make_shared<Detail::JobImpl<Result>>(
                 std::move(wrappedFunc), std::forward<CompletionFunc>(completion));
+
+            if (_workThreads.empty())
+            {
+                job->run();
+                // Defer completion until dispatchCompleted(), so the returned job can still be cancelled.
+                std::lock_guard lock(_mtx);
+                _jobs.push_back(job);
+                return Job(job);
+            }
 
             {
                 std::lock_guard lock(_mtx);
