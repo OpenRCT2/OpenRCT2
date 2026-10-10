@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../localisation/StringIdType.h"
 #include "../object/ObjectTypes.h"
 #include "../ride/RideTypes.h"
@@ -46,6 +47,8 @@ enum class ResearchCategory : uint8_t
     shop = 5,
     sceneryGroup = 6,
 };
+
+using ResearchCategories = FlagHolder<uint8_t, ResearchCategory>;
 
 struct ResearchItem
 {

@@ -287,7 +287,7 @@ namespace OpenRCT2::Park
         gameState.peepSpawns.clear();
         ParkEntranceReset();
 
-        gameState.researchPriorities = EnumsToFlags(
+        gameState.researchPriorities = ResearchCategories(
             ResearchCategory::transport, ResearchCategory::gentle, ResearchCategory::rollercoaster, ResearchCategory::thrill,
             ResearchCategory::water, ResearchCategory::shop, ResearchCategory::sceneryGroup);
         gameState.researchFundingLevel = RESEARCH_FUNDING_NORMAL;
