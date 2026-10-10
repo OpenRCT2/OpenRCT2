@@ -24,6 +24,7 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
@@ -762,6 +763,18 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
+                case WIDX_SPINNER_X:
+                {
+                    const int32_t maxValue = kMaximumMapSizeTechnical - 1;
+                    Formatter ft;
+                    ft.Add<int16_t>(0);
+                    ft.Add<int16_t>(maxValue);
+                    const std::string text = FormatStringID(STR_FORMAT_INTEGER, windowTileInspectorTile.x);
+                    const int32_t maxLength = static_cast<int32_t>(std::to_string(maxValue).length());
+                    WindowTextInputRawOpen(
+                        this, WIDX_SPINNER_X, STR_ENTER_NEW_VALUE, STR_ENTER_VALUE, ft, text.c_str(), maxLength);
+                    break;
+                }
                 case WIDX_SPINNER_X_INCREASE:
                     windowTileInspectorTile.x = std::min<int32_t>(windowTileInspectorTile.x + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.x = std::min<int32_t>(_toolMap.x + 32, kMaximumTileStartXY);
@@ -774,6 +787,18 @@ namespace OpenRCT2::Ui::Windows
                     LoadTile(nullptr);
                     break;
 
+                case WIDX_SPINNER_Y:
+                {
+                    const int32_t maxValue = kMaximumMapSizeTechnical - 1;
+                    Formatter ft;
+                    ft.Add<int16_t>(0);
+                    ft.Add<int16_t>(maxValue);
+                    const std::string text = FormatStringID(STR_FORMAT_INTEGER, windowTileInspectorTile.y);
+                    const int32_t maxLength = static_cast<int32_t>(std::to_string(maxValue).length());
+                    WindowTextInputRawOpen(
+                        this, WIDX_SPINNER_Y, STR_ENTER_NEW_VALUE, STR_ENTER_VALUE, ft, text.c_str(), maxLength);
+                    break;
+                }
                 case WIDX_SPINNER_Y_INCREASE:
                     windowTileInspectorTile.y = std::min<int32_t>(windowTileInspectorTile.y + 1, kMaximumMapSizeTechnical - 1);
                     _toolMap.y = std::min<int32_t>(_toolMap.y + 32, kMaximumTileStartXY);
@@ -1741,6 +1766,43 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords.y -= kScrollableRowHeight;
                 i++;
+            }
+        }
+
+        void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_SPINNER_X:
+                {
+                    try
+                    {
+                        const int32_t input = std::stoi(std::string(text));
+                        windowTileInspectorTile.x = std::clamp<int32_t>(input, 0, kMaximumMapSizeTechnical - 1);
+                        _toolMap.x = windowTileInspectorTile.x * kCoordsXYStep;
+                        invalidateWidget(WIDX_SPINNER_X);
+                    }
+                    catch (const std::logic_error&)
+                    {
+                        // std::stoi can throw std::out_of_range or std::invalid_argument
+                    }
+                    break;
+                }
+                case WIDX_SPINNER_Y:
+                {
+                    try
+                    {
+                        const int32_t input = std::stoi(std::string(text));
+                        windowTileInspectorTile.y = std::clamp<int32_t>(input, 0, kMaximumMapSizeTechnical - 1);
+                        _toolMap.y = windowTileInspectorTile.y * kCoordsXYStep;
+                        invalidateWidget(WIDX_SPINNER_Y);
+                    }
+                    catch (const std::logic_error&)
+                    {
+                        // std::stoi can throw std::out_of_range or std::invalid_argument
+                    }
+                    break;
+                }
             }
         }
 
