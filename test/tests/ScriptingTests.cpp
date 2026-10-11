@@ -73,4 +73,21 @@ TEST_F(ScriptingTests, MultipleSubscribersToSameEventShouldNotCrash)
     hookEngine.Call(HookType::intervalTick, arg, false);
 }
 
+TEST(ScriptEngineLifetimeTests, UninitialisedContextCanBeDestroyedAfterInitialisedOne)
+{
+    gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
+
+    // Registers the global script classes and then frees the JS runtime they belong to.
+    {
+        auto context = CreateContext();
+        context->GetScriptEngine().Initialise();
+    }
+
+    // Unregisters the global script classes again without registering them first.
+    {
+        auto context = CreateContext();
+    }
+}
+
 #endif
