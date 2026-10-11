@@ -529,16 +529,12 @@ namespace OpenRCT2::ObjectFactory
     std::unique_ptr<Object> CreateObjectFromJson(
         json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable, const std::string_view path)
     {
-        if (!jRoot.is_object())
-        {
-            throw std::runtime_error("Object JSON root was not an object");
-        }
-        else if (!jRoot.contains("objectType"))
+        if (!jRoot.is_object() || !jRoot.contains("objectType"))
         {
             LOG_VERBOSE("Ignoring JSON file (%.*s): not an object file", static_cast<int>(path.length()), path.data());
             return nullptr;
         }
-        else if (!jRoot["objectType"].is_string())
+        if (!jRoot["objectType"].is_string())
         {
             LOG_VERBOSE("Ignoring JSON file (%.*s): objectType is not a string", static_cast<int>(path.length()), path.data());
             return nullptr;
