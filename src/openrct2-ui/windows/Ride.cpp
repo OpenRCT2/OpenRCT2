@@ -4866,8 +4866,7 @@ namespace OpenRCT2::Ui::Windows
         bool shouldShowRideVisibilityDropdown() const
         {
             const auto& cheats = getGameState().cheats;
-            return cheats.allowArbitraryRideTypeChanges || cheats.unlockOperatingLimits
-                || cheats.allowSpecialColourSchemes;
+            return cheats.allowArbitraryRideTypeChanges || cheats.unlockOperatingLimits || cheats.allowSpecialColourSchemes;
         }
 
         int32_t colourOnPrepareDrawEntrance(int32_t startY, const Ride* ride)
