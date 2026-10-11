@@ -85,7 +85,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             duck.frame %= static_cast<uint16_t>(length);
             duck.invalidate();
         }
-    }
+    } // namespace
 
     size_t Duck::getAnimationLength(DuckState state)
     {
