@@ -140,6 +140,7 @@ namespace OpenRCT2
 
     void Peep::setNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface)
     {
+        nextFlags = {};
         nextFlags.setDirection(next_direction);
         nextFlags.set(PeepNextFlag::isSloped, is_sloped);
         nextFlags.set(PeepNextFlag::isSurface, is_surface);
