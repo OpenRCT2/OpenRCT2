@@ -89,7 +89,7 @@ static constexpr u8string_view kFileNames[] = {
 /**
  * Lower cases ASCII characters only, which matches how String::iequals compares strings.
  */
-static u8string ToLowerAscii(u8string_view str)
+static u8string toLowerAscii(const u8string_view str)
 {
     u8string result(str);
     for (auto& c : result)
@@ -131,41 +131,41 @@ public:
      * sub directories, matching the name case insensitively. Returns an empty string if there is no
      * such file.
      */
-    u8string FindFile(const u8string& directory, u8string_view fileName)
+    u8string findFile(const u8string& directory, u8string_view fileName)
     {
         std::lock_guard guard(_mutex);
 
-        const auto& listing = GetListing(directory);
+        const auto& listing = getListing(directory);
         if (!listing.has_value())
         {
             // The directory could not be listed, fall back to querying the file system.
             return Path::ResolveCasing(Path::Combine(directory, fileName));
         }
 
-        auto it = listing->find(ToLowerAscii(fileName));
+        auto it = listing->find(toLowerAscii(fileName));
         if (it == listing->end())
             return {};
 
         return it->second.path;
     }
 
-    void Clear()
+    void clear()
     {
         std::lock_guard guard(_mutex);
         _listings.clear();
     }
 
 private:
-    const std::optional<Listing>& GetListing(const u8string& directory)
+    const std::optional<Listing>& getListing(const u8string& directory)
     {
         auto it = _listings.find(directory);
         if (it != _listings.end())
             return it->second;
 
-        return _listings.emplace(directory, ReadListing(directory)).first->second;
+        return _listings.emplace(directory, readListing(directory)).first->second;
     }
 
-    static std::optional<Listing> ReadListing(const u8string& directory)
+    static std::optional<Listing> readListing(const u8string& directory)
     {
         std::error_code ec;
         auto it = fs::recursive_directory_iterator(fs::u8path(directory), fs::directory_options::skip_permission_denied, ec);
@@ -187,7 +187,7 @@ private:
 
             const auto depth = it.depth();
             auto entry = Entry{ it->path().u8string(), depth };
-            auto [entryIt, inserted] = listing.try_emplace(ToLowerAscii(it->path().filename().u8string()), entry);
+            auto [entryIt, inserted] = listing.try_emplace(toLowerAscii(it->path().filename().u8string()), entry);
 
             // Prefer the files closest to the root of the directory, files in sub directories are
             // only meant to be used when there is none of that name next to the other game files.
@@ -312,7 +312,7 @@ public:
     void SetBasePath(DirBase base, u8string_view path) override
     {
         _basePath[EnumValue(base)] = path;
-        _originalGameDataIndex.Clear();
+        _originalGameDataIndex.clear();
 
         if (base == DirBase::rct2)
         {
@@ -342,7 +342,7 @@ private:
             return Path::ResolveCasing(Path::Combine(dataPath, fileName));
         }
 
-        return _originalGameDataIndex.FindFile(dataPath, fileName);
+        return _originalGameDataIndex.findFile(dataPath, fileName);
     }
 
     static DirBase GetDefaultBaseDirectory(PathId pathid)

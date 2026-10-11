@@ -395,7 +395,7 @@ namespace OpenRCT2
         if (extensionStart != std::string::npos)
         {
             auto altName = name;
-            altName.replace(extensionStart, 4, ".POB");
+            altName.replace(extensionStart + 1, 3, "POB");
 
             objectPath = env.FindFile(DirBase::rct2, DirId::objects, altName);
             if (!objectPath.empty())
