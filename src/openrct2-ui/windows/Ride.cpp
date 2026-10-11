@@ -4774,9 +4774,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].setVisible(supportsMultipleColourSchemes);
             widgets[WIDX_PAINT_INDIVIDUAL_AREA].setVisible(supportsMultipleColourSchemes);
 
-            // Ride cheats on? Show visibility dropdown
+            const bool showRideVisibilityDropdown = shouldShowRideVisibilityDropdown();
             bool rideCheats = getGameState().cheats.allowArbitraryRideTypeChanges;
-            widgets[WIDX_VISIBILITY_DROPDOWN].setVisible(rideCheats);
+            widgets[WIDX_VISIBILITY_DROPDOWN].setVisible(showRideVisibilityDropdown);
 
             // Set colour scheme caption
             _spinnerCaption0 = LanguageGetString(ColourSchemeNames[colourScheme]);
@@ -4832,7 +4832,13 @@ namespace OpenRCT2::Ui::Windows
                     RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourAdditional, RtdFlag::hasTrackColourSupports)
                 && !(rideCheats && isShop))
             {
+                widgets[WIDX_PRIMARY_PREVIEW_GROUP].setHidden();
                 widgets[WIDX_PRIMARY_PREVIEW].setHidden();
+                if (showRideVisibilityDropdown)
+                {
+                    widgets[WIDX_VISIBILITY_DROPDOWN].moveTo({ 259, startY + 33 });
+                    return startY + 57;
+                }
                 return startY;
             }
 
@@ -4855,6 +4861,13 @@ namespace OpenRCT2::Ui::Windows
             // clang-format on
 
             return startY + 71;
+        }
+
+        bool shouldShowRideVisibilityDropdown() const
+        {
+            const auto& cheats = getGameState().cheats;
+            return cheats.allowArbitraryRideTypeChanges || cheats.unlockOperatingLimits
+                || cheats.allowSpecialColourSchemes;
         }
 
         int32_t colourOnPrepareDrawEntrance(int32_t startY, const Ride* ride)
@@ -4913,9 +4926,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_TRACK_ADDITIONAL_COLOUR].setHidden();
                 }
 
-                // Move visiblity button as well, if ride type cheats are on
-                bool rideCheats = getGameState().cheats.allowArbitraryRideTypeChanges;
-                widgets[WIDX_VISIBILITY_DROPDOWN].setVisible(rideCheats);
+                widgets[WIDX_VISIBILITY_DROPDOWN].setVisible(shouldShowRideVisibilityDropdown());
                 widgets[WIDX_VISIBILITY_DROPDOWN].moveTo(
                     { widgets[WIDX_SECONDARY_PREVIEW].left - 28, widgets[WIDX_SECONDARY_PREVIEW].bottom - 28 });
             }
