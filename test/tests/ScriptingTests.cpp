@@ -11,6 +11,9 @@
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/GameActionRegistry.h>
+#include <openrct2/actions/GameCommand.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/scripting/ScriptEngine.h>
 #include <quickjs.h>
 
@@ -71,6 +74,25 @@ TEST_F(ScriptingTests, MultipleSubscribersToSameEventShouldNotCrash)
 
     // This should NOT crash.
     hookEngine.Call(HookType::intervalTick, arg, false);
+}
+
+TEST(ScriptingActionNames, AllGameActionsHaveScriptName)
+{
+    for (uint32_t id = 0; id < EnumValue(GameCommand::count); id++)
+    {
+        // Skip IDs with no registered action.
+        if (!GameActions::IsValidId(id))
+            continue;
+
+        const auto command = static_cast<GameCommand>(id);
+
+        // Custom actions are named by the plugin that registers them.
+        if (command == GameCommand::custom)
+            continue;
+
+        EXPECT_FALSE(getActionName(command).empty())
+            << GameActions::GetName(command) << " (" << id << ") has no entry in ActionNameToType";
+    }
 }
 
 #endif

@@ -319,6 +319,9 @@ namespace OpenRCT2::Scripting
 
     std::string Stringify(JSContext* context, JSValue value);
 
+    // Returns the plugin API name for a game action, or an empty string if it is not exposed to scripts.
+    std::string getActionName(GameCommand commandId);
+
     class ScBase
     {
     private:
