@@ -682,8 +682,9 @@ namespace OpenRCT2
             const auto stringId = std::get<StringId>(res.errorMessage);
             if (stringId != STR_RAISE_OR_LOWER_LAND_FIRST && stringId != STR_FOOTPATH_IN_THE_WAY)
             {
-                return GameActions::Result(
-                    GameActions::Status::noClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId, res.errorMessageArgs.data());
+                auto result = GameActions::Result(GameActions::Status::noClearance, STR_ERR_CANT_PLACE_PERSON_HERE, stringId);
+                result.errorMessageText = res.errorMessageText;
+                return result;
             }
         }
 
