@@ -306,12 +306,13 @@ namespace OpenRCT2
     // Flags used by peep->WindowInvalidateFlags
     enum class PeepInvalidateFlag
     {
-        peepThoughts = 0,
-        peepStats = 1,
-        peep2 = 2,
-        peepInventory = 3,
+        thoughts = 0,
+        stats = 1,
+        flag2 = 2,
+        inventory = 3,
         staffStats = 4,
-        peepAction = 5, // Currently set only when guestHeadingToRideId is changed
+        favouriteRide = 4, // Intentionally shares storage with staffStats
+        action = 5, // Currently set only when guestHeadingToRideId is changed
     };
     using PeepInvalidateFlags = FlagHolder<uint8_t, PeepInvalidateFlag>;
 

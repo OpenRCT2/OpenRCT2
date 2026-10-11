@@ -1805,13 +1805,13 @@ namespace OpenRCT2
                     {
                         entranceFee /= 2;
                         guest->removeItem(ShopItem::voucher);
-                        guest->windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
+                        guest->windowInvalidateFlags.set(PeepInvalidateFlag::inventory);
                     }
                     else if (guest->voucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                     {
                         entranceFee = 0;
                         guest->removeItem(ShopItem::voucher);
-                        guest->windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
+                        guest->windowInvalidateFlags.set(PeepInvalidateFlag::inventory);
                     }
                 }
                 if (entranceFee > guest->cashInPocket)
@@ -2565,7 +2565,7 @@ namespace OpenRCT2
             if (peep->animationGroup == PeepAnimationGroup::balloon && peep->x != kLocationNull)
             {
                 Balloon::create({ peep->x, peep->y, spawn_height }, peep->balloonColour, false);
-                peep->windowInvalidateFlags.set(PeepInvalidateFlag::peepInventory);
+                peep->windowInvalidateFlags.set(PeepInvalidateFlag::inventory);
                 peep->updateAnimationGroup();
             }
         }
