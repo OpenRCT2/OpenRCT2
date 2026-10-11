@@ -35,14 +35,14 @@ namespace OpenRCT2::Scripting
 
     void ScDuck::Register(JSContext* ctx)
     {
-        static constexpr JSCFunctionListEntry funcs[] = {
+        static constexpr JSCFunctionListEntry kFuncs[] = {
             JS_CGETSET_DEF("positionFrozen", &ScDuck::positionFrozen_get, &ScDuck::positionFrozen_set),
             JS_CGETSET_DEF("animationFrozen", &ScDuck::animationFrozen_get, &ScDuck::animationFrozen_set),
             JS_CGETSET_DEF("orientation", &ScDuck::orientation_get, &ScDuck::orientation_set),
             JS_CGETSET_DEF("animationFrame", &ScDuck::animationFrame_get, &ScDuck::animationFrame_set),
             JS_CGETSET_DEF("animation", &ScDuck::animation_get, &ScDuck::animation_set),
         };
-        gScDuck.RegisterDerived(ctx, gScEntity, funcs);
+        gScDuck.RegisterDerived(ctx, gScEntity, kFuncs);
     }
 
     Duck* ScDuck::GetDuck(JSValue thisVal)
