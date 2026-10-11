@@ -35,6 +35,7 @@
 #include "LargeSceneryObject.h"
 #include "MusicObject.h"
 #include "Object.h"
+#include "ObjectAsset.h"
 #include "ObjectLimits.h"
 #include "PathAdditionObject.h"
 #include "PeepAnimationsObject.h"
