@@ -312,7 +312,7 @@ namespace OpenRCT2
         inventory = 3,
         staffStats = 4,
         favouriteRide = 4, // Intentionally shares storage with staffStats
-        action = 5, // Currently set only when guestHeadingToRideId is changed
+        action = 5,        // Currently set only when guestHeadingToRideId is changed
     };
     using PeepInvalidateFlags = FlagHolder<uint8_t, PeepInvalidateFlag>;
 
