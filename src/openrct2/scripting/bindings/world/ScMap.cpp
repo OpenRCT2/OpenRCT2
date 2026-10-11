@@ -22,6 +22,7 @@
     #include "../../../ride/TrainManager.h"
     #include "../../../ride/Vehicle.h"
     #include "../entity/ScBalloon.hpp"
+    #include "../entity/ScDuck.hpp"
     #include "../entity/ScGuest.hpp"
     #include "../entity/ScLitter.hpp"
     #include "../entity/ScMoneyEffect.hpp"
@@ -161,7 +162,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Duck>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, gScEntity.New(ctx, sprite->id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScDuck::New(ctx, sprite->id));
             }
         }
         else if (type == "peep")
@@ -268,7 +269,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<Duck>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScEntity::New(ctx, sprite->id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScDuck::New(ctx, sprite->id));
             }
         }
         else if (type == "guest")
@@ -424,7 +425,7 @@ namespace OpenRCT2::Scripting
         }
         else if (type == "duck")
         {
-            res = createEntityType<Duck, ScEntity>(ctx, initializer);
+            res = createEntityType<Duck, ScDuck>(ctx, initializer);
         }
         else if (type == "jumping_fountain")
         {

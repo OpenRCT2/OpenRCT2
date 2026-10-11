@@ -30,6 +30,7 @@
     #include "../platform/Platform.h"
     #include "../ride/ted/PitchAndRoll.h"
     #include "bindings/entity/ScBalloon.hpp"
+    #include "bindings/entity/ScDuck.hpp"
     #include "bindings/entity/ScEntity.hpp"
     #include "bindings/entity/ScGuest.hpp"
     #include "bindings/entity/ScLitter.hpp"
@@ -595,6 +596,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScEntity.Register(ctx);
     gScPeep.Register(ctx);
     gScGuest.Register(ctx);
+    gScDuck.Register(ctx);
     gScStaff.Register(ctx);
     gScHandyman.Register(ctx);
     gScMechanic.Register(ctx);
@@ -657,6 +659,7 @@ void ScriptEngine::UnregisterClasses()
     gScEntity.Unregister();
     gScPeep.Unregister();
     gScGuest.Unregister();
+    gScDuck.Unregister();
     gScStaff.Unregister();
     gScHandyman.Unregister();
     gScMechanic.Unregister();
