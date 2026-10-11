@@ -26,7 +26,7 @@ namespace OpenRCT2::GameActions
     void RideSetVisibilityAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
         visitor.Visit("ride", _rideIndex);
-        visitor.Visit("visiblity", _visibility);
+        visitor.Visit("visibility", _visibility);
     }
 
     uint16_t RideSetVisibilityAction::GetActionFlags() const
