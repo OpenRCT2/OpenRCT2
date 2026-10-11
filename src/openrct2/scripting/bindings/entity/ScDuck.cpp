@@ -11,42 +11,6 @@ namespace OpenRCT2::Scripting
 
     namespace
     {
-        constexpr size_t GetAnimationLength(OpenRCT2::Duck::DuckState state)
-        {
-            switch (state)
-            {
-                case OpenRCT2::Duck::DuckState::flyToWater:
-                    return 6;
-                case OpenRCT2::Duck::DuckState::swim:
-                    return 1;
-                case OpenRCT2::Duck::DuckState::drink:
-                    return 24;
-                case OpenRCT2::Duck::DuckState::doubleDrink:
-                    return 39;
-                case OpenRCT2::Duck::DuckState::flyAway:
-                    return 6;
-            }
-            return 0;
-        }
-
-        void AdvanceFrozenAnimation(OpenRCT2::Duck* duck)
-        {
-            if ((getGameState().currentTicks & 3) != 0)
-            {
-                return;
-            }
-
-            const auto length = GetAnimationLength(duck->getState());
-            if (length == 0)
-            {
-                return;
-            }
-
-            duck->frame++;
-            duck->frame %= static_cast<uint16_t>(length);
-            duck->invalidate();
-        }
-
         constexpr const char* kDuckAnimationNames[] = {
             "flyToWater",
             "swim",
@@ -159,7 +123,7 @@ namespace OpenRCT2::Scripting
         auto duck = GetDuck(thisVal);
         if (duck != nullptr)
         {
-            const auto length = GetAnimationLength(duck->getState());
+            const auto length = Duck::getAnimationLength(duck->getState());
             if (length != 0)
             {
                 duck->frame = static_cast<uint16_t>(value % length);

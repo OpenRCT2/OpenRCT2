@@ -73,9 +73,12 @@ namespace OpenRCT2
         void press();
         void update();
         uint32_t getFrameImage(int32_t direction) const;
-        bool isFlying();
+        bool isFlying() const;
         void remove();
         void serialise(DataSerialiser& stream);
+
+        // Returns the number of frames in the animation for the given state, or 0 if the state has no animation.
+        static size_t getAnimationLength(DuckState state);
 
     private:
         void updateFlyToWater();
