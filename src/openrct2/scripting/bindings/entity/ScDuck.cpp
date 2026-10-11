@@ -12,11 +12,7 @@ namespace OpenRCT2::Scripting
     namespace
     {
         constexpr const char* kDuckAnimationNames[] = {
-            "flyToWater",
-            "swim",
-            "drink",
-            "doubleDrink",
-            "flyAway",
+            "flyToWater", "swim", "drink", "doubleDrink", "flyAway",
         };
 
         std::optional<OpenRCT2::Duck::DuckState> GetDuckStateFromName(std::string_view name)
@@ -30,7 +26,7 @@ namespace OpenRCT2::Scripting
             }
             return std::nullopt;
         }
-    }
+    } // namespace
 
     JSValue ScDuck::New(JSContext* ctx, EntityId entityId)
     {
