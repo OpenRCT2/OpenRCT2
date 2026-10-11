@@ -94,8 +94,7 @@ static u8string ToLowerAscii(u8string_view str)
     u8string result(str);
     for (auto& c : result)
     {
-        if (c >= 'A' && c <= 'Z')
-            c += 'a' - 'A';
+        c = tolower(c);
     }
     return result;
 }
