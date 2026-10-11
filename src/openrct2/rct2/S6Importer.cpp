@@ -2318,7 +2318,7 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
         dst->targetX = src->TargetX;
         dst->targetY = src->TargetY;
-        dst->state = static_cast<::Duck::DuckState>(src->State);
+        dst->setState(static_cast<::Duck::DuckState>(src->State));
     }
 
     template<>
