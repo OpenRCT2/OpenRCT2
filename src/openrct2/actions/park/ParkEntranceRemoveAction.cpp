@@ -80,7 +80,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        auto direction = (park.entrances[entranceIndex].direction - 1) & 3;
+        auto direction = DirectionPrev(park.entrances[entranceIndex].direction);
 
         // Centre (sign)
         ParkEntranceRemoveSegment(_loc);

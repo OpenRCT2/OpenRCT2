@@ -11,14 +11,13 @@
 
 #include "../core/CoordsRange.hpp"
 #include "../core/Numerics.hpp"
+#include "../world/Direction.hpp"
 #include "../world/MapLimits.h"
 
 #include <cstdint>
 
 constexpr int16_t kLocationNull = -32768;
 constexpr int32_t kCoordsNull = 0xFFFF8000;
-
-constexpr auto kNumOrthogonalDirections = 4;
 
 /**
  * Tile coordinates use 1 x/y increment per tile and 1 z increment per step.
@@ -453,89 +452,6 @@ struct TileCoordsXYRangedZ : public TileCoordsXY
     }
 };
 
-/**
- * Cardinal directions are represented by the Direction type. It has four
- * possible values:
- * 0 is X-decreasing
- * 1 is Y-increasing
- * 2 is X-increasing
- * 3 is Y-decreasing
- * Direction is not used to model up/down, or diagonal directions.
- */
-using Direction = uint8_t;
-
-const Direction kInvalidDirection = 0xFF;
-
-/**
- * Array of all valid cardinal directions, to make it easy to write range-based for loops like:
- *   for (Direction d : kAllDirections)
- */
-constexpr Direction kAllDirections[] = {
-    0,
-    1,
-    2,
-    3,
-};
-
-/**
- * Given a direction, return the direction that points the other way,
- * on the same axis.
- */
-inline constexpr Direction DirectionReverse(Direction dir)
-{
-    return dir ^ 2;
-}
-
-inline constexpr bool DirectionValid(Direction dir)
-{
-    return dir < kNumOrthogonalDirections;
-}
-
-/**
- * Given a direction, return the next cardinal direction, wrapping around if necessary.
- * (TODO: Figure out if this is CW or CCW)
- */
-inline constexpr Direction DirectionNext(Direction dir)
-{
-    return (dir + 1) & 0x03;
-}
-
-/**
- * Given a direction, return the previous cardinal direction, wrapping around if necessary.
- * (TODO: Figure out if this is CW or CCW)
- */
-inline constexpr Direction DirectionPrev(Direction dir)
-{
-    return (dir - 1) & 0x03;
-}
-
-/**
- * Given two positions, return the cardinal direction which is closest to the direction from 'from' to 'to'.
- */
-inline constexpr Direction DirectionFromTo(const CoordsXY& from, const CoordsXY& to)
-{
-    int16_t x_diff = to.x - from.x;
-    int16_t y_diff = to.y - from.y;
-
-    int16_t abs_x = x_diff < 0 ? -x_diff : x_diff;
-    int16_t abs_y = y_diff < 0 ? -y_diff : y_diff;
-
-    if (abs_x <= abs_y)
-    {
-        return y_diff < 0 ? 3 : 1;
-    }
-
-    return x_diff < 0 ? 0 : 2;
-}
-
-/*
- * Flips the X axis so 1 and 3 are swapped 0 and 2 will stay the same.
- */
-inline constexpr Direction DirectionFlipXAxis(Direction direction)
-{
-    return (direction * 3) % 4;
-}
-
 struct CoordsXYZD : public CoordsXYZ
 {
     Direction direction{};
@@ -605,7 +521,7 @@ struct CoordsXYZD : public CoordsXYZ
 
     constexpr CoordsXYZD toTileCentre() const
     {
-        return toTileStart() + CoordsXYZD{ kCoordsXYHalfTile, kCoordsXYHalfTile, 0, 0 };
+        return toTileStart() + CoordsXY{ kCoordsXYHalfTile, kCoordsXYHalfTile };
     }
 };
 
@@ -667,6 +583,25 @@ struct TileCoordsXYZD : public TileCoordsXYZ
         direction = kInvalidDirection;
     }
 };
+
+/**
+ * Given two positions, return the cardinal direction which is closest to the direction from 'from' to 'to'.
+ */
+inline constexpr Direction DirectionFromTo(const CoordsXY& from, const CoordsXY& to)
+{
+    int16_t x_diff = to.x - from.x;
+    int16_t y_diff = to.y - from.y;
+
+    int16_t abs_x = x_diff < 0 ? -x_diff : x_diff;
+    int16_t abs_y = y_diff < 0 ? -y_diff : y_diff;
+
+    if (abs_x <= abs_y)
+    {
+        return y_diff < 0 ? 3 : 1;
+    }
+
+    return x_diff < 0 ? 0 : 2;
+}
 
 /**
  * Represents a rectangular range of the map using regular coordinates (32 per tile).
