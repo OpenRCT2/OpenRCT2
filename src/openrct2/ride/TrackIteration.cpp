@@ -284,7 +284,7 @@ namespace OpenRCT2
         int32_t y = input->y;
         int32_t OriginZ = inputElement->getBaseZ();
 
-        uint8_t rotation = inputElement->getDirection();
+        Direction rotation = inputElement->getDirection();
 
         CoordsXY coords = { x, y };
         CoordsXY trackCoordOffset = { trackCoordinate.x, trackCoordinate.y };

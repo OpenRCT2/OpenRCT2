@@ -123,7 +123,7 @@ money64 OpenRCT2::RideEntranceExitPlaceGhost(
  */
 void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
 {
-    int32_t direction = entrance.element->getDirection();
+    Direction direction = entrance.element->getDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->getBaseZ();
     RideId rideIndex = entrance.element->asEntrance()->getRideIndex();
@@ -160,7 +160,7 @@ void MazeEntranceHedgeReplacement(const CoordsXYE& entrance)
  */
 void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
 {
-    int32_t direction = entrance.element->getDirection();
+    Direction direction = entrance.element->getDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->getBaseZ();
     RideId rideIndex = entrance.element->asEntrance()->getRideIndex();

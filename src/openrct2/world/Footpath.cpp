@@ -219,9 +219,9 @@ namespace OpenRCT2
 
         std::get<0>(tileElements) = { initialTileElement, footpathPos };
         int32_t z = initialTileElement->getBaseZ();
-        for (int32_t initialDirection = 0; initialDirection < kNumOrthogonalDirections; initialDirection++)
+        for (Direction initialDirection : kAllDirections)
         {
-            int32_t direction = initialDirection;
+            Direction direction = initialDirection;
             auto currentPos = footpathPos + CoordsDirectionDelta[direction];
 
             std::get<1>(tileElements) = {
@@ -1552,7 +1552,7 @@ namespace OpenRCT2
             if (tileElement->asPath()->isQueue())
             {
                 FootpathQueueChainPush(tileElement->asPath()->getRideIndex());
-                for (int32_t direction = 0; direction < kNumOrthogonalDirections; direction++)
+                for (Direction direction : kAllDirections)
                 {
                     if (tileElement->asPath()->getEdges() & (1 << direction))
                     {
@@ -1764,7 +1764,7 @@ namespace OpenRCT2
 
         FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
 
-        for (uint8_t direction = 0; direction < kNumOrthogonalDirections; direction++)
+        for (Direction direction : kAllDirections)
         {
             int32_t z1 = tileElement->baseHeight;
             if (tileElement->getType() == TileElementType::path)
@@ -1890,7 +1890,7 @@ namespace OpenRCT2
         return ride->getRideTypeDescriptor().flags.has(RtdFlag::supportsLevelCrossings);
     }
 
-    bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t currentZ, int32_t currentDirection)
+    bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t currentZ, Direction currentDirection)
     {
         if (pathElement.isSloped())
         {

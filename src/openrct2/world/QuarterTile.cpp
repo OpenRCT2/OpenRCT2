@@ -13,7 +13,7 @@
 #include "Location.hpp"
 
 // Rotate both of the values amount
-const QuarterTile QuarterTile::Rotate(uint8_t amount) const
+const QuarterTile QuarterTile::Rotate(Direction amount) const
 {
     switch (amount)
     {

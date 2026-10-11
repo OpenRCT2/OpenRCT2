@@ -3467,7 +3467,7 @@ namespace OpenRCT2::Ui::Windows
             PathElement* pathsByDir[kNumOrthogonalDirections];
 
             bool keepOrientation = false;
-            for (int8_t i = 0; i < kNumOrthogonalDirections; i++)
+            for (Direction i : kAllDirections)
             {
                 const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
                 if (!MapIsLocationOwned(testLoc))
@@ -3509,7 +3509,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!keepOrientation)
             {
-                for (int8_t i = 0; i < kNumOrthogonalDirections; i++)
+                for (Direction i : kAllDirections)
                 {
                     if (pathsByDir[i] != nullptr)
                     {

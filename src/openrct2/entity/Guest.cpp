@@ -4908,7 +4908,7 @@ namespace OpenRCT2
         uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
         uint8_t openCount = 0;
         uint8_t mazeReverseLastEdge = DirectionReverse(mazeLastEdge);
-        for (uint8_t i = 0; i < kNumOrthogonalDirections; ++i)
+        for (Direction i : kAllDirections)
         {
             if (!(mazeEntry & (1 << kMazeCurrentDirectionToOpenHedge[var37 / 4][i])) && i != mazeReverseLastEdge)
             {
