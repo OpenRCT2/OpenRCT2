@@ -393,6 +393,7 @@ declare global {
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "scenerysetrestricted", args: ScenerySetRestrictedArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -485,6 +486,7 @@ declare global {
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "scenerysetrestricted", args: ScenerySetRestrictedArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -749,6 +751,7 @@ declare global {
         "ridesetvehicle" |
         "ridesetvisibility" |
         "scenariosetsetting" |
+        "scenerysetrestricted" |
         "signsetname" |
         "signsetstyle" |
         "smallsceneryplace" |
@@ -1381,6 +1384,12 @@ declare global {
          */
         setting: number;
         value: number;
+    }
+
+    interface ScenerySetRestrictedArgs extends GameActionArgs {
+        objectType: number;
+        objectIndex: number;
+        isRestricted: boolean;
     }
 
     interface SignSetNameArgs extends GameActionArgs {
