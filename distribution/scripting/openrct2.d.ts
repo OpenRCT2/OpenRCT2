@@ -391,6 +391,7 @@ declare global {
         queryAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
@@ -482,6 +483,7 @@ declare global {
         executeAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
@@ -745,6 +747,7 @@ declare global {
         "ridesetsetting" |
         "ridesetstatus" |
         "ridesetvehicle" |
+        "ridesetvisibility" |
         "scenariosetsetting" |
         "signsetname" |
         "signsetstyle" |
@@ -1365,6 +1368,11 @@ declare global {
          * Only used if {@link RideSetVehicleArgs.type} === 2 (ride entry)
          */
         colour: number;
+    }
+
+    interface RideSetVisibilityArgs extends GameActionArgs {
+        ride: number;
+        visibility: boolean;
     }
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
