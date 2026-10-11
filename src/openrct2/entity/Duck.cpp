@@ -72,30 +72,12 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
 
     namespace
     {
-        constexpr size_t GetFrozenAnimationLength(Duck::DuckState state)
-        {
-            switch (state)
-            {
-                case Duck::DuckState::flyToWater:
-                    return std::size(kDuckAnimationFlyToWater);
-                case Duck::DuckState::swim:
-                    return std::size(kDuckAnimationSwim);
-                case Duck::DuckState::drink:
-                    return std::size(kDuckAnimationDrink) - 1;
-                case Duck::DuckState::doubleDrink:
-                    return std::size(kDuckAnimationDoubleDrink) - 1;
-                case Duck::DuckState::flyAway:
-                    return std::size(kDuckAnimationFlyAway);
-            }
-            return 0;
-        }
-
         void AdvanceFrozenAnimation(Duck& duck)
         {
             if ((getGameState().currentTicks & 3) != 0)
                 return;
 
-            const auto length = GetFrozenAnimationLength(duck.getState());
+            const auto length = Duck::getAnimationLength(duck.getState());
             if (length == 0)
                 return;
 
@@ -105,13 +87,31 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
     }
 
+    size_t Duck::getAnimationLength(DuckState state)
+    {
+        switch (state)
+        {
+            case DuckState::flyToWater:
+                return std::size(kDuckAnimationFlyToWater);
+            case DuckState::swim:
+                return std::size(kDuckAnimationSwim);
+            case DuckState::drink:
+                return std::size(kDuckAnimationDrink) - 1;
+            case DuckState::doubleDrink:
+                return std::size(kDuckAnimationDoubleDrink) - 1;
+            case DuckState::flyAway:
+                return std::size(kDuckAnimationFlyAway);
+        }
+        return 0;
+    }
+
     template<>
     bool EntityBase::is<Duck>() const
     {
         return type == EntityType::duck;
     }
 
-    bool Duck::isFlying()
+    bool Duck::isFlying() const
     {
         return this->getState() == DuckState::flyAway || this->getState() == DuckState::flyToWater;
     }
