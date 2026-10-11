@@ -1258,6 +1258,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 invalidate();
             }
+
+            if (guest->windowInvalidateFlags.has(PeepInvalidateFlag::favouriteRide))
+            {
+                guest->windowInvalidateFlags.unset(PeepInvalidateFlag::favouriteRide);
+                invalidate();
+            }
         }
 
         ScreenSize onScrollGetSizeRides(int32_t scrollIndex)
