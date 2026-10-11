@@ -112,7 +112,7 @@ namespace OpenRCT2::Scripting
         for (auto i = EnumValue(ResearchCategory::transport); i <= EnumValue(ResearchCategory::sceneryGroup); i++)
         {
             auto category = static_cast<ResearchCategory>(i);
-            if (getGameState().researchPriorities & EnumToFlag(category))
+            if (getGameState().researchPriorities.has(category))
             {
                 JS_SetPropertyInt64(ctx, result, index++, JSFromStdString(ctx, ResearchCategoryMap[category]));
             }
@@ -125,13 +125,13 @@ namespace OpenRCT2::Scripting
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
         JS_UNPACK_ARRAY(values, ctx, value);
 
-        auto priorities = 0;
+        ResearchPriorities priorities = {};
         JSIterateArray(ctx, values, [&priorities](JSContext* ctx2, JSValue val) {
             auto item = JSToStdString(ctx2, val);
             auto category = ResearchCategoryMap.TryGet(item);
             if (category)
             {
-                priorities |= EnumToFlag(*category);
+                priorities.set(*category);
             }
         });
 
