@@ -37,6 +37,12 @@ namespace OpenRCT2::Drawing
 
         void invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) noexcept;
 
+        /** Whether any block has been invalidated since the last traversal or reset. */
+        bool isDirty() const noexcept
+        {
+            return _lowestRow != std::numeric_limits<uint32_t>::max();
+        }
+
         template<typename F>
         void traverseDirtyCells(F&& func)
         {

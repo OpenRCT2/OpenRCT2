@@ -47,10 +47,16 @@ namespace OpenRCT2::Ui
         {
             return _backDepth;
         }
+        GLuint GetWorldDepthTexture() const
+        {
+            return _opaqueFramebuffer.GetWorldDepthTexture();
+        }
         void BindOpaque()
         {
             _opaqueFramebuffer.Bind();
         }
+        void ClearWorldDepth();
+        void ClearWorldDepthRect(int32_t left, int32_t top, int32_t right, int32_t bottom);
         void BindTransparent()
         {
             _transparentFramebuffer.Bind();

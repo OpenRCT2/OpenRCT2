@@ -10,6 +10,7 @@
 #ifndef DISABLE_OPENGL
 
     #include "../DrawingEngineFactory.hpp"
+    #include "ApplyDropShadowShader.h"
     #include "ApplyPaletteShader.h"
     #include "ApplyTransparencyShader.h"
     #include "CopyRectShader.h"
@@ -25,9 +26,20 @@
 
     #include <SDL_video.h>
     #include <algorithm>
+    #include <array>
     #include <cassert>
     #include <cmath>
+    #include <cstdlib>
+    #include <cstring>
+    #include <openrct2-ui/interface/Window.h>
+    #include <openrct2/Context.h>
+    #include <openrct2/OpenRCT2.h>
+    #include <openrct2/PlatformEnvironment.h>
     #include <openrct2/config/Config.h>
+    #include <openrct2/core/Console.hpp>
+    #include <openrct2/core/File.h>
+    #include <openrct2/core/Imaging.h>
+    #include <openrct2/core/Path.hpp>
     #include <openrct2/drawing/Drawing.Sprite.h>
     #include <openrct2/drawing/Drawing.String.h>
     #include <openrct2/drawing/Drawing.h>
@@ -39,9 +51,17 @@
     #include <openrct2/drawing/TTF.h>
     #include <openrct2/drawing/WeatherDrawer.h>
     #include <openrct2/interface/Screenshot.h>
+    #include <openrct2/interface/Viewport.h>
     #include <openrct2/interface/Window.h>
+    #include <openrct2/interface/WindowBase.h>
+    #include <openrct2/paint/Paint.h>
     #include <openrct2/ui/UiContext.h>
+    #include <openrct2/world/Map.h>
     #include <openrct2/world/Weather.h>
+    #include <openrct2/world/tile_element/SurfaceElement.h>
+    #include <openrct2/world/tile_element/TileElement.h>
+    #include <optional>
+    #include <unordered_map>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -61,6 +81,47 @@ constexpr uint8_t kCSRight = 0b0010;
 constexpr uint8_t kCSTop = 0b0100;
 constexpr uint8_t kCSBottom = 0b1000;
 
+/** View-space units per destination pixel for a zoom level (0.5 zoomed in, 2 zoomed out, ...). */
+static float ZoomScaleOf(ZoomLevel zoom)
+{
+    const int8_t level = static_cast<int8_t>(zoom);
+    return level >= 0 ? static_cast<float>(1 << level) : 1.0f / static_cast<float>(1 << -level);
+}
+
+/** Shadows are drawn this frame: switched on, and not under rain or snow - except for the one
+    frame a lightning flash lights the storm, by which time UpdatePaletteEffects has moved
+    gLightningFlash to 2. */
+static bool ShadowsActiveThisFrame()
+{
+    return Config::Get().general.dropShadows && (!Weather::isPrecipitating() || Weather::gLightningFlash == 2);
+}
+
+/** Writes GL-order (bottom-up) RGBA8 rows to a PNG. */
+static void WriteBottomUpRgbaPng(const std::string& path, int32_t width, int32_t height, const std::vector<uint8_t>& rgba)
+{
+    const size_t stride = static_cast<size_t>(width) * 4u;
+    Image image;
+    image.Width = width;
+    image.Height = height;
+    image.Depth = 32;
+    image.Stride = static_cast<uint32_t>(stride);
+    image.Pixels.resize(rgba.size());
+    for (int32_t y = 0; y < height; y++)
+    {
+        std::memcpy(
+            image.Pixels.data() + static_cast<size_t>(y) * stride, rgba.data() + static_cast<size_t>(height - 1 - y) * stride,
+            stride);
+    }
+    try
+    {
+        Imaging::WriteToFile(path, image, ImageFormat::png);
+    }
+    catch (const std::exception& e)
+    {
+        LOG_ERROR("Unable to write %s: %s", path.c_str(), e.what());
+    }
+}
+
 class OpenGLDrawingEngine;
 
 class OpenGLDrawingContext final : public IDrawingContext
@@ -68,13 +129,84 @@ class OpenGLDrawingContext final : public IDrawingContext
 private:
     OpenGLDrawingEngine& _engine;
     std::unique_ptr<ApplyTransparencyShader> _applyTransparencyShader;
+    std::unique_ptr<ApplyDropShadowShader> _applyDropShadowShader;
     std::unique_ptr<DrawLineShader> _drawLineShader;
     std::unique_ptr<DrawRectShader> _drawRectShader;
     std::unique_ptr<SwapFramebuffer> _swapFramebuffer;
+    std::unique_ptr<OpenGLFramebuffer> _shadowFramebuffer;
+    OpenGLFramebuffer* _flushTarget = nullptr;
 
     std::unique_ptr<TextureCache> _textureCache;
 
     int32_t _drawCount = 0;
+    SpriteWorldDepthHint _spriteWorldDepth{};
+    /** Zoom of the destination while DrawSprite draws a sprite's zoomed-out variant through
+        an RT one level further in. */
+    std::optional<ZoomLevel> _depthZoomOverride;
+
+    // Canvas (camera) size, so the sun pass can restore the shaders' screen size.
+    int32_t _canvasWidth = 0;
+    int32_t _canvasHeight = 0;
+
+    /** Every visible viewport needs its own sun capture: a mini-viewport (ride camera, tile
+        preview, ...) can sit at a different zoom, rotation or position than the main view, so
+        one shared sun buffer is only ever correct for whichever viewport captured last. Keyed
+        by the camera Viewport's address, which is stable for that viewport's lifetime. */
+    struct SunCapture
+    {
+        /** Sized to this viewport's world footprint under the sun's 90-degree yaw, so it is
+            deliberately not canvas-sized. */
+        std::unique_ptr<OpenGLFramebuffer> framebuffer;
+        /** The sun pass paints through the normal software-RT bookkeeping, which locates an RT
+            by pointer-diffing against getRT()->bits, so it needs a bits block of its own. */
+        std::unique_ptr<PaletteIndex[]> bits;
+        RenderTarget rt{};
+        /** Sun-space projection the buffer contents were painted with. pos stays {0,0}, so
+            projecting through it lands directly in the buffer's own pixel space. */
+        Viewport sunViewport{};
+        /** View-units per sun-buffer texel. */
+        float zoomScale = 1.0f;
+        /** False until the first full paint, and whenever the buffer is reallocated. */
+        bool contentsValid = false;
+
+        /** Dirty blocks in sun-buffer space since the last capture, fed by
+            RegisterShadowInvalidationTarget: every world invalidation that reaches a real
+            viewport is also projected through sunViewport and marked here. */
+        Drawing::InvalidationGrid invalidationGrid;
+
+        /** The grid is only as good as the invalidations feeding it; anything that animates
+            without issuing one would cast a stale shadow for as long as the camera holds
+            still. Each capture therefore also repaints one column band, sweeping the whole
+            buffer every kSunRefreshSweepCaptures captures. A column costs its share of a full
+            repaint and no more, unlike a row band, which pays the paint traversal's whole
+            vertical margin, and unlike a periodic full repaint, which hitches. */
+        int32_t refreshSweepIndex = 0;
+
+        /** Cleared and re-marked each ApplyDropShadows call; captures whose viewport was not
+            visible this frame are unregistered and freed. */
+        bool usedThisFrame = false;
+    };
+    std::unordered_map<const Viewport*, SunCapture> _sunCaptures;
+    /** Lightning: the sun stands on the camera's left instead of its right for this frame. */
+    bool _sunFromLeft = false;
+    bool _inLightningFlash = false;
+    uint32_t _lightningFlashCount = 0;
+    static constexpr int32_t kSunRefreshSweepCaptures = 30;
+    /** Sun-grid block size. Measured on a busy park: 256 repaints a whole block for one peep,
+        while 64 and below split the work into so many rects that the paint traversal's
+        per-rect margin dominates, even after merging. */
+    static constexpr uint32_t kSunGridBlockSize = 128;
+
+    /** Scratch target for scrolling a sun buffer: GL leaves an overlapping blit within one
+        framebuffer undefined, so the shift goes through here. Shared by every capture and
+        grown to the largest one. */
+    std::unique_ptr<OpenGLFramebuffer> _sunScrollScratch;
+
+    /** The mask in _shadowFramebuffer stays correct for as long as neither the world, nor any
+        sun buffer, nor any viewport's projection changed, so it is cached against those. */
+    bool _shadowMaskValid = false;
+    bool _worldRedrawn = true;
+    uint64_t _shadowViewportKey = 0;
 
     #ifndef DISABLE_TTF
     uint32_t _ttfGlId = 0;
@@ -92,6 +224,7 @@ private:
     static uint8_t ComputeOutCode(ScreenCoordsXY, ScreenCoordsXY, ScreenCoordsXY);
     static bool CohenSutherlandLineClip(ScreenLine&, const RenderTarget&);
     [[nodiscard]] ScreenRect CalculateClipping(const RenderTarget& rt) const;
+    void ApplyWorldDepthToCommand(DrawRectCommand& command, const RenderTarget& rt, const ScreenRect& clip);
 
 public:
     explicit OpenGLDrawingContext(OpenGLDrawingEngine& engine);
@@ -112,11 +245,67 @@ public:
         return _swapFramebuffer->GetFinalFramebuffer();
     }
 
+    GLuint GetWorldDepthTexture() const
+    {
+        return _swapFramebuffer->GetWorldDepthTexture();
+    }
+
+    GLuint GetShadowTexture() const
+    {
+        return _shadowFramebuffer != nullptr ? _shadowFramebuffer->GetTexture() : 0;
+    }
+
     void Initialise();
     void Resize(int32_t width, int32_t height);
     void ResetPalette();
     void StartNewDraw();
     void FinishDraw();
+    void ApplyDropShadows();
+    /** Returns the (possibly newly created) capture for cameraVp, or nullptr if this frame's
+        capture failed (not mid-draw, or the sun target couldn't be allocated). */
+    SunCapture* CaptureSunDepth(const Viewport& cameraVp);
+    using SunRects = sfl::static_vector<ScreenRect, 128>;
+    using ShadowedViewports = sfl::static_vector<const Viewport*, kMaxViewportCount>;
+    /** The sun-space projection that covers cameraVp's world footprint, with the capture's
+        target allocated to fit. Nothing if the target could not be allocated. */
+    std::optional<Viewport> PlaceSunProjection(SunCapture& capture, const Viewport& cameraVp);
+    /** What an incremental repaint must redraw, merged by paint cost. Consumes the dirty grid. */
+    SunRects CollectSunRepaintRects(SunCapture& capture, const Viewport& sunVp, ScreenCoordsXY shift);
+    void BeginSunPass(SunCapture& capture);
+    void EndSunPass();
+    void RenderSunRect(SunCapture& capture, const Viewport& sunVp, const ScreenRect& rect, uint8_t cameraRotation);
+    void UpdateLightning();
+    void ReleaseSunCaptures();
+    ShadowedViewports SelectShadowedViewports() const;
+    /** Changes whenever a shadowed viewport's projection or the sun's side does. */
+    uint64_t ShadowViewportKey(const ShadowedViewports& viewports) const;
+    /** Frees the captures of viewports no longer shadowed; true if a remaining one has dirt. */
+    bool RetireUnusedSunCaptures(const ShadowedViewports& viewports);
+    void ResolveViewport(const Viewport& vp, const SunCapture& capture);
+    void EnsureSunTarget(SunCapture& capture, const Viewport* ownerKey, int32_t width, int32_t height);
+    /** Moves the buffer contents by shift texels (top-down). False if it could not. */
+    bool ScrollSunBuffer(SunCapture& capture, ScreenCoordsXY shift);
+    void ClearWorldDepth();
+    void ClearWorldDepthRect(int32_t left, int32_t top, int32_t right, int32_t bottom);
+
+    /** Any repaint of world pixels invalidates the cached shadow mask. */
+    void NotifyWorldRedrawn()
+    {
+        _worldRedrawn = true;
+    }
+
+    /** Force a full resolve on the next call, ignoring the one-frame lag allowance. Used by
+        the screenshot path, which must not hand back a mask that trails the frame. */
+    void InvalidateShadowMask()
+    {
+        _shadowMaskValid = false;
+        _worldRedrawn = true;
+    }
+
+    void SetSpriteWorldDepthHint(const SpriteWorldDepthHint& hint) override
+    {
+        _spriteWorldDepth = hint;
+    }
 
     void Clear(RenderTarget& rt, PaletteIndex paletteIndex) override;
     void FillRect(
@@ -134,6 +323,7 @@ public:
         uint8_t hintingThreshold) override;
 
     void FlushCommandBuffers();
+    void DrawRectsMaskingDepthlessRuns(const RectCommandBatch& batch);
 
     bool IsActive() const
     {
@@ -211,6 +401,10 @@ private:
     std::unique_ptr<PaletteIndex[]> _bits;
 
     RenderTarget _mainRT = {};
+    // While the sun-depth pass runs it paints into its own, larger render target.
+    // CalculateClipping locates an RT by pointer-diffing against whatever getRT()
+    // returns, so the override has to be swapped in for the whole sun pass.
+    RenderTarget* _rtOverride = nullptr;
 
     std::unique_ptr<OpenGLDrawingContext> _drawingContext;
 
@@ -227,6 +421,7 @@ private:
 public:
     SDL_Color Palette[256];
     vec4 GLPalette[256];
+    GLuint _shadeRemapTexture = 0;
 
     explicit OpenGLDrawingEngine(IUiContext& uiContext)
         : _uiContext(uiContext)
@@ -277,7 +472,7 @@ public:
         ConfigureDirtyGrid();
 
         _drawingContext->Resize(width, height);
-        _tempFramebuffer = std::make_unique<OpenGLFramebuffer>(width, height);
+        _tempFramebuffer = std::make_unique<OpenGLFramebuffer>(width, height, false, true, false, true);
 
         _drawingContext->StartNewDraw();
         _drawingContext->Clear(_mainRT, PaletteIndex::pi10);
@@ -338,6 +533,8 @@ public:
     {
         _drawingContext->FlushCommandBuffers();
 
+        _drawingContext->ApplyDropShadows();
+
         glDisable(GL_DEPTH_TEST);
         if (_scaleFramebuffer != nullptr)
         {
@@ -349,9 +546,7 @@ public:
             _screenFramebuffer->Bind();
         }
 
-        _applyPaletteShader->Use();
-        _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
-        _applyPaletteShader->Draw();
+        DrawPaletteComposite();
 
         if (_smoothScaleFramebuffer != nullptr)
         {
@@ -370,10 +565,49 @@ public:
         Display();
     }
 
+    /** Palette lookup and shadow mask, into whatever framebuffer is bound. */
+    /** The game's own darkening palettes - darken 1, 2 and 3 - as a 256x3 index lookup, so the
+        composite can shade a pixel by stepping down its colour ramp the way the art is shaded,
+        rather than multiplying it toward black. Built once the sprite data is loaded. */
+    void EnsureShadeRemapTexture()
+    {
+        if (_shadeRemapTexture != 0)
+            return;
+        std::array<uint8_t, 256 * 3> table{};
+        const FilterPaletteID levels[3] = { FilterPaletteID::paletteDarken1, FilterPaletteID::paletteDarken2,
+                                            FilterPaletteID::paletteDarken3 };
+        for (int32_t level = 0; level < 3; level++)
+        {
+            const auto map = GetPaletteMapForColour(levels[level]);
+            for (int32_t i = 0; i < 256; i++)
+                table[level * 256 + i] = map.has_value() ? static_cast<uint8_t>((*map)[i]) : static_cast<uint8_t>(i);
+        }
+        glCall(glGenTextures, 1, &_shadeRemapTexture);
+        glCall(glBindTexture, GL_TEXTURE_2D, _shadeRemapTexture);
+        glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glCall(glPixelStorei, GL_UNPACK_ALIGNMENT, 1);
+        glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_R8UI, 256, 3, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, table.data());
+    }
+
+    void DrawPaletteComposite()
+    {
+        EnsureShadeRemapTexture();
+        _applyPaletteShader->Use();
+        _applyPaletteShader->SetUseShadows(ShadowsActiveThisFrame());
+        ApplyPaletteShader::SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
+        ApplyPaletteShader::SetShadowTexture(_drawingContext->GetShadowTexture());
+        ApplyPaletteShader::SetWorldDepthTexture(_drawingContext->GetWorldDepthTexture());
+        ApplyPaletteShader::SetShadeRemapTexture(_shadeRemapTexture);
+        _applyPaletteShader->Draw();
+    }
+
     void PaintWindows() override
     {
         if (Weather::hasWeatherEffect() || gPaintForceRedraw)
         {
+            _drawingContext->NotifyWorldRedrawn();
+            _drawingContext->ClearWorldDepth();
             WindowUpdateAllViewports();
             // OpenGL doesn't support restoring pixels, always redraw.
             // TODO: Render the weather to a texture and use that instead.
@@ -399,6 +633,8 @@ public:
 
     void DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
+        _drawingContext->NotifyWorldRedrawn();
+        _drawingContext->ClearWorldDepthRect(left, top, right, bottom);
         // Draw region
         WindowDrawAll(_mainRT, left, top, right, bottom);
     }
@@ -410,11 +646,35 @@ public:
 
     std::string Screenshot() override
     {
-        const OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
-        framebuffer.Bind();
-        framebuffer.GetPixels(_mainRT);
-        std::string result = ScreenshotDumpPNG(_mainRT);
-        return result;
+        // The screen shows a composited RGB frame, not the palette-indexed canvas, so shoot
+        // that: shadows and all. A screenshot must not hand back a mask that trails the
+        // frame by the one-frame lag the live view allows, so force a full resolve.
+        _drawingContext->FlushCommandBuffers();
+        _drawingContext->InvalidateShadowMask();
+        _drawingContext->ApplyDropShadows();
+
+        const auto width = static_cast<int32_t>(_width);
+        const auto height = static_cast<int32_t>(_height);
+        std::vector<uint8_t> pixels(static_cast<size_t>(width) * static_cast<size_t>(height) * 4u);
+        OpenGLFramebuffer rgbaFramebuffer(width, height, false, false);
+        rgbaFramebuffer.Bind();
+        glDisable(GL_DEPTH_TEST);
+        _applyPaletteShader->Use();
+        _applyPaletteShader->SetPalette(GLPalette);
+        DrawPaletteComposite();
+        glCall(glPixelStorei, GL_PACK_ALIGNMENT, 1);
+        glCall(glReadPixels, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+
+        _drawingContext->FinishDraw();
+
+        const auto outPath = ScreenshotGetNextPath();
+        if (!outPath.has_value())
+        {
+            return {};
+        }
+
+        WriteBottomUpRgbaPng(*outPath, width, height, pixels);
+        return File::Exists(*outPath) ? *outPath : std::string{};
     }
 
     void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override
@@ -422,12 +682,22 @@ public:
         if (dx == 0 && dy == 0)
             return;
 
+    #ifdef __MACOSX__
+        // The macOS path below round-trips the palette indices through the CPU and has no
+        // way to carry the world-depth attachment along, so redraw the moved region instead.
+        _drawingContext->ClearWorldDepth();
+        _invalidationGrid.invalidate(0, 0, static_cast<int32_t>(_width), static_cast<int32_t>(_height));
+        return;
+    #endif
+
         _drawingContext->FlushCommandBuffers();
 
         auto& framebuffer = _drawingContext->GetFinalFramebuffer();
 
         const int32_t texWidth = static_cast<int32_t>(framebuffer.GetWidth());
         const int32_t texHeight = static_cast<int32_t>(framebuffer.GetHeight());
+
+        const ScreenRect shiftedRect{ { x, y }, { x + width, y + height } };
 
         // Adjust for move off screen
         int32_t lmargin = std::min(x - dx, 0);
@@ -459,9 +729,11 @@ public:
         glCall(glDisable, GL_BLEND);
         glCall(glDisable, GL_DEPTH_TEST);
 
-        // First pass: Copy from main to temp
+        // First pass: Copy from main to temp. The copy shader only writes the colour output, so
+        // restrict both targets to that attachment; the world-depth one is blitted separately.
         GLuint mainTexture = framebuffer.GetTexture();
         tempBuffer.BindDraw();
+        glCall(glDrawBuffer, GL_COLOR_ATTACHMENT0);
         framebuffer.BindRead();
         glCall(glViewport, 0, 0, width, height);
         _copyRectShader->Use();
@@ -473,6 +745,7 @@ public:
         // Second pass: Copy from temp to main
         GLuint tempTexture = tempBuffer.GetTexture();
         framebuffer.BindDraw();
+        glCall(glDrawBuffer, GL_COLOR_ATTACHMENT0);
         tempBuffer.BindRead();
         glCall(glViewport, destX, destY, width, height);
         _copyRectShader->Use();
@@ -480,6 +753,28 @@ public:
         _copyRectShader->SetSourceRect(0, 0, width, height);
         _copyRectShader->SetTextureSize(texWidth, texHeight);
         _copyRectShader->Draw();
+
+        // World positions are absolute, so the G-buffer scrolls exactly like the colour does.
+        tempBuffer.BlitWorldDepth(framebuffer, srcX, srcY, width, height, 0, 0);
+        framebuffer.BlitWorldDepth(tempBuffer, 0, 0, width, height, destX, destY);
+
+        // The caller repaints the strips this shift exposed with WindowDrawAll, which writes
+        // depth only where it draws something, so void at the map edge would keep whatever
+        // was there before. Clear them - after the copy, since they were part of its source.
+        const int32_t left = shiftedRect.getLeft();
+        const int32_t top = shiftedRect.getTop();
+        const int32_t right = shiftedRect.getRight();
+        const int32_t bottom = shiftedRect.getBottom();
+        if (dx > 0)
+            _drawingContext->ClearWorldDepthRect(left, top, left + dx, bottom);
+        else if (dx < 0)
+            _drawingContext->ClearWorldDepthRect(right + dx, top, right, bottom);
+        if (dy > 0)
+            _drawingContext->ClearWorldDepthRect(left, top, right, top + dy);
+        else if (dy < 0)
+            _drawingContext->ClearWorldDepthRect(left, bottom + dy, right, bottom);
+
+        framebuffer.Bind();
 
     #else
 
@@ -525,7 +820,13 @@ public:
 
     RenderTarget* getRT() override
     {
-        return &_mainRT;
+        return _rtOverride != nullptr ? _rtOverride : &_mainRT;
+    }
+
+    /** Redirect getRT() for the duration of an off-screen pass (sun depth capture). */
+    void SetRTOverride(RenderTarget* rt)
+    {
+        _rtOverride = rt;
     }
 
     DrawingEngineFlags GetFlags() override
@@ -643,6 +944,7 @@ void OpenGLDrawingContext::Initialise()
 {
     _textureCache = std::make_unique<TextureCache>();
     _applyTransparencyShader = std::make_unique<ApplyTransparencyShader>();
+    _applyDropShadowShader = std::make_unique<ApplyDropShadowShader>();
     _drawRectShader = std::make_unique<DrawRectShader>();
     _drawLineShader = std::make_unique<DrawLineShader>();
 }
@@ -657,8 +959,727 @@ void OpenGLDrawingContext::Resize(int32_t width, int32_t height)
     _drawLineShader->Use();
     _drawLineShader->SetScreenSize(width, height);
 
+    _canvasWidth = width;
+    _canvasHeight = height;
+
     // Re-create canvas framebuffer
     _swapFramebuffer = std::make_unique<SwapFramebuffer>(width, height);
+    _shadowFramebuffer = std::make_unique<OpenGLFramebuffer>(width, height, false, false);
+    // Sun framebuffers are allocated lazily by EnsureSunTarget — their size depends on each
+    // viewport's world footprint under a 90° yaw, not on the canvas size. Every viewport's
+    // captures still get discarded here: a canvas resize usually comes with viewport size
+    // changes too, and any that don't will just get a fresh (still correct) full capture next
+    // frame - simpler and safer than trying to figure out which ones are still valid.
+    for (auto& [owner, capture] : _sunCaptures)
+    {
+        UnregisterShadowInvalidationTarget(owner);
+    }
+    _sunCaptures.clear();
+    _shadowMaskValid = false;
+    _worldRedrawn = true;
+}
+
+void OpenGLDrawingContext::EnsureSunTarget(SunCapture& capture, const Viewport* ownerKey, int32_t width, int32_t height)
+{
+    // Grow to cover both this request and whatever the target already holds, so a viewport
+    // that resizes or re-zooms slightly does not reallocate every frame. A larger capture only
+    // sees more of the world, so it stays correct - but stop growing once that costs more than
+    // double the area actually asked for, and let it shrink back instead.
+    if (capture.framebuffer != nullptr)
+    {
+        const int32_t grownWidth = std::max(width, capture.rt.width);
+        const int32_t grownHeight = std::max(height, capture.rt.height);
+        if (static_cast<int64_t>(grownWidth) * grownHeight <= 2 * static_cast<int64_t>(width) * height)
+        {
+            width = grownWidth;
+            height = grownHeight;
+        }
+    }
+
+    if (capture.framebuffer != nullptr && capture.rt.width == width && capture.rt.height == height)
+    {
+        return;
+    }
+
+    // Allocation can genuinely fail: one capture is live per visible viewport, and a tall
+    // window drives this hard (the camera's screen HEIGHT sets the sun buffer's WIDTH, doubled).
+    // Failing to shadow one viewport is far better than dying, so drop the capture and carry
+    // on; a null framebuffer makes CaptureSunDepth skip this viewport for the frame.
+    try
+    {
+        capture.framebuffer = std::make_unique<OpenGLFramebuffer>(width, height, true, true, false, true, /*depth16*/ true);
+        // GPU-side failure does not throw - glTexImage2D reports an error and leaves the
+        // framebuffer incomplete, which only crashes once something draws into it.
+        if (!capture.framebuffer->IsComplete())
+        {
+            throw std::runtime_error("framebuffer incomplete (GPU allocation likely failed)");
+        }
+
+        const size_t bitsSize = static_cast<size_t>(width) * static_cast<size_t>(height);
+        capture.bits = std::make_unique<PaletteIndex[]>(bitsSize);
+        std::fill_n(capture.bits.get(), bitsSize, PaletteIndex::transparent);
+    }
+    catch (const std::exception& e)
+    {
+        LOG_ERROR("Sun depth target %dx%d could not be allocated (%s); skipping shadows here", width, height, e.what());
+        capture.framebuffer.reset();
+        capture.bits.reset();
+        capture.rt = {};
+        capture.contentsValid = false;
+        return;
+    }
+
+    capture.rt = {};
+    capture.rt.bits = capture.bits.get();
+    capture.rt.width = width;
+    capture.rt.height = height;
+    capture.rt.DrawingEngine = _engine.getRT()->DrawingEngine;
+
+    // Nothing in the new buffer has been painted, so the next capture must be a full one, and
+    // any blocks accumulated against the old buffer mean nothing.
+    capture.contentsValid = false;
+    capture.invalidationGrid.reset(width, height, kSunGridBlockSize, kSunGridBlockSize);
+    RegisterShadowInvalidationTarget(ownerKey, &capture.sunViewport, &capture.invalidationGrid);
+
+    LOG_VERBOSE(
+        "Sun depth target allocated: %dx%d (canvas %dx%d, owner %p)", width, height, _canvasWidth, _canvasHeight,
+        static_cast<const void*>(ownerKey));
+}
+
+void OpenGLDrawingContext::ApplyWorldDepthToCommand(DrawRectCommand& command, const RenderTarget& rt, const ScreenRect& clip)
+{
+    if (!_spriteWorldDepth.valid || _spriteWorldDepth.mode == SpriteWorldDepthMode::none)
+    {
+        command.world0 = { 0.0f, 0.0f, 0.0f, 0.0f };
+        command.world1 = { 0.0f, 0.0f, 0.0f, 0.0f };
+        return;
+    }
+
+    if (_spriteWorldDepth.mode == SpriteWorldDepthMode::worldNone)
+    {
+        command.world0 = { 0.0f, 0.0f, 0.0f, 0.0f };
+        command.world1 = { 0.0f, 0.0f, static_cast<float>(static_cast<int>(SpriteWorldDepthMode::worldNone)), 0.0f };
+        return;
+    }
+
+    const float yOffset = static_cast<float>(clip.getTop() - rt.y);
+    // A destination pixel is one view-space unit only at zoom 0, so each command carries the
+    // scale of the RT it is drawn into. Take it from the RT rather than from any viewport: every
+    // viewport, and the sun pass, paints at its own zoom. A wrong scale throws the solve off
+    // the tile and clamps every pixel of it to one corner - whole tiles shadowed or lit.
+    const float zoomScale = ZoomScaleOf(_depthZoomOverride.value_or(rt.zoom_level));
+
+    if (_spriteWorldDepth.mode == SpriteWorldDepthMode::billboard)
+    {
+        // world0: zMin, zMax, centreX, centreY
+        // world1: screenTop, screenBottom, mode, zoomScale
+        command.world0 = {
+            _spriteWorldDepth.zMin,
+            _spriteWorldDepth.zMax,
+            _spriteWorldDepth.centreX,
+            _spriteWorldDepth.centreY,
+        };
+        // screenTop/Bottom come out of Translate3DTo2DWithZ in view-space units; the shader
+        // compares them against destination pixels, so divide before adding the pixel offset.
+        const float invZoom = 1.0f / zoomScale;
+        command.world1 = {
+            _spriteWorldDepth.screenTop * invZoom + yOffset,
+            _spriteWorldDepth.screenBottom * invZoom + yOffset,
+            static_cast<float>(static_cast<int>(_spriteWorldDepth.mode) | (static_cast<int>(_spriteWorldDepth.rotation) << 8)),
+            zoomScale,
+        };
+        return;
+    }
+
+    if (_spriteWorldDepth.mode == SpriteWorldDepthMode::wall)
+    {
+        // world0: edge origin X, edge origin Y, zMin, zMax
+        // world1: viewOffsetX, viewOffsetY, mode | rotation | edge axis, zoomScale
+        // The axis rides in the mode word because world0 is already full; the shader needs
+        // it to know which way the 32-unit edge runs.
+        command.world0 = {
+            _spriteWorldDepth.centreX,
+            _spriteWorldDepth.centreY,
+            _spriteWorldDepth.zMin,
+            _spriteWorldDepth.zMax,
+        };
+        command.world1 = {
+            static_cast<float>(rt.x - clip.getLeft()),
+            static_cast<float>(rt.y - clip.getTop()),
+            static_cast<float>(
+                static_cast<int>(_spriteWorldDepth.mode) | (static_cast<int>(_spriteWorldDepth.rotation) << 8)
+                | (static_cast<int>(_spriteWorldDepth.wallAxis) << 10)
+                | (static_cast<int>(_spriteWorldDepth.wallTileShift) << 11)
+                | (static_cast<int>(_spriteWorldDepth.wallFacesSun) << 13)
+                | (static_cast<int>(_spriteWorldDepth.wallIsTerrainSide) << 14)),
+            zoomScale,
+        };
+        return;
+    }
+
+    // Flat / water: tile origin + baseZ + slope for TileElementHeight in the shader.
+    // world0: originX, originY, baseZ, slope
+    // world1: viewOffsetX, viewOffsetY, mode, zoomScale
+    command.world0 = {
+        _spriteWorldDepth.centreX,
+        _spriteWorldDepth.centreY,
+        _spriteWorldDepth.baseZ,
+        _spriteWorldDepth.slope,
+    };
+    command.world1 = {
+        static_cast<float>(rt.x - clip.getLeft()),
+        static_cast<float>(rt.y - clip.getTop()),
+        static_cast<float>(static_cast<int>(_spriteWorldDepth.mode) | (static_cast<int>(_spriteWorldDepth.rotation) << 8)),
+        zoomScale,
+    };
+}
+
+/** Floors v to a multiple of m (m > 0), rounding toward negative infinity. */
+static int32_t FloorToMultiple(int32_t v, int32_t m)
+{
+    const int32_t q = v / m;
+    return (q * m > v ? q - 1 : q) * m;
+}
+
+bool OpenGLDrawingContext::ScrollSunBuffer(SunCapture& capture, ScreenCoordsXY shift)
+{
+    // shift is how far the contents move, in top-down texels. Blit the part that stays in view
+    // out to the scratch target and back in at its new place. Only the world-depth attachment
+    // is read by the resolve; the painter depth is cleared under every rect before it is
+    // repainted, so neither of the others needs to move.
+    const int32_t bufferW = capture.rt.width;
+    const int32_t bufferH = capture.rt.height;
+    const int32_t keepW = bufferW - std::abs(shift.x);
+    const int32_t keepH = bufferH - std::abs(shift.y);
+    if (keepW <= 0 || keepH <= 0)
+        return false;
+
+    const int32_t scratchW = _sunScrollScratch != nullptr ? static_cast<int32_t>(_sunScrollScratch->GetWidth()) : 0;
+    const int32_t scratchH = _sunScrollScratch != nullptr ? static_cast<int32_t>(_sunScrollScratch->GetHeight()) : 0;
+    if (scratchW < keepW || scratchH < keepH)
+    {
+        _sunScrollScratch = std::make_unique<OpenGLFramebuffer>(
+            std::max(keepW, scratchW), std::max(keepH, scratchH), false, true, false, true);
+        if (!_sunScrollScratch->IsComplete())
+        {
+            _sunScrollScratch.reset();
+            return false;
+        }
+    }
+
+    const int32_t srcX = std::max(0, -shift.x);
+    const int32_t srcTop = std::max(0, -shift.y);
+    const int32_t dstX = std::max(0, shift.x);
+    const int32_t dstTop = std::max(0, shift.y);
+    // GL rows count from the bottom.
+    _sunScrollScratch->BlitWorldDepth(*capture.framebuffer, srcX, bufferH - srcTop - keepH, keepW, keepH, 0, 0);
+    capture.framebuffer->BlitWorldDepth(*_sunScrollScratch, 0, 0, keepW, keepH, dstX, bufferH - dstTop - keepH);
+    return true;
+}
+
+OpenGLDrawingContext::SunCapture* OpenGLDrawingContext::CaptureSunDepth(const Viewport& cameraVp)
+{
+    if (!_inDraw)
+    {
+        return nullptr;
+    }
+
+    // Finish any pending camera draws into the swap FBO first.
+    if (!_commandBuffers.rects.empty() || !_commandBuffers.lines.empty() || !_commandBuffers.transparent.empty())
+    {
+        FlushCommandBuffers();
+    }
+
+    SunCapture& capture = _sunCaptures[&cameraVp];
+    capture.usedThisFrame = true;
+
+    const auto sunVp = PlaceSunProjection(capture, cameraVp);
+    if (!sunVp.has_value())
+    {
+        return nullptr;
+    }
+
+    // A full repaint is needed when nothing valid is there yet or the sun projection itself
+    // changed. Otherwise the buffer only needs what moved: the blocks the invalidation grid
+    // collected, the strips a pan exposed, and this capture's refresh column.
+    const Viewport& prev = capture.sunViewport;
+    const int32_t texelSize = sunVp->zoom.ApplyTo(1);
+    bool fullRepaint = !capture.contentsValid || prev.rotation != sunVp->rotation || prev.zoom != sunVp->zoom
+        || prev.width != sunVp->width || prev.height != sunVp->height;
+    const ScreenCoordsXY shift = fullRepaint
+        ? ScreenCoordsXY{}
+        : ScreenCoordsXY{ (prev.viewPos.x - sunVp->viewPos.x) / texelSize, (prev.viewPos.y - sunVp->viewPos.y) / texelSize };
+    if (!fullRepaint && (shift.x != 0 || shift.y != 0) && !ScrollSunBuffer(capture, shift))
+    {
+        fullRepaint = true;
+    }
+
+    BeginSunPass(capture);
+    if (fullRepaint)
+    {
+        RenderSunRect(capture, *sunVp, ScreenRect{ { 0, 0 }, { sunVp->width, sunVp->height } }, cameraVp.rotation);
+        capture.invalidationGrid.reset(sunVp->width, sunVp->height, kSunGridBlockSize, kSunGridBlockSize);
+        capture.refreshSweepIndex = 0;
+    }
+    else
+    {
+        for (const auto& rect : CollectSunRepaintRects(capture, *sunVp, shift))
+        {
+            RenderSunRect(capture, *sunVp, rect, cameraVp.rotation);
+        }
+    }
+    EndSunPass();
+
+    capture.sunViewport = *sunVp;
+    capture.contentsValid = true;
+    return &capture;
+}
+
+std::optional<Viewport> OpenGLDrawingContext::PlaceSunProjection(SunCapture& capture, const Viewport& cameraVp)
+{
+    // Sun yaw = camera + 90°, so shadows fall camera-LEFT on screen.
+    Viewport sunVp = cameraVp;
+    sunVp.rotation = static_cast<uint8_t>((cameraVp.rotation + (_sunFromLeft ? 3 : 1)) & 3);
+    sunVp.pos = {};
+
+    // Size the sun buffer to contain the camera's world footprint. With (a,b) the
+    // camera-rotated world XY, the camera projects
+    //   sx = b - a,  sy = (a + b)/2 - z
+    // and the +90° sun view projects
+    //   sx' = a + b = 2*(sy + z),  sy' = (a - b)/2 - z = -sx/2 - z
+    // so the camera's screen HEIGHT drives the sun's WIDTH (doubled) and its WIDTH drives the
+    // sun's HEIGHT (halved). Height moves a point too, relative to the screen-centre terrain the
+    // buffer is centred on: 2 units of sx' and 1 of sy' per unit of Z, in either direction. The
+    // allowance is how far above or below that terrain anything is covered - ground across the
+    // view, and casters standing outside it that throw shadow in. Budgeting only one unit of
+    // sx' per unit of Z left half of it uncovered, which lost the shadows along the bottom of
+    // any view over high ground.
+    constexpr int32_t kZAllowance = 288;
+    const int32_t needViewW = 2 * cameraVp.ViewHeight() + 4 * kZAllowance;
+    const int32_t needViewH = cameraVp.ViewWidth() / 2 + 2 * kZAllowance;
+
+    // Resolution. Camera X maps onto sun Y at half scale, so a sun buffer at the camera's own
+    // zoom has half a row per camera pixel - coarser than the screen, which is what made
+    // zoomed-out views blocky. One zoom level finer gives at least one texel per camera pixel
+    // on both axes (a 4x1 footprint), which is all the screen can show; going finer still
+    // only multiplies the cost of every sun repaint and of the resolve's footprint walk.
+    // Zoomed in, stay at 1:1 - magnifying adds no caster detail. The budget is a last resort
+    // against allocation failure, one capture per visible viewport.
+    constexpr int64_t kMaxSunTexels = 16 * 1024 * 1024;
+    const int32_t cameraZoomLevel = static_cast<int8_t>(cameraVp.zoom);
+    sunVp.zoom = ZoomLevel{ static_cast<int8_t>(std::max(0, cameraZoomLevel - 1)) };
+    int32_t sunPxW = 0;
+    int32_t sunPxH = 0;
+    for (;;)
+    {
+        sunPxW = std::clamp(sunVp.zoom.ApplyInversedTo(needViewW), 64, 8192);
+        sunPxH = std::clamp(sunVp.zoom.ApplyInversedTo(needViewH), 64, 8192);
+        if (static_cast<int64_t>(sunPxW) * sunPxH <= kMaxSunTexels || static_cast<int8_t>(sunVp.zoom) >= 3)
+            break;
+        sunVp.zoom = sunVp.zoom + 1;
+    }
+
+    EnsureSunTarget(capture, &cameraVp, sunPxW, sunPxH);
+    if (capture.framebuffer == nullptr)
+    {
+        return std::nullopt;
+    }
+
+    // EnsureSunTarget may hand back a larger target than asked for, and the projection has to
+    // describe the buffer actually being drawn into.
+    sunVp.width = capture.rt.width;
+    sunVp.height = capture.rt.height;
+    capture.zoomScale = ZoomScaleOf(sunVp.zoom);
+
+    const ScreenCoordsXY mid = cameraVp.viewPos + ScreenCoordsXY{ cameraVp.ViewWidth() / 2, cameraVp.ViewHeight() / 2 };
+    // The terrain actually under the screen centre: a screen point names a different tile at
+    // every height, so settle the height and the tile against each other rather than reading the
+    // height of whatever tile lies under the centre at Z 0.
+    CoordsXY mapGuess = ViewportPosToMapPos(mid, 0, cameraVp.rotation);
+    int32_t centreZ = TileElementHeight(mapGuess);
+    for (int32_t i = 0; i < 4; i++)
+    {
+        mapGuess = ViewportPosToMapPos(mid, centreZ, cameraVp.rotation);
+        centreZ = TileElementHeight(mapGuess);
+    }
+    if (const auto centre = centre2dCoordinates({ mapGuess, centreZ }, &sunVp))
+    {
+        sunVp.viewPos = *centre;
+    }
+    // Whole texels only, so a camera pan moves the buffer contents by an exact texel offset
+    // that can be scrolled instead of repainted.
+    const int32_t texelSize = sunVp.zoom.ApplyTo(1);
+    sunVp.viewPos = { FloorToMultiple(sunVp.viewPos.x, texelSize), FloorToMultiple(sunVp.viewPos.y, texelSize) };
+    return sunVp;
+}
+
+OpenGLDrawingContext::SunRects OpenGLDrawingContext::CollectSunRepaintRects(
+    SunCapture& capture, const Viewport& sunVp, ScreenCoordsXY shift)
+{
+    const int32_t sunPxW = sunVp.width;
+    const int32_t sunPxH = sunVp.height;
+    SunRects rects;
+    const auto addRect = [&](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+        left = std::max(left, 0);
+        top = std::max(top, 0);
+        right = std::min(right, sunPxW);
+        bottom = std::min(bottom, sunPxH);
+        if (left >= right || top >= bottom)
+            return;
+        if (rects.size() == rects.capacity())
+        {
+            // Too fragmented to be worth tracking separately: one rect over the lot.
+            for (const auto& r : rects)
+            {
+                left = std::min(left, r.getLeft());
+                top = std::min(top, r.getTop());
+                right = std::max(right, r.getRight());
+                bottom = std::max(bottom, r.getBottom());
+            }
+            rects.clear();
+        }
+        rects.push_back({ { left, top }, { right, bottom } });
+    };
+
+    // Blocks were marked against the previous projection, so they move with the contents.
+    capture.invalidationGrid.traverseDirtyCells([&](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+        addRect(left + shift.x, top + shift.y, right + shift.x, bottom + shift.y);
+    });
+    if (shift.x > 0)
+        addRect(0, 0, shift.x, sunPxH);
+    else if (shift.x < 0)
+        addRect(sunPxW + shift.x, 0, sunPxW, sunPxH);
+    if (shift.y > 0)
+        addRect(0, 0, sunPxW, shift.y);
+    else if (shift.y < 0)
+        addRect(0, sunPxH + shift.y, sunPxW, sunPxH);
+
+    // The grid is only as good as the invalidations feeding it, so one column band is repainted
+    // regardless; see SunCapture::refreshSweepIndex.
+    const int32_t sweepWidth = (sunPxW + kSunRefreshSweepCaptures - 1) / kSunRefreshSweepCaptures;
+    const int32_t sweepLeft = capture.refreshSweepIndex * sweepWidth;
+    addRect(sweepLeft, 0, sweepLeft + sweepWidth, sunPxH);
+    capture.refreshSweepIndex = (capture.refreshSweepIndex + 1) % kSunRefreshSweepCaptures;
+
+    // Every rect is its own ViewportRender, and each one walks the paint traversal's
+    // tall-caster margin below itself - several times the height of a typical dirty block.
+    // So merge any two rects whose union costs less to paint than the pair, counting cost
+    // as paint columns times the rows walked including that margin.
+    const int32_t marginTexels = sunVp.zoom.ApplyInversedTo(kPaintVerticalTileMargin);
+    const auto paintCost = [marginTexels](const ScreenRect& r) {
+        return static_cast<int64_t>((r.getWidth() + 31) / 32) * (r.getHeight() + marginTexels);
+    };
+    for (bool merged = true; merged;)
+    {
+        merged = false;
+        for (size_t i = 0; i < rects.size() && !merged; i++)
+        {
+            for (size_t j = i + 1; j < rects.size(); j++)
+            {
+                const ScreenRect u{
+                    { std::min(rects[i].getLeft(), rects[j].getLeft()), std::min(rects[i].getTop(), rects[j].getTop()) },
+                    { std::max(rects[i].getRight(), rects[j].getRight()), std::max(rects[i].getBottom(), rects[j].getBottom()) }
+                };
+                if (paintCost(u) <= paintCost(rects[i]) + paintCost(rects[j]))
+                {
+                    rects[i] = u;
+                    rects.erase(rects.begin() + j);
+                    merged = true;
+                    break;
+                }
+            }
+        }
+    }
+    return rects;
+}
+
+void OpenGLDrawingContext::BeginSunPass(SunCapture& capture)
+{
+    // Point the shared draw state at the sun buffer for the duration of the pass: vertex
+    // positions map to NDC by destination size, and CalculateClipping pointer-diffs against
+    // getRT().
+    _drawRectShader->Use();
+    _drawRectShader->SetScreenSize(capture.rt.width, capture.rt.height);
+    _drawLineShader->Use();
+    _drawLineShader->SetScreenSize(capture.rt.width, capture.rt.height);
+    _flushTarget = capture.framebuffer.get();
+    _engine.SetRTOverride(&capture.rt);
+    capture.framebuffer->Bind();
+    _drawCount = 0;
+}
+
+void OpenGLDrawingContext::EndSunPass()
+{
+    _engine.SetRTOverride(nullptr);
+    _flushTarget = nullptr;
+
+    // FlushCommandBuffers skips HandleTransparency for the sun pass (the depth map only needs
+    // opaque geometry), which leaves the sun view's transparent sprites - water above all -
+    // queued. Surviving to the next camera flush, they would be composited into the visible
+    // frame at sun-view coordinates.
+    _commandBuffers.transparent.clear();
+
+    _drawRectShader->Use();
+    _drawRectShader->SetScreenSize(_canvasWidth, _canvasHeight);
+    _drawLineShader->Use();
+    _drawLineShader->SetScreenSize(_canvasWidth, _canvasHeight);
+}
+
+void OpenGLDrawingContext::RenderSunRect(
+    SunCapture& capture, const Viewport& sunVp, const ScreenRect& rect, uint8_t cameraRotation)
+{
+    // Scissored, so geometry overhanging the rect cannot bleed into the untouched buffer around
+    // it. GL scissor origin is bottom-left.
+    const GLuint zero[4] = { 0, 0, 0, 0 };
+    const GLfloat depthClear[1] = { 1.0f };
+    glCall(glEnable, GL_SCISSOR_TEST);
+    glCall(glScissor, rect.getLeft(), sunVp.height - rect.getBottom(), rect.getWidth(), rect.getHeight());
+    glCall(glClearBufferuiv, GL_COLOR, 0, zero);
+    capture.framebuffer->ClearWorldDepth();
+    glCall(glClearBufferfv, GL_DEPTH, 0, depthClear);
+
+    RenderTarget rectRT = capture.rt.Crop({ rect.getLeft(), rect.getTop() }, { rect.getWidth(), rect.getHeight() });
+    gPaintShadowCameraRotation = cameraRotation;
+    ViewportRender(rectRT, &sunVp);
+    gPaintShadowCameraRotation = -1;
+    FlushCommandBuffers();
+    glCall(glDisable, GL_SCISSOR_TEST);
+}
+
+/** A viewport's screen rect as a GL scissor box (x, y from the bottom, width, height), or nothing
+    if none of it is on the framebuffer. */
+static std::optional<std::array<GLint, 4>> ViewportScissor(const Viewport& vp, int32_t fbWidth, int32_t fbHeight)
+{
+    const int32_t sx = std::clamp(vp.pos.x, 0, fbWidth);
+    const int32_t sw = std::clamp(vp.width, 0, fbWidth - sx);
+    const int32_t syTop = std::clamp(vp.pos.y, 0, fbHeight);
+    const int32_t sh = std::clamp(vp.height, 0, fbHeight - syTop);
+    if (sw <= 0 || sh <= 0)
+        return std::nullopt;
+    return std::array<GLint, 4>{ sx, fbHeight - syTop - sh, sw, sh };
+}
+
+void OpenGLDrawingContext::ApplyDropShadows()
+{
+    if (_shadowFramebuffer == nullptr || _applyDropShadowShader == nullptr)
+    {
+        return;
+    }
+
+    UpdateLightning();
+    if (!Config::Get().general.dropShadows)
+    {
+        // Free what the shadows were holding - a sun buffer per viewport is not small - and
+        // make sure turning them back on resolves from scratch. The composite skips the mask.
+        ReleaseSunCaptures();
+        GetFinalFramebuffer().Bind();
+        return;
+    }
+    if (!ShadowsActiveThisFrame())
+    {
+        // Rain or snow: keep the buffers - the weather passes - but skip the work. The composite
+        // skips the mask.
+        _shadowMaskValid = false;
+        GetFinalFramebuffer().Bind();
+        return;
+    }
+
+    const ShadowedViewports viewports = SelectShadowedViewports();
+    const uint64_t viewportKey = ShadowViewportKey(viewports);
+    const bool sunBuffersDirty = RetireUnusedSunCaptures(viewports);
+
+    // The mask is a function of the world G-buffer, the sun buffers and every viewport's
+    // projection. If none of them moved, last frame's mask is still the right answer. Never let
+    // it trail a changed frame, even by one: the pixels a moving peep just left are ground again,
+    // and last frame's mask has them as an unshaded sprite.
+    if (_shadowMaskValid && viewportKey == _shadowViewportKey && !_worldRedrawn && !sunBuffersDirty)
+    {
+        GetFinalFramebuffer().Bind();
+        return;
+    }
+    _shadowViewportKey = viewportKey;
+    _shadowMaskValid = true;
+    _worldRedrawn = false;
+
+    // Start fully lit; each viewport then resolves only its own rectangle.
+    _shadowFramebuffer->Bind();
+    glCall(glDisable, GL_DEPTH_TEST);
+    glCall(glDisable, GL_BLEND);
+    const GLfloat lit[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    glCall(glClearBufferfv, GL_COLOR, 0, lit);
+
+    for (const Viewport* vp : viewports)
+    {
+        if (vp == nullptr || vp->width <= 0 || vp->height <= 0)
+            continue;
+        if (const SunCapture* capture = CaptureSunDepth(*vp); capture != nullptr)
+            ResolveViewport(*vp, *capture);
+    }
+
+    // A viewport left out (secondary viewports switched off) still sits inside the main view's
+    // screen rect, which was just resolved against the main view's sun - so clear it back to lit
+    // rather than leave it shaded by a projection that is not its own.
+    _shadowFramebuffer->Bind();
+    const auto fbWidth = static_cast<int32_t>(_shadowFramebuffer->GetWidth());
+    const auto fbHeight = static_cast<int32_t>(_shadowFramebuffer->GetHeight());
+    glCall(glEnable, GL_SCISSOR_TEST);
+    for (const Viewport* vp : GetVisibleViewports())
+    {
+        if (std::find(viewports.begin(), viewports.end(), vp) != viewports.end())
+            continue;
+        if (const auto box = ViewportScissor(*vp, fbWidth, fbHeight))
+        {
+            glCall(glScissor, (*box)[0], (*box)[1], (*box)[2], (*box)[3]);
+            glCall(glClearBufferfv, GL_COLOR, 0, lit);
+        }
+    }
+    glCall(glDisable, GL_SCISSOR_TEST);
+
+    GetFinalFramebuffer().Bind();
+}
+
+void OpenGLDrawingContext::UpdateLightning()
+{
+    // A lightning flash lights the storm for one frame: UpdatePaletteEffects has already
+    // brightened the palette for it and moved gLightningFlash to 2 by the time this runs. Shadows
+    // are cast for that frame only, harder than daylight's, and from the side opposite the usual
+    // sun on every other flash, so the flashes do not all read the same.
+    const bool lightningFlash = Config::Get().general.dropShadows && Weather::gLightningFlash == 2;
+    if (lightningFlash && !_inLightningFlash)
+        _lightningFlashCount++;
+    _inLightningFlash = lightningFlash;
+    _sunFromLeft = lightningFlash && (_lightningFlashCount & 1) != 0;
+}
+
+void OpenGLDrawingContext::ReleaseSunCaptures()
+{
+    for (const auto& [owner, capture] : _sunCaptures)
+    {
+        UnregisterShadowInvalidationTarget(owner);
+    }
+    _sunCaptures.clear();
+    _sunScrollScratch.reset();
+    _shadowMaskValid = false;
+}
+
+OpenGLDrawingContext::ShadowedViewports OpenGLDrawingContext::SelectShadowedViewports() const
+{
+    // Every viewport needs its OWN sun capture: the projection into sun space depends on that
+    // viewport's viewPos, rotation and zoom. Viewports are handled in list order so a window drawn
+    // on top of the main view also resolves last, overwriting the shared pixels.
+    ShadowedViewports viewports;
+    if (Config::Get().general.dropShadowsOnSecondaryViewports)
+    {
+        for (const Viewport* vp : GetVisibleViewports())
+        {
+            viewports.push_back(vp);
+        }
+    }
+    else if (const auto* mainWindow = WindowGetMain(); mainWindow != nullptr && mainWindow->viewport != nullptr)
+    {
+        // Secondary viewports (ride cameras, tile previews, ...) opted out: each one costs
+        // roughly what the main view's own shadow pass costs, since it needs an independent
+        // sun capture at its own zoom and rotation.
+        viewports.push_back(mainWindow->viewport);
+    }
+    return viewports;
+}
+
+uint64_t OpenGLDrawingContext::ShadowViewportKey(const ShadowedViewports& viewports) const
+{
+    uint64_t key = 1469598103934665603ULL;
+    const auto mix = [&key](int64_t value) { key = (key ^ static_cast<uint64_t>(value)) * 1099511628211ULL; };
+    for (const Viewport* vp : viewports)
+    {
+        if (vp == nullptr)
+            continue;
+        mix(vp->pos.x);
+        mix(vp->pos.y);
+        mix(vp->width);
+        mix(vp->height);
+        mix(vp->viewPos.x);
+        mix(vp->viewPos.y);
+        mix(static_cast<int8_t>(vp->zoom));
+        mix(vp->rotation);
+        mix(_sunFromLeft ? 3 : 1);
+        mix(_inLightningFlash ? 1 : 0);
+    }
+    return key;
+}
+
+bool OpenGLDrawingContext::RetireUnusedSunCaptures(const ShadowedViewports& viewports)
+{
+    // Drop sun captures for viewports that aren't visible anymore (window closed, scrolled
+    // off-screen, ...), so windows opening and closing don't leak a growing pool. Done before
+    // the cache-hit check, which skips CaptureSunDepth and so marks nothing used itself.
+    //
+    // A caster can also move while staying off screen - just outside the view, or behind a
+    // window - and throw a moving shadow into it. That dirties its sun buffer without redrawing
+    // any camera pixel, so it has to count as a world change in its own right.
+    for (auto& [owner, capture] : _sunCaptures)
+    {
+        capture.usedThisFrame = false;
+    }
+    bool sunBuffersDirty = false;
+    for (const Viewport* vp : viewports)
+    {
+        if (vp == nullptr)
+            continue;
+        if (auto it = _sunCaptures.find(vp); it != _sunCaptures.end())
+        {
+            it->second.usedThisFrame = true;
+            sunBuffersDirty |= it->second.invalidationGrid.isDirty();
+        }
+    }
+    std::erase_if(_sunCaptures, [](const auto& entry) {
+        if (entry.second.usedThisFrame)
+            return false;
+        UnregisterShadowInvalidationTarget(entry.first);
+        return true;
+    });
+    return sunBuffersDirty;
+}
+
+void OpenGLDrawingContext::ResolveViewport(const Viewport& vp, const SunCapture& capture)
+{
+    _shadowFramebuffer->Bind();
+    glCall(glDisable, GL_DEPTH_TEST);
+    glCall(glDisable, GL_BLEND);
+
+    const auto box = ViewportScissor(
+        vp, static_cast<int32_t>(_shadowFramebuffer->GetWidth()), static_cast<int32_t>(_shadowFramebuffer->GetHeight()));
+    if (!box.has_value())
+        return;
+    glCall(glEnable, GL_SCISSOR_TEST);
+    glCall(glScissor, (*box)[0], (*box)[1], (*box)[2], (*box)[3]);
+
+    _applyDropShadowShader->Use();
+    ApplyDropShadowShader::SetCameraDepthTexture(GetWorldDepthTexture());
+    ApplyDropShadowShader::SetSunDepthTexture(capture.framebuffer->GetWorldDepthTexture());
+    const Viewport& sunVp = capture.sunViewport;
+    _applyDropShadowShader->SetParameters(
+        static_cast<float>(sunVp.viewPos.x), static_cast<float>(sunVp.viewPos.y), static_cast<float>(sunVp.width),
+        static_cast<float>(sunVp.height), sunVp.rotation, capture.zoomScale, ZoomScaleOf(vp.zoom),
+        _inLightningFlash ? 0.5f : Config::Get().general.shadowStrength, vp.rotation, _sunFromLeft);
+    _applyDropShadowShader->Draw();
+
+    glCall(glDisable, GL_SCISSOR_TEST);
+}
+
+void OpenGLDrawingContext::ClearWorldDepth()
+{
+    if (_swapFramebuffer != nullptr)
+    {
+        _swapFramebuffer->ClearWorldDepth();
+    }
+}
+
+void OpenGLDrawingContext::ClearWorldDepthRect(int32_t left, int32_t top, int32_t right, int32_t bottom)
+{
+    if (_swapFramebuffer != nullptr)
+    {
+        _swapFramebuffer->ClearWorldDepthRect(left, top, right, bottom);
+    }
 }
 
 void OpenGLDrawingContext::ResetPalette()
@@ -672,6 +1693,11 @@ void OpenGLDrawingContext::StartNewDraw()
 
     _drawCount = 0;
     _swapFramebuffer->Clear();
+    // Full redraws need a clean world-depth buffer.
+    if (gPaintForceRedraw)
+    {
+        ClearWorldDepth();
+    }
     _inDraw = true;
 }
 
@@ -708,18 +1734,18 @@ void OpenGLDrawingContext::FillRect(
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
-    command.palettes = { 0, 0, 0 };
+    command.palettesFlags = { 0, 0, 0, static_cast<GLint>(DrawRectCommand::FLAG_NO_TEXTURE) };
     command.colour = EnumValue(paletteIndex);
     command.bounds = { left, top, right + 1, bottom + 1 };
-    command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
-    command.depth = _drawCount++;
-    command.zoom = 1.0f;
+
+    command.depthZoom = { static_cast<GLfloat>(_drawCount++), 1.0f };
 
     if (crossHatch)
     {
         // cross-pattern
-        command.flags |= DrawRectCommand::FLAG_CROSS_HATCH;
+        command.palettesFlags.w |= DrawRectCommand::FLAG_CROSS_HATCH;
     }
+    ApplyWorldDepthToCommand(command, rt, clip);
 }
 
 void OpenGLDrawingContext::FilterRect(
@@ -741,12 +1767,21 @@ void OpenGLDrawingContext::FilterRect(
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
-    command.palettes = { 0, 0, 0 };
+    command.palettesFlags = { 0, 0, 0, static_cast<GLint>(DrawRectCommand::FLAG_NO_TEXTURE) };
     command.colour = TextureCache::PaletteToY(palette);
     command.bounds = { left, top, right + 1, bottom + 1 };
-    command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
-    command.depth = _drawCount++;
-    command.zoom = 1.0f;
+    command.depthZoom = { static_cast<GLfloat>(_drawCount++), 1.0f };
+    ApplyWorldDepthToCommand(command, rt, clip);
+
+    // A translucent window panel is drawn through the transparency pass, which has no
+    // world-depth attachment. Mark what it covers (see FLAG_WORLD_DEPTH_ONLY) so the composite
+    // can soften the shadow there instead of laying it at full strength over the panel.
+    if (!_spriteWorldDepth.valid)
+    {
+        DrawRectCommand& depthCommand = _commandBuffers.rects.allocate();
+        depthCommand = command;
+        depthCommand.palettesFlags.w = DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_WORLD_DEPTH_ONLY;
+    }
 }
 
 // Compute the bit code for a point p relative to the clip rectangle defined by topLeft and bottomRight
@@ -862,9 +1897,17 @@ static auto EuclideanRemainder(const auto a, const auto b)
     return r >= 0 ? r : r + b;
 };
 
-void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, const int32_t x, const int32_t y)
+void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, int32_t x, int32_t y)
 {
     Guard::Assert(_inDraw == true);
+
+    // A shadow-pass sprite drawn where its root matches the camera's (see drawOffsetX). Once,
+    // at the outermost call: the zoomed-variant recursion below already carries the shift.
+    if (_spriteWorldDepth.valid && !_depthZoomOverride.has_value())
+    {
+        x += _spriteWorldDepth.drawOffsetX;
+        y += _spriteWorldDepth.drawOffsetY;
+    }
 
     auto g1Element = GfxGetG1Element(imageId);
     if (g1Element == nullptr)
@@ -884,7 +1927,14 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
             zoomedRT.width = rt.width;
             zoomedRT.pitch = rt.pitch;
             zoomedRT.zoom_level = rt.zoom_level - 1;
+            // The zoomed variant is drawn through an RT one level further in, but it lands in
+            // the same destination pixels, so the world-depth solve must keep this RT's scale.
+            const bool outermost = !_depthZoomOverride.has_value();
+            if (outermost)
+                _depthZoomOverride = rt.zoom_level;
             DrawSprite(zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1Element->zoomedOffset), x >> 1, y >> 1);
+            if (outermost)
+                _depthZoomOverride.reset();
             return;
         }
         if (g1Element->flags.has(G1Flag::noZoomDraw))
@@ -971,12 +2021,12 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = texture.index;
         command.texMaskBounds = texture.coords;
-        command.palettes = palettes;
+        command.palettesFlags = { palettes.x, palettes.y, palettes.z,
+                                  special ? 0 : DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK };
         command.colour = palettes.x - (special ? 1 : 0);
         command.bounds = { left, top, right, bottom };
-        command.flags = special ? 0 : DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
-        command.depth = _drawCount++;
-        command.zoom = zoom;
+        command.depthZoom = { static_cast<GLfloat>(_drawCount++), zoom };
+        ApplyWorldDepthToCommand(command, rt, clip);
     }
     else
     {
@@ -987,12 +2037,11 @@ void OpenGLDrawingContext::DrawSprite(RenderTarget& rt, const ImageId imageId, c
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = 0;
         command.texMaskBounds = { 0.0f, 0.0f, texture.coords.z, texture.coords.w };
-        command.palettes = palettes;
+        command.palettesFlags = { palettes.x, palettes.y, palettes.z, paletteCount };
         command.colour = 0;
         command.bounds = { left, top, right, bottom };
-        command.flags = paletteCount;
-        command.depth = _drawCount++;
-        command.zoom = zoom;
+        command.depthZoom = { static_cast<GLfloat>(_drawCount++), zoom };
+        ApplyWorldDepthToCommand(command, rt, clip);
     }
 }
 
@@ -1051,12 +2100,12 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     command.texColourBounds = textureColour.coords;
     command.texMaskAtlas = textureMask.index;
     command.texMaskBounds = textureMask.coords;
-    command.palettes = { 0, 0, 0 };
-    command.flags = DrawRectCommand::FLAG_MASK;
+    command.palettesFlags = { 0, 0, 0, static_cast<GLint>(DrawRectCommand::FLAG_MASK) };
+
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
-    command.depth = _drawCount++;
-    command.zoom = zoom;
+    command.depthZoom = { static_cast<GLfloat>(_drawCount++), zoom };
+    ApplyWorldDepthToCommand(command, rt, clip);
 }
 
 void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, PaletteIndex colour)
@@ -1103,12 +2152,12 @@ void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& rt, const ImageId image
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.texMaskAtlas = texture.index;
     command.texMaskBounds = texture.coords;
-    command.palettes = { 0, 0, 0 };
-    command.flags = DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
+    command.palettesFlags = { 0, 0, 0, static_cast<GLint>(DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK) };
+
     command.colour = static_cast<GLuint>(colour);
     command.bounds = { left, top, right, bottom };
-    command.depth = _drawCount++;
-    command.zoom = 1.0f;
+    command.depthZoom = { static_cast<GLfloat>(_drawCount++), 1.0f };
+    ApplyWorldDepthToCommand(command, rt, clip);
 }
 
 void OpenGLDrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
@@ -1158,12 +2207,12 @@ void OpenGLDrawingContext::DrawGlyph(RenderTarget& rt, const ImageId image, int3
     command.texColourBounds = texture.coords;
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
-    command.palettes = { 0, 0, 0 };
-    command.flags = 0;
+    command.palettesFlags = { 0, 0, 0, static_cast<GLint>(0) };
+
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
-    command.depth = _drawCount++;
-    command.zoom = zoom;
+    command.depthZoom = { static_cast<GLfloat>(_drawCount++), zoom };
+    ApplyWorldDepthToCommand(command, rt, clip);
 }
 
 void OpenGLDrawingContext::DrawTTFBitmap(
@@ -1223,12 +2272,12 @@ void OpenGLDrawingContext::DrawTTFBitmap(
             command.texColourBounds = texture.coords;
             command.texMaskAtlas = 0;
             command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
-            command.palettes = { 0, 0, 0 };
-            command.flags = DrawRectCommand::FLAG_TTF_TEXT;
+            command.palettesFlags = { 0, 0, 0, static_cast<GLint>(DrawRectCommand::FLAG_TTF_TEXT) };
+
             command.colour = static_cast<GLuint>(info.palette.shadowOutline);
             command.bounds = b;
-            command.depth = _drawCount++;
-            command.zoom = 1.0f;
+            command.depthZoom = { static_cast<GLfloat>(_drawCount++), 1.0f };
+            ApplyWorldDepthToCommand(command, rt, clip);
         }
     }
     if (info.colourFlags.has(ColourFlag::inset))
@@ -1239,12 +2288,12 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         command.texColourBounds = texture.coords;
         command.texMaskAtlas = 0;
         command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
-        command.palettes = { 0, 0, 0 };
-        command.flags = DrawRectCommand::FLAG_TTF_TEXT;
+        command.palettesFlags = { 0, 0, 0, static_cast<GLint>(DrawRectCommand::FLAG_TTF_TEXT) };
+
         command.colour = static_cast<GLuint>(info.palette.shadowOutline);
         command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
-        command.depth = _drawCount++;
-        command.zoom = 1.0f;
+        command.depthZoom = { static_cast<GLfloat>(_drawCount++), 1.0f };
+        ApplyWorldDepthToCommand(command, rt, clip);
     }
     auto& cmdBuf = hintingThreshold > 0 ? _commandBuffers.transparent : _commandBuffers.rects;
     DrawRectCommand& command = cmdBuf.allocate();
@@ -1253,12 +2302,12 @@ void OpenGLDrawingContext::DrawTTFBitmap(
     command.texColourBounds = texture.coords;
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
-    command.palettes = { 0, 0, 0 };
-    command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hintingThreshold << 8);
+    command.palettesFlags = { 0, 0, 0, static_cast<GLint>(DrawRectCommand::FLAG_TTF_TEXT | (hintingThreshold << 8)) };
+
     command.colour = static_cast<GLuint>(info.palette.fill);
     command.bounds = { left, top, right, bottom };
-    command.depth = _drawCount++;
-    command.zoom = 1.0f;
+    command.depthZoom = { static_cast<GLfloat>(_drawCount++), 1.0f };
+    ApplyWorldDepthToCommand(command, rt, clip);
     #endif // DISABLE_TTF
 }
 
@@ -1269,14 +2318,30 @@ void OpenGLDrawingContext::FlushCommandBuffers()
     glCall(glEnable, GL_DEPTH_TEST);
     glCall(glDepthFunc, GL_LESS);
 
-    _swapFramebuffer->BindOpaque();
+    if (_flushTarget != nullptr)
+    {
+        _flushTarget->Bind();
+    }
+    else
+    {
+        _swapFramebuffer->BindOpaque();
+    }
     _drawRectShader->Use();
     _drawRectShader->DisablePeeling();
+    // A non-null flush target means we are capturing the sun's view rather than the camera's.
+    // This had been pinned to false, which left the sun capture ranking its samples by paint
+    // order instead of by height, and left terrain occupying texels that its own vertical
+    // faces needed - the faces are what actually cast, so their shadows went missing.
+    _drawRectShader->SetShadowMapPass(_flushTarget != nullptr);
 
     FlushLines();
     FlushRectangles();
 
-    HandleTransparency();
+    // Sun depth capture only needs opaque geometry.
+    if (_flushTarget == nullptr)
+    {
+        HandleTransparency();
+    }
 }
 
 void OpenGLDrawingContext::FlushLines()
@@ -1290,6 +2355,66 @@ void OpenGLDrawingContext::FlushLines()
     _commandBuffers.lines.clear();
 }
 
+/**
+ * Draws a rect batch in runs by which attachments each command writes. World sprites that carry
+ * no world position of their own - labels, price text, placement ghosts, birds - have the
+ * world-depth attachment masked off, and depth-only commands have colour masked off.
+ *
+ * Those fragments would otherwise write zeros into the world-depth buffer, erasing the
+ * ground's record underneath them. The resolve pass then reads "nothing here", returns no
+ * shadow, and the sprite punches a bright hole through the shadow it is sitting on. An
+ * integer attachment cannot blend, so masking the write is the only way to leave the ground
+ * intact. Runs are drawn in their original order, so overlapping sprites still resolve the
+ * same way they did before.
+ */
+void OpenGLDrawingContext::DrawRectsMaskingDepthlessRuns(const RectCommandBatch& batch)
+{
+    // Only world sprites that carry no depth of their own get the attachment masked off. A UI
+    // draw has no hint at all and lands here as mode 0, which must still write its zeros -
+    // otherwise windows inherit the terrain record beneath them and get shaded through.
+    // Bit 0: writes colour. Bit 1: writes world depth. A depth-only command writes neither
+    // colour nor painter depth, and ORs a flag into the world-depth record it covers.
+    const auto writeMask = [](const DrawRectCommand& command) {
+        const bool writesColour = (command.palettesFlags.w & DrawRectCommand::FLAG_WORLD_DEPTH_ONLY) == 0;
+        const bool writesDepth = (static_cast<int>(command.world1.z) & 0xFF)
+            != static_cast<int>(SpriteWorldDepthMode::worldNone);
+        return (writesColour ? 1 : 0) | (writesDepth ? 2 : 0);
+    };
+
+    size_t start = 0;
+    while (start < batch.size())
+    {
+        const int runMask = writeMask(batch[start]);
+        size_t end = start + 1;
+        while (end < batch.size() && writeMask(batch[end]) == runMask)
+            end++;
+
+        const GLboolean colour = (runMask & 1) ? GL_TRUE : GL_FALSE;
+        const GLboolean depth = (runMask & 2) ? GL_TRUE : GL_FALSE;
+        glCall(glColorMaski, 0, colour, colour, colour, colour);
+        glCall(glColorMaski, 1, depth, depth, depth, depth);
+        // A depth-only command must not claim the painter depth either: the transparency
+        // composite drops any translucent pixel not strictly in front of the opaque depth, and
+        // this command shares its depth with the translucent fill it accompanies.
+        glCall(glDepthMask, colour);
+        if (!colour)
+        {
+            glCall(glEnable, GL_COLOR_LOGIC_OP);
+            glCall(glLogicOp, GL_OR);
+        }
+        _drawRectShader->SetInstances(batch.data() + start, end - start);
+        _drawRectShader->DrawInstances();
+        if (!colour)
+        {
+            glCall(glDisable, GL_COLOR_LOGIC_OP);
+        }
+        start = end;
+    }
+    glCall(glColorMaski, 0, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glCall(glColorMaski, 1, GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glCall(glDepthMask, GL_TRUE);
+}
+
 void OpenGLDrawingContext::FlushRectangles()
 {
     if (_commandBuffers.rects.empty())
@@ -1299,8 +2424,7 @@ void OpenGLDrawingContext::FlushRectangles()
     OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, _textureCache->GetPaletteTexture());
 
     _drawRectShader->Use();
-    _drawRectShader->SetInstances(_commandBuffers.rects);
-    _drawRectShader->DrawInstances();
+    DrawRectsMaskingDepthlessRuns(_commandBuffers.rects);
 
     _commandBuffers.rects.clear();
 }

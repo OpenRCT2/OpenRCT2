@@ -3872,3 +3872,7 @@ STR_7078    :Pine green
 STR_7079    :Ruby
 STR_7080    :Deep blue
 STR_7081    :Silver
+STR_7082    :Drop shadows
+STR_7083    :Shade the park with shadows cast by the sun.{NEWLINE}Requires the OpenGL drawing engine.
+STR_7084    :Shadows in other windows
+STR_7085    :Also shade ride cameras and other windows that show the park.{NEWLINE}Each one costs about as much as the main view, so turn this off if many are open.

@@ -27,6 +27,7 @@ namespace OpenRCT2::Drawing
     enum class PaletteIndex : uint8_t;
 
     struct RenderTarget;
+    struct SpriteWorldDepthHint;
 } // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2::Drawing
@@ -55,6 +56,8 @@ void GfxClear(OpenRCT2::Drawing::RenderTarget& rt, OpenRCT2::Drawing::PaletteInd
 
 // sprite (NewDrawing.cpp functions that use the drawing engine)
 void FASTCALL GfxDrawSprite(OpenRCT2::Drawing::RenderTarget& rt, ImageId image_id, const ScreenCoordsXY& coords);
+void GfxSetSpriteWorldDepthHint(OpenRCT2::Drawing::RenderTarget& rt, const OpenRCT2::Drawing::SpriteWorldDepthHint& hint);
+void GfxClearSpriteWorldDepthHint(OpenRCT2::Drawing::RenderTarget& rt);
 void FASTCALL GfxDrawGlyph(
     OpenRCT2::Drawing::RenderTarget& rt, ImageId image, const ScreenCoordsXY& coords,
     const OpenRCT2::Drawing::PaletteMap& paletteMap);

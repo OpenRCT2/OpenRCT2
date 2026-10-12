@@ -50,6 +50,7 @@
     <ClInclude Include="CursorRepository.h" />
     <ClInclude Include="drawing\BitmapReader.h" />
     <ClInclude Include="drawing\engines\DrawingEngineFactory.hpp" />
+    <ClInclude Include="drawing\engines\opengl\ApplyDropShadowShader.h" />
     <ClInclude Include="drawing\engines\opengl\ApplyPaletteShader.h" />
     <ClInclude Include="drawing\engines\opengl\ApplyTransparencyShader.h" />
     <ClInclude Include="drawing\engines\opengl\CopyRectShader.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="CursorRepository.cpp" />
     <ClCompile Include="drawing\BitmapReader.cpp" />
     <ClCompile Include="drawing\engines\HardwareDisplayDrawingEngine.cpp" />
+    <ClCompile Include="drawing\engines\opengl\ApplyDropShadowShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\ApplyPaletteShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\ApplyTransparencyShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\CopyRectShader.cpp" />

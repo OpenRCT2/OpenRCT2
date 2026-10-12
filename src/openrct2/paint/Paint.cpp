@@ -26,6 +26,8 @@
 #include "../profiling/Profiling.h"
 #include "Boundbox.h"
 #include "Paint.Entity.h"
+#include "Paint.SessionFlags.h"
+#include "ShadowDepthHint.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>
@@ -60,6 +62,7 @@ bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 bool gPaintStableSort;
+int32_t gPaintShadowCameraRotation = -1;
 
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, ViewportFlags viewFlags);
@@ -217,6 +220,10 @@ static PaintStruct* CreateNormalPaintStruct(
     ps->MapPos = session.MapPosition;
     ps->Element = session.CurrentlyDrawnTileElement;
     ps->Entity = session.CurrentlyDrawnEntity;
+    ps->IsVerticalTileSide = (session.Flags & PaintSessionFlags::PaintingVerticalTileSide) != 0;
+    ps->VerticalTileSideEdge = ps->IsVerticalTileSide ? session.VerticalTileSideEdge : 0;
+    ps->IsTerrainCap = (session.Flags & PaintSessionFlags::PaintingTerrainCap) != 0;
+    ps->IsVerticalSupport = false;
 
     return ps;
 }
@@ -265,6 +272,10 @@ static PaintStruct* CreateNormalPaintStructHeight(
     ps->MapPos = session.MapPosition;
     ps->Element = session.CurrentlyDrawnTileElement;
     ps->Entity = session.CurrentlyDrawnEntity;
+    ps->IsVerticalTileSide = (session.Flags & PaintSessionFlags::PaintingVerticalTileSide) != 0;
+    ps->VerticalTileSideEdge = ps->IsVerticalTileSide ? session.VerticalTileSideEdge : 0;
+    ps->IsTerrainCap = (session.Flags & PaintSessionFlags::PaintingTerrainCap) != 0;
+    ps->IsVerticalSupport = false;
 
     return ps;
 }
@@ -283,7 +294,7 @@ void PaintSessionGenerateRotate(PaintSession& session)
     }
     mapTile = mapTile.toTileStart();
 
-    uint16_t numVerticalTiles = (session.rt.WorldHeight() + 2128) >> 5;
+    uint16_t numVerticalTiles = static_cast<uint16_t>((session.rt.WorldHeight() + kPaintVerticalTileMargin) >> 5);
 
     // Adjacent tiles to also check due to overlapping of sprites
     constexpr CoordsXY adjacentTiles[] = {
@@ -684,6 +695,7 @@ static inline void PaintAttachedPS(RenderTarget& rt, PaintStruct* ps, ViewportFl
         const auto screenCoords = ps->ScreenPos + attached_ps->RelativePos;
 
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
+        // Drawn while the parent's world-depth hint is still active.
         if (attached_ps->IsMasked)
         {
             GfxDrawSpriteRawMasked(rt, screenCoords, imageId, attached_ps->ColourImageId);
@@ -712,6 +724,8 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
         }
     }
     auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
+    const auto depthHint = MakeSpriteWorldDepthHint(*ps, session.CurrentRotation);
+    GfxSetSpriteWorldDepthHint(session.rt, depthHint);
     if (gPaintBoundingBoxes)
     {
         PaintPSImageWithBoundingBoxes(session, ps, imageId, screenPos.x, screenPos.y);
@@ -729,6 +743,7 @@ static inline void PaintDrawStruct(PaintSession& session, PaintStruct* ps)
     {
         PaintAttachedPS(session.rt, ps, session.ViewFlags);
     }
+    GfxClearSpriteWorldDepthHint(session.rt);
 }
 
 /**
@@ -887,6 +902,17 @@ PaintStruct* PaintAddImageAsParent(
 
     PaintSessionAddPSToQuadrant(session, ps);
 
+    return ps;
+}
+
+PaintStruct* PaintAddImageAsSupport(
+    PaintSession& session, const ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+{
+    auto* ps = PaintAddImageAsParent(session, imageId, offset, boundBox);
+    if (ps != nullptr)
+    {
+        ps->IsVerticalSupport = true;
+    }
     return ps;
 }
 
@@ -1076,6 +1102,15 @@ void PaintFloatingMoneyEffect(
  */
 void PaintDrawMoneyStructs(RenderTarget& rt, PaintStringStruct* ps)
 {
+    // String entries never build a depth hint of their own, so without this they inherit
+    // whatever the last sprite left behind and stamp its world position under the text -
+    // which reads as an unshaded hole punched through the shadow. Floating money is part of
+    // the world but has no world position, so it must leave the ground's record alone.
+    SpriteWorldDepthHint textHint{};
+    textHint.mode = SpriteWorldDepthMode::worldNone;
+    textHint.valid = true;
+    GfxSetSpriteWorldDepthHint(rt, textHint);
+
     do
     {
         char buffer[256]{};
@@ -1093,4 +1128,8 @@ void PaintDrawMoneyStructs(RenderTarget& rt, PaintStringStruct* ps)
             rt, buffer, { Drawing::Colour::black }, ps->ScreenPos, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont,
             FontStyle::medium);
     } while ((ps = ps->NextEntry) != nullptr);
+
+    // Anything drawn after this - window chrome in the same dirty rect above all - is not part
+    // of the world and must write "no depth here" again, not keep masking its writes off.
+    GfxClearSpriteWorldDepthHint(rt);
 }

@@ -69,6 +69,21 @@ struct PaintStruct
     uint16_t QuadrantIndex;
     uint8_t SortFlags;
     ViewportInteractionItem InteractionItem;
+    /** One of the vertical faces of a terrain or water tile rather than the flat top. The
+        shadow G-buffer solves these as a segment running along a tile edge, which only works
+        because the segment really is 32 units of tile boundary - a raised path deck has the
+        same bound-box shape and must not be solved that way. Only the paint code knows the
+        difference, so it records it here instead of the renderer guessing. */
+    bool IsVerticalTileSide;
+    /** View-relative edge_t value for a terrain/water side. This preserves which of the two
+        parallel faces was painted; an axis alone cannot tell whether the face points at or
+        away from the sun. */
+    uint8_t VerticalTileSideEdge;
+    bool IsTerrainCap;
+    /** Support paint is upright geometry even when it is emitted while painting a footpath.
+        Keep this separate from InteractionItem so shadow depth does not change clicking or
+        other long-established viewport behaviour. */
+    bool IsVerticalSupport;
 };
 
 struct PaintStringStruct
@@ -161,6 +176,7 @@ struct PaintSessionCore
     uint8_t VerticalTunnelHeight;
     uint8_t CurrentRotation;
     uint8_t Flags;
+    uint8_t VerticalTileSideEdge;
     ViewportInteractionItem InteractionType;
 };
 
@@ -251,8 +267,22 @@ extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 extern bool gPaintStableSort;
 
+/** Extra view-space distance PaintSessionGenerate walks "south" past the region it is filling,
+ *  to catch tall objects whose sprites reach up into that region from further away - roughly
+ *  the tallest world Z that can exist. Measured from the region, not from any buffer edge, so
+ *  it cannot be narrowed for a partial repaint without slicing tall objects out of it. */
+constexpr int32_t kPaintVerticalTileMargin = 2128;
+
+/** Set while a drop-shadow sun pass paints, to the rotation of the camera it is shadowing; -1
+ *  otherwise. Each view draws an object's image for its own direction, and those images do not
+ *  agree to the pixel on where the object meets the ground, so the sun pass shifts each prop to
+ *  put its root where the camera drew it. */
+extern int32_t gPaintShadowCameraRotation;
+
 PaintStruct* PaintAddImageAsParent(
     PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+PaintStruct* PaintAddImageAsSupport(
+    PaintSession& session, ImageId imageId, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 /**
  *  rct2: 0x006861AC, 0x00686337, 0x006864D0, 0x0068666B, 0x0098196C
  *
@@ -269,6 +299,12 @@ inline PaintStruct* PaintAddImageAsParent(
     PaintSession& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
     return PaintAddImageAsParent(session, image_id, offset, { offset, boundBoxSize });
+}
+
+inline PaintStruct* PaintAddImageAsSupport(
+    PaintSession& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+{
+    return PaintAddImageAsSupport(session, imageId, offset, { offset, boundBoxSize });
 }
 
 [[nodiscard]] PaintStruct* PaintAddImageAsOrphan(

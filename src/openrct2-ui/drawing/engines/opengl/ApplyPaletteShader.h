@@ -12,12 +12,17 @@
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
 
+#include <SDL_pixels.h>
 namespace OpenRCT2::Ui
 {
     class ApplyPaletteShader final : public OpenGLShaderProgram
     {
     private:
         GLint uTexture{ -1 };
+        GLint uShadowTex{ -1 };
+        GLint uWorldDepthTex{ -1 };
+        GLint uShadeRemapTex{ -1 };
+        GLint uUseShadows{ -1 };
         GLint uPalette{ -1 };
 
         GLint vPosition{ -1 };
@@ -31,6 +36,10 @@ namespace OpenRCT2::Ui
         ~ApplyPaletteShader() override;
 
         static void SetTexture(GLuint texture);
+        static void SetShadowTexture(GLuint texture);
+        static void SetWorldDepthTexture(GLuint texture);
+        static void SetShadeRemapTexture(GLuint texture);
+        void SetUseShadows(bool enabled);
         void SetPalette(const vec4* glPalette);
 
         void Draw();

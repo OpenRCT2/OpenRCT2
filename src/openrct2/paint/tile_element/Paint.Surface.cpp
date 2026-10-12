@@ -157,6 +157,31 @@ struct TileDescriptor
     SlopeRelativeCornerHeights corner_heights;
 };
 
+static bool TerrainTopCapsExposedCliff(const TileDescriptor& self, const TileDescriptor (&neighbours)[4])
+{
+    const auto edgeDrops = [](uint8_t ownA, uint8_t ownB, const TileDescriptor& neighbour, uint8_t otherA, uint8_t otherB) {
+        // Any exposed part of an edge makes this top a caster. A one-corner-up tile beside
+        // flat ground has a triangular vertical step whose height falls to zero at the other
+        // endpoint; requiring both endpoints to be raised incorrectly removed that entire
+        // top from the shadow map. Fully continuous joins are rejected exactly in the
+        // resolve from the two tiles' stored corner heights.
+        return neighbour.tile_element == nullptr || ownA > otherA || ownB > otherB;
+    };
+
+    return edgeDrops(
+               self.corner_heights.left, self.corner_heights.bottom, neighbours[0], neighbours[0].corner_heights.top,
+               neighbours[0].corner_heights.right)
+        || edgeDrops(
+               self.corner_heights.right, self.corner_heights.bottom, neighbours[1], neighbours[1].corner_heights.top,
+               neighbours[1].corner_heights.left)
+        || edgeDrops(
+               self.corner_heights.top, self.corner_heights.left, neighbours[2], neighbours[2].corner_heights.right,
+               neighbours[2].corner_heights.bottom)
+        || edgeDrops(
+               self.corner_heights.top, self.corner_heights.right, neighbours[3], neighbours[3].corner_heights.left,
+               neighbours[3].corner_heights.bottom);
+}
+
 struct TileSurfaceBoundaryData
 {
     int32_t bit_1;
@@ -961,7 +986,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         },
     };
 
-    TileDescriptor tileDescriptors[4];
+    TileDescriptor tileDescriptors[4]{};
 
     for (std::size_t i = 0; i < std::size(kNeighbouringTileCoordOffsets); i++)
     {
@@ -1053,7 +1078,16 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             imageId = imageId.WithRemap(FilterPaletteID::paletteGhost);
         }
 
+        // A continuous heightfield is only a receiver: recording it in the sun pass lets
+        // quantisation at a grazing light angle self-shadow its neighbouring tiles. A top
+        // with a genuinely exposed cliff edge is different—it is a lid, whether flat or
+        // sloped, and must contribute its full silhouette to the cast shadow.
+        if (TerrainTopCapsExposedCliff(selfDescriptor, tileDescriptors))
+        {
+            session.Flags |= PaintSessionFlags::PaintingTerrainCap;
+        }
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
+        session.Flags &= ~PaintSessionFlags::PaintingTerrainCap;
         has_surface = true;
     }
 
@@ -1222,15 +1256,24 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (!session.ViewFlags.has(ViewportFlag::hideVertical))
     {
+        // Everything these four emit is a vertical face of this tile, tunnel mouths and
+        // fillers included. Flag it so the renderer knows without having to guess.
         auto edgeColour1 = tileElement.getPrimaryEdgeColour();
+        session.Flags |= PaintSessionFlags::PaintingVerticalTileSide;
+        session.VerticalTileSideEdge = EDGE_TOPLEFT;
         ViewportSurfaceDrawTileSideTop(
             session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2], false, edgeColour1);
+        session.VerticalTileSideEdge = EDGE_TOPRIGHT;
         ViewportSurfaceDrawTileSideTop(
             session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3], false, edgeColour1);
+        session.VerticalTileSideEdge = EDGE_BOTTOMLEFT;
         ViewportSurfaceDrawTileSideBottom(
             session, EDGE_BOTTOMLEFT, height, edgeObject, selfDescriptor, tileDescriptors[0], false, edgeColour1);
+        session.VerticalTileSideEdge = EDGE_BOTTOMRIGHT;
         ViewportSurfaceDrawTileSideBottom(
             session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1], false, edgeColour1);
+        session.VerticalTileSideEdge = 0;
+        session.Flags &= ~PaintSessionFlags::PaintingVerticalTileSide;
     }
 
     const uint16_t waterHeight = tileElement.getWaterHeight();
@@ -1263,14 +1306,21 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         if (!session.ViewFlags.has(ViewportFlag::hideVertical))
         {
             auto edgeColour1 = tileElement.getPrimaryEdgeColour();
+            session.Flags |= PaintSessionFlags::PaintingVerticalTileSide;
+            session.VerticalTileSideEdge = EDGE_BOTTOMLEFT;
             ViewportSurfaceDrawTileSideBottom(
                 session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0], true, edgeColour1);
+            session.VerticalTileSideEdge = EDGE_BOTTOMRIGHT;
             ViewportSurfaceDrawTileSideBottom(
                 session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1], true, edgeColour1);
+            session.VerticalTileSideEdge = EDGE_TOPLEFT;
             ViewportSurfaceDrawTileSideTop(
                 session, EDGE_TOPLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2], true, edgeColour1);
+            session.VerticalTileSideEdge = EDGE_TOPRIGHT;
             ViewportSurfaceDrawTileSideTop(
                 session, EDGE_TOPRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3], true, edgeColour1);
+            session.VerticalTileSideEdge = 0;
+            session.Flags &= ~PaintSessionFlags::PaintingVerticalTileSide;
         }
     }
 

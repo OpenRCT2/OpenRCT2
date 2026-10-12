@@ -99,7 +99,9 @@ namespace OpenRCT2::Ui
         GLint depth;
     };
 
-    // Per-instance data for images
+    // Per-instance data for images.
+    // Layout is packed so the VAO stays within GL_MAX_VERTEX_ATTRIBS (16):
+    //   palettes+flags → 1 attrib, depth+zoom → 1 attrib, world depth → 2 attribs.
     struct DrawRectCommand
     {
         ivec4 clip;
@@ -107,12 +109,13 @@ namespace OpenRCT2::Ui
         vec4 texColourBounds;
         GLint texMaskAtlas;
         vec4 texMaskBounds;
-        ivec3 palettes;
-        GLint flags;
+        ivec4 palettesFlags; // xyz = remaps, w = flags
         GLuint colour;
         ivec4 bounds;
-        GLint depth;
-        GLfloat zoom;
+        vec2 depthZoom; // x = painter depth, y = zoom
+        // World-depth solve inputs; layout per mode in OpenGLDrawingContext::ApplyWorldDepthToCommand.
+        vec4 world0;
+        vec4 world1;
 
         enum
         {
@@ -120,6 +123,8 @@ namespace OpenRCT2::Ui
             FLAG_MASK = (1u << 3u),
             FLAG_CROSS_HATCH = (1u << 4u),
             FLAG_TTF_TEXT = (1u << 5u),
+            // Writes only the world-depth attachment (as "no depth here"), never colour.
+            FLAG_WORLD_DEPTH_ONLY = (1u << 6u),
             // bits 8 to 16 used to store hinting threshold.
             FLAG_TTF_HINTING_THRESHOLD_MASK = 0xff00
         };

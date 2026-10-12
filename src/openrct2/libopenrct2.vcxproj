@@ -403,6 +403,9 @@
     <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
+    <ClInclude Include="paint\ShadowDepthHint.h" />
+    <ClInclude Include="paint\ShadowRoofFit.h" />
+    <ClInclude Include="paint\ShadowSpriteRoot.h" />
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\Balloon.h" />
@@ -1027,6 +1030,9 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="paint\Paint.cpp" />
+    <ClCompile Include="paint\ShadowDepthHint.cpp" />
+    <ClCompile Include="paint\ShadowRoofFit.cpp" />
+    <ClCompile Include="paint\ShadowSpriteRoot.cpp" />
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />

@@ -59,6 +59,8 @@ namespace OpenRCT2::Drawing
 void ScreenshotCheck();
 std::string ScreenshotDump();
 std::string ScreenshotDumpPNG(OpenRCT2::Drawing::RenderTarget& rt);
+/** A free path in the screenshot directory, named after the park and the time. */
+std::optional<std::string> ScreenshotGetNextPath();
 
 void ScreenshotGiant();
 int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options);

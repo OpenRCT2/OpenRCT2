@@ -140,7 +140,7 @@ static std::string ScreenshotGetFormattedDateTime()
     return formatted;
 }
 
-static std::optional<std::string> ScreenshotGetNextPath()
+std::optional<std::string> ScreenshotGetNextPath()
 {
     auto screenshotDirectory = ScreenshotGetDirectory();
     if (!Path::CreateDirectory(screenshotDirectory))

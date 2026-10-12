@@ -26,7 +26,8 @@ struct PaintStruct;
 namespace OpenRCT2::Drawing
 {
     struct RenderTarget;
-}
+    class InvalidationGrid;
+} // namespace OpenRCT2::Drawing
 
 namespace OpenRCT2
 {
@@ -159,6 +160,35 @@ namespace OpenRCT2
     void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom);
     void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom);
     void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom = ZoomLevel{ -1 });
+
+    /**
+     * Lets a drawing engine track world-space changes against one or more second, non-displayed
+     * projections (e.g. a shadow/light-source capture per real viewport) using the same
+     * world-space invalidation calls that already drive every real viewport's dirty-block
+     * redraw - with none of those call sites needing to know it exists. Every
+     * ViewportsInvalidate(...) call additionally projects through every registered `viewport`
+     * (only `rotation`, `zoom`, `viewPos`, `width`, `height` are read; `pos` should stay {0,0}
+     * so the result lands directly in the target's own pixel space) and marks the result dirty
+     * in the matching `grid`, exactly as it would for a real viewport except the result goes to
+     * `grid` instead of the screen.
+     *
+     * `ownerKey` identifies this registration for later replacement or removal - typically the
+     * address of whatever real viewport this shadow projection belongs to, so a drawing engine
+     * tracking one capture per viewport can key its own pool the same way. Registering again
+     * with an already-used `ownerKey` replaces that entry (e.g. every time a capture updates
+     * its reference frame). Both pointers are borrowed - the caller owns their lifetime and
+     * must call UnregisterShadowInvalidationTarget before destroying either.
+     */
+    void RegisterShadowInvalidationTarget(const void* ownerKey, Viewport* viewport, Drawing::InvalidationGrid* grid);
+    void UnregisterShadowInvalidationTarget(const void* ownerKey);
+
+    /**
+     * Marks a world tile dirty in every registered shadow target, without touching any real
+     * viewport. ViewportsInvalidate already does both, but the map-animation path invalidates
+     * one specific viewport at a time and so would never reach the shadow targets - leaving an
+     * animating caster redrawn on screen while its sun buffer kept the previous frame.
+     */
+    void ShadowTargetsInvalidateTile(int32_t x, int32_t y, int32_t z0, int32_t z1);
     void ViewportUpdatePosition(WindowBase* window);
     void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
     void ViewportRotateSingle(WindowBase* window, int32_t direction);

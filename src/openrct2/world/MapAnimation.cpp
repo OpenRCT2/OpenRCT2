@@ -83,6 +83,12 @@ static void Invalidate(
     else
     {
         viewport->Invalidate(x, y, z0, z1, maxZoom);
+        // The caller is walking one viewport at a time, so it cannot use ViewportsInvalidate -
+        // but the shadow targets still have to hear about this. Without it an animating caster
+        // is redrawn on screen while the sun buffer keeps the previous frame's geometry, and
+        // its shadow only catches up when something else dirties the receiver. Marking a block
+        // already dirty is a no-op, so the repeat across viewports costs nothing.
+        ShadowTargetsInvalidateTile(x, y, z0, z1);
     }
 }
 

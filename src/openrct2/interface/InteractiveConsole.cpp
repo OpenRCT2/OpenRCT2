@@ -692,6 +692,20 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         {
             console.WriteFormatLine("render_weather_gloom %d", Config::Get().general.renderWeatherGloom);
         }
+        else if (argv[0] == "drop_shadows")
+        {
+            console.WriteFormatLine("drop_shadows %d", Config::Get().general.dropShadows);
+        }
+        else if (argv[0] == "drop_shadows_on_secondary_viewports")
+        {
+            console.WriteFormatLine(
+                "drop_shadows_on_secondary_viewports %d", Config::Get().general.dropShadowsOnSecondaryViewports);
+        }
+        else if (argv[0] == "shadow_strength")
+        {
+            console.WriteFormatLine("shadow_strength %.2f", Config::Get().general.shadowStrength);
+            console.WriteLine("  fraction of the light a shadow takes away: 0 = none, 1 = black");
+        }
         else if (argv[0] == "cheat_sandbox_mode")
         {
             console.WriteFormatLine("cheat_sandbox_mode %d", gameState.cheats.sandboxMode);
@@ -943,6 +957,27 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             Config::Get().general.renderWeatherGloom = (int_val[0] != 0);
             Config::Save();
             console.Execute("get render_weather_gloom");
+        }
+        else if (varName == "drop_shadows" && InvalidArguments(&invalidArgs, int_valid[0]))
+        {
+            Config::Get().general.dropShadows = (int_val[0] != 0);
+            Config::Save();
+            Drawing::GfxInvalidateScreen();
+            console.Execute("get drop_shadows");
+        }
+        else if (varName == "drop_shadows_on_secondary_viewports" && InvalidArguments(&invalidArgs, int_valid[0]))
+        {
+            Config::Get().general.dropShadowsOnSecondaryViewports = (int_val[0] != 0);
+            Config::Save();
+            Drawing::GfxInvalidateScreen();
+            console.Execute("get drop_shadows_on_secondary_viewports");
+        }
+        else if (varName == "shadow_strength" && InvalidArguments(&invalidArgs, double_valid[0]))
+        {
+            Config::Get().general.shadowStrength = std::clamp(static_cast<float>(double_val[0]), 0.0f, 1.0f);
+            Config::Save();
+            Drawing::GfxInvalidateScreen();
+            console.Execute("get shadow_strength");
         }
         else if (varName == "cheat_sandbox_mode" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -1795,6 +1830,9 @@ static constexpr const utf8* console_variable_table[] = {
     "window_limit",
     "render_weather_effects",
     "render_weather_gloom",
+    "drop_shadows",
+    "drop_shadows_on_secondary_viewports",
+    "shadow_strength",
     "cheat_sandbox_mode",
     "cheat_disable_clearance_checks",
     "cheat_disable_support_limits",

@@ -173,6 +173,24 @@ void FASTCALL GfxDrawSprite(RenderTarget& rt, const ImageId imageId, const Scree
     }
 }
 
+void GfxSetSpriteWorldDepthHint(RenderTarget& rt, const SpriteWorldDepthHint& hint)
+{
+    auto drawingEngine = rt.DrawingEngine;
+    if (drawingEngine != nullptr)
+    {
+        IDrawingContext* dc = drawingEngine->GetDrawingContext();
+        if (dc != nullptr)
+        {
+            dc->SetSpriteWorldDepthHint(hint);
+        }
+    }
+}
+
+void GfxClearSpriteWorldDepthHint(RenderTarget& rt)
+{
+    GfxSetSpriteWorldDepthHint(rt, {});
+}
+
 void FASTCALL GfxDrawGlyph(RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = rt.DrawingEngine;

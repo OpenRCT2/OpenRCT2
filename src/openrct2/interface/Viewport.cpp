@@ -20,7 +20,9 @@
 #include "../drawing/Drawing.Screen.h"
 #include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/IDrawingContext.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/InvalidationGrid.h"
 #include "../drawing/NewDrawing.h"
 #include "../drawing/Rectangle.h"
 #include "../entity/Guest.h"
@@ -45,13 +47,63 @@
 #include "Window.h"
 #include "WindowBase.h"
 
+#include <algorithm>
 #include <cstring>
 #include <list>
+#include <unordered_map>
+#include <vector>
 
 namespace OpenRCT2
 {
     using namespace OpenRCT2::Drawing;
     using namespace OpenRCT2::Numerics;
+
+    namespace
+    {
+        struct ShadowInvalidationTarget
+        {
+            const void* owner;
+            Viewport* viewport;              // borrowed
+            Drawing::InvalidationGrid* grid; // borrowed
+        };
+
+        // Small by construction (one entry per real shadowed viewport, typically well under
+        // ten), so a linear scan on every registration/lookup is cheap - no need for a map.
+        std::vector<ShadowInvalidationTarget> _shadowInvalidationTargets;
+    } // namespace
+
+    static std::optional<ScreenRect> ProjectInvalidationToViewportPixels(
+        const Viewport& viewport, const ScreenRect& screenRect);
+    static ScreenRect ComputeTileInvalidationRect(uint8_t rotation, int32_t x, int32_t y, int32_t z0, int32_t z1);
+
+    /**
+     * Marks dirty, in every registered shadow target, the rect `toScreen(target viewport)`
+     * covers - the shadow-side twin of each ViewportsInvalidate overload's viewport loop. See
+     * RegisterShadowInvalidationTarget in Viewport.h for the contract.
+     *
+     * Deliberately not filtered by maxZoom. For a real viewport that means "too small to be
+     * worth redrawing at this zoom", which is harmless because the pixels get redrawn for other
+     * reasons anyway. Skipped in a sun buffer, the old geometry keeps casting its old shadow
+     * until something else forces a repaint.
+     */
+    template<typename TToScreen>
+    static void MarkShadowTargetsDirty(TToScreen&& toScreen)
+    {
+        for (const auto& target : _shadowInvalidationTargets)
+        {
+            if (target.viewport == nullptr || target.grid == nullptr)
+                continue;
+            if (auto rect = ProjectInvalidationToViewportPixels(*target.viewport, toScreen(*target.viewport)))
+            {
+                target.grid->invalidate(rect->getLeft(), rect->getTop(), rect->getRight(), rect->getBottom());
+            }
+        }
+    }
+
+    void ShadowTargetsInvalidateTile(int32_t x, int32_t y, int32_t z0, int32_t z1)
+    {
+        MarkShadowTargetsDirty([&](const Viewport& vp) { return ComputeTileInvalidationRect(vp.rotation, x, y, z0, z1); });
+    }
 
     enum : uint8_t
     {
@@ -79,6 +131,7 @@ namespace OpenRCT2
     }
 
     static void ViewportPaintWeatherGloom(RenderTarget& rt);
+
     static void ViewportPaint(const Viewport* viewport, RenderTarget& rt);
     static void ViewportUpdateFollowSprite(WindowBase* window);
     static void ViewportUpdateSmartFollowEntity(WindowBase* window);
@@ -230,6 +283,7 @@ namespace OpenRCT2
                 viewport.Invalidate(x, y, z0, z1, maxZoom);
             }
         }
+        ShadowTargetsInvalidateTile(x, y, z0, z1);
     }
 
     void ViewportsInvalidate(
@@ -246,6 +300,11 @@ namespace OpenRCT2
                 ViewportInvalidate(&vp, screenPos);
             }
         }
+        MarkShadowTargetsDirty([&](const Viewport& vp) {
+            const auto screenCoords = Translate3DTo2DWithZ(vp.rotation, pos);
+            return ScreenRect(
+                screenCoords - ScreenCoordsXY{ width, minHeight }, screenCoords + ScreenCoordsXY{ width, maxHeight });
+        });
     }
 
     void ViewportsInvalidate(const ScreenRect& screenRect, const ZoomLevel maxZoom)
@@ -257,6 +316,7 @@ namespace OpenRCT2
                 ViewportInvalidate(&vp, screenRect);
             }
         }
+        MarkShadowTargetsDirty([&](const Viewport&) { return screenRect; });
     }
 
     /**
@@ -1008,7 +1068,14 @@ namespace OpenRCT2
             auto y = rt.y;
             auto w = rt.width;
             auto h = rt.height;
+            // Part of the world, so it must leave the ground's depth record alone: a translucent
+            // fill with no hint counts as window chrome and clears the record under it.
+            SpriteWorldDepthHint gloomHint{};
+            gloomHint.mode = SpriteWorldDepthMode::worldNone;
+            gloomHint.valid = true;
+            GfxSetSpriteWorldDepthHint(rt, gloomHint);
             Rectangle::filter(rt, ScreenRect(x, y, x + w, y + h), paletteId);
+            GfxClearSpriteWorldDepthHint(rt);
         }
     }
 
@@ -1091,14 +1158,18 @@ namespace OpenRCT2
     {
         if ((maxZoom == ZoomLevel{ -1 } || zoom <= ZoomLevel{ maxZoom }))
         {
-            const auto screenCoord = Translate3DTo2DWithZ(
-                rotation, CoordsXYZ{ x + kCoordsXYHalfTile, y + kCoordsXYHalfTile, 0 });
-
-            const auto topLeft = screenCoord - ScreenCoordsXY(kScreenCoordsTileWidthHalf, kScreenCoordsTileHeight + z1);
-            const auto bottomRight = screenCoord + ScreenCoordsXY(kScreenCoordsTileWidthHalf, kScreenCoordsTileHeight - z0);
-
-            ViewportInvalidate(this, ScreenRect{ topLeft, bottomRight });
+            ViewportInvalidate(this, ComputeTileInvalidationRect(rotation, x, y, z0, z1));
         }
+    }
+
+    static ScreenRect ComputeTileInvalidationRect(
+        const uint8_t rotation, const int32_t x, const int32_t y, const int32_t z0, const int32_t z1)
+    {
+        const auto screenCoord = Translate3DTo2DWithZ(rotation, CoordsXYZ{ x + kCoordsXYHalfTile, y + kCoordsXYHalfTile, 0 });
+
+        const auto topLeft = screenCoord - ScreenCoordsXY(kScreenCoordsTileWidthHalf, kScreenCoordsTileHeight + z1);
+        const auto bottomRight = screenCoord + ScreenCoordsXY(kScreenCoordsTileWidthHalf, kScreenCoordsTileHeight - z0);
+        return ScreenRect{ topLeft, bottomRight };
     }
 
     CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z, uint8_t rotation)
@@ -1749,29 +1820,59 @@ namespace OpenRCT2
     }
 
     /**
-     * screenRect represents 2D map coordinates at zoom 0.
+     * screenRect represents 2D map coordinates at zoom 0. Shared by ViewportInvalidate and the
+     * shadow-tracking sink below - identical math, just a different destination for the result.
      */
-    void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect)
+    static std::optional<ScreenRect> ProjectInvalidationToViewportPixels(const Viewport& viewport, const ScreenRect& screenRect)
     {
-        PROFILED_FUNCTION();
-
-        auto zoom = viewport->zoom;
-        auto viewPos = viewport->viewPos;
-        auto viewportScreenPos = viewport->pos;
+        auto zoom = viewport.zoom;
+        auto viewPos = viewport.viewPos;
+        auto viewportScreenPos = viewport.pos;
 
         ScreenRect invalidRect = { { zoom.ApplyInversedTo(screenRect.getLeft() - viewPos.x),
                                      zoom.ApplyInversedTo(screenRect.getTop() - viewPos.y) },
                                    { zoom.ApplyInversedTo(screenRect.getRight() - viewPos.x),
                                      zoom.ApplyInversedTo(screenRect.getBottom() - viewPos.y) } };
 
-        if (invalidRect.getTop() >= viewport->height || invalidRect.getBottom() <= 0 || invalidRect.getLeft() >= viewport->width
+        if (invalidRect.getTop() >= viewport.height || invalidRect.getBottom() <= 0 || invalidRect.getLeft() >= viewport.width
             || invalidRect.getRight() <= 0)
         {
-            return;
+            return std::nullopt;
         }
         invalidRect.point1 += viewportScreenPos;
         invalidRect.point2 += viewportScreenPos;
-        GfxSetDirtyBlocks(invalidRect);
+        return invalidRect;
+    }
+
+    void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect)
+    {
+        PROFILED_FUNCTION();
+
+        if (auto rect = ProjectInvalidationToViewportPixels(*viewport, screenRect))
+        {
+            GfxSetDirtyBlocks(*rect);
+        }
+    }
+
+    void RegisterShadowInvalidationTarget(const void* ownerKey, Viewport* viewport, Drawing::InvalidationGrid* grid)
+    {
+        for (auto& target : _shadowInvalidationTargets)
+        {
+            if (target.owner == ownerKey)
+            {
+                target.viewport = viewport;
+                target.grid = grid;
+                return;
+            }
+        }
+        _shadowInvalidationTargets.push_back({ ownerKey, viewport, grid });
+    }
+
+    void UnregisterShadowInvalidationTarget(const void* ownerKey)
+    {
+        std::erase_if(_shadowInvalidationTargets, [ownerKey](const ShadowInvalidationTarget& target) {
+            return target.owner == ownerKey;
+        });
     }
 
     Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)

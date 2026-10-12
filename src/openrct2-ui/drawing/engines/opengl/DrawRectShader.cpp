@@ -81,11 +81,8 @@ DrawRectShader::DrawRectShader()
         glVertexAttribPointer, vTexMaskCoords, 4, GL_FLOAT, GL_FALSE, glSizeOf<DrawRectCommand>(),
         reinterpret_cast<void*>(offsetof(DrawRectCommand, texMaskBounds)));
     glCall(
-        glVertexAttribIPointer, vPalettes, 3, GL_INT, glSizeOf<DrawRectCommand>(),
-        reinterpret_cast<void*>(offsetof(DrawRectCommand, palettes)));
-    glCall(
-        glVertexAttribIPointer, vFlags, 1, GL_INT, glSizeOf<DrawRectCommand>(),
-        reinterpret_cast<void*>(offsetof(DrawRectCommand, flags)));
+        glVertexAttribIPointer, vPalettesFlags, 4, GL_INT, glSizeOf<DrawRectCommand>(),
+        reinterpret_cast<void*>(offsetof(DrawRectCommand, palettesFlags)));
     glCall(
         glVertexAttribIPointer, vColour, 1, GL_UNSIGNED_INT, glSizeOf<DrawRectCommand>(),
         reinterpret_cast<void*>(offsetof(DrawRectCommand, colour)));
@@ -93,11 +90,14 @@ DrawRectShader::DrawRectShader()
         glVertexAttribIPointer, vBounds, 4, GL_INT, glSizeOf<DrawRectCommand>(),
         reinterpret_cast<void*>(offsetof(DrawRectCommand, bounds)));
     glCall(
-        glVertexAttribIPointer, vDepth, 1, GL_INT, glSizeOf<DrawRectCommand>(),
-        reinterpret_cast<void*>(offsetof(DrawRectCommand, depth)));
+        glVertexAttribPointer, vDepthZoom, 2, GL_FLOAT, GL_FALSE, glSizeOf<DrawRectCommand>(),
+        reinterpret_cast<void*>(offsetof(DrawRectCommand, depthZoom)));
     glCall(
-        glVertexAttribPointer, vZoom, 1, GL_FLOAT, GL_FALSE, glSizeOf<DrawRectCommand>(),
-        reinterpret_cast<void*>(offsetof(DrawRectCommand, zoom)));
+        glVertexAttribPointer, vWorld0, 4, GL_FLOAT, GL_FALSE, glSizeOf<DrawRectCommand>(),
+        reinterpret_cast<void*>(offsetof(DrawRectCommand, world0)));
+    glCall(
+        glVertexAttribPointer, vWorld1, 4, GL_FLOAT, GL_FALSE, glSizeOf<DrawRectCommand>(),
+        reinterpret_cast<void*>(offsetof(DrawRectCommand, world1)));
 
     glCall(glEnableVertexAttribArray, vVertMat + 0);
     glCall(glEnableVertexAttribArray, vVertMat + 1);
@@ -110,24 +110,24 @@ DrawRectShader::DrawRectShader()
     glCall(glEnableVertexAttribArray, vTexColourCoords);
     glCall(glEnableVertexAttribArray, vTexMaskAtlas);
     glCall(glEnableVertexAttribArray, vTexMaskCoords);
-    glCall(glEnableVertexAttribArray, vPalettes);
-    glCall(glEnableVertexAttribArray, vFlags);
+    glCall(glEnableVertexAttribArray, vPalettesFlags);
     glCall(glEnableVertexAttribArray, vColour);
     glCall(glEnableVertexAttribArray, vBounds);
-    glCall(glEnableVertexAttribArray, vDepth);
-    glCall(glEnableVertexAttribArray, vZoom);
+    glCall(glEnableVertexAttribArray, vDepthZoom);
+    glCall(glEnableVertexAttribArray, vWorld0);
+    glCall(glEnableVertexAttribArray, vWorld1);
 
     glCall(glVertexAttribDivisor, vClip, 1);
     glCall(glVertexAttribDivisor, vTexColourAtlas, 1);
     glCall(glVertexAttribDivisor, vTexColourCoords, 1);
     glCall(glVertexAttribDivisor, vTexMaskAtlas, 1);
     glCall(glVertexAttribDivisor, vTexMaskCoords, 1);
-    glCall(glVertexAttribDivisor, vPalettes, 1);
-    glCall(glVertexAttribDivisor, vFlags, 1);
+    glCall(glVertexAttribDivisor, vPalettesFlags, 1);
     glCall(glVertexAttribDivisor, vColour, 1);
     glCall(glVertexAttribDivisor, vBounds, 1);
-    glCall(glVertexAttribDivisor, vDepth, 1);
-    glCall(glVertexAttribDivisor, vZoom, 1);
+    glCall(glVertexAttribDivisor, vDepthZoom, 1);
+    glCall(glVertexAttribDivisor, vWorld0, 1);
+    glCall(glVertexAttribDivisor, vWorld1, 1);
 
     Use();
     glCall(glUniform1i, uTexture, 0);
@@ -135,6 +135,7 @@ DrawRectShader::DrawRectShader()
 
     glCall(glUniform1i, uPeelingTex, 2);
     glCall(glUniform1i, uPeeling, 0);
+    glCall(glUniform1i, uShadowMapPass, 0);
 }
 
 DrawRectShader::~DrawRectShader()
@@ -152,18 +153,19 @@ void DrawRectShader::GetLocations()
 
     uPeelingTex = GetUniformLocation("uPeelingTex");
     uPeeling = GetUniformLocation("uPeeling");
+    uShadowMapPass = GetUniformLocation("uShadowMapPass");
 
     vClip = GetAttributeLocation("vClip");
     vTexColourAtlas = GetAttributeLocation("vTexColourAtlas");
     vTexColourCoords = GetAttributeLocation("vTexColourCoords");
     vTexMaskAtlas = GetAttributeLocation("vTexMaskAtlas");
     vTexMaskCoords = GetAttributeLocation("vTexMaskCoords");
-    vPalettes = GetAttributeLocation("vPalettes");
-    vFlags = GetAttributeLocation("vFlags");
+    vPalettesFlags = GetAttributeLocation("vPalettesFlags");
     vColour = GetAttributeLocation("vColour");
     vBounds = GetAttributeLocation("vBounds");
-    vDepth = GetAttributeLocation("vDepth");
-    vZoom = GetAttributeLocation("vZoom");
+    vDepthZoom = GetAttributeLocation("vDepthZoom");
+    vWorld0 = GetAttributeLocation("vWorld0");
+    vWorld1 = GetAttributeLocation("vWorld1");
 
     vVertMat = GetAttributeLocation("vVertMat");
     vVertVec = GetAttributeLocation("vVertVec");
@@ -185,23 +187,33 @@ void DrawRectShader::DisablePeeling()
     glCall(glUniform1i, uPeeling, 0);
 }
 
+void DrawRectShader::SetShadowMapPass(bool enabled)
+{
+    glCall(glUniform1i, uShadowMapPass, enabled ? 1 : 0);
+}
+
 void DrawRectShader::SetInstances(const RectCommandBatch& instances)
+{
+    SetInstances(instances.data(), instances.size());
+}
+
+void DrawRectShader::SetInstances(const DrawRectCommand* instances, size_t count)
 {
     glCall(glBindVertexArray, _vao);
 
     glCall(glBindBuffer, GL_ARRAY_BUFFER, _vboInstances);
 
-    if (instances.size() > _maxInstancesBufferSize)
+    if (count > _maxInstancesBufferSize)
     {
-        glCall(glBufferData, GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * instances.size(), instances.data(), GL_STREAM_DRAW);
-        _maxInstancesBufferSize = instances.size();
+        glCall(glBufferData, GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * count, instances, GL_STREAM_DRAW);
+        _maxInstancesBufferSize = count;
     }
     else
     {
-        glCall(glBufferSubData, GL_ARRAY_BUFFER, 0, sizeof(DrawRectCommand) * instances.size(), instances.data());
+        glCall(glBufferSubData, GL_ARRAY_BUFFER, 0, sizeof(DrawRectCommand) * count, instances);
     }
 
-    _instanceCount = static_cast<GLsizei>(instances.size());
+    _instanceCount = static_cast<GLsizei>(count);
 }
 
 void DrawRectShader::DrawInstances()

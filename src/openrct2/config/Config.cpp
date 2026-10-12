@@ -263,6 +263,9 @@ namespace OpenRCT2::Config
             model->zoomToCursor = reader->GetBoolean("zoom_to_cursor", true);
             model->renderWeatherEffects = reader->GetBoolean("render_weather_effects", true);
             model->renderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
+            model->dropShadows = reader->GetBoolean("drop_shadows", false);
+            model->dropShadowsOnSecondaryViewports = reader->GetBoolean("drop_shadows_on_secondary_viewports", true);
+            model->shadowStrength = reader->GetFloat("shadow_strength", 0.2f);
             model->showGuestPurchases = reader->GetBoolean("show_guest_purchases", false);
             model->showRealNamesOfGuests = reader->GetBoolean("show_real_names_of_guests", true);
             model->showRealNamesOfStaff = reader->GetBoolean("show_real_names_of_staff", false);
@@ -360,6 +363,9 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("zoom_to_cursor", model->zoomToCursor);
         writer->WriteBoolean("render_weather_effects", model->renderWeatherEffects);
         writer->WriteBoolean("render_weather_gloom", model->renderWeatherGloom);
+        writer->WriteBoolean("drop_shadows", model->dropShadows);
+        writer->WriteBoolean("drop_shadows_on_secondary_viewports", model->dropShadowsOnSecondaryViewports);
+        writer->WriteFloat("shadow_strength", model->shadowStrength);
         writer->WriteBoolean("show_guest_purchases", model->showGuestPurchases);
         writer->WriteBoolean("show_real_names_of_guests", model->showRealNamesOfGuests);
         writer->WriteBoolean("show_real_names_of_staff", model->showRealNamesOfStaff);

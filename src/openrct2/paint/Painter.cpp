@@ -180,6 +180,7 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, ViewportFlags viewFlags, 
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
     session->Flags = 0;
+    session->VerticalTileSideEdge = 0;
     session->CurrentRotation = rotation;
 
     std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);

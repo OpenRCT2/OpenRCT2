@@ -32,7 +32,8 @@ namespace OpenRCT2::Ui
 
     private:
         std::string GetPath(const std::string& name);
-        static std::string ReadSourceCode(const std::string& path);
+        /** Reads a shader, expanding `#include "file"` lines against files in the same directory. */
+        static std::string ReadSourceCode(const std::string& path, int32_t includeDepth = 0);
     };
 
     class OpenGLShaderProgram

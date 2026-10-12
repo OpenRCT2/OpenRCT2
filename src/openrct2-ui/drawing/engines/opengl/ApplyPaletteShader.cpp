@@ -53,6 +53,10 @@ ApplyPaletteShader::ApplyPaletteShader()
 
     Use();
     glCall(glUniform1i, uTexture, 0);
+    glCall(glUniform1i, uShadowTex, 1);
+    glCall(glUniform1i, uWorldDepthTex, 2);
+    glCall(glUniform1i, uShadeRemapTex, 3);
+    glCall(glUniform1i, uUseShadows, 0);
 }
 
 ApplyPaletteShader::~ApplyPaletteShader()
@@ -64,6 +68,10 @@ ApplyPaletteShader::~ApplyPaletteShader()
 void ApplyPaletteShader::GetLocations()
 {
     uTexture = GetUniformLocation("uTexture");
+    uShadowTex = GetUniformLocation("uShadowTex");
+    uWorldDepthTex = GetUniformLocation("uWorldDepthTex");
+    uShadeRemapTex = GetUniformLocation("uShadeRemapTex");
+    uUseShadows = GetUniformLocation("uUseShadows");
     uPalette = GetUniformLocation("uPalette");
 
     vPosition = GetAttributeLocation("vPosition");
@@ -73,6 +81,26 @@ void ApplyPaletteShader::GetLocations()
 void ApplyPaletteShader::SetTexture(GLuint texture)
 {
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
+}
+
+void ApplyPaletteShader::SetShadowTexture(GLuint texture)
+{
+    OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, texture);
+}
+
+void ApplyPaletteShader::SetWorldDepthTexture(GLuint texture)
+{
+    OpenGLAPI::SetTexture(2, GL_TEXTURE_2D, texture);
+}
+
+void ApplyPaletteShader::SetShadeRemapTexture(GLuint texture)
+{
+    OpenGLAPI::SetTexture(3, GL_TEXTURE_2D, texture);
+}
+
+void ApplyPaletteShader::SetUseShadows(bool enabled)
+{
+    glCall(glUniform1i, uUseShadows, enabled ? 1 : 0);
 }
 
 void ApplyPaletteShader::SetPalette(const vec4* glPalette)

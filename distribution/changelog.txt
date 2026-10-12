@@ -1,5 +1,6 @@
 0.5.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#NNNNN] Optional sun-cast drop shadows in the OpenGL renderer (Options > Rendering).
 - Fix: [#16807] Error messages when trying to load regular JSON files as custom objects.
 - Fix: [#24524] Some build types (like AppImage) lack information about their specific build.
 - Fix: [#27264] Headless server crashes when loading a recolourable terrain surface.

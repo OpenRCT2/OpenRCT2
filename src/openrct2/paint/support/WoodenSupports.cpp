@@ -359,7 +359,7 @@ static void PaintRepeatedWoodenSupports(
             // Half support
             auto imageId = imageTemplate.WithIndex(supportImages.Half);
             uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            PaintAddImageAsSupport(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
             baseHeight += 16;
             heightSteps -= 1;
         }
@@ -368,7 +368,7 @@ static void PaintRepeatedWoodenSupports(
             // Full support
             auto imageId = imageTemplate.WithIndex(supportImages.Full);
             uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
+            PaintAddImageAsSupport(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
             baseHeight += 32;
             heightSteps -= 2;
         }
@@ -391,13 +391,14 @@ static void PaintSlopeTransitions(
 
     if (supportsDesc.AsOrphan == false || session.WoodenSupportsPrependTo == nullptr)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
+        PaintAddImageAsSupport(session, imageId, { 0, 0, baseHeight }, boundBox);
     }
     else
     {
         auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
         if (paintStruct != nullptr)
         {
+            paintStruct->IsVerticalSupport = true;
             session.WoodenSupportsPrependTo->Children = paintStruct;
         }
     }
@@ -476,8 +477,8 @@ static inline bool WoodenSupportsPaintSetupCommon(
         {
             auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
 
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
-            PaintAddImageAsParent(
+            PaintAddImageAsSupport(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, 11 } });
+            PaintAddImageAsSupport(
                 session, imageId.WithIndexOffset(4), { 0, 0, baseHeight + 16 },
                 { { 0, 0, baseHeight + 16 + 2 }, { 32, 32, zOffset } });
 
@@ -503,7 +504,7 @@ static inline bool WoodenSupportsPaintSetupCommon(
         else
         {
             auto imageId = imageTemplate.WithIndex(imageIndex + word_97B3C4[slope & kTileSlopeMask]);
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, zOffset } });
+            PaintAddImageAsSupport(session, imageId, { 0, 0, baseHeight }, { { 0, 0, baseHeight + 2 }, { 32, 32, zOffset } });
             hasSupports = true;
         }
 
@@ -522,7 +523,7 @@ static inline bool WoodenSupportsPaintSetupCommon(
         if (shouldDraw)
         {
             auto imageId = imageTemplate.WithIndex(supportImages.Flat);
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
+            PaintAddImageAsSupport(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
             hasSupports = true;
         }
     }

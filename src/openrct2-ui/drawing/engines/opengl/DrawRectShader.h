@@ -23,6 +23,7 @@ namespace OpenRCT2::Ui
 
         GLint uPeelingTex{ -1 };
         GLint uPeeling{ -1 };
+        GLint uShadowMapPass{ -1 };
 
         GLint vVertMat{ -1 };
         GLint vVertVec{ -1 };
@@ -32,12 +33,12 @@ namespace OpenRCT2::Ui
         GLint vTexColourCoords{ -1 };
         GLint vTexMaskAtlas{ -1 };
         GLint vTexMaskCoords{ -1 };
-        GLint vPalettes{ -1 };
-        GLint vFlags{ -1 };
+        GLint vPalettesFlags{ -1 };
         GLint vColour{ -1 };
         GLint vBounds{ -1 };
-        GLint vDepth{ -1 };
-        GLint vZoom{ -1 };
+        GLint vDepthZoom{ -1 };
+        GLint vWorld0{ -1 };
+        GLint vWorld1{ -1 };
 
         GLuint _vbo{ 0 };
         GLuint _vboInstances{ 0 };
@@ -53,8 +54,10 @@ namespace OpenRCT2::Ui
         void SetScreenSize(int32_t width, int32_t height);
         void EnablePeeling(GLuint peelingTex);
         void DisablePeeling();
+        void SetShadowMapPass(bool enabled);
 
         void SetInstances(const RectCommandBatch& instances);
+        void SetInstances(const DrawRectCommand* instances, size_t count);
         void DrawInstances();
 
     private:

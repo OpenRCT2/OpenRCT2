@@ -415,7 +415,7 @@ static bool MetalSupportsPaintSetupCommon(
                 return false;
         }
 
-        PaintAddImageAsParent(
+        PaintAddImageAsSupport(
             session, imageTemplate.WithIndex(kMetalSupportTypeToCrossbeamImages[supportType][crossBeamIndex]),
             { kMetalSupportBoundBoxOffsets[segment] + kMetalSupportCrossBeamBoundBoxOffsets[crossBeamIndex], currentHeight },
             { kMetalSupportCrossBeamBoundBoxLengths[crossBeamIndex], 1 });
@@ -436,7 +436,7 @@ static bool MetalSupportsPaintSetupCommon(
     {
         const auto imageIndex = kSupportBasesAndBeams[supportType].base
             + kMetalSupportsSlopeImageOffsetMap[supportSegments[segment].slope & kTileSlopeMask];
-        PaintAddImageAsParent(
+        PaintAddImageAsSupport(
             session, imageTemplate.WithIndex(imageIndex),
             { kMetalSupportBoundBoxOffsets[segment], supportSegments[segment].height }, { 0, 0, kMetalSupportBaseHeight - 1 });
 
@@ -452,7 +452,7 @@ static bool MetalSupportsPaintSetupCommon(
         - currentHeight;
     if (heightDiff > 0)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsSupport(
             session, imageTemplate.WithIndex(supportBeamImageIndex + heightDiff - 1),
             { kMetalSupportBoundBoxOffsets[segment], currentHeight }, { 0, 0, heightDiff - 1 });
     }
@@ -471,7 +471,7 @@ static bool MetalSupportsPaintSetupCommon(
         if (count % kMetalSupportJointInterval == 0 && beamLength == kMetalSupportMaxSectionHeight)
             imageIndex++;
 
-        PaintAddImageAsParent(
+        PaintAddImageAsSupport(
             session, imageTemplate.WithIndex(imageIndex), { kMetalSupportBoundBoxOffsets[segment], currentHeight },
             { 0, 0, beamLength - 1 });
 
@@ -493,7 +493,7 @@ static bool MetalSupportsPaintSetupCommon(
         if (beamLength <= 0)
             break;
 
-        PaintAddImageAsParent(
+        PaintAddImageAsSupport(
             session, imageTemplate.WithIndex(extraSupportBeamImageIndex + beamLength - 1),
             { kMetalSupportBoundBoxOffsets[originalSegment], currentHeight }, { boundBoxOffset, { 0, 0, 0 } });
 
@@ -612,7 +612,7 @@ bool PathPoleSupportsPaintSetup(
         uint8_t imageOffset = kMetalSupportsSlopeImageOffsetMap[supportSegments[segment].slope & kTileSlopeMask];
         baseHeight = supportSegments[segment].height;
 
-        PaintAddImageAsParent(
+        PaintAddImageAsSupport(
             session, imageTemplate.WithIndex(railings.bridgeImage + 37 + imageOffset),
             { kMetalSupportBoundBoxOffsets[segment].x, kMetalSupportBoundBoxOffsets[segment].y, baseHeight }, { 0, 0, 5 });
         baseHeight += 6;
@@ -631,7 +631,7 @@ bool PathPoleSupportsPaintSetup(
 
     if (heightDiff > 0)
     {
-        PaintAddImageAsParent(
+        PaintAddImageAsSupport(
             session, imageTemplate.WithIndex(railings.bridgeImage + 20 + (heightDiff - 1)),
             { kMetalSupportBoundBoxOffsets[segment], baseHeight }, { 0, 0, heightDiff - 1 });
     }
@@ -664,7 +664,7 @@ bool PathPoleSupportsPaintSetup(
                 break;
             }
 
-            PaintAddImageAsParent(
+            PaintAddImageAsSupport(
                 session, imageTemplate.WithIndex(railings.bridgeImage + 20 + (z - 1)),
                 { kMetalSupportBoundBoxOffsets[segment], baseHeight }, { 0, 0, (z - 1) });
 
@@ -682,7 +682,7 @@ bool PathPoleSupportsPaintSetup(
             imageIndex += 1;
         }
 
-        PaintAddImageAsParent(
+        PaintAddImageAsSupport(
             session, imageTemplate.WithIndex(imageIndex), { kMetalSupportBoundBoxOffsets[segment], baseHeight },
             { 0, 0, (z - 1) });
 
@@ -712,7 +712,7 @@ bool PathPoleSupportsPaintSetup(
             }
 
             ImageIndex imageIndex = railings.bridgeImage + 20 + (z - 1);
-            PaintAddImageAsParent(
+            PaintAddImageAsSupport(
                 session, imageTemplate.WithIndex(imageIndex), { kMetalSupportBoundBoxOffsets[segment], baseHeight },
                 { 0, 0, 0 });
 

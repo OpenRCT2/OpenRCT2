@@ -60,6 +60,15 @@ namespace OpenRCT2::Config
         bool renderWeatherEffects;
         bool renderWeatherGloom;
         bool disableLightningEffect;
+        /** Drop shadows on every visible viewport, not just the main one - a ride camera or
+            other mini-viewport window gets its own independent sun capture, at its own zoom
+            and rotation. Each one costs roughly what the main view's shadow pass costs, so a
+            park with many such windows open at once may want this off. */
+        /** Sun-cast drop shadows. OpenGL drawing engine only. */
+        bool dropShadows;
+        bool dropShadowsOnSecondaryViewports;
+        /** Fraction of the light a drop shadow takes away, 0..1. */
+        float shadowStrength;
         bool showGuestPurchases;
         bool transparentScreenshot;
         bool transparentWater;

@@ -71,7 +71,7 @@ std::string OpenGLShader::GetPath(const std::string& name)
     return path;
 }
 
-std::string OpenGLShader::ReadSourceCode(const std::string& path)
+std::string OpenGLShader::ReadSourceCode(const std::string& path, int32_t includeDepth)
 {
     auto fs = FileStream(path, FileMode::open);
 
@@ -81,9 +81,37 @@ std::string OpenGLShader::ReadSourceCode(const std::string& path)
         throw IOException("Shader source too large.");
     }
 
-    auto fileData = std::string(static_cast<size_t>(fileLength) + 1, '\0');
+    auto fileData = std::string(static_cast<size_t>(fileLength), '\0');
     fs.Read(static_cast<void*>(fileData.data()), fileLength);
-    return fileData;
+
+    // GLSL has no include of its own, and several shaders share the world-depth G-buffer's
+    // packing and projection helpers.
+    constexpr std::string_view kInclude = "#include \"";
+    std::string result;
+    result.reserve(fileData.size());
+    size_t lineStart = 0;
+    while (lineStart < fileData.size())
+    {
+        const size_t lineEnd = std::min(fileData.find('\n', lineStart), fileData.size());
+        const std::string_view line(fileData.data() + lineStart, lineEnd - lineStart);
+        if (line.starts_with(kInclude))
+        {
+            const size_t nameEnd = line.find('"', kInclude.size());
+            if (nameEnd == std::string_view::npos || includeDepth >= 4)
+            {
+                throw IOException("Malformed or too deeply nested #include in shader " + path);
+            }
+            const auto name = std::string(line.substr(kInclude.size(), nameEnd - kInclude.size()));
+            result += ReadSourceCode(Path::Combine(Path::GetDirectory(path), name), includeDepth + 1);
+        }
+        else
+        {
+            result += line;
+        }
+        result += '\n';
+        lineStart = lineEnd + 1;
+    }
+    return result;
 }
 
 OpenGLShaderProgram::OpenGLShaderProgram(const char* name)
