@@ -1375,7 +1375,7 @@ declare global {
 
     interface RideSetVisibilityArgs extends GameActionArgs {
         ride: number;
-        visibility: boolean;
+        visibility: number;
     }
 
     interface ScenarioSetSettingArgs extends GameActionArgs {
