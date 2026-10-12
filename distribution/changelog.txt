@@ -14,6 +14,7 @@
 - Fix: [#6142] `openrct2 <track file>` does not install the track design.
 - Fix: [#25395] `openrct2 <command> -h` fails instead of showing help for the command, and `openrct2 -ha` leaves out the command name.
 - Fix: [#26957] The frame 0 image is skipped when changing the state from `swim` to `flyAway`.
+- Fix: [#27279] Fixed RideSetVisibiltyAction parameter name from 'visiblity' to 'visibility'.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
 - Fix: [#27319] Crash when clicking an item in the Scenery window while a search filter is active.
 - Fix: [#27353] Some hacked colours appear differently between OpenGL and software drawing modes.
