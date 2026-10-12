@@ -24,6 +24,8 @@ namespace OpenRCT2::GameActions
         ScenerySetRestrictedAction() = default;
         ScenerySetRestrictedAction(ObjectType objectType, ObjectEntryIndex entryIndex, bool isRestricted);
 
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;

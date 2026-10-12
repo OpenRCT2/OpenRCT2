@@ -391,7 +391,9 @@ declare global {
         queryAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "scenerysetrestricted", args: ScenerySetRestrictedArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -482,7 +484,9 @@ declare global {
         executeAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "scenerysetrestricted", args: ScenerySetRestrictedArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -745,7 +749,9 @@ declare global {
         "ridesetsetting" |
         "ridesetstatus" |
         "ridesetvehicle" |
+        "ridesetvisibility" |
         "scenariosetsetting" |
+        "scenerysetrestricted" |
         "signsetname" |
         "signsetstyle" |
         "smallsceneryplace" |
@@ -1367,12 +1373,23 @@ declare global {
         colour: number;
     }
 
+    interface RideSetVisibilityArgs extends GameActionArgs {
+        ride: number;
+        visibility: number;
+    }
+
     interface ScenarioSetSettingArgs extends GameActionArgs {
         /**
          * @see ScenarioSetSetting in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/ScenarioSetSettingAction.h}
          */
         setting: number;
         value: number;
+    }
+
+    interface ScenerySetRestrictedArgs extends GameActionArgs {
+        objectType: number;
+        objectIndex: number;
+        isRestricted: boolean;
     }
 
     interface SignSetNameArgs extends GameActionArgs {
