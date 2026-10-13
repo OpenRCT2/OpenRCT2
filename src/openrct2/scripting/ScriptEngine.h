@@ -211,7 +211,7 @@ namespace OpenRCT2::Scripting
             for (const auto& plugin : _plugins)
             {
                 const auto& metadata = plugin->GetMetadata();
-                if (metadata.Type == PluginType::Remote)
+                if (metadata.Type == PluginType::remote)
                 {
                     res.push_back(plugin);
                 }
