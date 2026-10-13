@@ -6101,25 +6101,25 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 33)),
-                        { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 37)),
-                        { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 41)),
-                        { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 45)),
-                        { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6152,7 +6152,7 @@ static void LimLaunchedRCTrackLeftEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 38)),
-                        { 0, 0, height }, { { 0, 0, height }, { 34, 16, 3 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 34, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -6276,25 +6276,25 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 49)),
-                        { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 16, 16, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 53)),
-                        { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 16, 0, height }, { 16, 16, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 57)),
-                        { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 16, 16, height }, { 16, 16, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 61)),
-                        { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
+                        { 0, 0, height }, { { 0, 16, height }, { 16, 16, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -6328,13 +6328,13 @@ static void LimLaunchedRCTrackRightEighthToOrthogonalUp25(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 54)),
-                        { 0, 0, height }, { { 0, 0, height }, { 16, 32, 3 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 16, 32, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_LARGE_CURVE + 58)),
-                        { 0, 0, height }, { { 0, 0, height }, { 16, 32, 3 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 16, 32, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
