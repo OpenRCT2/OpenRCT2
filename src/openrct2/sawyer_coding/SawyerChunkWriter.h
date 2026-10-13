@@ -11,7 +11,7 @@
 
 #include "SawyerChunk.h"
 
-#include <memory>
+#include <cstddef>
 
 namespace OpenRCT2
 {

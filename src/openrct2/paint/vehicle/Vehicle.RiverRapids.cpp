@@ -9,7 +9,7 @@
 
 #include "../../ride/Vehicle.h"
 
-#include "../../ride/Ride.h"
+#include "../../ride/CarEntry.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 
@@ -72,7 +72,7 @@ namespace OpenRCT2
                 baseImage_id = ecx & 7;
             }
         }
-        baseImage_id += carEntry->base_image_id;
+        baseImage_id += carEntry->baseImageId;
 
         const auto& riverRapidsBb = _riverRapidsBoundbox[j];
         auto bb = BoundBoxXYZ{ { riverRapidsBb.offset_x, riverRapidsBb.offset_y, riverRapidsBb.offset_z + z },

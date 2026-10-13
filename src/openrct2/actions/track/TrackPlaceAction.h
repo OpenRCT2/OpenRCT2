@@ -19,7 +19,7 @@ namespace OpenRCT2::GameActions
         uint8_t GroundFlags{ 0 };
     };
 
-    class TrackPlaceAction final : public GameActionBase<GameCommand::PlaceTrack>
+    class TrackPlaceAction final : public GameActionBase<GameCommand::placeTrack>
     {
     private:
         RideId _rideIndex{ RideId::GetNull() };

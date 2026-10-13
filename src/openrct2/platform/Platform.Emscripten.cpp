@@ -11,14 +11,7 @@
 
     #include "Platform.h"
 
-    #include "../Diagnostic.h"
-    #include "../GameState.h"
-    #include "../core/Compression.h"
-    #include "../core/File.h"
-    #include "../core/Guard.hpp"
-    #include "../core/MemoryStream.h"
     #include "../localisation/Language.h"
-    #include "../park/ParkFile.h"
 
     #include <emscripten.h>
 

@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
@@ -16,7 +17,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.String.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatting.h>

@@ -11,9 +11,10 @@
 
 #include "../Identifiers.h"
 #include "Location.hpp"
+#include "MapOwnership.h"
+#include "tile_element/TileElement.h"
 
 #include <array>
-#include <initializer_list>
 #include <optional>
 #include <vector>
 
@@ -60,7 +61,10 @@ namespace OpenRCT2
     void UnstashMap();
     std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
 
-    void MapInit(const TileCoordsXY& size);
+    /**
+     * @param surfaceColour1 Should always be Drawing::Colour::black, unless we’re in the Track Designer.
+     */
+    void MapInit(const TileCoordsXY& size, Drawing::Colour surfaceColour1);
 
     void MapCountRemainingLandRights();
     void MapStripGhostFlagFromElements();
@@ -70,7 +74,7 @@ namespace OpenRCT2
     TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type);
     void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements);
     int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
-    BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t position);
+    BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, Direction position);
     SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords);
     SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
     PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
@@ -82,7 +86,7 @@ namespace OpenRCT2
     EntranceElement* MapGetRideExitElementAt(const CoordsXYZ& exitCoords, bool ghost);
     uint8_t MapGetHighestLandHeight(const MapRange& range);
     uint8_t MapGetLowestLandHeight(const MapRange& range);
-    bool MapCoordIsConnected(const TileCoordsXYZ& loc, uint8_t faceDirection);
+    bool MapCoordIsConnected(const TileCoordsXYZ& loc, Direction faceDirection);
     void MapUpdatePathWideFlags();
     bool MapIsLocationValid(const CoordsXY& coords);
     bool MapIsEdge(const CoordsXY& coords);
@@ -168,9 +172,6 @@ namespace OpenRCT2
     TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPos, RideId rideIndex);
     TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
 
-    uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
-
-    void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership);
     MapRange ClampRangeWithinMap(const MapRange& range);
     void ShiftMap(const TileCoordsXY& amount);
 } // namespace OpenRCT2

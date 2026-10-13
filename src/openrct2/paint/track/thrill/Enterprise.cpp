@@ -19,7 +19,6 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Numerics;
@@ -33,7 +32,7 @@ static void PaintEnterpriseRiders(
     if (imageOffset >= 12)
         return;
 
-    auto baseImageIndex = rideEntry.Cars[0].base_image_id;
+    auto baseImageIndex = rideEntry.Cars[0].baseImageId;
     for (int32_t i = 0; i < 15; i++)
     {
         if (vehicle.num_peeps <= i)
@@ -57,7 +56,7 @@ static void PaintEnterpriseStructure(
     Vehicle* vehicle = nullptr;
     if (ride.flags.has(RideFlag::onTrack))
     {
-        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::entity;
@@ -80,7 +79,7 @@ static void PaintEnterpriseStructure(
     {
         imageTemplate = imageFlags;
     }
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].baseImageId + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bb);
 
     if (vehicle != nullptr)
@@ -153,24 +152,24 @@ static void PaintEnterprise(
             break;
     }
 
-    int32_t cornerSegments = 0;
+    PaintSegments cornerSegments = {};
     switch (trackSequence)
     {
         case 0:
-            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
+            cornerSegments = { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight };
             break;
         case 3:
-            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
+            cornerSegments = { PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight };
             break;
         case 12:
-            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
+            cornerSegments = { PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft };
             break;
         case 15:
-            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
+            cornerSegments = { PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll.without(cornerSegments), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 160);
 }
 

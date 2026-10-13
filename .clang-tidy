@@ -20,5 +20,9 @@ CheckOptions:
       value: 'CamelCase'
     - key: readability-identifier-naming.ConstexprVariablePrefix
       value: 'k'
+    - key: readability-identifier-naming.EnumCase
+      value: 'CamelCase'
+    - key: readability-identifier-naming.ScopedEnumConstantCase
+      value: 'camelBack'
 WarningsAsErrors: true
 FormatStyle: 'file'

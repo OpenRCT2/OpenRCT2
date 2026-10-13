@@ -1,0 +1,21 @@
+{
+    "scenario_name": "Southern Sands",
+    "sha256": "dab0347d7557878be7008df13ed7e0eb3a36facc83da52ecce7b11b2c10fe238",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Burrower"
+        },
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Desert Diver"
+        },
+        {
+            "id": 2,
+            "operation": "set_name",
+            "name": "Sandstorm"
+        }
+    ]
+}

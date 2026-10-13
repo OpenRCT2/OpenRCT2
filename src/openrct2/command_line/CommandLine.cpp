@@ -12,7 +12,6 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Font.h"
 #include "../platform/Platform.h"
 
 #include <cstring>

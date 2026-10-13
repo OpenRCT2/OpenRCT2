@@ -13,7 +13,6 @@
 #include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
@@ -60,9 +59,7 @@ static void PaintBoatHireTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
@@ -122,8 +119,7 @@ static void PaintBoatHireTrackLeftQuarterTurn1Tile(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topLeft), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topLeft }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 16);
 }

@@ -33,6 +33,7 @@ namespace OpenRCT2::Drawing
     };
 
     ColourShadeMap getColourMap(Colour colour);
+    PaletteIndex getColourMapShade(Colour colour, uint8_t shade);
 
     void initColourMaps();
 } // namespace OpenRCT2::Drawing

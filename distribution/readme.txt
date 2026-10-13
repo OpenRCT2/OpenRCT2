@@ -141,14 +141,13 @@ OpenRCT2 is licensed under the GNU General Public Licence version 3.0. For
 the complete licence text, see the file 'licence.txt'. This licence applies
 to all files in this distribution, except as noted below.
 
-dukglue          | MIT licence.
-duktape          | MIT licence.
 libcURL          | MIT (or Modified BSD-style) licence.
 libicu           | Unicode licence.
 libpng           | libpng licence.
 libzip           | BSD 3 clause licence.
 nlohmann-json    | MIT licence.
 OpenSSL          | OpenSSL licence.
+QuickJS          | MIT licence.
 SDL2             | zlib licence.
 zlib             | zlib licence.
 Google Test      | BSD 3 clause licence.

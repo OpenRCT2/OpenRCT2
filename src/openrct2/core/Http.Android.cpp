@@ -14,7 +14,7 @@
     #include "../Version.h"
     #include "../platform/Platform.h"
 
-    #include <SDL.h>
+    #include <SDL_system.h>
     #include <android/log.h>
     #include <jni.h>
 
@@ -76,13 +76,13 @@ namespace OpenRCT2::Http
         std::string method = "GET";
         switch (req.method)
         {
-            case Method::GET:
+            case Method::get:
                 method = "GET";
                 break;
-            case Method::POST:
+            case Method::post:
                 method = "POST";
                 break;
-            case Method::PUT:
+            case Method::put:
                 method = "PUT";
                 break;
         }

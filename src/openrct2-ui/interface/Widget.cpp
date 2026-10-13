@@ -13,7 +13,7 @@
 #include <cmath>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Theme.h>
-#include <openrct2-ui/windows/Windows.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
@@ -23,10 +23,10 @@
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 
@@ -70,6 +70,9 @@ namespace OpenRCT2::Ui
             LOG_ERROR("Tried drawing an out-of-bounds widget index!");
             return;
         }
+
+        if (!widget->isVisible())
+            return;
 
         switch (widget->type)
         {
@@ -213,14 +216,6 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
 
-        // Dead code?
-        if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
-        {
-            // Draw border with no fill
-            Rectangle::fillInset(rt, rect, colour, borderStyle, Rectangle::FillBrightness::light, Rectangle::FillMode::none);
-            return;
-        }
-
         // Draw the border with fill
         Rectangle::fillInset(rt, rect, colour, borderStyle);
 
@@ -300,16 +295,6 @@ namespace OpenRCT2::Ui
         // Check if the button is pressed down
         if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
         {
-            // Dead code?
-            if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
-            {
-                // Draw border with no fill
-                Rectangle::fillInset(
-                    rt, rect, colour, Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
-                    Rectangle::FillMode::none);
-                return;
-            }
-
             // Draw the border with fill
             Rectangle::fillInset(rt, rect, colour, Rectangle::BorderStyle::inset);
         }
@@ -575,14 +560,14 @@ namespace OpenRCT2::Ui
         if (static_cast<size_t>(widgetIndex + 1) < w.widgets.size()
             && (w.widgets[widgetIndex + 1]).type == WidgetType::closeBox)
         {
-            width -= kCloseButtonSize;
+            width -= kCloseButtonSize.width;
             if (static_cast<size_t>(widgetIndex + 2) < w.widgets.size()
                 && (w.widgets[widgetIndex + 2]).type == WidgetType::closeBox)
-                width -= kCloseButtonSize;
+                width -= kCloseButtonSize.width;
         }
         topLeft.x += width / 2;
         if (Config::Get().interface.windowButtonsOnTheLeft)
-            topLeft.x += kCloseButtonSize;
+            topLeft.x += kCloseButtonSize.width;
         if (Config::Get().interface.enlargedUi)
             topLeft.y += kTitleHeightLarge / 4;
 
@@ -716,16 +701,16 @@ namespace OpenRCT2::Ui
         bottomRight.x--;
         bottomRight.y--;
 
-        bool hScrollNeeded = scroll.contentWidth > (widget.width() - 1) && (scroll.flags & HSCROLLBAR_VISIBLE);
-        bool vScrollNeeded = scroll.contentHeight > widget.height() - 1 && (scroll.flags & VSCROLLBAR_VISIBLE);
+        bool hScrollNeeded = scroll.contentWidth > (widget.width() - 1) && scroll.flags.has(ScrollFlag::hScrollbarVisible);
+        bool vScrollNeeded = scroll.contentHeight > widget.height() - 1 && scroll.flags.has(ScrollFlag::vScrollbarVisible);
 
         // Horizontal scrollbar
         if (hScrollNeeded)
         {
             WidgetHScrollbarDraw(
                 rt, scroll, topLeft.x, bottomRight.y - kScrollBarWidth,
-                ((scroll.flags & VSCROLLBAR_VISIBLE) ? bottomRight.x - (kScrollBarWidth + 1) : bottomRight.x), bottomRight.y,
-                colour);
+                (scroll.flags.has(ScrollFlag::vScrollbarVisible) ? bottomRight.x - (kScrollBarWidth + 1) : bottomRight.x),
+                bottomRight.y, colour);
         }
 
         // Vertical scrollbar
@@ -733,7 +718,8 @@ namespace OpenRCT2::Ui
         {
             WidgetVScrollbarDraw(
                 rt, scroll, bottomRight.x - kScrollBarWidth, topLeft.y, bottomRight.x,
-                ((scroll.flags & HSCROLLBAR_VISIBLE) ? bottomRight.y - (kScrollBarWidth + 1) : bottomRight.y), colour);
+                (scroll.flags.has(ScrollFlag::hScrollbarVisible) ? bottomRight.y - (kScrollBarWidth + 1) : bottomRight.y),
+                colour);
         }
 
         // Contents
@@ -788,8 +774,8 @@ namespace OpenRCT2::Ui
 
         // Left button
         {
-            auto borderStyle = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? Rectangle::BorderStyle::inset
-                                                                        : Rectangle::BorderStyle::outset;
+            auto borderStyle = scroll.flags.has(ScrollFlag::hScrollbarLeftPressed) ? Rectangle::BorderStyle::inset
+                                                                                   : Rectangle::BorderStyle::outset;
 
             Rectangle::fillInset(rt, { { l, t }, { l + (kScrollBarWidth - 1), b } }, colour, borderStyle);
             drawText(rt, { l + 1, t }, kBlackLeftArrowString);
@@ -799,16 +785,16 @@ namespace OpenRCT2::Ui
         {
             int16_t left = std::max(l + kScrollBarWidth, l + scroll.hThumbLeft - 1);
             int16_t right = std::min(r - kScrollBarWidth, l + scroll.hThumbRight - 1);
-            auto borderStyle = (scroll.flags & HSCROLLBAR_THUMB_PRESSED) ? Rectangle::BorderStyle::inset
-                                                                         : Rectangle::BorderStyle::outset;
+            auto borderStyle = scroll.flags.has(ScrollFlag::hScrollbarThumbPressed) ? Rectangle::BorderStyle::inset
+                                                                                    : Rectangle::BorderStyle::outset;
 
             Rectangle::fillInset(rt, { { left, t }, { right, b } }, colour, borderStyle);
         }
 
         // Right button
         {
-            auto borderStyle = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? Rectangle::BorderStyle::inset
-                                                                         : Rectangle::BorderStyle::outset;
+            auto borderStyle = scroll.flags.has(ScrollFlag::hScrollbarRightPressed) ? Rectangle::BorderStyle::inset
+                                                                                    : Rectangle::BorderStyle::outset;
 
             Rectangle::fillInset(rt, { { r - (kScrollBarWidth - 1), t }, { r, b } }, colour, borderStyle);
             drawText(rt, { r - 6, t }, kBlackRightArrowString);
@@ -836,7 +822,8 @@ namespace OpenRCT2::Ui
         // Up button
         Rectangle::fillInset(
             rt, { { l, t }, { r, t + (kScrollBarWidth - 1) } }, colour,
-            ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? Rectangle::BorderStyle::inset : Rectangle::BorderStyle::outset));
+            (scroll.flags.has(ScrollFlag::vScrollbarUpPressed) ? Rectangle::BorderStyle::inset
+                                                               : Rectangle::BorderStyle::outset));
         drawText(rt, { l + 1, t - 1 }, kBlackUpArrowString);
 
         // Thumb
@@ -845,12 +832,14 @@ namespace OpenRCT2::Ui
             { { l, std::max(t + kScrollBarWidth, t + scroll.vThumbTop - 1) },
               { r, std::min(b - kScrollBarWidth, t + scroll.vThumbBottom - 1) } },
             { colour },
-            ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? Rectangle::BorderStyle::inset : Rectangle::BorderStyle::outset));
+            (scroll.flags.has(ScrollFlag::vScrollbarThumbPressed) ? Rectangle::BorderStyle::inset
+                                                                  : Rectangle::BorderStyle::outset));
 
         // Down button
         Rectangle::fillInset(
             rt, { { l, b - (kScrollBarWidth - 1) }, { r, b } }, colour,
-            ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? Rectangle::BorderStyle::inset : Rectangle::BorderStyle::outset));
+            (scroll.flags.has(ScrollFlag::vScrollbarDownPressed) ? Rectangle::BorderStyle::inset
+                                                                 : Rectangle::BorderStyle::outset));
         drawText(rt, { l + 1, b - (kScrollBarWidth - 1) }, kBlackDownArrowString);
     }
 
@@ -974,14 +963,14 @@ namespace OpenRCT2::Ui
         }
 
         const auto& scroll = w.scrolls[*scroll_id];
-        if ((scroll.flags & HSCROLLBAR_VISIBLE) && scroll.contentWidth > (widget->width() - 1)
+        if (scroll.flags.has(ScrollFlag::hScrollbarVisible) && scroll.contentWidth > (widget->width() - 1)
             && screenCoords.y >= (w.windowPos.y + widget->bottom - (kScrollBarWidth + 1)))
         {
             // horizontal scrollbar
             int32_t rightOffset = 0;
             int32_t iteratorLeft = widget->left + w.windowPos.x + kScrollBarWidth;
             int32_t iteratorRight = widget->right + w.windowPos.x - kScrollBarWidth;
-            if (!(scroll.flags & VSCROLLBAR_VISIBLE))
+            if (!scroll.flags.has(ScrollFlag::vScrollbarVisible))
             {
                 rightOffset = kScrollBarWidth + 1;
             }
@@ -1012,14 +1001,14 @@ namespace OpenRCT2::Ui
             }
         }
         else if (
-            (scroll.flags & VSCROLLBAR_VISIBLE) && scroll.contentHeight > widget->height() - 1
+            scroll.flags.has(ScrollFlag::vScrollbarVisible) && scroll.contentHeight > widget->height() - 1
             && (screenCoords.x >= w.windowPos.x + widget->right - (kScrollBarWidth + 1)))
         {
             // vertical scrollbar
             int32_t bottomOffset = 0;
             int32_t iteratorTop = widget->top + w.windowPos.y + kScrollBarWidth;
             int32_t iteratorBottom = widget->bottom + w.windowPos.y;
-            if (scroll.flags & HSCROLLBAR_VISIBLE)
+            if (scroll.flags.has(ScrollFlag::hScrollbarVisible))
             {
                 bottomOffset = (kScrollBarWidth + 1);
             }
@@ -1160,7 +1149,7 @@ namespace OpenRCT2::Ui
         topLeft.y = w.windowPos.y + widget.textTop();
 
         auto* textInput = Windows::GetTextboxSession();
-        if (!active || textInput == nullptr)
+        if (!active || textInput == nullptr || textInput->Buffer == nullptr)
         {
             if (widget.text != 0)
             {
@@ -1271,10 +1260,10 @@ namespace OpenRCT2::Ui
         const auto& widget = w.widgets[widget_index];
         auto& scroll = w.scrolls[WindowGetScrollDataIndex(w, widget_index)];
 
-        if (scroll.flags & HSCROLLBAR_VISIBLE)
+        if (scroll.flags.has(ScrollFlag::hScrollbarVisible))
         {
             int32_t view_size = widget.width() - 22;
-            if (scroll.flags & VSCROLLBAR_VISIBLE)
+            if (scroll.flags.has(ScrollFlag::vScrollbarVisible))
                 view_size -= 11;
             int32_t x = scroll.contentOffsetX * view_size;
             if (scroll.contentWidth != 0)
@@ -1282,7 +1271,7 @@ namespace OpenRCT2::Ui
             scroll.hThumbLeft = x + 11;
 
             x = widget.width() - 3;
-            if (scroll.flags & VSCROLLBAR_VISIBLE)
+            if (scroll.flags.has(ScrollFlag::vScrollbarVisible))
                 x -= 11;
             x += scroll.contentOffsetX;
             if (scroll.contentWidth != 0)
@@ -1300,10 +1289,10 @@ namespace OpenRCT2::Ui
             }
         }
 
-        if (scroll.flags & VSCROLLBAR_VISIBLE)
+        if (scroll.flags.has(ScrollFlag::vScrollbarVisible))
         {
             int32_t view_size = widget.height() - 22;
-            if (scroll.flags & HSCROLLBAR_VISIBLE)
+            if (scroll.flags.has(ScrollFlag::hScrollbarVisible))
                 view_size -= 11;
             int32_t y = scroll.contentOffsetY * view_size;
             if (scroll.contentHeight != 0)
@@ -1311,7 +1300,7 @@ namespace OpenRCT2::Ui
             scroll.vThumbTop = y + 11;
 
             y = widget.height() - 3;
-            if (scroll.flags & HSCROLLBAR_VISIBLE)
+            if (scroll.flags.has(ScrollFlag::hScrollbarVisible))
                 y -= 11;
             y += scroll.contentOffsetY;
             if (scroll.contentHeight != 0)

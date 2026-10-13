@@ -12,12 +12,13 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor DodgemsRTD =
+constexpr RideTypeDescriptor kDodgemsRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack4x4,
@@ -32,11 +33,11 @@ constexpr RideTypeDescriptor DodgemsRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::hasMusicByDefault,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::hasRoofOverWholeRide),
-    .RideModes = EnumsToFlags(RideMode::dodgems),
+    .rideModes = { RideMode::dodgems },
     .DefaultMode = RideMode::dodgems,
     .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 9, 48, 2, 2, },
     .MaxMass = 255,
@@ -56,20 +57,20 @@ constexpr RideTypeDescriptor DodgemsRTD =
         { Drawing::Colour::saturatedGreen, Drawing::Colour::saturatedBrown, Drawing::Colour::saturatedBrown },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_DODGEMS_TRACK, SPR_RIDE_DESIGN_PREVIEW_DODGEMS_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "dodgems",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(1, 30), RideRating::make(0, 50), RideRating::make(0, 35) },
         16,
         7,
         false,
         {
             // Special case, passing -2 to represent division by 2
-            { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
-            { RatingsModifierType::BonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
-            { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
+            { RatingsModifierType::bonusOperationOption, 0, 1, -2, 0 },
+            { RatingsModifierType::bonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
+            { RatingsModifierType::bonusScenery,         0, 5577, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

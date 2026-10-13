@@ -10,17 +10,9 @@
 #pragma once
 
 #include "../core/IStream.hpp"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "SawyerChunk.h"
 
-#include <cstdint>
 #include <memory>
-#include <vector>
-
-namespace OpenRCT2
-{
-    struct IStream;
-}
 
 namespace OpenRCT2::SawyerCoding
 {

@@ -7,9 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../object/StationObject.h"
-#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
@@ -19,7 +18,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 enum
 {
@@ -424,11 +423,11 @@ static void PaintMonorailTrackFlat(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -437,9 +436,7 @@ static void PaintMonorailTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -454,11 +451,11 @@ static void PaintMonorailStation(
 
     if (direction == 0 || direction == 2)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
@@ -494,16 +491,16 @@ static void PaintMonorailTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
@@ -513,9 +510,7 @@ static void PaintMonorailTrack25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -539,16 +534,16 @@ static void PaintMonorailTrackFlatTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
@@ -558,9 +553,7 @@ static void PaintMonorailTrackFlatTo25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -584,16 +577,16 @@ static void PaintMonorailTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
@@ -603,9 +596,7 @@ static void PaintMonorailTrack25DegUpToFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -653,48 +644,43 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                PaintSegment::bottom, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight,
+                                PaintSegment::right,      PaintSegment::bottom, PaintSegment::topRight };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre);
+            blockedSegments = { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre };
             break;
         case 5:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                PaintSegment::bottom, PaintSegment::topLeft);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft,
+                                PaintSegment::left,        PaintSegment::bottom, PaintSegment::topLeft };
             break;
         case 6:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left };
             break;
     }
 
@@ -747,38 +733,34 @@ static void PaintMonorailTrackSBendLeft(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     else
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     DrawSBendLeftSupports(session, supportType.metal, originalTrackSequence, direction, height, 0, 0);
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
@@ -817,38 +799,34 @@ static void PaintMonorailTrackSBendRight(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     else
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     DrawSBendRightSupports(session, supportType.metal, originalTrackSequence, direction, height, 0, 0);
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction & 1), 0xFFFF, 0);
@@ -864,7 +842,7 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 3, height, direction, trackSequence, session.TrackColours, monorail_track_pieces_flat_quarter_turn_3_tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -874,20 +852,18 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight,
+                                PaintSegment::bottom };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -947,37 +923,33 @@ static void PaintMonorailTrackLeftEighthToDiag(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom, PaintSegment::bottomRight,
-                PaintSegment::right);
+            blockedSegments = { PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom, PaintSegment::bottomRight,
+                                PaintSegment::right };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft };
             break;
         case 4:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft,
-                PaintSegment::bottom, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight,
+                                PaintSegment::topLeft,    PaintSegment::bottom, PaintSegment::bottomRight };
             break;
     }
 
@@ -1023,36 +995,34 @@ static void PaintMonorailTrackRightEighthToDiag(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRight, PaintSegment::left, PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::centre, PaintSegment::topRight, PaintSegment::left, PaintSegment::topLeft,
+                                PaintSegment::top };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom,
+                                PaintSegment::bottomRight };
             break;
         case 4:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::bottomRight };
             break;
     }
 
@@ -1102,7 +1072,7 @@ static void PaintMonorailTrackDiag25DegUp(
             session, supportType.metal, kDiagSupportPlacement[direction], 8, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -1122,7 +1092,7 @@ static void PaintMonorailTrackDiagFlatTo25DegUp(
             session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -1142,7 +1112,7 @@ static void PaintMonorailTrackDiag25DegUpToFlat(
             session, supportType.metal, kDiagSupportPlacement[direction], 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -1162,7 +1132,7 @@ static void PaintMonorailTrackDiag25DegDown(
             session, supportType.metal, kDiagSupportPlacement[direction], 8, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -1182,7 +1152,7 @@ static void PaintMonorailTrackDiagFlatTo25DegDown(
             session, supportType.metal, kDiagSupportPlacement[direction], 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -1202,7 +1172,7 @@ static void PaintMonorailTrackDiag25DegDownToFlat(
             session, supportType.metal, kDiagSupportPlacement[direction], 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }

@@ -15,7 +15,6 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
 #include "Drawing.String.h"
-#include "Drawing.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

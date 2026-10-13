@@ -10,10 +10,9 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GameActionRunner.h>
@@ -21,13 +20,11 @@
 #include <openrct2/actions/scenery/BannerSetNameAction.h>
 #include <openrct2/actions/scenery/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/drawing/TextColour.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/Map.h>
-#include <openrct2/world/Scenery.h>
 #include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/tile_element/BannerElement.h>
 
@@ -92,8 +89,6 @@ namespace OpenRCT2::Ui::Windows
                 *this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 },
                 viewportWidget.width() - 2, viewportWidget.height() - 2, Focus(_bannerViewPos));
 
-            if (viewport != nullptr)
-                viewport->flags = Config::Get().general.alwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : VIEWPORT_FLAG_NONE;
             invalidate();
         }
 
@@ -112,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (auto* bannerElement : TileElementsView<BannerElement>(banner->position))
             {
-                if (bannerElement->GetIndex() == GetBannerIndex())
+                if (bannerElement->getIndex() == GetBannerIndex())
                 {
                     return bannerElement;
                 }
@@ -137,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
             if (bannerElement == nullptr)
                 return;
 
-            _bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), bannerElement->getBaseZ() };
+            _bannerViewPos = CoordsXYZ{ banner->position.toCoordsXY().toTileCentre(), bannerElement->getBaseZ() };
             createViewport();
         }
 
@@ -167,8 +162,8 @@ namespace OpenRCT2::Ui::Windows
                     widget--;
 
                     WindowDropdownShowTextCustomWidth(
-                        { widget->left + windowPos.x, widget->top + windowPos.y }, widget->height(), colours[1], 0,
-                        Dropdown::Flag::StayOpen, numItems, widget->width() - 1 + 3);
+                        { widget->left + windowPos.x, widget->top + windowPos.y }, widget->height(), colours[1], 0, {},
+                        numItems, widget->width() - 1 + 3);
 
                     gDropdown.items[EnumValue(banner->textColour) - 1].setChecked(true);
                     break;
@@ -198,7 +193,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     auto bannerRemoveAction = GameActions::BannerRemoveAction(
-                        { banner->position.ToCoordsXY(), bannerElement->getBaseZ(), bannerElement->GetPosition() });
+                        { banner->position.toCoordsXY(), bannerElement->getBaseZ(), bannerElement->getPosition() });
                     GameActions::Execute(&bannerRemoveAction, gameState);
                     break;
                 }
@@ -278,22 +273,20 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            Widget& colourBtn = widgets[WIDX_MAIN_COLOUR];
-            colourBtn.type = WidgetType::empty;
-
             auto* bannerEntry = OpenRCT2::ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
-            if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
-            {
-                colourBtn.type = WidgetType::colourBtn;
-            }
+            const bool visible = bannerEntry != nullptr && (bannerEntry->flags.has(BannerEntryFlag::hasPrimaryColour));
+            widgets[WIDX_MAIN_COLOUR].setVisible(visible);
+
             const bool noEntry = banner->flags.has(BannerFlag::noEntry);
             setWidgetPressed(WIDX_BANNER_NO_ENTRY, noEntry);
             setWidgetDisabled(WIDX_BANNER_TEXT, noEntry);
             setWidgetDisabled(WIDX_TEXT_COLOUR_DROPDOWN, noEntry);
             setWidgetDisabled(WIDX_TEXT_COLOUR_DROPDOWN_BUTTON, noEntry);
-            colourBtn.image = getColourButtonImage(banner->colour);
-            Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
-            dropDownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];
+
+            widgets[WIDX_MAIN_COLOUR].image = getColourButtonImage(banner->colour);
+
+            Widget& dropdownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
+            dropdownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];
         }
     };
 

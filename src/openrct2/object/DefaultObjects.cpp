@@ -9,12 +9,22 @@
 
 #include "DefaultObjects.h"
 
-#include "Object.h"
+#include "ObjectLimits.h"
+#include "ObjectManager.h"
+#include "StationObject.h"
+
+using ObjectEntryIndex = uint16_t;
 
 namespace OpenRCT2
 {
     constexpr std::array<std::string_view, 3> kMinimumRequiredObjects = {
         "rct2.terrain_surface.grass",
+        "rct2.terrain_edge.rock",
+
+        "rct2.station.plain",
+    };
+    constexpr std::array<std::string_view, 3> kMinimumRequiredObjectsDesigner = {
+        "rct2.terrain_surface.designer_grid",
         "rct2.terrain_edge.rock",
 
         "rct2.station.plain",
@@ -153,10 +163,7 @@ namespace OpenRCT2
         "rct2.terrain_surface.chequerboard",
         "rct2.terrain_surface.grass_clumps",
         "rct2.terrain_surface.ice",
-        "rct2.terrain_surface.grid_red",
-        "rct2.terrain_surface.grid_yellow",
-        "rct2.terrain_surface.grid_purple",
-        "rct2.terrain_surface.grid_green",
+        "rct2.terrain_surface.grid",
         "rct2.terrain_surface.sand_red",
         "rct2.terrain_surface.sand_brown",
 
@@ -165,4 +172,23 @@ namespace OpenRCT2
         "rct2.terrain_edge.wood_black",
         "rct2.terrain_edge.ice",
     };
+
+    ObjectEntryIndex GetDefaultStationObject(IObjectManager& objectManager)
+    {
+        auto stationObjectIndex = objectManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+        if (stationObjectIndex != kObjectEntryIndexNull)
+        {
+            return stationObjectIndex;
+        }
+
+        for (ObjectEntryIndex i = 0; i < kMaxStationObjects; i++)
+        {
+            if (objectManager.GetLoadedObject<StationObject>(i) != nullptr)
+            {
+                return i;
+            }
+        }
+
+        return kObjectEntryIndexNull;
+    }
 } // namespace OpenRCT2

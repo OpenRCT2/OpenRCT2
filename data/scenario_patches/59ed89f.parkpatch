@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Paradise Pier 2",
+    "sha256": "59ed89f0821cbf335eb7e662dd560d5601502685d9fe61e0d7c56747f4ac8556",
+    "rides": [
+        {
+            "id": 2,
+            "operation": "set_name",
+            "name": "Beach Buggies"
+        }
+    ]
+}

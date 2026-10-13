@@ -11,12 +11,13 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor FlyingSaucersRTD =
+constexpr RideTypeDescriptor kFlyingSaucersRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack4x4,
@@ -31,11 +32,11 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::hasMusicByDefault, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::singleSession, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::dodgems),
+    .rideModes = { RideMode::dodgems },
     .DefaultMode = RideMode::dodgems,
     .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_FLYING_SAUCERS, STR_RIDE_DESCRIPTION_FLYING_SAUCERS },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 9, 48, 2, 2, },
     .MaxMass = 255,
@@ -54,20 +55,20 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
         { Drawing::Colour::icyBlue, Drawing::Colour::white, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_FLYING_SAUCERS_TRACK, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "flying_saucers",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(2, 40), RideRating::make(0, 55), RideRating::make(0, 39) },
         32,
         0,
         false,
         {
             // Special case, passing -2 to represent division by 2
-            { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
-            { RatingsModifierType::BonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
-            { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
+            { RatingsModifierType::bonusOperationOption, 0, 1, -2, 0 },
+            { RatingsModifierType::bonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
+            { RatingsModifierType::bonusScenery,         0, 5577, 0, 0 },
         },
     },
 };

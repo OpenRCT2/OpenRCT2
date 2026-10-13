@@ -13,7 +13,6 @@
 #include "../../drawing/ImageId.hpp"
 #include "../../entity/Balloon.h"
 #include "../../profiling/Profiling.h"
-#include "../../profiling/ProfilingMacros.hpp"
 #include "../Paint.h"
 
 using namespace OpenRCT2;

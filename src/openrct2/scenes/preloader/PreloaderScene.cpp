@@ -16,12 +16,8 @@
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/StringIds.h"
 #include "../../ui/WindowManager.h"
-#include "../../windows/Intent.h"
 #include "../../world/Map.h"
-
-#include <sstream>
 
 using namespace OpenRCT2;
 
@@ -39,7 +35,7 @@ void PreloaderScene::Load()
     gameStateInitAll(getGameState(), kDefaultMapSize);
     ContextResetSubsystems();
     ContextOpenWindow(WindowClass::mainWindow);
-    WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+    WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, true);
     WindowResizeGui(ContextGetWidth(), ContextGetHeight());
 
     LOG_VERBOSE("PreloaderScene::Load() finished");

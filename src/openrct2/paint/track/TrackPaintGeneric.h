@@ -16,10 +16,10 @@
 #include "../tile_element/Paint.TileElement.h"
 #include "Support.h"
 
-struct Ride;
-
 namespace OpenRCT2
 {
+    struct Ride;
+
     ImageId getPrimaryTrackColourWithSecondarySupportColour(const PaintSession& session);
 
     template<const bool flipXAxis, const size_t sequenceCount, const size_t spriteCount>
@@ -27,7 +27,7 @@ namespace OpenRCT2
     {
         const size_t directionOffset = sequenceCount * spriteCount;
         uint64_t spriteMap = 0;
-        for (size_t direction = 0; direction < kNumOrthogonalDirections; direction++)
+        for (Direction direction : kAllDirections)
         {
             for (size_t sequence = 0; sequence < sequenceCount; sequence++)
             {
@@ -71,7 +71,7 @@ namespace OpenRCT2
     {
         static_assert(tunnelCount <= TrackMetadata::kSequenceTunnelMaxPerSequence);
 
-        const auto& ted = OpenRCT2::TrackMetadata::GetTrackElementDescriptor(trackElement.GetTrackType());
+        const auto& ted = OpenRCT2::TrackMetadata::GetTrackElementDescriptor(trackElement.getTrackType());
         const auto& sequenceDescriptor = ted.sequenceData.sequences[trackSequence];
 
         uint8_t modifiedTrackSequence = trackSequence;

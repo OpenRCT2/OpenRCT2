@@ -384,7 +384,7 @@ namespace OpenRCT2::ScenarioSources
 
         outDesc->title = nullptr;
         outDesc->id = SC_UNIDENTIFIED;
-        outDesc->source = static_cast<uint8_t>(ScenarioSource::Other);
+        outDesc->source = static_cast<uint8_t>(ScenarioSource::other);
         outDesc->index = -1;
         outDesc->category = Scenario::Category::other;
         outDesc->textObjectId = {};
@@ -417,7 +417,7 @@ namespace OpenRCT2::ScenarioSources
 
         outDesc->title = "";
         outDesc->id = SC_UNIDENTIFIED;
-        outDesc->source = static_cast<uint8_t>(ScenarioSource::Other);
+        outDesc->source = static_cast<uint8_t>(ScenarioSource::other);
         outDesc->index = -1;
         outDesc->category = Scenario::Category::other;
         outDesc->textObjectId = {};

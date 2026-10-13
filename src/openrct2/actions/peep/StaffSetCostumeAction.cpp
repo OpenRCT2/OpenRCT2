@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto* staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
+        auto* staff = gameState.entities.tryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
@@ -75,25 +75,25 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetCostumeAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto* staff = gameState.entities.TryGetEntity<Staff>(_spriteIndex);
+        auto* staff = gameState.entities.tryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
             return Result(Status::invalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
         }
 
-        staff->AnimationObjectIndex = _costume;
-        staff->AnimationGroup = PeepAnimationGroup::normal;
+        staff->animationObjectIndex = _costume;
+        staff->animationGroup = PeepAnimationGroup::normal;
 
         auto& objManager = GetContext()->GetObjectManager();
         auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
 
-        staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
+        staff->peepFlags.unset(PeepFlag::slowWalk);
         if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
-            staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+            staff->peepFlags.set(PeepFlag::slowWalk);
 
-        staff->AnimationFrameNum = 0;
-        staff->UpdateCurrentAnimationType();
+        staff->animationFrameNum = 0;
+        staff->updateCurrentAnimationType();
         staff->invalidate();
 
         auto* windowMgr = Ui::GetWindowManager();

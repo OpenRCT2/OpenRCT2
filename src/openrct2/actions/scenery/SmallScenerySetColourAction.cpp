@@ -102,9 +102,9 @@ namespace OpenRCT2::GameActions
 
         if (isExecuting)
         {
-            sceneryElement->SetPrimaryColour(_primaryColour);
-            sceneryElement->SetSecondaryColour(_secondaryColour);
-            sceneryElement->SetTertiaryColour(_tertiaryColour);
+            sceneryElement->setPrimaryColour(_primaryColour);
+            sceneryElement->setSecondaryColour(_secondaryColour);
+            sceneryElement->setTertiaryColour(_tertiaryColour);
 
             MapInvalidateTileFull(_loc);
         }

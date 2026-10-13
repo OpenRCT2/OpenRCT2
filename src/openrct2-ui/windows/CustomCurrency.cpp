@@ -10,6 +10,7 @@
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
@@ -92,8 +93,8 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[1] = Dropdown::MenuLabel(STR_SUFFIX);
 
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0,
-                        Dropdown::Flag::StayOpen, 2, widget->width() - 4);
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height(), colours[1], 0, {}, 2,
+                        widget->width() - 4);
 
                     if (CurrencyDescriptors[EnumValue(CurrencyType::custom)].affix_unicode == CurrencyAffix::prefix)
                     {

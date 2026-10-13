@@ -9,16 +9,12 @@
 
 #include "Object.h"
 
-#include "../Context.h"
 #include "../Diagnostic.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/String.hpp"
 #include "../core/ZipStream.hpp"
 #include "../drawing/Image.h"
-#include "../localisation/Language.h"
-#include "../localisation/StringIds.h"
-#include "../world/Scenery.h"
 #include "ObjectLimits.h"
 #include "ObjectRepository.h"
 
@@ -39,20 +35,20 @@ namespace OpenRCT2
     {
         if (!newEntry.IsEmpty())
         {
-            Generation = ObjectGeneration::DAT;
+            Generation = ObjectGeneration::dat;
             Entry = newEntry;
         }
     }
 
     ObjectEntryDescriptor::ObjectEntryDescriptor(std::string_view newIdentifier)
     {
-        Generation = ObjectGeneration::JSON;
+        Generation = ObjectGeneration::json;
         Identifier = std::string(newIdentifier);
     }
 
     ObjectEntryDescriptor::ObjectEntryDescriptor(ObjectType type, std::string_view newIdentifier)
     {
-        Generation = ObjectGeneration::JSON;
+        Generation = ObjectGeneration::json;
         Identifier = std::string(newIdentifier);
         Type = type;
     }
@@ -61,34 +57,34 @@ namespace OpenRCT2
     {
         if (!ori.Identifier.empty())
         {
-            Generation = ObjectGeneration::JSON;
+            Generation = ObjectGeneration::json;
             Identifier = std::string(ori.Identifier);
         }
         else
         {
-            Generation = ObjectGeneration::DAT;
+            Generation = ObjectGeneration::dat;
             Entry = ori.ObjectEntry;
         }
     }
 
     bool ObjectEntryDescriptor::HasValue() const
     {
-        return Generation != ObjectGeneration::JSON || !Identifier.empty();
+        return Generation != ObjectGeneration::json || !Identifier.empty();
     }
 
     ObjectType ObjectEntryDescriptor::GetType() const
     {
-        return Generation == ObjectGeneration::JSON ? Type : Entry.GetType();
+        return Generation == ObjectGeneration::json ? Type : Entry.GetType();
     }
 
     std::string_view ObjectEntryDescriptor::GetName() const
     {
-        return Generation == ObjectGeneration::JSON ? Identifier : Entry.GetName();
+        return Generation == ObjectGeneration::json ? Identifier : Entry.GetName();
     }
 
     std::string ObjectEntryDescriptor::ToString() const
     {
-        if (Generation == ObjectGeneration::DAT)
+        if (Generation == ObjectGeneration::dat)
         {
             char buffer[32];
             std::snprintf(&buffer[0], 9, "%08X", Entry.flags);
@@ -131,7 +127,7 @@ namespace OpenRCT2
     {
         if (Generation != rhs.Generation)
             return false;
-        if (Generation == ObjectGeneration::DAT)
+        if (Generation == ObjectGeneration::dat)
         {
             return Entry == rhs.Entry;
         }

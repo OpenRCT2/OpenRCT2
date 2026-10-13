@@ -9,16 +9,16 @@
 
 #include "Construction.h"
 
-#include "../interface/Viewport.h"
-
 #include <openrct2/GameState.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/ride/RideCreateAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/RideTypes.h>
+#include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/ted/TrackElementDescriptor.h>
 #include <openrct2/util/Util.h>
@@ -258,8 +258,8 @@ namespace OpenRCT2
         SpecialElementsDropdownState list;
 
         // if it's building neither forwards nor backwards, no list is available
-        if (state != RideConstructionState::Front && state != RideConstructionState::Place
-            && state != RideConstructionState::Back)
+        if (state != RideConstructionState::front && state != RideConstructionState::place
+            && state != RideConstructionState::back)
             return list;
 
         auto& elements = list.Elements;
@@ -272,7 +272,7 @@ namespace OpenRCT2
 
             // If the current build orientation (slope, bank, diagonal) matches the track element's, show the piece as enabled
             bool entryIsDisabled;
-            if (state == RideConstructionState::Back)
+            if (state == RideConstructionState::back)
             {
                 entryIsDisabled = ted.definition.pitchEnd != buildSlope || ted.definition.rollEnd != buildBank
                     || TrackPieceDirectionIsDiagonal(ted.coordinates.rotationEnd) != buildDirectionIsDiagonal;
@@ -374,24 +374,24 @@ namespace OpenRCT2
         CoordsXYZD entranceExitCoords{};
         gRideEntranceExitPlaceDirection = kInvalidDirection;
         // determine if the mouse is hovering over a station - that's the station to add the entrance to
-        auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::ride));
+        auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItem::ride);
         if (info.interactionType != ViewportInteractionItem::none)
         {
             if (info.Element->getType() == TileElementType::track)
             {
                 const auto* trackElement = info.Element->asTrack();
-                if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
+                if (trackElement->getRideIndex() == gRideEntranceExitPlaceRideIndex)
                 {
-                    const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
+                    const auto& ted = GetTrackElementDescriptor(trackElement->getTrackType());
                     if (ted.sequenceData.sequences[0].flags.has(SequenceFlag::trackOrigin))
                     {
-                        if (trackElement->GetTrackType() == TrackElemType::maze)
+                        if (trackElement->getTrackType() == TrackElemType::maze)
                         {
                             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
                         }
                         else
                         {
-                            gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
+                            gRideEntranceExitPlaceStationIndex = trackElement->getStationIndex();
                         }
                     }
                 }
@@ -401,31 +401,31 @@ namespace OpenRCT2
         auto ride = GetRide(gRideEntranceExitPlaceRideIndex);
         if (ride == nullptr)
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
-        auto stationBaseZ = ride->getStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
+        auto stationBaseZ = ride->getStation(gRideEntranceExitPlaceStationIndex).getBaseZ();
 
         auto coordsAtHeight = ScreenGetMapXYWithZ(screenCoords, stationBaseZ);
         if (!coordsAtHeight.has_value())
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
-        entranceExitCoords = { coordsAtHeight->ToTileStart(), stationBaseZ, kInvalidDirection };
+        entranceExitCoords = { coordsAtHeight->toTileStart(), stationBaseZ, kInvalidDirection };
 
         if (ride->type == kRideTypeNull)
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
-        auto stationStart = ride->getStation(gRideEntranceExitPlaceStationIndex).Start;
-        if (stationStart.IsNull())
+        auto stationStart = ride->getStation(gRideEntranceExitPlaceStationIndex).start;
+        if (stationStart.isNull())
         {
-            entranceExitCoords.SetNull();
+            entranceExitCoords.setNull();
             return entranceExitCoords;
         }
 
@@ -455,9 +455,9 @@ namespace OpenRCT2
                 {
                     if (trackElement->getBaseZ() != stationBaseZ)
                         continue;
-                    if (trackElement->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
+                    if (trackElement->getRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;
-                    if (trackElement->GetTrackType() == TrackElemType::maze)
+                    if (trackElement->getTrackType() == TrackElemType::maze)
                     {
                         // if it's a maze, it can place the entrance and exit immediately
                         entranceExitCoords.direction = DirectionReverse(entranceExitCoords.direction);
@@ -467,12 +467,12 @@ namespace OpenRCT2
                     // if it's not a maze, the sequence properties for the TrackElement must be found to determine if an
                     // entrance can be placed on that side
 
-                    gRideEntranceExitPlaceStationIndex = trackElement->GetStationIndex();
+                    gRideEntranceExitPlaceStationIndex = trackElement->getStationIndex();
 
                     // get the ride entrance's side relative to the TrackElement
                     Direction direction = (DirectionReverse(entranceExitCoords.direction) - trackElement->getDirection()) & 3;
-                    const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-                    auto connectionSides = ted.sequenceData.sequences[trackElement->GetSequenceIndex()]
+                    const auto& ted = GetTrackElementDescriptor(trackElement->getTrackType());
+                    auto connectionSides = ted.sequenceData.sequences[trackElement->getSequenceIndex()]
                                                .getEntranceConnectionSides();
                     if (connectionSides & (1 << direction))
                     {

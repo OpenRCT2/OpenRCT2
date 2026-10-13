@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../Game.h"
 #include "NetworkPacket.h"
 
 #include <array>

@@ -13,15 +13,15 @@
 
 enum class FileExtension
 {
-    Unknown,
-    DAT,
-    SC4,
-    SV4,
-    TD4,
-    SC6,
-    SV6,
-    TD6,
-    PARK,
+    unknown,
+    dat,
+    sc4,
+    sv4,
+    td4,
+    sc6,
+    sv6,
+    td6,
+    park,
 };
 
 #include <string>

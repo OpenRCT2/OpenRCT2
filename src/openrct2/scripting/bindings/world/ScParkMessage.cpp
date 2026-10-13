@@ -11,15 +11,7 @@
 
     #include "ScParkMessage.hpp"
 
-    #include "../../../Context.h"
     #include "../../../GameState.h"
-    #include "../../../core/String.hpp"
-    #include "../../../entity/Peep.h"
-    #include "../../../management/Finance.h"
-    #include "../../../management/NewsItem.h"
-    #include "../../../windows/Intent.h"
-    #include "../../../world/Park.h"
-    #include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
 {
@@ -31,7 +23,7 @@ namespace OpenRCT2::Scripting
     News::Item* ScParkMessage::GetMessage(JSValue thisVal)
     {
         auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
-        return &getGameState().newsItems[index];
+        return &getGameState().park.newsItems[index];
     }
 
     JSValue ScParkMessage::isArchived_get(JSContext* ctx, JSValue thisVal)
@@ -181,7 +173,7 @@ namespace OpenRCT2::Scripting
     JSValue ScParkMessage::remove(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
-        News::RemoveItem(static_cast<int32_t>(index));
+        News::RemoveItem(getGameState().park.newsItems, static_cast<int32_t>(index));
         return JS_UNDEFINED;
     }
 

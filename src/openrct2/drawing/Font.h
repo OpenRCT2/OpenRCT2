@@ -23,8 +23,8 @@ enum class FontStyle : uint8_t
     tiny = 2,
 };
 
-constexpr uint8_t FontStyleCount = 3;
-constexpr std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::small, FontStyle::medium, FontStyle::tiny };
+constexpr uint8_t kFontStyleCount = 3;
+constexpr std::array<FontStyle, kFontStyleCount> kFontStyles = { FontStyle::small, FontStyle::medium, FontStyle::tiny };
 
 #ifndef DISABLE_TTF
 
@@ -44,7 +44,7 @@ struct TTFFontDescriptor
 
 struct TTFFontSetDescriptor
 {
-    TTFFontDescriptor size[FontStyleCount];
+    TTFFontDescriptor size[kFontStyleCount];
 };
 
 extern TTFFontSetDescriptor* gCurrentTTFFontSet;

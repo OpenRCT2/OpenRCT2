@@ -9,11 +9,9 @@
 
 #include "MapAnimation.h"
 
-#include "../Context.h"
-#include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../core/Numerics.hpp"
+#include "../drawing/ScrollingText.h"
 #include "../entity/EntityList.h"
 #include "../entity/Peep.h"
 #include "../interface/Viewport.h"
@@ -23,11 +21,8 @@
 #include "../object/WallSceneryEntry.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
-#include "../ride/RideData.h"
-#include "Banner.h"
-#include "Footpath.h"
+#include "../ride/ted/TrackElemType.h"
 #include "Map.h"
-#include "Scenery.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/LargeSceneryElement.h"
 #include "tile_element/PathElement.h"
@@ -36,7 +31,6 @@
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
-#include <algorithm>
 #include <set>
 
 using namespace OpenRCT2;
@@ -96,9 +90,9 @@ template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateEntranceAnimation(
     const EntranceElement& entrance, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    if (entrance.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    if (entrance.getEntranceType() == EntranceType::rideEntrance)
     {
-        const auto* const ride = GetRide(entrance.GetRideIndex());
+        const auto* const ride = GetRide(entrance.getRideIndex());
         if (ride != nullptr)
         {
             const auto* const stationObj = ride->getStationObject();
@@ -114,7 +108,8 @@ static bool UpdateEntranceAnimation(
             }
         }
     }
-    else if (entrance.GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance.GetSequenceIndex() == 0)
+    else if (
+        entrance.getEntranceType() == EntranceType::parkEntrance && entrance.getSequenceIndex() == ParkEntranceSequence::centre)
     {
         if constexpr (invalidate)
         {
@@ -134,11 +129,11 @@ template<bool invalidate, bool invalidateAllViewports>
 static bool UpdatePathAnimation(
     const PathElement& path, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    if (path.IsQueue() && path.HasQueueBanner())
+    if (path.isQueue() && path.hasQueueBanner())
     {
         if constexpr (invalidate)
         {
-            const int32_t direction = (path.GetQueueBannerDirection() + GetCurrentRotation()) & 3;
+            const int32_t direction = (path.getQueueBannerDirection() + GetCurrentRotation()) & 3;
             if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
             {
                 Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 16, baseZ + 30, kMaxScrollingTextZoom);
@@ -153,7 +148,7 @@ template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateSmallSceneryAnimation(
     const SmallSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto* const entry = scenery.GetEntry();
+    const auto* const entry = scenery.getEntry();
     if (entry == nullptr)
     {
         return std::nullopt;
@@ -171,16 +166,16 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
             // Don't apply anything to peeps when the scenery is a ghost.
             if (!scenery.isGhost() && !(getGameState().currentTicks & 0x3FF))
             {
-                const int32_t direction = scenery.getDirection();
+                const Direction direction = scenery.getDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc.x, loc.y } - CoordsDirectionDelta[direction]);
                 for (auto peep : quad)
                 {
-                    if (peep->State != PeepState::walking || peep->z != baseZ || !peep->IsActionInterruptableSafely())
+                    if (peep->state != PeepState::walking || peep->z != baseZ || !peep->isActionInterruptableSafely())
                         continue;
-                    peep->Action = PeepActionType::checkTime;
-                    peep->AnimationFrameNum = 0;
-                    peep->AnimationImageIdOffset = 0;
-                    peep->UpdateCurrentAnimationType();
+                    peep->action = PeepActionType::checkTime;
+                    peep->animationFrameNum = 0;
+                    peep->animationImageIdOffset = 0;
+                    peep->updateCurrentAnimationType();
                     if constexpr (invalidate)
                     {
                         peep->invalidate();
@@ -206,7 +201,7 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
 template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    switch (track.GetTrackType())
+    switch (track.getTrackType())
     {
         case TrackElemType::waterfall:
             if constexpr (invalidate)
@@ -238,7 +233,7 @@ template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateLargeSceneryAnimation(
     const LargeSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto* const entry = scenery.GetEntry();
+    const auto* const entry = scenery.getEntry();
     if (entry != nullptr && entry->flags.has(LargeSceneryFlag::isAnimated))
     {
         if constexpr (invalidate)
@@ -255,13 +250,13 @@ template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateWallAnimation(
     WallElement& wall, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto* const entry = wall.GetEntry();
+    const auto* const entry = wall.getEntry();
     if (entry == nullptr)
     {
         return std::nullopt;
     }
 
-    if (entry->flags & WALL_SCENERY_IS_DOOR && wall.IsAnimating())
+    if (entry->flags.has(WallSceneryFlag::isDoor) && wall.isAnimating())
     {
         if (getGameState().currentTicks & 1)
         {
@@ -270,14 +265,14 @@ static std::optional<UpdateType> UpdateWallAnimation(
 
         bool removeAnim = true;
 
-        const auto currentFrame = wall.GetAnimationFrame();
+        const auto currentFrame = wall.getAnimationFrame();
         if (currentFrame != 0)
         {
             auto newFrame = currentFrame;
             if (currentFrame == 15)
             {
                 newFrame = 0;
-                wall.SetIsAnimating(false);
+                wall.setIsAnimating(false);
             }
             else
             {
@@ -286,14 +281,14 @@ static std::optional<UpdateType> UpdateWallAnimation(
                 {
                     newFrame++;
 
-                    if (newFrame == 13 && !(entry->flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
+                    if (newFrame == 13 && !(entry->flags.has(WallSceneryFlag::hasLongDoorAnimation)))
                         newFrame = 15;
                 }
             }
 
             if (currentFrame != newFrame)
             {
-                wall.SetAnimationFrame(newFrame);
+                wall.setAnimationFrame(newFrame);
                 if constexpr (invalidate)
                 {
                     Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 32, kMaxZoom);
@@ -303,7 +298,7 @@ static std::optional<UpdateType> UpdateWallAnimation(
 
         return removeAnim ? std::nullopt : std::optional(UpdateType::update);
     }
-    else if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone)
+    else if (entry->flags2.has(WallSceneryFlag2::isAnimated) || entry->scrolling_mode != kScrollingModeNone)
     {
         if constexpr (invalidate)
         {
@@ -340,7 +335,7 @@ static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Vi
     do
     {
         const auto baseZ = tileElement->getBaseZ();
-        const CoordsXYZ loc{ coords.ToCoordsXY(), baseZ };
+        const CoordsXYZ loc{ coords.toCoordsXY(), baseZ };
 
         switch (tileElement->getType())
         {
@@ -403,9 +398,9 @@ static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Vi
 template<bool invalidate>
 static bool UpdateOnRidePhotoAnimation(TrackElement& track, const CoordsXYZ& coords)
 {
-    if (track.IsTakingPhoto())
+    if (track.isTakingPhoto())
     {
-        track.DecrementPhotoTimeout();
+        track.decrementPhotoTimeout();
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, track.getClearanceZ(), kMaxZoom);
@@ -425,10 +420,10 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
 
     bool isAnimating = false;
 
-    const auto doorAState = track.GetDoorAState();
+    const auto doorAState = track.getDoorAState();
     if (doorAState >= kLandEdgeDoorFrameEnd)
     {
-        track.SetDoorAState(kLandEdgeDoorFrameClosed);
+        track.setDoorAState(kLandEdgeDoorFrameClosed);
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
@@ -436,7 +431,7 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
     }
     else if (doorAState != kLandEdgeDoorFrameClosed && doorAState != kLandEdgeDoorFrameOpen)
     {
-        track.SetDoorAState(doorAState + 1);
+        track.setDoorAState(doorAState + 1);
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
@@ -444,10 +439,10 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
         isAnimating = true;
     }
 
-    const auto doorBState = track.GetDoorBState();
+    const auto doorBState = track.getDoorBState();
     if (doorBState >= kLandEdgeDoorFrameEnd)
     {
-        track.SetDoorBState(kLandEdgeDoorFrameClosed);
+        track.setDoorBState(kLandEdgeDoorFrameClosed);
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
@@ -455,7 +450,7 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
     }
     else if (doorBState != kLandEdgeDoorFrameClosed && doorBState != kLandEdgeDoorFrameOpen)
     {
-        track.SetDoorBState(doorBState + 1);
+        track.setDoorBState(doorBState + 1);
         if constexpr (invalidate)
         {
             ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
@@ -484,7 +479,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
             case MapAnimations::TemporaryType::onRidePhoto:
             {
                 if (tileElement->getType() == TileElementType::track && tileElement->baseHeight == tileCoords.z
-                    && tileElement->asTrack()->GetTrackType() == TrackElemType::onRidePhoto)
+                    && tileElement->asTrack()->getTrackType() == TrackElemType::onRidePhoto)
                 {
                     isAnimating |= UpdateOnRidePhotoAnimation<invalidate>(*tileElement->asTrack(), animation.location);
                 }
@@ -512,14 +507,14 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::wall:
         {
             const auto* const wall = element.asWall();
-            const auto* const entry = wall->GetEntry();
+            const auto* const entry = wall->getEntry();
             if (entry != nullptr)
             {
-                if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone)
+                if (entry->flags2.has(WallSceneryFlag2::isAnimated) || entry->scrolling_mode != kScrollingModeNone)
                 {
                     return std::optional(UpdateType::invalidate);
                 }
-                if (entry->flags & WALL_SCENERY_IS_DOOR && wall->IsAnimating())
+                if (entry->flags.has(WallSceneryFlag::isDoor) && wall->isAnimating())
                 {
                     return std::optional(UpdateType::update);
                 }
@@ -529,7 +524,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::smallScenery:
         {
             const auto* const scenery = element.asSmallScenery();
-            const auto* const entry = scenery->GetEntry();
+            const auto* const entry = scenery->getEntry();
             if (entry != nullptr && entry->flags.has(SmallSceneryFlag::isAnimated))
             {
                 if (entry->flags.has(SmallSceneryFlag::isClock))
@@ -546,7 +541,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::largeScenery:
         {
             const auto* const scenery = element.asLargeScenery();
-            const auto* const entry = scenery->GetEntry();
+            const auto* const entry = scenery->getEntry();
             if (entry != nullptr && entry->flags.has(LargeSceneryFlag::isAnimated))
             {
                 return std::optional(UpdateType::invalidate);
@@ -556,7 +551,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::path:
         {
             const auto* const path = element.asPath();
-            if (path->HasQueueBanner())
+            if (path->hasQueueBanner())
             {
                 return std::optional(UpdateType::invalidate);
             }
@@ -565,11 +560,12 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::entrance:
         {
             const auto* const entrance = element.asEntrance();
-            if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
+            if (entrance->getEntranceType() == EntranceType::parkEntrance
+                && entrance->getSequenceIndex() == ParkEntranceSequence::centre)
             {
                 return std::optional(UpdateType::invalidate);
             }
-            else if (entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            else if (entrance->getEntranceType() == EntranceType::rideEntrance)
             {
                 return std::optional(UpdateType::invalidate);
             }
@@ -578,7 +574,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         case TileElementType::track:
         {
             const auto* const track = element.asTrack();
-            switch (track->GetTrackType())
+            switch (track->getTrackType())
             {
                 case TrackElemType::waterfall:
                 case TrackElemType::rapids:
@@ -599,7 +595,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
 
 void MapAnimations::MarkTileForInvalidation(const TileCoordsXY coords)
 {
-    if (!MapIsEdge(coords.ToCoordsXY()) && !_mapAnimationsUpdate.contains(coords))
+    if (!MapIsEdge(coords.toCoordsXY()) && !_mapAnimationsUpdate.contains(coords))
     {
         _mapAnimationsInvalidate[coords.x + (coords.y * kMaximumMapSizeTechnical)] = true;
     }
@@ -607,7 +603,7 @@ void MapAnimations::MarkTileForInvalidation(const TileCoordsXY coords)
 
 void MapAnimations::MarkTileForUpdate(const TileCoordsXY coords)
 {
-    if (!MapIsEdge(coords.ToCoordsXY()))
+    if (!MapIsEdge(coords.toCoordsXY()))
     {
         _mapAnimationsInvalidate[coords.x + (coords.y * kMaximumMapSizeTechnical)] = false;
         _mapAnimationsUpdate.insert(coords);
@@ -657,7 +653,7 @@ static void InvalidateAll(const ViewportList& viewports)
 
         const auto direction = DirectionFlipXAxis(viewport->rotation);
         const int32_t numVerticalTiles = (viewport->ViewHeight() + maxTileHeight) / kScreenCoordsTileHeight;
-        const TileCoordsXY nextVerticalTile = TileCoordsXY{ 1, 1 }.Rotate(direction);
+        const TileCoordsXY nextVerticalTile = TileCoordsXY{ 1, 1 }.rotate(direction);
         const int32_t screenCoordY = Numerics::floor2(
             (viewport->viewPos.y - kScreenCoordsTileHeightHalf), kScreenCoordsTileWidthHalf);
 
@@ -666,17 +662,17 @@ static void InvalidateAll(const ViewportList& viewports)
         {
             const ScreenCoordsXY screenCoord = { Numerics::floor2(x, kScreenCoordsTileWidthHalf), screenCoordY };
             CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
-            mapTile = mapTile.Rotate(direction);
+            mapTile = mapTile.rotate(direction);
             if (direction & 1)
             {
                 mapTile.y -= kCoordsXYHalfTile;
             }
-            mapTile = mapTile.ToTileStart();
+            mapTile = mapTile.toTileStart();
             TileCoordsXY tileCoords(mapTile);
 
             for (int32_t i = 0; i < numVerticalTiles; ++i)
             {
-                if (!MapIsEdge(tileCoords.ToCoordsXY())
+                if (!MapIsEdge(tileCoords.toCoordsXY())
                     && _mapAnimationsInvalidate[tileCoords.x + (tileCoords.y * kMaximumMapSizeTechnical)])
                 {
                     if (!UpdateTile<true, false>(tileCoords, viewport))
@@ -781,7 +777,7 @@ void MapAnimations::ShiftAll(const TileCoordsXY amount)
         {
             const bool animated = _mapAnimationsInvalidate[x + (y * kMaximumMapSizeTechnical)];
             const TileCoordsXY newCoords = TileCoordsXY(x, y) + amount;
-            if (!MapIsEdge(newCoords.ToCoordsXY()))
+            if (!MapIsEdge(newCoords.toCoordsXY()))
             {
                 newMapAnimationsInvalidate[newCoords.x + (newCoords.y * kMaximumMapSizeTechnical)] = animated;
             }
@@ -799,7 +795,7 @@ void MapAnimations::ShiftAll(const TileCoordsXY amount)
     std::set<TemporaryMapAnimation> newTemporaryMapAnimations;
     for (const auto& a : _temporaryMapAnimations)
     {
-        newTemporaryMapAnimations.insert(TemporaryMapAnimation{ a.location + CoordsXYZ(amount.ToCoordsXY(), 0), a.type });
+        newTemporaryMapAnimations.insert(TemporaryMapAnimation{ a.location + CoordsXYZ(amount.toCoordsXY(), 0), a.type });
     }
     _temporaryMapAnimations = std::move(newTemporaryMapAnimations);
 }

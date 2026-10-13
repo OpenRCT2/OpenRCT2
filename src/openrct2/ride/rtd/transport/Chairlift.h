@@ -12,12 +12,13 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor ChairliftRTD =
+constexpr RideTypeDescriptor kChairliftRTD =
 {
     .Category = RideCategory::transport,
     .StartTrackPiece = TrackElemType::endStation,
@@ -33,11 +34,11 @@ constexpr RideTypeDescriptor ChairliftRTD =
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::isSuspended, RtdFlag::runningSpeedAffectsReliability),
-    .RideModes = EnumsToFlags(RideMode::stationToStation),
+    .rideModes = { RideMode::stationToStation },
     .DefaultMode = RideMode::stationToStation,
     .OperatingSettings = { 1, 4 },
     .Naming = { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::track, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 40, 32, 28, 2, },
     .MaxMass = 18,
@@ -55,40 +56,40 @@ constexpr RideTypeDescriptor ChairliftRTD =
         { Drawing::Colour::lightBrown, Drawing::Colour::lightBrown, Drawing::Colour::white },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_CHAIRLIFT_TRACK, SPR_RIDE_DESIGN_PREVIEW_CHAIRLIFT_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "chairlift",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(1, 60), RideRating::make(0, 40), RideRating::make(0, 50) },
         14,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::BonusLength,            6000,     764, 0, 0 },
-            { RatingsModifierType::BonusTrainLength,       0,        187245, 0, 0 },
-            { RatingsModifierType::BonusMaxSpeed,          0,        44281, 88562, 35424 },
-            { RatingsModifierType::BonusAverageSpeed,      0,        291271, 436906, 0 },
-            { RatingsModifierType::BonusDuration,          150,      26214, 0, 0 },
-            { RatingsModifierType::BonusTurns,             0,        7430, 3476, 4574 },
-            { RatingsModifierType::BonusSheltered,         0,        -19275, 21845, 23405 },
-            { RatingsModifierType::BonusProximity,         0,        11183, 0, 0 },
-            { RatingsModifierType::BonusScenery,           0,        25098, 0, 0 },
-            { RatingsModifierType::RequirementLength,      0x960000, 2, 2, 2 },
-            { RatingsModifierType::RequirementStations,    1,        0, 2, 1 },
-            { RatingsModifierType::RequirementUnsheltered, 4,        4, 1, 1 },
+            { RatingsModifierType::bonusLength,            6000,     764, 0, 0 },
+            { RatingsModifierType::bonusTrainLength,       0,        187245, 0, 0 },
+            { RatingsModifierType::bonusMaxSpeed,          0,        44281, 88562, 35424 },
+            { RatingsModifierType::bonusAverageSpeed,      0,        291271, 436906, 0 },
+            { RatingsModifierType::bonusDuration,          150,      26214, 0, 0 },
+            { RatingsModifierType::bonusTurns,             0,        7430, 3476, 4574 },
+            { RatingsModifierType::bonusSheltered,         0,        -19275, 21845, 23405 },
+            { RatingsModifierType::bonusProximity,         0,        11183, 0, 0 },
+            { RatingsModifierType::bonusScenery,           0,        25098, 0, 0 },
+            { RatingsModifierType::requirementLength,      0x960000, 2, 2, 2 },
+            { RatingsModifierType::requirementStations,    1,        0, 2, 1 },
+            { RatingsModifierType::requirementUnsheltered, 4,        4, 1, 1 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_ChairLift,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Default,
+    .DesignCreateMode = TrackDesignCreateMode::standard,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::Default,
+    .ConstructionWindowContext = RideConstructionWindowContext::standard,
     .RideUpdate = updateChairlift,
 };
 } // namespace OpenRCT2

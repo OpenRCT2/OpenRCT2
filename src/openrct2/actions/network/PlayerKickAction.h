@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class PlayerKickAction final : public GameActionBase<GameCommand::KickPlayer>
+    class PlayerKickAction final : public GameActionBase<GameCommand::kickPlayer>
     {
     private:
         Network::PlayerId_t _playerId{ -1 };

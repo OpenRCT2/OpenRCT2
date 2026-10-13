@@ -11,14 +11,15 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
@@ -92,6 +93,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_HIGH_DOWN,
         WIDX_FLOOR_TEXTURE,
         WIDX_WALL_TEXTURE,
+        WIDX_SURFACE_COLOUR_1,
+        WIDX_EDGE_COLOUR_1,
         WIDX_RANDOM_TERRAIN,
         WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
 
@@ -153,6 +156,8 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                  ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
         makeWidget        ({179,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
         makeWidget        ({236,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
+        makeWidget        ({197, 128}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR), // surface colour 1
+        makeWidget        ({254, 128}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_SELECT_COLOUR), // edge colour 1
         makeWidget        ({ 10, 106}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
         makeWidget        ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
     );
@@ -204,9 +209,9 @@ namespace OpenRCT2::Ui::Windows
 
     enum class ResizeDirection
     {
-        Both,
-        X,
-        Y,
+        both,
+        x,
+        y,
     };
 
     static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path);
@@ -214,7 +219,7 @@ namespace OpenRCT2::Ui::Windows
     class MapGenWindow final : public Window
     {
     private:
-        ResizeDirection _resizeDirection{ ResizeDirection::Both };
+        ResizeDirection _resizeDirection{ ResizeDirection::both };
         bool _mapWidthAndHeightLinked{ true };
         MapGenerator::Settings _settings{};
         bool _randomTerrain = true;
@@ -223,6 +228,9 @@ namespace OpenRCT2::Ui::Windows
 
         u8string _xSpinnerCaption{};
         u8string _ySpinnerCaption{};
+
+        bool _surfaceColour1Enabled = false;
+        bool _edgeColour1Enabled = false;
 
         void setPage(int32_t newPage)
         {
@@ -271,15 +279,15 @@ namespace OpenRCT2::Ui::Windows
         void ChangeMapSize(int32_t sizeOffset)
         {
             if (_mapWidthAndHeightLinked)
-                _resizeDirection = ResizeDirection::Both;
+                _resizeDirection = ResizeDirection::both;
 
-            if (_resizeDirection != ResizeDirection::X)
+            if (_resizeDirection != ResizeDirection::x)
             {
                 _settings.mapSize.y = std::clamp<int32_t>(
                     _settings.mapSize.y + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
             }
 
-            if (_resizeDirection != ResizeDirection::Y)
+            if (_resizeDirection != ResizeDirection::y)
             {
                 _settings.mapSize.x = std::clamp<int32_t>(
                     _settings.mapSize.x + sizeOffset, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
@@ -330,7 +338,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             MapGenerator::generate(&mapgenSettings);
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
 
 #pragma region Base page
@@ -347,11 +355,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_MAP_SIZE_Y:
-                    _resizeDirection = ResizeDirection::Y;
+                    _resizeDirection = ResizeDirection::y;
                     InputMapSize(WIDX_MAP_SIZE_Y, _settings.mapSize.y);
                     break;
                 case WIDX_MAP_SIZE_X:
-                    _resizeDirection = ResizeDirection::X;
+                    _resizeDirection = ResizeDirection::x;
                     InputMapSize(WIDX_MAP_SIZE_X, _settings.mapSize.x);
                     break;
                 case WIDX_MAP_SIZE_LINK:
@@ -371,22 +379,22 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_MAP_SIZE_Y_UP:
-                    _resizeDirection = ResizeDirection::Y;
+                    _resizeDirection = ResizeDirection::y;
                     ChangeMapSize(+1);
                     invalidate();
                     break;
                 case WIDX_MAP_SIZE_Y_DOWN:
-                    _resizeDirection = ResizeDirection::Y;
+                    _resizeDirection = ResizeDirection::y;
                     ChangeMapSize(-1);
                     invalidate();
                     break;
                 case WIDX_MAP_SIZE_X_UP:
-                    _resizeDirection = ResizeDirection::X;
+                    _resizeDirection = ResizeDirection::x;
                     ChangeMapSize(+1);
                     invalidate();
                     break;
                 case WIDX_MAP_SIZE_X_DOWN:
-                    _resizeDirection = ResizeDirection::X;
+                    _resizeDirection = ResizeDirection::x;
                     ChangeMapSize(-1);
                     invalidate();
                     break;
@@ -404,8 +412,8 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0,
-                        Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height(), colours[1], 0, {},
+                        std::size(items), ddWidget->width() - 3);
 
                     gDropdown.items[EnumValue(_settings.algorithm)].setChecked(true);
                     break;
@@ -448,9 +456,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_SIZE_X:
                     // The practical size is 2 lower than the technical size
                     auto technicalSize = std::clamp<uint16_t>(value + 2, kMinimumMapSizeTechnical, kMaximumMapSizeTechnical);
-                    if (_resizeDirection == ResizeDirection::Y || _mapWidthAndHeightLinked)
+                    if (_resizeDirection == ResizeDirection::y || _mapWidthAndHeightLinked)
                         _settings.mapSize.y = technicalSize;
-                    if (_resizeDirection == ResizeDirection::X || _mapWidthAndHeightLinked)
+                    if (_resizeDirection == ResizeDirection::x || _mapWidthAndHeightLinked)
                         _settings.mapSize.x = technicalSize;
                     break;
             }
@@ -512,28 +520,24 @@ namespace OpenRCT2::Ui::Windows
 
         void ToggleSimplexWidgets(bool state)
         {
-            // clang-format off
-            widgets[WIDX_SIMPLEX_GROUP].type          = state ? WidgetType::groupbox : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WidgetType::spinner  : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WidgetType::spinner  : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WidgetType::button   : WidgetType::empty;
-            // clang-format on
+            widgets[WIDX_SIMPLEX_GROUP].setVisible(state);
+            widgets[WIDX_SIMPLEX_BASE_FREQ].setVisible(state);
+            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].setVisible(state);
+            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].setVisible(state);
+            widgets[WIDX_SIMPLEX_OCTAVES].setVisible(state);
+            widgets[WIDX_SIMPLEX_OCTAVES_UP].setVisible(state);
+            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].setVisible(state);
         }
 
         void ToggleHeightmapWidgets(bool state)
         {
-            // clang-format off
-            widgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WidgetType::groupbox : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_BROWSE].type           = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WidgetType::checkbox : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WidgetType::checkbox : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WidgetType::spinner  : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].type      = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].type    = state ? WidgetType::button   : WidgetType::empty;
-            // clang-format on
+            widgets[WIDX_HEIGHTMAP_GROUP].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_BROWSE].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_NORMALIZE].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_STRENGTH].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].setVisible(state);
+            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].setVisible(state);
         }
 
         void BaseDraw(RenderTarget& rt)
@@ -1021,6 +1025,14 @@ namespace OpenRCT2::Ui::Windows
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 2);
                     invalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
+                case WIDX_SURFACE_COLOUR_1:
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.surfaceColour1, true);
+                    break;
+                case WIDX_EDGE_COLOUR_1:
+                    WindowDropdownShowColour(
+                        this, widget, colours[1].withFlag(ColourFlag::translucent, true), _settings.edgeColour1, true);
+                    break;
             }
         }
 
@@ -1062,14 +1074,10 @@ namespace OpenRCT2::Ui::Windows
 
                     type = (dropdownIndex == -1) ? _settings.landTexture : dropdownIndex;
 
-                    if (gLandToolTerrainSurface == type)
+                    if (_settings.landTexture != type)
                     {
-                        gLandToolTerrainSurface = kObjectEntryIndexNull;
-                    }
-                    else
-                    {
-                        gLandToolTerrainSurface = type;
                         _settings.landTexture = type;
+                        LandTool::resetSurfaceColourSelection(type, _settings.surfaceColour1, _surfaceColour1Enabled);
                     }
                     invalidate();
                     break;
@@ -1079,17 +1087,31 @@ namespace OpenRCT2::Ui::Windows
 
                     type = (dropdownIndex == -1) ? _settings.edgeTexture : dropdownIndex;
 
-                    if (gLandToolTerrainEdge == type)
+                    if (_settings.edgeTexture != type)
                     {
-                        gLandToolTerrainEdge = kObjectEntryIndexNull;
-                    }
-                    else
-                    {
-                        gLandToolTerrainEdge = type;
                         _settings.edgeTexture = type;
+                        LandTool::resetEdgeColourSelection(type, _settings.edgeColour1, _edgeColour1Enabled);
                     }
                     invalidate();
                     break;
+                case WIDX_SURFACE_COLOUR_1:
+                {
+                    if (dropdownIndex == -1)
+                        break;
+
+                    _settings.surfaceColour1 = ColourDropDownIndexToColour(dropdownIndex);
+                    invalidate();
+                    break;
+                }
+                case WIDX_EDGE_COLOUR_1:
+                {
+                    if (dropdownIndex == -1)
+                        break;
+
+                    _settings.edgeColour1 = ColourDropDownIndexToColour(dropdownIndex);
+                    invalidate();
+                    break;
+                }
             }
         }
 
@@ -1122,18 +1144,18 @@ namespace OpenRCT2::Ui::Windows
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
-                surfaceImage = ImageId(surfaceObj->IconImageId);
-                if (surfaceObj->Colour != kColourNull)
-                {
-                    surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
-                }
+                auto colour = widgets[WIDX_SURFACE_COLOUR_1].isVisible()
+                    ? surfaceObj->getPrimaryColour(_settings.surfaceColour1)
+                    : surfaceObj->getPreviewColour();
+                surfaceImage = ImageId(surfaceObj->IconImageId, colour);
             }
 
             ImageId edgeImage;
             const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_settings.edgeTexture);
             if (edgeObj != nullptr)
             {
-                edgeImage = ImageId(edgeObj->IconImageId);
+                auto colour = widgets[WIDX_EDGE_COLOUR_1].isVisible() ? _settings.edgeColour1 : edgeObj->getPreviewColour();
+                edgeImage = ImageId(edgeObj->IconImageId, colour);
             }
 
             DrawDropdownButton(rt, floorWidgetIndex, surfaceImage);
@@ -1154,6 +1176,12 @@ namespace OpenRCT2::Ui::Windows
 
             // only offer terrain edge smoothing if we don't use flatland terrain
             setWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
+
+            widgets[WIDX_SURFACE_COLOUR_1].setVisible(_surfaceColour1Enabled && !_randomTerrain);
+            widgets[WIDX_EDGE_COLOUR_1].setVisible(_edgeColour1Enabled && !_randomTerrain);
+
+            widgets[WIDX_SURFACE_COLOUR_1].image = getColourButtonImage(_settings.surfaceColour1);
+            widgets[WIDX_EDGE_COLOUR_1].image = getColourButtonImage(_settings.edgeColour1);
         }
 
         void TerrainDraw(RenderTarget& rt)
@@ -1294,6 +1322,9 @@ namespace OpenRCT2::Ui::Windows
             initScrollWidgets();
 
             _heightmapLoaded = false;
+
+            LandTool::resetSurfaceColourSelection(_settings.landTexture, _settings.surfaceColour1, _surfaceColour1Enabled);
+            LandTool::resetEdgeColourSelection(_settings.edgeTexture, _settings.edgeColour1, _edgeColour1Enabled);
         }
 
         void onClose() override

@@ -11,7 +11,8 @@
 
 #include "../../Context.h"
 #include "../../GameState.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
+#include "../../scripting/ScriptEngine.h"
 #include "../../ui/UiContext.h"
 #include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"
@@ -87,7 +88,23 @@ namespace OpenRCT2::GameActions
         Park::UpdateSize(park);
 
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
+
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = ctx->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::mapResize))
+        {
+            auto sctx = GetContext()->GetScriptEngine().GetContext();
+            JSValue obj = JS_NewObject(sctx);
+
+            JS_SetPropertyStr(sctx, obj, "targetSizeX", JS_NewInt32(sctx, _targetSize.x));
+            JS_SetPropertyStr(sctx, obj, "targetSizeY", JS_NewInt32(sctx, _targetSize.y));
+            JS_SetPropertyStr(sctx, obj, "shiftX", JS_NewInt32(sctx, _shift.x));
+            JS_SetPropertyStr(sctx, obj, "shiftY", JS_NewInt32(sctx, _shift.y));
+
+            hookEngine.Call(OpenRCT2::Scripting::HookType::mapResize, obj, true);
+        }
+#endif
         return Result();
     }
 

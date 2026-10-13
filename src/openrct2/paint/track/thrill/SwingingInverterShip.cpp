@@ -17,9 +17,7 @@
 #include "../../../ride/Vehicle.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -76,7 +74,7 @@ static void PaintSwingingInverterShipStructure(
     Vehicle* vehicle = nullptr;
     if (ride.flags.has(RideFlag::onTrack))
     {
-        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::entity;
@@ -84,13 +82,13 @@ static void PaintSwingingInverterShipStructure(
         }
     }
 
-    ImageIndex vehicleImageIndex = rideEntry->Cars[0].base_image_id + kSwingingInverterShipBaseSpriteOffset[direction];
+    ImageIndex vehicleImageIndex = rideEntry->Cars[0].baseImageId + kSwingingInverterShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
         int32_t rotation = static_cast<int8_t>(vehicle->flatRideAnimationFrame);
         if (rotation != 0)
         {
-            vehicleImageIndex = rideEntry->Cars[0].base_image_id + kSwingingInverterShipAnimatingBaseSpriteOffset[direction];
+            vehicleImageIndex = rideEntry->Cars[0].baseImageId + kSwingingInverterShipAnimatingBaseSpriteOffset[direction];
             if (direction & 2)
             {
                 rotation = -rotation;
@@ -138,7 +136,7 @@ static void PaintSwingingInverterShip(
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
 
-        if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
+        if (stationObject != nullptr && !stationObject->Flags.has(StationObjectFlag::noPlatforms))
         {
             ImageId imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_BORDERLESS);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });

@@ -11,6 +11,7 @@
 
     #include "ScStaff.hpp"
 
+    #include "../../../Context.h"
     #include "../../../entity/PatrolArea.h"
     #include "../../../entity/Staff.h"
     #include "../../../object/ObjectManager.h"
@@ -50,7 +51,7 @@ namespace OpenRCT2::Scripting
     Staff* ScStaff::GetStaff(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
-        return getGameState().entities.GetEntity<Staff>(id);
+        return getGameState().entities.getEntity<Staff>(id);
     }
 
     JSValue ScStaff::staffType_get(JSContext* ctx, JSValue thisVal)
@@ -85,31 +86,31 @@ namespace OpenRCT2::Scripting
             if (value == "handyman" && peep->assignedStaffType != StaffType::handyman)
             {
                 peep->assignedStaffType = StaffType::handyman;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::handyman);
-                peep->AnimationGroup = PeepAnimationGroup::normal;
+                peep->animationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::handyman);
+                peep->animationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "mechanic" && !peep->isMechanic())
             {
                 peep->assignedStaffType = StaffType::mechanic;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::mechanic);
-                peep->AnimationGroup = PeepAnimationGroup::normal;
+                peep->animationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::mechanic);
+                peep->animationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "security" && peep->assignedStaffType != StaffType::security)
             {
                 peep->assignedStaffType = StaffType::security;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::security);
-                peep->AnimationGroup = PeepAnimationGroup::normal;
+                peep->animationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::security);
+                peep->animationGroup = PeepAnimationGroup::normal;
             }
             else if (value == "entertainer" && !peep->isEntertainer())
             {
                 peep->assignedStaffType = StaffType::entertainer;
-                peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::entertainer);
-                peep->AnimationGroup = PeepAnimationGroup::normal;
+                peep->animationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::entertainer);
+                peep->animationGroup = PeepAnimationGroup::normal;
             }
 
             // Reset state to walking to prevent invalid actions from carrying over
-            peep->Action = PeepActionType::walking;
-            peep->AnimationType = peep->NextAnimationType = PeepAnimationType::walking;
+            peep->action = PeepActionType::walking;
+            peep->animationType = peep->nextAnimationType = PeepAnimationType::walking;
             peep->invalidate();
         }
         return JS_UNDEFINED;
@@ -118,7 +119,7 @@ namespace OpenRCT2::Scripting
     JSValue ScStaff::colour_get(JSContext* ctx, JSValue thisVal)
     {
         auto peep = GetStaff(thisVal);
-        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->TshirtColour) : 0);
+        return JS_NewUint32(ctx, peep != nullptr ? EnumValue(peep->tShirtColour) : 0);
     }
 
     JSValue ScStaff::colour_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
@@ -128,7 +129,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff(thisVal);
         if (peep != nullptr)
         {
-            peep->TshirtColour = static_cast<Drawing::Colour>(value);
+            peep->tShirtColour = static_cast<Drawing::Colour>(value);
             peep->invalidate();
         }
         return JS_UNDEFINED;
@@ -182,7 +183,7 @@ namespace OpenRCT2::Scripting
         auto& costumes = costumesByStaffType(peep->assignedStaffType);
 
         auto costume = std::find_if(costumes.begin(), costumes.end(), [peep](auto& candidate) {
-            return candidate.objectId == peep->AnimationObjectIndex;
+            return candidate.objectId == peep->animationObjectIndex;
         });
 
         if (costume != costumes.end())
@@ -228,8 +229,8 @@ namespace OpenRCT2::Scripting
             return JS_EXCEPTION;
         }
 
-        peep->AnimationObjectIndex = costume->objectId;
-        peep->AnimationGroup = costume->group;
+        peep->animationObjectIndex = costume->objectId;
+        peep->animationGroup = costume->group;
         peep->invalidate();
         return JS_UNDEFINED;
     }
@@ -316,9 +317,9 @@ namespace OpenRCT2::Scripting
         }
 
         auto& objManager = GetContext()->GetObjectManager();
-        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, *animationType);
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->animationGroup, *animationType);
         auto idx = 0;
         for (auto frameOffset : animationGroup.frameOffsets)
         {
@@ -343,7 +344,7 @@ namespace OpenRCT2::Scripting
         }
 
         auto animationGroups = animationsByStaffType(peep->assignedStaffType);
-        return JSFromStdString(ctx, animationGroups[peep->AnimationType]);
+        return JSFromStdString(ctx, animationGroups[peep->animationType]);
     }
 
     JSValue ScStaff::animation_set(JSContext* ctx, JSValue thisVal, JSValue jsValue)
@@ -360,21 +361,21 @@ namespace OpenRCT2::Scripting
             return JS_EXCEPTION;
         }
 
-        peep->AnimationType = peep->NextAnimationType = *newType;
+        peep->animationType = peep->nextAnimationType = *newType;
 
         auto offset = 0;
-        if (peep->IsActionWalking())
-            peep->WalkingAnimationFrameNum = offset;
+        if (peep->isActionWalking())
+            peep->walkingAnimationFrameNum = offset;
         else
-            peep->AnimationFrameNum = offset;
+            peep->animationFrameNum = offset;
 
         auto& objManager = GetContext()->GetObjectManager();
-        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
-        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->animationGroup, peep->animationType);
+        peep->animationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->invalidate();
-        peep->UpdateSpriteBoundingBox();
+        peep->updateSpriteBoundingBox();
         peep->invalidate();
         return JS_UNDEFINED;
     }
@@ -387,7 +388,7 @@ namespace OpenRCT2::Scripting
             return JS_NewUint32(ctx, 0);
         }
 
-        auto frame = peep->IsActionWalking() ? peep->WalkingAnimationFrameNum : peep->AnimationFrameNum;
+        auto frame = peep->isActionWalking() ? peep->walkingAnimationFrameNum : peep->animationFrameNum;
         return JS_NewUint32(ctx, frame);
     }
 
@@ -399,20 +400,20 @@ namespace OpenRCT2::Scripting
         auto* peep = GetStaff(thisVal);
 
         auto& objManager = GetContext()->GetObjectManager();
-        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->animationGroup, peep->animationType);
         auto length = animationGroup.frameOffsets.size();
         offset %= length;
 
-        if (peep->IsActionWalking())
-            peep->WalkingAnimationFrameNum = offset;
+        if (peep->isActionWalking())
+            peep->walkingAnimationFrameNum = offset;
         else
-            peep->AnimationFrameNum = offset;
+            peep->animationFrameNum = offset;
 
-        peep->AnimationImageIdOffset = animationGroup.frameOffsets[offset];
+        peep->animationImageIdOffset = animationGroup.frameOffsets[offset];
         peep->invalidate();
-        peep->UpdateSpriteBoundingBox();
+        peep->updateSpriteBoundingBox();
         peep->invalidate();
         return JS_UNDEFINED;
     }
@@ -426,9 +427,9 @@ namespace OpenRCT2::Scripting
         }
 
         auto& objManager = GetContext()->GetObjectManager();
-        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->animationObjectIndex);
 
-        const auto& animationGroup = animObj->GetPeepAnimation(peep->AnimationGroup, peep->AnimationType);
+        const auto& animationGroup = animObj->GetPeepAnimation(peep->animationGroup, peep->animationType);
         auto length = static_cast<uint8_t>(animationGroup.frameOffsets.size());
         return JS_NewUint32(ctx, length);
     }
@@ -573,6 +574,34 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    ScEntertainer gScEntertainer;
+
+    JSValue ScEntertainer::New(JSContext* ctx, EntityId entityId)
+    {
+        return gScEntity.NewDerivedInstance(ctx, entityId, gScEntertainer.GetProto());
+    }
+
+    void ScEntertainer::Register(JSContext* ctx)
+    {
+        static constexpr JSCFunctionListEntry kFuncs[] = {
+            JS_CGETSET_DEF("guestsEntertained", &ScEntertainer::guestsEntertained_get, nullptr),
+        };
+        gScEntertainer.RegisterDerived(ctx, gScStaff, kFuncs);
+    }
+
+    JSValue ScEntertainer::guestsEntertained_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto peep = GetStaff(thisVal);
+        if (peep != nullptr && peep->isEntertainer())
+        {
+            return JS_NewUint32(ctx, peep->staffGuestsEntertained);
+        }
+        else
+        {
+            return JS_NULL;
+        }
+    }
+
     using OpaquePatrolAreaData = struct
     {
         EntityId staffId;
@@ -605,7 +634,7 @@ namespace OpenRCT2::Scripting
     Staff* ScPatrolArea::GetStaff(JSValue thisVal)
     {
         OpaquePatrolAreaData* data = gScPatrolArea.GetOpaque<OpaquePatrolAreaData*>(thisVal);
-        return getGameState().entities.GetEntity<Staff>(data->staffId);
+        return getGameState().entities.getEntity<Staff>(data->staffId);
     }
 
     void ScPatrolArea::ModifyArea(JSContext* ctx, JSValue thisVal, JSValue coordsOrRange, bool reset)
@@ -616,7 +645,7 @@ namespace OpenRCT2::Scripting
             if (JS_IsArray(coordsOrRange))
             {
                 JSIterateArray(ctx, coordsOrRange, [staff, reset](JSContext* ctx2, JSValue v) {
-                    auto coord = JSToCoordsXY(ctx2, v);
+                    auto coord = JStoCoordsXY(ctx2, v);
                     staff->setPatrolArea(coord, reset);
                     MapInvalidateTileFull(coord);
                 });
@@ -625,9 +654,9 @@ namespace OpenRCT2::Scripting
             {
                 MapRange mapRange = { JSToCoordXY(ctx, coordsOrRange, "leftTop"),
                                       JSToCoordXY(ctx, coordsOrRange, "rightBottom") };
-                for (int32_t y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+                for (int32_t y = mapRange.getY1(); y <= mapRange.getY2(); y += kCoordsXYStep)
                 {
-                    for (int32_t x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
+                    for (int32_t x = mapRange.getX1(); x <= mapRange.getX2(); x += kCoordsXYStep)
                     {
                         CoordsXY coord(x, y);
                         staff->setPatrolArea(coord, reset);
@@ -646,7 +675,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr && staff->patrolInfo != nullptr)
         {
-            auto tiles = staff->patrolInfo->ToVector();
+            auto tiles = staff->patrolInfo->toVector();
 
             auto index = 0;
             for (const auto& tile : tiles)
@@ -711,7 +740,7 @@ namespace OpenRCT2::Scripting
         auto staff = GetStaff(thisVal);
         if (staff != nullptr)
         {
-            auto pos = JSToCoordsXY(ctx, coord);
+            auto pos = JStoCoordsXY(ctx, coord);
             return JS_NewBool(ctx, staff->isLocationInPatrol(pos));
         }
         return JS_NewBool(ctx, false);

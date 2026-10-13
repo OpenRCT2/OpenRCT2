@@ -10,9 +10,11 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "Location.hpp"
+#include "MapLimits.h"
 
 struct CoordsXYE;
+struct CoordsXYZ;
+struct CoordsXYZD;
 
 constexpr uint8_t ParkEntranceHeight = 12 * kCoordsZStep;
 constexpr uint8_t RideEntranceHeight = 7 * kCoordsZStep;

@@ -12,12 +12,13 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor MiniatureRailwayRTD =
+constexpr RideTypeDescriptor kMiniatureRailwayRTD =
 {
     .Category = RideCategory::transport,
     .StartTrackPiece = TrackElemType::endStation,
@@ -34,11 +35,11 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::allowMoreVehiclesThanStationFits,
                      RtdFlag::allowMultipleCircuits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::supportsLevelCrossings),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::shuttle),
+    .rideModes = { RideMode::continuousCircuit, RideMode::shuttle },
     .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 5, 27 },
     .Naming = { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY },
-    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
+    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::vehicleMalfunction },
     .Heights = { 7, 32, 5, 9, },
     .MaxMass = 39,
@@ -55,26 +56,26 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
         { Drawing::Colour::brightRed, Drawing::Colour::white, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_MINIATURE_RAILWAY_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINIATURE_RAILWAY_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "miniature_railway",
     .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 50), RideRating::make(0, 00), RideRating::make(0, 00) },
         11,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::BonusLength,            6000,     764, 0, 0 },
-            { RatingsModifierType::BonusTrainLength,       0,        140434, 0, 0 },
-            { RatingsModifierType::BonusMaxSpeed,          0,        44281, 88562, 35424 },
-            { RatingsModifierType::BonusAverageSpeed,      0,        291271, 436906, 0 },
-            { RatingsModifierType::BonusDuration,          150,      26214, 0, 0 },
-            { RatingsModifierType::BonusSheltered,         0,        -6425, 6553, 23405 },
-            { RatingsModifierType::BonusProximity,         0,        8946, 0, 0 },
-            { RatingsModifierType::BonusScenery,           0,        20915 , 0, 0},
-            { RatingsModifierType::RequirementLength,      0xC80000, 2, 2, 2 },
-            { RatingsModifierType::RequirementUnsheltered, 4,        4, 1, 1 },
+            { RatingsModifierType::bonusLength,            6000,     764, 0, 0 },
+            { RatingsModifierType::bonusTrainLength,       0,        140434, 0, 0 },
+            { RatingsModifierType::bonusMaxSpeed,          0,        44281, 88562, 35424 },
+            { RatingsModifierType::bonusAverageSpeed,      0,        291271, 436906, 0 },
+            { RatingsModifierType::bonusDuration,          150,      26214, 0, 0 },
+            { RatingsModifierType::bonusSheltered,         0,        -6425, 6553, 23405 },
+            { RatingsModifierType::bonusProximity,         0,        8946, 0, 0 },
+            { RatingsModifierType::bonusScenery,           0,        20915 , 0, 0},
+            { RatingsModifierType::requirementLength,      0xC80000, 2, 2, 2 },
+            { RatingsModifierType::requirementUnsheltered, 4,        4, 1, 1 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

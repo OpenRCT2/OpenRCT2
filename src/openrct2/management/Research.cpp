@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../Date.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/GameActionRunner.h"
@@ -25,20 +24,15 @@
 #include "../localisation/StringIds.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectLimits.h"
-#include "../object/ObjectList.h"
-#include "../object/RideObject.h"
 #include "../object/SceneryGroupEntry.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideEntry.h"
-#include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
-#include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "Finance.h"
 #include "NewsItem.h"
 
 #include <iterator>
@@ -272,7 +266,8 @@ void ResearchFinishItem(const ResearchItem& researchItem)
             {
                 if (Config::Get().notifications.rideResearched)
                 {
-                    News::AddItemToQueue(News::ItemType::research, availabilityString, researchItem.rawValue, ft);
+                    News::AddItemToQueue(
+                        gameState.park.newsItems, News::ItemType::research, availabilityString, researchItem.rawValue, ft);
                 }
             }
 
@@ -296,7 +291,8 @@ void ResearchFinishItem(const ResearchItem& researchItem)
                 if (Config::Get().notifications.rideResearched)
                 {
                     News::AddItemToQueue(
-                        News::ItemType::research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem.rawValue, ft);
+                        gameState.park.newsItems, News::ItemType::research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE,
+                        researchItem.rawValue, ft);
                 }
             }
 
@@ -329,7 +325,7 @@ void ResearchUpdate()
         return;
     }
 
-    if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) && gameState.researchFundingLevel == RESEARCH_FUNDING_NONE)
+    if (gameState.park.flags.has(ParkFlag::noMoney) && gameState.researchFundingLevel == RESEARCH_FUNDING_NONE)
     {
         researchLevel = RESEARCH_FUNDING_NORMAL;
     }

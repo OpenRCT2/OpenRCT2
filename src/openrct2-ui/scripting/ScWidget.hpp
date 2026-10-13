@@ -19,6 +19,7 @@
 
     #include <memory>
     #include <openrct2/Context.h>
+    #include <openrct2/Input.h>
     #include <openrct2/scripting/IconNames.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <openrct2/ui/WindowManager.h>
@@ -43,15 +44,15 @@ namespace OpenRCT2::Scripting
         return img;
     }
 
-    class ScWidget;
-    extern ScWidget gScWidget;
-
     struct WidgetData
     {
         WindowClass _class{};
         WindowNumber _number{};
         WidgetIndex _widgetIndex{};
     };
+
+    class ScWidget;
+    extern ScWidget gScWidget;
 
     class ScWidget : public ScBase
     {
@@ -445,7 +446,7 @@ namespace OpenRCT2::Scripting
 
         void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("window", ScWidget::window_get, nullptr),
                 JS_CGETSET_DEF("name", ScWidget::name_get, ScWidget::name_set),
                 JS_CGETSET_DEF("type", ScWidget::type_get, nullptr),
@@ -457,11 +458,11 @@ namespace OpenRCT2::Scripting
                 JS_CGETSET_DEF("isDisabled", ScWidget::isDisabled_get, &ScWidget::isDisabled_set),
                 JS_CGETSET_DEF("isVisible", ScWidget::isVisible_get, &ScWidget::isVisible_set),
             };
-            RegisterBase(ctx, "Widget", Finalize, funcs);
+            RegisterBase(ctx, "Widget", Finalise, kFuncs);
         }
 
     private:
-        static void Finalize(JSRuntime* rt, JSValue thisVal)
+        static void Finalise(JSRuntime* rt, JSValue thisVal)
         {
             WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
             if (data)
@@ -540,23 +541,29 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScButtonWidget;
+    extern ScButtonWidget gScButtonWidget;
+
     class ScButtonWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            // In the future it might be worth properly subclassing the widget type here.
-            // Not just for this button class but also for all the other widget subclasses.
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("border", ScButtonWidget::border_get, ScButtonWidget::border_set),
                 JS_CGETSET_DEF("isPressed", ScButtonWidget::isPressed_get, ScButtonWidget::isPressed_set),
                 JS_CGETSET_DEF("image", ScButtonWidget::image_get, ScButtonWidget::image_set),
                 JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
 
     private:
+        static bool isImageButton(WidgetType type)
+        {
+            return type == WidgetType::flatBtn || type == WidgetType::imgBtn || type == WidgetType::hiddenButton;
+        }
+
         static JSValue border_get(JSContext* ctx, JSValue thisVal)
         {
             auto widget = GetWidget(thisVal);
@@ -571,12 +578,10 @@ namespace OpenRCT2::Scripting
             JS_UNPACK_BOOL(valueBool, ctx, value);
 
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
+            if (widget != nullptr && isImageButton(widget->type))
             {
-                if (valueBool)
-                    widget->type = WidgetType::imgBtn;
-                else
-                    widget->type = WidgetType::flatBtn;
+                // hiddenButton rather than flatBtn, so that themes do not draw a border anyway.
+                widget->type = valueBool ? WidgetType::imgBtn : WidgetType::hiddenButton;
                 Invalidate(thisVal);
             }
             return JS_UNDEFINED;
@@ -610,7 +615,7 @@ namespace OpenRCT2::Scripting
         static JSValue image_get(JSContext* ctx, JSValue thisVal)
         {
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
+            if (widget != nullptr && isImageButton(widget->type))
             {
                 if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
                 {
@@ -624,7 +629,7 @@ namespace OpenRCT2::Scripting
         static JSValue image_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
             auto widget = GetWidget(thisVal);
-            if (widget != nullptr && (widget->type == WidgetType::flatBtn || widget->type == WidgetType::imgBtn))
+            if (widget != nullptr && isImageButton(widget->type))
             {
                 widget->image = ImageId(ImageFromJSValue(ctx, value));
                 Invalidate(thisVal);
@@ -633,16 +638,19 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScCheckBoxWidget;
+    extern ScCheckBoxWidget gScCheckBoxWidget;
+
     class ScCheckBoxWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("isChecked", ScCheckBoxWidget::isChecked_get, ScCheckBoxWidget::isChecked_set),
                 JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
 
     private:
@@ -671,15 +679,18 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScColourPickerWidget;
+    extern ScColourPickerWidget gScColourPickerWidget;
+
     class ScColourPickerWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("colour", ScColourPickerWidget::colour_get, ScColourPickerWidget::colour_set),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
 
     private:
@@ -708,17 +719,20 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScDropdownWidget;
+    extern ScDropdownWidget gScDropdownWidget;
+
     class ScDropdownWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("items", ScDropdownWidget::items_get, ScDropdownWidget::items_set),
                 JS_CGETSET_DEF("selectedIndex", ScDropdownWidget::selectedIndex_get, ScDropdownWidget::selectedIndex_set),
                 JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
 
     private:
@@ -782,28 +796,34 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScGroupBoxWidget;
+    extern ScGroupBoxWidget gScGroupBoxWidget;
+
     class ScGroupBoxWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
     };
+
+    class ScLabelWidget;
+    extern ScLabelWidget gScLabelWidget;
 
     class ScLabelWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set),
                 JS_CGETSET_DEF("textAlign", ScLabelWidget::textAlign_get, ScLabelWidget::textAlign_set),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
 
     private:
@@ -835,12 +855,16 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
     };
+
+    class ScListViewWidget;
+    extern ScListViewWidget gScListViewWidget;
+
     class ScListViewWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("canSelect", ScListViewWidget::canSelect_get, ScListViewWidget::canSelect_set),
                 JS_CGETSET_DEF("isStriped", ScListViewWidget::isStriped_get, ScListViewWidget::isStriped_set),
                 JS_CGETSET_DEF("scrollbars", ScListViewWidget::scrollbars_get, ScListViewWidget::scrollbars_set),
@@ -851,7 +875,7 @@ namespace OpenRCT2::Scripting
                 JS_CGETSET_DEF("columns", ScListViewWidget::columns_get, ScListViewWidget::columns_set),
                 JS_CGETSET_DEF("items", ScListViewWidget::items_get, ScListViewWidget::items_set),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
 
     private:
@@ -903,7 +927,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue scrollbars_get(JSContext* ctx, JSValue thisVal)
         {
-            auto scrollType = ScrollbarType::None;
+            auto scrollType = ScrollbarType::none;
             auto listView = GetListView(thisVal);
             if (listView != nullptr)
             {
@@ -1044,28 +1068,36 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
     };
+
+    class ScSpinnerWidget;
+    extern ScSpinnerWidget gScSpinnerWidget;
+
     class ScSpinnerWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
     };
+
+    class ScTextBoxWidget;
+    extern ScTextBoxWidget gScTextBoxWidget;
 
     class ScTextBoxWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("maxLength", ScTextBoxWidget::maxLength_get, ScTextBoxWidget::maxLength_set),
+                JS_CGETSET_DEF("caret", ScTextBoxWidget::caret_get, ScTextBoxWidget::caret_set),
                 JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set), JS_CFUNC_DEF("focus", 0, ScTextBoxWidget::focus)
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
 
     private:
@@ -1093,6 +1125,32 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
+        static JSValue caret_get(JSContext* ctx, JSValue thisVal)
+        {
+            WidgetData data = GetWidgetData(thisVal);
+            auto w = GetWindow(data._class, data._number);
+            if (IsCustomWindow(w) && IsActive(w, data._widgetIndex))
+            {
+                auto* session = GetTextboxSession();
+                return JS_NewInt64(ctx, session->SelectionStart);
+            }
+            return JS_NewInt64(ctx, 0);
+        }
+
+        static JSValue caret_set(JSContext* ctx, JSValue thisVal, JSValue value)
+        {
+            JS_UNPACK_INT64(valueInt, ctx, value);
+
+            WidgetData data = GetWidgetData(thisVal);
+            auto w = GetWindow(data._class, data._number);
+            if (IsCustomWindow(w) && IsActive(w, data._widgetIndex))
+            {
+                SetTextboxCaret(valueInt);
+                Invalidate(thisVal);
+            }
+            return JS_UNDEFINED;
+        }
+
         static JSValue focus(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
             WidgetData data = GetWidgetData(thisVal);
@@ -1105,17 +1163,28 @@ namespace OpenRCT2::Scripting
             }
             return JS_UNDEFINED;
         }
+
+        static bool IsActive(WindowBase* window, WidgetIndex widgetIndex)
+        {
+            auto currentTextBox = GetCurrentTextBox();
+            return (
+                currentTextBox.window.classification == window->classification && currentTextBox.window.number == window->number
+                && currentTextBox.widgetIndex == widgetIndex);
+        }
     };
+
+    class ScViewportWidget;
+    extern ScViewportWidget gScViewportWidget;
 
     class ScViewportWidget : public ScWidget
     {
     public:
-        static void AddFuncs(JSContext* ctx, JSValue obj)
+        void Register(JSContext* ctx)
         {
-            static constexpr JSCFunctionListEntry funcs[] = {
+            static constexpr JSCFunctionListEntry kFuncs[] = {
                 JS_CGETSET_DEF("viewport", ScViewportWidget::viewport_get, nullptr),
             };
-            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
+            RegisterDerived(ctx, gScWidget, kFuncs);
         }
 
     private:
@@ -1137,48 +1206,47 @@ namespace OpenRCT2::Scripting
 
     inline JSValue ScWidget::New(JSContext* ctx, WindowBase* w, WidgetIndex widgetIndex)
     {
-        JSValue newObj = MakeWithOpaque(ctx, new WidgetData{ w->classification, w->number, widgetIndex });
-        // TODO: Adding these functions like this in New() is probably slower than creating a proto for each type in Register()
-        // and using that.
+        JSValue widgetProto = GetProto();
         switch (w->widgets[widgetIndex].type)
         {
             case WidgetType::button:
             case WidgetType::flatBtn:
             case WidgetType::imgBtn:
-                ScButtonWidget::AddFuncs(ctx, newObj);
+            case WidgetType::hiddenButton:
+                widgetProto = gScButtonWidget.GetProto();
                 break;
             case WidgetType::checkbox:
-                ScCheckBoxWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScCheckBoxWidget.GetProto();
                 break;
             case WidgetType::colourBtn:
-                ScColourPickerWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScColourPickerWidget.GetProto();
                 break;
             case WidgetType::dropdownMenu:
-                ScDropdownWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScDropdownWidget.GetProto();
                 break;
             case WidgetType::groupbox:
-                ScGroupBoxWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScGroupBoxWidget.GetProto();
                 break;
             case WidgetType::label:
             case WidgetType::labelCentred:
-                ScLabelWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScLabelWidget.GetProto();
                 break;
             case WidgetType::scroll:
-                ScListViewWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScListViewWidget.GetProto();
                 break;
             case WidgetType::spinner:
-                ScSpinnerWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScSpinnerWidget.GetProto();
                 break;
             case WidgetType::textBox:
-                ScTextBoxWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScTextBoxWidget.GetProto();
                 break;
             case WidgetType::viewport:
-                ScViewportWidget::AddFuncs(ctx, newObj);
+                widgetProto = gScViewportWidget.GetProto();
                 break;
             default:
                 break;
         }
-        return newObj;
+        return MakeWithOpaqueAndProto(ctx, new WidgetData{ w->classification, w->number, widgetIndex }, widgetProto);
     }
 
 } // namespace OpenRCT2::Scripting

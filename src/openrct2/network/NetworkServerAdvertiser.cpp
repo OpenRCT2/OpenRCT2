@@ -19,11 +19,7 @@
     #include "../core/Http.h"
     #include "../core/Json.hpp"
     #include "../core/String.hpp"
-    #include "../entity/Guest.h"
-    #include "../localisation/Localisation.Date.h"
-    #include "../management/Finance.h"
     #include "../platform/Platform.h"
-    #include "../world/Park.h"
     #include "Network.h"
     #include "Socket.h"
 
@@ -188,7 +184,7 @@ namespace OpenRCT2::Network
             // Send the registration request
             Http::Request request;
             request.url = getMasterServerUrl();
-            request.method = Http::Method::POST;
+            request.method = Http::Method::post;
             request.forceIPv4 = forceIPv4;
 
             json_t body = {
@@ -205,7 +201,7 @@ namespace OpenRCT2::Network
             request.header["Content-Type"] = "application/json";
 
             _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
-                                  if (response.status != Http::Status::Ok)
+                                  if (response.status != Http::Status::ok)
                                   {
                                       Console::Error::WriteLine(
                                           "Unable to connect to master server, retrying in %d seconds",
@@ -225,7 +221,7 @@ namespace OpenRCT2::Network
         {
             Http::Request request;
             request.url = getMasterServerUrl();
-            request.method = Http::Method::PUT;
+            request.method = Http::Method::put;
 
             json_t body = getHeartbeatJson();
             request.body = body.dump();
@@ -234,7 +230,7 @@ namespace OpenRCT2::Network
             _lastHeartbeatTime = Platform::GetTicks();
 
             _currentRequest = Http::DoAsync(request, [&](Http::Response response) -> void {
-                                  if (response.status != Http::Status::Ok)
+                                  if (response.status != Http::Status::ok)
                                   {
                                       Console::Error::WriteLine(
                                           "Unable to connect to master server, retrying in %d seconds",
@@ -337,7 +333,7 @@ namespace OpenRCT2::Network
                 { "parkValue", gameState.park.value },
             };
 
-            if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+            if (!gameState.park.flags.has(ParkFlag::noMoney))
             {
                 gameInfo["cash"] = gameState.park.cash;
             }

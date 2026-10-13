@@ -11,15 +11,17 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/JobPool.h"
 #include "../core/Numerics.hpp"
+#include "../drawing/Drawing.Screen.h"
+#include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
+#include "../drawing/NewDrawing.h"
 #include "../drawing/Rectangle.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -45,7 +47,6 @@
 
 #include <cstring>
 #include <list>
-#include <unordered_map>
 
 namespace OpenRCT2
 {
@@ -100,7 +101,7 @@ namespace OpenRCT2
         // If the start location was invalid
         // propagate the invalid location to the output.
         // This fixes a bug that caused the game to enter an infinite loop.
-        if (loc.IsNull())
+        if (loc.isNull())
         {
             return std::nullopt;
         }
@@ -120,7 +121,7 @@ namespace OpenRCT2
                     return arg;
                 else if constexpr (std::is_same_v<T, EntityFocus>)
                 {
-                    auto* centreEntity = getGameState().entities.GetEntity(arg);
+                    auto* centreEntity = getGameState().entities.getEntity(arg);
                     if (centreEntity != nullptr)
                     {
                         return CoordsXYZ{ centreEntity->x, centreEntity->y, centreEntity->z };
@@ -170,11 +171,11 @@ namespace OpenRCT2
 
         const auto zoom = focus.zoom;
         viewport->zoom = zoom;
-        viewport->flags = 0;
+        viewport->flags.clearAll();
         viewport->rotation = GetCurrentRotation();
 
         if (Config::Get().general.alwaysShowGridlines)
-            viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+            viewport->flags.set(ViewportFlag::gridlines);
         w.viewport = viewport;
         viewport->isVisible = w.isVisible;
 
@@ -304,9 +305,9 @@ namespace OpenRCT2
         if (window != nullptr)
         {
             // skip current window and non-intersecting windows
-            if (window == originalWindow || drawRect.GetRight() <= window->windowPos.x
-                || drawRect.GetLeft() >= window->windowPos.x + window->width || drawRect.GetBottom() <= window->windowPos.y
-                || drawRect.GetTop() >= window->windowPos.y + window->height)
+            if (window == originalWindow || drawRect.getRight() <= window->windowPos.x
+                || drawRect.getLeft() >= window->windowPos.x + window->width || drawRect.getBottom() <= window->windowPos.y
+                || drawRect.getTop() >= window->windowPos.y + window->height)
             {
                 auto itWindowPos = WindowGetIterator(window);
                 // Get next valid window after.
@@ -323,52 +324,52 @@ namespace OpenRCT2
                 return;
             }
 
-            if (drawRect.GetLeft() < window->windowPos.x)
+            if (drawRect.getLeft() < window->windowPos.x)
             {
-                ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x, drawRect.GetBottom() } };
+                ScreenRect leftRect = { drawRect.point1, { window->windowPos.x, drawRect.getBottom() } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
 
-                ScreenRect rightRect = { { window->windowPos.x, drawRect.GetTop() }, drawRect.Point2 };
+                ScreenRect rightRect = { { window->windowPos.x, drawRect.getTop() }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
-            else if (drawRect.GetRight() > window->windowPos.x + window->width)
+            else if (drawRect.getRight() > window->windowPos.x + window->width)
             {
-                ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x + window->width, drawRect.GetBottom() } };
+                ScreenRect leftRect = { drawRect.point1, { window->windowPos.x + window->width, drawRect.getBottom() } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
 
-                ScreenRect rightRect = { { window->windowPos.x + window->width, drawRect.GetTop() }, drawRect.Point2 };
+                ScreenRect rightRect = { { window->windowPos.x + window->width, drawRect.getTop() }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
-            else if (drawRect.GetTop() < window->windowPos.y)
+            else if (drawRect.getTop() < window->windowPos.y)
             {
-                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y } };
+                ScreenRect topRect = { drawRect.point1, { drawRect.getRight(), window->windowPos.y } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
-                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y }, drawRect.Point2 };
+                ScreenRect bottomRect = { { drawRect.getLeft(), window->windowPos.y }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, bottomRect);
             }
-            else if (drawRect.GetBottom() > window->windowPos.y + window->height)
+            else if (drawRect.getBottom() > window->windowPos.y + window->height)
             {
-                ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y + window->height } };
+                ScreenRect topRect = { drawRect.point1, { drawRect.getRight(), window->windowPos.y + window->height } };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
-                ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y + window->height }, drawRect.Point2 };
+                ScreenRect bottomRect = { { drawRect.getLeft(), window->windowPos.y + window->height }, drawRect.point2 };
                 ViewportRedrawAfterShift(rt, window, originalWindow, shift, bottomRect);
             }
         }
         else
         {
-            auto left = drawRect.GetLeft();
-            auto right = drawRect.GetRight();
-            auto top = drawRect.GetTop();
-            auto bottom = drawRect.GetBottom();
+            auto left = drawRect.getLeft();
+            auto right = drawRect.getRight();
+            auto top = drawRect.getTop();
+            auto bottom = drawRect.getBottom();
 
             // if moved more than the draw rectangle size
-            if (abs(shift.x) < drawRect.GetWidth() && abs(shift.y) < drawRect.GetHeight())
+            if (abs(shift.x) < drawRect.getWidth() && abs(shift.y) < drawRect.getHeight())
             {
                 // update whole block ?
                 DrawingEngineCopyRect(
-                    drawRect.GetLeft(), drawRect.GetTop(), drawRect.GetWidth(), drawRect.GetHeight(), shift.x, shift.y);
+                    drawRect.getLeft(), drawRect.getTop(), drawRect.getWidth(), drawRect.getHeight(), shift.x, shift.y);
 
                 if (shift.x > 0)
                 {
@@ -419,20 +420,20 @@ namespace OpenRCT2
             if (w->viewport == window->viewport)
                 continue;
 
-            if (drawRect.GetRight() <= w->windowPos.x)
+            if (drawRect.getRight() <= w->windowPos.x)
                 continue;
-            if (w->windowPos.x + w->width <= drawRect.GetLeft())
-                continue;
-
-            if (drawRect.GetBottom() <= w->windowPos.y)
-                continue;
-            if (w->windowPos.y + w->height <= drawRect.GetTop())
+            if (w->windowPos.x + w->width <= drawRect.getLeft())
                 continue;
 
-            const int32_t left = std::max(w->windowPos.x, drawRect.GetLeft());
-            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.GetRight());
-            const int32_t top = std::max(w->windowPos.y, drawRect.GetTop());
-            const int32_t bottom = std::min(w->windowPos.y + w->height, drawRect.GetBottom());
+            if (drawRect.getBottom() <= w->windowPos.y)
+                continue;
+            if (w->windowPos.y + w->height <= drawRect.getTop())
+                continue;
+
+            const int32_t left = std::max(w->windowPos.x, drawRect.getLeft());
+            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.getRight());
+            const int32_t top = std::max(w->windowPos.y, drawRect.getTop());
+            const int32_t bottom = std::min(w->windowPos.y + w->height, drawRect.getBottom());
 
             if (left >= right || top >= bottom)
                 continue;
@@ -472,7 +473,7 @@ namespace OpenRCT2
         }
         else
         {
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
     }
 
@@ -484,15 +485,15 @@ namespace OpenRCT2
         {
             if (!underground)
             {
-                int32_t bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                int32_t bit = viewport->flags.has(ViewportFlag::undergroundInside);
+                viewport->flags.unset(ViewportFlag::undergroundInside);
                 if (!bit)
                     return;
             }
             else
             {
-                int32_t bit = viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                int32_t bit = viewport->flags.has(ViewportFlag::undergroundInside);
+                viewport->flags.set(ViewportFlag::undergroundInside);
                 if (bit)
                     return;
             }
@@ -611,7 +612,7 @@ namespace OpenRCT2
     {
         if (!window->viewportTargetSprite.IsNull() && window->viewport != nullptr)
         {
-            auto* sprite = getGameState().entities.GetEntity(window->viewportTargetSprite);
+            auto* sprite = getGameState().entities.getEntity(window->viewportTargetSprite);
             if (sprite == nullptr)
             {
                 return;
@@ -635,7 +636,7 @@ namespace OpenRCT2
 
     void ViewportUpdateSmartFollowEntity(WindowBase* window)
     {
-        auto entity = getGameState().entities.TryGetEntity(window->viewportSmartFollowSprite);
+        auto entity = getGameState().entities.tryGetEntity(window->viewportSmartFollowSprite);
         if (entity == nullptr || entity->type == EntityType::null)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
@@ -681,7 +682,7 @@ namespace OpenRCT2
         Focus focus = Focus(peep.id);
         window->viewportTargetSprite = peep.id;
 
-        if (peep.State == PeepState::picked)
+        if (peep.state == PeepState::picked)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();
@@ -690,16 +691,16 @@ namespace OpenRCT2
         }
 
         bool overallFocus = true;
-        if (peep.State == PeepState::onRide || peep.State == PeepState::enteringRide
-            || (peep.State == PeepState::leavingRide && peep.x == kLocationNull))
+        if (peep.state == PeepState::onRide || peep.state == PeepState::enteringRide
+            || (peep.state == PeepState::leavingRide && peep.x == kLocationNull))
         {
-            auto ride = GetRide(peep.CurrentRide);
+            auto ride = GetRide(peep.currentRide);
             if (ride != nullptr && ride->flags.has(RideFlag::onTrack))
             {
-                auto train = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[peep.CurrentTrain]);
+                auto train = getGameState().entities.getEntity<Vehicle>(ride->vehicles[peep.currentTrain]);
                 if (train != nullptr)
                 {
-                    const auto car = train->GetCar(peep.CurrentCar);
+                    const auto car = train->GetCar(peep.currentCar);
                     if (car != nullptr)
                     {
                         focus = Focus(car->id);
@@ -712,10 +713,10 @@ namespace OpenRCT2
 
         if (peep.x == kLocationNull && overallFocus)
         {
-            auto ride = GetRide(peep.CurrentRide);
+            auto ride = GetRide(peep.currentRide);
             if (ride != nullptr)
             {
-                auto xy = ride->overallView.ToTileCentre();
+                auto xy = ride->overallView.toTileCentre();
                 CoordsXYZ coordFocus;
                 coordFocus.x = xy.x;
                 coordFocus.y = xy.y;
@@ -730,7 +731,7 @@ namespace OpenRCT2
 
     void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep)
     {
-        if (peep.State == PeepState::picked)
+        if (peep.state == PeepState::picked)
         {
             window->viewportSmartFollowSprite = EntityId::GetNull();
             window->viewportTargetSprite = EntityId::GetNull();
@@ -801,7 +802,7 @@ namespace OpenRCT2
             auto* viewport = w->viewport;
             if (viewport == nullptr)
                 return;
-            if (viewport->flags & VIEWPORT_FLAG_INDEPENDENT_ROTATION)
+            if (viewport->flags.has(ViewportFlag::independentRotation))
                 return;
             ViewportRotateSingleInternal(*w, direction);
         });
@@ -819,7 +820,7 @@ namespace OpenRCT2
      */
     void ViewportRender(RenderTarget& rt, const Viewport* viewport)
     {
-        if (viewport->flags & VIEWPORT_FLAG_RENDERING_INHIBITED)
+        if (viewport->flags.has(ViewportFlag::renderingInhibited))
             return;
 
         if (rt.x + rt.width <= viewport->pos.x)
@@ -846,13 +847,12 @@ namespace OpenRCT2
     {
         PROFILED_FUNCTION();
 
-        if (session.ViewFlags
-                & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE
-                   | VIEWPORT_FLAG_CLIP_VIEW)
-            && (~session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
+        if (session.ViewFlags.hasAny(
+                ViewportFlag::hideVertical, ViewportFlag::hideBase, ViewportFlag::undergroundInside, ViewportFlag::clipView)
+            && !session.ViewFlags.has(ViewportFlag::transparentBackground))
         {
             PaletteIndex colour = PaletteIndex::pi10;
-            if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
+            if (session.ViewFlags.has(ViewportFlag::hideEntities))
             {
                 colour = PaletteIndex::transparent;
             }
@@ -862,7 +862,7 @@ namespace OpenRCT2
         PaintDrawStructs(session);
 
         if (Config::Get().general.renderWeatherGloom && !gTrackDesignSaveMode
-            && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES) && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+            && !session.ViewFlags.hasAny(ViewportFlag::hideEntities, ViewportFlag::highlightPathIssues))
         {
             ViewportPaintWeatherGloom(session.rt);
         }
@@ -1059,12 +1059,12 @@ namespace OpenRCT2
 
         if (direction != nullptr)
             *direction = my_direction;
-        return { mapCoords->ToTileStart() };
+        return { mapCoords->toTileStart() };
     }
 
     [[nodiscard]] bool Viewport::ContainsTile(const TileCoordsXY coords) const noexcept
     {
-        const auto centreCoords = coords.ToCoordsXY() + CoordsXY(kCoordsXYHalfTile, kCoordsXYHalfTile);
+        const auto centreCoords = coords.toCoordsXY() + CoordsXY(kCoordsXYHalfTile, kCoordsXYHalfTile);
         const auto screenPos = Translate3DTo2DWithZ(rotation, CoordsXYZ{ centreCoords, 0 });
         const auto left = screenPos.x - kScreenCoordsTileWidthHalf;
         const auto top = screenPos.y - (kMaxTileElementHeight * kCoordsZStep) - kScreenCoordsTileHeightHalf;
@@ -1106,7 +1106,7 @@ namespace OpenRCT2
         // Reverse of Translate3DTo2DWithZ
         CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
         auto inverseRotation = DirectionFlipXAxis(rotation);
-        return ret.Rotate(inverseRotation);
+        return ret.rotate(inverseRotation);
     }
 
     /**
@@ -1120,9 +1120,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES))
+                if (!mainWindow->viewport->flags.has(ViewportFlag::gridlines))
                 {
-                    mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+                    mainWindow->viewport->flags.set(ViewportFlag::gridlines);
                     mainWindow->invalidate();
                 }
             }
@@ -1146,7 +1146,7 @@ namespace OpenRCT2
             {
                 if (!Config::Get().general.alwaysShowGridlines)
                 {
-                    mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
+                    mainWindow->viewport->flags.unset(ViewportFlag::gridlines);
                     mainWindow->invalidate();
                 }
             }
@@ -1164,9 +1164,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP))
+                if (!mainWindow->viewport->flags.has(ViewportFlag::landOwnership))
                 {
-                    mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
+                    mainWindow->viewport->flags.set(ViewportFlag::landOwnership);
                     mainWindow->invalidate();
                 }
             }
@@ -1188,9 +1188,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+                if (mainWindow->viewport->flags.has(ViewportFlag::landOwnership))
                 {
-                    mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
+                    mainWindow->viewport->flags.unset(ViewportFlag::landOwnership);
                     mainWindow->invalidate();
                 }
             }
@@ -1208,9 +1208,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS))
+                if (!mainWindow->viewport->flags.has(ViewportFlag::constructionRights))
                 {
-                    mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
+                    mainWindow->viewport->flags.set(ViewportFlag::constructionRights);
                     mainWindow->invalidate();
                 }
             }
@@ -1232,9 +1232,9 @@ namespace OpenRCT2
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)
+                if (mainWindow->viewport->flags.has(ViewportFlag::constructionRights))
                 {
-                    mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
+                    mainWindow->viewport->flags.unset(ViewportFlag::constructionRights);
                     mainWindow->invalidate();
                 }
             }
@@ -1258,32 +1258,33 @@ namespace OpenRCT2
             {
                 case ViewportVisibility::standard:
                 { // Set all these flags to 0, and invalidate if any were active
-                    uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_RIDES | VIEWPORT_FLAG_HIDE_SCENERY
-                        | VIEWPORT_FLAG_HIDE_PATHS | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS
-                        | VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF
-                        | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_VEHICLES
-                        | VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_HIDE_VEGETATION;
+                    ViewportFlags flags = ViewportFlags(
+                        ViewportFlag::undergroundInside, ViewportFlag::hideRides, ViewportFlag::hideScenery,
+                        ViewportFlag::hidePaths, ViewportFlag::landHeights, ViewportFlag::trackHeights,
+                        ViewportFlag::pathHeights, ViewportFlag::hideGuests, ViewportFlag::hideStaff, ViewportFlag::hideBase,
+                        ViewportFlag::hideVertical, ViewportFlag::hideVehicles, ViewportFlag::hideSupports,
+                        ViewportFlag::hideVegetation);
 
-                    invalidate += vp->flags & mask;
-                    vp->flags &= ~mask;
+                    invalidate += vp->flags.hasAny(flags);
+                    vp->flags.unset(flags);
                     break;
                 }
                 case ViewportVisibility::undergroundViewOn:      // 6CB79D
                 case ViewportVisibility::undergroundViewGhostOn: // 6CB7C4
                     // Set underground on, invalidate if it was off
-                    invalidate += !(vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-                    vp->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                    invalidate += !(vp->flags.has(ViewportFlag::undergroundInside));
+                    vp->flags.set(ViewportFlag::undergroundInside);
                     break;
                 case ViewportVisibility::trackHeights: // 6CB7EB
                     // Set track heights on, invalidate if off
-                    invalidate += !(vp->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
-                    vp->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
+                    invalidate += !(vp->flags.has(ViewportFlag::trackHeights));
+                    vp->flags.set(ViewportFlag::trackHeights);
                     break;
                 case ViewportVisibility::undergroundViewOff:      // 6CB7B1
                 case ViewportVisibility::undergroundViewGhostOff: // 6CB7D8
                     // Set underground off, invalidate if it was on
-                    invalidate += vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                    vp->flags &= ~(static_cast<uint16_t>(VIEWPORT_FLAG_UNDERGROUND_INSIDE));
+                    invalidate += vp->flags.has(ViewportFlag::undergroundInside);
+                    vp->flags.unset(ViewportFlag::undergroundInside);
                     break;
             }
             if (invalidate != 0)
@@ -1295,8 +1296,8 @@ namespace OpenRCT2
     {
         switch (cursor)
         {
-            case CursorID::TreeDown:
-            case CursorID::FlowerDown:
+            case CursorID::treeDown:
+            case CursorID::flowerDown:
                 return true;
             default:
                 return false;
@@ -1310,7 +1311,7 @@ namespace OpenRCT2
             case TileElementType::smallScenery:
             {
                 auto sceneryItem = tileElement->asSmallScenery();
-                auto sceneryEntry = sceneryItem->GetEntry();
+                auto sceneryEntry = sceneryItem->getEntry();
                 if (sceneryEntry != nullptr
                     && (sceneryEntry->flags.has(SmallSceneryFlag::isTree) || IsCursorIdVegetation(sceneryEntry->tool_id)))
                 {
@@ -1321,7 +1322,7 @@ namespace OpenRCT2
             case TileElementType::largeScenery:
             {
                 auto sceneryItem = tileElement->asLargeScenery();
-                auto sceneryEntry = sceneryItem->GetEntry();
+                auto sceneryEntry = sceneryItem->getEntry();
                 if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
                 {
                     return true;
@@ -1331,7 +1332,7 @@ namespace OpenRCT2
             case TileElementType::wall:
             {
                 auto sceneryItem = tileElement->asWall();
-                auto sceneryEntry = sceneryItem->GetEntry();
+                auto sceneryEntry = sceneryItem->getEntry();
                 if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
                 {
                     return true;
@@ -1344,11 +1345,10 @@ namespace OpenRCT2
         return false;
     }
 
-    VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
+    VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, ViewportFlags viewFlags)
     {
         // the cut-away view is active and see-through is activated
-        auto cutAwayViewWithTransparency = (viewFlags & VIEWPORT_FLAG_CLIP_VIEW)
-            && (viewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
+        auto cutAwayViewWithTransparency = viewFlags.hasAll(ViewportFlag::clipView, ViewportFlag::clipViewSeeThrough);
 
         // the element is above the cut-off height
         auto clipped = cutAwayViewWithTransparency && ps->Element == nullptr && ps->Entity != nullptr
@@ -1367,14 +1367,14 @@ namespace OpenRCT2
                     {
                         case EntityType::vehicle:
                         {
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES || clipped)
+                            if (viewFlags.has(ViewportFlag::hideVehicles) || clipped)
                             {
-                                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::hidden
+                                return viewFlags.has(ViewportFlag::invisibleVehicles) ? VisibilityKind::hidden
                                                                                       : VisibilityKind::partial;
                             }
                             // Rides without track can technically have a 'vehicle':
                             // these should be hidden if 'hide rides' is enabled
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || clipped)
+                            if (viewFlags.has(ViewportFlag::hideRides) || clipped)
                             {
                                 auto vehicle = ps->Entity->as<Vehicle>();
                                 if (vehicle == nullptr)
@@ -1383,14 +1383,14 @@ namespace OpenRCT2
                                 auto ride = vehicle->GetRide();
                                 if (ride != nullptr && !ride->getRideTypeDescriptor().flags.has(RtdFlag::hasTrack))
                                 {
-                                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::hidden
+                                    return viewFlags.has(ViewportFlag::invisibleRides) ? VisibilityKind::hidden
                                                                                        : VisibilityKind::partial;
                                 }
                             }
                             break;
                         }
                         case EntityType::guest:
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
+                            if (viewFlags.has(ViewportFlag::hideGuests))
                             {
                                 return VisibilityKind::hidden;
                             }
@@ -1400,7 +1400,7 @@ namespace OpenRCT2
                             }
                             break;
                         case EntityType::staff:
-                            if (viewFlags & VIEWPORT_FLAG_HIDE_STAFF)
+                            if (viewFlags.has(ViewportFlag::hideStaff))
                             {
                                 return VisibilityKind::hidden;
                             }
@@ -1419,17 +1419,17 @@ namespace OpenRCT2
                 }
                 break;
             case ViewportInteractionItem::ride:
-                if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES || clipped)
+                if (viewFlags.has(ViewportFlag::hideRides) || clipped)
                 {
-                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::hidden : VisibilityKind::partial;
+                    return viewFlags.has(ViewportFlag::invisibleRides) ? VisibilityKind::hidden : VisibilityKind::partial;
                 }
                 break;
             case ViewportInteractionItem::footpath:
             case ViewportInteractionItem::pathAddition:
             case ViewportInteractionItem::banner:
-                if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS || clipped)
+                if (viewFlags.has(ViewportFlag::hidePaths) || clipped)
                 {
-                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::hidden : VisibilityKind::partial;
+                    return viewFlags.has(ViewportFlag::invisiblePaths) ? VisibilityKind::hidden : VisibilityKind::partial;
                 }
                 break;
             case ViewportInteractionItem::scenery:
@@ -1439,23 +1439,23 @@ namespace OpenRCT2
                 {
                     if (IsTileElementVegetation(ps->Element))
                     {
-                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION || clipped)
+                        if (viewFlags.has(ViewportFlag::hideVegetation) || clipped)
                         {
-                            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEGETATION) ? VisibilityKind::hidden
+                            return viewFlags.has(ViewportFlag::invisibleVegetation) ? VisibilityKind::hidden
                                                                                     : VisibilityKind::partial;
                         }
                     }
                     else
                     {
-                        if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY || clipped)
+                        if (viewFlags.has(ViewportFlag::hideScenery) || clipped)
                         {
-                            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::hidden
+                            return viewFlags.has(ViewportFlag::invisibleScenery) ? VisibilityKind::hidden
                                                                                  : VisibilityKind::partial;
                         }
                     }
                 }
                 if (ps->InteractionItem == ViewportInteractionItem::wall
-                    && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE || clipped))
+                    && (viewFlags.has(ViewportFlag::undergroundInside) || clipped))
                 {
                     return VisibilityKind::partial;
                 }
@@ -1473,18 +1473,11 @@ namespace OpenRCT2
     /**
      * Checks if a PaintStruct sprite type is in the filter mask.
      */
-    static bool PSInteractionTypeIsInFilter(PaintStruct* ps, uint16_t filter)
+    static bool PSInteractionTypeIsInFilter(PaintStruct* ps, ViewportInteractionItems filter)
     {
-        if (ps->InteractionItem != ViewportInteractionItem::none && ps->InteractionItem != ViewportInteractionItem::label
-            && ps->InteractionItem <= ViewportInteractionItem::banner)
-        {
-            auto mask = EnumToFlag(ps->InteractionItem);
-            if (filter & mask)
-            {
-                return true;
-            }
-        }
-        return false;
+        return (ps->InteractionItem != ViewportInteractionItem::none && ps->InteractionItem != ViewportInteractionItem::label
+                && ps->InteractionItem <= ViewportInteractionItem::banner)
+            && filter.has(ps->InteractionItem);
     }
 
     /**
@@ -1647,7 +1640,8 @@ namespace OpenRCT2
      *
      *  rct2: 0x0068862C
      */
-    InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32_t viewFlags, uint16_t filter)
+    InteractionInfo SetInteractionInfoFromPaintSession(
+        PaintSession* session, ViewportFlags viewFlags, ViewportInteractionItems filter)
     {
         PROFILED_FUNCTION();
 
@@ -1704,14 +1698,15 @@ namespace OpenRCT2
      * tileElement: edx
      * viewport: edi
      */
-    InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags)
+    InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags)
     {
         auto* windowMgr = Ui::GetWindowManager();
         WindowBase* window = windowMgr->FindFromPoint(screenCoords);
         return GetMapCoordinatesFromPosWindow(window, screenCoords, flags);
     }
 
-    InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags)
+    InteractionInfo GetMapCoordinatesFromPosWindow(
+        WindowBase* window, const ScreenCoordsXY& screenCoords, ViewportInteractionItems flags)
     {
         InteractionInfo info{};
         if (window == nullptr || window->viewport == nullptr)
@@ -1747,7 +1742,7 @@ namespace OpenRCT2
             PaintSession* session = PaintSessionAlloc(rt, viewport->flags, viewport->rotation);
             PaintSessionGenerate(*session);
             PaintSessionArrange(*session);
-            info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags & 0xFFFF);
+            info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags);
             PaintSessionFree(session);
         }
         return info;
@@ -1764,18 +1759,18 @@ namespace OpenRCT2
         auto viewPos = viewport->viewPos;
         auto viewportScreenPos = viewport->pos;
 
-        ScreenRect invalidRect = { { zoom.ApplyInversedTo(screenRect.GetLeft() - viewPos.x),
-                                     zoom.ApplyInversedTo(screenRect.GetTop() - viewPos.y) },
-                                   { zoom.ApplyInversedTo(screenRect.GetRight() - viewPos.x),
-                                     zoom.ApplyInversedTo(screenRect.GetBottom() - viewPos.y) } };
+        ScreenRect invalidRect = { { zoom.ApplyInversedTo(screenRect.getLeft() - viewPos.x),
+                                     zoom.ApplyInversedTo(screenRect.getTop() - viewPos.y) },
+                                   { zoom.ApplyInversedTo(screenRect.getRight() - viewPos.x),
+                                     zoom.ApplyInversedTo(screenRect.getBottom() - viewPos.y) } };
 
-        if (invalidRect.GetTop() >= viewport->height || invalidRect.GetBottom() <= 0 || invalidRect.GetLeft() >= viewport->width
-            || invalidRect.GetRight() <= 0)
+        if (invalidRect.getTop() >= viewport->height || invalidRect.getBottom() <= 0 || invalidRect.getLeft() >= viewport->width
+            || invalidRect.getRight() <= 0)
         {
             return;
         }
-        invalidRect.Point1 += viewportScreenPos;
-        invalidRect.Point2 += viewportScreenPos;
+        invalidRect.point1 += viewportScreenPos;
+        invalidRect.point2 += viewportScreenPos;
         GfxSetDirtyBlocks(invalidRect);
     }
 
@@ -1819,14 +1814,14 @@ namespace OpenRCT2
             return std::nullopt;
         }
         auto myViewport = window->viewport;
-        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
+        auto info = GetMapCoordinatesFromPosWindow(window, screenCoords, ViewportInteractionItem::terrain);
         if (info.interactionType == ViewportInteractionItem::none)
         {
             return std::nullopt;
         }
 
         auto start_vp_pos = myViewport->ScreenToViewportCoord(screenCoords);
-        CoordsXY cursorMapPos = info.Loc.ToTileCentre();
+        CoordsXY cursorMapPos = info.Loc.toTileCentre();
 
         // Iterates the cursor location to work out exactly where on the tile it is
         for (int32_t i = 0; i < 5; i++)
@@ -1876,7 +1871,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *quadrant = MapGetTileQuadrant(*mapCoords);
-        return mapCoords->ToTileStart();
+        return mapCoords->toTileStart();
     }
 
     /**
@@ -1890,7 +1885,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *quadrant = MapGetTileQuadrant(*mapCoords);
-        return mapCoords->ToTileStart();
+        return mapCoords->toTileStart();
     }
 
     /**
@@ -1904,7 +1899,7 @@ namespace OpenRCT2
             return std::nullopt;
 
         *side = MapGetTileSide(*mapCoords);
-        return mapCoords->ToTileStart();
+        return mapCoords->toTileStart();
     }
 
     /**
@@ -1918,12 +1913,12 @@ namespace OpenRCT2
             return std::nullopt;
 
         *side = MapGetTileSide(*mapCoords);
-        return mapCoords->ToTileStart();
+        return mapCoords->toTileStart();
     }
 
     ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos)
     {
-        auto rotated = pos.Rotate(rotation);
+        auto rotated = pos.rotate(rotation);
         // Use right shift to avoid issues like #9301
         return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
     }

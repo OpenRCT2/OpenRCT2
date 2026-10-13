@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Vertigo Views",
+    "sha256": "b20304c501d79b657e38a3febccbef1e22dadd2d06855770f2e909332bde465a",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Vertigulator"
+        }
+    ]
+}

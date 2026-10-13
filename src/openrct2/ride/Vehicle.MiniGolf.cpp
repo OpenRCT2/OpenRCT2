@@ -31,7 +31,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::RideVehicle;
 using namespace OpenRCT2::TrackMetadata;
 
-void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemType trackType)
+void OpenRCT2::RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemType trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
     if (ted.flags.has(TrackElementFlag::isGolfHole))
@@ -58,7 +58,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             return UpdateMiniGolfSubroutineStatus::stop;
         }
         acceleration = Geometry::getAccelerationFromPitch(pitch);
-        _vehicleUnkF64E10++;
+        _vehicleSubpositionsMoved++;
         return UpdateMiniGolfSubroutineStatus::restart;
     }
 
@@ -80,7 +80,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 return UpdateMiniGolfSubroutineStatus::stop;
             }
             acceleration = Geometry::getAccelerationFromPitch(pitch);
-            _vehicleUnkF64E10++;
+            _vehicleSubpositionsMoved++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
         miniGolfFlags.unset(MiniGolfFlag::flag2);
@@ -89,7 +89,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
     if (miniGolfFlags.has(MiniGolfFlag::flag0))
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
+        Vehicle* vEDI = getGameState().entities.getEntity<Vehicle>(vehicleIdx);
         if (vEDI == nullptr)
         {
             return UpdateMiniGolfSubroutineStatus::stop;
@@ -108,7 +108,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 return UpdateMiniGolfSubroutineStatus::stop;
             }
             acceleration = Geometry::getAccelerationFromPitch(pitch);
-            _vehicleUnkF64E10++;
+            _vehicleSubpositionsMoved++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
         if (vEDI->var_D3 != 0)
@@ -125,7 +125,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 return UpdateMiniGolfSubroutineStatus::stop;
             }
             acceleration = Geometry::getAccelerationFromPitch(pitch);
-            _vehicleUnkF64E10++;
+            _vehicleSubpositionsMoved++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
         vEDI->miniGolfFlags.unset(MiniGolfFlag::flag0);
@@ -135,7 +135,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
     if (miniGolfFlags.has(MiniGolfFlag::flag1))
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
+        Vehicle* vEDI = getGameState().entities.getEntity<Vehicle>(vehicleIdx);
         if (vEDI == nullptr)
         {
             return UpdateMiniGolfSubroutineStatus::stop;
@@ -154,7 +154,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 return UpdateMiniGolfSubroutineStatus::stop;
             }
             acceleration = Geometry::getAccelerationFromPitch(pitch);
-            _vehicleUnkF64E10++;
+            _vehicleSubpositionsMoved++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
         if (vEDI->var_D3 != 0)
@@ -171,7 +171,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 return UpdateMiniGolfSubroutineStatus::stop;
             }
             acceleration = Geometry::getAccelerationFromPitch(pitch);
-            _vehicleUnkF64E10++;
+            _vehicleSubpositionsMoved++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
         vEDI->miniGolfFlags.unset(MiniGolfFlag::flag1);
@@ -184,7 +184,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
 
         for (;;)
         {
-            vEDI = getGameState().entities.GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
+            vEDI = getGameState().entities.getEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
             if (vEDI == this || vEDI == nullptr)
             {
                 break;
@@ -207,7 +207,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 return UpdateMiniGolfSubroutineStatus::stop;
             }
             acceleration = Geometry::getAccelerationFromPitch(pitch);
-            _vehicleUnkF64E10++;
+            _vehicleSubpositionsMoved++;
             return UpdateMiniGolfSubroutineStatus::restart;
         }
 
@@ -243,10 +243,10 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             if (!trackBlockGetNext(&input, &output, &outZ, &outDirection))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                _vehicleVelocityF64E0C -= remaining_distance + 1;
+                _vehicleRemainingDistance -= remaining_distance + 1;
                 remaining_distance = -1;
                 acceleration += Geometry::getAccelerationFromPitch(pitch);
-                _vehicleUnkF64E10++;
+                _vehicleSubpositionsMoved++;
                 return UpdateMiniGolfSubroutineStatus::carryOn;
             }
             tileElement = output.element;
@@ -256,14 +256,14 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             if (PitchAndRollStart(false, tileElement) != TrackPitchAndRollEnd(GetTrackType()))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                _vehicleVelocityF64E0C -= remaining_distance + 1;
+                _vehicleRemainingDistance -= remaining_distance + 1;
                 remaining_distance = -1;
                 if (remaining_distance >= 0)
                 {
                     Loc6DCDE4(curRide);
                 }
                 acceleration += Geometry::getAccelerationFromPitch(pitch);
-                _vehicleUnkF64E10++;
+                _vehicleSubpositionsMoved++;
                 return UpdateMiniGolfSubroutineStatus::carryOn;
             }
 
@@ -271,12 +271,12 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
 
             if (!IsHead())
             {
-                Vehicle* prevVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+                Vehicle* prevVehicle = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
                 if (prevVehicle != nullptr)
                 {
                     TrackSubposition = prevVehicle->TrackSubposition;
                 }
-                if (TrackSubposition != VehicleTrackSubposition::MiniGolfStart9)
+                if (TrackSubposition != VehicleTrackSubposition::miniGolfStart9)
                 {
                     TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(
                         static_cast<uint8_t>(TrackSubposition) - 1u) };
@@ -284,9 +284,9 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             }
 
             flags.unset(VehicleFlag::onLiftHill);
-            SetTrackType(tileElement->asTrack()->GetTrackType());
+            SetTrackType(tileElement->asTrack()->getTrackType());
             SetTrackDirection(direction);
-            brake_speed = tileElement->asTrack()->GetBrakeBoosterSpeed();
+            brake_speed = tileElement->asTrack()->getBrakeBoosterSpeed();
             track_progress = 0;
         }
         else
@@ -312,7 +312,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             }
             switch (MiniGolfState(moveInfo->y))
             {
-                case MiniGolfState::Unk0: // Loc6DC7B4
+                case MiniGolfState::unk0: // Loc6DC7B4
                     if (!IsHead())
                     {
                         miniGolfFlags.set(MiniGolfFlag::flag3);
@@ -320,54 +320,54 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     else
                     {
                         uint16_t rand16 = ScenarioRand() & 0xFFFF;
-                        VehicleTrackSubposition nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathC14;
+                        VehicleTrackSubposition nextTrackSubposition = VehicleTrackSubposition::miniGolfBallPathC14;
                         if (rand16 <= 0xA000)
                         {
-                            nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathB12;
+                            nextTrackSubposition = VehicleTrackSubposition::miniGolfBallPathB12;
                             if (rand16 <= 0x900)
                             {
-                                nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathA10;
+                                nextTrackSubposition = VehicleTrackSubposition::miniGolfBallPathA10;
                             }
                         }
                         TrackSubposition = nextTrackSubposition;
                     }
                     track_progress++;
                     break;
-                case MiniGolfState::Unk1: // Loc6DC7ED
+                case MiniGolfState::unk1: // Loc6DC7ED
                     LOG_ERROR("Unused move info...");
                     assert(false);
                     var_D3 = static_cast<uint8_t>(moveInfo->z);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk2: // Loc6DC800
+                case MiniGolfState::unk2: // Loc6DC800
                     miniGolfFlags.set(MiniGolfFlag::flag0);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk3: // Loc6DC810
+                case MiniGolfState::unk3: // Loc6DC810
                     miniGolfFlags.set(MiniGolfFlag::flag1);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk4: // Loc6DC820
+                case MiniGolfState::unk4: // Loc6DC820
                 {
                     auto animation = MiniGolfAnimation(moveInfo->z);
                     // When the ride is closed occasionally the peep is removed
                     // but the vehicle is still on the track. This will prevent
                     // it from crashing in that situation.
-                    auto* curPeep = getGameState().entities.TryGetEntity<Guest>(peep[0]);
+                    auto* curPeep = getGameState().entities.tryGetEntity<Guest>(peep[0]);
                     if (curPeep != nullptr)
                     {
-                        if (animation == MiniGolfAnimation::SwingLeft)
+                        if (animation == MiniGolfAnimation::swingLeft)
                         {
-                            if (curPeep->PeepId & 7)
+                            if (curPeep->peepId & 7)
                             {
-                                animation = MiniGolfAnimation::Swing;
+                                animation = MiniGolfAnimation::swing;
                             }
                         }
-                        if (animation == MiniGolfAnimation::PuttLeft)
+                        if (animation == MiniGolfAnimation::puttLeft)
                         {
-                            if (curPeep->PeepId & 7)
+                            if (curPeep->peepId & 7)
                             {
-                                animation = MiniGolfAnimation::Putt;
+                                animation = MiniGolfAnimation::putt;
                             }
                         }
                     }
@@ -376,11 +376,11 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     track_progress++;
                     break;
                 }
-                case MiniGolfState::Unk5: // Loc6DC87A
+                case MiniGolfState::unk5: // Loc6DC87A
                     miniGolfFlags.set(MiniGolfFlag::flag2);
                     track_progress++;
                     break;
-                case MiniGolfState::Unk6: // Loc6DC88A
+                case MiniGolfState::unk6: // Loc6DC88A
                     miniGolfFlags.unset(MiniGolfFlag::flag4);
                     miniGolfFlags.set(MiniGolfFlag::flag5);
                     track_progress++;
@@ -409,7 +409,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
 
         if (this == _vehicleFrontVehicle)
         {
-            if (_vehicleVelocityF64E08 >= 0)
+            if (_vehicleVelocity >= 0)
             {
                 auto otherVehicleIndex = prev_vehicle_on_ride;
                 UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex);
@@ -421,7 +421,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             return UpdateMiniGolfSubroutineStatus::stop;
         }
         acceleration = Geometry::getAccelerationFromPitch(pitch);
-        _vehicleUnkF64E10++;
+        _vehicleSubpositionsMoved++;
     }
 }
 
@@ -436,10 +436,10 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             if (!trackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                _vehicleVelocityF64E0C -= remaining_distance + 1;
+                _vehicleRemainingDistance -= remaining_distance + 1;
                 remaining_distance = -1;
                 acceleration += Geometry::getAccelerationFromPitch(pitch);
-                _vehicleUnkF64E10++;
+                _vehicleSubpositionsMoved++;
                 continue;
             }
             CoordsXYZ trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
@@ -449,10 +449,10 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             if (PitchAndRollStart(false, tileElement) != TrackPitchAndRollEnd(GetTrackType()))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-                _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+                _vehicleRemainingDistance -= remaining_distance - 0x368A;
                 remaining_distance = 0x368A;
                 acceleration = Geometry::getAccelerationFromPitch(pitch);
-                _vehicleUnkF64E10++;
+                _vehicleSubpositionsMoved++;
                 return UpdateMiniGolfSubroutineStatus::restart;
             }
 
@@ -463,16 +463,16 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                 flags.unset(VehicleFlag::onLiftHill);
                 if (next_vehicle_on_train.IsNull())
                 {
-                    if (_vehicleVelocityF64E08 < 0)
+                    if (_vehicleVelocity < 0)
                     {
                         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
                     }
                 }
             }
 
-            SetTrackType(tileElement->asTrack()->GetTrackType());
+            SetTrackType(tileElement->asTrack()->getTrackType());
             SetTrackDirection(direction);
-            brake_speed = tileElement->asTrack()->GetBrakeBoosterSpeed();
+            brake_speed = tileElement->asTrack()->getBrakeBoosterSpeed();
 
             // There are two bytes before the move info list
             track_progress = GetTrackProgress();
@@ -499,15 +499,15 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
 
         if (this == _vehicleFrontVehicle)
         {
-            if (_vehicleVelocityF64E08 >= 0)
+            if (_vehicleVelocity >= 0)
             {
                 auto otherVehicleIndex = EntityId::FromUnderlying(var_44); // Possibly wrong?.
                 if (UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex))
                 {
-                    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+                    _vehicleRemainingDistance -= remaining_distance - 0x368A;
                     remaining_distance = 0x368A;
                     {
-                        Vehicle* vEBP = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
+                        Vehicle* vEBP = getGameState().entities.getEntity<Vehicle>(otherVehicleIndex);
                         if (vEBP == nullptr)
                         {
                             return UpdateMiniGolfSubroutineStatus::stop;
@@ -522,7 +522,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
                     }
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
                     acceleration = Geometry::getAccelerationFromPitch(pitch);
-                    _vehicleUnkF64E10++;
+                    _vehicleSubpositionsMoved++;
                     return UpdateMiniGolfSubroutineStatus::restart;
                 }
             }
@@ -534,7 +534,7 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
             return UpdateMiniGolfSubroutineStatus::stop;
         }
         acceleration += Geometry::getAccelerationFromPitch(pitch);
-        _vehicleUnkF64E10++;
+        _vehicleSubpositionsMoved++;
     }
 }
 
@@ -546,11 +546,11 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const TrackElemT
 
 void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry)
 {
-    _vehicleUnkF64E10 = 1;
+    _vehicleSubpositionsMoved = 1;
     acceleration = Geometry::getAccelerationFromPitch(pitch);
     if (!flags.has(VehicleFlag::moveSingleCar))
     {
-        remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
+        remaining_distance = _vehicleRemainingDistance + remaining_distance;
     }
     if (remaining_distance >= 0 && remaining_distance < 0x368A)
     {
@@ -588,8 +588,8 @@ void Vehicle::Loc6DCDE4(const Ride& curRide)
 
 void Vehicle::Loc6DCE02(const Ride& curRide)
 {
-    acceleration /= _vehicleUnkF64E10;
-    if (TrackSubposition == VehicleTrackSubposition::ChairliftGoingBack)
+    acceleration /= _vehicleSubpositionsMoved;
+    if (TrackSubposition == VehicleTrackSubposition::chairliftGoingBack)
     {
         return;
     }
@@ -609,7 +609,7 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
     {
         return;
     }
-    if (_vehicleVelocityF64E08 < 0)
+    if (_vehicleVelocity < 0)
     {
         if (track_progress > 11)
         {
@@ -625,11 +625,11 @@ void Vehicle::Loc6DCE02(const Ride& curRide)
 
     for (const auto& station : curRide.getStations())
     {
-        if (TrackLocation != station.Start)
+        if (TrackLocation != station.start)
         {
             continue;
         }
-        if (TrackLocation.z != station.GetBaseZ())
+        if (TrackLocation.z != station.getBaseZ())
         {
             continue;
         }
@@ -644,7 +644,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
     uint16_t totalMass = 0;
 
     for (Vehicle* vehicle = this; vehicle != nullptr;
-         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+         vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numVehicles++;
         totalMass += vehicle->mass;
@@ -692,9 +692,9 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     gCurrentVehicle = this;
     _vehicleMotionTrackFlags = 0;
     velocity += acceleration;
-    _vehicleVelocityF64E08 = velocity;
-    _vehicleVelocityF64E0C = (velocity >> 10) * 42;
-    _vehicleFrontVehicle = _vehicleVelocityF64E08 < 0 ? TrainTail() : this;
+    _vehicleVelocity = velocity;
+    _vehicleRemainingDistance = (velocity >> 10) * 42;
+    _vehicleFrontVehicle = _vehicleVelocity < 0 ? TrainTail() : this;
 
     for (Vehicle* vehicle = _vehicleFrontVehicle; vehicle != nullptr;)
     {
@@ -709,9 +709,9 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
                 *outStation = _vehicleStationIndex.ToUnderlying();
             return _vehicleMotionTrackFlags;
         }
-        if (_vehicleVelocityF64E08 >= 0)
+        if (_vehicleVelocity >= 0)
         {
-            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+            vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else
         {
@@ -719,7 +719,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
             {
                 break;
             }
-            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            vehicle = getGameState().entities.getEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         }
     }
 

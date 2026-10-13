@@ -7,9 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
@@ -22,12 +22,9 @@
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -226,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetDisabledTabs()
         {
-            setWidgetDisabled(WIDX_TAB_5, (_parkData.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+            setWidgetDisabled(WIDX_TAB_5, _parkData.flags.has(ParkFlag::forbidMarketingCampaigns));
         }
 
     public:
@@ -615,7 +612,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Loan and interest rate
             drawText(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
-            if (!(_parkData.flags & PARK_FLAGS_RCT1_INTEREST))
+            if (!_parkData.flags.has(ParkFlag::rct1Interest))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(_parkData.bankLoanInterestRate);
@@ -670,7 +667,7 @@ namespace OpenRCT2::Ui::Windows
         void onPrepareDrawMarketing()
         {
             // Count number of active campaigns
-            int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().park.marketingCampaigns.size());
+            int32_t numActiveCampaigns = static_cast<int32_t>(_parkData.marketingCampaigns.size());
             int32_t y = widgets[WIDX_TAB_1].top + std::max(1, numActiveCampaigns) * kListRowHeight + 75;
 
             // Update group box positions
@@ -681,18 +678,18 @@ namespace OpenRCT2::Ui::Windows
             y += 3;
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
-                auto campaignButton = &widgets[WIDX_CAMPAIGN_1 + i];
-                auto marketingCampaign = MarketingGetCampaign(i);
+                auto& campaignButton = widgets[WIDX_CAMPAIGN_1 + i];
+                auto* marketingCampaign = MarketingGetCampaign(i);
                 if (marketingCampaign == nullptr && MarketingIsCampaignTypeApplicable(i))
                 {
-                    campaignButton->type = WidgetType::button;
-                    campaignButton->top = y;
-                    campaignButton->bottom = y + kButtonFaceHeight + 1;
-                    y += kButtonFaceHeight + 2;
+                    campaignButton.setVisible();
+                    campaignButton.top = y;
+                    campaignButton.bottom = y + kButtonFaceHeight;
+                    y += kButtonFaceHeight + 1;
                 }
                 else
                 {
-                    campaignButton->type = WidgetType::empty;
+                    campaignButton.setHidden();
                 }
             }
         }
@@ -732,7 +729,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     default:
                     {
-                        auto parkName = getGameState().park.name.c_str();
+                        auto parkName = _parkData.name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                     }
@@ -760,7 +757,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
                 auto campaignButton = &widgets[WIDX_CAMPAIGN_1 + i];
-                if (campaignButton->type != WidgetType::empty)
+                if (campaignButton->isVisible())
                 {
                     // Draw button text
                     screenCoords = windowPos + ScreenCoordsXY{ campaignButton->left, campaignButton->textTop() };
@@ -780,7 +777,7 @@ namespace OpenRCT2::Ui::Windows
         {
             Formatter ft;
             ft.Add<money64>(currentValue);
-            drawText(rt, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
+            drawText(rt, _graphBounds.point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
             Rectangle::fillInset(
@@ -790,7 +787,7 @@ namespace OpenRCT2::Ui::Windows
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             Rectangle::fillInset(
-                rt, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1], Rectangle::BorderStyle::none,
+                rt, { _graphBounds.point2 - bigOffset, _graphBounds.point2 - offset }, colours[1], Rectangle::BorderStyle::none,
                 Rectangle::FillBrightness::light, Rectangle::FillMode::dontLightenWhenInset);
 
             Graph::DrawFinanceGraph(rt, _graphProps);
@@ -828,7 +825,7 @@ namespace OpenRCT2::Ui::Windows
             _graphBounds = { windowPos + ScreenCoordsXY{ graphPageWidget->left + 4, graphPageWidget->top + 15 },
                              windowPos + ScreenCoordsXY{ graphPageWidget->right - 4, graphPageWidget->bottom - 4 } };
             _graphProps.RecalculateLayout(
-                { _graphBounds.Point1 + dynamicPadding, _graphBounds.Point2 - kGraphBottomRightPadding }, kGraphNumYLabels,
+                { _graphBounds.point1 + dynamicPadding, _graphBounds.point2 - kGraphBottomRightPadding }, kGraphNumYLabels,
                 kGraphNumPoints);
             _graphProps.lineCol = colours[2];
         }

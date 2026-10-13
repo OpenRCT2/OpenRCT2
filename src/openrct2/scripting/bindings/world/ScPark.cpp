@@ -12,37 +12,35 @@
     #include "ScPark.hpp"
 
     #include "../../../Context.h"
-    #include "../../../Date.h"
     #include "../../../GameState.h"
-    #include "../../../core/String.hpp"
-    #include "../../../drawing/Drawing.h"
-    #include "../../../entity/Guest.h"
-    #include "../../../management/Finance.h"
-    #include "../../../management/NewsItem.h"
+    #include "../../../core/EnumMap.hpp"
+    #include "../../../drawing/Drawing.Screen.h"
     #include "../../../ui/WindowManager.h"
     #include "../../../windows/Intent.h"
     #include "../../../world/Park.h"
-    #include "../../ScriptEngine.h"
+    #include "../../../world/ParkData.h"
     #include "../entity/ScGuest.hpp"
+    #include "ScAward.hpp"
     #include "ScParkMessage.hpp"
+    #include "ScResearch.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    static const EnumMap<uint64_t> ParkFlagMap(
+    static const EnumMap<ParkFlag> kParkFlagMap(
         {
-            { "open", PARK_FLAGS_PARK_OPEN },
-            { "scenarioCompleteNameInput", PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT },
-            { "forbidLandscapeChanges", PARK_FLAGS_FORBID_LANDSCAPE_CHANGES },
-            { "forbidTreeRemoval", PARK_FLAGS_FORBID_TREE_REMOVAL },
-            { "forbidHighConstruction", PARK_FLAGS_FORBID_HIGH_CONSTRUCTION },
-            { "preferLessIntenseRides", PARK_FLAGS_PREF_LESS_INTENSE_RIDES },
-            { "forbidMarketingCampaigns", PARK_FLAGS_FORBID_MARKETING_CAMPAIGN },
-            { "preferMoreIntenseRides", PARK_FLAGS_PREF_MORE_INTENSE_RIDES },
-            { "noMoney", PARK_FLAGS_NO_MONEY },
-            { "difficultGuestGeneration", PARK_FLAGS_DIFFICULT_GUEST_GENERATION },
-            { "freeParkEntry", PARK_FLAGS_PARK_FREE_ENTRY },
-            { "difficultParkRating", PARK_FLAGS_DIFFICULT_PARK_RATING },
-            { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
+            { "open", ParkFlag::parkOpen },
+            { "scenarioCompleteNameInput", ParkFlag::scenarioCompleteNameInput },
+            { "forbidLandscapeChanges", ParkFlag::forbidLandscapeChanges },
+            { "forbidTreeRemoval", ParkFlag::forbidTreeRemoval },
+            { "forbidHighConstruction", ParkFlag::forbidHighConstruction },
+            { "preferLessIntenseRides", ParkFlag::guestPreferLessIntenseRides },
+            { "forbidMarketingCampaigns", ParkFlag::forbidMarketingCampaigns },
+            { "preferMoreIntenseRides", ParkFlag::guestPreferMoreIntenseRides },
+            { "noMoney", ParkFlag::noMoney },
+            { "difficultGuestGeneration", ParkFlag::difficultGuestGeneration },
+            { "freeParkEntry", ParkFlag::freeEntry },
+            { "difficultParkRating", ParkFlag::difficultParkRating },
+            { "unlockAllPrices", ParkFlag::unlockAllPrices },
         });
 
     JSValue ScPark::cash_get(JSContext* ctx, JSValue thisVal)
@@ -324,7 +322,7 @@ namespace OpenRCT2::Scripting
         if (park.name != valueStr)
         {
             park.name = std::move(valueStr);
-            GfxInvalidateScreen();
+            Drawing::GfxInvalidateScreen();
         }
         return JS_UNDEFINED;
     }
@@ -332,8 +330,8 @@ namespace OpenRCT2::Scripting
     JSValue ScPark::getFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         JS_UNPACK_STR(key, ctx, argv[0])
-        auto mask = ParkFlagMap[key];
-        return JS_NewBool(ctx, (getGameState().park.flags & mask) != 0);
+        const auto flag = kParkFlagMap[key];
+        return JS_NewBool(ctx, getGameState().park.flags.has(flag));
     }
 
     JSValue ScPark::setFlag(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -342,13 +340,10 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_BOOL(value, ctx, argv[1]);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
-        auto mask = ParkFlagMap[key];
+        const auto flag = kParkFlagMap[key];
         auto& gameState = getGameState();
-        if (value)
-            gameState.park.flags |= mask;
-        else
-            gameState.park.flags &= ~mask;
-        GfxInvalidateScreen();
+        gameState.park.flags.set(flag, value);
+        Drawing::GfxInvalidateScreen();
         return JS_UNDEFINED;
     }
 
@@ -361,12 +356,12 @@ namespace OpenRCT2::Scripting
     {
         JSValue result = JS_NewArray(ctx);
         int64_t resultIdx = 0;
-        auto& gameState = getGameState();
-        for (size_t i = 0, newsSize = gameState.newsItems.getRecent().size(); i < newsSize; i++)
+        auto& newsItems = getGameState().park.newsItems;
+        for (size_t i = 0, newsSize = newsItems.getRecent().size(); i < newsSize; i++)
         {
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, i));
         }
-        for (size_t i = 0, newsSize = gameState.newsItems.getArchived().size(); i < newsSize; i++)
+        for (size_t i = 0, newsSize = newsItems.getArchived().size(); i < newsSize; i++)
         {
             auto offset = i + News::ItemHistoryStart;
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, offset));
@@ -378,15 +373,15 @@ namespace OpenRCT2::Scripting
     {
         int32_t index = 0;
         int32_t archiveIndex = News::ItemHistoryStart;
-        auto& gameState = getGameState();
-        JSIterateArray(ctx, value, [&index, &archiveIndex, &gameState](JSContext* ctx2, JSValue item) {
+        auto& newsItems = getGameState().park.newsItems;
+        JSIterateArray(ctx, value, [&index, &archiveIndex, &newsItems](JSContext* ctx2, JSValue item) {
             auto isArchived = AsOrDefault(ctx2, item, "isArchived", false);
             auto newsItem = NewsItemFromJS(ctx2, item);
             if (isArchived)
             {
                 if (archiveIndex < News::MaxItems)
                 {
-                    gameState.newsItems[archiveIndex] = newsItem;
+                    newsItems[archiveIndex] = newsItem;
                     archiveIndex++;
                 }
             }
@@ -394,7 +389,7 @@ namespace OpenRCT2::Scripting
             {
                 if (index < News::ItemHistoryStart)
                 {
-                    gameState.newsItems[index] = newsItem;
+                    newsItems[index] = newsItem;
                     index++;
                 }
             }
@@ -403,11 +398,11 @@ namespace OpenRCT2::Scripting
         // End the lists by setting next item to null
         if (index < News::ItemHistoryStart)
         {
-            gameState.newsItems[index].type = News::ItemType::null;
+            newsItems[index].type = News::ItemType::null;
         }
         if (archiveIndex < News::MaxItems)
         {
-            gameState.newsItems[archiveIndex].type = News::ItemType::null;
+            newsItems[archiveIndex].type = News::ItemType::null;
         }
         return JS_UNDEFINED;
     }
@@ -445,7 +440,7 @@ namespace OpenRCT2::Scripting
                 assoc = JSToUint(ctx, subject);
             }
         }
-        News::AddItemToQueue(type, text.c_str(), assoc);
+        News::AddItemToQueue(getGameState().park.newsItems, type, text.c_str(), assoc);
         return JS_UNDEFINED;
     }
 

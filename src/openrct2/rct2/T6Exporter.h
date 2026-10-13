@@ -11,8 +11,6 @@
 
 #include "../ride/TrackDesign.h"
 
-#include <vector>
-
 namespace OpenRCT2
 {
     struct IStream;

@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <string>
+
 namespace OpenRCT2::Ui
 {
     class OpenGLShader final

@@ -9,13 +9,15 @@
 
 #pragma once
 
-#include "../world/Entrance.h"
-#include "../world/Location.hpp"
 #include "EntranceEntry.h"
 #include "Object.h"
 
+using Direction = uint8_t;
+
 namespace OpenRCT2
 {
+    enum class ParkEntranceSequence : uint8_t;
+
     class EntranceObject final : public Object
     {
     private:
@@ -36,7 +38,7 @@ namespace OpenRCT2
 
         void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
-        ImageIndex GetImage(uint8_t sequence, Direction direction) const;
+        ImageIndex GetImage(ParkEntranceSequence sequence, Direction direction) const;
         uint8_t GetScrollingMode() const;
         uint8_t GetTextHeight() const;
     };

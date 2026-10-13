@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
         // If we have a bugged scenery entry, do not touch the tile element.
         if (sceneryEntry == nullptr)
         {
@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::unknown, STR_CANT_REMOVE_THIS, STR_UNKNOWN_OBJECT_TYPE);
         }
 
-        auto rotatedOffsets = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
+        auto rotatedOffsets = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.rotate(_loc.direction),
                                          sceneryEntry->tiles[_tileIndex].offset.z };
 
         auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedOffsets;
@@ -81,13 +81,13 @@ namespace OpenRCT2::GameActions
         bool calculate_cost = true;
         for (auto& tile : sceneryEntry->tiles)
         {
-            auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
+            auto currentTileRotatedOffset = CoordsXYZ{ CoordsXY{ tile.offset }.rotate(_loc.direction), tile.offset.z };
 
             auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + currentTileRotatedOffset;
 
             if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
             {
-                if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+                if (park.flags.has(ParkFlag::forbidTreeRemoval))
                 {
                     if (sceneryEntry->flags.has(LargeSceneryFlag::isTree))
                     {
@@ -112,11 +112,11 @@ namespace OpenRCT2::GameActions
             // scenery tile elements.
             if (flags.has(CommandFlag::trackDesign))
             {
-                if (tileElement->asLargeScenery()->IsAccounted())
+                if (tileElement->asLargeScenery()->isAccounted())
                     calculate_cost = false;
 
                 // Sets the flag to prevent this being counted in additional calls
-                tileElement->asLargeScenery()->SetIsAccounted(true);
+                tileElement->asLargeScenery()->setIsAccounted(true);
             }
         }
 
@@ -143,7 +143,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
-        auto* sceneryEntry = tileElement->asLargeScenery()->GetEntry();
+        auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
         // If we have a bugged scenery entry, do not touch the tile element.
         if (sceneryEntry == nullptr)
         {
@@ -151,16 +151,16 @@ namespace OpenRCT2::GameActions
             return Result(Status::unknown, STR_CANT_REMOVE_THIS, kStringIdNone);
         }
 
-        tileElement->RemoveBannerEntry();
+        tileElement->removeBannerEntry();
 
-        auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.Rotate(_loc.direction),
+        auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ sceneryEntry->tiles[_tileIndex].offset }.rotate(_loc.direction),
                                            sceneryEntry->tiles[_tileIndex].offset.z };
 
         auto firstTile = CoordsXYZ{ _loc.x, _loc.y, _loc.z } - rotatedFirstTile;
 
         for (auto& tile : sceneryEntry->tiles)
         {
-            auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(_loc.direction), tile.offset.z };
+            auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.rotate(_loc.direction), tile.offset.z };
 
             auto currentTile = CoordsXYZ{ firstTile.x, firstTile.y, firstTile.z } + rotatedCurrentTile;
 
@@ -201,7 +201,7 @@ namespace OpenRCT2::GameActions
             if (sceneryElement->getDirection() != _loc.direction)
                 continue;
 
-            if (sceneryElement->GetSequenceIndex() != sequenceIndex)
+            if (sceneryElement->getSequenceIndex() != sequenceIndex)
                 continue;
 
             if (sceneryElement->getBaseZ() != pos.z)

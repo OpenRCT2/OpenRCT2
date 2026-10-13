@@ -8,10 +8,8 @@
  *****************************************************************************/
 
 #include "../../../SpriteIds.h"
-#include "../../../drawing/Drawing.h"
-#include "../../../object/StationObject.h"
-#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
@@ -19,16 +17,14 @@
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
 
-#include <algorithm>
-
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
 
 enum class JuniorRCSubType : uint8_t
 {
-    Junior = 1,
-    WaterCoaster = 2,
+    junior = 1,
+    waterCoaster = 2,
 };
 
 enum
@@ -1851,7 +1847,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_blockbrakes[2][4] = 
 template<JuniorRCSubType TSubType>
 constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
 {
-    return trackElement.HasChain() ? EnumValue(TSubType) : 0;
+    return trackElement.hasChain() ? EnumValue(TSubType) : 0;
 }
 
 template<JuniorRCSubType TSubType>
@@ -1862,7 +1858,7 @@ static void JuniorRCPaintTrackFlat(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_flat[subTypeOffset][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -1871,9 +1867,7 @@ static void JuniorRCPaintTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -1885,12 +1879,12 @@ static void JuniorRCPaintStation(
 {
     ImageId imageId;
 
-    const bool isBraked = trackElement.IsBrakeClosed();
+    const bool isBraked = trackElement.isBrakeClosed();
 
     if (direction == 0 || direction == 2)
     {
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::Junior)
+        if (trackElement.getTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::junior)
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
@@ -1903,7 +1897,7 @@ static void JuniorRCPaintStation(
     else if (direction == 1 || direction == 3)
     {
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::Junior)
+        if (trackElement.getTrackType() == TrackElemType::endStation && TSubType == JuniorRCSubType::junior)
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
@@ -1939,8 +1933,8 @@ static void JuniorRCPaintTrack25DegUp(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 
     int8_t tunnelHeights[4] = { -8, 8, 8, -8 };
-    TunnelSubType tunnelType[4] = { TunnelSubType::SlopeStart, TunnelSubType::SlopeEnd, TunnelSubType::SlopeEnd,
-                                    TunnelSubType::SlopeStart };
+    TunnelSubType tunnelType[4] = { TunnelSubType::slopeStart, TunnelSubType::slopeEnd, TunnelSubType::slopeEnd,
+                                    TunnelSubType::slopeStart };
     PaintUtilPushTunnelRotated(session, direction, height + tunnelHeights[direction], kTunnelGroup, tunnelType[direction]);
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -1950,9 +1944,7 @@ static void JuniorRCPaintTrack25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -1968,11 +1960,11 @@ static void JuniorRCPaintTrackFlatTo25DegUp(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
     if (direction == 0 || direction == 3)
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::slopeEnd);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -1983,9 +1975,7 @@ static void JuniorRCPaintTrackFlatTo25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -2003,12 +1993,12 @@ static void JuniorRCPaintTrack25DegUpToFlat(
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TunnelSubType::FlatTo25Deg;
+        tunnelType = TunnelSubType::flatTo25Deg;
         tunnelHeight = height + 8;
     }
     else
     {
-        tunnelType = TunnelSubType::Flat;
+        tunnelType = TunnelSubType::flat;
         tunnelHeight = height - 8;
     }
 
@@ -2028,9 +2018,7 @@ static void JuniorRCPaintTrack25DegUpToFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -2067,22 +2055,22 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     switch (trackSequence)
@@ -2091,17 +2079,15 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
-                    direction),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                        PaintSegment::bottom, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                      PaintSegment::bottom, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2109,17 +2095,15 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
-                    direction),
+                    { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2127,8 +2111,7 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
-                    direction),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left }, direction),
                 0xFFFF, 0);
             break;
     }
@@ -2164,13 +2147,13 @@ static void JuniorRCFlatToLeftBankPaintSetup(
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (junior_rc_track_pieces_flat_to_left_bank[direction][1] != 0)
@@ -2194,9 +2177,7 @@ static void JuniorRCFlatToLeftBankPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2215,13 +2196,13 @@ static void JuniorRCFlatToRightBankPaintSetup(
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
 
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (junior_rc_track_pieces_flat_to_right_bank[direction][1] != 0)
@@ -2245,9 +2226,7 @@ static void JuniorRCFlatToRightBankPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2370,22 +2349,22 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     switch (trackSequence)
@@ -2394,17 +2373,15 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
-                    direction),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                        PaintSegment::bottom, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                      PaintSegment::bottom, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2412,17 +2389,15 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
-                    direction),
+                    { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2430,8 +2405,7 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
-                    direction),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left }, direction),
                 0xFFFF, 0);
             break;
     }
@@ -2491,23 +2465,21 @@ static void JuniorRCLeftBankTo25DegUpPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -2554,23 +2526,21 @@ static void JuniorRCRightBankTo25DegUpPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -2588,12 +2558,12 @@ static void JuniorRC25DegUpToLeftBankPaintSetup(
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TunnelSubType::FlatTo25Deg;
+        tunnelType = TunnelSubType::flatTo25Deg;
         tunnelHeight = height + 8;
     }
     else
     {
-        tunnelType = TunnelSubType::Flat;
+        tunnelType = TunnelSubType::flat;
         tunnelHeight = height - 8;
     }
 
@@ -2632,9 +2602,7 @@ static void JuniorRC25DegUpToLeftBankPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -2652,12 +2620,12 @@ static void JuniorRC25DegUpToRightBankPaintSetup(
     int16_t tunnelHeight;
     if (direction == 1 || direction == 2)
     {
-        tunnelType = TunnelSubType::FlatTo25Deg;
+        tunnelType = TunnelSubType::flatTo25Deg;
         tunnelHeight = height + 8;
     }
     else
     {
-        tunnelType = TunnelSubType::Flat;
+        tunnelType = TunnelSubType::flat;
         tunnelHeight = height - 8;
     }
 
@@ -2696,9 +2664,7 @@ static void JuniorRC25DegUpToRightBankPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -2773,11 +2739,11 @@ static void JuniorRCLeftBankPaintSetup(
 
     if (direction & 1)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -2787,9 +2753,7 @@ static void JuniorRCLeftBankPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2808,7 +2772,7 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours,
         junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[subTypeOffset],
@@ -2831,19 +2795,19 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
     }
     if (direction == 2 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
     }
     if (direction == 3 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
     }
 
     switch (trackSequence)
@@ -2852,17 +2816,15 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top),
-                    direction),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::top, PaintSegment::left,
-                        PaintSegment::topLeft, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::top, PaintSegment::left,
+                      PaintSegment::topLeft, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2870,7 +2832,7 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::right, PaintSegment::topRight, PaintSegment::centre),
+                    { PaintSegment::bottomRight, PaintSegment::right, PaintSegment::topRight, PaintSegment::centre },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2878,9 +2840,8 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2888,7 +2849,7 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottom),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottom },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2907,7 +2868,7 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours,
         junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[subTypeOffset], kDefaultRightQuarterTurn5TilesOffsets,
@@ -2930,19 +2891,19 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
     }
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
     }
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
     }
 
     switch (trackSequence)
@@ -2951,17 +2912,15 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
-                    direction),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                        PaintSegment::bottom, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                      PaintSegment::bottom, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2969,17 +2928,15 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
-                    direction),
+                    { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -2987,8 +2944,7 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
-                    direction),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left }, direction),
                 0xFFFF, 0);
             break;
     }
@@ -3062,14 +3018,14 @@ static void JuniorRCSBendLeftPaintSetup(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     else
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     switch (trackSequence)
@@ -3088,26 +3044,22 @@ static void JuniorRCSBendLeftPaintSetup(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, (direction & 1)), 0xFFFF, 0);
@@ -3155,14 +3107,14 @@ static void JuniorRCSBendRightPaintSetup(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     else
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     switch (trackSequence)
@@ -3182,26 +3134,22 @@ static void JuniorRCSBendRightPaintSetup(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, (direction & 1)), 0xFFFF, 0);
@@ -3217,7 +3165,7 @@ static void JuniorRCRightQuarterTurn3TilesPaintSetup(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_flat_quarter_turn_3_tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -3232,20 +3180,18 @@ static void JuniorRCRightQuarterTurn3TilesPaintSetup(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight,
+                                PaintSegment::bottom };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3325,7 +3271,7 @@ static void JuniorRCRightQuarterTurn3TilesBankPaintSetup(
         session, thickness[direction][trackSequence], height, direction, trackSequence, session.TrackColours,
         junior_rc_track_pieces_banked_quarter_turn_3_tiles, nullptr, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths,
         junior_rc_right_quarter_turn_3_tiles_bank_offsets);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::flat, height, direction, trackSequence);
 
     if (direction == 1 && trackSequence == 3)
     {
@@ -3351,20 +3297,18 @@ static void JuniorRCRightQuarterTurn3TilesBankPaintSetup(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight,
+                                PaintSegment::bottom };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3376,7 +3320,7 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
     auto imageId = ImageId(0);
     CoordsXY offset;
     BoundBoxXY bb;
@@ -3405,22 +3349,22 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
     }
 
     switch (trackSequence)
@@ -3436,16 +3380,14 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3460,7 +3402,7 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
     auto imageId = ImageId(0);
     CoordsXY offset;
     BoundBoxXY bb;
@@ -3489,22 +3431,22 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
     }
 
     switch (trackSequence)
@@ -3520,16 +3462,14 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
             break;
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3608,40 +3548,38 @@ static void JuniorRCRightHalfBankedHelixUpSmallPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right,
-                PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right,
+                                PaintSegment::bottomRight };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom,
+                                PaintSegment::bottomRight };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
-                PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre,
+                                PaintSegment::topLeft, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3679,40 +3617,38 @@ static void JuniorRCRightHalfBankedHelixDownSmallPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right,
-                PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right,
+                                PaintSegment::bottomRight };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom,
+                                PaintSegment::bottomRight };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
-                PaintSegment::left);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre,
+                                PaintSegment::topLeft, PaintSegment::left };
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3782,22 +3718,22 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     switch (trackSequence)
@@ -3806,9 +3742,8 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::right),
+                    { PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topRight,
+                      PaintSegment::right },
                     direction),
                 0xFFFF, 0);
             break;
@@ -3816,9 +3751,8 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                        PaintSegment::bottom, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                      PaintSegment::bottom, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -3826,17 +3760,15 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
-                    direction),
+                    { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -3844,9 +3776,8 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::left),
+                    { PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::left },
                     direction),
                 0xFFFF, 0);
             break;
@@ -3886,22 +3817,22 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flat);
     }
 
     switch (trackSequence)
@@ -3910,9 +3841,8 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topRight,
-                        PaintSegment::right),
+                    { PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topRight,
+                      PaintSegment::right },
                     direction),
                 0xFFFF, 0);
             break;
@@ -3920,9 +3850,8 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                        PaintSegment::bottom, PaintSegment::topRight),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                      PaintSegment::bottom, PaintSegment::topRight },
                     direction),
                 0xFFFF, 0);
             break;
@@ -3930,17 +3859,15 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
-                    direction),
+                    { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre }, direction),
                 0xFFFF, 0);
             break;
         case 5:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                        PaintSegment::bottom, PaintSegment::topLeft),
+                    { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                      PaintSegment::bottom, PaintSegment::topLeft },
                     direction),
                 0xFFFF, 0);
             break;
@@ -3948,9 +3875,8 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
-                        PaintSegment::left),
+                    { PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
+                      PaintSegment::left },
                     direction),
                 0xFFFF, 0);
             break;
@@ -4005,13 +3931,13 @@ static void JuniorRCBrakePaintSetup(
     {
         PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
 
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
 
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -4021,9 +3947,7 @@ static void JuniorRCBrakePaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4037,20 +3961,20 @@ static void JuniorRCBlockBrakePaintSetup(
 {
     ImageId image_id;
 
-    bool isBraked = trackElement.IsBrakeClosed();
+    bool isBraked = trackElement.isBrakeClosed();
 
     image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
 
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
 
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -4060,9 +3984,7 @@ static void JuniorRCBlockBrakePaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4092,37 +4014,33 @@ static void JuniorRCLeftEighthToDiagPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom, PaintSegment::bottomRight,
-                PaintSegment::right);
+            blockedSegments = { PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom, PaintSegment::bottomRight,
+                                PaintSegment::right };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft };
             break;
         case 4:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft,
-                PaintSegment::bottom, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight,
+                                PaintSegment::topLeft,    PaintSegment::bottom, PaintSegment::bottomRight };
             break;
     }
 
@@ -4155,36 +4073,34 @@ static void JuniorRCRightEighthToDiagPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRight, PaintSegment::left, PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::centre, PaintSegment::topRight, PaintSegment::left, PaintSegment::topLeft,
+                                PaintSegment::top };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom,
+                                PaintSegment::bottomRight };
             break;
         case 4:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::bottomRight };
             break;
     }
 
@@ -4315,37 +4231,33 @@ static void JuniorRCLeftEighthToDiagBankPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom, PaintSegment::bottomRight,
-                PaintSegment::right);
+            blockedSegments = { PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom, PaintSegment::bottomRight,
+                                PaintSegment::right };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft };
             break;
         case 4:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft,
-                PaintSegment::bottom, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight,
+                                PaintSegment::topLeft,    PaintSegment::bottom, PaintSegment::bottomRight };
             break;
     }
 
@@ -4458,36 +4370,34 @@ static void JuniorRCRightEighthToDiagBankPaintSetup(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight };
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRight, PaintSegment::left, PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::centre, PaintSegment::topRight, PaintSegment::left, PaintSegment::topLeft,
+                                PaintSegment::top };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom,
+                                PaintSegment::bottomRight };
             break;
         case 4:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::bottomRight };
             break;
     }
 
@@ -4539,7 +4449,7 @@ static void JuniorRCTrackDiagBrakes(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4549,7 +4459,7 @@ static void JuniorRCTrackDiagBlockBrakes(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilDiagTilesPaint(
-        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_blockbrakes[trackElement.IsBrakeClosed()],
+        session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_blockbrakes[trackElement.isBrakeClosed()],
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
@@ -4558,7 +4468,7 @@ static void JuniorRCTrackDiagBlockBrakes(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4579,7 +4489,7 @@ static void JuniorRCPaintTrackDiag25DegUp(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 8, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -4600,7 +4510,7 @@ static void JuniorRCPaintTrackDiagFlatTo25DegUp(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -4610,7 +4520,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat_to_60_deg_up[subTypeOffset],
@@ -4622,7 +4532,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegUp(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 6, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
@@ -4643,7 +4553,7 @@ static void JuniorRCPaintTrackDiag25DegUpToFlat(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -4653,7 +4563,7 @@ static void JuniorRCPaintTrackDiag60DegUpToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_up_to_flat[subTypeOffset],
@@ -4665,7 +4575,7 @@ static void JuniorRCPaintTrackDiag60DegUpToFlat(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height + 13, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
@@ -4686,7 +4596,7 @@ static void JuniorRCPaintTrackDiag25DegDown(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 8, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -4707,7 +4617,7 @@ static void JuniorRCPaintTrackDiagFlatTo25DegDown(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -4717,7 +4627,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegDown(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_flat_to_60_deg_down[subTypeOffset],
@@ -4729,7 +4639,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegDown(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height + 7, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -4750,7 +4660,7 @@ static void JuniorRCPaintTrackDiag25DegDownToFlat(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -4760,7 +4670,7 @@ static void JuniorRCPaintTrackDiag60DegDownToFlat(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_down_to_flat[subTypeOffset],
@@ -4772,7 +4682,7 @@ static void JuniorRCPaintTrackDiag60DegDownToFlat(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -4798,7 +4708,7 @@ static void JuniorRCDiagFlatToLeftBankPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4824,7 +4734,7 @@ static void JuniorRCDiagFlatToRightBankPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4850,7 +4760,7 @@ static void JuniorRCDiagLeftBankToFlatPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4876,7 +4786,7 @@ static void JuniorRCDiagRightBankToFlatPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4902,7 +4812,7 @@ static void JuniorRCDiagLeftBankTo25DegUpPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -4928,7 +4838,7 @@ static void JuniorRCDiagRightBankTo25DegUpPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -4954,7 +4864,7 @@ static void JuniorRCDiag25DegUpToLeftBankPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -4980,7 +4890,7 @@ static void JuniorRCDiag25DegUpToRightBankPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -5006,7 +4916,7 @@ static void JuniorRCDiagLeftBankTo25DegDownPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -5032,7 +4942,7 @@ static void JuniorRCDiagRightBankTo25DegDownPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -5058,7 +4968,7 @@ static void JuniorRCDiag25DegDownToLeftBankPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -5084,7 +4994,7 @@ static void JuniorRCDiag25DegDownToRightBankPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -5119,7 +5029,7 @@ static void JuniorRCDiagLeftBankPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -5140,7 +5050,7 @@ static void JuniorRCDiagRightBankPaintSetup(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -5178,7 +5088,7 @@ static void JuniorRCPaintTrack60DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     auto image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_60_deg_up[subTypeOffset][direction]);
 
@@ -5190,16 +5100,16 @@ static void JuniorRCPaintTrack60DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 56, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 56, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
@@ -5212,9 +5122,7 @@ static void JuniorRCPaintTrack60DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -5252,7 +5160,7 @@ static void JuniorRCPaintTrack25DegUpTo60DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     auto image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_25_deg_up_to_60_deg_up[subTypeOffset][direction][0]);
 
@@ -5276,16 +5184,16 @@ static void JuniorRCPaintTrack25DegUpTo60DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
@@ -5298,9 +5206,7 @@ static void JuniorRCPaintTrack25DegUpTo60DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5317,7 +5223,7 @@ static void JuniorRCPaintTrack60DegUpTo25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     auto image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_60_deg_up_to_25_deg_up[subTypeOffset][direction][0]);
 
@@ -5341,16 +5247,16 @@ static void JuniorRCPaintTrack60DegUpTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
@@ -5361,9 +5267,7 @@ static void JuniorRCPaintTrack60DegUpTo25DegUp(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5380,7 +5284,7 @@ static void JuniorRCPaintTrackDiag60DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_up[subTypeOffset],
@@ -5392,7 +5296,7 @@ static void JuniorRCPaintTrackDiag60DegUp(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 36, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -5402,7 +5306,7 @@ static void JuniorRCPaintTrackDiag60DegDown(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_down[subTypeOffset],
@@ -5414,7 +5318,7 @@ static void JuniorRCPaintTrackDiag60DegDown(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 28, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -5424,7 +5328,7 @@ static void JuniorRCPaintTrackDiag25DegUpTo60DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[subTypeOffset],
@@ -5436,7 +5340,7 @@ static void JuniorRCPaintTrackDiag25DegUpTo60DegUp(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 16, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5446,7 +5350,7 @@ static void JuniorRCPaintTrackDiag60DegUpTo25DegUp(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     if (direction == 1 && trackSequence == 3)
     {
@@ -5468,7 +5372,7 @@ static void JuniorRCPaintTrackDiag60DegUpTo25DegUp(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 21, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5478,7 +5382,7 @@ static void JuniorRCPaintTrackDiag25DegDownTo60DegDown(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     if (direction == 3 && trackSequence == 0)
     {
@@ -5500,7 +5404,7 @@ static void JuniorRCPaintTrackDiag25DegDownTo60DegDown(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 17, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5510,7 +5414,7 @@ static void JuniorRCPaintTrackDiag60DegDownTo25DegDown(
     const TrackElement& trackElement, SupportType supportType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[subTypeOffset],
@@ -5522,7 +5426,7 @@ static void JuniorRCPaintTrackDiag60DegDownTo25DegDown(
             session, supportType.metal, MetalSupportPlace::leftCorner, direction, 8, height, session.SupportColours);
     }
 
-    int32_t blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
+    PaintSegments blockedSegments = BlockedSegments::kDiagStraightFlat[trackSequence];
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5566,7 +5470,7 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isChained = trackElement.HasChain();
+    bool isChained = trackElement.hasChain();
     auto image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][0]);
 
     PaintAddImageAsParent(
@@ -5589,16 +5493,16 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
@@ -5611,9 +5515,7 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 64);
 }
@@ -5629,7 +5531,7 @@ static void JuniorRC60DegUpToFlatPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    bool isChained = trackElement.HasChain();
+    bool isChained = trackElement.hasChain();
     auto image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][0]);
 
     PaintAddImageAsParent(
@@ -5652,16 +5554,16 @@ static void JuniorRC60DegUpToFlatPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::flat);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::flat);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
@@ -5672,9 +5574,7 @@ static void JuniorRC60DegUpToFlatPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5725,7 +5625,7 @@ static void JuniorRCBoosterPaintSetup(
             session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NE_SW), { 0, 0, height },
             { { 6, 0, height }, { 20, 32, 1 } });
 
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
@@ -5733,7 +5633,7 @@ static void JuniorRCBoosterPaintSetup(
             session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NW_SE), { 0, 0, height },
             { { 0, 6, height }, { 32, 20, 1 } });
 
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -5743,9 +5643,7 @@ static void JuniorRCBoosterPaintSetup(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -5996,10 +5894,10 @@ TrackPaintFunction GetTrackPaintFunctionJuniorRCTemplate(TrackElemType trackType
 
 TrackPaintFunction GetTrackPaintFunctionJuniorRC(TrackElemType trackType)
 {
-    return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::Junior>(trackType);
+    return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::junior>(trackType);
 }
 
 TrackPaintFunction GetTrackPaintFunctionWaterRC(TrackElemType trackType)
 {
-    return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::WaterCoaster>(trackType);
+    return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::waterCoaster>(trackType);
 }

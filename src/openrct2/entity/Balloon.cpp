@@ -9,15 +9,11 @@
 
 #include "Balloon.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
-#include "../network/Network.h"
-#include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
-#include "../world/Map.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
@@ -30,7 +26,7 @@ namespace OpenRCT2
         return type == EntityType::balloon;
     }
 
-    void Balloon::Update()
+    void Balloon::update()
     {
         invalidate();
         if (popped == 1)
@@ -38,15 +34,15 @@ namespace OpenRCT2
             frame++;
             if (frame >= 5)
             {
-                getGameState().entities.EntityRemove(this);
+                getGameState().entities.entityRemove(this);
             }
         }
         else
         {
-            time_to_move++;
-            if (time_to_move >= 3)
+            timeToMove++;
+            if (timeToMove >= 3)
             {
-                time_to_move = 0;
+                timeToMove = 0;
                 frame++;
                 // NOTE: To keep S6 Compatibility this field needs to roll over after 1 byte
                 if (frame == 256)
@@ -54,9 +50,9 @@ namespace OpenRCT2
                     frame = 0;
                 }
 
-                if (Collides())
+                if (collides())
                 {
-                    Pop(false);
+                    pop(false);
                     return;
                 }
 
@@ -65,13 +61,13 @@ namespace OpenRCT2
                 int32_t maxZ = 1967 - ((x ^ y) & 31);
                 if (z >= maxZ)
                 {
-                    Pop(true);
+                    pop(true);
                 }
             }
         }
     }
 
-    void Balloon::Press()
+    void Balloon::press()
     {
         if (popped != 1)
         {
@@ -80,7 +76,7 @@ namespace OpenRCT2
             uint32_t random = ScenarioRand();
             if ((id.ToUnderlying() & 7) || (random & 0xFFFF) < 0x2000)
             {
-                Pop(true);
+                pop(true);
             }
             else
             {
@@ -90,7 +86,7 @@ namespace OpenRCT2
         }
     }
 
-    void Balloon::Pop(bool playSound)
+    void Balloon::pop(bool playSound)
     {
         popped = 1;
         frame = 0;
@@ -100,9 +96,9 @@ namespace OpenRCT2
         }
     }
 
-    void Balloon::Create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped)
+    void Balloon::create(const CoordsXYZ& balloonPos, Drawing::Colour colour, bool isPopped)
     {
-        auto* balloon = getGameState().entities.CreateEntity<Balloon>();
+        auto* balloon = getGameState().entities.createEntity<Balloon>();
         if (balloon == nullptr)
             return;
 
@@ -110,7 +106,7 @@ namespace OpenRCT2
         balloon->spriteData.heightMin = 22;
         balloon->spriteData.heightMax = 11;
         balloon->moveTo(balloonPos);
-        balloon->time_to_move = 0;
+        balloon->timeToMove = 0;
         balloon->frame = 0;
         balloon->colour = colour;
         balloon->popped = (isPopped ? 1 : 0);
@@ -121,11 +117,11 @@ namespace OpenRCT2
         EntityBase::serialise(stream);
         stream << frame;
         stream << popped;
-        stream << time_to_move;
+        stream << timeToMove;
         stream << colour;
     }
 
-    bool Balloon::Collides() const
+    bool Balloon::collides() const
     {
         for (auto* tileElement : TileElementsView(CoordsXY(x, y)))
         {
@@ -141,7 +137,7 @@ namespace OpenRCT2
             if (tileElement->getType() == TileElementType::track)
             {
                 const TrackElement* trackElement = tileElement->asTrack();
-                const auto* ride = GetRide(trackElement->GetRideIndex());
+                const auto* ride = GetRide(trackElement->getRideIndex());
                 if (ride != nullptr && ride->getRideTypeDescriptor().flags.has(RtdFlag::hasRoofOverWholeRide))
                 {
                     check_ceiling = true;

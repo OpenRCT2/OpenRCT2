@@ -9,34 +9,22 @@
 
 #include "Banner.h"
 
-#include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Game.h"
 #include "../GameState.h"
-#include "../core/String.hpp"
+#include "../drawing/ScrollingText.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../management/Finance.h"
-#include "../network/Network.h"
-#include "../object/BannerSceneryEntry.h"
-#include "../object/ObjectEntryManager.h"
 #include "../object/WallSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
-#include "../windows/Intent.h"
 #include "Map.h"
-#include "MapAnimation.h"
-#include "Park.h"
-#include "Scenery.h"
 #include "TileElementsView.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/TileElement.h"
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
-#include <cstring>
-#include <iterator>
 #include <limits>
 
 using namespace OpenRCT2;
@@ -107,7 +95,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
     RideId resultRideIndex = RideId::GetNull();
     for (auto* trackElement : TileElementsView<TrackElement>(bannerCoords))
     {
-        RideId rideIndex = trackElement->GetRideIndex();
+        RideId rideIndex = trackElement->getRideIndex();
         auto ride = GetRide(rideIndex);
         if (ride == nullptr || ride->getRideTypeDescriptor().flags.has(RtdFlag::isShopOrFacility))
             continue;
@@ -161,7 +149,7 @@ TileElement* BannerGetTileElement(BannerIndex bannerIndex)
         {
             do
             {
-                if (tileElement->GetBannerIndex() == bannerIndex)
+                if (tileElement->getBannerIndex() == bannerIndex)
                 {
                     return tileElement;
                 }
@@ -188,10 +176,10 @@ WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex)
         if (wallElement == nullptr)
             continue;
 
-        auto* wallEntry = wallElement->GetEntry();
+        auto* wallEntry = wallElement->getEntry();
         if (wallEntry->scrolling_mode == kScrollingModeNone)
             continue;
-        if (wallElement->GetBannerIndex() != bannerIndex)
+        if (wallElement->getBannerIndex() != bannerIndex)
             continue;
         return wallElement;
     } while (!(tileElement++)->isLastForTile());
@@ -236,7 +224,7 @@ RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
             continue;
 
         auto rideCoords = ride.overallView;
-        if (rideCoords.IsNull())
+        if (rideCoords.isNull())
             continue;
 
         int32_t distance = abs(mapPos.x - rideCoords.x) + abs(mapPos.y - rideCoords.y);
@@ -265,9 +253,9 @@ static std::vector<BannerElementWithPos> GetAllBannerElementsOnMap()
         for (int x = 0; x < gameState.mapSize.x; x++)
         {
             const auto tilePos = TileCoordsXY{ x, y };
-            for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.ToCoordsXY()))
+            for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(tilePos.toCoordsXY()))
             {
-                auto bannerIndex = bannerElement->GetIndex();
+                auto bannerIndex = bannerElement->getIndex();
                 if (bannerIndex == BannerIndex::GetNull())
                     continue;
 
@@ -305,14 +293,14 @@ static void BannerFixDuplicates(std::vector<BannerElementWithPos>& bannerElement
 {
     // Sort the banners by index
     std::sort(bannerElements.begin(), bannerElements.end(), [](const BannerElementWithPos& a, const BannerElementWithPos& b) {
-        return a.Element->GetIndex() < b.Element->GetIndex();
+        return a.Element->getIndex() < b.Element->getIndex();
     });
 
     // Create a list of all banners with duplicate indices.
     std::vector<BannerElementWithPos> duplicates;
     for (size_t i = 1; i < bannerElements.size(); i++)
     {
-        if (bannerElements[i - 1].Element->GetIndex() == bannerElements[i].Element->GetIndex())
+        if (bannerElements[i - 1].Element->getIndex() == bannerElements[i].Element->getIndex())
         {
             duplicates.push_back(bannerElements[i]);
         }
@@ -321,7 +309,7 @@ static void BannerFixDuplicates(std::vector<BannerElementWithPos>& bannerElement
     // For each duplicate, create a new banner and copy the old data
     for (const auto& duplicate : duplicates)
     {
-        const auto oldIndex = duplicate.Element->GetIndex();
+        const auto oldIndex = duplicate.Element->getIndex();
         const auto* oldBanner = GetBanner(oldIndex);
         if (oldBanner == nullptr)
         {
@@ -343,7 +331,7 @@ static void BannerFixDuplicates(std::vector<BannerElementWithPos>& bannerElement
         newBanner->id = newBannerId;
 
         // Assign the new banner index to the tile element.
-        duplicate.Element->SetIndex(newBannerId);
+        duplicate.Element->setIndex(newBannerId);
     }
 }
 
@@ -353,7 +341,7 @@ static void BannerFixPositions(std::vector<BannerElementWithPos>& bannerElements
 {
     for (const auto& entry : bannerElements)
     {
-        const auto index = entry.Element->GetIndex();
+        const auto index = entry.Element->getIndex();
         auto* banner = GetBanner(index);
         if (banner == nullptr)
         {

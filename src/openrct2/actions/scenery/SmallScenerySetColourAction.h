@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class SmallScenerySetColourAction final : public GameActionBase<GameCommand::SetSceneryColour>
+    class SmallScenerySetColourAction final : public GameActionBase<GameCommand::setSceneryColour>
     {
     private:
         CoordsXYZ _loc;

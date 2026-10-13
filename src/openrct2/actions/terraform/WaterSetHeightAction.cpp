@@ -53,7 +53,7 @@ namespace OpenRCT2::GameActions
         res.position = { _coords, _height * kCoordsZStep };
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-            && park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+            && park.flags.has(ParkFlag::forbidLandscapeChanges))
         {
             return Result(Status::disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
@@ -86,9 +86,9 @@ namespace OpenRCT2::GameActions
 
         int32_t zHigh = surfaceElement->getBaseZ();
         int32_t zLow = _height * kCoordsZStep;
-        if (surfaceElement->GetWaterHeight() > 0)
+        if (surfaceElement->getWaterHeight() > 0)
         {
-            zHigh = surfaceElement->GetWaterHeight();
+            zHigh = surfaceElement->getWaterHeight();
         }
         if (zLow > zHigh)
         {
@@ -101,7 +101,7 @@ namespace OpenRCT2::GameActions
         {
             return res2;
         }
-        if (surfaceElement->HasTrackThatNeedsWater())
+        if (surfaceElement->hasTrackThatNeedsWater() && !gameState.cheats.disableClearanceChecks)
         {
             return Result(Status::disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER);
         }
@@ -131,11 +131,11 @@ namespace OpenRCT2::GameActions
 
         if (_height > surfaceElement->baseHeight)
         {
-            surfaceElement->SetWaterHeight(_height * kCoordsZStep);
+            surfaceElement->setWaterHeight(_height * kCoordsZStep);
         }
         else
         {
-            surfaceElement->SetWaterHeight(0);
+            surfaceElement->setWaterHeight(0);
         }
         MapInvalidateTileFull(_coords);
 

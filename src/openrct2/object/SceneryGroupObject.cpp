@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma warning(disable : 4706) // assignment within conditional expression
-
 #include "SceneryGroupObject.h"
 
 #include "../Context.h"
@@ -17,14 +15,12 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../entity/Staff.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
-
-#include <unordered_map>
 
 namespace OpenRCT2
 {

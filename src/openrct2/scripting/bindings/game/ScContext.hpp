@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue sharedStorage_get(JSContext* ctx, JSValue thisVal)
         {
-            return gScConfiguration.New(ctx, ScConfigurationKind::Shared);
+            return gScConfiguration.New(ctx, ScConfigurationKind::shared);
         }
 
         static JSValue getParkStorage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -66,7 +66,7 @@ namespace OpenRCT2::Scripting
                 {
                     return JS_ThrowPlainError(ctx, "Plugin name is empty");
                 }
-                result = gScConfiguration.New(ctx, ScConfigurationKind::Park, pluginName);
+                result = gScConfiguration.New(ctx, ScConfigurationKind::park, pluginName);
             }
             else if (JS_IsUndefined(jsPluginName))
             {
@@ -75,7 +75,7 @@ namespace OpenRCT2::Scripting
                 {
                     return JS_ThrowPlainError(ctx, "Plugin name must be specified when used from console.");
                 }
-                result = gScConfiguration.New(ctx, ScConfigurationKind::Park, plugin->GetMetadata().Name);
+                result = gScConfiguration.New(ctx, ScConfigurationKind::park, plugin->GetMetadata().Name);
             }
             else
             {
@@ -95,6 +95,11 @@ namespace OpenRCT2::Scripting
             else if (gLegacyScene == LegacyScene::trackDesignsManager)
                 return JSFromStdString(ctx, "track_manager");
             return JSFromStdString(ctx, "normal");
+        }
+
+        static JSValue gameSpeed_get(JSContext* ctx, JSValue thisVal)
+        {
+            return JS_NewUint32(ctx, gGameSpeed);
         }
 
         static JSValue paused_get(JSContext* ctx, JSValue thisVal)
@@ -374,6 +379,9 @@ namespace OpenRCT2::Scripting
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
 
+            if (plugin && plugin->IsStopping())
+                return 0;
+
             return scriptEngine.AddInterval(plugin, delay, repeat, callback);
         }
 
@@ -443,6 +451,7 @@ namespace OpenRCT2::Scripting
                 JS_CGETSET_DEF("sharedStorage", ScContext::sharedStorage_get, nullptr),
                 JS_CFUNC_DEF("getParkStorage", 1, ScContext::getParkStorage),
                 JS_CGETSET_DEF("mode", ScContext::mode_get, nullptr),
+                JS_CGETSET_DEF("gameSpeed", ScContext::gameSpeed_get, nullptr),
                 JS_CGETSET_DEF("paused", ScContext::paused_get, &ScContext::paused_set),
                 JS_CFUNC_DEF("captureImage", 1, ScContext::captureImage),
                 JS_CFUNC_DEF("getObject", 2, ScContext::getObject),

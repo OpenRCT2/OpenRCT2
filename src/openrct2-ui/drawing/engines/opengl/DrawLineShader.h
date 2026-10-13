@@ -10,8 +10,8 @@
 #pragma once
 
 #include "DrawCommands.h"
-#include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
+
 namespace OpenRCT2::Ui
 {
     class DrawLineShader final : public OpenGLShaderProgram

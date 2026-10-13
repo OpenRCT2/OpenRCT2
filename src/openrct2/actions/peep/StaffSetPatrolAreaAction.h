@@ -20,7 +20,7 @@ namespace OpenRCT2::GameActions
         clearAll
     };
 
-    class StaffSetPatrolAreaAction final : public GameActionBase<GameCommand::SetStaffPatrol>
+    class StaffSetPatrolAreaAction final : public GameActionBase<GameCommand::setStaffPatrol>
     {
     private:
         EntityId _spriteId{ EntityId::GetNull() };

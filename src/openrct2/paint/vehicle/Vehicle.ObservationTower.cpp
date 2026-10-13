@@ -9,7 +9,7 @@
 
 #include "../../ride/Vehicle.h"
 
-#include "../../ride/Ride.h"
+#include "../../ride/CarEntry.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 
@@ -26,12 +26,12 @@ namespace OpenRCT2
             auto directionOffset = imageDirection / 8;
             if ((directionOffset == 0) || (directionOffset == 3))
             {
-                result = carEntry->base_image_id + 8;
+                result = carEntry->baseImageId + 8;
             }
             else
             {
                 result *= 2;
-                result += carEntry->base_image_id;
+                result += carEntry->baseImageId;
                 if (directionOffset == 1)
                 {
                     result += 28;
@@ -44,7 +44,7 @@ namespace OpenRCT2
         }
         else
         {
-            result = (vehicle->animation_frame * 2) + carEntry->base_image_id + 8;
+            result = (vehicle->animation_frame * 2) + carEntry->baseImageId + 8;
         }
         return result;
     }
@@ -68,6 +68,6 @@ namespace OpenRCT2
 
         PaintAddImageAsParent(session, imageId0, { 0, 0, z }, { { -11, -11, z + 1 }, { 2, 2, 41 } });
         PaintAddImageAsParent(session, imageId1, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
-        assert(carEntry->effect_visual == 1);
+        assert(carEntry->effectVisual == EffectVisual::unknown1);
     }
 } // namespace OpenRCT2

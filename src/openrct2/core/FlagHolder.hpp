@@ -68,7 +68,7 @@ struct FlagHolder
     }
 
     template<typename... TTypes>
-    [[nodiscard]] constexpr FlagHolder with(TTypes... types)
+    [[nodiscard]] constexpr FlagHolder with(TTypes... types) const
     {
         FlagHolder res = *this;
         res.set(types...);
@@ -76,10 +76,24 @@ struct FlagHolder
     }
 
     template<typename... TTypes>
-    [[nodiscard]] constexpr FlagHolder without(TTypes... types)
+    [[nodiscard]] constexpr FlagHolder without(TTypes... types) const
     {
         FlagHolder res = *this;
         res.unset(types...);
+        return res;
+    }
+
+    [[nodiscard]] constexpr FlagHolder without(const FlagHolder& other) const
+    {
+        FlagHolder res = *this;
+        res.holder &= ~other.holder;
+        return res;
+    }
+
+    [[nodiscard]] constexpr FlagHolder intersect(const FlagHolder& other) const
+    {
+        FlagHolder res = *this;
+        res.holder &= other.holder;
         return res;
     }
 
@@ -107,6 +121,11 @@ struct FlagHolder
         holder &= ~EnumsToFlags(types...);
     }
 
+    constexpr void unset(const FlagHolder& other)
+    {
+        holder &= ~other.holder;
+    }
+
     constexpr void flip(TEnumType flag)
     {
         holder ^= EnumToFlag(flag);
@@ -123,5 +142,15 @@ struct FlagHolder
     {
         holder |= other.holder;
         return *this;
+    }
+
+    constexpr bool operator==(const FlagHolder& other) const noexcept
+    {
+        return this->holder == other.holder;
+    }
+
+    constexpr bool operator!=(const FlagHolder& other) const noexcept
+    {
+        return this->holder != other.holder;
     }
 };

@@ -9,12 +9,9 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/WindowBase.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
@@ -63,10 +60,7 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
         if (surfaceObj != nullptr && !surfaceObj->UsesFallbackImages())
         {
-            auto imageId = ImageId(surfaceObj->IconImageId);
-            if (surfaceObj->Colour != Drawing::kColourNull)
-                imageId = imageId.WithPrimary(surfaceObj->Colour);
-
+            auto imageId = ImageId(surfaceObj->IconImageId, surfaceObj->getPreviewColour());
             gDropdown.items[itemIndex] = Dropdown::ImageItem(imageId, surfaceObj->NameStringId);
             if (i == currentSurfaceType)
             {
@@ -78,8 +72,8 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
     uint32_t surfaceCount = itemIndex;
 
     WindowDropdownShowImage(
-        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2], 0, surfaceCount, 47,
-        36, DropdownGetAppropriateImageDropdownItemsPerRow(surfaceCount));
+        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2],
+        { Dropdown::Flag::autoClose }, surfaceCount, 47, 36, DropdownGetAppropriateImageDropdownItemsPerRow(surfaceCount));
 
     gDropdown.hasTooltips = true;
     gDropdown.defaultIndex = defaultIndex;
@@ -88,7 +82,7 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
 ObjectEntryIndex LandTool::GetSurfaceStyleFromDropdownIndex(size_t index)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    auto itemIndex = 0U;
+    auto itemIndex = 0u;
     for (size_t i = 0; i < kMaxTerrainSurfaceObjects; i++)
     {
         const auto surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(i);
@@ -117,7 +111,8 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
         if (edgeObj != nullptr && !edgeObj->UsesFallbackImages())
         {
-            gDropdown.items[itemIndex] = Dropdown::ImageItem(ImageId(edgeObj->IconImageId), edgeObj->NameStringId);
+            gDropdown.items[itemIndex] = Dropdown::ImageItem(
+                ImageId(edgeObj->IconImageId, edgeObj->getPreviewColour()), edgeObj->NameStringId);
             if (i == currentEdgeType)
             {
                 defaultIndex = itemIndex;
@@ -129,8 +124,8 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
     auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(edgeCount);
 
     WindowDropdownShowImage(
-        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2], 0, edgeCount, 47, 36,
-        itemsPerRow);
+        w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, widget->height() - 1, w->colours[2],
+        { Dropdown::Flag::autoClose }, edgeCount, 47, 36, itemsPerRow);
 
     gDropdown.hasTooltips = true;
     gDropdown.defaultIndex = defaultIndex;
@@ -139,7 +134,7 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
 ObjectEntryIndex LandTool::GetEdgeStyleFromDropdownIndex(size_t index)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    auto itemIndex = 0U;
+    auto itemIndex = 0u;
     for (size_t i = 0; i < kMaxTerrainEdgeObjects; i++)
     {
         const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(i);
@@ -154,4 +149,35 @@ ObjectEntryIndex LandTool::GetEdgeStyleFromDropdownIndex(size_t index)
         }
     }
     return kObjectEntryIndexNull;
+}
+
+void LandTool::resetSurfaceColourSelection(
+    ObjectEntryIndex selectedSurfaceIndex, Drawing::Colour& surfaceColour1, bool& hasColour)
+{
+    surfaceColour1 = Drawing::Colour::black;
+    hasColour = false;
+
+    auto& objManager = GetContext()->GetObjectManager();
+
+    const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(selectedSurfaceIndex);
+    if (surfaceObject != nullptr && surfaceObject->Flags.has(TerrainSurfaceFlag::hasPrimaryColour))
+    {
+        surfaceColour1 = surfaceObject->Colour;
+        hasColour = true;
+    }
+}
+
+void LandTool::resetEdgeColourSelection(ObjectEntryIndex selectedEdgeIndex, Drawing::Colour& edgeColour1, bool& hasColour)
+{
+    edgeColour1 = Drawing::Colour::black;
+    hasColour = false;
+
+    auto& objManager = GetContext()->GetObjectManager();
+
+    const auto* edgeObject = objManager.GetLoadedObject<TerrainEdgeObject>(selectedEdgeIndex);
+    if (edgeObject != nullptr && edgeObject->flags.has(TerrainEdgeFlag::hasPrimaryColour))
+    {
+        edgeColour1 = edgeObject->colour;
+        hasColour = true;
+    }
 }

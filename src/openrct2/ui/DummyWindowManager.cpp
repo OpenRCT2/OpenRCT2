@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/Widget.h"
+#include "../interface/ZoomLevel.h"
 #include "WindowManager.h"
 
 namespace OpenRCT2::Ui

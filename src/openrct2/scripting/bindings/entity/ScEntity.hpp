@@ -11,14 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../Context.h"
-    #include "../../../GameState.h"
-    #include "../../../entity/EntityRegistry.h"
-    #include "../../../entity/Peep.h"
     #include "../../ScriptEngine.h"
-
-    #include <string_view>
-    #include <unordered_map>
 
 namespace OpenRCT2::Scripting
 {

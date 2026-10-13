@@ -14,6 +14,7 @@
 
 #include "AssetPackManager.h"
 #include "Context.h"
+#include "Diagnostic.h"
 #include "FileClassifier.h"
 #include "Game.h"
 #include "GameState.h"
@@ -28,6 +29,7 @@
 #include "audio/Audio.h"
 #include "audio/AudioContext.h"
 #include "config/Config.h"
+#include "core/BackgroundWorker.hpp"
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
@@ -39,17 +41,19 @@
 #include "core/String.hpp"
 #include "core/Timer.hpp"
 #include "drawing/ColourMap.h"
+#include "drawing/Drawing.Sprite.h"
 #include "drawing/Drawing.h"
+#include "drawing/Font.h"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
+#include "drawing/Palette.h"
+#include "drawing/PickupPeep.h"
 #include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
-#include "interface/Chat.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Formatter.h"
-#include "localisation/Localisation.Date.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
 #include "network/Network.h"
@@ -67,23 +71,19 @@
 #include "scenario/ScenarioRepository.h"
 #include "scenes/SceneManager.h"
 #include "scenes/editor/EditorScene.h"
-#include "scenes/game/GameScene.h"
-#include "scenes/intro/IntroScene.h"
 #include "scenes/preloader/PreloaderScene.h"
-#include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequenceManager.h"
-#include "scripting/HookEngine.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "world/MapAnimation.h"
 #include "world/MapSelection.h"
+#include "world/Park.h"
 
 #include <chrono>
 #include <cmath>
 #include <exception>
 #include <future>
-#include <iterator>
 #include <memory>
 #include <string>
 
@@ -130,7 +130,7 @@ namespace OpenRCT2
         Network::NetworkBase _network;
 #endif
 
-        DrawingEngine _drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
+        DrawingEngine _drawingEngineType = DrawingEngine::softwareWithHardwareDisplay;
         std::unique_ptr<Drawing::IDrawingEngine> _drawingEngine;
         std::unique_ptr<Paint::Painter> _painter;
 
@@ -469,7 +469,8 @@ namespace OpenRCT2
                 Audio::gGameSoundsOff = !Config::Get().sound.masterSoundEnabled;
             }
 
-            ChatInit();
+            auto intent = Intent(INTENT_ACTION_INIT_CHAT);
+            _uiContext->GetWindowManager()->BroadcastIntent(intent);
             CopyOriginalUserFilesOver();
 
             if (!gOpenRCT2NoGraphics)
@@ -521,7 +522,7 @@ namespace OpenRCT2
             gInputFlags.clearAll();
             InputSetState(InputState::reset);
             gPressedWidget.windowClassification = WindowClass::null;
-            gPickupPeepImage = ImageId();
+            Drawing::pickupPeepClear();
             ResetTooltipNotShown();
             gMapSelectFlags.clearAll();
             ClearPatrolAreaToRender();
@@ -608,9 +609,9 @@ namespace OpenRCT2
                 else
                 {
                     // If the drawing engine creation failed, try to create a software engine.
-                    if (drawingEngineType == DrawingEngine::OpenGL)
+                    if (drawingEngineType == DrawingEngine::openGL)
                     {
-                        drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
+                        drawingEngineType = DrawingEngine::softwareWithHardwareDisplay;
                         LOG_ERROR("Trying fallback back to software...");
 
                         drawingEngine = initializeEngine(drawingEngineType);
@@ -764,7 +765,7 @@ namespace OpenRCT2
                 }
 
                 // Inhibit viewport rendering while we're loading
-                WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+                WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, true);
 
                 OpenProgress(asScenario ? STR_LOADING_SCENARIO : STR_LOADING_SAVED_GAME);
                 SetProgress(0, 100, STR_STRING_M_PERCENT);
@@ -787,14 +788,14 @@ namespace OpenRCT2
                 SetProgress(100, 100, STR_STRING_M_PERCENT);
 
                 // Reset viewport rendering inhibition
-                WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
+                WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
 
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
                 gFirstTimeSaving = true;
                 GameFixSaveVars();
                 MapAnimations::MarkAllTiles();
-                EntityTweener::Get().Reset();
+                EntityTweener::get().reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = kAutosavePause;
 
@@ -810,6 +811,10 @@ namespace OpenRCT2
                     }
 #endif
                     GameLoadInit(); // NB: calls `setActiveScene`
+
+                    // Park::Update only recalculates these every ~13 seconds, so a save can hold a value that
+                    // predates this park being loaded. Scenarios get the same treatment from ScenarioReset.
+                    Park::updateValuations(gameState.park, gameState);
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == Network::Mode::server)
                     {
@@ -939,7 +944,7 @@ namespace OpenRCT2
             }
 
             CloseProgress();
-            WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
+            WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
             return false;
         }
 
@@ -1001,6 +1006,16 @@ namespace OpenRCT2
             GfxLoadCsg();
             FontSpriteInitialiseCharacters();
             return true;
+        }
+
+        void rememberStartUpParkDirectory()
+        {
+            const bool isContinuedSaveGame = gScenarioSavePath == gOpenRCT2StartupActionPath;
+            if (!isContinuedSaveGame || gScenarioSavePath.empty())
+                return;
+
+            Config::Get().general.lastSaveGameDirectory = Path::GetDirectory(Path::GetAbsolute(gScenarioSavePath));
+            Config::Save();
         }
 
         void SwitchToStartUpScene()
@@ -1077,6 +1092,8 @@ namespace OpenRCT2
                             nextScene = _sceneManager->getTitleScene();
                             break;
                         }
+
+                        rememberStartUpParkDirectory();
                     }
 
                     // Successfully loaded a file
@@ -1253,11 +1270,11 @@ namespace OpenRCT2
             {
                 _variableFrame = useVariableFrame;
 
-                // Switching from variable to fixed frame requires reseting
+                // Switching from variable to fixed frame requires resetting
                 // of entity positions back to end of tick positions
-                auto& tweener = EntityTweener::Get();
-                tweener.Restore();
-                tweener.Reset();
+                auto& tweener = EntityTweener::get();
+                tweener.restore();
+                tweener.reset();
             }
 
             UpdateTimeAccumulators(deltaTime);
@@ -1327,7 +1344,7 @@ namespace OpenRCT2
             PROFILED_FUNCTION();
 
             const bool shouldDraw = ShouldDraw();
-            auto& tweener = EntityTweener::Get();
+            auto& tweener = EntityTweener::get();
 
             _uiContext->ProcessMessages();
 
@@ -1335,7 +1352,7 @@ namespace OpenRCT2
             {
                 // Get the original position of each sprite
                 if (shouldDraw)
-                    tweener.PreTick();
+                    tweener.preTick();
 
                 Tick();
 
@@ -1343,7 +1360,7 @@ namespace OpenRCT2
 
                 // Get the next position of each sprite
                 if (shouldDraw)
-                    tweener.PostTick();
+                    tweener.postTick();
             }
 
             _backgroundWorker.dispatchCompleted();
@@ -1354,7 +1371,7 @@ namespace OpenRCT2
             if (shouldDraw)
             {
                 const float alpha = std::min(_ticksAccumulator / kGameUpdateTimeMS, 1.0f);
-                tweener.Tween(alpha);
+                tweener.tween(alpha);
 
                 Draw();
             }
@@ -1379,7 +1396,7 @@ namespace OpenRCT2
 
             if (GameIsNotPaused())
             {
-                gPaletteEffectFrame += gCurrentDeltaTime;
+                Drawing::gPaletteEffectFrame += gCurrentDeltaTime;
             }
 
             DateUpdateRealTimeOfDay();
@@ -1394,7 +1411,8 @@ namespace OpenRCT2
             }
 #endif
 
-            ChatUpdate();
+            auto intent = Intent(INTENT_ACTION_UPDATE_CHAT);
+            _uiContext->GetWindowManager()->BroadcastIntent(intent);
 #ifdef ENABLE_SCRIPTING
             if (auto* activeScene = _sceneManager->getActiveScene(); activeScene != _sceneManager->getPreloaderScene())
             {
@@ -1459,11 +1477,11 @@ namespace OpenRCT2
             LOG_VERBOSE("CopyOriginalUserFilesOver('%s', '%s', '%s')", srcRoot.c_str(), dstRoot.c_str(), pattern.c_str());
 
             auto scanPattern = Path::Combine(srcRoot, pattern);
-            auto scanner = Path::ScanDirectory(scanPattern, true);
-            while (scanner->Next())
+            auto scanner = Path::scanDirectory(scanPattern, true);
+            while (scanner->next())
             {
-                auto src = std::string(scanner->GetPath());
-                auto dst = Path::Combine(dstRoot, scanner->GetPathRelative());
+                auto src = std::string(scanner->getPath());
+                auto dst = Path::Combine(dstRoot, scanner->getPathRelative());
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary
@@ -1491,13 +1509,13 @@ namespace OpenRCT2
             // Download park to buffer in memory
             Http::Request request;
             request.url = url;
-            request.method = Http::Method::GET;
+            request.method = Http::Method::get;
 
             Http::Response res;
             try
             {
                 res = Do(request);
-                if (res.status != Http::Status::Ok)
+                if (res.status != Http::Status::ok)
                     throw std::runtime_error("bad http status");
             }
             catch (std::exception& e)

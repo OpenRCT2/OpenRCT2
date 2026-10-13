@@ -8,12 +8,11 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/peep/StaffFireAction.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
@@ -78,14 +77,14 @@ namespace OpenRCT2::Ui::Windows
         {
             drawWidgets(rt);
 
-            Peep* peep = getGameState().entities.GetEntity<Staff>(EntityId::FromUnderlying(number));
+            Peep* peep = getGameState().entities.getEntity<Staff>(EntityId::FromUnderlying(number));
             // The staff member may have been fired in the meantime.
             if (peep == nullptr)
             {
                 return;
             }
             auto ft = Formatter();
-            peep->FormatNameTo(ft);
+            peep->formatNameTo(ft);
 
             ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ kWindowSize.width / 2, (kWindowSize.height / 2) - 3 });
             drawTextWrapped(rt, textCoords, kWindowSize.width - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::centre });

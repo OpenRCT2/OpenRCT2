@@ -10,7 +10,6 @@
 #include "TitleSequenceManager.h"
 
 #include "../../Context.h"
-#include "../../OpenRCT2.h"
 #include "../../PlatformEnvironment.h"
 #include "../../core/Collections.hpp"
 #include "../../core/File.h"
@@ -203,10 +202,10 @@ namespace OpenRCT2::TitleSequenceManager
     static void Scan(const std::string& directory)
     {
         auto pattern = Path::Combine(directory, u8"script.txt;*.parkseq");
-        auto fileScanner = Path::ScanDirectory(pattern, true);
-        while (fileScanner->Next())
+        auto fileScanner = Path::scanDirectory(pattern, true);
+        while (fileScanner->next())
         {
-            AddSequence(fileScanner->GetPath());
+            AddSequence(fileScanner->getPath());
         }
     }
 

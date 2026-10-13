@@ -9,13 +9,28 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
+
 #include <cstdint>
 
 namespace OpenRCT2
 {
+    enum class ScrollFlag : uint8_t
+    {
+        hScrollbarVisible,
+        hScrollbarThumbPressed,
+        hScrollbarLeftPressed,
+        hScrollbarRightPressed,
+        vScrollbarVisible,
+        vScrollbarThumbPressed,
+        vScrollbarUpPressed,
+        vScrollbarDownPressed,
+    };
+    using ScrollFlags = FlagHolder<uint16_t, ScrollFlag>;
+
     struct ScrollArea
     {
-        uint16_t flags{};
+        ScrollFlags flags{};
         int32_t contentOffsetX{};
         int32_t contentWidth{};
         int32_t hThumbLeft{};
@@ -24,18 +39,6 @@ namespace OpenRCT2
         int32_t contentHeight{};
         int32_t vThumbTop{};
         int32_t vThumbBottom{};
-    };
-
-    enum SCROLL_FLAGS
-    {
-        HSCROLLBAR_VISIBLE = (1 << 0),
-        HSCROLLBAR_THUMB_PRESSED = (1 << 1),
-        HSCROLLBAR_LEFT_PRESSED = (1 << 2),
-        HSCROLLBAR_RIGHT_PRESSED = (1 << 3),
-        VSCROLLBAR_VISIBLE = (1 << 4),
-        VSCROLLBAR_THUMB_PRESSED = (1 << 5),
-        VSCROLLBAR_UP_PRESSED = (1 << 6),
-        VSCROLLBAR_DOWN_PRESSED = (1 << 7),
     };
 
     enum

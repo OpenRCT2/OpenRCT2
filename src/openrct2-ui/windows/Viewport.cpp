@@ -7,13 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/SpriteIds.h>
-#include <openrct2/audio/Audio.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Map.h>
@@ -79,7 +78,7 @@ namespace OpenRCT2::Ui::Windows
             setWidgets(_viewportWidgets);
 
             // Create viewport
-            ViewportCreate(*this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
+            ViewportCreate(*this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).toCoordsXYZ()));
             if (viewport == nullptr)
             {
                 close();
@@ -96,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
                 savedViewPos = { x - (viewport->ViewWidth() / 2), y - (viewport->ViewHeight() / 2) };
             }
 
-            viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
+            viewport->flags.set(ViewportFlag::soundOn, ViewportFlag::independentRotation);
 
             WindowSetResize(*this, kWindowSize, { (ContextGetWidth() * 4) / 5, (ContextGetHeight() * 4) / 5 });
         }
@@ -107,9 +106,9 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow == nullptr)
                 return;
 
-            if (viewport != nullptr && viewport->flags != (mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION))
+            if (viewport != nullptr && viewport->flags != mainWindow->viewport->flags.with(ViewportFlag::independentRotation))
             {
-                viewport->flags = mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
+                viewport->flags = mainWindow->viewport->flags.with(ViewportFlag::independentRotation);
                 invalidateWidget(WIDX_VIEWPORT);
             }
         }

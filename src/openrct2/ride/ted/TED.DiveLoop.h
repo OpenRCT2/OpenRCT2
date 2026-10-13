@@ -53,36 +53,36 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0000,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = { {
-            EnumsToFlags(PS::right, PS::centre, PS::topRight, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                             // inverted
-            kSegmentsUnimplemented,                                             // wide
+            { PS::right, PS::centre, PS::topRight, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                   // inverted
+            kSegmentsUnimplemented,                                   // wide
         } },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq1 = {
         .clearance = { 0, 32, 0, 88, { 0b0100, 0 }, {} },
         .allowedWallEdges = 0b0110,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::centre, PS::topLeft, PS::topRight), // narrow
-            kSegmentsUnimplemented,                                       // inverted
-            kSegmentsUnimplemented,                                       // wide
+            { PS::top, PS::centre, PS::topLeft, PS::topRight }, // narrow
+            kSegmentsUnimplemented,                             // inverted
+            kSegmentsUnimplemented,                             // wide
         } },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq2 = {
         .clearance = { -32, 0, 0, 88, { 0b0001, 0 }, {} },
         .allowedWallEdges = 0b1001,
         .blockedSegments = { {
-            EnumsToFlags(PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight), // narrow
-            kSegmentsUnimplemented,                                                // inverted
-            kSegmentsUnimplemented,                                                // wide
+            { PS::bottom, PS::centre, PS::bottomLeft, PS::bottomRight }, // narrow
+            kSegmentsUnimplemented,                                      // inverted
+            kSegmentsUnimplemented,                                      // wide
         } },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq3 = {
         .clearance = { -32, 32, 32, 80, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                                 // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                                       // inverted
+            kSegmentsUnimplemented,                                                       // wide
         } },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq4 = {
@@ -90,9 +90,9 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                                 // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                                       // inverted
+            kSegmentsUnimplemented,                                                       // wide
         } },
     };
     static constexpr SequenceDescriptor kLeftEighthDiveLoopUpToOrthogonalSeq5 = {
@@ -101,9 +101,9 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            EnumsToFlags(PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft), // narrow
-            kSegmentsUnimplemented,                                                                 // inverted
-            kSegmentsUnimplemented,                                                                 // wide
+            { PS::top, PS::left, PS::centre, PS::topLeft, PS::topRight, PS::bottomLeft }, // narrow
+            kSegmentsUnimplemented,                                                       // inverted
+            kSegmentsUnimplemented,                                                       // wide
         } },
     };
     static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq0 = {

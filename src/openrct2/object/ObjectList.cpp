@@ -10,13 +10,10 @@
 #include "ObjectList.h"
 
 #include "../Context.h"
-#include "../Game.h"
 #include "../core/EnumUtils.hpp"
 #include "../object/Object.h"
-#include "../sawyer_coding/SawyerCoding.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"
-#include "ObjectRepository.h"
 
 #include <array>
 #include <cstring>
@@ -180,7 +177,7 @@ namespace OpenRCT2
         auto& subList = GetList(type);
         for (size_t i = 0; i < subList.size(); i++)
         {
-            if (subList[i].Generation == ObjectGeneration::JSON && subList[i].Identifier == identifier)
+            if (subList[i].Generation == ObjectGeneration::json && subList[i].Identifier == identifier)
             {
                 return static_cast<ObjectEntryIndex>(i);
             }
@@ -194,7 +191,7 @@ namespace OpenRCT2
         auto& subList = GetList(type);
         for (size_t i = 0; i < subList.size(); i++)
         {
-            if (subList[i].Generation == ObjectGeneration::DAT && subList[i].Entry.GetName() == identifier
+            if (subList[i].Generation == ObjectGeneration::dat && subList[i].Entry.GetName() == identifier
                 && subList[i].Entry.GetSourceGame() != ObjectSourceGame::custom)
             {
                 return static_cast<ObjectEntryIndex>(i);

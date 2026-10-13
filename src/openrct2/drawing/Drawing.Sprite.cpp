@@ -19,10 +19,12 @@
 #include "../core/Guard.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
+#include "../interface/ZoomLevel.h"
 #include "../platform/Platform.h"
 #include "../rct1/Csg.h"
 #include "../ui/UiContext.h"
 #include "Drawing.h"
+#include "RenderTarget.h"
 #include "ScrollingText.h"
 
 #include <cassert>
@@ -309,6 +311,34 @@ static void OverrideElementOffsets(size_t index, G1Element& element)
             element.xOffset -= 1; // Steeplechase leftEighthToDiag angle 2
             break;
     }
+}
+
+static auto GetMaskFunction()
+{
+    if (Platform::AVX2Available())
+    {
+        LOG_VERBOSE("registering AVX2 mask function");
+        return MaskAvx2;
+    }
+    else if (Platform::SSE41Available())
+    {
+        LOG_VERBOSE("registering SSE4.1 mask function");
+        return MaskSse4_1;
+    }
+    else
+    {
+        LOG_VERBOSE("registering scalar mask function");
+        return MaskScalar;
+    }
+}
+
+static const auto MaskFunc = GetMaskFunction();
+
+void MaskFn(
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc,
+    PaletteIndex* RESTRICT dst, int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+{
+    MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
 static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1Element* elements)
@@ -849,7 +879,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     int32_t height = g1->height;
 
     // This is the start y coordinate on the destination
-    int16_t dest_start_y = y + g1->yOffset;
+    int32_t dest_start_y = y + g1->yOffset;
 
     // For whatever reason the RLE version does not use
     // the zoom mask on the y coordinate but does on x.
@@ -908,7 +938,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
-    int16_t dest_start_x = ((x + g1->xOffset + ~zoom_mask) & zoom_mask) - rt.WorldX();
+    int32_t dest_start_x = ((x + g1->xOffset + ~zoom_mask) & zoom_mask) - rt.WorldX();
 
     if (dest_start_x < 0)
     {

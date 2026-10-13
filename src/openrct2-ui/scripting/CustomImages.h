@@ -14,10 +14,11 @@
     #include <memory>
     #include <openrct2/drawing/Image.h>
     #include <openrct2/scripting/Plugin.h>
-    #include <openrct2/scripting/ScriptEngine.h>
 
 namespace OpenRCT2::Scripting
 {
+    class ScriptEngine;
+
     void InitialiseCustomImages(ScriptEngine& scriptEngine);
     std::optional<ImageList> AllocateCustomImages(const std::shared_ptr<Plugin>& plugin, uint32_t count);
     bool FreeCustomImages(const std::shared_ptr<Plugin>& plugin, ImageList range);

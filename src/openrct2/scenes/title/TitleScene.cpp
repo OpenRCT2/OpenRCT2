@@ -18,19 +18,17 @@
 #include "../../audio/Audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
-#include "../../drawing/Drawing.h"
-#include "../../drawing/Text.h"
+#include "../../drawing/Drawing.Screen.h"
+#include "../../drawing/Palette.h"
 #include "../../interface/Screenshot.h"
-#include "../../network/Network.h"
+#include "../../interface/Window.h"
 #include "../../network/NetworkBase.h"
 #include "../../scenario/ScenarioRepository.h"
 #include "../../scenes/SceneManager.h"
 #include "../../ui/UiContext.h"
 #include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
-#include "../../windows/Intent.h"
 #include "../../world/Map.h"
-#include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 
@@ -156,7 +154,7 @@ void TitleScene::Tick()
         {
             gameStateUpdateLogic();
         }
-        UpdatePaletteEffects();
+        Drawing::UpdatePaletteEffects();
         // update_weather_animation();
     }
 
@@ -228,13 +226,13 @@ void TitleScene::TitleInitialise()
                 const ScenarioSource sourceGame = ScenarioRepositoryGetByIndex(s)->SourceGame;
                 switch (sourceGame)
                 {
-                    case ScenarioSource::RCT1:
+                    case ScenarioSource::rct1:
                         RCT1Count++;
                         break;
-                    case ScenarioSource::RCT1_AA:
+                    case ScenarioSource::rct1AA:
                         RCT1AAInstalled = true;
                         break;
-                    case ScenarioSource::RCT1_LL:
+                    case ScenarioSource::rct1LL:
                         RCT1LLInstalled = true;
                         break;
                     default:
@@ -313,7 +311,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
                         Config::Get().interface.currentTitleSequencePreset = configId;
                     }
                     _currentSequence = targetSequence;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     return true;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;

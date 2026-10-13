@@ -77,7 +77,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        if (gameState.entities.GetNumFreeEntities() < 400)
+        if (gameState.entities.getNumFreeEntities() < 400)
         {
             return Result(Status::noFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
@@ -92,7 +92,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        Staff* newPeep = gameState.entities.CreateEntity<Staff>();
+        Staff* newPeep = gameState.entities.createEntity<Staff>();
         if (newPeep == nullptr)
         {
             // Too many peeps exist already.
@@ -102,20 +102,20 @@ namespace OpenRCT2::GameActions
         if (execute == false)
         {
             // In query we just want to see if we can obtain a sprite slot.
-            gameState.entities.EntityRemove(newPeep);
+            gameState.entities.entityRemove(newPeep);
 
             res.setData(StaffHireNewActionResult{ EntityId::GetNull() });
         }
         else
         {
-            newPeep->WindowInvalidateFlags = 0;
-            newPeep->Action = PeepActionType::walking;
-            newPeep->SpecialSprite = 0;
-            newPeep->AnimationImageIdOffset = 0;
-            newPeep->WalkingAnimationFrameNum = 0;
-            newPeep->AnimationType = PeepAnimationType::walking;
-            newPeep->PathCheckOptimisation = 0;
-            newPeep->PeepFlags = 0;
+            newPeep->windowInvalidateFlags = 0;
+            newPeep->action = PeepActionType::walking;
+            newPeep->specialSprite = 0;
+            newPeep->animationImageIdOffset = 0;
+            newPeep->walkingAnimationFrameNum = 0;
+            newPeep->animationType = PeepAnimationType::walking;
+            newPeep->pathCheckOptimisation = 0;
+            newPeep->peepFlags = {};
             newPeep->staffLawnsMown = 0;
             newPeep->staffGardensWatered = 0;
             newPeep->staffLitterSwept = 0;
@@ -130,7 +130,7 @@ namespace OpenRCT2::GameActions
                 if (static_cast<uint8_t>(searchPeep->assignedStaffType) != _staffType)
                     continue;
 
-                usedStaffIds.insert(searchPeep->PeepId);
+                usedStaffIds.insert(searchPeep->peepId);
             }
 
             uint32_t newStaffId = 1;
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
                 newStaffId++;
             }
 
-            newPeep->PeepId = newStaffId;
+            newPeep->peepId = newStaffId;
             newPeep->assignedStaffType = static_cast<StaffType>(_staffType);
 
             auto animPeepType = AnimationPeepType(static_cast<uint8_t>(_staffType) + 1);
@@ -147,18 +147,18 @@ namespace OpenRCT2::GameActions
             if (animPeepType != AnimationPeepType::entertainer)
                 animObjectIndex = findPeepAnimationsIndexForType(animPeepType);
 
-            newPeep->Name = nullptr;
-            newPeep->AnimationObjectIndex = animObjectIndex;
-            newPeep->AnimationGroup = PeepAnimationGroup::normal;
+            newPeep->name = nullptr;
+            newPeep->animationObjectIndex = animObjectIndex;
+            newPeep->animationGroup = PeepAnimationGroup::normal;
 
             auto& objManager = GetContext()->GetObjectManager();
             auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(animObjectIndex);
 
-            newPeep->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
+            newPeep->peepFlags.unset(PeepFlag::slowWalk);
             if (animObj->IsSlowWalking(PeepAnimationGroup::normal))
-                newPeep->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+                newPeep->peepFlags.set(PeepFlag::slowWalk);
 
-            const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->AnimationGroup);
+            const auto& spriteBounds = animObj->GetSpriteBounds(newPeep->animationGroup);
             newPeep->spriteData.width = spriteBounds.spriteWidth;
             newPeep->spriteData.heightMin = spriteBounds.spriteHeightNegative;
             newPeep->spriteData.heightMax = spriteBounds.spriteHeightPositive;
@@ -170,7 +170,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->State = PeepState::picked;
+                newPeep->state = PeepState::picked;
 
                 // INVESTIGATE: x and y are LOCATION_NULL at this point.
                 newPeep->moveTo(newPeep->getLocation());
@@ -178,31 +178,31 @@ namespace OpenRCT2::GameActions
 
             // Staff uses this
             newPeep->setHireDate(GetDate().GetMonthsElapsed());
-            newPeep->PathfindGoal.x = 0xFF;
-            newPeep->PathfindGoal.y = 0xFF;
-            newPeep->PathfindGoal.z = 0xFF;
-            newPeep->PathfindGoal.direction = kInvalidDirection;
+            newPeep->pathfindGoal.x = 0xFF;
+            newPeep->pathfindGoal.y = 0xFF;
+            newPeep->pathfindGoal.z = 0xFF;
+            newPeep->pathfindGoal.direction = kInvalidDirection;
 
             auto colour = StaffGetColour(static_cast<StaffType>(_staffType));
-            newPeep->TshirtColour = colour;
-            newPeep->TrousersColour = colour;
+            newPeep->tShirtColour = colour;
+            newPeep->trousersColour = colour;
 
             // Staff energy determines their walking speed
             switch (gameState.cheats.selectedStaffSpeed)
             {
                 case StaffSpeedCheat::none:
-                    newPeep->Energy = kCheatsStaffNormalSpeed;
-                    newPeep->EnergyTarget = kCheatsStaffNormalSpeed;
+                    newPeep->energy = kCheatsStaffNormalSpeed;
+                    newPeep->energyTarget = kCheatsStaffNormalSpeed;
                     break;
 
                 case StaffSpeedCheat::frozen:
-                    newPeep->Energy = kCheatsStaffFreezeSpeed;
-                    newPeep->EnergyTarget = kCheatsStaffFreezeSpeed;
+                    newPeep->energy = kCheatsStaffFreezeSpeed;
+                    newPeep->energyTarget = kCheatsStaffFreezeSpeed;
                     break;
 
                 case StaffSpeedCheat::fast:
-                    newPeep->Energy = kCheatsStaffFastSpeed;
-                    newPeep->EnergyTarget = kCheatsStaffFastSpeed;
+                    newPeep->energy = kCheatsStaffFastSpeed;
+                    newPeep->energyTarget = kCheatsStaffFastSpeed;
                     break;
             }
 
@@ -218,7 +218,7 @@ namespace OpenRCT2::GameActions
     void StaffHireNewAction::AutoPositionNewStaff(GameState_t& gameState, Park::ParkData& park, Peep* newPeep) const
     {
         // Find a location to place new staff member
-        newPeep->State = PeepState::falling;
+        newPeep->state = PeepState::falling;
 
         uint32_t count = 0;
         PathElement* guest_tile = nullptr;
@@ -227,10 +227,10 @@ namespace OpenRCT2::GameActions
         {
             for (auto guest : EntityList<Guest>())
             {
-                if (guest->State == PeepState::walking)
+                if (guest->state == PeepState::walking)
                 {
                     // Check the walking guest's tile. Only count them if they're on a path tile.
-                    guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
+                    guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->nextLoc });
                     if (guest_tile != nullptr)
                         ++count;
                 }
@@ -246,9 +246,9 @@ namespace OpenRCT2::GameActions
 
             for (auto guest : EntityList<Guest>())
             {
-                if (guest->State == PeepState::walking)
+                if (guest->state == PeepState::walking)
                 {
-                    guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->NextLoc });
+                    guest_tile = MapGetPathElementAt(TileCoordsXYZ{ guest->nextLoc });
                     if (guest_tile != nullptr)
                     {
                         if (rand == 0)
@@ -268,7 +268,7 @@ namespace OpenRCT2::GameActions
             else
             {
                 // User must pick a location
-                newPeep->State = PeepState::picked;
+                newPeep->state = PeepState::picked;
                 newLocation = newPeep->getLocation();
             }
         }
@@ -279,16 +279,12 @@ namespace OpenRCT2::GameActions
             {
                 auto rand = ScenarioRandMax(static_cast<uint32_t>(park.entrances.size()));
                 const auto& entrance = park.entrances[rand];
-                auto dir = entrance.direction;
-                newLocation = entrance;
-                // TODO: Replace with CoordsDirectionDelta
-                newLocation.x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
-                newLocation.y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
+                newLocation = entrance + CoordsDirectionDelta[entrance.direction] + CoordsXY{ 16, 16 };
             }
             else
             {
                 // User must pick a location
-                newPeep->State = PeepState::picked;
+                newPeep->state = PeepState::picked;
                 newLocation = newPeep->getLocation();
             }
         }

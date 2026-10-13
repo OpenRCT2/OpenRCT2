@@ -1,0 +1,16 @@
+{
+    "scenario_name": "Good Knight Park",
+    "sha256": "6c4dac2f18d55b4a7f414cd88d30fa30cb22c502cefa131f21984a4e1d836e48",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Knight Shift 1"
+        },
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Knight Shift 2"
+        }
+    ]
+}

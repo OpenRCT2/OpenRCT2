@@ -198,6 +198,7 @@
     <ClInclude Include="core\Collections.hpp" />
     <ClInclude Include="core\Compression.h" />
     <ClInclude Include="core\Console.hpp" />
+    <ClInclude Include="core\CoordsRange.h" />
     <ClInclude Include="core\Crypt.h" />
     <ClInclude Include="core\DataSerialiser.h" />
     <ClInclude Include="core\DataSerialiserTag.h" />
@@ -251,8 +252,8 @@
     <ClInclude Include="drawing\BlendColourMap.h" />
     <ClInclude Include="drawing\Colour.h" />
     <ClInclude Include="drawing\ColourMap.h" />
-    <ClInclude Include="drawing\ColourPalette.h" />
     <ClInclude Include="drawing\Drawing.h" />
+    <ClInclude Include="drawing\Drawing.Screen.h" />
     <ClInclude Include="drawing\Drawing.String.h" />
     <ClInclude Include="drawing\FilterPaletteIds.h" />
     <ClInclude Include="drawing\Font.h" />
@@ -264,8 +265,13 @@
     <ClInclude Include="drawing\ImageImporter.h" />
     <ClInclude Include="drawing\InvalidationGrid.h" />
     <ClInclude Include="drawing\LightFX.h" />
+    <ClInclude Include="drawing\Line.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
     <ClInclude Include="drawing\PaletteIndex.h" />
+    <ClInclude Include="drawing\Palette.h" />
+    <ClInclude Include="drawing\PaletteMap.h" />
+    <ClInclude Include="drawing\PaletteType.h" />
+    <ClInclude Include="drawing\PickupPeep.h" />
     <ClInclude Include="drawing\Rectangle.h" />
     <ClInclude Include="drawing\RenderTarget.h" />
     <ClInclude Include="drawing\ScrollingText.h" />
@@ -295,19 +301,21 @@
     <ClInclude Include="GameStateSnapshots.h" />
     <ClInclude Include="Identifiers.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="interface\Chat.h" />
     <ClInclude Include="interface\ColourWithFlags.h" />
     <ClInclude Include="interface\Cursors.h" />
     <ClInclude Include="interface\FontFamilies.h" />
     <ClInclude Include="interface\Fonts.h" />
     <ClInclude Include="interface\InteractiveConsole.h" />
+    <ClInclude Include="interface\ScreenCoords.hpp" />
     <ClInclude Include="interface\Screenshot.h" />
     <ClInclude Include="interface\ScrollArea.h" />
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
+    <ClInclude Include="interface\WidgetIndexGlobals.h" />
     <ClInclude Include="interface\Window.h" />
     <ClInclude Include="interface\WindowBase.h" />
     <ClInclude Include="interface\WindowClasses.h" />
+    <ClInclude Include="interface\WindowFlags.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\Currency.h" />
@@ -425,6 +433,7 @@
     <ClInclude Include="paint\tile_element\Paint.Tunnel.h" />
     <ClInclude Include="paint\tile_element\Paint.Wall.h" />
     <ClInclude Include="paint\tile_element\Segment.h" />
+    <ClInclude Include="paint\track\coaster\FlyingRollerCoasterInverted.h" />
     <ClInclude Include="paint\track\coaster\WoodenRollerCoaster.hpp" />
     <ClInclude Include="paint\track\Segment.h" />
     <ClInclude Include="paint\track\Support.h" />
@@ -439,6 +448,7 @@
     <ClInclude Include="park\ParkPreview.h" />
     <ClInclude Include="peep\Guest.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
+    <ClInclude Include="peep\PeepActionFormat.h" />
     <ClInclude Include="peep\PeepAnimations.h" />
     <ClInclude Include="peep\PeepSpriteIds.h" />
     <ClInclude Include="peep\PeepThoughts.h" />
@@ -458,6 +468,7 @@
     <ClInclude Include="rct1\Csg.h" />
     <ClInclude Include="rct1\Limits.h" />
     <ClInclude Include="rct1\RCT1.h" />
+    <ClInclude Include="rct1\RCT1File.h" />
     <ClInclude Include="rct1\Tables.h" />
     <ClInclude Include="rct2\DATLimits.h" />
     <ClInclude Include="rct2\Limits.h" />
@@ -600,6 +611,7 @@
     <ClInclude Include="ride\Vehicle.h" />
     <ClInclude Include="ride\VehicleColour.h" />
     <ClInclude Include="ride\VehicleData.h" />
+    <ClInclude Include="ride\VehicleFlags.h" />
     <ClInclude Include="ride\VehicleGeometry.h" />
     <ClInclude Include="ride\VehicleRiderControl.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
@@ -668,6 +680,8 @@
     <ClInclude Include="scripting\bindings\world\ScDate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScMap.hpp" />
     <ClInclude Include="scripting\bindings\world\ScPark.hpp" />
+    <ClInclude Include="scripting\bindings\world\ScPathConnection.h" />
+    <ClInclude Include="scripting\bindings\world\ScPathNavigator.h" />
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
     <ClInclude Include="scripting\bindings\world\ScResearch.hpp" />
     <ClInclude Include="scripting\bindings\world\ScScenario.hpp" />
@@ -693,9 +707,11 @@
     <ClInclude Include="world\ConstructionClearance.h" />
     <ClInclude Include="world\Entrance.h" />
     <ClInclude Include="world\Footpath.h" />
+    <ClInclude Include="world\FootpathDragSlope.h" />
     <ClInclude Include="world\LargeScenery.h" />
     <ClInclude Include="world\Location.hpp" />
     <ClInclude Include="world\Map.h" />
+    <ClInclude Include="world\MapOwnership.h" />
     <ClInclude Include="world\MapAnimation.h" />
     <ClInclude Include="world\MapLimits.h" />
     <ClInclude Include="world\MapRangeView.hpp" />
@@ -889,17 +905,22 @@
     <ClCompile Include="drawing\Colour.cpp" />
     <ClCompile Include="drawing\ColourMap.cpp" />
     <ClCompile Include="drawing\Drawing.cpp" />
+    <ClCompile Include="drawing\Drawing.Screen.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.BMP.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.cpp" />
     <ClCompile Include="drawing\Drawing.Sprite.RLE.cpp" />
     <ClCompile Include="drawing\Drawing.String.cpp" />
     <ClCompile Include="drawing\Font.cpp" />
     <ClCompile Include="drawing\Image.cpp" />
+    <ClCompile Include="drawing\ImageId.cpp" />
     <ClCompile Include="drawing\ImageImporter.cpp" />
     <ClCompile Include="drawing\InvalidationGrid.cpp" />
     <ClCompile Include="drawing\LightFX.cpp" />
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
+    <ClCompile Include="drawing\Palette.cpp" />
+    <ClCompile Include="drawing\PaletteMap.cpp" />
+    <ClCompile Include="drawing\PickupPeep.cpp" />
     <ClCompile Include="drawing\Rectangle.cpp" />
     <ClCompile Include="drawing\RenderTarget.cpp" />
     <ClCompile Include="drawing\ScrollingText.cpp" />
@@ -928,7 +949,6 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStateSnapshots.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="interface\Chat.cpp" />
     <ClCompile Include="interface\ColourWithFlags.cpp" />
     <ClCompile Include="interface\Cursors.cpp" />
     <ClCompile Include="interface\FontFamilies.cpp" />
@@ -999,7 +1019,7 @@
     <ClCompile Include="object\TerrainEdgeObject.cpp" />
     <ClCompile Include="object\TerrainSurfaceObject.cpp" />
     <ClCompile Include="object\WallObject.cpp" />
-    <ClCompile Include="object\WallSceneryEntry.cpp" />
+    <ClCompile Include="object\WaterEntry.cpp" />
     <ClCompile Include="object\WaterObject.cpp" />
     <ClCompile Include="OpenRCT2.cpp" />
     <ClCompile Include="openrct2_pch.cpp" Condition="'$(UsePCH)'=='true'">
@@ -1134,6 +1154,7 @@
     <ClCompile Include="park\ParkFile.cpp" />
     <ClCompile Include="park\ParkPreview.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
+    <ClCompile Include="peep\PeepActionFormat.cpp" />
     <ClCompile Include="peep\PeepAnimations.cpp" />
     <ClCompile Include="peep\PeepThoughts.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
@@ -1150,6 +1171,7 @@
     <ClCompile Include="rct12\ScenarioPatcher.cpp" />
     <ClCompile Include="rct12\TD46.cpp" />
     <ClCompile Include="rct1\Csg.cpp" />
+    <ClCompile Include="rct1\RCT1File.cpp" />
     <ClCompile Include="rct1\S4Importer.cpp" />
     <ClCompile Include="rct1\T4Importer.cpp" />
     <ClCompile Include="rct1\Tables.cpp" />
@@ -1249,6 +1271,8 @@
     <ClCompile Include="scripting\bindings\ride\ScTrackSegment.cpp" />
     <ClCompile Include="scripting\bindings\world\ScAward.cpp" />
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
+    <ClCompile Include="scripting\bindings\world\ScPathConnection.cpp" />
+    <ClCompile Include="scripting\bindings\world\ScPathNavigator.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />
     <ClCompile Include="scripting\bindings\world\ScResearch.cpp" />
@@ -1267,8 +1291,10 @@
     <ClCompile Include="world\ConstructionClearance.cpp" />
     <ClCompile Include="world\Entrance.cpp" />
     <ClCompile Include="world\Footpath.cpp" />
+    <ClCompile Include="world\FootpathDragSlope.cpp" />
     <ClCompile Include="world\Map.cpp" />
     <ClCompile Include="world\MapAnimation.cpp" />
+    <ClCompile Include="world\MapOwnership.cpp" />
     <ClCompile Include="world\MapRangeView.cpp" />
     <ClCompile Include="world\MapSelection.cpp" />
     <ClCompile Include="world\Park.cpp" />

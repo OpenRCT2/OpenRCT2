@@ -11,23 +11,22 @@
 
 #include "ShortcutIds.h"
 
-#include <SDL.h>
-#include <SDL_gamecontroller.h>
+#include <SDL_events.h>
+#include <SDL_timer.h>
 #include <cmath>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
+#include <openrct2-ui/interface/Chat.h>
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
+#include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Window.h>
 #include <openrct2/paint/VirtualFloor.h>
-#include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
@@ -141,6 +140,9 @@ void InputManager::processAnalogueInput()
 {
     _analogueScroll.x = 0;
     _analogueScroll.y = 0;
+
+    if (!ContextHasFocus())
+        return;
 
     const int32_t deadzone = Config::Get().general.gamepadDeadzone;
     const float sensitivity = Config::Get().general.gamepadSensitivity;
@@ -449,6 +451,11 @@ void InputManager::processChat(const InputEvent& e)
 
 void InputManager::processHoldEvents()
 {
+    _viewScroll = { 0, 0 };
+
+    if (!ContextHasFocus())
+        return;
+
     // Get mouse state
     _mouseState = SDL_GetMouseState(nullptr, nullptr);
 
@@ -459,9 +466,6 @@ void InputManager::processHoldEvents()
     std::memcpy(_keyboardState.data(), keys, numkeys);
 
     // Check view scroll shortcuts
-    _viewScroll.x = 0;
-    _viewScroll.y = 0;
-
     if (!hasTextInputFocus())
     {
         auto& shortcutManager = GetShortcutManager();

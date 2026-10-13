@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "../../core/FileStream.h"
-#include "../../drawing/Drawing.h"
 #include "SpriteCommands.h"
 
 #include <cstdint>

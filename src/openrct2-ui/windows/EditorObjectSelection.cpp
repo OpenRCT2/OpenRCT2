@@ -8,9 +8,9 @@
  *****************************************************************************/
 
 #include <bit>
-#include <cctype>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
@@ -20,19 +20,20 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ResultWithMessage.h>
-#include <openrct2/actions/general/LoadOrQuitAction.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/ColourMap.h>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Palette.h>
 #include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/object/ClimateObject.h>
 #include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
@@ -40,11 +41,9 @@
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/SceneryGroupObject.h>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenes/SceneManager.h>
 #include <openrct2/scenes/editor/EditorController.h>
-#include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
@@ -110,7 +109,7 @@ namespace OpenRCT2::Ui::Windows
     {
         const ObjectRepositoryItem* repositoryItem;
         std::unique_ptr<RideFilters> filter;
-        uint8_t* flags;
+        ObjectSelectionFlags* flags;
     };
 
     static constexpr uint8_t _numSourceGameItems = 8;
@@ -489,7 +488,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             objectManager.UnloadObjects({ descriptor });
                             objectManager.LoadObject(descriptor, entryIndex);
-                            GfxInvalidateScreen();
+                            Drawing::GfxInvalidateScreen();
                         }
                     }
                     break;
@@ -540,7 +539,7 @@ namespace OpenRCT2::Ui::Windows
                     auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget.left, windowPos.y + ddWidget.top }, ddWidget.height(),
-                        colours[ddWidget.colour], Dropdown::Flag::StayOpen, _numSourceGameItems + numSelectionItems);
+                        colours[ddWidget.colour], {}, _numSourceGameItems + numSelectionItems);
 
                     for (int32_t i = 0; i < _numSourceGameItems; i++)
                     {
@@ -618,8 +617,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             ObjectListItem* listItem = &_listItems[selected_object];
-            uint8_t object_selection_flags = *listItem->flags;
-            if (object_selection_flags & ObjectSelectionFlags::Flag6)
+            ObjectSelectionFlags objectSelectionFlags = *listItem->flags;
+            if (objectSelectionFlags.has(ObjectSelectionFlag::flag5))
                 return;
 
             invalidate();
@@ -654,7 +653,7 @@ namespace OpenRCT2::Ui::Windows
 
             Editor::InputFlags inputFlags = { Editor::InputFlag::unk1, Editor::InputFlag::selectObjectsInSceneryGroup };
             // If already selected
-            if (!(object_selection_flags & ObjectSelectionFlags::Selected))
+            if (!objectSelectionFlags.has(ObjectSelectionFlag::selected))
                 inputFlags.set(Editor::InputFlag::select);
 
             Editor::gSceneryGroupPartialSelectError.clear();
@@ -694,8 +693,8 @@ namespace OpenRCT2::Ui::Windows
             if (selectedObject != -1)
             {
                 ObjectListItem* listItem = &_listItems[selectedObject];
-                uint8_t objectSelectionFlags = *listItem->flags;
-                if (objectSelectionFlags & ObjectSelectionFlags::Flag6)
+                ObjectSelectionFlags objectSelectionFlags = *listItem->flags;
+                if (objectSelectionFlags.has(ObjectSelectionFlag::flag5))
                 {
                     selectedObject = -1;
                 }
@@ -741,7 +740,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y + kScrollableRowHeight >= rt.y && screenCoords.y <= rt.y + rt.height)
                 {
                     // Draw checkbox
-                    if (gLegacyScene != LegacyScene::trackDesignsManager && !(*listItem.flags & 0x20))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && !listItem.flags->has(ObjectSelectionFlag::flag5))
                         Rectangle::fillInset(
                             rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1],
                             Rectangle::BorderStyle::inset, Rectangle::FillBrightness::dark,
@@ -749,7 +748,7 @@ namespace OpenRCT2::Ui::Windows
 
                     // Highlight background
                     auto highlighted = i == static_cast<size_t>(selectedListItem)
-                        && !(*listItem.flags & ObjectSelectionFlags::Flag6);
+                        && !listItem.flags->has(ObjectSelectionFlag::flag5);
                     if (highlighted)
                     {
                         auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
@@ -757,12 +756,12 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw checkmark
-                    if (gLegacyScene != LegacyScene::trackDesignsManager && (*listItem.flags & ObjectSelectionFlags::Selected))
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && listItem.flags->has(ObjectSelectionFlag::selected))
                     {
                         screenCoords.x = 2;
                         auto darkness = highlighted ? TextDarkness::extraDark : TextDarkness::dark;
                         auto colour2 = colours[1].withFlag(ColourFlag::translucent, false);
-                        if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
+                        if (listItem.flags->hasAny(ObjectSelectionFlag::inUse, ObjectSelectionFlag::alwaysRequired))
                             colour2.flags.set(ColourFlag::inset, true);
 
                         drawText(rt, screenCoords, kCheckMarkString, { colour2, FontStyle::medium, darkness });
@@ -776,7 +775,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Drawing::Colour colour = Drawing::Colour::black;
                     auto darkness = TextDarkness::regular;
-                    if (*listItem.flags & ObjectSelectionFlags::Flag6)
+                    if (listItem.flags->has(ObjectSelectionFlag::flag5))
                     {
                         colour = colours[1].colour;
                         darkness = TextDarkness::dark;
@@ -866,12 +865,12 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 titleWidget.setString(STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE);
-                installTrackWidget.type = WidgetType::button;
+                installTrackWidget.setVisible();
             }
             else if (gLegacyScene == LegacyScene::trackDesigner)
             {
                 titleWidget.setString(STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES);
-                installTrackWidget.type = WidgetType::empty;
+                installTrackWidget.setHidden();
             }
             else
             {
@@ -884,7 +883,7 @@ namespace OpenRCT2::Ui::Windows
 
                 _windowTitle = FormatStringID(STR_OBJECT_SELECTION, stringId);
                 titleWidget.setString(_windowTitle.c_str());
-                installTrackWidget.type = WidgetType::empty;
+                installTrackWidget.setHidden();
             }
 
             // Set filter dropdown caption
@@ -917,27 +916,22 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
                 auto& widget = widgets[WIDX_TAB_1 + i];
-                if (ObjectSelectionPages[i].Image != kImageIndexUndefined)
+                widget.setVisible(ObjectSelectionPages[i].Image != kImageIndexUndefined);
+                if (widget.isVisible())
                 {
-                    widget.type = WidgetType::tab;
                     widget.left = x;
                     widget.right = x + 30;
                     x += 31;
                 }
-                else
-                    widget.type = WidgetType::empty;
             }
 
-            if (Config::Get().general.debuggingTools)
-                widgets[WIDX_RELOAD_OBJECT].type = WidgetType::imgBtn;
-            else
-                widgets[WIDX_RELOAD_OBJECT].type = WidgetType::empty;
+            widgets[WIDX_RELOAD_OBJECT].setVisible(Config::Get().general.debuggingTools);
 
             if (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::trackDesigner)
             {
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
-                    widgets[WIDX_TAB_1 + i].type = WidgetType::empty;
+                    widgets[WIDX_TAB_1 + i].setHidden();
                 }
             }
 
@@ -961,18 +955,14 @@ namespace OpenRCT2::Ui::Windows
             for (int8_t i = 0; i <= 6; i++)
             {
                 widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : kStringIdNone;
-                widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WidgetType::tab : WidgetType::empty;
+                widgets[WIDX_SUB_TAB_0 + i].setVisible(i < numSubTabs);
                 setWidgetPressed(WIDX_SUB_TAB_0 + i, false);
             }
 
             // Mark current sub-tab as active, and toggle tab frame
+            widgets[WIDX_FILTER_RIDE_TAB_FRAME].setVisible(hasSubTabs);
             if (hasSubTabs)
-            {
                 setWidgetPressed(WIDX_SUB_TAB_0 + _selectedSubTab, true);
-                widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WidgetType::imgBtn;
-            }
-            else
-                widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WidgetType::empty;
 
             // The ride tab has two headers for the list
             bool isRideTab = GetSelectedObjectType() == ObjectType::ride;
@@ -980,13 +970,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 int32_t width_limit = (widgets[WIDX_LIST].width() - 16) / 2;
 
-                widgets[WIDX_LIST_SORT_TYPE].type = WidgetType::tableHeader;
+                widgets[WIDX_LIST_SORT_TYPE].setVisible();
                 widgets[WIDX_LIST_SORT_TYPE].top = widgets[WIDX_FILTER_TEXT_BOX].bottom + 3;
                 widgets[WIDX_LIST_SORT_TYPE].bottom = widgets[WIDX_LIST_SORT_TYPE].top + 13;
                 widgets[WIDX_LIST_SORT_TYPE].left = 4;
                 widgets[WIDX_LIST_SORT_TYPE].right = widgets[WIDX_LIST_SORT_TYPE].left + width_limit;
 
-                widgets[WIDX_LIST_SORT_RIDE].type = WidgetType::tableHeader;
+                widgets[WIDX_LIST_SORT_RIDE].setVisible();
                 widgets[WIDX_LIST_SORT_RIDE].top = widgets[WIDX_LIST_SORT_TYPE].top;
                 widgets[WIDX_LIST_SORT_RIDE].bottom = widgets[WIDX_LIST_SORT_TYPE].bottom;
                 widgets[WIDX_LIST_SORT_RIDE].left = widgets[WIDX_LIST_SORT_TYPE].right + 1;
@@ -996,8 +986,8 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_LIST_SORT_TYPE].type = WidgetType::empty;
-                widgets[WIDX_LIST_SORT_RIDE].type = WidgetType::empty;
+                widgets[WIDX_LIST_SORT_TYPE].setHidden();
+                widgets[WIDX_LIST_SORT_RIDE].setHidden();
 
                 widgets[WIDX_LIST].top = widgets[WIDX_FILTER_TEXT_BOX].bottom + 2;
             }
@@ -1016,7 +1006,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
                 const auto& widget = widgets[WIDX_TAB_1 + i];
-                if (widget.type != WidgetType::empty)
+                if (widget.isVisible())
                 {
                     auto image = ImageId(ObjectSelectionPages[i].Image);
                     auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
@@ -1035,7 +1025,7 @@ namespace OpenRCT2::Ui::Windows
                 for (auto i = 0u; i < currentPage.subTabs.size(); i++)
                 {
                     const auto& widget = widgets[WIDX_SUB_TAB_0 + i];
-                    if (widget.type == WidgetType::empty)
+                    if (widget.isHidden())
                         continue;
 
                     auto& subTabDef = currentPage.subTabs[i];
@@ -1084,7 +1074,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw sort button text
             const auto& listSortTypeWidget = widgets[WIDX_LIST_SORT_TYPE];
-            if (listSortTypeWidget.type != WidgetType::empty)
+            if (listSortTypeWidget.isVisible())
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
@@ -1094,7 +1084,7 @@ namespace OpenRCT2::Ui::Windows
                 drawTextEllipsised(rt, screenPos, listSortTypeWidget.width() - 1, STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
             }
             const auto& listSortRideWidget = widgets[WIDX_LIST_SORT_RIDE];
-            if (listSortRideWidget.type != WidgetType::empty)
+            if (listSortRideWidget.isVisible())
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
@@ -1192,9 +1182,9 @@ namespace OpenRCT2::Ui::Windows
             const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
             for (int32_t i = 0; i < numObjects; i++)
             {
-                uint8_t selectionFlags = Editor::_objectSelectionFlags[i];
+                auto selectionFlags = Editor::_objectSelectionFlags[i];
                 const ObjectRepositoryItem* item = &items[i];
-                if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6)
+                if (item->Type == GetSelectedObjectType() && !selectionFlags.has(ObjectSelectionFlag::flag5)
                     && FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags)
                     && FilterCompatibilityObject(*item, selectionFlags))
                 {
@@ -1422,7 +1412,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        bool FilterSelected(uint8_t objectFlag)
+        bool FilterSelected(ObjectSelectionFlags objectFlags)
         {
             // Track Manager has no concept of selection filtering, so always return true
             if (gLegacyScene == LegacyScene::trackDesignsManager)
@@ -1433,11 +1423,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 return true;
             }
-            if (IsFilterActive(FILTER_SELECTED) && (objectFlag & ObjectSelectionFlags::Selected))
+            if (IsFilterActive(FILTER_SELECTED) && objectFlags.has(ObjectSelectionFlag::selected))
             {
                 return true;
             }
-            if (IsFilterActive(FILTER_NONSELECTED) && !(objectFlag & ObjectSelectionFlags::Selected))
+            if (IsFilterActive(FILTER_NONSELECTED) && !objectFlags.has(ObjectSelectionFlag::selected))
             {
                 return true;
             }
@@ -1445,10 +1435,10 @@ namespace OpenRCT2::Ui::Windows
             return false;
         }
 
-        bool FilterCompatibilityObject(const ObjectRepositoryItem& item, uint8_t objectFlag)
+        bool FilterCompatibilityObject(const ObjectRepositoryItem& item, ObjectSelectionFlags objectFlags)
         {
             // only show compat objects if they are selected already.
-            return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || (objectFlag & ObjectSelectionFlags::Selected);
+            return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || objectFlags.has(ObjectSelectionFlag::selected);
         }
 
         bool IsFilterActive(const uint16_t filter) const
@@ -1694,7 +1684,7 @@ namespace OpenRCT2::Ui::Windows
         bool showFallbackWarning = false;
         for (int32_t i = 0; i < numItems; i++)
         {
-            if (Editor::_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
+            if (Editor::_objectSelectionFlags[i].has(ObjectSelectionFlag::selected))
             {
                 const auto* item = &items[i];
                 auto descriptor = ObjectEntryDescriptor(*item);
@@ -1733,7 +1723,7 @@ namespace OpenRCT2::Ui::Windows
         if (Editor::_numSelectedObjectsForType[EnumValue(ObjectType::water)] == 0)
         {
             // Reloads the default cyan water palette if no palette was selected.
-            LoadPalette();
+            Drawing::LoadPalette();
         }
         if (showFallbackWarning)
             ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, kStringIdEmpty, {});

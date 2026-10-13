@@ -11,21 +11,8 @@
 
     #include "ScTile.hpp"
 
-    #include "../../../Context.h"
-    #include "../../../core/Guard.hpp"
-    #include "../../../drawing/ScrollingText.h"
-    #include "../../../entity/EntityRegistry.h"
-    #include "../../../object/LargeSceneryEntry.h"
-    #include "../../../world/Footpath.h"
     #include "../../../world/Map.h"
-    #include "../../../world/Scenery.h"
     #include "../../../world/tile_element/LargeSceneryElement.h"
-    #include "../../ScriptEngine.h"
-    #include "ScTileElement.hpp"
-
-    #include <cstdio>
-    #include <cstring>
-    #include <utility>
 
 namespace OpenRCT2::Scripting
 {
@@ -102,7 +89,7 @@ namespace OpenRCT2::Scripting
                 if (numElements > currentNumElements)
                 {
                     // Allocate space for the extra tile elements (inefficient but works)
-                    auto pos = TileCoordsXYZ(TileCoordsXY(coords), 0).ToCoordsXYZ();
+                    auto pos = TileCoordsXYZ(TileCoordsXY(coords), 0).toCoordsXYZ();
                     auto numToInsert = numElements - currentNumElements;
                     for (size_t i = 0; i < numToInsert; i++)
                     {
@@ -154,7 +141,7 @@ namespace OpenRCT2::Scripting
         {
             std::vector<TileElement> data(first, first + origNumElements);
 
-            auto pos = TileCoordsXYZ(TileCoordsXY(coords), 0).ToCoordsXYZ();
+            auto pos = TileCoordsXYZ(TileCoordsXY(coords), 0).toCoordsXYZ();
             auto newElement = TileElementInsert(pos, 0, TileElementType::surface);
             if (newElement == nullptr)
             {
@@ -201,10 +188,10 @@ namespace OpenRCT2::Scripting
         {
             auto element = &first[index];
             if (element->getType() != TileElementType::largeScenery
-                || element->asLargeScenery()->GetEntry()->scrolling_mode == kScrollingModeNone
+                || element->asLargeScenery()->getEntry()->scrolling_mode == kScrollingModeNone
                 || ScTileElement::GetOtherLargeSceneryElement(coords, element->asLargeScenery()) == nullptr)
             {
-                element->RemoveBannerEntry();
+                element->removeBannerEntry();
             }
             TileElementRemove(&first[index]);
             MapInvalidateTileFull(coords);

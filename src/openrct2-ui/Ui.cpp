@@ -20,9 +20,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/AudioContext.h>
-#include <openrct2/command_line/CommandLine.hpp>
 #include <openrct2/command_line/ExitCode.h>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 
 #ifdef __EMSCRIPTEN__

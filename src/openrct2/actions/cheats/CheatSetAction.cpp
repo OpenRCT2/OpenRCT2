@@ -17,7 +17,7 @@
 #include "../../core/EnumUtils.hpp"
 #include "../../core/Guard.hpp"
 #include "../../drawing/Colour.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/Duck.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/EntityRegistry.h"
@@ -34,6 +34,7 @@
 #include "../../util/Util.h"
 #include "../../world/Location.hpp"
 #include "../../world/Map.h"
+#include "../../world/MapOwnership.h"
 #include "../../world/Park.h"
 #include "../../world/Weather.h"
 #include "../../world/tile_element/PathElement.h"
@@ -257,7 +258,7 @@ namespace OpenRCT2::GameActions
                 CreateDucks(_param1);
                 break;
             case CheatType::removeDucks:
-                Duck::RemoveAll();
+                Duck::removeAll();
                 break;
             case CheatType::allowTrackPlaceInvalidHeights:
                 gameState.cheats.allowTrackPlaceInvalidHeights = _param1 != 0;
@@ -393,7 +394,7 @@ namespace OpenRCT2::GameActions
             case CheatType::setStaffSpeed:
                 return { { 0, 255 }, { 0, 0 } };
             case CheatType::forceWeather:
-                return { { 0, EnumValue(Weather::Type::Count) - 1 }, { 0, 0 } };
+                return { { 0, EnumValue(Weather::Type::count) - 1 }, { 0, 0 } };
             case CheatType::setForcedParkRating:
                 return { { -1, 999 }, { 0, 0 } };
             case CheatType::createDucks:
@@ -448,15 +449,15 @@ namespace OpenRCT2::GameActions
                 if (surfaceElement == nullptr)
                     continue;
 
-                if (surfaceElement != nullptr && (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
-                    && surfaceElement->GetWaterHeight() == 0 && surfaceElement->CanGrassGrow())
+                if (surfaceElement != nullptr && (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
+                    && surfaceElement->getWaterHeight() == 0 && surfaceElement->canGrassGrow())
                 {
-                    surfaceElement->SetGrassLength(length);
+                    surfaceElement->setGrassLength(length);
                 }
             }
         }
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::WaterPlants() const
@@ -468,11 +469,11 @@ namespace OpenRCT2::GameActions
         {
             if (it.element->getType() == TileElementType::smallScenery)
             {
-                it.element->asSmallScenery()->SetAge(0);
+                it.element->asSmallScenery()->setAge(0);
             }
         } while (TileElementIteratorNext(&it));
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::FixVandalism() const
@@ -485,20 +486,20 @@ namespace OpenRCT2::GameActions
             if (it.element->getType() != TileElementType::path)
                 continue;
 
-            if (!(it.element)->asPath()->HasAddition())
+            if (!(it.element)->asPath()->hasAddition())
                 continue;
 
-            it.element->asPath()->SetIsBroken(false);
+            it.element->asPath()->setIsBroken(false);
         } while (TileElementIteratorNext(&it));
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::RemoveLitter(GameState_t& gameState) const
     {
         for (auto litter : EntityList<Litter>())
         {
-            gameState.entities.EntityRemove(litter);
+            gameState.entities.entityRemove(litter);
         }
 
         TileElementIterator it{};
@@ -509,16 +510,16 @@ namespace OpenRCT2::GameActions
                 continue;
 
             auto* path = it.element->asPath();
-            if (!path->HasAddition())
+            if (!path->hasAddition())
                 continue;
 
-            auto* pathAdditionEntry = path->GetAdditionEntry();
-            if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
-                path->SetAdditionStatus(0xFF);
+            auto* pathAdditionEntry = path->getAdditionEntry();
+            if (pathAdditionEntry != nullptr && pathAdditionEntry->flags.has(PathAdditionFlag::isBin))
+                path->setAdditionStatus(0xFF);
 
         } while (TileElementIteratorNext(&it));
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::FixBrokenRides(GameState_t& gameState) const
@@ -533,11 +534,11 @@ namespace OpenRCT2::GameActions
                 {
                     if (ride.mechanicStatus == MechanicStatus::fixing)
                     {
-                        mechanic->RideSubState = PeepRideSubState::approachExit;
+                        mechanic->rideSubState = PeepRideSubState::approachExit;
                     }
                     else if (ride.mechanicStatus == MechanicStatus::calling || ride.mechanicStatus == MechanicStatus::heading)
                     {
-                        mechanic->RemoveFromRide();
+                        mechanic->removeFromRide();
                     }
                 }
 
@@ -582,14 +583,7 @@ namespace OpenRCT2::GameActions
 
     void CheatSetAction::SetScenarioNoMoney(Park::ParkData& park, bool enabled) const
     {
-        if (enabled)
-        {
-            park.flags |= PARK_FLAGS_NO_MONEY;
-        }
-        else
-        {
-            park.flags &= ~PARK_FLAGS_NO_MONEY;
-        }
+        park.flags.set(ParkFlag::noMoney, enabled);
 
         // Invalidate all windows that have anything to do with finance
         auto* windowMgr = Ui::GetWindowManager();
@@ -597,7 +591,7 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::peep);
         windowMgr->InvalidateByClass(WindowClass::parkInformation);
         windowMgr->InvalidateByClass(WindowClass::finances);
-        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
         windowMgr->InvalidateByClass(WindowClass::topToolbar);
         windowMgr->InvalidateByClass(WindowClass::cheats);
     }
@@ -608,7 +602,7 @@ namespace OpenRCT2::GameActions
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::finances);
-        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
     }
 
     void CheatSetAction::AddMoney(Park::ParkData& park, money64 amount) const
@@ -617,7 +611,7 @@ namespace OpenRCT2::GameActions
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::finances);
-        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
     }
 
     void CheatSetAction::ClearLoan(GameState_t& gameState, Park::ParkData& park) const
@@ -638,7 +632,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto* windowMgr = Ui::GetWindowManager();
-        windowMgr->InvalidateByClass(WindowClass::bottomToolbar);
+        windowMgr->InvalidateByClass(WindowClass::parkInfoPanel);
     }
 
     void CheatSetAction::SetGuestParameter(int32_t parameter, int32_t value) const
@@ -653,13 +647,13 @@ namespace OpenRCT2::GameActions
                     // Clear the 'red-faced with anger' status if we're making the guest happy
                     if (value > 0)
                     {
-                        peep->PeepFlags &= ~PEEP_FLAGS_ANGRY;
+                        peep->peepFlags.unset(PeepFlag::angry);
                         peep->angriness = 0;
                     }
                     break;
                 case GUEST_PARAMETER_ENERGY:
-                    peep->Energy = value;
-                    peep->EnergyTarget = value;
+                    peep->energy = value;
+                    peep->energyTarget = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
                     peep->hunger = value;
@@ -699,12 +693,12 @@ namespace OpenRCT2::GameActions
                     break;
                 case OBJECT_BALLOON:
                     peep->giveItem(ShopItem::balloon);
-                    peep->balloonColour = static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal));
+                    peep->balloonColour = Drawing::getRandomColourNetworkSafe();
                     peep->updateAnimationGroup();
                     break;
                 case OBJECT_UMBRELLA:
                     peep->giveItem(ShopItem::umbrella);
-                    peep->umbrellaColour = static_cast<Drawing::Colour>(ScenarioRandMax(Drawing::kColourNumNormal));
+                    peep->umbrellaColour = Drawing::getRandomColourNetworkSafe();
                     peep->updateAnimationGroup();
                     break;
             }
@@ -723,14 +717,14 @@ namespace OpenRCT2::GameActions
 
             for (auto& station : ride.getStations())
             {
-                station.QueueLength = 0;
-                station.LastPeepInQueue = EntityId::GetNull();
+                station.queueLength = 0;
+                station.lastPeepInQueue = EntityId::GetNull();
             }
 
             for (auto trainIndex : ride.vehicles)
             {
-                for (Vehicle* vehicle = gameState.entities.TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
-                     vehicle = gameState.entities.TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                for (Vehicle* vehicle = gameState.entities.tryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
+                     vehicle = gameState.entities.tryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
                     auto i = 0;
                     for (auto& peepInTrainIndex : vehicle->peep)
@@ -738,14 +732,14 @@ namespace OpenRCT2::GameActions
                         if (i >= vehicle->num_peeps)
                             break;
 
-                        auto peep = gameState.entities.TryGetEntity<Guest>(peepInTrainIndex);
-                        if (peep != nullptr && peep->CurrentRide == ride.id)
+                        auto peep = gameState.entities.tryGetEntity<Guest>(peepInTrainIndex);
+                        if (peep != nullptr && peep->currentRide == ride.id)
                         {
-                            if ((peep->State == PeepState::onRide && peep->RideSubState == PeepRideSubState::onRide)
-                                || (peep->State == PeepState::leavingRide
-                                    && peep->RideSubState == PeepRideSubState::leaveVehicle))
+                            if ((peep->state == PeepState::onRide && peep->rideSubState == PeepRideSubState::onRide)
+                                || (peep->state == PeepState::leavingRide
+                                    && peep->rideSubState == PeepRideSubState::leaveVehicle))
                             {
-                                vehicle->ApplyMass(-peep->Mass);
+                                vehicle->ApplyMass(-peep->mass);
                             }
                         }
                         peepInTrainIndex = EntityId::GetNull();
@@ -764,23 +758,23 @@ namespace OpenRCT2::GameActions
         {
             // Frozen peeps are usually placed and tweaked for artistic purposes,
             // so exempt them from being removed.
-            if (guest->PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
+            if (guest->peepFlags.has(PeepFlag::positionFrozen))
                 continue;
 
-            guest->Remove();
+            guest->remove();
         }
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByClass(WindowClass::ride);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
     void CheatSetAction::SetStaffSpeed(uint8_t value) const
     {
         for (auto peep : EntityList<Staff>())
         {
-            peep->Energy = value;
-            peep->EnergyTarget = value;
+            peep->energy = value;
+            peep->energyTarget = value;
         }
     }
 
@@ -798,16 +792,15 @@ namespace OpenRCT2::GameActions
                     continue;
 
                 // Ignore already owned tiles.
-                if (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
+                if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                     continue;
 
                 int32_t baseZ = surfaceElement->getBaseZ();
-                int32_t destOwnership = CheckMaxAllowableLandRightsForTile({ coords, baseZ });
+                auto destOwnership = CheckMaxAllowableLandRightsForTile({ coords, baseZ });
 
-                // only own tiles that were not set to 0
-                if (destOwnership != OWNERSHIP_UNOWNED)
+                if (destOwnership != kUnowned)
                 {
-                    surfaceElement->SetOwnership(destOwnership);
+                    surfaceElement->setOwnership(destOwnership);
                     Park::UpdateFencesAroundTile(coords);
                     MapInvalidateTile({ coords, baseZ, baseZ + 16 });
                 }
@@ -820,7 +813,7 @@ namespace OpenRCT2::GameActions
             auto* surfaceElement = MapGetSurfaceElementAt(spawn);
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
+                surfaceElement->setOwnership(kUnowned);
                 Park::UpdateFencesAroundTile(spawn);
                 uint16_t baseZ = surfaceElement->getBaseZ();
                 MapInvalidateTile({ spawn, baseZ, baseZ + 16 });
@@ -858,10 +851,10 @@ namespace OpenRCT2::GameActions
             if (it.element->getType() == TileElementType::surface)
             {
                 // Remove all park fence flags
-                it.element->asSurface()->SetParkFences(0);
+                it.element->asSurface()->setParkFences(0);
             }
         } while (TileElementIteratorNext(&it));
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 } // namespace OpenRCT2::GameActions

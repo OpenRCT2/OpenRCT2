@@ -11,7 +11,7 @@
 
 #include "../core/FileStream.h"
 #include "../core/Path.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/G1Element.h"
 #include "../rct1/Limits.h"
 
 namespace OpenRCT2

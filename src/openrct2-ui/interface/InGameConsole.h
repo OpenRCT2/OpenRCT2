@@ -12,9 +12,18 @@
 #include <deque>
 #include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/InteractiveConsole.h>
-#include <openrct2/localisation/FormatCodes.h>
-#include <openrct2/world/Location.hpp>
+#include <openrct2/interface/ScreenCoords.hpp>
 #include <vector>
+
+namespace OpenRCT2
+{
+    struct TextInputSession;
+}
+
+namespace OpenRCT2::Drawing
+{
+    struct RenderTarget;
+}
 
 namespace OpenRCT2::Ui
 {

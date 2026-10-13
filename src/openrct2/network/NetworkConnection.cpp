@@ -12,12 +12,9 @@
     #include "NetworkConnection.h"
 
     #include "../Diagnostic.h"
-    #include "../core/Diagnostics.hpp"
     #include "../core/Guard.hpp"
-    #include "../core/String.hpp"
     #include "../localisation/Formatting.h"
     #include "../platform/Platform.h"
-    #include "Network.h"
     #include "Socket.h"
 
     #include <sfl/small_vector.hpp>

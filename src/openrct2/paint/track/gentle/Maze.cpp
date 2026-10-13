@@ -7,17 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../SpriteIds.h"
 #include "../../../core/Numerics.hpp"
 #include "../../../ride/Ride.h"
-#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Paint.Surface.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
@@ -54,7 +52,7 @@ static void MazePaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    uint16_t mazeEntry = trackElement.GetMazeEntry();
+    uint16_t mazeEntry = trackElement.getMazeEntry();
     mazeEntry = Numerics::rol16(mazeEntry, direction * 4);
 
     uint32_t rotation = session.CurrentRotation;
@@ -66,7 +64,7 @@ static void MazePaintSetup(
         session, WoodenSupportType::truss, WoodenSupportSubType::nwSe, rotation, height,
         GetShopSupportColourScheme(session, trackElement));
 
-    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(session, kSegmentsAll.without(PaintSegment::centre), 0xFFFF, 0);
 
     int32_t baseImageId = 0;
     switch (EnumValue(ride.trackColours[0].supports))
@@ -176,7 +174,7 @@ static void MazePaintSetup(
         imageId = baseImage.WithIndexOffset(SprMazeOffsetColumnCentre);
         PaintAddImageAsParent(session, imageId, { 14, 14, height }, { { 15, 15, height + 2 }, { 2, 2, 8 } });
 
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), height + 12, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::centre, height + 12, 0x20);
     }
 
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);

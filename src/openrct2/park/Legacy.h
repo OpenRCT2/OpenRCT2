@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
+#include "../core/OrcaStream.hpp"
 #include "../object/ObjectTypes.h"
-#include "../ride/Track.h"
 
 #include <cstdint>
 #include <optional>
@@ -36,11 +36,25 @@ namespace OpenRCT2
 
     struct ObjectEntryDescriptor;
     class ObjectList;
+
+    enum class SpecialElement : uint8_t;
+    using SpecialElements = FlagHolder<uint8_t, SpecialElement>;
+
+    using ObjectEntryIndex = uint16_t;
+
+    namespace Drawing
+    {
+        enum class Colour : uint8_t;
+    }
 } // namespace OpenRCT2
 
 using ride_type_t = uint16_t;
-enum class SpecialElement : uint8_t;
-using SpecialElements = FlagHolder<uint8_t, SpecialElement>;
+
+struct TerrainSurfaceMapping
+{
+    OpenRCT2::ObjectEntryIndex newEntryIndex;
+    OpenRCT2::Drawing::Colour colour;
+};
 
 std::string_view MapToNewObjectIdentifier(std::string_view s);
 std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
@@ -67,5 +81,11 @@ std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::Climat
  */
 bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, int32_t parkFileVersion = -1);
 
-std::pair<uint8_t, SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
+std::pair<uint8_t, OpenRCT2::SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
 std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue);
+void updateSurfaceElementsColour(
+    OpenRCT2::GameState_t& gameState, std::span<const TerrainSurfaceMapping> terrainSurfaceMap,
+    std::span<const OpenRCT2::Drawing::Colour> terrainEdgeMap);
+OpenRCT2::Drawing::Colour convertPre63Colour(uint8_t colour);
+OpenRCT2::Drawing::Colour convertPre63Colour(OpenRCT2::Drawing::Colour colour);
+void readWriteColour(OpenRCT2::OrcaStream::ChunkStream& cs, OpenRCT2::Drawing::Colour& colourField, uint32_t parkFileVersion);

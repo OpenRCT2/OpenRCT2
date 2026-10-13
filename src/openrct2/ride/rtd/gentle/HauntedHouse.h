@@ -9,14 +9,14 @@
 
 #pragma once
 
-#include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor HauntedHouseRTD =
+constexpr RideTypeDescriptor kHauntedHouseRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack3x3,
@@ -31,10 +31,10 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::hauntedHouse),
+    .rideModes = { RideMode::hauntedHouse },
     .DefaultMode = RideMode::hauntedHouse,
     .Naming = { STR_RIDE_NAME_HAUNTED_HOUSE, STR_RIDE_DESCRIPTION_HAUNTED_HOUSE },
-    .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::building, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 16, 160, 3, 2, },
     .MaxMass = 255,
@@ -48,16 +48,16 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
     .BonusValue = 22,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "haunted_house",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(3, 41), RideRating::make(1, 53), RideRating::make(0, 10) },
         8,
         7,
         false,
-        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
     },
 };
 } // namespace OpenRCT2

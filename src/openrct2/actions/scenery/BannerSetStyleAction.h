@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         count
     };
 
-    class BannerSetStyleAction final : public GameActionBase<GameCommand::SetBannerStyle>
+    class BannerSetStyleAction final : public GameActionBase<GameCommand::setBannerStyle>
     {
     private:
         BannerSetStyleType _type{ BannerSetStyleType::count };

@@ -31,6 +31,7 @@
     #include "../Version.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
+    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
 
     #include <cassert>

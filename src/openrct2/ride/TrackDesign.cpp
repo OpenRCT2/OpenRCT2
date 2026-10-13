@@ -31,26 +31,19 @@
 #include "../actions/scenery/WallRemoveAction.h"
 #include "../actions/track/TrackPlaceAction.h"
 #include "../actions/track/TrackRemoveAction.h"
-#include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/DataSerialiser.h"
-#include "../core/File.h"
 #include "../core/Numerics.hpp"
-#include "../core/String.hpp"
 #include "../core/UnitConversion.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
-#include "../management/Finance.h"
-#include "../network/Network.h"
-#include "../object/FootpathObject.h"
+#include "../object/FootpathEntry.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectLimits.h"
-#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
-#include "../object/ObjectRepository.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/StationObject.h"
 #include "../rct12/TD46.h"
@@ -59,8 +52,6 @@
 #include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "../world/MapSelection.h"
-#include "../world/Park.h"
-#include "../world/Scenery.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
@@ -70,10 +61,7 @@
 #include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
-#include "TrackDesign.h"
-#include "TrackDesignRepository.h"
 #include "TrackIteration.h"
-#include "Vehicle.h"
 #include "ted/TrackElementDescriptor.h"
 
 #include <iterator>
@@ -101,7 +89,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetadata;
 
-constexpr TileCoordsXY TRACK_DESIGN_PREVIEW_MAP_SIZE = TileCoordsXY{ 256, 256 };
+static constexpr TileCoordsXY kTrackDesignPreviewMapSize = TileCoordsXY{ 256, 256 };
 
 bool gTrackDesignSceneryToggle;
 bool _trackDesignDrawingPreview;
@@ -176,7 +164,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
 
     const auto& rtd = GetRideTypeDescriptor(trackAndVehicle.rtdIndex);
 
-    if (rtd.DesignCreateMode == TrackDesignCreateMode::Maze)
+    if (rtd.DesignCreateMode == TrackDesignCreateMode::maze)
     {
         return CreateTrackDesignMaze(tds, ride);
     }
@@ -197,7 +185,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     RideGetStartOfTrack(&trackElement);
 
     int32_t z = trackElement.element->getBaseZ();
-    auto trackType = trackElement.element->asTrack()->GetTrackType();
+    auto trackType = trackElement.element->asTrack()->getTrackType();
     uint8_t direction = trackElement.element->getDirection();
     _saveDirection = direction;
     auto newCoords = GetTrackElementOriginAndApplyChanges(
@@ -211,7 +199,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     trackElement.y = newCoords->y;
     z = newCoords->z;
 
-    const auto& ted = GetTrackElementDescriptor(trackElement.element->asTrack()->GetTrackType());
+    const auto& ted = GetTrackElementDescriptor(trackElement.element->asTrack()->getTrackType());
     const TrackCoordinates* trackCoordinates = &ted.coordinates;
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
@@ -226,27 +214,27 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         const auto& element = trackElement.element->asTrack();
 
-        if (element->GetTrackType() > TrackElemType::highestAlias)
+        if (element->getTrackType() > TrackElemType::highestAlias)
         {
             version = RCT12::TD46Version::td7;
         }
 
         TrackDesignTrackElement track{};
-        track.type = element->GetTrackType();
-        track.colourScheme = element->GetColourScheme();
-        track.stationIndex = element->GetStationIndex();
-        track.brakeBoosterSpeed = element->GetBrakeBoosterSpeed();
-        track.seatRotation = element->GetSeatRotation();
+        track.type = element->getTrackType();
+        track.colourScheme = element->getColourScheme();
+        track.stationIndex = element->getStationIndex();
+        track.brakeBoosterSpeed = element->getBrakeBoosterSpeed();
+        track.seatRotation = element->getSeatRotation();
 
-        if (track.type == TrackElemType::blockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
+        if (track.type == TrackElemType::blockBrakes && element->getBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
             version = RCT12::TD46Version::td7;
         }
 
-        if (element->HasChain())
+        if (element->hasChain())
             track.flags.set(TrackDesignTrackElementFlag::hasChain);
 
-        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasInvertedVariant) && element->IsInverted())
+        if (ride.getRideTypeDescriptor().flags.has(RtdFlag::hasInvertedVariant) && element->isInverted())
         {
             track.flags.set(TrackDesignTrackElementFlag::isInverted);
         }
@@ -260,7 +248,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
         z = trackElement.element->getBaseZ();
         direction = trackElement.element->getDirection();
-        trackType = trackElement.element->asTrack()->GetTrackType();
+        trackType = trackElement.element->asTrack()->getTrackType();
         newCoords = GetTrackElementOriginAndApplyChanges(
             { trackElement, z, direction }, trackType, 0, &trackElement.element, {});
 
@@ -282,24 +270,24 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         for (const auto& station : ride.getStations())
         {
-            z = station.GetBaseZ();
+            z = station.getBaseZ();
 
             TileCoordsXYZD location;
             if (i == 0)
             {
-                location = station.Entrance;
+                location = station.entrance;
             }
             else
             {
-                location = station.Exit;
+                location = station.exit;
             }
 
-            if (location.IsNull())
+            if (location.isNull())
             {
                 continue;
             }
 
-            CoordsXY mapLocation = location.ToCoordsXY();
+            CoordsXY mapLocation = location.toCoordsXY();
 
             TileElement* tileElement = MapGetFirstElementAt(mapLocation);
             if (tileElement == nullptr)
@@ -321,7 +309,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
             mapLocation -= tds.origin;
             // Rotate entrance coordinates backwards to the correct direction
-            auto rotatedMapLocation = TileCoordsXY(mapLocation.Rotate(0 - _saveDirection));
+            auto rotatedMapLocation = TileCoordsXY(mapLocation.rotate(0 - _saveDirection));
 
             z -= tds.origin.z;
             z /= kCoordsZStep;
@@ -382,12 +370,12 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
                     break;
                 if (tileElement->getType() != TileElementType::track)
                     continue;
-                if (tileElement->asTrack()->GetRideIndex() != ride.id)
+                if (tileElement->asTrack()->getRideIndex() != ride.id)
                     continue;
 
                 TrackDesignMazeElement maze{};
 
-                maze.mazeEntry = tileElement->asTrack()->GetMazeEntry();
+                maze.mazeEntry = tileElement->asTrack()->getMazeEntry();
                 maze.location.x = (x - startLoc.x) / kCoordsXYStep;
                 maze.location.y = (y - startLoc.y) / kCoordsXYStep;
                 _saveDirection = tileElement->getDirection();
@@ -402,13 +390,13 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
         x = 0;
     }
 
-    auto location = ride.getStation().Entrance;
-    if (location.IsNull())
+    auto location = ride.getStation().entrance;
+    if (location.isNull())
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    CoordsXY entranceLoc = location.ToCoordsXY();
+    CoordsXY entranceLoc = location.toCoordsXY();
     auto tileElement = MapGetFirstElementAt(entranceLoc);
     do
     {
@@ -416,9 +404,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
             return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
         if (tileElement->getType() != TileElementType::entrance)
             continue;
-        if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideEntrance)
             continue;
-        if (tileElement->asEntrance()->GetRideIndex() == ride.id)
+        if (tileElement->asEntrance()->getRideIndex() == ride.id)
             break;
     } while (!(tileElement++)->isLastForTile());
     // Add something that stops this from walking off the end
@@ -429,13 +417,13 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     mazeEntrance.isExit = false;
     entranceElements.push_back(mazeEntrance);
 
-    location = ride.getStation().Exit;
-    if (location.IsNull())
+    location = ride.getStation().exit;
+    if (location.isNull())
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
 
-    CoordsXY exitLoc = location.ToCoordsXY();
+    CoordsXY exitLoc = location.toCoordsXY();
     tileElement = MapGetFirstElementAt(exitLoc);
     if (tileElement == nullptr)
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
@@ -443,9 +431,9 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     {
         if (tileElement->getType() != TileElementType::entrance)
             continue;
-        if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
+        if (tileElement->asEntrance()->getEntranceType() != EntranceType::rideExit)
             continue;
-        if (tileElement->asEntrance()->GetRideIndex() == ride.id)
+        if (tileElement->asEntrance()->getRideIndex() == ride.id)
             break;
     } while (!(tileElement++)->isLastForTile());
     // Add something that stops this from walking off the end
@@ -486,7 +474,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
 
                 if (tile.element->getType() != TileElementType::track)
                     continue;
-                if (tile.element->asTrack()->GetRideIndex() == ride.id)
+                if (tile.element->asTrack()->getRideIndex() == ride.id)
                 {
                     return tile;
                 }
@@ -536,7 +524,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
         }
 
         const auto relativeMapPosition = scenery.loc - tds.origin;
-        const CoordsXY rotatedRelativeMapPos = relativeMapPosition.Rotate(0 - _saveDirection);
+        const CoordsXY rotatedRelativeMapPos = relativeMapPosition.rotate(0 - _saveDirection);
 
         if (rotatedRelativeMapPos.x > 127 * kCoordsXYStep || rotatedRelativeMapPos.y > 127 * kCoordsXYStep
             || rotatedRelativeMapPos.x < -126 * kCoordsXYStep || rotatedRelativeMapPos.y < -126 * kCoordsXYStep)
@@ -556,7 +544,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
 
 void TrackDesign::Serialise(DataSerialiser& stream)
 {
-    if (stream.IsLogging())
+    if (stream.isLogging())
     {
         stream << DS_TAG(gameStateData.name);
         // There is too much information logged.
@@ -566,7 +554,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(trackAndVehicle.rtdIndex);
     stream << DS_TAG(gameStateData.cost);
     stream << DS_TAG(operation.rideMode);
-    stream << DS_TAG(gameStateData.flags);
+    stream << DS_TAG(gameStateData.flags.holder);
     stream << DS_TAG(appearance.vehicleColourSettings);
     stream << DS_TAG(appearance.vehicleColours);
     stream << DS_TAG(appearance.stationObjectIdentifier);
@@ -640,9 +628,31 @@ static void TrackDesignLoadSceneryObjects(const TrackDesign& td)
     {
         if (scenery.sceneryObject.HasValue())
         {
-            objectManager.LoadObject(scenery.sceneryObject);
+            // When dealing with a legacy path entry, we must first check if a mapping exists, because calling LoadObject()
+            // on the old DAT identifier will return null for official objects. If no mapping exists, it’s likely a custom DAT
+            // object, which can be loaded as normal.
+            if (scenery.sceneryObject.GetType() == ObjectType::paths)
+            {
+                auto mapping = RCT2::GetFootpathSurfaceId(ObjectEntryDescriptor(scenery.sceneryObject));
+                if (mapping != nullptr)
+                {
+                    objectManager.LoadObject(mapping->NormalSurface);
+                    objectManager.LoadObject(mapping->QueueSurface);
+                    objectManager.LoadObject(mapping->Railing);
+                }
+                else
+                {
+                    objectManager.LoadObject(scenery.sceneryObject);
+                }
+            }
+            else
+            {
+                objectManager.LoadObject(scenery.sceneryObject);
+            }
         }
     }
+
+    objectManager.LoadObject(td.appearance.stationObjectIdentifier);
 }
 
 struct TrackSceneryEntry
@@ -718,12 +728,15 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
             result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
         }
 
+        // Legacy footpaths consist of a single object for both surface and railing.
+        const bool secondaryIndexRequired = result.Type != ObjectType::paths;
+
         if (result.Index == kObjectEntryIndexNull)
             result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.isQueue());
-        if (result.SecondaryIndex == kObjectEntryIndexNull)
+        if (secondaryIndexRequired && result.SecondaryIndex == kObjectEntryIndexNull)
             result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
 
-        if (result.Index == kObjectEntryIndexNull || result.SecondaryIndex == kObjectEntryIndexNull)
+        if (result.Index == kObjectEntryIndexNull || (secondaryIndexRequired && result.SecondaryIndex == kObjectEntryIndexNull))
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
             return {};
@@ -1248,7 +1261,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview
                     || tds.placeOperation == TrackPlaceOperation::place)
                 {
-                    if (!pathElement->IsQueue() || FootpathQueueCountConnections(mapCoord, *pathElement) < 2)
+                    if (!pathElement->isQueue() || FootpathQueueCountConnections(mapCoord, *pathElement) < 2)
                     {
                         FootpathRemoveEdgesAt(mapCoord, reinterpret_cast<TileElement*>(pathElement));
                         FootpathConnectEdges(mapCoord, reinterpret_cast<TileElement*>(pathElement), flags);
@@ -1294,7 +1307,7 @@ static GameActions::Result TrackDesignPlaceAllScenery(
 
         for (const auto& scenery : sceneryList)
         {
-            auto mapCoord = CoordsXYZ{ CoordsXY(origin) + scenery.loc.Rotate(rotation), origin.z };
+            auto mapCoord = CoordsXYZ{ CoordsXY(origin) + scenery.loc.rotate(rotation), origin.z };
             TrackDesignUpdatePreviewBounds(tds, mapCoord);
 
             auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
@@ -1328,8 +1341,8 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
     for (const auto& entrance : td.entranceElements)
     {
         auto rotation = _currentTrackPieceDirection & 3;
-        CoordsXY entranceMapPos = entrance.location.ToCoordsXY();
-        auto rotatedEntranceMapPos = entranceMapPos.Rotate(rotation);
+        CoordsXY entranceMapPos = entrance.location.toCoordsXY();
+        auto rotatedEntranceMapPos = entranceMapPos.rotate(rotation);
         newCoords = { rotatedEntranceMapPos + tds.origin, newCoords.z };
 
         TrackDesignUpdatePreviewBounds(tds, newCoords);
@@ -1371,7 +1384,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                             continue;
                         }
 
-                        auto stationIndex = tile_element->asTrack()->GetStationIndex();
+                        auto stationIndex = tile_element->asTrack()->getStationIndex();
                         CommandFlags flags = { CommandFlag::apply };
                         if (tds.placeOperation == TrackPlaceOperation::placeTrackPreview)
                         {
@@ -1449,8 +1462,8 @@ static GameActions::Result TrackDesignPlaceMaze(
     for (const auto& maze_element : td.mazeElements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
-        CoordsXY mazeMapPos = maze_element.location.ToCoordsXY();
-        auto mapCoord = mazeMapPos.Rotate(rotation);
+        CoordsXY mazeMapPos = maze_element.location.toCoordsXY();
+        auto mapCoord = mazeMapPos.rotate(rotation);
         mapCoord += origin;
 
         TrackDesignUpdatePreviewBounds(tds, { mapCoord, origin.z });
@@ -1514,16 +1527,16 @@ static GameActions::Result TrackDesignPlaceMaze(
             if (surfaceElement == nullptr)
                 continue;
             int16_t surfaceZ = surfaceElement->getBaseZ();
-            if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+            if (surfaceElement->getSlope() & kTileSlopeRaisedCornersMask)
             {
                 surfaceZ += kLandHeightStep;
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                 {
                     surfaceZ += kLandHeightStep;
                 }
             }
 
-            int16_t waterZ = surfaceElement->GetWaterHeight();
+            int16_t waterZ = surfaceElement->getWaterHeight();
             if (waterZ > 0 && waterZ > surfaceZ)
             {
                 surfaceZ = waterZ;
@@ -1590,7 +1603,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
                 {
                     const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(rotation);
+                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.rotate(rotation);
                     TrackDesignUpdatePreviewBounds(tds, { tile, newCoords.z });
                     TrackDesignAddSelectedTile(tile);
                 }
@@ -1665,7 +1678,7 @@ static GameActions::Result TrackDesignPlaceRide(
                 for (uint8_t i = 0; i < ted.sequenceData.numSequences; i++)
                 {
                     const auto& trackBlock = ted.sequenceData.sequences[i].clearance;
-                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.Rotate(rotation);
+                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock.x, trackBlock.y }.rotate(rotation);
                     if (!MapIsLocationValid(tile))
                     {
                         continue;
@@ -1680,16 +1693,16 @@ static GameActions::Result TrackDesignPlaceRide(
                     }
 
                     int32_t surfaceZ = surfaceElement->getBaseZ();
-                    if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+                    if (surfaceElement->getSlope() & kTileSlopeRaisedCornersMask)
                     {
                         surfaceZ += kLandHeightStep;
-                        if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                        if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                         {
                             surfaceZ += kLandHeightStep;
                         }
                     }
 
-                    auto waterZ = surfaceElement->GetWaterHeight();
+                    auto waterZ = surfaceElement->getWaterHeight();
                     if (waterZ > 0 && waterZ > surfaceZ)
                     {
                         surfaceZ = waterZ;
@@ -1706,7 +1719,7 @@ static GameActions::Result TrackDesignPlaceRide(
 
         const TrackCoordinates& track_coordinates = ted.coordinates;
         auto offsetAndRotatedTrack = CoordsXY{ newCoords }
-            + CoordsXY{ track_coordinates.x, track_coordinates.y }.Rotate(rotation);
+            + CoordsXY{ track_coordinates.x, track_coordinates.y }.rotate(rotation);
 
         newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates.zBegin + track_coordinates.zEnd };
         rotation = (rotation + track_coordinates.rotationEnd - track_coordinates.rotationBegin) & 3;
@@ -1893,7 +1906,7 @@ static bool TrackDesignPlacePreview(
     TrackDesignState& tds, const TrackDesign& td, Ride** outRide, TrackDesignGameStateData& gameStateData, bool placeScenery)
 {
     *outRide = nullptr;
-    gameStateData.flags = 0;
+    gameStateData.flags.clearAll();
 
     auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
@@ -1935,8 +1948,8 @@ static bool TrackDesignPlacePreview(
 
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
-    uint32_t backup_park_flags = gameState.park.flags;
-    gameState.park.flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+    auto backupParkFlags = gameState.park.flags;
+    gameState.park.flags.unset(ParkFlag::forbidHighConstruction);
     auto mapSize = TileCoordsXY{ gameState.mapSize.x * 16, gameState.mapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
@@ -1945,29 +1958,29 @@ static bool TrackDesignPlacePreview(
 
     if (tds.hasScenery)
     {
-        gameStateData.setFlag(TrackDesignGameStateFlag::HasScenery, true);
+        gameStateData.flags.set(TrackDesignGameStateFlag::hasScenery);
     }
 
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        gameStateData.setFlag(TrackDesignGameStateFlag::SceneryUnavailable, true);
+        gameStateData.flags.set(TrackDesignGameStateFlag::sceneryUnavailable);
     }
 
     auto res = TrackDesignPlaceVirtual(
         tds, td, TrackPlaceOperation::placeTrackPreview, placeScenery, *ride,
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
-    gameState.park.flags = backup_park_flags;
+    gameState.park.flags = backupParkFlags;
 
     if (res.error == GameActions::Status::ok)
     {
         if (entry_index == kObjectEntryIndexNull)
         {
-            gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
+            gameStateData.flags.set(TrackDesignGameStateFlag::vehicleUnavailable);
         }
         else if (!RideEntryIsInvented(entry_index) && !getGameState().cheats.ignoreResearchStatus)
         {
-            gameStateData.setFlag(TrackDesignGameStateFlag::VehicleUnavailable, true);
+            gameStateData.flags.set(TrackDesignGameStateFlag::vehicleUnavailable);
         }
 
         _currentTrackPieceDirection = backup_rotation;
@@ -2133,7 +2146,7 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
     view.height = 217;
     view.pos = { 0, 0 };
     view.zoom = zoom_level;
-    view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
+    view.flags = ViewportFlags(ViewportFlag::hideBase, ViewportFlag::hideEntities);
 
     RenderTarget rt;
     rt.x = 0;
@@ -2149,7 +2162,7 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
     drawingEngine->BeginDraw();
 
     const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
-    for (Direction direction = 0; direction < kNumOrthogonalDirections; direction++)
+    for (Direction direction : kAllDirections)
     {
         view.viewPos = Translate3DTo2DWithZ(direction, centre) - offset;
         view.rotation = direction;
@@ -2173,7 +2186,7 @@ static void TrackDesignPreviewClearMap()
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
     auto& gameState = getGameState();
-    gameState.mapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
+    gameState.mapSize = kTrackDesignPreviewMapSize;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;
@@ -2182,15 +2195,15 @@ static void TrackDesignPreviewClearMap()
     for (int32_t i = 0; i < numTiles; i++)
     {
         auto* element = &tileElements.emplace_back();
-        element->ClearAs(TileElementType::surface);
+        element->clearAs(TileElementType::surface);
         element->setLastForTile(true);
-        element->asSurface()->SetSlope(kTileSlopeFlat);
-        element->asSurface()->SetWaterHeight(0);
-        element->asSurface()->SetSurfaceObjectIndex(0);
-        element->asSurface()->SetEdgeObjectIndex(0);
-        element->asSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        element->asSurface()->SetOwnership(OWNERSHIP_OWNED);
-        element->asSurface()->SetParkFences(0);
+        element->asSurface()->setSlope(kTileSlopeFlat);
+        element->asSurface()->setWaterHeight(0);
+        element->asSurface()->setSurfaceObjectIndex(0);
+        element->asSurface()->setEdgeObjectIndex(0);
+        element->asSurface()->setGrassLength(GRASS_LENGTH_CLEAR_0);
+        element->asSurface()->setOwnership(OwnershipFlag::landOwned);
+        element->asSurface()->setParkFences(0);
     }
 
     SetTileElements(gameState, std::move(tileElements));
@@ -2202,19 +2215,6 @@ bool TrackDesignAreEntranceAndExitPlaced()
 }
 
 #pragma endregion
-
-bool TrackDesignGameStateData::hasFlag(TrackDesignGameStateFlag flag) const
-{
-    return flags & EnumToFlag(flag);
-}
-
-void TrackDesignGameStateData::setFlag(TrackDesignGameStateFlag flag, bool on)
-{
-    if (on)
-        flags |= EnumToFlag(flag);
-    else
-        flags &= ~EnumToFlag(flag);
-}
 
 u8string trackDesignGetExtension(RCT12::TD46Version version)
 {

@@ -8,17 +8,13 @@
  *****************************************************************************/
 
 #include "../Context.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../config/ConfigTypes.h"
 #include "../core/Console.hpp"
 #include "../entity/EntityRegistry.h"
-#include "../network/Network.h"
-#include "../platform/Platform.h"
+#include "../network/NetworkTypes.h"
 #include "CommandLine.hpp"
 
-#include <cstdlib>
 #include <memory>
 
 using namespace OpenRCT2::CommandLine;
@@ -75,7 +71,7 @@ namespace OpenRCT2
             {
                 gameStateUpdateLogic();
             }
-            Console::WriteLine("Completed: %s", getGameState().entities.GetAllEntitiesChecksum().ToString().c_str());
+            Console::WriteLine("Completed: %s", getGameState().entities.getAllEntitiesChecksum().toString().c_str());
         }
         else
         {

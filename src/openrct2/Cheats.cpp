@@ -12,14 +12,7 @@
 #include "GameState.h"
 #include "actions/GameActionRunner.h"
 #include "actions/cheats/CheatSetAction.h"
-#include "actions/park/ParkSetLoanAction.h"
 #include "core/DataSerialiser.h"
-#include "network/Network.h"
-#include "ride/Ride.h"
-#include "world/Footpath.h"
-#include "world/Park.h"
-#include "world/Scenery.h"
-#include "world/Weather.h"
 
 using namespace OpenRCT2;
 
@@ -78,9 +71,9 @@ void CheatsSerialise(DataSerialiser& ds)
     uint16_t count = 0;
     auto& gameState = getGameState();
 
-    if (ds.IsSaving())
+    if (ds.isSaving())
     {
-        IStream& stream = ds.GetStream();
+        IStream& stream = ds.getStream();
 
         // Temporarily write 0, will be updated after every cheat is written.
         uint64_t countOffset = stream.GetPosition();

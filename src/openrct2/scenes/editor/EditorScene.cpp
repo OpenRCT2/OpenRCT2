@@ -16,12 +16,11 @@
 #include "../../OpenRCT2.h"
 #include "../../ParkImporter.h"
 #include "../../actions/GameActionRunner.h"
-#include "../../actions/ResultWithMessage.h"
 #include "../../actions/park/LandBuyRightsAction.h"
 #include "../../actions/park/LandSetRightsAction.h"
 #include "../../audio/Audio.h"
 #include "../../core/Path.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Palette.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/Guest.h"
 #include "../../entity/PatrolArea.h"
@@ -50,7 +49,7 @@ void EditorScene::Load()
 
     gLegacyScene = LegacyScene::scenarioEditor;
     gameState.editorStep = Editor::Step::objectSelection;
-    gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+    gameState.park.flags.set(ParkFlag::showRealGuestNames);
     gameState.scenarioOptions.category = Scenario::Category::other;
 
     Editor::ObjectListLoad();
@@ -59,7 +58,7 @@ void EditorScene::Load()
     OpenEditorWindows();
     resetMainViewport();
 
-    LoadPalette();
+    Drawing::LoadPalette();
     gScreenAge = 0;
     gameState.scenarioOptions.name = LanguageGetString(STR_MY_NEW_SCENARIO);
 
@@ -179,15 +178,15 @@ void EditorScene::clearMapForEditing()
 
     for (auto* guest : EntityList<Guest>())
     {
-        guest->SetName({});
+        guest->setName({});
     }
     for (auto* staff : EntityList<Staff>())
     {
-        staff->SetName({});
+        staff->setName({});
     }
 
     auto& gameState = getGameState();
-    gameState.entities.ResetAllEntities();
+    gameState.entities.resetAllEntities();
 
     UpdateConsolidatedPatrolAreas();
 
@@ -199,7 +198,7 @@ void EditorScene::clearMapForEditing()
 
     Weather::reset();
 
-    News::InitQueue(gameState);
+    News::InitQueue(park);
 }
 
 // NB: only called by LoadLandscape
@@ -208,18 +207,18 @@ void EditorScene::clearFinances()
     auto& gameState = getGameState();
     auto& park = gameState.park;
 
-    park.flags |= PARK_FLAGS_NO_MONEY;
+    park.flags.set(ParkFlag::noMoney);
 
     if (park.entranceFee == 0)
     {
-        park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+        park.flags.set(ParkFlag::freeEntry);
     }
     else
     {
-        park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+        park.flags.unset(ParkFlag::freeEntry);
     }
 
-    park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+    park.flags.unset(ParkFlag::spritesInitialised);
 
     auto& scenarioOptions = gameState.scenarioOptions;
     scenarioOptions.guestInitialCash = std::clamp(scenarioOptions.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
@@ -235,7 +234,9 @@ void EditorScene::OpenEditorWindows()
 {
     ContextOpenWindow(WindowClass::mainWindow);
     ContextOpenWindow(WindowClass::topToolbar);
-    ContextOpenWindowView(WindowView::editorBottomToolbar);
+    ContextOpenWindow(WindowClass::editorStepController); // previous step
+    ContextOpenWindow(WindowClass::editorStatusLine);
+    ContextOpenWindow(WindowClass::editorStepController); // next step
 }
 
 /**
@@ -311,13 +312,13 @@ void EditorScene::FinaliseMainView()
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD));
 
     gWindowUpdateTicks = 0;
-    LoadPalette();
+    Drawing::LoadPalette();
 }
 
 void EditorScene::resetMainViewport()
 {
     auto* mainWindow = WindowGetMain();
-    mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
+    mainWindow->setViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.toCoordsXYZ());
 }
 
 /**

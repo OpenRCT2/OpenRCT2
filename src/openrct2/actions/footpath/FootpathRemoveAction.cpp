@@ -108,7 +108,7 @@ namespace OpenRCT2::GameActions
                     gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
                     [this](const CoordsXYZ& spawn) {
                         {
-                            return spawn.ToTileStart() == _loc.ToTileStart();
+                            return spawn.toTileStart() == _loc.toTileStart();
                         }
                     }),
                 gameState.peepSpawns.end());
@@ -164,7 +164,7 @@ namespace OpenRCT2::GameActions
                 continue;
 
             auto bannerRemoveAction = BannerRemoveAction(
-                { loc, tileElement->getBaseZ(), tileElement->asBanner()->GetPosition() });
+                { loc, tileElement->getBaseZ(), tileElement->asBanner()->getPosition() });
             bool isGhost = tileElement->isGhost();
             auto bannerFlags = GetFlags();
             if (isGhost)

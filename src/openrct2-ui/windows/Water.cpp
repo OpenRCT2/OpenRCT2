@@ -9,8 +9,8 @@
 
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/interface/LandTool.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -19,12 +19,11 @@
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/terraform/WaterLowerAction.h>
 #include <openrct2/actions/terraform/WaterRaiseAction.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -165,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
                 drawText(rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::centre });
             }
 
-            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+            if (!getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 // Draw raise cost amount
                 screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
@@ -328,7 +327,7 @@ namespace OpenRCT2::Ui::Windows
             gMapSelectFlags.unset(MapSelectFlag::enable);
 
             auto info = GetMapCoordinatesFromPos(
-                screenPos, EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water));
+                screenPos, { ViewportInteractionItem::terrain, ViewportInteractionItem::water });
 
             if (info.interactionType == ViewportInteractionItem::none)
             {
@@ -363,7 +362,7 @@ namespace OpenRCT2::Ui::Windows
             // Move to tool bottom left
             mapTile.x -= tool_length / 2;
             mapTile.y -= tool_length / 2;
-            mapTile = mapTile.ToTileStart();
+            mapTile = mapTile.toTileStart();
 
             if (gMapSelectPositionA.x != mapTile.x)
             {

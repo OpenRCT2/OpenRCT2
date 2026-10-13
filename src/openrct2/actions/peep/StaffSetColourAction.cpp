@@ -10,7 +10,7 @@
 #include "StaffSetColourAction.h"
 
 #include "../../Diagnostic.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../entity/EntityList.h"
 #include "../../entity/Staff.h"
 #include "../../localisation/StringIds.h"
@@ -65,12 +65,12 @@ namespace OpenRCT2::GameActions
         {
             if (peep->assignedStaffType == static_cast<StaffType>(_staffType))
             {
-                peep->TshirtColour = _colour;
-                peep->TrousersColour = _colour;
+                peep->tShirtColour = _colour;
+                peep->trousersColour = _colour;
             }
         }
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
         return Result();
     }
 } // namespace OpenRCT2::GameActions

@@ -9,22 +9,14 @@
 
 #include "Paint.Entity.h"
 
-#include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
-#include "../entity/Duck.h"
 #include "../entity/EntityList.h"
-#include "../entity/JumpingFountain.h"
-#include "../entity/MoneyEffect.h"
-#include "../entity/Particle.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../profiling/Profiling.h"
-#include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
-#include "../ride/Vehicle.h"
 #include "../world/Map.h"
-#include "../world/Park.h"
-#include "../world/Weather.h"
+#include "Paint.h"
 #include "entity/Paint.Balloon.h"
 #include "entity/Paint.CrashSplashParticle.h"
 #include "entity/Paint.Duck.h"
@@ -38,7 +30,6 @@
 #include "entity/Paint.SteamParticle.h"
 #include "entity/Paint.Vehicle.h"
 #include "entity/Paint.VehicleCrashParticle.h"
-#include "vehicle/VehiclePaint.h"
 
 #include <cassert>
 
@@ -57,7 +48,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
     {
         return;
     }
-    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES))
+    if (gTrackDesignSaveMode || session.ViewFlags.has(ViewportFlag::hideEntities))
     {
         return;
     }
@@ -67,7 +58,7 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         return;
     }
 
-    const bool highlightPathIssues = (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+    const bool highlightPathIssues = session.ViewFlags.has(ViewportFlag::highlightPathIssues);
 
     for (auto* entity : EntityTileList(pos))
     {
@@ -93,13 +84,13 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
-        if (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW)
+        if (session.ViewFlags.has(ViewportFlag::clipView))
         {
             if (entityPos.z > (gClipHeight * kCoordsZStep))
             {
                 // see-through off: don't paint this entity at all
                 // see-through on: paint this entity as partial or hidden later on
-                if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0)
+                if (!session.ViewFlags.has(ViewportFlag::clipViewSeeThrough))
                 {
                     continue;
                 }
@@ -120,10 +111,10 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             screenCoords + ScreenCoordsXY{ entity->spriteData.width, entity->spriteData.heightMax });
 
         const ZoomLevel zoom = session.rt.zoom_level;
-        if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.GetTop())
-            || zoom.ApplyInversedTo(spriteRect.GetBottom()) <= session.rt.y
-            || session.rt.x + session.rt.width <= zoom.ApplyInversedTo(spriteRect.GetLeft())
-            || zoom.ApplyInversedTo(spriteRect.GetRight()) <= session.rt.x)
+        if (session.rt.y + session.rt.height <= zoom.ApplyInversedTo(spriteRect.getTop())
+            || zoom.ApplyInversedTo(spriteRect.getBottom()) <= session.rt.y
+            || session.rt.x + session.rt.width <= zoom.ApplyInversedTo(spriteRect.getLeft())
+            || zoom.ApplyInversedTo(spriteRect.getRight()) <= session.rt.x)
         {
             continue;
         }

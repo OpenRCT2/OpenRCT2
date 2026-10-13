@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class WallSetColourAction final : public GameActionBase<GameCommand::SetWallColour>
+    class WallSetColourAction final : public GameActionBase<GameCommand::setWallColour>
     {
     private:
         CoordsXYZD _loc;

@@ -12,26 +12,21 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Date.h"
-#include "../Game.h"
 #include "../GameState.h"
-#include "../OpenRCT2.h"
 #include "../actions/GameActionRunner.h"
 #include "../actions/park/ParkSetParameterAction.h"
 #include "../core/String.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Litter.h"
 #include "../entity/Peep.h"
-#include "../entity/Staff.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/Research.h"
-#include "../network/Network.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
-#include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
@@ -80,7 +75,7 @@ namespace OpenRCT2::Park
     static money64 calculateTotalRideValueForMoney(const ParkData& park, const GameState_t& gameState)
     {
         money64 totalRideValue = 0;
-        bool ridePricesUnlocked = RidePricesUnlocked(park) && !(gameState.park.flags & PARK_FLAGS_NO_MONEY);
+        bool ridePricesUnlocked = RidePricesUnlocked(park) && !gameState.park.flags.has(ParkFlag::noMoney);
         for (auto& ride : RideManager(gameState))
         {
             if (ride.status != RideStatus::open)
@@ -121,7 +116,7 @@ namespace OpenRCT2::Park
             suggestedMaxGuests += ride.getRideTypeDescriptor().BonusValue;
 
             // If difficult guest generation, extra guests are available for good rides
-            if (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+            if (park.flags.has(ParkFlag::difficultGuestGeneration))
             {
                 if (!ride.flags.has(RideFlag::tested))
                     continue;
@@ -129,7 +124,7 @@ namespace OpenRCT2::Park
                     continue;
                 if (!ride.getRideTypeDescriptor().flags.has(RtdFlag::hasDataLogging))
                     continue;
-                if (ride.getStation().SegmentLength < (600 << 16))
+                if (ride.getStation().segmentLength < (600 << 16))
                     continue;
                 if (ride.ratings.excitement < RideRating::make(6, 00))
                     continue;
@@ -139,7 +134,7 @@ namespace OpenRCT2::Park
             }
         }
 
-        if (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        if (park.flags.has(ParkFlag::difficultGuestGeneration))
         {
             suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
             suggestedMaxGuests += difficultGenerationBonus;
@@ -176,7 +171,7 @@ namespace OpenRCT2::Park
         {
             probability /= 4;
             // Even lower for difficult guest generation
-            if (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+            if (park.flags.has(ParkFlag::difficultGuestGeneration))
             {
                 probability /= 4;
             }
@@ -222,7 +217,7 @@ namespace OpenRCT2::Park
         // Generate a new guest for some probability
         if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < park.guestGenerationProbability)
         {
-            bool difficultGeneration = (park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+            bool difficultGeneration = park.flags.has(ParkFlag::difficultGuestGeneration);
             if (!difficultGeneration || park.suggestedGuestMaximum + 150 >= park.numGuestsInPark)
             {
                 GenerateGuest();
@@ -306,7 +301,7 @@ namespace OpenRCT2::Park
         gameState.scenarioOptions.objective.NumGuests = 1000;
         gameState.scenarioOptions.landPrice = 90.00_GBP;
         gameState.scenarioOptions.constructionRightsPrice = 40.00_GBP;
-        park.flags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        park.flags = { ParkFlag::noMoney, ParkFlag::showRealGuestNames };
 
         ResetHistories(park);
         FinanceResetHistory();
@@ -314,6 +309,12 @@ namespace OpenRCT2::Park
 
         gameState.scenarioOptions.name.clear();
         gameState.scenarioOptions.details = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
+    }
+
+    void updateValuations(ParkData& park, const GameState_t& gameState)
+    {
+        park.value = CalculateParkValue(park, gameState);
+        park.companyValue = CalculateCompanyValue(park);
     }
 
     void Update(ParkData& park, GameState_t& gameState)
@@ -333,8 +334,7 @@ namespace OpenRCT2::Park
         if (currentTicks % 512 == 0)
         {
             park.rating = CalculateParkRating(park, gameState);
-            park.value = CalculateParkValue(park, gameState);
-            park.companyValue = CalculateCompanyValue(park);
+            updateValuations(park, gameState);
             park.totalRideValueForMoney = calculateTotalRideValueForMoney(park, gameState);
             park.suggestedGuestMaximum = calculateSuggestedMaxGuests(park, gameState);
             park.guestGenerationProbability = calculateGuestGenerationProbability(park);
@@ -362,7 +362,8 @@ namespace OpenRCT2::Park
         {
             if (it.element->getType() == TileElementType::surface)
             {
-                if (it.element->asSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
+                if (it.element->asSurface()->getOwnership().hasAny(
+                        OwnershipFlag::constructionRightsOwned, OwnershipFlag::landOwned))
                 {
                     tiles++;
                 }
@@ -380,7 +381,7 @@ namespace OpenRCT2::Park
         }
 
         int32_t result = 1150;
-        if (park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+        if (park.flags.has(ParkFlag::difficultParkRating))
         {
             result = 1050;
         }
@@ -401,7 +402,7 @@ namespace OpenRCT2::Park
                     {
                         happyGuestCount++;
                     }
-                    if ((peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK) && (peep->guestIsLostCountdown < 90))
+                    if (peep->peepFlags.has(PeepFlag::leavingPark) && (peep->guestIsLostCountdown < 90))
                     {
                         lostGuestCount++;
                     }
@@ -522,9 +523,9 @@ namespace OpenRCT2::Park
         for (uint8_t n = 1; n < 55; n++)
         {
             // Avoid floating point math by rescaling PI up.
-            constexpr int32_t SCALE = 100000;
-            constexpr int32_t PI_SCALED = 314159; // PI * SCALE;
-            if (((PI_SCALED * (9 + n)) / SCALE) / 2 >= percentage)
+            constexpr int32_t kScale = 100000;
+            constexpr int32_t kScaled = 314159; // PI * kScale;
+            if (((kScaled * (9 + n)) / kScale) / 2 >= percentage)
             {
                 return (9 + n) * 4;
             }
@@ -546,11 +547,11 @@ namespace OpenRCT2::Park
             {
                 peep->orientation = direction << 3;
 
-                auto destination = peep->getLocation().ToTileCentre();
-                peep->SetDestination(destination, 5);
-                peep->PeepDirection = direction;
-                peep->Var37 = 0;
-                peep->State = PeepState::enteringPark;
+                auto destination = peep->getLocation().toTileCentre();
+                peep->setDestination(destination, 5);
+                peep->peepDirection = direction;
+                peep->var37 = 0;
+                peep->state = PeepState::enteringPark;
             }
         }
         return peep;
@@ -645,7 +646,7 @@ namespace OpenRCT2::Park
             return;
 
         uint8_t newFences = 0;
-        if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) == 0)
+        if (!surfaceElement->hasOwnership(OwnershipFlag::landOwned))
         {
             bool fenceRequired = true;
 
@@ -658,7 +659,7 @@ namespace OpenRCT2::Park
                 if (tileElement->getType() != TileElementType::entrance)
                     continue;
 
-                if (tileElement->asEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->asEntrance()->getEntranceType() != EntranceType::parkEntrance)
                     continue;
 
                 if (!(tileElement->isGhost()))
@@ -692,12 +693,12 @@ namespace OpenRCT2::Park
             }
         }
 
-        if (surfaceElement->GetParkFences() != newFences)
+        if (surfaceElement->getParkFences() != newFences)
         {
             int32_t baseZ = surfaceElement->getBaseZ();
             int32_t clearZ = baseZ + 16;
             MapInvalidateTile({ coords, baseZ, clearZ });
-            surfaceElement->SetParkFences(newFences);
+            surfaceElement->setParkFences(newFences);
         }
     }
 
@@ -728,7 +729,7 @@ namespace OpenRCT2::Park
 
     money64 GetEntranceFee(const ParkData& park)
     {
-        if (park.flags & PARK_FLAGS_NO_MONEY)
+        if (park.flags.has(ParkFlag::noMoney))
         {
             return 0;
         }
@@ -742,11 +743,11 @@ namespace OpenRCT2::Park
 
     bool RidePricesUnlocked(const ParkData& park)
     {
-        if (park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+        if (park.flags.has(ParkFlag::unlockAllPrices))
         {
             return true;
         }
-        if (park.flags & PARK_FLAGS_PARK_FREE_ENTRY)
+        if (park.flags.has(ParkFlag::freeEntry))
         {
             return true;
         }
@@ -755,11 +756,11 @@ namespace OpenRCT2::Park
 
     bool EntranceFeeUnlocked(const ParkData& park)
     {
-        if (park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+        if (park.flags.has(ParkFlag::unlockAllPrices))
         {
             return true;
         }
-        if (!(park.flags & PARK_FLAGS_PARK_FREE_ENTRY))
+        if (!park.flags.has(ParkFlag::freeEntry))
         {
             return true;
         }
@@ -768,6 +769,6 @@ namespace OpenRCT2::Park
 
     bool IsOpen(const ParkData& park)
     {
-        return (park.flags & PARK_FLAGS_PARK_OPEN) != 0;
+        return park.flags.has(ParkFlag::parkOpen);
     }
 } // namespace OpenRCT2::Park

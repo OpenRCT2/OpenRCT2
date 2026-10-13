@@ -15,7 +15,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    GuestSetFlagsAction::GuestSetFlagsAction(EntityId peepId, uint32_t flags)
+    GuestSetFlagsAction::GuestSetFlagsAction(EntityId peepId, PeepFlags flags)
         : _peepId(peepId)
         , _newFlags(flags)
     {
@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
     void GuestSetFlagsAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
         visitor.Visit("peep", _peepId);
-        visitor.Visit("guestFlags", _newFlags);
+        visitor.Visit("guestFlags", _newFlags.holder);
     }
 
     uint16_t GuestSetFlagsAction::GetActionFlags() const
@@ -36,12 +36,12 @@ namespace OpenRCT2::GameActions
     {
         GameAction::Serialise(stream);
 
-        stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
+        stream << DS_TAG(_peepId) << DS_TAG(_newFlags.holder);
     }
 
     Result GuestSetFlagsAction::Query(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
+        auto* peep = gameState.entities.tryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {
             LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
@@ -52,14 +52,14 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetFlagsAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
+        auto* peep = gameState.entities.tryGetEntity<Guest>(_peepId);
         if (peep == nullptr)
         {
             LOG_ERROR("Guest entity not found for peepID %u", _peepId.ToUnderlying());
             return Result(Status::invalidParameters, STR_CANT_CHANGE_THIS, kStringIdNone);
         }
 
-        peep->PeepFlags = _newFlags;
+        peep->peepFlags = _newFlags;
 
         return Result();
     }

@@ -948,40 +948,40 @@ namespace OpenRCT2::Ui
         "      X                         ");
 
     static constexpr const CursorData* kRawCursorData[] = {
-        nullptr,                    // CursorID::Arrow
-        &kBlankCursorData,          // CursorID::Blank
-        &kUpArrowCursorData,        // CursorID::UpArrow
-        &kUpDownArrowCursorData,    // CursorID::UpDownArrow
-        nullptr,                    // CursorID::HandPoint
-        &kZzzCursorData,            // CursorID::ZZZ
-        &kDiagonalArrowCursorData,  // CursorID::DiagonalArrows
-        &kPickerArrowCursorData,    // CursorID::Picker
-        &kTreeDownCursorData,       // CursorID::TreeDown
-        &kFountainDownCursorData,   // CursorID::FountainDown
-        &kStatueDownCursorData,     // CursorID::StatueDown
-        &kBenchDownCursorData,      // CursorID::BenchDown
-        &kCrossHairCursorData,      // CursorID::CrossHair
-        &kBinDownCursorData,        // CursorID::BinDown
-        &kLampPostDownCursorData,   // CursorID::LamppostDown
-        &kFenceDownCursorData,      // CursorID::FenceDown
-        &kFlowerDownCursorData,     // CursorID::FlowerDown
-        &kFootpathDownCursorData,   // CursorID::PathDown
-        &kDigDownCursorData,        // CursorID::DigDown
-        &kWaterDownCursorData,      // CursorID::WaterDown
-        &kHouseDownCursorData,      // CursorID::HouseDown
-        &kVolcanoDownCursorData,    // CursorID::VolcanoDown
-        &kWalkDownCursorData,       // CursorID::WalkDown
-        &kPaintDownCursorData,      // CursorID::PaintDown
-        &kEntranceDownCursorData,   // CursorID::EntranceDown
-        &kHandOpenDownCursorData,   // CursorID::HandOpen
-        &kHandClosedDownCursorData, // CursorID::HandClosed
-        &kBulldozerCursorData,      // CursorID::Bulldozer
+        nullptr,                    // CursorID::arrow
+        &kBlankCursorData,          // CursorID::blank
+        &kUpArrowCursorData,        // CursorID::upArrow
+        &kUpDownArrowCursorData,    // CursorID::upDownArrow
+        nullptr,                    // CursorID::handPoint
+        &kZzzCursorData,            // CursorID::zZZ
+        &kDiagonalArrowCursorData,  // CursorID::diagonalArrows
+        &kPickerArrowCursorData,    // CursorID::picker
+        &kTreeDownCursorData,       // CursorID::treeDown
+        &kFountainDownCursorData,   // CursorID::fountainDown
+        &kStatueDownCursorData,     // CursorID::statueDown
+        &kBenchDownCursorData,      // CursorID::benchDown
+        &kCrossHairCursorData,      // CursorID::crossHair
+        &kBinDownCursorData,        // CursorID::binDown
+        &kLampPostDownCursorData,   // CursorID::lamppostDown
+        &kFenceDownCursorData,      // CursorID::fenceDown
+        &kFlowerDownCursorData,     // CursorID::flowerDown
+        &kFootpathDownCursorData,   // CursorID::pathDown
+        &kDigDownCursorData,        // CursorID::digDown
+        &kWaterDownCursorData,      // CursorID::waterDown
+        &kHouseDownCursorData,      // CursorID::houseDown
+        &kVolcanoDownCursorData,    // CursorID::volcanoDown
+        &kWalkDownCursorData,       // CursorID::walkDown
+        &kPaintDownCursorData,      // CursorID::paintDown
+        &kEntranceDownCursorData,   // CursorID::entranceDown
+        &kHandOpenDownCursorData,   // CursorID::handOpen
+        &kHandClosedDownCursorData, // CursorID::handClosed
+        &kBulldozerCursorData,      // CursorID::bulldozer
     };
 
     const CursorData* getCursorData(CursorID cursorId)
     {
         const CursorData* result = nullptr;
-        if (cursorId != CursorID::Undefined && cursorId != CursorID::Count)
+        if (cursorId != CursorID::undefined && cursorId != CursorID::count)
         {
             result = kRawCursorData[EnumValue(cursorId)];
         }

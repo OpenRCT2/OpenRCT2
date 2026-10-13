@@ -7,18 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma warning(disable : 4706) // assignment within conditional expression
-
 #include "SmallSceneryObject.h"
 
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
-#include "../world/Scenery.h"
 
 namespace OpenRCT2
 {
@@ -186,7 +183,7 @@ void SmallSceneryObject::PerformFixes()
         if (properties.is_object())
         {
             _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
-            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
+            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::statueDown);
             _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
             _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;
             _legacyType.animation_delay = Json::GetNumber<uint16_t>(properties["animationDelay"]);

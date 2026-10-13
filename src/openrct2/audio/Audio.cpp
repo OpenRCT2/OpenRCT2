@@ -163,7 +163,7 @@ namespace OpenRCT2::Audio
         const auto& activeViewports = GetAllViewports();
         for (const auto& viewport : activeViewports)
         {
-            if (viewport.flags & VIEWPORT_FLAG_SOUND_ON)
+            if (viewport.flags.has(ViewportFlag::soundOn))
             {
                 int16_t vx = pos2.x - viewport.viewPos.x;
                 params.pan = viewport.pos.x + viewport.zoom.ApplyInversedTo(vx);
@@ -210,7 +210,7 @@ namespace OpenRCT2::Audio
             mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
         }
 
-        CreateAudioChannel(audioSource, MixerGroup::Sound, false, DStoMixerVolume(volume), DStoMixerPan(mixerPan), 1, true);
+        CreateAudioChannel(audioSource, MixerGroup::sound, false, DStoMixerVolume(volume), DStoMixerPan(mixerPan), 1, true);
     }
 
     void Play3D(SoundId soundId, const CoordsXYZ& loc)
@@ -316,7 +316,7 @@ namespace OpenRCT2::Audio
             auto source = audioObject->GetSample(0);
             if (source != nullptr)
             {
-                _titleMusicChannel = CreateAudioChannel(source, MixerGroup::TitleMusic, true);
+                _titleMusicChannel = CreateAudioChannel(source, MixerGroup::titleMusic, true);
             }
         }
     }
@@ -468,7 +468,7 @@ namespace OpenRCT2::Audio
             auto source = baseAudioObject->GetSample(sampleIndex);
             if (source != nullptr)
             {
-                return CreateAudioChannel(source, MixerGroup::Sound, loop, volume, pan, rate, forget);
+                return CreateAudioChannel(source, MixerGroup::sound, loop, volume, pan, rate, forget);
             }
         }
         return nullptr;

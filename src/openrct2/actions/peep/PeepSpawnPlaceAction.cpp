@@ -73,7 +73,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
         }
-        if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
+        if (surfaceMapElement->getOwnership() != kUnowned)
         {
             return Result(
                 Status::invalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
@@ -89,7 +89,7 @@ namespace OpenRCT2::GameActions
         res.position = _location;
 
         // Shift the spawn point to the edge of the tile
-        auto spawnPos = CoordsXY{ _location.ToTileCentre() }
+        auto spawnPos = CoordsXY{ _location.toTileCentre() }
             + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
 
         PeepSpawn spawn;
@@ -106,7 +106,7 @@ namespace OpenRCT2::GameActions
             auto foundSpawn = std::find_if(
                 gameState.peepSpawns.begin(), gameState.peepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
                     {
-                        return existingSpawn.ToTileStart() == spawn.ToTileStart();
+                        return existingSpawn.toTileStart() == spawn.toTileStart();
                     }
                 });
 

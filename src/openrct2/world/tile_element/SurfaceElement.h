@@ -9,12 +9,17 @@
 
 #pragma once
 
-#include "../../object/TerrainEdgeObject.h"
-#include "../../object/TerrainSurfaceObject.h"
+#include "../../object/ObjectTypes.h"
+#include "../MapOwnership.h"
 #include "TileElementBase.h"
 
 namespace OpenRCT2
 {
+    namespace Drawing
+    {
+        enum class Colour : uint8_t;
+    }
+
     enum
     {
         SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
@@ -31,17 +36,11 @@ namespace OpenRCT2
         GRASS_LENGTH_CLUMPS_2,
     };
 
-    enum
-    {
-        OWNERSHIP_UNOWNED = 0,
-        OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
-        OWNERSHIP_OWNED = (1 << 5),
-        OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE = (1 << 6),
-        OWNERSHIP_AVAILABLE = (1 << 7)
-    };
-
     constexpr uint8_t kTileElementSurfaceOwnershipMask = 0xF0;
     constexpr uint8_t kTileElementSurfaceParkFenceMask = 0x0F;
+
+    class TerrainEdgeObject;
+    class TerrainSurfaceObject;
 
 #pragma pack(push, 1)
     struct SurfaceElement : TileElementBase
@@ -49,46 +48,55 @@ namespace OpenRCT2
         static constexpr TileElementType kElementType = TileElementType::surface;
 
     private:
-        uint8_t Slope;
-        uint8_t WaterHeight;
-        uint8_t GrassLength;
-        uint8_t Ownership;
-        uint8_t SurfaceStyle;
-        uint8_t EdgeObjectIndex;
+        uint8_t slope;
+        uint8_t waterHeight;
+        uint8_t grassLength;
+        uint8_t ownership;
+        uint8_t surfaceStyle;
+        uint8_t edgeObjectIndex;
+        Drawing::Colour surfaceColour1;
+        Drawing::Colour edgeColour1;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-        uint8_t Pad0B[5];
+        uint8_t pad0D[3];
 #pragma clang diagnostic pop
 
     public:
-        uint8_t GetSlope() const;
-        void SetSlope(uint8_t newSlope);
+        uint8_t getSlope() const;
+        void setSlope(uint8_t newSlope);
 
-        ObjectEntryIndex GetSurfaceObjectIndex() const;
-        TerrainSurfaceObject* GetSurfaceObject() const;
-        void SetSurfaceObjectIndex(ObjectEntryIndex newStyle);
+        ObjectEntryIndex getSurfaceObjectIndex() const;
+        TerrainSurfaceObject* getSurfaceObject() const;
+        void setSurfaceObjectIndex(ObjectEntryIndex newStyle);
 
-        ObjectEntryIndex GetEdgeObjectIndex() const;
-        TerrainEdgeObject* GetEdgeObject() const;
-        void SetEdgeObjectIndex(ObjectEntryIndex newIndex);
+        ObjectEntryIndex getEdgeObjectIndex() const;
+        TerrainEdgeObject* getEdgeObject() const;
+        void setEdgeObjectIndex(ObjectEntryIndex newIndex);
 
-        bool CanGrassGrow() const;
-        uint8_t GetGrassLength() const;
-        void SetGrassLength(uint8_t newLength);
-        void SetGrassLengthAndInvalidate(uint8_t newLength, const CoordsXY& coords);
-        void UpdateGrassLength(const CoordsXY& coords);
+        bool canGrassGrow() const;
+        uint8_t getGrassLength() const;
+        void setGrassLength(uint8_t newLength);
+        void setGrassLengthAndInvalidate(uint8_t newLength, const CoordsXY& coords);
+        void updateGrassLength(const CoordsXY& coords);
 
-        uint8_t GetOwnership() const;
-        void SetOwnership(uint8_t newOwnership);
+        OwnershipFlags getOwnership() const;
+        void setOwnership(OwnershipFlags newOwnership);
+        bool hasOwnership(OwnershipFlag flag) const;
 
-        int32_t GetWaterHeight() const;
-        void SetWaterHeight(int32_t newWaterHeight);
+        int32_t getWaterHeight() const;
+        void setWaterHeight(int32_t newWaterHeight);
 
-        uint8_t GetParkFences() const;
-        void SetParkFences(uint8_t newParkFences);
+        uint8_t getParkFences() const;
+        void setParkFences(uint8_t newParkFences);
 
-        bool HasTrackThatNeedsWater() const;
-        void SetHasTrackThatNeedsWater(bool on);
+        bool hasTrackThatNeedsWater() const;
+        void setHasTrackThatNeedsWater(bool on);
+
+        Drawing::Colour getPrimarySurfaceColour() const;
+        void setPrimarySurfaceColour(Drawing::Colour newColour);
+
+        Drawing::Colour getPrimaryEdgeColour() const;
+        void setPrimaryEdgeColour(Drawing::Colour newColour);
     };
     static_assert(sizeof(SurfaceElement) == kTileElementSize);
 #pragma pack(pop)

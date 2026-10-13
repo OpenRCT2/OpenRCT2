@@ -14,7 +14,7 @@
 
 #ifndef DISABLE_FLAC
     #include <FLAC/all.h>
-    #include <SDL.h>
+    #include <SDL_rwops.h>
     #include <cstring>
     #include <vector>
 #endif

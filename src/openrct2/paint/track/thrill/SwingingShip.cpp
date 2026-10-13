@@ -19,7 +19,6 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -97,7 +96,7 @@ static void PaintSwingingShipStructure(
     Vehicle* vehicle = nullptr;
     if (ride.flags.has(RideFlag::onTrack) && !ride.vehicles[0].IsNull())
     {
-        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
         session.InteractionType = ViewportInteractionItem::entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
@@ -106,7 +105,7 @@ static void PaintSwingingShipStructure(
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     BoundBoxXYZ bb = { { bounds.offset, height + 7 }, { bounds.length, 80 } };
 
-    auto baseImageId = rideEntry->Cars[0].base_image_id + kSwingingShipBaseSpriteOffset[direction];
+    auto baseImageId = rideEntry->Cars[0].baseImageId + kSwingingShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
         int32_t rotation = static_cast<int8_t>(vehicle->flatRideAnimationFrame);
@@ -172,7 +171,7 @@ static void PaintSwingingShip(
     else
     {
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
-        if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
+        if (stationObject != nullptr && !stationObject->Flags.has(StationObjectFlag::noPlatforms))
         {
             ImageIndex base = (direction & 1) ? SPR_STATION_BASE_TALL_NW_SE : SPR_STATION_BASE_TALL_SW_NE;
             imageId = session.SupportColours.WithIndex(base);
@@ -182,7 +181,7 @@ static void PaintSwingingShip(
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
 
-    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
+    if (stationObject != nullptr && !stationObject->Flags.has(StationObjectFlag::noPlatforms))
     {
         if (direction & 1)
         {

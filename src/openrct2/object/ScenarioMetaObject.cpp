@@ -9,11 +9,9 @@
 
 #include "ScenarioMetaObject.h"
 
-#include "../Context.h"
-#include "../PlatformEnvironment.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Sprite.h"
 
 namespace OpenRCT2
 {

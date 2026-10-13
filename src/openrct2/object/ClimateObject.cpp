@@ -11,13 +11,12 @@
 
 #include "../Diagnostic.h"
 #include "../core/Guard.hpp"
-#include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Text.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Formatter.h"
 #include "../localisation/StringIds.h"
-#include "../world/Location.hpp"
 
 #include <algorithm>
 
@@ -62,7 +61,7 @@ namespace OpenRCT2
         const auto dist = getYearlyDistribution();
         const auto totalSize = kNumClimateMonths * kWeatherDistSize;
 
-        for (auto i = 0u; i < EnumValue(Weather::Type::Count); i++)
+        for (auto i = 0u; i < EnumValue(Weather::Type::count); i++)
         {
             auto type = Weather::Type(i);
             auto imageId = ImageId(Weather::getWeatherSpriteId(type));
@@ -124,7 +123,7 @@ namespace OpenRCT2
         for (auto m = 0; m < kNumClimateMonths; m++)
         {
             auto& pattern = getPatternForMonth(m);
-            for (auto i = 0u; i < EnumValue(Weather::Type::Count); i++)
+            for (auto i = 0u; i < EnumValue(Weather::Type::count); i++)
                 dist[i] += weatherTypeCount(pattern, Weather::Type(i));
         }
 

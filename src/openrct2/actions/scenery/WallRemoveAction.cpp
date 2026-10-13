@@ -84,7 +84,7 @@ namespace OpenRCT2::GameActions
         res.position.y = _loc.y + 16;
         res.position.z = _loc.z;
 
-        wallElement->RemoveBannerEntry();
+        wallElement->removeBannerEntry();
         MapInvalidateTileZoom1({ _loc, wallElement->getBaseZ(), (wallElement->getBaseZ()) + 72 });
         TileElementRemove(wallElement);
 

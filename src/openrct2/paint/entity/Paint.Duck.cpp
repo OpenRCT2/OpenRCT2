@@ -23,7 +23,7 @@ namespace OpenRCT2
         if (rt.zoom_level > ZoomLevel{ 1 })
             return;
 
-        uint32_t imageId = duck.GetFrameImage(imageDirection);
+        uint32_t imageId = duck.getFrameImage(imageDirection);
         if (imageId != 0)
         {
             PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, duck.z }, { 1, 1, 0 });

@@ -12,21 +12,28 @@
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/ScrollingText.h"
 #include "../interface/Cursors.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
 
 namespace OpenRCT2
 {
+    static constexpr uint8_t kFlags2DoorSoundMask = 0b0110;
+    static constexpr uint8_t kFlags2DoorSoundShift = 1;
+
     void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         stream->Seek(6, STREAM_SEEK_CURRENT);
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-        _legacyType.flags = stream->ReadValue<uint8_t>();
+        _legacyType.flags = static_cast<WallSceneryFlags>(stream->ReadValue<uint8_t>());
         _legacyType.height = stream->ReadValue<uint8_t>();
-        _legacyType.flags2 = stream->ReadValue<uint8_t>();
+        auto combinedFlagsAndDoorSound = stream->ReadValue<uint8_t>();
+        auto doorSound = (combinedFlagsAndDoorSound & kFlags2DoorSoundMask) >> kFlags2DoorSoundShift;
+        auto flags2 = combinedFlagsAndDoorSound &= ~kFlags2DoorSoundMask;
+        _legacyType.flags2.holder = flags2;
+        _legacyType.doorSound = static_cast<Audio::DoorSoundType>(doorSound);
         _legacyType.price = stream->ReadValue<money16>();
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         stream->Seek(1, STREAM_SEEK_CURRENT);
@@ -49,8 +56,7 @@ namespace OpenRCT2
         auto identifier = GetLegacyIdentifier();
         if (identifier == "XXWLBR03")
         {
-            _legacyType.flags2 &= ~WALL_SCENERY_2_DOOR_SOUND_MASK;
-            _legacyType.flags2 |= (1u << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
+            _legacyType.doorSound = Audio::DoorSoundType::door;
         }
     }
 
@@ -78,19 +84,19 @@ namespace OpenRCT2
         screenCoords.y += (_legacyType.height * 2) + 16;
 
         auto imageId = ImageId(_legacyType.image, Drawing::Colour::bordeauxRed);
-        if (_legacyType.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+        if (_legacyType.flags.has(WallSceneryFlag::hasSecondaryColour))
         {
             imageId = imageId.WithSecondary(Drawing::Colour::yellow);
         }
 
         GfxDrawSprite(rt, imageId, screenCoords);
 
-        if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
+        if (_legacyType.flags.has(WallSceneryFlag::hasGlass))
         {
             auto glassImageId = imageId.WithTransparency(Drawing::Colour::bordeauxRed).WithIndexOffset(6);
             GfxDrawSprite(rt, glassImageId, screenCoords);
         }
-        else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
+        else if (_legacyType.flags.has(WallSceneryFlag::isDoor))
         {
             GfxDrawSprite(rt, imageId.WithIndexOffset(1), screenCoords);
         }
@@ -104,7 +110,7 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::FenceDown);
+            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::fenceDown);
             _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
             _legacyType.price = Json::GetNumber<money64>(properties["price"]);
 
@@ -113,39 +119,39 @@ namespace OpenRCT2
             SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
 
             // clang-format off
-        _legacyType.flags = Json::GetFlags<uint8_t>(
+        _legacyType.flags = Json::GetFlagHolder<WallSceneryFlags, WallSceneryFlag>(
             properties,
             {
-                { "hasPrimaryColour",       WALL_SCENERY_HAS_PRIMARY_COLOUR,    Json::FlagType::Normal },
-                { "isAllowedOnSlope",       WALL_SCENERY_CANT_BUILD_ON_SLOPE,   Json::FlagType::Inverted },
-                { "hasSecondaryColour",     WALL_SCENERY_HAS_SECONDARY_COLOUR,  Json::FlagType::Normal },
-                { "hasTertiaryColour",      WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::Normal },
-                { "hasTernaryColour",       WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::Normal },
-                { "hasGlass",               WALL_SCENERY_HAS_GLASS,             Json::FlagType::Normal },
-                { "isBanner",               WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::Normal },
-                { "isDoubleSided",          WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::Normal },
-                { "isDoor",                 WALL_SCENERY_IS_DOOR,               Json::FlagType::Normal },
-                { "isLongDoorAnimation",    WALL_SCENERY_LONG_DOOR_ANIMATION,   Json::FlagType::Normal },
+                { "hasPrimaryColour",       WallSceneryFlag::hasPrimaryColour,     Json::FlagType::normal },
+                { "isAllowedOnSlope",       WallSceneryFlag::cannotBuildOnSlope,   Json::FlagType::inverted },
+                { "hasSecondaryColour",     WallSceneryFlag::hasSecondaryColour,   Json::FlagType::normal },
+                { "hasTertiaryColour",      WallSceneryFlag::hasTertiaryColour,    Json::FlagType::normal },
+                { "hasTernaryColour",       WallSceneryFlag::hasTertiaryColour,    Json::FlagType::normal },
+                { "hasGlass",               WallSceneryFlag::hasGlass,             Json::FlagType::normal },
+                { "isBanner",               WallSceneryFlag::isDoubleSided,        Json::FlagType::normal },
+                { "isDoubleSided",          WallSceneryFlag::isDoubleSided,        Json::FlagType::normal },
+                { "isDoor",                 WallSceneryFlag::isDoor,               Json::FlagType::normal },
+                { "isLongDoorAnimation",    WallSceneryFlag::hasLongDoorAnimation, Json::FlagType::normal },
             });
             // clang-format on
 
-            _legacyType.flags2 = Json::GetFlags<uint8_t>(
+            _legacyType.flags2 = Json::GetFlagHolder<WallSceneryFlags2, WallSceneryFlag2>(
                 properties,
                 {
-                    { "isTransparent", WALL_SCENERY_2_IS_TRANSPARENT },
+                    { "isTransparent", WallSceneryFlag2::isTransparent },
                     // Deprecated because it did the opposite of what the name implied.
-                    { "isOpaque", WALL_SCENERY_2_IS_TRANSPARENT },
-                    { "isAnimated", WALL_SCENERY_2_ANIMATED },
+                    { "isOpaque", WallSceneryFlag2::isTransparent },
+                    { "isAnimated", WallSceneryFlag2::isAnimated },
                 });
 
-            // HACK WALL_SCENERY_HAS_PRIMARY_COLOUR actually means, has any colour but we simplify the
+            // HACK WallSceneryFlag::hasPrimaryColour actually means, has any colour but we simplify the
             //      JSON and handle this on load. We should change code base in future to reflect the JSON.
-            if (!(_legacyType.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR))
+            if (!_legacyType.flags.has(WallSceneryFlag::hasPrimaryColour))
             {
-                if (_legacyType.flags & (WALL_SCENERY_HAS_SECONDARY_COLOUR | WALL_SCENERY_HAS_TERTIARY_COLOUR))
+                if (_legacyType.flags.hasAny(WallSceneryFlag::hasSecondaryColour, WallSceneryFlag::hasTertiaryColour))
                 {
-                    _legacyType.flags |= WALL_SCENERY_HAS_PRIMARY_COLOUR;
-                    _legacyType.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;
+                    _legacyType.flags.set(WallSceneryFlag::hasPrimaryColour);
+                    _legacyType.flags2.set(WallSceneryFlag2::disablePrimaryColour);
                 }
             }
 
@@ -154,7 +160,7 @@ namespace OpenRCT2
             if (jDoorSound.is_number())
             {
                 auto doorSound = Json::GetNumber<uint8_t>(jDoorSound);
-                _legacyType.flags2 |= (doorSound << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
+                _legacyType.doorSound = static_cast<Audio::DoorSoundType>(doorSound);
             }
         }
 

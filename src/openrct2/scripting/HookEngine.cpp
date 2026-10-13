@@ -32,6 +32,7 @@ static const EnumMap<HookType> HooksLookupTable(
         { "vehicle.crash", HookType::vehicleCrash },
         { "map.change", HookType::mapChange },
         { "map.changed", HookType::mapChanged },
+        { "map.resize", HookType::mapResize },
         { "map.save", HookType::mapSave },
         { "park.guest.softcap.calculate", HookType::parkCalculateGuestCap },
         { "ride.breakdown", HookType::rideBreakDown },
@@ -46,8 +47,8 @@ HookType OpenRCT2::Scripting::GetHookType(const std::string& name)
 HookEngine::HookEngine(ScriptEngine& scriptEngine)
     : _scriptEngine(scriptEngine)
 {
-    _hookMap.resize(NUM_HookTypeS);
-    for (size_t i = 0; i < NUM_HookTypeS; i++)
+    _hookMap.resize(kHookTypeCount);
+    for (size_t i = 0; i < kHookTypeCount; i++)
     {
         _hookMap[i].Type = static_cast<HookType>(i);
     }
@@ -102,7 +103,7 @@ bool HookEngine::HasSubscriptions(HookType type) const
 
 bool HookEngine::IsValidHookForPlugin(HookType type, Plugin& plugin) const
 {
-    if (type == HookType::mapChanged && plugin.GetMetadata().Type != PluginType::Intransient)
+    if (type == HookType::mapChanged && plugin.GetMetadata().Type != PluginType::intransient)
     {
         return false;
     }

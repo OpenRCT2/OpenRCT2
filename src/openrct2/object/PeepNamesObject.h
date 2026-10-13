@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../core/IStream.hpp"
 #include "Object.h"
 
 #include <string>

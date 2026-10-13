@@ -65,27 +65,27 @@ namespace OpenRCT2::GameActions
     {
         auto res = Result();
 
-        MapRange normRange = _range.Normalise();
+        MapRange normRange = _range.normalise();
         // Keep big coordinates within map boundaries
         auto mapSizeMaxXY = GetMapSizeMaxXY();
-        auto aX = std::max<decltype(normRange.GetX1())>(32, normRange.GetX1());
-        auto bX = std::min<decltype(normRange.GetX2())>(mapSizeMaxXY.x, normRange.GetX2());
-        auto aY = std::max<decltype(normRange.GetY1())>(32, normRange.GetY1());
-        auto bY = std::min<decltype(normRange.GetY2())>(mapSizeMaxXY.y, normRange.GetY2());
+        auto aX = std::max<decltype(normRange.getX1())>(32, normRange.getX1());
+        auto bX = std::min<decltype(normRange.getX2())>(mapSizeMaxXY.x, normRange.getX2());
+        auto aY = std::max<decltype(normRange.getY1())>(32, normRange.getY1());
+        auto bY = std::min<decltype(normRange.getY2())>(mapSizeMaxXY.y, normRange.getY2());
 
         MapRange validRange = MapRange{ aX, aY, bX, bY };
 
-        CoordsXYZ centre{ (validRange.GetX1() + validRange.GetX2()) / 2 + 16,
-                          (validRange.GetY1() + validRange.GetY2()) / 2 + 16, 0 };
+        CoordsXYZ centre{ (validRange.getX1() + validRange.getX2()) / 2 + 16,
+                          (validRange.getY1() + validRange.getY2()) / 2 + 16, 0 };
         centre.z = TileElementHeight(centre);
 
         res.position = centre;
         res.expenditure = ExpenditureType::landPurchase;
 
         // Game command modified to accept selection size
-        for (auto y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
+        for (auto y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
         {
-            for (auto x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
+            for (auto x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;
@@ -122,38 +122,38 @@ namespace OpenRCT2::GameActions
         switch (_setting)
         {
             case LandBuyRightSetting::buyLand: // 0
-                if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) != 0)
+                if (surfaceElement->hasOwnership(OwnershipFlag::landOwned))
                 { // If the land is already owned
                     return res;
                 }
 
-                if (gLegacyScene == LegacyScene::scenarioEditor || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
+                if (gLegacyScene == LegacyScene::scenarioEditor || !surfaceElement->hasOwnership(OwnershipFlag::landForSale))
                 {
                     return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
                 }
                 if (isExecuting)
                 {
-                    surfaceElement->SetOwnership(OWNERSHIP_OWNED);
+                    surfaceElement->setOwnership(OwnershipFlag::landOwned);
                     Park::UpdateFencesAroundTile(loc);
                 }
                 res.cost = gameState.scenarioOptions.landPrice;
                 return res;
 
             case LandBuyRightSetting::buyConstructionRights: // 2
-                if ((surfaceElement->GetOwnership() & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
+                if (surfaceElement->getOwnership().hasAny(OwnershipFlag::landOwned, OwnershipFlag::constructionRightsOwned))
                 { // If the land or construction rights are already owned
                     return res;
                 }
 
                 if (gLegacyScene == LegacyScene::scenarioEditor
-                    || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
+                    || !surfaceElement->hasOwnership(OwnershipFlag::constructionRightsForSale))
                 {
                     return Result(Status::notOwned, kErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
                 }
 
                 if (isExecuting)
                 {
-                    surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    surfaceElement->setOwnership(surfaceElement->getOwnership().with(OwnershipFlag::constructionRightsOwned));
                     uint16_t baseZ = surfaceElement->getBaseZ();
                     MapInvalidateTile({ loc, baseZ, baseZ + 16 });
                 }

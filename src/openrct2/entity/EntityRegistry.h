@@ -18,10 +18,12 @@
 #include <string>
 #include <vector>
 
+struct CoordsXY;
+
 namespace OpenRCT2
 {
     constexpr uint16_t kMaxEntities = 65535;
-    constexpr uint16_t kMaxMiscEntities = 3200;
+    constexpr uint16_t kMaxMiscEntities = 6400;
 
     constexpr const uint32_t kSpatialIndexSize = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
     constexpr uint32_t kSpatialIndexNullBucket = kSpatialIndexSize - 1;
@@ -31,10 +33,10 @@ namespace OpenRCT2
 
     union Entity_t
     {
-        uint8_t Pad00[0x200];
+        uint8_t pad00[0x200];
         EntityBase base;
         Entity_t()
-            : Pad00()
+            : pad00()
         {
         }
     };
@@ -44,7 +46,7 @@ namespace OpenRCT2
     {
         std::array<std::byte, 20> raw;
 
-        std::string ToString() const;
+        std::string toString() const;
     };
 #pragma pack(pop)
 
@@ -55,23 +57,23 @@ namespace OpenRCT2
     {
     private:
         Entity_t entities[kMaxEntities]{};
-        std::array<std::list<EntityId>, EnumValue(EntityType::count)> gEntityLists;
+        std::array<std::list<EntityId>, EnumValue(EntityType::count)> _entityLists;
         std::vector<EntityId> _freeIdList;
 
         bool _entityFlashingList[kMaxEntities];
 
-        std::array<std::vector<EntityId>, kSpatialIndexSize> gEntitySpatialIndex;
+        std::array<std::vector<EntityId>, kSpatialIndexSize> _entitySpatialIndex;
 
     public:
-        uint16_t GetEntityListCount(EntityType type);
-        uint16_t GetNumFreeEntities();
+        uint16_t getEntityListCount(EntityType type);
+        uint16_t getNumFreeEntities();
 
-        EntityBase* GetEntity(EntityId entityId);
+        EntityBase* getEntity(EntityId entityId);
 
         template<typename T>
-        T* GetEntity(EntityId entityId)
+        T* getEntity(EntityId entityId)
         {
-            auto* ent = GetEntity(entityId);
+            auto* ent = getEntity(entityId);
             if (ent == nullptr)
             {
                 return nullptr;
@@ -86,12 +88,12 @@ namespace OpenRCT2
             }
         }
 
-        EntityBase* TryGetEntity(EntityId spriteIndex);
+        EntityBase* tryGetEntity(EntityId spriteIndex);
 
         template<typename T>
-        T* TryGetEntity(EntityId entityId)
+        T* tryGetEntity(EntityId entityId)
         {
-            auto* ent = TryGetEntity(entityId);
+            auto* ent = tryGetEntity(entityId);
             if (ent == nullptr)
             {
                 return nullptr;
@@ -106,35 +108,35 @@ namespace OpenRCT2
             }
         }
 
-        const std::vector<EntityId>& GetEntityTileList(const CoordsXY& spritePos);
+        const std::vector<EntityId>& getEntityTileList(const CoordsXY& spritePos);
 
-        EntityBase* CreateEntity(EntityType type);
+        EntityBase* createEntity(EntityType type);
 
         template<typename T>
-        T* CreateEntity()
+        T* createEntity()
         {
-            return static_cast<T*>(CreateEntity(T::cEntityType));
+            return static_cast<T*>(createEntity(T::kEntityType));
         }
 
         // Use only with imports that must happen at a specified index
-        EntityBase* CreateEntityAt(EntityId index, EntityType type);
+        EntityBase* createEntityAt(EntityId index, EntityType type);
         // Use only with imports that must happen at a specified index
         template<typename T>
-        T* CreateEntityAt(EntityId index)
+        T* createEntityAt(EntityId index)
         {
-            return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
+            return static_cast<T*>(createEntityAt(index, T::kEntityType));
         }
 
-        const std::list<EntityId>& GetEntityList(EntityType id);
-        uint16_t GetMiscEntityCount();
+        const std::list<EntityId>& getEntityList(EntityType id);
+        uint16_t getMiscEntityCount();
 
-        void ResetAllEntities();
-        void ResetEntitySpatialIndices();
+        void resetAllEntities();
+        void resetEntitySpatialIndices();
 
 #ifndef DISABLE_NETWORK
 
         template<typename T>
-        void NetworkSerialseEntityType(DataSerialiser& ds)
+        void networkSerialseEntityType(DataSerialiser& ds)
         {
             for (auto* ent : EntityList<T>())
             {
@@ -143,51 +145,51 @@ namespace OpenRCT2
         }
 
         template<typename... T>
-        void NetworkSerialiseEntityTypes(DataSerialiser& ds)
+        void networkSerialiseEntityTypes(DataSerialiser& ds)
         {
-            (NetworkSerialseEntityType<T>(ds), ...);
+            (networkSerialseEntityType<T>(ds), ...);
         }
 
 #endif // DISABLE_NETWORK
 
-        EntitiesChecksum GetAllEntitiesChecksum();
+        EntitiesChecksum getAllEntitiesChecksum();
 
         template<typename T>
-        void MiscUpdateAllType()
+        void miscUpdateAllType()
         {
             for (auto misc : EntityList<T>())
             {
-                misc->Update();
+                misc->update();
             }
         }
 
         template<typename... T>
-        void MiscUpdateAllTypes()
+        void miscUpdateAllTypes()
         {
-            (MiscUpdateAllType<T>(), ...);
+            (miscUpdateAllType<T>(), ...);
         }
 
-        void UpdateAllMiscEntities();
-        void UpdateMoneyEffect();
-        void EntityRemove(EntityBase* entity);
-        uint16_t RemoveFloatingEntities();
-        void UpdateEntitiesSpatialIndex();
-        void UpdateEntitySpatialIndex(EntityBase& entity);
+        void updateAllMiscEntities();
+        void updateMoneyEffect();
+        void entityRemove(EntityBase* entity);
+        uint16_t removeFloatingEntities();
+        void updateEntitiesSpatialIndex();
+        void updateEntitySpatialIndex(EntityBase& entity);
 
-        void EntitySetFlashing(EntityBase* entity, bool flashing);
-        bool EntityGetFlashing(EntityBase* entity);
+        void entitySetFlashing(EntityBase* entity, bool flashing);
+        bool entityGetFlashing(EntityBase* entity);
 
     private:
-        void ResetEntityLists();
-        void ResetFreeIds();
-        void EntityReset(EntityBase& entity);
-        void AddToEntityList(EntityBase& entity);
-        void AddToFreeList(EntityId index);
-        void RemoveFromEntityList(EntityBase& entity);
-        void PrepareNewEntity(EntityBase& base, EntityType type);
-        void EntitySpatialInsert(EntityBase& entity, const CoordsXY& newLoc);
-        void EntitySpatialRemove(EntityBase& entity);
-        void FreeEntity(EntityBase& entity);
+        void resetEntityLists();
+        void resetFreeIds();
+        void entityReset(EntityBase& entity);
+        void addToEntityList(EntityBase& entity);
+        void addToFreeList(EntityId index);
+        void removeFromEntityList(EntityBase& entity);
+        void prepareNewEntity(EntityBase& base, EntityType type);
+        void entitySpatialInsert(EntityBase& entity, const CoordsXY& newLoc);
+        void entitySpatialRemove(EntityBase& entity);
+        void freeEntity(EntityBase& entity);
     };
 
 } // namespace OpenRCT2

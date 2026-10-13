@@ -7,20 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../ride/RideData.h"
+#include "../../../ride/Ride.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../ride/Vehicle.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
-
-#include <cassert>
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::standard;
 
 static void SubmarineRidePaintTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -59,13 +56,13 @@ static void SubmarineRidePaintTrackFlat(
     {
         imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
-        PaintUtilPushTunnelRight(session, heightLower, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, heightLower, kTunnelGroup, TunnelSubType::flat);
     }
     else
     {
         imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
-        PaintUtilPushTunnelLeft(session, heightLower, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, heightLower, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -75,9 +72,7 @@ static void SubmarineRidePaintTrackFlat(
     }
 
     PaintUtilSetSegmentSupportHeight(
-        session,
-        PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
+        session, PaintUtilRotateSegments({ PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 16);
 }
@@ -90,7 +85,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
         session, 3, height - 16, direction, trackSequence, session.TrackColours,
         kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(
-        session, kTunnelGroup, TunnelSubType::Flat, height - 16, direction, trackSequence);
+        session, kTunnelGroup, TunnelSubType::flat, height - 16, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -100,16 +95,14 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top),
-                    direction),
+                    { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top }, direction),
                 0xFFFF, 0);
             break;
         case 2:
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left),
-                    direction),
+                    { PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left }, direction),
                 0xFFFF, 0);
             break;
         case 3:
@@ -118,7 +111,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom),
+                    { PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom },
                     direction),
                 0xFFFF, 0);
             break;
@@ -149,12 +142,12 @@ static void SubmarineRidePaintTrackLeftQuarterTurn1Tile(
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 1, height - 16, 0, direction, session.TrackColours, kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
-        session, kTunnelGroup, direction, height - 16, 0, TunnelSubType::Flat, 0, TunnelSubType::Flat);
+        session, kTunnelGroup, direction, height - 16, 0, TunnelSubType::flat, 0, TunnelSubType::flat);
 
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft), direction),
+            { PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft }, direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 16);
 }

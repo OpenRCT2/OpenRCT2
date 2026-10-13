@@ -16,7 +16,6 @@
 
 #include <array>
 #include <cstdint>
-#include <string>
 #include <vector>
 
 namespace OpenRCT2::Audio
@@ -24,19 +23,24 @@ namespace OpenRCT2::Audio
     enum class SoundId : uint8_t;
 }
 
-enum class SoundRange : uint8_t;
+namespace OpenRCT2
+{
+    enum class EffectVisual : uint8_t;
+    enum class SoundRange : uint8_t;
+    enum class VehiclePaintStyle : uint8_t;
+} // namespace OpenRCT2
 
 enum class CarEntryAnimation : uint8_t
 {
-    None = 0,
-    SimpleVehicle,
-    SteamLocomotive,
-    SwanBoat,
-    MonorailCycle,
-    MultiDimension,
-    ObservationTower,
-    AnimalFlying,
-    Count,
+    none = 0,
+    simpleVehicle,
+    steamLocomotive,
+    swanBoat,
+    monorailCycle,
+    multiDimension,
+    observationTower,
+    animalFlying,
+    count,
 };
 
 enum class CarEntryFlag : uint8_t
@@ -114,76 +118,78 @@ using CarEntryFlags = FlagHolder<uint64_t, CarEntryFlag>;
  */
 enum class SpriteGroupType : uint8_t
 {
-    SlopeFlat = 0,
-    Slopes12,
-    Slopes25,
-    Slopes42,
-    Slopes60,
-    Slopes75,
-    Slopes90,
-    SlopesLoop,
-    SlopeInverted,
-    Slopes8,
-    Slopes16,
-    Slopes50,
-    FlatBanked22,
-    FlatBanked45,
-    FlatBanked67,
-    FlatBanked90,
-    InlineTwists,
-    Slopes12Banked22,
-    Slopes8Banked22,
-    Slopes25Banked22,
-    Slopes8Banked45,
-    Slopes16Banked22,
-    Slopes16Banked45,
-    Slopes25Banked45,
-    Slopes12Banked45,
-    Slopes25Banked67,
-    Slopes25Banked90,
-    Slopes25InlineTwists,
-    Slopes42Banked22,
-    Slopes42Banked45,
-    Slopes42Banked67,
-    Slopes42Banked90,
-    Slopes60Banked22,
-    Slopes50Banked45,
-    Slopes50Banked67,
-    Slopes50Banked90,
-    Corkscrews,
-    RestraintAnimation,
-    CurvedLiftHillUp,
-    CurvedLiftHillDown,
-    Count
+    slopeFlat = 0,
+    slopes12,
+    slopes25,
+    slopes42,
+    slopes60,
+    slopes75,
+    slopes90,
+    slopesLoop,
+    slopeInverted,
+    slopes8,
+    slopes16,
+    slopes50,
+    flatBanked22,
+    flatBanked45,
+    flatBanked67,
+    flatBanked90,
+    inlineTwists,
+    slopes12Banked22,
+    slopes8Banked22,
+    slopes25Banked22,
+    slopes8Banked45,
+    slopes16Banked22,
+    slopes16Banked45,
+    slopes25Banked45,
+    slopes12Banked45,
+    slopes25Banked67,
+    slopes25Banked90,
+    slopes25InlineTwists,
+    slopes42Banked22,
+    slopes42Banked45,
+    slopes42Banked67,
+    slopes42Banked90,
+    slopes60Banked22,
+    slopes50Banked45,
+    slopes50Banked67,
+    slopes50Banked90,
+    corkscrews,
+    restraintAnimation,
+    curvedLiftHillUp,
+    curvedLiftHillDown,
+    count
 };
 
-static constexpr const char* SpriteGroupNames[] = { "slopeFlat",        "slopes12",
-                                                    "slopes25",         "slopes42",
-                                                    "slopes60",         "slopes75",
-                                                    "slopes90",         "slopesLoop",
-                                                    "slopeInverted",    "slopes8",
-                                                    "slopes16",         "slopes50",
-                                                    "flatBanked22",     "flatBanked45",
-                                                    "flatBanked67",     "flatBanked90",
-                                                    "inlineTwists",     "slopes12Banked22",
-                                                    "slopes8Banked22",  "slopes25Banked22",
-                                                    "slopes8Banked45",  "slopes16Banked22",
-                                                    "slopes16Banked45", "slopes25Banked45",
-                                                    "slopes12Banked45", "slopes25Banked67",
-                                                    "slopes25Banked90", "slopes25InlineTwists",
-                                                    "slopes42Banked22", "slopes42Banked45",
-                                                    "slopes42Banked67", "slopes42Banked90",
-                                                    "slopes60Banked22", "slopes50Banked45",
-                                                    "slopes50Banked67", "slopes50Banked90",
-                                                    "corkscrews",       "restraintAnimation",
-                                                    "curvedLiftHillUp", "curvedLiftHillDown" };
-static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
+static constexpr const char* kSpriteGroupNames[] = {
+    "slopeFlat",        "slopes12",
+    "slopes25",         "slopes42",
+    "slopes60",         "slopes75",
+    "slopes90",         "slopesLoop",
+    "slopeInverted",    "slopes8",
+    "slopes16",         "slopes50",
+    "flatBanked22",     "flatBanked45",
+    "flatBanked67",     "flatBanked90",
+    "inlineTwists",     "slopes12Banked22",
+    "slopes8Banked22",  "slopes25Banked22",
+    "slopes8Banked45",  "slopes16Banked22",
+    "slopes16Banked45", "slopes25Banked45",
+    "slopes12Banked45", "slopes25Banked67",
+    "slopes25Banked90", "slopes25InlineTwists",
+    "slopes42Banked22", "slopes42Banked45",
+    "slopes42Banked67", "slopes42Banked90",
+    "slopes60Banked22", "slopes50Banked45",
+    "slopes50Banked67", "slopes50Banked90",
+    "corkscrews",       "restraintAnimation",
+    "curvedLiftHillUp", "curvedLiftHillDown",
+};
+static_assert(std::size(kSpriteGroupNames) == EnumValue(SpriteGroupType::count));
 
 struct VehicleSpriteGroup
 {
     uint32_t imageId{};
     OpenRCT2::Entity::Yaw::SpritePrecision spritePrecision{};
-    bool Enabled() const
+    bool isEnabled() const
     {
         return spritePrecision != OpenRCT2::Entity::Yaw::SpritePrecision::none;
     }
@@ -194,51 +200,51 @@ struct VehicleSpriteGroup
  */
 struct CarEntry
 {
-    uint16_t TabRotationMask;
+    uint16_t tabRotationMask;
     uint32_t spacing;
-    uint16_t car_mass;
-    int8_t tab_height;
-    uint8_t num_seats;
+    uint16_t carMass;
+    int8_t tabHeight;
+    uint8_t numSeats;
     uint8_t spriteWidth;
     uint8_t spriteHeightNegative;
     uint8_t spriteHeightPositive;
     CarEntryAnimation animation;
     CarEntryFlags flags;
-    uint16_t base_num_frames; // The number of sprites of animation or swinging per rotation frame
-    uint32_t base_image_id;
-    VehicleSpriteGroup SpriteGroups[EnumValue(SpriteGroupType::Count)];
-    uint32_t NumCarImages;
-    uint8_t no_seating_rows;
-    uint8_t spinning_inertia;
-    uint8_t spinning_friction;
-    OpenRCT2::Audio::SoundId friction_sound_id; // Only valid for front/default car of train
-    uint8_t ReversedCarIndex; // When the car is reversed (using a turntable or reverser), it will be changed to this car.
-    SoundRange soundRange;
-    uint8_t double_sound_frequency; // (Doubles the velocity when working out the sound frequency {used on go karts})
-    uint8_t powered_acceleration;
-    uint8_t powered_max_speed;
-    uint8_t PaintStyle;
-    uint8_t effect_visual;
-    uint8_t draw_order;
-    uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.
+    uint16_t baseNumFrames; // The number of sprites of animation or swinging per rotation frame
+    uint32_t baseImageId;
+    VehicleSpriteGroup spriteGroups[EnumValue(SpriteGroupType::count)];
+    uint32_t numCarImages;
+    uint8_t numSeatingRows;
+    uint8_t spinningInertia;
+    uint8_t spinningFriction;
+    OpenRCT2::Audio::SoundId frictionSoundId; // Only valid for front/default car of train
+    uint8_t reversedCarIndex; // When the car is reversed (using a turntable or reverser), it will be changed to this car.
+    OpenRCT2::SoundRange soundRange;
+    uint8_t doubleSoundFrequency; // (Doubles the velocity when working out the sound frequency {used on go karts})
+    uint8_t poweredAcceleration;
+    uint8_t poweredMaxSpeed;
+    OpenRCT2::VehiclePaintStyle paintStyle;
+    OpenRCT2::EffectVisual effectVisual;
+    uint8_t drawOrder;
+    uint8_t numVerticalFramesOverride; // A custom number that can be used rather than letting RCT2 determine it.
     // Needs the overrideNumberOfVerticalFrames CarEntryFlag to be set.
-    uint8_t peep_loading_waypoint_segments;
-    uint16_t AnimationSpeed;
-    uint8_t AnimationFrames;
+    uint8_t guestLoadingWaypointSegments;
+    uint16_t animationSpeed;
+    uint8_t animationFrames;
     struct
     {
-        int8_t Longitudinal;
-        int8_t Vertical;
-    } SteamEffect;
+        int8_t longitudinal;
+        int8_t vertical;
+    } steamEffect;
     uint8_t spinningNumFrames;
-    std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
-    std::vector<int8_t> peep_loading_positions = {};
+    std::vector<std::array<CoordsXY, 3>> guestLoadingWaypoints = {};
+    std::vector<int8_t> guestLoadingPositions = {};
 
-    uint32_t NumRotationSprites(SpriteGroupType rotationType) const;
-    int32_t SpriteByYaw(int32_t yaw, SpriteGroupType rotationType) const;
-    bool GroupEnabled(SpriteGroupType rotationType) const;
-    uint32_t GroupImageId(SpriteGroupType spriteGroup) const;
-    uint32_t SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const;
+    uint32_t numRotationSprites(SpriteGroupType rotationType) const;
+    int32_t spriteByYaw(int32_t yaw, SpriteGroupType rotationType) const;
+    bool groupEnabled(SpriteGroupType rotationType) const;
+    uint32_t groupImageId(SpriteGroupType spriteGroup) const;
+    uint32_t getSpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const;
 
     bool isVisible() const;
 };

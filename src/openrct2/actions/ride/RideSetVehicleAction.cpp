@@ -14,7 +14,7 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../core/EnumUtils.hpp"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/Drawing.Screen.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Research.h"
 #include "../../object/ObjectManager.h"
@@ -212,9 +212,9 @@ namespace OpenRCT2::GameActions
         }
 
         auto res = Result();
-        if (!ride->overallView.IsNull())
+        if (!ride->overallView.isNull())
         {
-            auto location = ride->overallView.ToTileCentre();
+            auto location = ride->overallView.toTileCentre();
             res.position = { location, TileElementHeight(res.position) };
         }
 
@@ -222,7 +222,7 @@ namespace OpenRCT2::GameActions
         intent.PutExtra(INTENT_EXTRA_RIDE_ID, _rideIndex.ToUnderlying());
         ContextBroadcastIntent(&intent);
 
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
         return res;
     }
 

@@ -59,16 +59,16 @@ namespace OpenRCT2::GameActions
         switch (_parameter)
         {
             case ParkParameter::close:
-                if (park.flags & PARK_FLAGS_PARK_OPEN)
+                if (park.flags.has(ParkFlag::parkOpen))
                 {
-                    park.flags &= ~PARK_FLAGS_PARK_OPEN;
+                    park.flags.unset(ParkFlag::parkOpen);
                     windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;
             case ParkParameter::open:
-                if (!(park.flags & PARK_FLAGS_PARK_OPEN))
+                if (!park.flags.has(ParkFlag::parkOpen))
                 {
-                    park.flags |= PARK_FLAGS_PARK_OPEN;
+                    park.flags.set(ParkFlag::parkOpen);
                     windowMgr->InvalidateByClass(WindowClass::parkInformation);
                 }
                 break;

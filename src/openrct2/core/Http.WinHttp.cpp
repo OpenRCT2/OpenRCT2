@@ -39,11 +39,11 @@ namespace OpenRCT2::Http
     {
         switch (method)
         {
-            case Method::GET:
+            case Method::get:
                 return L"GET";
-            case Method::POST:
+            case Method::post:
                 return L"POST";
-            case Method::PUT:
+            case Method::put:
                 return L"PUT";
             default:
                 throw std::runtime_error("Unsupported verb.");
@@ -238,7 +238,7 @@ namespace OpenRCT2::Http
             WinHttpCloseHandle(hRequest);
 
             Response response;
-            response.status = Status::Error;
+            response.status = Status::error;
             response.error = e.what();
             return response;
         }

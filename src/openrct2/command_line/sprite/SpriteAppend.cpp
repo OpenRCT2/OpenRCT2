@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../core/FileStream.h"
-#include "../../drawing/Drawing.h"
 #include "SpriteCommands.h"
 #include "SpriteFile.h"
 
@@ -51,7 +49,7 @@ namespace OpenRCT2::CommandLine::Sprite
         }
 
         constexpr ImportFlags importFlags = { ImportFlag::rle };
-        ImageImportMeta meta = { { xOffset, yOffset }, Palette::OpenRCT2, importFlags, spriteMode };
+        ImageImportMeta meta = { { xOffset, yOffset }, Palette::openRCT2, importFlags, spriteMode };
         const auto image = SpriteImageLoad(imagePath, meta);
         if (!image.has_value())
             return ExitCode::fail;

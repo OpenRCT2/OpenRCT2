@@ -13,10 +13,8 @@
 
     #include <cstring>
     #include <fnmatch.h>
-    #include <limits.h>
     #include <locale.h>
     #include <pwd.h>
-    #include <stdlib.h>
     #include <unistd.h>
     #include <vector>
     #if defined(__FreeBSD__) || defined(__NetBSD__)
@@ -32,9 +30,9 @@
         #include <fontconfig/fontconfig.h>
     #endif // DISABLE_TTF
 
-    #include "../Date.h"
     #include "../OpenRCT2.h"
     #include "../core/Path.hpp"
+    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
     #include "Platform.h"
 
@@ -384,6 +382,13 @@ namespace OpenRCT2::Platform
             if (Path::DirectoryExists(snapLocalShareSteamPath))
             {
                 ret.roots.emplace_back(snapLocalShareSteamPath);
+            }
+
+            // The Flatpak build of Steam keeps its data in the app's sandboxed home directory.
+            auto flatpakSteamPath = Path::Combine(homeDir, u8".var/app/com.valvesoftware.Steam/.local/share/Steam");
+            if (Path::DirectoryExists(flatpakSteamPath))
+            {
+                ret.roots.emplace_back(flatpakSteamPath);
             }
         }
 

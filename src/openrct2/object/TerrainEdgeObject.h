@@ -10,10 +10,21 @@
 #pragma once
 
 #include "../audio/Audio.h"
+#include "../core/FlagHolder.hpp"
+#include "../drawing/Colour.h"
 #include "Object.h"
 
 namespace OpenRCT2
 {
+    constexpr auto kDefaultTerrainEdgeColour1 = Drawing::Colour::beige;
+
+    enum class TerrainEdgeFlag : uint8_t
+    {
+        hasDoors,
+        hasPrimaryColour,
+    };
+    using TerrainEdgeFlags = FlagHolder<uint8_t, TerrainEdgeFlag>;
+
     class TerrainEdgeObject final : public Object
     {
     private:
@@ -23,8 +34,9 @@ namespace OpenRCT2
         StringId NameStringId{};
         uint32_t IconImageId{};
         uint32_t BaseImageId{};
-        bool HasDoors{};
         Audio::DoorSoundType doorSound{};
+        TerrainEdgeFlags flags;
+        Drawing::Colour colour = Drawing::kColourNull;
 
         void ReadJson(IReadObjectContext* context, json_t& root) override;
         void Load() override;
@@ -33,5 +45,6 @@ namespace OpenRCT2
         void DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const override;
 
         static TerrainEdgeObject* GetById(ObjectEntryIndex entryIndex);
+        Drawing::Colour getPreviewColour() const;
     };
 } // namespace OpenRCT2

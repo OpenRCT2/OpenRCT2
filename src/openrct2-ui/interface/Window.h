@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <openrct2/interface/Window.h>
 #include <openrct2/interface/WindowBase.h>
+#include <openrct2/interface/WindowTypes.h>
 
 namespace OpenRCT2
 {
@@ -69,6 +69,7 @@ namespace OpenRCT2::Ui::Windows
 
     const TextInputSession* GetTextboxSession();
     void SetTexboxSession(TextInputSession* session);
+    void SetTextboxCaret(size_t position);
     bool IsUsingWidgetTextBox();
     bool TextBoxCaretIsFlashed();
     const WidgetIdentifier& GetCurrentTextBox();

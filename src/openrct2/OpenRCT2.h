@@ -12,8 +12,6 @@
 #include "command_line/ExitCode.h"
 #include "core/StringTypes.h"
 
-enum class PromptMode : uint8_t;
-
 enum class StartupAction
 {
     none,
@@ -68,10 +66,13 @@ namespace OpenRCT2
 
 namespace OpenRCT2
 {
+    enum class PromptMode : uint8_t;
+
     CommandLine::ExitCode CommandLineRun(const char** argv, int32_t argc);
+
+    extern PromptMode gSavePromptMode;
 } // namespace OpenRCT2
 
 extern uint32_t gCurrentDrawCount;
 extern LegacyScene gLegacyScene;
 extern uint32_t gScreenAge;
-extern PromptMode gSavePromptMode;

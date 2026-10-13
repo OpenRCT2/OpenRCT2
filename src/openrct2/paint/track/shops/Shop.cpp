@@ -7,21 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../../SpriteIds.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideEntry.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
-#include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 static void PaintShop(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -42,7 +39,7 @@ static void PaintShop(
     BoundBoxXYZ bb = { { 2, 2, height }, { 28, 28, trackElement.getClearanceZ() - trackElement.getBaseZ() - 3 } };
 
     auto imageFlags = session.TrackColours.WithoutSecondary();
-    auto imageIndex = firstCarEntry->base_image_id + direction;
+    auto imageIndex = firstCarEntry->baseImageId + direction;
     if (hasSupports)
     {
         auto foundationImageTemplate = GetShopSupportColourScheme(session, trackElement);
@@ -60,7 +57,7 @@ static void PaintShop(
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 
     if (direction == 1 || direction == 2)
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
 }
 
 TrackPaintFunction GetTrackPaintFunctionShop(TrackElemType trackType)

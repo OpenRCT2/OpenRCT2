@@ -19,9 +19,9 @@ namespace OpenRCT2::FileScanner
 {
     struct FileInfo
     {
-        u8string Name;
-        uint64_t Size;
-        uint64_t LastModified;
+        u8string name;
+        uint64_t size;
+        uint64_t lastModified;
     };
 } // namespace OpenRCT2::FileScanner
 
@@ -29,20 +29,20 @@ struct IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const OpenRCT2::FileScanner::FileInfo& GetFileInfo() const = 0;
-    virtual const u8string& GetPath() const = 0;
-    virtual u8string GetPathRelative() const = 0;
+    virtual const OpenRCT2::FileScanner::FileInfo& getFileInfo() const = 0;
+    virtual const u8string& getPath() const = 0;
+    virtual u8string getPathRelative() const = 0;
 
-    virtual void Reset() = 0;
-    virtual bool Next() = 0;
+    virtual void reset() = 0;
+    virtual bool next() = 0;
 };
 
 struct QueryDirectoryResult
 {
-    uint32_t TotalFiles;
-    uint64_t TotalFileSize;
-    uint32_t FileDateModifiedChecksum;
-    uint32_t PathChecksum;
+    uint32_t totalFiles;
+    uint64_t totalFileSize;
+    uint32_t fileDateModifiedChecksum;
+    uint32_t pathChecksum;
 };
 
 namespace OpenRCT2::Path
@@ -54,14 +54,14 @@ namespace OpenRCT2::Path
      * @param recurse Whether to scan sub directories or not.
      * @returns A new FileScanner, this must be deleted when no longer needed.
      */
-    [[nodiscard]] std::unique_ptr<IFileScanner> ScanDirectory(const std::string& pattern, bool recurse);
+    [[nodiscard]] std::unique_ptr<IFileScanner> scanDirectory(const std::string& pattern, bool recurse);
 
     /**
      * Scans a directory and all sub directories
      * @param result The query result to modify.
      * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
      */
-    void QueryDirectory(QueryDirectoryResult* result, const std::string& pattern);
+    void queryDirectory(QueryDirectoryResult* result, const std::string& pattern);
 
-    [[nodiscard]] std::vector<std::string> GetDirectories(const std::string& path);
+    [[nodiscard]] std::vector<std::string> getDirectories(const std::string& path);
 } // namespace OpenRCT2::Path

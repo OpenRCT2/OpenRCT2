@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include <cstdint>
-
 struct PaintSession;
 
 namespace OpenRCT2

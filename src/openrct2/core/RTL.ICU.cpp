@@ -15,8 +15,6 @@
     #include <unicode/ubidi.h>
     #include <unicode/unistr.h>
     #include <unicode/ushape.h>
-    #include <unicode/ustring.h>
-    #include <unicode/utf.h>
     #include <unicode/utypes.h>
 
 std::string FixRTL(std::string& input)

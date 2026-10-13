@@ -11,12 +11,13 @@
 
 #include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor SwingingInverterShipRTD =
+constexpr RideTypeDescriptor kSwingingInverterShipRTD =
 {
     .Category = RideCategory::thrill,
     .StartTrackPiece = TrackElemType::flatTrack1x4B,
@@ -31,11 +32,11 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::swing),
+    .rideModes = { RideMode::swing },
     .DefaultMode = RideMode::swing,
     .OperatingSettings = { 7, 15 },
     .Naming = { STR_RIDE_NAME_SWINGING_INVERTER_SHIP, STR_RIDE_DESCRIPTION_SWINGING_INVERTER_SHIP },
-    .NameConvention = { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::ship, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 15, 176, 7, 11, },
     .MaxMass = 255,
@@ -52,18 +53,18 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
         { Drawing::Colour::black, Drawing::Colour::saturatedBrown, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "swinging_inverter_ship",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(2, 50), RideRating::make(2, 70), RideRating::make(2, 74) },
         16,
         0,
         false,
         {
-            { RatingsModifierType::BonusOperationOption, 0, 11, 22, 22 }, 
-            { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
+            { RatingsModifierType::bonusOperationOption, 0, 11, 22, 22 },
+            { RatingsModifierType::bonusScenery,         0, 11155, 0, 0 },
         },
     },
 };

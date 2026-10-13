@@ -10,40 +10,38 @@
 #include "Window.h"
 
 #include "../Context.h"
-#include "../Diagnostic.h"
 #include "../Game.h"
-#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../config/Config.h"
-#include "../drawing/Drawing.h"
-#include "../interface/Cursors.h"
+#include "../drawing/Drawing.Screen.h"
+#include "../drawing/Drawing.String.h"
+#include "../drawing/RenderTarget.h"
+#include "../entity/EntityRegistry.h"
 #include "../ride/RideAudio.h"
+#include "../scenes/SceneManager.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Map.h"
 #include "../world/MapSelection.h"
 #include "Viewport.h"
 #include "Widget.h"
+#include "WidgetIndexGlobals.h"
 #include "WindowBase.h"
 
 #include <cassert>
-#include <cmath>
 #include <functional>
 #include <iterator>
-#include <list>
 
 namespace OpenRCT2
 {
-
     std::vector<std::unique_ptr<WindowBase>> gWindowList;
     WindowBase* gWindowAudioExclusive;
 
     WindowCloseModifier gLastCloseModifier = { { WindowClass::null, 0 }, CloseWindowModifier::none };
 
     uint32_t gWindowUpdateTicks;
-    Drawing::Colour gCurrentWindowColours[3];
 
     Tool gCurrentToolId;
     WidgetRef gCurrentToolWidget;
@@ -93,15 +91,12 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled)
+    void WindowSetFlagForAllViewports(ViewportFlag viewportFlag, bool enabled)
     {
         WindowVisitEach([&](WindowBase* w) {
             if (w->viewport != nullptr)
             {
-                if (enabled)
-                    w->viewport->flags |= viewportFlag;
-                else
-                    w->viewport->flags &= ~viewportFlag;
+                w->viewport->flags.set(viewportFlag, enabled);
             }
         });
     }
@@ -348,17 +343,17 @@ static constexpr float kWindowScrollLocations[][2] = {
         int16_t height = TileElementHeight(coords);
         if (coords.z < height - 16)
         {
-            if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+            if (!w.viewport->flags.has(ViewportFlag::undergroundInside))
             {
-                w.viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.viewport->flags.set(ViewportFlag::undergroundInside);
                 w.invalidate();
             }
         }
         else
         {
-            if (w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+            if (w.viewport->flags.has(ViewportFlag::undergroundInside))
             {
-                w.viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.viewport->flags.unset(ViewportFlag::undergroundInside);
                 w.invalidate();
             }
         }
@@ -366,7 +361,8 @@ static constexpr float kWindowScrollLocations[][2] = {
         auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
         int32_t i = 0;
-        if (gLegacyScene != LegacyScene::titleSequence)
+        auto sceneManager = GetContext()->GetSceneManager();
+        if (sceneManager->getActiveScene() != sceneManager->getTitleScene())
         {
             bool found = false;
             while (!found)
@@ -629,9 +625,9 @@ static constexpr float kWindowScrollLocations[][2] = {
         w.onPrepareDraw();
 
         // Text colouring
-        gCurrentWindowColours[0] = w.colours[0].colour;
-        gCurrentWindowColours[1] = w.colours[1].colour;
-        gCurrentWindowColours[2] = w.colours[2].colour;
+        Drawing::gCurrentWindowColours[0] = w.colours[0].colour;
+        Drawing::gCurrentWindowColours[1] = w.colours[1].colour;
+        Drawing::gCurrentWindowColours[2] = w.colours[2].colour;
 
         w.onDraw(copy);
     }
@@ -724,62 +720,9 @@ static constexpr float kWindowScrollLocations[][2] = {
     }
 
     /**
-     * rct2: 0x0066B905
-     */
-    void WindowResizeGui(int32_t width, int32_t height)
-    {
-        WindowResizeGuiScenarioEditor(width, height);
-        if (isInEditorMode())
-            return;
-
-        auto* windowMgr = Ui::GetWindowManager();
-        WindowBase* titleWind = windowMgr->FindByClass(WindowClass::titleMenu);
-        if (titleWind != nullptr)
-        {
-            titleWind->windowPos.x = (width - titleWind->width) / 2;
-            titleWind->windowPos.y = height - 182;
-        }
-
-        WindowBase* versionWind = windowMgr->FindByClass(WindowClass::titleVersion);
-        if (versionWind != nullptr)
-            versionWind->windowPos.y = height - 30;
-
-        WindowBase* exitWind = windowMgr->FindByClass(WindowClass::titleExit);
-        if (exitWind != nullptr)
-        {
-            exitWind->windowPos.x = width - 40;
-            exitWind->windowPos.y = height - 64;
-        }
-
-        WindowBase* optionsWind = windowMgr->FindByClass(WindowClass::titleOptions);
-        if (optionsWind != nullptr)
-        {
-            optionsWind->windowPos.x = width - 80;
-        }
-
-        // Keep options window centred after a resize
-        WindowBase* optionsWindow = windowMgr->FindByClass(WindowClass::options);
-        if (optionsWindow != nullptr)
-        {
-            optionsWindow->windowPos.x = (ContextGetWidth() - optionsWindow->width) / 2;
-            optionsWindow->windowPos.y = (ContextGetHeight() - optionsWindow->height) / 2;
-        }
-
-        // Keep progress bar window centred after a resize
-        WindowBase* ProgressWindow = windowMgr->FindByClass(WindowClass::progressWindow);
-        if (ProgressWindow != nullptr)
-        {
-            ProgressWindow->windowPos.x = (ContextGetWidth() - ProgressWindow->width) / 2;
-            ProgressWindow->windowPos.y = (ContextGetHeight() - ProgressWindow->height) / 2;
-        }
-
-        GfxInvalidateScreen();
-    }
-
-    /**
      * rct2: 0x0066F0DD
      */
-    void WindowResizeGuiScenarioEditor(int32_t width, int32_t height)
+    static void WindowResizeGuiMainToolbars(const int32_t width, const int32_t height)
     {
         auto* mainWind = WindowGetMain();
         if (mainWind != nullptr)
@@ -804,12 +747,137 @@ static constexpr float kWindowScrollLocations[][2] = {
             topWind->width = std::max(640, width);
         }
 
-        WindowBase* bottomWind = windowMgr->FindByClass(WindowClass::bottomToolbar);
-        if (bottomWind != nullptr)
+        WindowBase* parkInfoPanel = windowMgr->FindByClass(WindowClass::parkInfoPanel);
+        if (parkInfoPanel != nullptr)
         {
-            bottomWind->windowPos.y = height - 32;
-            bottomWind->width = std::max(640, width);
+            parkInfoPanel->windowPos.y = height - 32;
         }
+
+        WindowBase* dateInfoPanel = windowMgr->FindByClass(WindowClass::dateInfoPanel);
+        if (dateInfoPanel != nullptr)
+        {
+            dateInfoPanel->windowPos.x = width - dateInfoPanel->width;
+            dateInfoPanel->windowPos.y = height - 32;
+        }
+
+        auto bottomWidth = std::max(640, width);
+        auto bottomOffset = 0;
+        if (parkInfoPanel != nullptr && dateInfoPanel != nullptr)
+        {
+            bottomWidth -= parkInfoPanel->width + dateInfoPanel->width;
+            bottomOffset = parkInfoPanel->width;
+        }
+
+        WindowBase* statusBar = windowMgr->FindByClass(WindowClass::gameStatusBar);
+        if (statusBar != nullptr)
+        {
+            statusBar->width = bottomWidth;
+            statusBar->windowPos.x = bottomOffset;
+            statusBar->windowPos.y = height - 32;
+        }
+
+        WindowBase* newsTicker = windowMgr->FindByClass(WindowClass::newsTicker);
+        if (newsTicker != nullptr)
+        {
+            newsTicker->width = bottomWidth;
+            newsTicker->windowPos.x = bottomOffset;
+            newsTicker->windowPos.y = height - 32;
+        }
+    }
+
+    static void WindowResizeGuiTitleScreen(const int32_t width, const int32_t height)
+    {
+        auto* windowMgr = Ui::GetWindowManager();
+        WindowBase* titleWind = windowMgr->FindByClass(WindowClass::titleMenu);
+        if (titleWind != nullptr)
+        {
+            titleWind->windowPos.x = (width - titleWind->width) / 2;
+            titleWind->windowPos.y = height - 182;
+        }
+
+        WindowBase* versionWind = windowMgr->FindByClass(WindowClass::titleVersion);
+        if (versionWind != nullptr)
+            versionWind->windowPos.y = height - 30;
+
+        WindowBase* exitWind = windowMgr->FindByClass(WindowClass::titleExit);
+        if (exitWind != nullptr)
+        {
+            exitWind->windowPos.x = width - 40;
+            exitWind->windowPos.y = height - 64;
+        }
+
+        WindowBase* optionsWind = windowMgr->FindByClass(WindowClass::titleOptions);
+        if (optionsWind != nullptr)
+        {
+            optionsWind->windowPos.x = width - 80;
+        }
+    }
+
+    static void WindowResizeGuiCentredWindows(const int32_t width, const int32_t height)
+    {
+        auto* windowMgr = Ui::GetWindowManager();
+
+        // Keep options window centred after a resize
+        WindowBase* optionsWindow = windowMgr->FindByClass(WindowClass::options);
+        if (optionsWindow != nullptr)
+        {
+            optionsWindow->windowPos.x = (width - optionsWindow->width) / 2;
+            optionsWindow->windowPos.y = (height - optionsWindow->height) / 2;
+        }
+
+        // Keep progress bar window centred after a resize
+        WindowBase* ProgressWindow = windowMgr->FindByClass(WindowClass::progressWindow);
+        if (ProgressWindow != nullptr)
+        {
+            ProgressWindow->windowPos.x = (width - ProgressWindow->width) / 2;
+            ProgressWindow->windowPos.y = (height - ProgressWindow->height) / 2;
+        }
+    }
+
+    static void WindowResizeEditorController(const int32_t width, const int32_t height)
+    {
+        auto* windowMgr = Ui::GetWindowManager();
+
+        auto* prevStep = windowMgr->FindByNumber(WindowClass::editorStepController, 0);
+        if (prevStep != nullptr)
+        {
+            prevStep->windowPos.x = 0;
+            prevStep->windowPos.y = height - prevStep->height;
+        }
+
+        auto* statusLine = windowMgr->FindByClass(WindowClass::editorStatusLine);
+        if (statusLine != nullptr)
+        {
+            statusLine->windowPos.x = (width - statusLine->width) / 2;
+            statusLine->windowPos.y = height - statusLine->height;
+        }
+
+        auto* nextStep = windowMgr->FindByNumber(WindowClass::editorStepController, 1);
+        if (nextStep != nullptr)
+        {
+            nextStep->windowPos.x = width - nextStep->width;
+            nextStep->windowPos.y = height - nextStep->height;
+        }
+    }
+
+    void WindowResizeGui(const int32_t width, const int32_t height)
+    {
+        WindowResizeGuiMainToolbars(width, height);
+
+        auto sceneManager = GetContext()->GetSceneManager();
+        if (sceneManager->getActiveScene() == sceneManager->getTitleScene())
+        {
+            return WindowResizeGuiTitleScreen(width, height);
+        }
+
+        if (isInEditorMode() || isInTrackDesignerOrManager())
+        {
+            WindowResizeEditorController(width, height);
+        }
+
+        WindowResizeGuiCentredWindows(width, height);
+
+        Drawing::GfxInvalidateScreen();
     }
 
     /**
@@ -825,7 +893,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             auto w = it->get();
             auto viewport = w->viewport;
-            if (viewport == nullptr || !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+            if (viewport == nullptr || !(viewport->flags.has(ViewportFlag::soundOn)))
                 continue;
 
             gMusicTrackingViewport = viewport;

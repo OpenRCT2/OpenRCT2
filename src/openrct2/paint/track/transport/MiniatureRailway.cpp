@@ -8,21 +8,20 @@
  *****************************************************************************/
 
 #include "../../../SpriteIds.h"
-#include "../../../ride/RideData.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../ride/ted/TrackElemType.h"
 #include "../../../world/tile_element/PathElement.h"
 #include "../../../world/tile_element/TileElement.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 #include "../../track/Support.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
+static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
 enum
 {
@@ -583,7 +582,7 @@ static ImageId MiniatureRailwayTrackToGroovedIndent(const TileElement* path, uin
 
     uint32_t imageIdAlt = SPR_TRACKS_MINIATURE_RAILWAY_GROOVED_SW_NE;
 
-    uint8_t correctedEdges = path->asPath()->GetEdges();
+    uint8_t correctedEdges = path->asPath()->getEdges();
     correctedEdges |= correctedEdges << 4;
     correctedEdges >>= 4 - rotation;
     correctedEdges &= 0x0F;
@@ -692,7 +691,7 @@ static void PaintMiniatureRailwayTrackFlat(
         }
     }
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -733,16 +732,16 @@ static void PaintMiniatureRailwayTrack25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::slopeStart);
             break;
     }
 
@@ -766,16 +765,16 @@ static void PaintMiniatureRailwayTrackFlatTo25DegUp(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::slopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
@@ -799,16 +798,16 @@ static void PaintMiniatureRailwayTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::flat);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+            PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+            PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::flatTo25Deg);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::flat);
             break;
     }
 
@@ -1025,50 +1024,48 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
     }
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
             blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
-                PaintSegment::bottom, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight,
+                                PaintSegment::right,      PaintSegment::bottom, PaintSegment::topRight };
             break;
         case 3:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
-                PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight);
+            blockedSegments = { PaintSegment::top,        PaintSegment::left,       PaintSegment::right,
+                                PaintSegment::centre,     PaintSegment::topLeft,    PaintSegment::topRight,
+                                PaintSegment::bottomLeft, PaintSegment::bottomRight };
             break;
         case 4:
-            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
+            blockedSegments = { PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight };
             break;
         case 5:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
-                PaintSegment::bottom, PaintSegment::topLeft);
+            blockedSegments = { PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft,
+                                PaintSegment::left,        PaintSegment::bottom, PaintSegment::topLeft };
             break;
         case 6:
             blockedSegments = kSegmentsAll;
@@ -1165,32 +1162,30 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     else
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
             blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 3:
             blockedSegments = kSegmentsAll;
@@ -1276,32 +1271,30 @@ static void PaintMiniatureRailwayTrackSBendRight(
     {
         if (trackSequence == 0)
         {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
     else
     {
         if (trackSequence == 3)
         {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
         }
     }
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
             blockedSegments = kSegmentsAll;
             break;
         case 1:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
-                PaintSegment::bottomRight, PaintSegment::right);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,      PaintSegment::topRight,
+                                PaintSegment::bottom,     PaintSegment::bottomRight, PaintSegment::right };
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
-                PaintSegment::topLeft, PaintSegment::top);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre,  PaintSegment::topRight,
+                                PaintSegment::left,       PaintSegment::topLeft, PaintSegment::top };
             break;
         case 3:
             blockedSegments = kSegmentsAll;
@@ -1401,17 +1394,17 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
         PaintAddImageAsChild(
             session, imageId, { offset, height }, { boundsOffset + CoordsXYZ{ 0, 0, height }, { boundsLength, 3 } });
     }
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
+    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::flat, height, direction, trackSequence);
 
-    int32_t blockedSegments = 0;
+    PaintSegments blockedSegments = {};
     switch (trackSequence)
     {
         case 0:
             blockedSegments = kSegmentsAll;
             break;
         case 2:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
+            blockedSegments = { PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight,
+                                PaintSegment::bottom };
             break;
         case 3:
             blockedSegments = kSegmentsAll;
@@ -1546,7 +1539,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     };
 
     bool isSupported = false;
-    bool isRightEighthToOrthog = trackElement.GetTrackType() == TrackElemType::rightEighthToOrthogonal;
+    bool isRightEighthToOrthog = trackElement.getTrackType() == TrackElemType::rightEighthToOrthogonal;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isRightEighthToOrthog)
@@ -1591,11 +1584,11 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -1714,7 +1707,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     };
 
     bool isSupported = false;
-    bool isLeftEighthToOrthog = trackElement.GetTrackType() == TrackElemType::leftEighthToOrthogonal;
+    bool isLeftEighthToOrthog = trackElement.getTrackType() == TrackElemType::leftEighthToOrthogonal;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isLeftEighthToOrthog)
@@ -1759,11 +1752,11 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
 
     if (direction == 0 && trackSequence == 0)
     {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::flat);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
+        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::flat);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);

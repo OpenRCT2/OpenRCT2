@@ -12,8 +12,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
-#include "../PlatformEnvironment.h"
-#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -23,8 +21,6 @@
 #include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 
-#include <cassert>
-#include <limits>
 #include <memory>
 
 using namespace OpenRCT2::CommandLine;
@@ -32,11 +28,13 @@ using namespace OpenRCT2::CommandLine;
 namespace OpenRCT2
 {
     static int32_t _compressLevel = kParkFileSaveCompressionLevel;
+    static bool _stripObjects = false;
 
     // clang-format off
     static constexpr CommandLineOptionDefinition kConvertOptions[]
     {
         { CMDLINE_TYPE_INTEGER, &_compressLevel, 'l', "compress-level", "The compression level to use when writing the converted file" },
+        { CMDLINE_TYPE_SWITCH, &_stripObjects, kNAC, "strip-objects", "Do not pack custom objects into the converted file" },
         kOptionTableEnd
     };
 
@@ -83,7 +81,7 @@ namespace OpenRCT2
         auto destinationFileType = GetFileExtensionType(destinationPath.c_str());
 
         // Validate target type
-        if (destinationFileType != FileExtension::PARK)
+        if (destinationFileType != FileExtension::park)
         {
             Console::Error::WriteLine("Only conversion to .PARK is supported.");
             return ExitCode::fail;
@@ -92,13 +90,13 @@ namespace OpenRCT2
         // Validate the source type
         switch (sourceFileType)
         {
-            case FileExtension::SC4:
-            case FileExtension::SV4:
-            case FileExtension::SC6:
-            case FileExtension::SV6:
+            case FileExtension::sc4:
+            case FileExtension::sv4:
+            case FileExtension::sc6:
+            case FileExtension::sv6:
                 break;
-            case FileExtension::PARK:
-                if (destinationFileType == FileExtension::PARK)
+            case FileExtension::park:
+                if (destinationFileType == FileExtension::park)
                 {
                     Console::Error::WriteLine(
                         "File is already an OpenRCT2 saved game or scenario. Updating file version and recompressing.");
@@ -135,7 +133,7 @@ namespace OpenRCT2
             return ExitCode::fail;
         }
 
-        if (sourceFileType == FileExtension::SC4 || sourceFileType == FileExtension::SC6)
+        if (sourceFileType == FileExtension::sc4 || sourceFileType == FileExtension::sc6)
         {
             // We are converting a scenario, so reset the park
             ScenarioBegin(gameState);
@@ -144,6 +142,10 @@ namespace OpenRCT2
         try
         {
             auto exporter = std::make_unique<ParkFileExporter>();
+            if (!_stripObjects)
+            {
+                exporter->ExportObjectsList = objManager.GetPackableObjects();
+            }
 
             // HACK remove the main window so it saves the park with the
             //      correct initial view
@@ -174,15 +176,15 @@ namespace OpenRCT2
     {
         switch (fileType)
         {
-            case FileExtension::SC4:
+            case FileExtension::sc4:
                 return "RollerCoaster Tycoon 1 scenario";
-            case FileExtension::SV4:
+            case FileExtension::sv4:
                 return "RollerCoaster Tycoon 1 saved game";
-            case FileExtension::SC6:
+            case FileExtension::sc6:
                 return "RollerCoaster Tycoon 2 scenario";
-            case FileExtension::SV6:
+            case FileExtension::sv6:
                 return "RollerCoaster Tycoon 2 saved game";
-            case FileExtension::PARK:
+            case FileExtension::park:
                 return "OpenRCT2 park";
             default:
                 break;

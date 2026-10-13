@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #pragma once
+
 #include "../rct12/Limits.h"
 
 namespace OpenRCT2::RCT1::Limits

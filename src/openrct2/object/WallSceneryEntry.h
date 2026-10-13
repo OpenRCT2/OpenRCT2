@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../audio/Audio.h"
+#include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
@@ -18,26 +19,27 @@ enum class CursorID : uint8_t;
 
 namespace OpenRCT2
 {
-    enum WALL_SCENERY_FLAGS
+    enum class WallSceneryFlag : uint8_t
     {
-        WALL_SCENERY_HAS_PRIMARY_COLOUR = (1 << 0),   // 0x1
-        WALL_SCENERY_HAS_GLASS = (1 << 1),            // 0x2
-        WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),  // 0x4
-        WALL_SCENERY_IS_DOUBLE_SIDED = (1 << 3),      // 0x8
-        WALL_SCENERY_IS_DOOR = (1 << 4),              // 0x10
-        WALL_SCENERY_LONG_DOOR_ANIMATION = (1 << 5),  // 0x20
-        WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6), // 0x40
-        WALL_SCENERY_HAS_TERTIARY_COLOUR = (1 << 7),  // 0x80
+        hasPrimaryColour,
+        hasGlass,
+        cannotBuildOnSlope,
+        isDoubleSided,
+        isDoor,
+        hasLongDoorAnimation,
+        hasSecondaryColour,
+        hasTertiaryColour,
     };
+    using WallSceneryFlags = FlagHolder<uint8_t, WallSceneryFlag>;
 
-    enum WALL_SCENERY_2_FLAGS
+    enum class WallSceneryFlag2 : uint8_t
     {
-        WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = (1 << 0), // 0x1
-        WALL_SCENERY_2_DOOR_SOUND_MASK = 0b0110,
-        WALL_SCENERY_2_DOOR_SOUND_SHIFT = 1,
-        WALL_SCENERY_2_IS_TRANSPARENT = (1 << 3), // 0x8
-        WALL_SCENERY_2_ANIMATED = (1 << 4),       // 0x10
+        disablePrimaryColour,
+        // bits 1 and 2 were used for the door sound mask, now moved to a separate field.
+        isTransparent = 3,
+        isAnimated = 4,
     };
+    using WallSceneryFlags2 = FlagHolder<uint8_t, WallSceneryFlag2>;
 
     struct WallSceneryEntry
     {
@@ -46,13 +48,12 @@ namespace OpenRCT2
         StringId name;
         uint32_t image;
         CursorID tool_id;
-        uint8_t flags;
+        WallSceneryFlags flags;
         uint8_t height;
-        uint8_t flags2;
+        WallSceneryFlags2 flags2;
+        Audio::DoorSoundType doorSound;
         money64 price;
         ObjectEntryIndex scenery_tab_id;
         uint8_t scrolling_mode;
-
-        Audio::DoorSoundType getDoorSoundType() const;
     };
 } // namespace OpenRCT2

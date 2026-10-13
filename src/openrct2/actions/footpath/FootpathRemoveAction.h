@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class FootpathRemoveAction final : public GameActionBase<GameCommand::RemovePath>
+    class FootpathRemoveAction final : public GameActionBase<GameCommand::removePath>
     {
     private:
         CoordsXYZ _loc;

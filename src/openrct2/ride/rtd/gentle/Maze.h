@@ -9,16 +9,16 @@
 
 #pragma once
 
-#include "../../../SpriteIds.h"
 #include "../../RideAudio.h"
 #include "../../RideData.h"
 #include "../../RideRatings.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor MazeRTD =
+constexpr RideTypeDescriptor kMazeRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::maze,
@@ -31,11 +31,11 @@ constexpr RideTypeDescriptor MazeRTD =
     .flags = RtdFlags(RtdFlag::hasTrackColourSupports, RtdFlag::hasSinglePieceStation, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::noWallsAroundTrack, RtdFlag::describeAsInside, RtdFlag::hasTrack, RtdFlag::hasEntranceAndExit,
                      RtdFlag::guestsCanUseUmbrella),
-    .RideModes = EnumsToFlags(RideMode::maze),
+    .rideModes = { RideMode::maze },
     .DefaultMode = RideMode::maze,
     .OperatingSettings = { 1, 64 },
     .Naming = { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE },
-    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
+    .NameConvention = { RideComponentType::train, RideComponentType::track, RideComponentType::station },
     .availableBreakdowns = {},
     .Heights = { 6, 24, 0, 1, },
     .MaxMass = 18,
@@ -51,30 +51,30 @@ constexpr RideTypeDescriptor MazeRTD =
         { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::grey },
     ),
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "maze",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(1, 30), RideRating::make(0, 50), RideRating::make(0, 00) },
         8,
         0,
         false,
         {
-            { RatingsModifierType::BonusMazeSize, 100, 1, 2, 0 },
-            { RatingsModifierType::BonusScenery,  0,   22310, 0, 0 },
+            { RatingsModifierType::bonusMazeSize, 100, 1, 2, 0 },
+            { RatingsModifierType::bonusScenery,  0,   22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Maze,
+    .DesignCreateMode = TrackDesignCreateMode::maze,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceMaze,
-    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
+    .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAdjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
-    .ConstructionWindowContext = RideConstructionWindowContext::Maze,
+    .ConstructionWindowContext = RideConstructionWindowContext::maze,
     .specialType = RtdSpecialType::maze,
 };
 } // namespace OpenRCT2

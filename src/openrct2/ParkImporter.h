@@ -17,7 +17,6 @@
 
 namespace OpenRCT2
 {
-    struct IObjectManager;
     struct IObjectRepository;
     struct IStream;
     struct GameState_t;

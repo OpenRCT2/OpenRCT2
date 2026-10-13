@@ -12,9 +12,7 @@
 #include "../core/DataSerialiser.h"
 #include "NetworkTypes.h"
 
-#include <memory>
 #include <sfl/small_vector.hpp>
-#include <vector>
 
 namespace OpenRCT2::Network
 {
@@ -84,7 +82,7 @@ namespace OpenRCT2::Network
 
         Packet& operator<<(DataSerialiser& serialiser)
         {
-            write(static_cast<const uint8_t*>(serialiser.GetStream().GetData()), serialiser.GetStream().GetLength());
+            write(static_cast<const uint8_t*>(serialiser.getStream().GetData()), serialiser.getStream().GetLength());
             return *this;
         }
 
