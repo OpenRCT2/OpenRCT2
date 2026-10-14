@@ -462,18 +462,16 @@ namespace OpenRCT2::Ui::Windows
 
             // Server name is displayed word-wrapped, so figure out how high it will be.
             {
-                int32_t numLines;
-                wrapString(Network::GetServerName(), baseWidth, FontStyle::medium, nullptr, &numLines);
-                baseHeight += (numLines + 1) * lineHeight + (kListRowHeight / 2);
+                const auto metrics = measureWrappedString(Network::GetServerName(), baseWidth, FontStyle::medium);
+                baseHeight += metrics.lineCount * lineHeight + (kListRowHeight / 2);
             }
 
             // Likewise, for the optional server description -- which can be a little longer.
             const auto& descString = Network::GetServerDescription();
             if (!descString.empty())
             {
-                int32_t numLines;
-                wrapString(descString, baseWidth, FontStyle::medium, nullptr, &numLines);
-                baseHeight += (numLines + 1) * lineHeight + (kListRowHeight / 2);
+                const auto metrics = measureWrappedString(descString, baseWidth, FontStyle::medium);
+                baseHeight += metrics.lineCount * lineHeight + (kListRowHeight / 2);
             }
 
             // Finally, account for provider info, if present.
