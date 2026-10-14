@@ -3243,6 +3243,8 @@ bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, co
             case TrackElemType::rightEighthDiveLoopUpToOrthogonal:
             case TrackElemType::leftEighthDiveLoopDownToDiag:
             case TrackElemType::rightEighthDiveLoopDownToDiag:
+            case TrackElemType::leftQuarterTurn1Tile:
+            case TrackElemType::rightQuarterTurn1Tile:
                 return true;
             default:
                 break;
