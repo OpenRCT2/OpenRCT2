@@ -374,6 +374,16 @@ namespace OpenRCT2::TrackMetadata
     {
         uint8_t numSequences{};
         std::array<SequenceDescriptor, kMaxSequencesPerPiece> sequences;
+
+        constexpr SequenceTable flipXAxis() const
+        {
+            auto newSequences = sequences;
+            for (size_t i = 0; i < numSequences; i++)
+            {
+                newSequences[i] = sequences[i].flipXAxis();
+            }
+            return SequenceTable{ numSequences, newSequences };
+        }
     };
 
     struct TrackElementDescriptor
