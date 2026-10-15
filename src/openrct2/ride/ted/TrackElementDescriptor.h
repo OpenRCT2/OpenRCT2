@@ -316,6 +316,11 @@ namespace OpenRCT2::TrackMetadata
         return sequenceTunnels;
     }
 
+    constexpr uint8_t allowedWallEdgesFlipXAxis(const uint8_t allowedWallEdges)
+    {
+        return (allowedWallEdges & 0b0101) | ((allowedWallEdges & 0b1000) >> 2) | ((allowedWallEdges & 0b0010) << 2);
+    }
+
     struct SequenceDescriptor
     {
         SequenceClearance clearance{};
@@ -335,6 +340,23 @@ namespace OpenRCT2::TrackMetadata
         constexpr uint8_t getEntranceConnectionSides() const
         {
             return flags.holder & 0xF;
+        }
+
+        constexpr SequenceDescriptor flipXAxis() const
+        {
+            return SequenceDescriptor{
+                clearance.flipXAxis(),
+                allowedWallEdgesFlipXAxis(allowedWallEdges),
+                flags,
+                woodenSupports.flipXAxis(),
+                metalSupports.flipXAxis(),
+                DirectionFlipXAxis(extraSupportRotation),
+                invertSegmentBlocking,
+                blockedSegmentsFlipXAxis(blockedSegments),
+                generalSupportHeight,
+                sequenceTunnelsFlipXAxis(tunnels),
+                reversedTrackSequence,
+            };
         }
     };
 
