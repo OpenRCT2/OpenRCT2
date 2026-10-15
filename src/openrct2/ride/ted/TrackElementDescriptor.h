@@ -214,6 +214,11 @@ namespace OpenRCT2::TrackMetadata
         WoodenSupportSubType subType = WoodenSupportSubType::null;
         WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::none;
         int8_t height = 0;
+
+        constexpr SequenceWoodenSupport flipXAxis() const
+        {
+            return SequenceWoodenSupport{ woodenSupportSubTypeFlipXAxis(subType), transitionType, height };
+        }
     };
 
     struct SequenceMetalSupport

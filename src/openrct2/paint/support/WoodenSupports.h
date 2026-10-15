@@ -36,6 +36,23 @@ enum class WoodenSupportSubType : uint8_t
     null,
 };
 
+namespace OpenRCT2
+{
+    constexpr WoodenSupportSubType woodenSupportSubTypeFlipXAxis(const WoodenSupportSubType subType)
+    {
+        if (subType == WoodenSupportSubType::corner0)
+            return WoodenSupportSubType::corner1;
+        if (subType == WoodenSupportSubType::corner1)
+            return WoodenSupportSubType::corner0;
+        if (subType == WoodenSupportSubType::corner2)
+            return WoodenSupportSubType::corner3;
+        if (subType == WoodenSupportSubType::corner3)
+            return WoodenSupportSubType::corner2;
+        else
+            return subType;
+    }
+} // namespace OpenRCT2
+
 enum class WoodenSupportTransitionType : uint8_t
 {
     none = 255,
