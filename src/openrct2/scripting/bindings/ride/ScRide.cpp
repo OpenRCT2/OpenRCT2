@@ -63,6 +63,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("maxLiftHillSpeed", ScRide::maxLiftHillSpeed_get, nullptr),
             JS_CGETSET_DEF("minLiftHillSpeed", ScRide::minLiftHillSpeed_get, nullptr),
             JS_CGETSET_DEF("satisfaction", ScRide::satisfaction_get, nullptr),
+            JS_CGETSET_DEF("popularity", ScRide::popularity_get, nullptr),
             JS_CGETSET_DEF("maxSpeed", ScRide::maxSpeed_get, nullptr),
             JS_CGETSET_DEF("averageSpeed", ScRide::averageSpeed_get, nullptr),
             JS_CGETSET_DEF("rideTime", ScRide::rideTime_get, nullptr),
@@ -733,6 +734,12 @@ namespace OpenRCT2::Scripting
     {
         auto ride = GetRide(thisVal);
         return JS_NewUint32(ctx, ride != nullptr ? ride->satisfaction * 5 : 0);
+    }
+
+    JSValue ScRide::popularity_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto ride = GetRide(thisVal);
+        return JS_NewUint32(ctx, ride != nullptr ? ride->popularity * 4 : 0);
     }
 
     JSValue ScRide::maxSpeed_get(JSContext* ctx, JSValue thisVal)
