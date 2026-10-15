@@ -202,6 +202,11 @@ namespace OpenRCT2::TrackMetadata
         uint8_t clearanceZ{};
         QuarterTile quarterTile = { 0, 0 };
         ClearanceFlags flags{};
+
+        constexpr SequenceClearance flipXAxis() const
+        {
+            return SequenceClearance{ x, static_cast<int16_t>(-y), z, clearanceZ, quarterTile.flipXAxis(), flags };
+        }
     };
 
     struct SequenceWoodenSupport
