@@ -324,8 +324,7 @@ declare global {
         registerAction<T = object>(
             action: string,
             query: (args: GameActionEventArgs<T>) => GameActionResult,
-            execute: (args: GameActionEventArgs<T>) => GameActionResult,
-        ): void;
+            execute: (args: GameActionEventArgs<T>) => GameActionResult): void;
 
         /**
          * Query the result of running a game action. This allows you to check the outcome and validity of
@@ -334,421 +333,89 @@ declare global {
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
          */
-        queryAction(
-            action: string,
-            args: object,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: ActionType,
-            args: object,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "balloonpress",
-            args: BalloonPressArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "bannerplace",
-            args: BannerPlaceArgs,
-            callback?: (result: BannerCreateActionResult) => void,
-        ): void;
-        queryAction(
-            action: "bannerremove",
-            args: BannerRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "bannersetcolour",
-            args: BannerSetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "bannersetname",
-            args: BannerSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "bannersetstyle",
-            args: BannerSetStyleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "cheatset",
-            args: CheatSetArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "clearscenery",
-            args: ClearSceneryArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "footpathadditionplace",
-            args: FootpathAdditionPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "footpathadditionremove",
-            args: FootpathAdditionRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "footpathplace",
-            args: FootpathPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "footpathlayoutplace",
-            args: FootpathLayoutPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "footpathremove",
-            args: FootpathRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "gamesetspeed",
-            args: GameSetSpeedArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "guestsetflags",
-            args: GuestSetFlagsArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "guestsetname",
-            args: GuestSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "landbuyrights",
-            args: LandBuyRightsArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "landlower",
-            args: LandLowerArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "landraise",
-            args: LandRaiseArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "landsetheight",
-            args: LandSetHeightArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "landsetrights",
-            args: LandSetRightsArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "landsmooth",
-            args: LandSmoothArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "largesceneryplace",
-            args: LargeSceneryPlaceArgs,
-            callback?: (result: BannerCreateActionResult) => void,
-        ): void;
-        queryAction(
-            action: "largesceneryremove",
-            args: LargeSceneryRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "largescenerysetcolour",
-            args: LargeScenerySetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "loadorquit",
-            args: LoadOrQuitArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "mapchangesize",
-            args: MapChangeSizeArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "mazeplacetrack",
-            args: MazePlaceTrackArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "mazesettrack",
-            args: MazeSetTrackArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "networkmodifygroup",
-            args: NetworkModifyGroupArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parkentranceplace",
-            args: ParkEntrancePlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parkentranceremove",
-            args: ParkEntranceRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parkmarketing",
-            args: ParkMarketingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parksetdate",
-            args: ParkSetDateArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parksetentrancefee",
-            args: ParkSetEntranceFeeArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parksetloan",
-            args: ParkSetLoanArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parksetname",
-            args: ParkSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parksetparameter",
-            args: ParkSetParameterArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "parksetresearchfunding",
-            args: ParkSetResearchFundingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "pausetoggle",
-            args: PauseToggleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "peeppickup",
-            args: PeepPickupArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "peepspawnplace",
-            args: PeepSpawnPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "playerkick",
-            args: PlayerKickArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "playersetgroup",
-            args: PlayerSetGroupArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridecreate",
-            args: RideCreateArgs,
-            callback?: (result: RideCreateActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridedemolish",
-            args: RideDemolishArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "rideentranceexitplace",
-            args: RideEntranceExitPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "rideentranceexitremove",
-            args: RideEntranceExitRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridefreezerating",
-            args: RideFreezeRatingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridesetappearance",
-            args: RideSetAppearanceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridesetcolourscheme",
-            args: RideSetColourSchemeArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridesetname",
-            args: RideSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridesetprice",
-            args: RideSetPriceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridesetsetting",
-            args: RideSetSettingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridesetstatus",
-            args: RideSetStatusArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "ridesetvehicle",
-            args: RideSetVehicleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "scenariosetsetting",
-            args: ScenarioSetSettingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "signsetname",
-            args: SignSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "signsetstyle",
-            args: SignSetStyleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "smallsceneryplace",
-            args: SmallSceneryPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "smallsceneryremove",
-            args: SmallSceneryRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "smallscenerysetcolour",
-            args: SmallScenerySetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "stafffire",
-            args: StaffFireArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "staffhire",
-            args: StaffHireArgs,
-            callback?: (result: StaffHireNewActionResult) => void,
-        ): void;
-        queryAction(
-            action: "staffsetcolour",
-            args: StaffSetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "staffsetcostume",
-            args: StaffSetCostumeArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "staffsetname",
-            args: StaffSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "staffsetorders",
-            args: StaffSetOrdersArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "staffsetpatrolarea",
-            args: StaffSetPatrolAreaArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "surfacesetstyle",
-            args: SurfaceSetStyleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "tilemodify",
-            args: TileModifyArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "trackdesign",
-            args: TrackDesignArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "trackplace",
-            args: TrackPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "trackremove",
-            args: TrackRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "tracksetbrakespeed",
-            args: TrackSetBrakeSpeedArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "wallplace",
-            args: WallPlaceArgs,
-            callback?: (result: BannerCreateActionResult) => void,
-        ): void;
-        queryAction(
-            action: "wallremove",
-            args: WallRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "wallsetcolour",
-            args: WallSetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "waterlower",
-            args: WaterLowerArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "waterraise",
-            args: WaterRaiseArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        queryAction(
-            action: "watersetheight",
-            args: WaterSetHeightArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
+        queryAction(action: string, args: object, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: ActionType, args: object, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "balloonpress", args: BalloonPressArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannerplace", args: BannerPlaceArgs, callback?: (result: BannerCreateActionResult) => void): void;
+        queryAction(action: "bannerremove", args: BannerRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathadditionremove", args: FootpathAdditionRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "gamesetspeed", args: GameSetSpeedArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landlower", args: LandLowerArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landraise", args: LandRaiseArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landsetheight", args: LandSetHeightArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landsetrights", args: LandSetRightsArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "landsmooth", args: LandSmoothArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "largesceneryplace", args: LargeSceneryPlaceArgs, callback?: (result: BannerCreateActionResult) => void): void;
+        queryAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "mapchangesize", args: MapChangeSizeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parkentranceplace", args: ParkEntrancePlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetentrancefee", args: ParkSetEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "parksetresearchfunding", args: ParkSetResearchFundingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "pausetoggle", args: PauseToggleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "peeppickup", args: PeepPickupArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "peepspawnplace", args: PeepSpawnPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "playerkick", args: PlayerKickArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
+        queryAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetappearance", args: RideSetAppearanceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetcolourscheme", args: RideSetColourSchemeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetname", args: RideSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetprice", args: RideSetPriceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "smallsceneryremove", args: SmallSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "smallscenerysetcolour", args: SmallScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "stafffire", args: StaffFireArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffhire", args: StaffHireArgs, callback?: (result: StaffHireNewActionResult) => void): void;
+        queryAction(action: "staffsetcolour", args: StaffSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetcostume", args: StaffSetCostumeArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetname", args: StaffSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetorders", args: StaffSetOrdersArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "staffsetpatrolarea", args: StaffSetPatrolAreaArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "surfacesetstyle", args: SurfaceSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "tilemodify", args: TileModifyArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "trackdesign", args: TrackDesignArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "trackplace", args: TrackPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "trackremove", args: TrackRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "tracksetbrakespeed", args: TrackSetBrakeSpeedArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "wallplace", args: WallPlaceArgs, callback?: (result: BannerCreateActionResult) => void): void;
+        queryAction(action: "wallremove", args: WallRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "wallsetcolour", args: WallSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "waterlower", args: WaterLowerArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "waterraise", args: WaterRaiseArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "watersetheight", args: WaterSetHeightArgs, callback?: (result: GameActionResult) => void): void;
 
         /**
          * Executes a game action. In a network game, this will send a request to the server and wait
@@ -757,483 +424,112 @@ declare global {
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
          */
-        executeAction(
-            action: string,
-            args: object,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: ActionType,
-            args: object,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "balloonpress",
-            args: BalloonPressArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "bannerplace",
-            args: BannerPlaceArgs,
-            callback?: (result: BannerCreateActionResult) => void,
-        ): void;
-        executeAction(
-            action: "bannerremove",
-            args: BannerRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "bannersetcolour",
-            args: BannerSetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "bannersetname",
-            args: BannerSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "bannersetstyle",
-            args: BannerSetStyleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "cheatset",
-            args: CheatSetArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "clearscenery",
-            args: ClearSceneryArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "footpathadditionplace",
-            args: FootpathAdditionPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "footpathadditionremove",
-            args: FootpathAdditionRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "footpathplace",
-            args: FootpathPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "footpathlayoutplace",
-            args: FootpathLayoutPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "footpathremove",
-            args: FootpathRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "gamesetspeed",
-            args: GameSetSpeedArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "guestsetflags",
-            args: GuestSetFlagsArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "guestsetname",
-            args: GuestSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "landbuyrights",
-            args: LandBuyRightsArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "landlower",
-            args: LandLowerArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "landraise",
-            args: LandRaiseArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "landsetheight",
-            args: LandSetHeightArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "landsetrights",
-            args: LandSetRightsArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "landsmooth",
-            args: LandSmoothArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "largesceneryplace",
-            args: LargeSceneryPlaceArgs,
-            callback?: (result: BannerCreateActionResult) => void,
-        ): void;
-        executeAction(
-            action: "largesceneryremove",
-            args: LargeSceneryRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "largescenerysetcolour",
-            args: LargeScenerySetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "loadorquit",
-            args: LoadOrQuitArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "mapchangesize",
-            args: MapChangeSizeArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "mazeplacetrack",
-            args: MazePlaceTrackArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "mazesettrack",
-            args: MazeSetTrackArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "networkmodifygroup",
-            args: NetworkModifyGroupArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parkentranceplace",
-            args: ParkEntrancePlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parkentranceremove",
-            args: ParkEntranceRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parkmarketing",
-            args: ParkMarketingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parksetdate",
-            args: ParkSetDateArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parksetentrancefee",
-            args: ParkSetEntranceFeeArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parksetloan",
-            args: ParkSetLoanArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parksetname",
-            args: ParkSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parksetparameter",
-            args: ParkSetParameterArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "parksetresearchfunding",
-            args: ParkSetResearchFundingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "pausetoggle",
-            args: PauseToggleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "peeppickup",
-            args: PeepPickupArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "peepspawnplace",
-            args: PeepSpawnPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "playerkick",
-            args: PlayerKickArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "playersetgroup",
-            args: PlayerSetGroupArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridecreate",
-            args: RideCreateArgs,
-            callback?: (result: RideCreateActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridedemolish",
-            args: RideDemolishArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "rideentranceexitplace",
-            args: RideEntranceExitPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "rideentranceexitremove",
-            args: RideEntranceExitRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridefreezerating",
-            args: RideFreezeRatingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridesetappearance",
-            args: RideSetAppearanceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridesetcolourscheme",
-            args: RideSetColourSchemeArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridesetname",
-            args: RideSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridesetprice",
-            args: RideSetPriceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridesetsetting",
-            args: RideSetSettingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridesetstatus",
-            args: RideSetStatusArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "ridesetvehicle",
-            args: RideSetVehicleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "scenariosetsetting",
-            args: ScenarioSetSettingArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "signsetname",
-            args: SignSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "signsetstyle",
-            args: SignSetStyleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "smallsceneryplace",
-            args: SmallSceneryPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "smallsceneryremove",
-            args: SmallSceneryRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "smallscenerysetcolour",
-            args: SmallScenerySetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "stafffire",
-            args: StaffFireArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "staffhire",
-            args: StaffHireArgs,
-            callback?: (result: StaffHireNewActionResult) => void,
-        ): void;
-        executeAction(
-            action: "staffsetcolour",
-            args: StaffSetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "staffsetcostume",
-            args: StaffSetCostumeArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "staffsetname",
-            args: StaffSetNameArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "staffsetorders",
-            args: StaffSetOrdersArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "staffsetpatrolarea",
-            args: StaffSetPatrolAreaArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "surfacesetstyle",
-            args: SurfaceSetStyleArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "tilemodify",
-            args: TileModifyArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "trackdesign",
-            args: TrackDesignArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "trackplace",
-            args: TrackPlaceArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "trackremove",
-            args: TrackRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "tracksetbrakespeed",
-            args: TrackSetBrakeSpeedArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "wallplace",
-            args: WallPlaceArgs,
-            callback?: (result: BannerCreateActionResult) => void,
-        ): void;
-        executeAction(
-            action: "wallremove",
-            args: WallRemoveArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "wallsetcolour",
-            args: WallSetColourArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "waterlower",
-            args: WaterLowerArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "waterraise",
-            args: WaterRaiseArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
-        executeAction(
-            action: "watersetheight",
-            args: WaterSetHeightArgs,
-            callback?: (result: GameActionResult) => void,
-        ): void;
+        executeAction(action: string, args: object, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: ActionType, args: object, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "balloonpress", args: BalloonPressArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannerplace", args: BannerPlaceArgs, callback?: (result: BannerCreateActionResult) => void): void;
+        executeAction(action: "bannerremove", args: BannerRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannersetcolour", args: BannerSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannersetname", args: BannerSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "bannersetstyle", args: BannerSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "cheatset", args: CheatSetArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "clearscenery", args: ClearSceneryArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathadditionplace", args: FootpathAdditionPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathadditionremove", args: FootpathAdditionRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "gamesetspeed", args: GameSetSpeedArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landlower", args: LandLowerArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landraise", args: LandRaiseArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landsetheight", args: LandSetHeightArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landsetrights", args: LandSetRightsArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "landsmooth", args: LandSmoothArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "largesceneryplace", args: LargeSceneryPlaceArgs, callback?: (result: BannerCreateActionResult) => void): void;
+        executeAction(action: "largesceneryremove", args: LargeSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "largescenerysetcolour", args: LargeScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "loadorquit", args: LoadOrQuitArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "mapchangesize", args: MapChangeSizeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "mazeplacetrack", args: MazePlaceTrackArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "mazesettrack", args: MazeSetTrackArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "networkmodifygroup", args: NetworkModifyGroupArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parkentranceplace", args: ParkEntrancePlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parkentranceremove", args: ParkEntranceRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parkmarketing", args: ParkMarketingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetdate", args: ParkSetDateArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetentrancefee", args: ParkSetEntranceFeeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetloan", args: ParkSetLoanArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetname", args: ParkSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetparameter", args: ParkSetParameterArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "parksetresearchfunding", args: ParkSetResearchFundingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "pausetoggle", args: PauseToggleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "peeppickup", args: PeepPickupArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "peepspawnplace", args: PeepSpawnPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "playerkick", args: PlayerKickArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "playersetgroup", args: PlayerSetGroupArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridecreate", args: RideCreateArgs, callback?: (result: RideCreateActionResult) => void): void;
+        executeAction(action: "ridedemolish", args: RideDemolishArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "rideentranceexitplace", args: RideEntranceExitPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "rideentranceexitremove", args: RideEntranceExitRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridefreezerating", args: RideFreezeRatingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetappearance", args: RideSetAppearanceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetcolourscheme", args: RideSetColourSchemeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetname", args: RideSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetprice", args: RideSetPriceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "smallsceneryremove", args: SmallSceneryRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "smallscenerysetcolour", args: SmallScenerySetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "stafffire", args: StaffFireArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffhire", args: StaffHireArgs, callback?: (result: StaffHireNewActionResult) => void): void;
+        executeAction(action: "staffsetcolour", args: StaffSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetcostume", args: StaffSetCostumeArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetname", args: StaffSetNameArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetorders", args: StaffSetOrdersArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "staffsetpatrolarea", args: StaffSetPatrolAreaArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "surfacesetstyle", args: SurfaceSetStyleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "tilemodify", args: TileModifyArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "trackdesign", args: TrackDesignArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "trackplace", args: TrackPlaceArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "trackremove", args: TrackRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "tracksetbrakespeed", args: TrackSetBrakeSpeedArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "wallplace", args: WallPlaceArgs, callback?: (result: BannerCreateActionResult) => void): void;
+        executeAction(action: "wallremove", args: WallRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "wallsetcolour", args: WallSetColourArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "waterlower", args: WaterLowerArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "waterraise", args: WaterRaiseArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "watersetheight", args: WaterSetHeightArgs, callback?: (result: GameActionResult) => void): void;
 
         /**
          * Subscribes to the given hook.
          */
         subscribe(hook: HookType, callback: Function): IDisposable;
 
-        subscribe(
-            hook: "action.execute",
-            callback: (e: GameActionEventArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "action.location",
-            callback: (e: ActionLocationArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "action.query",
-            callback: (e: GameActionEventArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "guest.generation",
-            callback: (e: GuestGenerationArgs) => void,
-        ): IDisposable;
+        subscribe(hook: "action.execute", callback: (e: GameActionEventArgs) => void): IDisposable;
+        subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
+        subscribe(hook: "action.query", callback: (e: GameActionEventArgs) => void): IDisposable;
+        subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
-        subscribe(
-            hook: "map.resize",
-            callback: (e: MapChangeSizeArgs) => void,
-        ): IDisposable;
+        subscribe(hook: "map.resize", callback: (e: MapChangeSizeArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
-        subscribe(
-            hook: "network.authenticate",
-            callback: (e: NetworkAuthenticateEventArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "network.chat",
-            callback: (e: NetworkChatEventArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "network.join",
-            callback: (e: NetworkEventArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "network.leave",
-            callback: (e: NetworkEventArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "park.guest.softcap.calculate",
-            callback: (e: ParkCalculateGuestCapArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "ride.breakdown",
-            callback: (e: RideBreakdownArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "ride.ratings.calculate",
-            callback: (e: RideRatingsCalculateArgs) => void,
-        ): IDisposable;
-        subscribe(
-            hook: "vehicle.crash",
-            callback: (e: VehicleCrashArgs) => void,
-        ): IDisposable;
+        subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
+        subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
+        subscribe(hook: "network.join", callback: (e: NetworkEventArgs) => void): IDisposable;
+        subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
+        subscribe(hook: "park.guest.softcap.calculate", callback: (e: ParkCalculateGuestCapArgs) => void): IDisposable;
+        subscribe(hook: "ride.breakdown", callback: (e: RideBreakdownArgs) => void): IDisposable;
+        subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
+        subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
 
         /**
          * Can only be used in intransient plugins.
@@ -1329,151 +625,152 @@ declare global {
     }
 
     type GameMode =
-        | "normal"
-        | "title"
-        | "scenario_editor"
-        | "track_designer"
-        | "track_manager";
+        "normal" |
+        "title" |
+        "scenario_editor" |
+        "track_designer" |
+        "track_manager";
 
     type ObjectType =
-        | "ride"
-        | "small_scenery"
-        | "large_scenery"
-        | "wall"
-        | "banner"
-        | "footpath"
-        | "footpath_addition"
-        | "scenery_group"
-        | "park_entrance"
-        | "water"
-        | "scenario_text"
-        | "terrain_surface"
-        | "terrain_edge"
-        | "station"
-        | "music"
-        | "footpath_surface"
-        | "footpath_railings"
-        | "audio"
-        | "peep_names"
-        | "peep_animations"
-        | "climate";
+        "ride" |
+        "small_scenery" |
+        "large_scenery" |
+        "wall" |
+        "banner" |
+        "footpath" |
+        "footpath_addition" |
+        "scenery_group" |
+        "park_entrance" |
+        "water" |
+        "scenario_text" |
+        "terrain_surface" |
+        "terrain_edge" |
+        "station" |
+        "music" |
+        "footpath_surface" |
+        "footpath_railings" |
+        "audio" |
+        "peep_names" |
+        "peep_animations" |
+        "climate";
 
     type HookType =
-        | "action.execute"
-        | "action.location"
-        | "action.query"
-        | "guest.generation"
-        | "interval.day"
-        | "interval.tick"
-        | "map.change"
-        | "map.changed"
-        | "map.save"
-        | "network.authenticate"
-        | "network.chat"
-        | "network.join"
-        | "network.leave"
-        | "park.guest.softcap.calculate"
-        | "ride.ratings.calculate"
-        | "vehicle.crash";
+        "action.execute" |
+        "action.location" |
+        "action.query" |
+        "guest.generation" |
+        "interval.day" |
+        "interval.tick" |
+        "map.change" |
+        "map.changed" |
+        "map.save" |
+        "network.authenticate" |
+        "network.chat" |
+        "network.join" |
+        "network.leave" |
+        "park.guest.softcap.calculate" |
+        "ride.ratings.calculate" |
+        "vehicle.crash";
 
     type ExpenditureType =
-        | "ride_construction"
-        | "ride_runningcosts"
-        | "land_purchase"
-        | "landscaping"
-        | "park_entrance_tickets"
-        | "park_ride_tickets"
-        | "shop_sales"
-        | "shop_stock"
-        | "food_drink_sales"
-        | "food_drink_stock"
-        | "wages"
-        | "marketing"
-        | "research"
-        | "interest";
+        "ride_construction" |
+        "ride_runningcosts" |
+        "land_purchase" |
+        "landscaping" |
+        "park_entrance_tickets" |
+        "park_ride_tickets" |
+        "shop_sales" |
+        "shop_stock" |
+        "food_drink_sales" |
+        "food_drink_stock" |
+        "wages" |
+        "marketing" |
+        "research" |
+        "interest";
 
     type ActionType =
-        | "balloonpress"
-        | "bannerplace"
-        | "bannerremove"
-        | "bannersetcolour"
-        | "bannersetname"
-        | "bannersetstyle"
-        | "cheatset"
-        | "clearscenery"
-        | "footpathadditionplace"
-        | "footpathadditionremove"
-        | "footpathplace"
-        | "footpathlayoutplace"
-        | "footpathremove"
-        | "gamesetspeed"
-        | "guestsetflags"
-        | "guestsetname"
-        | "landbuyrights"
-        | "landlower"
-        | "landraise"
-        | "landsetheight"
-        | "landsetrights"
-        | "landsmooth"
-        | "largesceneryplace"
-        | "largesceneryremove"
-        | "largescenerysetcolour"
-        | "loadorquit"
-        | "mapchangesize"
-        | "mazeplacetrack"
-        | "mazesettrack"
-        | "networkmodifygroup"
-        | "parkentranceplace"
-        | "parkentranceremove"
-        | "parkmarketing"
-        | "parksetdate"
-        | "parksetentrancefee"
-        | "parksetloan"
-        | "parksetname"
-        | "parksetparameter"
-        | "parksetresearchfunding"
-        | "pausetoggle"
-        | "peeppickup"
-        | "peepspawnplace"
-        | "playerkick"
-        | "playersetgroup"
-        | "ridecreate"
-        | "ridedemolish"
-        | "rideentranceexitplace"
-        | "rideentranceexitremove"
-        | "ridefreezerating"
-        | "ridesetappearance"
-        | "ridesetcolourscheme"
-        | "ridesetname"
-        | "ridesetprice"
-        | "ridesetsetting"
-        | "ridesetstatus"
-        | "ridesetvehicle"
-        | "scenariosetsetting"
-        | "signsetname"
-        | "signsetstyle"
-        | "smallsceneryplace"
-        | "smallsceneryremove"
-        | "smallscenerysetcolour"
-        | "stafffire"
-        | "staffhire"
-        | "staffsetcolour"
-        | "staffsetcostume"
-        | "staffsetname"
-        | "staffsetorders"
-        | "staffsetpatrolarea"
-        | "surfacesetstyle"
-        | "tilemodify"
-        | "trackdesign"
-        | "trackplace"
-        | "trackremove"
-        | "tracksetbrakespeed"
-        | "wallplace"
-        | "wallremove"
-        | "wallsetcolour"
-        | "waterlower"
-        | "waterraise"
-        | "watersetheight";
+        "balloonpress" |
+        "bannerplace" |
+        "bannerremove" |
+        "bannersetcolour" |
+        "bannersetname" |
+        "bannersetstyle" |
+        "cheatset" |
+        "clearscenery" |
+        "footpathadditionplace" |
+        "footpathadditionremove" |
+        "footpathplace" |
+        "footpathlayoutplace" |
+        "footpathremove" |
+        "gamesetspeed" |
+        "guestsetflags" |
+        "guestsetname" |
+        "landbuyrights" |
+        "landlower" |
+        "landraise" |
+        "landsetheight" |
+        "landsetrights" |
+        "landsmooth" |
+        "largesceneryplace" |
+        "largesceneryremove" |
+        "largescenerysetcolour" |
+        "loadorquit" |
+        "mapchangesize" |
+        "mazeplacetrack" |
+        "mazesettrack" |
+        "networkmodifygroup" |
+        "parkentranceplace" |
+        "parkentranceremove" |
+        "parkmarketing" |
+        "parksetdate" |
+        "parksetentrancefee" |
+        "parksetloan" |
+        "parksetname" |
+        "parksetparameter" |
+        "parksetresearchfunding" |
+        "pausetoggle" |
+        "peeppickup" |
+        "peepspawnplace" |
+        "playerkick" |
+        "playersetgroup" |
+        "ridecreate" |
+        "ridedemolish" |
+        "rideentranceexitplace" |
+        "rideentranceexitremove" |
+        "ridefreezerating" |
+        "ridesetappearance" |
+        "ridesetcolourscheme" |
+        "ridesetname" |
+        "ridesetprice" |
+        "ridesetsetting" |
+        "ridesetstatus" |
+        "ridesetvehicle" |
+        "scenariosetsetting" |
+        "signsetname" |
+        "signsetstyle" |
+        "smallsceneryplace" |
+        "smallsceneryremove" |
+        "smallscenerysetcolour" |
+        "stafffire" |
+        "staffhire" |
+        "staffsetcolour" |
+        "staffsetcostume" |
+        "staffsetname" |
+        "staffsetorders" |
+        "staffsetpatrolarea" |
+        "surfacesetstyle" |
+        "tilemodify" |
+        "trackdesign" |
+        "trackplace" |
+        "trackremove" |
+        "tracksetbrakespeed" |
+        "wallplace" |
+        "wallremove" |
+        "wallsetcolour" |
+        "waterlower" |
+        "waterraise" |
+        "watersetheight";
+
 
     interface GameActionArgs {
         /** @see `GameCommand` in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/Game.h} */
@@ -1895,7 +1192,8 @@ declare global {
         fundingAmount: number;
     }
 
-    interface PauseToggleArgs extends GameActionArgs {}
+    interface PauseToggleArgs extends GameActionArgs {
+    }
 
     interface PeepPickupArgs extends GameActionArgs {
         /**
@@ -2372,10 +1670,10 @@ declare global {
         cancel: boolean;
     }
 
-    interface RideBreakdownArgs {
-        readonly rideId: number;
-        breakdownReason: string;
-    }
+	interface RideBreakdownArgs {
+		readonly rideId: number;
+		breakdownReason: string;
+	}
 
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
@@ -2446,6 +1744,7 @@ declare global {
         readonly year: number;
     }
 
+
     /**
      * APIs for the map.
      */
@@ -2475,10 +1774,7 @@ declare global {
         getAllEntitiesOnTile(type: "car", tilePos: CoordsXY): Car[];
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         getAllEntitiesOnTile(type: "balloon", tilePos: CoordsXY): Balloon[];
-        getAllEntitiesOnTile(
-            type: "money_effect",
-            tilePos: CoordsXY,
-        ): MoneyEffect[];
+        getAllEntitiesOnTile(type: "money_effect", tilePos: CoordsXY): MoneyEffect[];
         createEntity(type: EntityType, initializer: object): Entity;
 
         /**
@@ -2487,10 +1783,7 @@ declare global {
          * @param location The tile coordinates.
          * @param elementIndex The index of the track element on the tile.
          */
-        getTrackIterator(
-            location: CoordsXY,
-            elementIndex: number,
-        ): TrackIterator | null;
+        getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
 
         /**
          * Gets a {@link PathNavigator} for the given footpath element. This can be used
@@ -2501,11 +1794,7 @@ declare global {
          *                and apply to {@link PathNavigator.getConnectedPaths},
          *                {@link PathNavigator.moveTo}, and {@link PathNavigator.permittedEdges}.
          */
-        getPathNavigator(
-            location: CoordsXY,
-            elementIndex: number,
-            options?: PathNavigationOptions,
-        ): PathNavigator | null;
+        getPathNavigator(location: CoordsXY, elementIndex: number, options?: PathNavigationOptions): PathNavigator | null;
 
         /**
          * Gets a {@link PathNavigator} for the footpath at the given world coordinates.
@@ -2513,34 +1802,19 @@ declare global {
          * @param position The world coordinates (x, y, z) of the footpath.
          * @param options Optional traversal rules; see the other overload for details.
          */
-        getPathNavigator(
-            position: CoordsXYZ,
-            options?: PathNavigationOptions,
-        ): PathNavigator | null;
+        getPathNavigator(position: CoordsXYZ, options?: PathNavigationOptions): PathNavigator | null;
+
     }
 
     type TileElementType =
-        | "surface"
-        | "footpath"
-        | "track"
-        | "small_scenery"
-        | "wall"
-        | "entrance"
-        | "large_scenery"
-        | "banner";
+        "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
 
     type Direction = 0 | 1 | 2 | 3;
     type Direction8 = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
     type TileElement =
-        | SurfaceElement
-        | FootpathElement
-        | TrackElement
-        | SmallSceneryElement
-        | WallElement
-        | EntranceElement
-        | LargeSceneryElement
-        | BannerElement;
+        SurfaceElement | FootpathElement | TrackElement | SmallSceneryElement | WallElement | EntranceElement
+        | LargeSceneryElement | BannerElement;
 
     interface BaseTileElement {
         type: TileElementType;
@@ -2728,14 +2002,14 @@ declare global {
     }
 
     type ObjectSourceGame =
-        | "rct1"
-        | "added_attractions"
-        | "loopy_landscapes"
-        | "rct2"
-        | "wacky_worlds"
-        | "time_twister"
-        | "custom"
-        | "openrct2_official";
+        "rct1" |
+        "added_attractions" |
+        "loopy_landscapes" |
+        "rct2" |
+        "wacky_worlds" |
+        "time_twister" |
+        "custom" |
+        "openrct2_official";
 
     type ObjectGeneration = "dat" | "json";
 
@@ -2998,6 +2272,7 @@ declare global {
     }
 
     interface LargeSceneryObject extends SceneryObject {
+
         readonly tiles: LargeSceneryObjectTile[];
     }
 
@@ -3033,15 +2308,21 @@ declare global {
         readonly walls: number;
     }
 
-    interface WallObject extends SceneryObject {}
+    interface WallObject extends SceneryObject {
+
+    }
 
     interface FootpathSurfaceObject extends LoadedImageObject {
         readonly flags: number;
     }
 
-    interface FootpathAdditionObject extends SceneryObject {}
+    interface FootpathAdditionObject extends SceneryObject {
 
-    interface BannerObject extends SceneryObject {}
+    }
+
+    interface BannerObject extends SceneryObject {
+
+    }
 
     /**
      * Represents the object definition of a scenery group.
@@ -3314,8 +2595,8 @@ declare global {
         readonly highestDropHeight: number;
 
         /**
-         * The current breakdown of the ride.
-         */
+        * The current breakdown of the ride.
+        */
         readonly breakdown: BreakdownType;
 
         /**
@@ -3328,21 +2609,14 @@ declare global {
          * Fix a ride / clear the breakdown.
          */
         fixBreakdown(): void;
+
     }
 
     type RideClassification = "ride" | "stall" | "facility";
 
     type RideStatus = "closed" | "open" | "testing" | "simulating";
 
-    type BreakdownType =
-        | "brakes_failure"
-        | "control_failure"
-        | "doors_stuck_closed"
-        | "doors_stuck_open"
-        | "restraints_stuck_closed"
-        | "restraints_stuck_open"
-        | "safety_cut_out"
-        | "vehicle_malfunction";
+    type BreakdownType = "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "restraints_stuck_closed" | "restraints_stuck_open" | "safety_cut_out" | "vehicle_malfunction";
 
     interface TrackColour {
         main: number;
@@ -3536,19 +2810,13 @@ declare global {
         /**
          * Gets a length of the subpositions list for this track segment.
          */
-        getSubpositionLength(
-            subpositionType: number,
-            direction: Direction,
-        ): number;
+        getSubpositionLength(subpositionType: number, direction: Direction): number;
 
         /**
          * Gets all of the subpositions for this track segment. These subpositions are used for the
          * pathing of vehicles when moving along the track.
          */
-        getSubpositions(
-            subpositionType: number,
-            direction: Direction,
-        ): TrackSubposition[];
+        getSubpositions(subpositionType: number, direction: Direction): TrackSubposition[];
     }
 
     enum TrackSlope {
@@ -3558,20 +2826,21 @@ declare global {
         Down25 = 6,
         Down60 = 8,
         Up90 = 10,
-        Down90 = 18,
+        Down90 = 18
     }
 
     enum TrackBanking {
         None = 0,
         Left = 2,
         Right = 4,
-        UpsideDown = 15,
+        UpsideDown = 15
     }
 
     type TrackCurveType = "straight" | "left" | "right";
     type TrackSlopeType = "flat" | "up" | "down";
 
-    interface TrackSegmentElement extends Readonly<CoordsXYZ> {}
+    interface TrackSegmentElement extends Readonly<CoordsXYZ> {
+    }
 
     /**
      * A single subposition on a track piece. These subpositions are used for the pathing of vehicles
@@ -3703,24 +2972,24 @@ declare global {
     }
 
     type EntityType =
-        | "balloon"
-        | "car"
-        | "crash_splash"
-        | "crashed_vehicle_particle"
-        | "duck"
-        | "explosion_cloud"
-        | "explosion_flare"
-        | "jumping_fountain_snow"
-        | "jumping_fountain_water"
-        | "litter"
-        | "money_effect"
-        | "guest"
-        | "staff"
-        | "steam_particle"
+        "balloon" |
+        "car" |
+        "crash_splash" |
+        "crashed_vehicle_particle" |
+        "duck" |
+        "explosion_cloud" |
+        "explosion_flare" |
+        "jumping_fountain_snow" |
+        "jumping_fountain_water" |
+        "litter" |
+        "money_effect" |
+        "guest" |
+        "staff" |
+        "steam_particle" |
         /**
          * @deprecated since version 34, use guest or staff instead.
          */
-        | "peep";
+        "peep";
 
     /**
      * Represents an object "entity" on the map that can typically moves and has a sub-tile coordinate.
@@ -3858,6 +3127,7 @@ declare global {
          */
         status: VehicleStatus;
 
+
         /**
          * Current vehicle spin rotation.
          * Values are 0-255. The game actually only considers the higher
@@ -3917,37 +3187,37 @@ declare global {
     }
 
     type VehicleStatus =
-        | "arriving"
-        | "crashed"
-        | "crashing"
-        | "crooked_house_operating"
-        | "departing"
-        | "doing_circus_show"
-        | "ferris_wheel_rotating"
-        | "haunted_house_operating"
-        | "moving_to_end_of_station"
-        | "operating_1a"
-        | "rotating"
-        | "showing_film"
-        | "simulator_operating"
-        | "space_rings_operating"
-        | "starting"
-        | "stopped_by_block_brake"
-        | "stopping_1b"
-        | "stopping"
-        | "swinging"
-        | "top_spin_operating"
-        | "travelling_boat"
-        | "travelling_cable_lift"
-        | "travelling_dodgems"
-        | "travelling"
-        | "unloading_passengers_1c"
-        | "unloading_passengers"
-        | "waiting_for_cable_lift"
-        | "waiting_for_passengers_17"
-        | "waiting_for_passengers"
-        | "waiting_to_depart"
-        | "waiting_to_start";
+        "arriving" |
+        "crashed" |
+        "crashing" |
+        "crooked_house_operating" |
+        "departing" |
+        "doing_circus_show" |
+        "ferris_wheel_rotating" |
+        "haunted_house_operating" |
+        "moving_to_end_of_station" |
+        "operating_1a" |
+        "rotating" |
+        "showing_film" |
+        "simulator_operating" |
+        "space_rings_operating" |
+        "starting" |
+        "stopped_by_block_brake" |
+        "stopping_1b" |
+        "stopping" |
+        "swinging" |
+        "top_spin_operating" |
+        "travelling_boat" |
+        "travelling_cable_lift" |
+        "travelling_dodgems" |
+        "travelling" |
+        "unloading_passengers_1c" |
+        "unloading_passengers" |
+        "waiting_for_cable_lift" |
+        "waiting_for_passengers_17" |
+        "waiting_for_passengers" |
+        "waiting_to_depart" |
+        "waiting_to_start";
 
     type CrashParticleType = "corner" | "rod" | "wheel" | "panel" | "seat";
 
@@ -4056,33 +3326,33 @@ declare global {
     }
 
     type PeepFlags =
-        | "leavingPark"
-        | "slowWalk"
-        | "tracking"
-        | "waving"
-        | "hasPaidForParkEntry"
-        | "photo"
-        | "painting"
-        | "wow"
-        | "litter"
-        | "lost"
-        | "hunger"
-        | "toilet"
-        | "crowded"
-        | "happiness"
-        | "nausea"
-        | "purple"
-        | "pizza"
-        | "explode"
-        | "rideShouldBeMarkedAsFavourite"
-        | "parkEntranceChosen"
-        | "contagious"
-        | "joy"
-        | "angry"
-        | "iceCream"
-        | "hereWeAre"
-        | "positionFrozen"
-        | "animationFrozen";
+        "leavingPark" |
+        "slowWalk" |
+        "tracking" |
+        "waving" |
+        "hasPaidForParkEntry" |
+        "photo" |
+        "painting" |
+        "wow" |
+        "litter" |
+        "lost" |
+        "hunger" |
+        "toilet" |
+        "crowded" |
+        "happiness" |
+        "nausea" |
+        "purple" |
+        "pizza" |
+        "explode" |
+        "rideShouldBeMarkedAsFavourite" |
+        "parkEntranceChosen" |
+        "contagious" |
+        "joy" |
+        "angry" |
+        "iceCream" |
+        "hereWeAre" |
+        "positionFrozen" |
+        "animationFrozen";
 
     /**
      * @deprecated since version 34, use EntityType instead.
@@ -4090,32 +3360,32 @@ declare global {
     type PeepType = "guest" | "staff";
 
     type GuestAnimation =
-        | "walking"
-        | "checkTime"
-        | "watchRide"
-        | "eatFood"
-        | "shakeHead"
-        | "emptyPockets"
-        | "holdMat"
-        | "sittingIdle"
-        | "sittingEatFood"
-        | "sittingLookAroundLeft"
-        | "sittingLookAroundRight"
-        | "hanging"
-        | "wow"
-        | "throwUp"
-        | "jump"
-        | "drowning"
-        | "joy"
-        | "readMap"
-        | "wave"
-        | "wave2"
-        | "takePhoto"
-        | "clap"
-        | "disgust"
-        | "drawPicture"
-        | "beingWatched"
-        | "withdrawMoney";
+        "walking" |
+        "checkTime" |
+        "watchRide" |
+        "eatFood" |
+        "shakeHead" |
+        "emptyPockets" |
+        "holdMat" |
+        "sittingIdle" |
+        "sittingEatFood" |
+        "sittingLookAroundLeft" |
+        "sittingLookAroundRight" |
+        "hanging" |
+        "wow" |
+        "throwUp" |
+        "jump" |
+        "drowning" |
+        "joy" |
+        "readMap" |
+        "wave" |
+        "wave2" |
+        "takePhoto" |
+        "clap" |
+        "disgust" |
+        "drawPicture" |
+        "beingWatched" |
+        "withdrawMoney";
 
     /**
      * Represents a guest.
@@ -4263,10 +3533,7 @@ declare global {
         /**
          * Gets an array of sprite ids representing a particular guest animation.
          */
-        getAnimationSpriteIds(
-            animation: GuestAnimation,
-            rotation: number,
-        ): number[];
+        getAnimationSpriteIds(animation: GuestAnimation, rotation: number): number[];
 
         /**
          * The animation the guest is currently exhibiting.
@@ -4323,189 +3590,189 @@ declare global {
     }
 
     type ThoughtType =
-        | "cant_afford_ride"
-        | "spent_money"
-        | "sick"
-        | "very_sick"
-        | "more_thrilling"
-        | "intense"
-        | "havent_finished"
-        | "sickening"
-        | "bad_value"
-        | "go_home"
-        | "good_value"
-        | "already_got"
-        | "cant_afford_item"
-        | "not_hungry"
-        | "not_thirsty"
-        | "drowning"
-        | "lost"
-        | "was_great"
-        | "queuing_ages"
-        | "tired"
-        | "hungry"
-        | "thirsty"
-        | "toilet"
-        | "cant_find"
-        | "not_paying"
-        | "not_while_raining"
-        | "bad_litter"
-        | "cant_find_exit"
-        | "get_off"
-        | "get_out"
-        | "not_safe"
-        | "path_disgusting"
-        | "crowded"
-        | "vandalism"
-        | "scenery"
-        | "very_clean"
-        | "fountains"
-        | "music"
-        | "balloon"
-        | "toy"
-        | "map"
-        | "photo"
-        | "umbrella"
-        | "drink"
-        | "burger"
-        | "chips"
-        | "ice_cream"
-        | "candyfloss"
-        | "pizza"
-        | "popcorn"
-        | "hot_dog"
-        | "tentacle"
-        | "hat"
-        | "toffee_apple"
-        | "tshirt"
-        | "doughnut"
-        | "coffee"
-        | "chicken"
-        | "lemonade"
-        | "wow"
-        | "wow2"
-        | "watched"
-        | "balloon_much"
-        | "toy_much"
-        | "map_much"
-        | "photo_much"
-        | "umbrella_much"
-        | "drink_much"
-        | "burger_much"
-        | "chips_much"
-        | "ice_cream_much"
-        | "candyfloss_much"
-        | "pizza_much"
-        | "popcorn_much"
-        | "hot_dog_much"
-        | "tentacle_much"
-        | "hat_much"
-        | "toffee_apple_much"
-        | "tshirt_much"
-        | "doughnut_much"
-        | "coffee_much"
-        | "chicken_much"
-        | "lemonade_much"
-        | "photo2"
-        | "photo3"
-        | "photo4"
-        | "pretzel"
-        | "hot_chocolate"
-        | "iced_tea"
-        | "funnel_cake"
-        | "sunglasses"
-        | "beef_noodles"
-        | "fried_rice_noodles"
-        | "wonton_soup"
-        | "meatball_soup"
-        | "fruit_juice"
-        | "soybean_milk"
-        | "sujongkwa"
-        | "sub_sandwich"
-        | "cookie"
-        | "roast_sausage"
-        | "photo2_much"
-        | "photo3_much"
-        | "photo4_much"
-        | "pretzel_much"
-        | "hot_chocolate_much"
-        | "iced_tea_much"
-        | "funnel_cake_much"
-        | "sunglasses_much"
-        | "beef_noodles_much"
-        | "fried_rice_noodles_much"
-        | "wonton_soup_much"
-        | "meatball_soup_much"
-        | "fruit_juice_much"
-        | "soybean_milk_much"
-        | "sujongkwa_much"
-        | "sub_sandwich_much"
-        | "cookie_much"
-        | "roast_sausage_much"
-        | "help"
-        | "running_out"
-        | "new_ride"
-        | "nice_ride_deprecated"
-        | "excited_deprecated"
-        | "here_we_are";
+        "cant_afford_ride" |
+        "spent_money" |
+        "sick" |
+        "very_sick" |
+        "more_thrilling" |
+        "intense" |
+        "havent_finished" |
+        "sickening" |
+        "bad_value" |
+        "go_home" |
+        "good_value" |
+        "already_got" |
+        "cant_afford_item" |
+        "not_hungry" |
+        "not_thirsty" |
+        "drowning" |
+        "lost" |
+        "was_great" |
+        "queuing_ages" |
+        "tired" |
+        "hungry" |
+        "thirsty" |
+        "toilet" |
+        "cant_find" |
+        "not_paying" |
+        "not_while_raining" |
+        "bad_litter" |
+        "cant_find_exit" |
+        "get_off" |
+        "get_out" |
+        "not_safe" |
+        "path_disgusting" |
+        "crowded" |
+        "vandalism" |
+        "scenery" |
+        "very_clean" |
+        "fountains" |
+        "music" |
+        "balloon" |
+        "toy" |
+        "map" |
+        "photo" |
+        "umbrella" |
+        "drink" |
+        "burger" |
+        "chips" |
+        "ice_cream" |
+        "candyfloss" |
+        "pizza" |
+        "popcorn" |
+        "hot_dog" |
+        "tentacle" |
+        "hat" |
+        "toffee_apple" |
+        "tshirt" |
+        "doughnut" |
+        "coffee" |
+        "chicken" |
+        "lemonade" |
+        "wow" |
+        "wow2" |
+        "watched" |
+        "balloon_much" |
+        "toy_much" |
+        "map_much" |
+        "photo_much" |
+        "umbrella_much" |
+        "drink_much" |
+        "burger_much" |
+        "chips_much" |
+        "ice_cream_much" |
+        "candyfloss_much" |
+        "pizza_much" |
+        "popcorn_much" |
+        "hot_dog_much" |
+        "tentacle_much" |
+        "hat_much" |
+        "toffee_apple_much" |
+        "tshirt_much" |
+        "doughnut_much" |
+        "coffee_much" |
+        "chicken_much" |
+        "lemonade_much" |
+        "photo2" |
+        "photo3" |
+        "photo4" |
+        "pretzel" |
+        "hot_chocolate" |
+        "iced_tea" |
+        "funnel_cake" |
+        "sunglasses" |
+        "beef_noodles" |
+        "fried_rice_noodles" |
+        "wonton_soup" |
+        "meatball_soup" |
+        "fruit_juice" |
+        "soybean_milk" |
+        "sujongkwa" |
+        "sub_sandwich" |
+        "cookie" |
+        "roast_sausage" |
+        "photo2_much" |
+        "photo3_much" |
+        "photo4_much" |
+        "pretzel_much" |
+        "hot_chocolate_much" |
+        "iced_tea_much" |
+        "funnel_cake_much" |
+        "sunglasses_much" |
+        "beef_noodles_much" |
+        "fried_rice_noodles_much" |
+        "wonton_soup_much" |
+        "meatball_soup_much" |
+        "fruit_juice_much" |
+        "soybean_milk_much" |
+        "sujongkwa_much" |
+        "sub_sandwich_much" |
+        "cookie_much" |
+        "roast_sausage_much" |
+        "help" |
+        "running_out" |
+        "new_ride" |
+        "nice_ride_deprecated" |
+        "excited_deprecated" |
+        "here_we_are";
 
     type GuestItemType =
-        | "balloon"
-        | "hat"
-        | "map"
-        | "sunglasses"
-        | "toy"
-        | "tshirt"
-        | "umbrella"
-        | "photo1"
-        | "photo2"
-        | "photo3"
-        | "photo4"
-        | "voucher"
-        | "beef_noodles"
-        | "burger"
-        | "candyfloss"
-        | "chicken"
-        | "chips"
-        | "chocolate"
-        | "cookie"
-        | "doughnut"
-        | "hot_dog"
-        | "fried_rice_noodles"
-        | "funnel_cake"
-        | "ice_cream"
-        | "meatball_soup"
-        | "pizza"
-        | "popcorn"
-        | "pretzel"
-        | "roast_sausage"
-        | "sub_sandwich"
-        | "tentacle"
-        | "toffee_apple"
-        | "wonton_soup"
-        | "coffee"
-        | "drink"
-        | "fruit_juice"
-        | "iced_tea"
-        | "lemonade"
-        | "soybean_milk"
-        | "sujeonggwa"
-        | "empty_bottle"
-        | "empty_bowl_blue"
-        | "empty_bowl_red"
-        | "empty_box"
-        | "empty_burger_box"
-        | "empty_can"
-        | "empty_cup"
-        | "empty_drink_carton"
-        | "empty_juice_cup"
-        | "rubbish";
+        "balloon" |
+        "hat" |
+        "map" |
+        "sunglasses" |
+        "toy" |
+        "tshirt" |
+        "umbrella" |
+        "photo1" |
+        "photo2" |
+        "photo3" |
+        "photo4" |
+        "voucher" |
+        "beef_noodles" |
+        "burger" |
+        "candyfloss" |
+        "chicken" |
+        "chips" |
+        "chocolate" |
+        "cookie" |
+        "doughnut" |
+        "hot_dog" |
+        "fried_rice_noodles" |
+        "funnel_cake" |
+        "ice_cream" |
+        "meatball_soup" |
+        "pizza" |
+        "popcorn" |
+        "pretzel" |
+        "roast_sausage" |
+        "sub_sandwich" |
+        "tentacle" |
+        "toffee_apple" |
+        "wonton_soup" |
+        "coffee" |
+        "drink" |
+        "fruit_juice" |
+        "iced_tea" |
+        "lemonade" |
+        "soybean_milk" |
+        "sujeonggwa" |
+        "empty_bottle" |
+        "empty_bowl_blue" |
+        "empty_bowl_red" |
+        "empty_box" |
+        "empty_burger_box" |
+        "empty_can" |
+        "empty_cup" |
+        "empty_drink_carton" |
+        "empty_juice_cup" |
+        "rubbish";
 
     type VoucherType =
-        | "entry_free"
-        | "entry_half_price"
-        | "ride_free"
-        | "food_drink_free";
+        "entry_free" |
+        "entry_half_price" |
+        "ride_free" |
+        "food_drink_free";
 
     /**
      * Represents an item in a guest's possession.
@@ -4564,42 +3831,42 @@ declare global {
     }
 
     type StaffCostume =
-        | "none"
-        | "handyman"
-        | "mechanic"
-        | "security1"
-        | "security2"
-        | "panda"
-        | "tiger"
-        | "elephant"
-        | "roman"
-        | "gorilla"
-        | "snowman"
-        | "knight"
-        | "astronaut"
-        | "bandit"
-        | "sheriff"
-        | "pirate";
+        "none" |
+        "handyman" |
+        "mechanic" |
+        "security1" |
+        "security2" |
+        "panda" |
+        "tiger" |
+        "elephant" |
+        "roman" |
+        "gorilla" |
+        "snowman" |
+        "knight" |
+        "astronaut" |
+        "bandit" |
+        "sheriff" |
+        "pirate";
 
     type StaffAnimation =
-        | "walking"
-        | "watchRide"
-        | "wave"
-        | "hanging"
-        | "staffMower"
-        | "staffSweep"
-        | "drowning"
-        | "staffAnswerCall"
-        | "staffAnswerCall2"
-        | "staffCheckBoard"
-        | "staffFix"
-        | "staffFix2"
-        | "staffFixGround"
-        | "staffFix3"
-        | "staffWatering"
-        | "joy"
-        | "staffEmptyBin"
-        | "wave2";
+        "walking" |
+        "watchRide" |
+        "wave" |
+        "hanging" |
+        "staffMower" |
+        "staffSweep" |
+        "drowning" |
+        "staffAnswerCall" |
+        "staffAnswerCall2" |
+        "staffCheckBoard" |
+        "staffFix" |
+        "staffFix2" |
+        "staffFixGround" |
+        "staffFix3" |
+        "staffWatering" |
+        "joy" |
+        "staffEmptyBin" |
+        "wave2";
 
     /**
      * Represents a staff member.
@@ -4648,10 +3915,7 @@ declare global {
         /**
          * Gets an array of sprite ids representing a particular staff animation.
          */
-        getAnimationSpriteIds(
-            animation: StaffAnimation,
-            rotation: number,
-        ): number[];
+        getAnimationSpriteIds(animation: StaffAnimation, rotation: number): number[];
 
         /**
          * The animation the staff member is currently exhibiting.
@@ -4785,19 +4049,18 @@ declare global {
         creationTick: number;
     }
 
-    type LitterType =
-        | "vomit"
-        | "vomit_alt"
-        | "empty_can"
-        | "rubbish"
-        | "burger_box"
-        | "empty_cup"
-        | "empty_box"
-        | "empty_bottle"
-        | "empty_bowl_red"
-        | "empty_drink_carton"
-        | "empty_juice_cup"
-        | "empty_bowl_blue";
+    type LitterType = "vomit" |
+        "vomit_alt" |
+        "empty_can" |
+        "rubbish" |
+        "burger_box" |
+        "empty_cup" |
+        "empty_box" |
+        "empty_bottle" |
+        "empty_bowl_red" |
+        "empty_drink_carton" |
+        "empty_juice_cup" |
+        "empty_bowl_blue";
 
     /**
      * Represents balloon entity.
@@ -5005,30 +4268,30 @@ declare global {
     }
 
     type PermissionType =
-        | "chat"
-        | "terraform"
-        | "set_water_level"
-        | "toggle_pause"
-        | "create_ride"
-        | "remove_ride"
-        | "build_ride"
-        | "ride_properties"
-        | "scenery"
-        | "path"
-        | "clear_landscape"
-        | "guest"
-        | "staff"
-        | "park_properties"
-        | "park_funding"
-        | "kick_player"
-        | "modify_groups"
-        | "set_player_group"
-        | "cheat"
-        | "toggle_scenery_cluster"
-        | "passwordless_login"
-        | "modify_tile"
-        | "edit_scenario_options"
-        | "drag_path_area";
+        "chat" |
+        "terraform" |
+        "set_water_level" |
+        "toggle_pause" |
+        "create_ride" |
+        "remove_ride" |
+        "build_ride" |
+        "ride_properties" |
+        "scenery" |
+        "path" |
+        "clear_landscape" |
+        "guest" |
+        "staff" |
+        "park_properties" |
+        "park_funding" |
+        "kick_player" |
+        "modify_groups" |
+        "set_player_group" |
+        "cheat" |
+        "toggle_scenery_cluster" |
+        "passwordless_login" |
+        "modify_tile" |
+        "edit_scenario_options" |
+        "drag_path_area";
 
     /**
      * Park APIs
@@ -5038,16 +4301,7 @@ declare global {
      * The type of park message, including icon and behaviour.
      */
     type ParkMessageType =
-        | "attraction"
-        | "peep_on_attraction"
-        | "peep"
-        | "money"
-        | "blank"
-        | "research"
-        | "guests"
-        | "award"
-        | "chart"
-        | "campaign";
+        "attraction" | "peep_on_attraction" | "peep" | "money" | "blank" | "research" | "guests" | "award" | "chart" | "campaign";
 
     interface ParkMessage {
         /**
@@ -5100,38 +4354,38 @@ declare global {
     }
 
     type ParkFlags =
-        | "difficultGuestGeneration"
-        | "difficultParkRating"
-        | "forbidHighConstruction"
-        | "forbidLandscapeChanges"
-        | "forbidMarketingCampaigns"
-        | "forbidTreeRemoval"
-        | "freeParkEntry"
-        | "noMoney"
-        | "open"
-        | "preferLessIntenseRides"
-        | "preferMoreIntenseRides"
-        | "scenarioCompleteNameInput"
-        | "unlockAllPrices";
+        "difficultGuestGeneration" |
+        "difficultParkRating" |
+        "forbidHighConstruction" |
+        "forbidLandscapeChanges" |
+        "forbidMarketingCampaigns" |
+        "forbidTreeRemoval" |
+        "freeParkEntry" |
+        "noMoney" |
+        "open" |
+        "preferLessIntenseRides" |
+        "preferMoreIntenseRides" |
+        "scenarioCompleteNameInput" |
+        "unlockAllPrices";
 
     type AwardType =
-        | "mostUntidy"
-        | "mostTidy"
-        | "bestRollerCoasters"
-        | "bestValue"
-        | "mostBeautiful"
-        | "worstValue"
-        | "safest"
-        | "bestStaff"
-        | "bestFood"
-        | "worstFood"
-        | "bestToilets"
-        | "mostDisappointing"
-        | "bestWaterRides"
-        | "bestCustomDesignedRides"
-        | "mostDazzlingRideColours"
-        | "mostConfusingLayout"
-        | "bestGentleRides";
+        "mostUntidy" |
+        "mostTidy" |
+        "bestRollerCoasters" |
+        "bestValue" |
+        "mostBeautiful" |
+        "worstValue" |
+        "safest" |
+        "bestStaff" |
+        "bestFood" |
+        "worstFood" |
+        "bestToilets" |
+        "mostDisappointing" |
+        "bestWaterRides" |
+        "bestCustomDesignedRides" |
+        "mostDazzlingRideColours" |
+        "mostConfusingLayout" |
+        "bestGentleRides";
 
     interface Award {
         /**
@@ -5308,17 +4562,17 @@ declare global {
          * The maximum length of the array is 16.
          * @param type The type of expenditure to get.
          */
-        getMonthlyExpenditure(type: ExpenditureType): number[];
+        getMonthlyExpenditure(type: ExpenditureType): number[]
 
         /**
          * The current awards of the park.
          */
-        readonly awards: Award[];
+        readonly awards: Award[]
 
         /**
          *  Clear all awards.
          */
-        clearAwards(): void;
+        clearAwards(): void
 
         /**
          * Grant the given award type to the park.
@@ -5327,7 +4581,7 @@ declare global {
          * If the park already has 4 active awards, the oldest award will be removed.
          * @param type the award type to grant
          */
-        grantAward(type: AwardType): void;
+        grantAward(type: AwardType): void
     }
 
     interface Research {
@@ -5431,35 +4685,35 @@ declare global {
     }
 
     type RideResearchCategory =
-        | "transport"
-        | "gentle"
-        | "rollercoaster"
-        | "thrill"
-        | "water"
-        | "shop";
+        "transport" |
+        "gentle" |
+        "rollercoaster" |
+        "thrill" |
+        "water" |
+        "shop";
 
     type ResearchCategory = RideResearchCategory | "scenery";
 
     type ResearchFundingStage =
-        | "initial_research"
-        | "designing"
-        | "completing_design"
-        | "unknown"
-        | "finished_all";
+        "initial_research" |
+        "designing" |
+        "completing_design" |
+        "unknown" |
+        "finished_all";
 
     type ScenarioObjectiveType =
-        | "none"
-        | "guestsBy"
-        | "parkValueBy"
-        | "haveFun"
-        | "buildTheBest"
-        | "10Rollercoasters"
-        | "guestsAndRating"
-        | "monthlyRideIncome"
-        | "10RollercoastersLength"
-        | "finish5Rollercoasters"
-        | "repayLoanAndParkValue"
-        | "monthlyFoodIncome";
+        "none" |
+        "guestsBy" |
+        "parkValueBy" |
+        "haveFun" |
+        "buildTheBest" |
+        "10Rollercoasters" |
+        "guestsAndRating" |
+        "monthlyRideIncome" |
+        "10RollercoastersLength" |
+        "finish5Rollercoasters" |
+        "repayLoanAndParkValue" |
+        "monthlyFoodIncome";
 
     interface ScenarioObjective {
         /**
@@ -5550,18 +4804,22 @@ declare global {
         companyValueRecord: number;
     }
 
-    type ClimateType = "coolAndWet" | "warm" | "hotAndDry" | "cold";
+    type ClimateType =
+        "coolAndWet" |
+        "warm" |
+        "hotAndDry" |
+        "cold";
 
     type WeatherType =
-        | "sunny"
-        | "partiallyCloudy"
-        | "cloudy"
-        | "rain"
-        | "heavyRain"
-        | "thunder"
-        | "snow"
-        | "heavySnow"
-        | "blizzard";
+        "sunny" |
+        "partiallyCloudy" |
+        "cloudy" |
+        "rain" |
+        "heavyRain" |
+        "thunder" |
+        "snow" |
+        "heavySnow" |
+        "blizzard";
 
     interface WeatherState {
         readonly weather: WeatherType;
@@ -5764,25 +5022,8 @@ declare global {
      */
     interface ScenarioFile {
         id: number;
-        category:
-            | "beginner"
-            | "challenging"
-            | "expert"
-            | "real"
-            | "other"
-            | "dlc"
-            | "build_your_own"
-            | "competitions";
-        sourceGame:
-            | "rct1"
-            | "rct1_aa"
-            | "rct1_ll"
-            | "rct2"
-            | "rct2_ww"
-            | "rct2_tt"
-            | "real"
-            | "extras"
-            | "other";
+        category: "beginner" | "challenging" | "expert" | "real" | "other" | "dlc" | "build_your_own" | "competitions";
+        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "real" | "extras" | "other";
         path: string;
         internalName: string;
         name: string;
@@ -5834,47 +5075,47 @@ declare global {
     }
 
     type CursorType =
-        | "arrow"
-        | "bench_down"
-        | "bin_down"
-        | "blank"
-        | "cross_hair"
-        | "diagonal_arrows"
-        | "dig_down"
-        | "entrance_down"
-        | "fence_down"
-        | "flower_down"
-        | "fountain_down"
-        | "hand_closed"
-        | "hand_open"
-        | "hand_point"
-        | "house_down"
-        | "lamppost_down"
-        | "paint_down"
-        | "path_down"
-        | "picker"
-        | "statue_down"
-        | "tree_down"
-        | "up_arrow"
-        | "up_down_arrow"
-        | "volcano_down"
-        | "walk_down"
-        | "water_down"
-        | "zzz";
+        "arrow" |
+        "bench_down" |
+        "bin_down" |
+        "blank" |
+        "cross_hair" |
+        "diagonal_arrows" |
+        "dig_down" |
+        "entrance_down" |
+        "fence_down" |
+        "flower_down" |
+        "fountain_down" |
+        "hand_closed" |
+        "hand_open" |
+        "hand_point" |
+        "house_down" |
+        "lamppost_down" |
+        "paint_down" |
+        "path_down" |
+        "picker" |
+        "statue_down" |
+        "tree_down" |
+        "up_arrow" |
+        "up_down_arrow" |
+        "volcano_down" |
+        "walk_down" |
+        "water_down" |
+        "zzz";
 
     type ToolFilter =
-        | "terrain"
-        | "entity"
-        | "ride"
-        | "water"
-        | "scenery"
-        | "footpath"
-        | "footpath_item"
-        | "park_entrance"
-        | "wall"
-        | "large_scenery"
-        | "label"
-        | "banner";
+        "terrain" |
+        "entity" |
+        "ride" |
+        "water" |
+        "scenery" |
+        "footpath" |
+        "footpath_item" |
+        "park_entrance" |
+        "wall" |
+        "large_scenery" |
+        "label" |
+        "banner";
 
     interface ShortcutDesc {
         /**
@@ -5905,180 +5146,37 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        | "button"
-        | "checkbox"
-        | "colourpicker"
-        | "custom"
-        | "dropdown"
-        | "groupbox"
-        | "label"
-        | "listview"
-        | "spinner"
-        | "textbox"
-        | "viewport";
+        "button" | "checkbox" | "colourpicker" | "custom" | "dropdown" | "groupbox" |
+        "label" | "listview" | "spinner" | "textbox" | "viewport";
 
     type Widget =
-        | ButtonWidget
-        | CheckboxWidget
-        | ColourPickerWidget
-        | CustomWidget
-        | DropdownWidget
-        | GroupBoxWidget
-        | LabelWidget
-        | ListViewWidget
-        | SpinnerWidget
-        | TextBoxWidget
-        | ViewportWidget;
+        ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
+        LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
     type IconName =
-        | "arrow_down"
-        | "arrow_up"
-        | "award"
-        | "awards"
-        | "chain_lift"
-        | "chat"
-        | "cheats"
-        | "closed"
-        | "construction"
-        | "copy"
-        | "demolish"
-        | "empty"
-        | "eyedropper"
-        | "fast_forward"
-        | "finance"
-        | "floppy_disk"
-        | "game_speed_indicator"
-        | "game_speed_indicator_double"
-        | "glassy_recolourable"
-        | "graph"
-        | "guest_inventory"
-        | "guests"
-        | "hearing"
-        | "hide_full"
-        | "hide_partial"
-        | "hide_scenery"
-        | "hide_supports"
-        | "hide_vegetation"
-        | "hide_vehicles"
-        | "kiosks_and_facilities"
-        | "large_scenery"
-        | "legacy_paths"
-        | "link_chain"
-        | "locate"
-        | "logo"
-        | "logo_text"
-        | "map"
-        | "map_east"
-        | "map_east_pressed"
-        | "map_gen_land"
-        | "map_gen_noise"
-        | "map_gen_trees"
-        | "map_north"
-        | "map_north_pressed"
-        | "map_south"
-        | "map_south_pressed"
-        | "map_west"
-        | "map_west_pressed"
-        | "mechanic"
-        | "mirror_arrow"
-        | "mountain_tool_even"
-        | "mountain_tool_odd"
-        | "multiplayer"
-        | "multiplayer_desync"
-        | "multiplayer_sync"
-        | "multiplayer_toolbar"
-        | "multiplayer_toolbar_pressed"
-        | "music"
-        | "mute"
-        | "mute_pressed"
-        | "news_messages"
-        | "new_ride"
-        | "next"
-        | "no_entry"
-        | "open"
-        | "paintbrush"
-        | "palette_invisible"
-        | "palette_invisible_pressed"
-        | "park"
-        | "paste"
-        | "path_additions"
-        | "path_railings"
-        | "path_surfaces"
-        | "paths"
-        | "patrol"
-        | "pause"
-        | "pickup"
-        | "placeholder"
-        | "previous"
-        | "question"
-        | "rct1_close_off"
-        | "rct1_close_off_pressed"
-        | "rct1_close_on"
-        | "rct1_close_on_pressed"
-        | "rct1_open_off"
-        | "rct1_open_off_pressed"
-        | "rct1_open_on"
-        | "rct1_open_on_pressed"
-        | "rct1_simulate_off"
-        | "rct1_simulate_off_pressed"
-        | "rct1_simulate_on"
-        | "rct1_simulate_on_pressed"
-        | "rct1_test_off"
-        | "rct1_test_off_pressed"
-        | "rct1_test_on"
-        | "rct1_test_on_pressed"
-        | "reload"
-        | "rename"
-        | "research"
-        | "ride"
-        | "ride_stations"
-        | "rides_gentle"
-        | "rides_rollercoasters"
-        | "rides_shop"
-        | "rides_thrill"
-        | "rides_transport"
-        | "rides_water"
-        | "rotate_arrow"
-        | "scenery"
-        | "scenery_cluster"
-        | "scenery_paths"
-        | "scenery_paths_items"
-        | "scenery_scatter_high"
-        | "scenery_scatter_low"
-        | "scenery_scatter_medium"
-        | "scenery_signage"
-        | "scenery_statues"
-        | "scenery_trees"
-        | "scenery_urban"
-        | "scenery_walls"
-        | "search"
-        | "selection_edge_ne"
-        | "selection_edge_nw"
-        | "selection_edge_se"
-        | "selection_edge_sw"
-        | "server_password"
-        | "shops_and_stalls"
-        | "sideways_tab"
-        | "sideways_tab_active"
-        | "simulate"
-        | "small_scenery"
-        | "sort"
-        | "stats"
-        | "testing"
-        | "terrain_edges"
-        | "title_play"
-        | "title_restart"
-        | "title_skip"
-        | "title_stop"
-        | "unmute"
-        | "unmute_pressed"
-        | "view"
-        | "walls"
-        | "water"
-        | "zoom_in"
-        | "zoom_in_background"
-        | "zoom_out"
-        | "zoom_out_background";
+        "arrow_down" | "arrow_up" | "award" | "awards" | "chain_lift" | "chat" | "cheats" | "closed" | "construction" |
+        "copy" | "demolish" | "empty" | "eyedropper" | "fast_forward" | "finance" | "floppy_disk" | "game_speed_indicator" |
+        "game_speed_indicator_double" | "glassy_recolourable" | "graph" | "guest_inventory" | "guests" |
+        "hearing" | "hide_full" | "hide_partial" | "hide_scenery" | "hide_supports" | "hide_vegetation" | "hide_vehicles" |
+        "kiosks_and_facilities" | "large_scenery" | "legacy_paths" | "link_chain" | "locate" | "logo" | "logo_text" | "map" |
+        "map_east" | "map_east_pressed" | "map_gen_land" | "map_gen_noise" | "map_gen_trees" | "map_north" | "map_north_pressed" |
+        "map_south" | "map_south_pressed" | "map_west" | "map_west_pressed" | "mechanic" | "mirror_arrow" |
+        "mountain_tool_even" | "mountain_tool_odd" | "multiplayer" | "multiplayer_desync" | "multiplayer_sync" |
+        "multiplayer_toolbar" | "multiplayer_toolbar_pressed" | "music" | "mute" | "mute_pressed" | "news_messages" |
+        "new_ride" | "next" | "no_entry" | "open" | "paintbrush" | "palette_invisible" | "palette_invisible_pressed" | "park" |
+        "paste" | "path_additions" | "path_railings" | "path_surfaces" | "paths" | "patrol" | "pause" | "pickup" | "placeholder" |
+        "previous" | "question" | "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed" |
+        "rct1_open_off" | "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" |
+        "rct1_simulate_off_pressed" | "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" |
+        "rct1_test_off_pressed" | "rct1_test_on" | "rct1_test_on_pressed" | "reload" | "rename" | "research" | "ride" |
+        "ride_stations" | "rides_gentle" | "rides_rollercoasters" | "rides_shop" | "rides_thrill" | "rides_transport" |
+        "rides_water" | "rotate_arrow" | "scenery" | "scenery_cluster" | "scenery_paths" | "scenery_paths_items" |
+        "scenery_scatter_high" | "scenery_scatter_low" | "scenery_scatter_medium" | "scenery_signage" | "scenery_statues" |
+        "scenery_trees" | "scenery_urban" | "scenery_walls" | "search" | "selection_edge_ne" | "selection_edge_nw" |
+        "selection_edge_se" | "selection_edge_sw" | "server_password" | "shops_and_stalls" | "sideways_tab" |
+        "sideways_tab_active" | "simulate" | "small_scenery" | "sort" | "stats" | "testing" | "terrain_edges" | "title_play" |
+        "title_restart" | "title_skip" | "title_stop" | "unmute" | "unmute_pressed" | "view" | "walls" | "water" | "zoom_in" |
+        "zoom_in_background" | "zoom_out" | "zoom_out_background";
 
     interface WidgetBase {
         readonly window: Window;
@@ -6139,6 +5237,7 @@ declare global {
         text: string;
         textAlign: TextAlignment;
     }
+
 
     type SortOrder = "none" | "ascending" | "descending";
 
@@ -6238,17 +5337,8 @@ declare global {
     }
 
     type WidgetDesc =
-        | ButtonDesc
-        | CheckboxDesc
-        | ColourPickerDesc
-        | CustomDesc
-        | DropdownDesc
-        | GroupBoxDesc
-        | LabelDesc
-        | ListViewDesc
-        | SpinnerDesc
-        | TextBoxDesc
-        | ViewportDesc;
+        ButtonDesc | CheckboxDesc | ColourPickerDesc | CustomDesc | DropdownDesc | GroupBoxDesc |
+        LabelDesc | ListViewDesc | SpinnerDesc | TextBoxDesc | ViewportDesc;
 
     interface WidgetBaseDesc {
         type: WidgetType;
@@ -6574,16 +5664,16 @@ declare global {
     }
 
     type TitleSequenceCommandType =
-        | "load"
-        | "loadsc"
-        | "location"
-        | "rotate"
-        | "zoom"
-        | "speed"
-        | "follow"
-        | "wait"
-        | "restart"
-        | "end";
+        "load" |
+        "loadsc" |
+        "location" |
+        "rotate" |
+        "zoom" |
+        "speed" |
+        "follow" |
+        "wait" |
+        "restart" |
+        "end";
 
     interface LoadTitleSequenceCommand {
         type: "load";
@@ -6635,16 +5725,16 @@ declare global {
     }
 
     type TitleSequenceCommand =
-        | LoadTitleSequenceCommand
-        | LocationTitleSequenceCommand
-        | RotateTitleSequenceCommand
-        | ZoomTitleSequenceCommand
-        | FollowTitleSequenceCommand
-        | SpeedTitleSequenceCommand
-        | WaitTitleSequenceCommand
-        | LoadScenarioTitleSequenceCommand
-        | RestartTitleSequenceCommand
-        | EndTitleSequenceCommand;
+        LoadTitleSequenceCommand |
+        LocationTitleSequenceCommand |
+        RotateTitleSequenceCommand |
+        ZoomTitleSequenceCommand |
+        FollowTitleSequenceCommand |
+        SpeedTitleSequenceCommand |
+        WaitTitleSequenceCommand |
+        LoadScenarioTitleSequenceCommand |
+        RestartTitleSequenceCommand |
+        EndTitleSequenceCommand;
 
     interface TitleSequenceManager {
         /**
@@ -6721,11 +5811,7 @@ declare global {
          * @param size The size the image that should be allocated.
          * @param callback The function that will draw to the image.
          */
-        draw(
-            id: number,
-            size: ScreenSize,
-            callback: (g: GraphicsContext) => void,
-        ): void;
+        draw(id: number, size: ScreenSize, callback: (g: GraphicsContext) => void): void;
     }
 
     type PixelData = RawPixelData | RlePixelData | PngPixelData;
@@ -6736,7 +5822,7 @@ declare global {
      * each horizontal row.
      */
     interface RawPixelData {
-        type: "raw";
+        type: 'raw';
         width: number;
         height: number;
 
@@ -6758,7 +5844,7 @@ declare global {
      * Pixel data that is encoded as RCT run-length encoded data.
      */
     interface RlePixelData {
-        type: "rle";
+        type: 'rle';
         width: number;
         height: number;
 
@@ -6775,7 +5861,7 @@ declare global {
      * Pixel data that is encoded as a .png file.
      */
     interface PngPixelData {
-        type: "png";
+        type: 'png';
 
         /**
          * How the colours of the .png file are converted to the OpenRCT2 palette.
@@ -6785,7 +5871,7 @@ declare global {
          * Dither will add noise to reduce colour banding for images rich in colour.
          * If undefined, only colours that are in OpenRCT2 palette will be imported.
          */
-        palette?: "keep" | "closest" | "dither";
+        palette?: 'keep' | 'closest' | 'dither';
 
         /**
          * Data can either by a:
@@ -6876,14 +5962,8 @@ declare global {
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
         getObject(type: "large_scenery", index: number): LargeSceneryObject;
         getObject(type: "wall", index: number): WallObject;
-        getObject(
-            type: "footpath_surface",
-            index: number,
-        ): FootpathSurfaceObject;
-        getObject(
-            type: "footpath_addition",
-            index: number,
-        ): FootpathAdditionObject;
+        getObject(type: "footpath_surface", index: number): FootpathSurfaceObject;
+        getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
         getObject(type: "banner", index: number): BannerObject;
         getObject(type: "scenery_group", index: number): SceneryGroupObject;
 
