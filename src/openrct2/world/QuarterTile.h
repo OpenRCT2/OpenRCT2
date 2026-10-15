@@ -14,6 +14,14 @@
 using Direction = uint8_t;
 struct TileCornersZ;
 
+namespace OpenRCT2
+{
+    constexpr uint8_t quartersFlipXAxis(const uint8_t quarters)
+    {
+        return ((quarters & 0b1010) >> 1) | ((quarters & 0b0101) << 1);
+    }
+} // namespace OpenRCT2
+
 class QuarterTile
 {
 private:
@@ -82,6 +90,12 @@ public:
     }
 
     TileCornersZ GetQuarterHeights(int32_t height) const;
+
+    constexpr QuarterTile flipXAxis() const
+    {
+        return QuarterTile(
+            OpenRCT2::quartersFlipXAxis(GetBaseQuarterOccupied()), OpenRCT2::quartersFlipXAxis(GetZQuarterOccupied()));
+    }
 };
 
 enum
