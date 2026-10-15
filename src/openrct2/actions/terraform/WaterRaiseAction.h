@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class WaterRaiseAction final : public GameActionBase<GameCommand::RaiseWater>
+    class WaterRaiseAction final : public GameActionBase<GameCommand::raiseWater>
     {
     private:
         MapRange _range;

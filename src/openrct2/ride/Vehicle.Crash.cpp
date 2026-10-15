@@ -112,8 +112,8 @@ void Vehicle::UpdateCollisionSetup()
     KillAllPassengersInTrain();
 
     Vehicle* lastVehicle = this;
-    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(id); train != nullptr;
-         train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
+    for (Vehicle* train = getGameState().entities.getEntity<Vehicle>(id); train != nullptr;
+         train = getGameState().entities.getEntity<Vehicle>(train->next_vehicle_on_train))
     {
         lastVehicle = train;
 
@@ -126,11 +126,11 @@ void Vehicle::UpdateCollisionSetup()
 
         Play3D(SoundId::crash, trainLoc);
 
-        ExplosionCloud::Create(trainLoc);
+        ExplosionCloud::create(trainLoc);
 
         for (int32_t i = 0; i < 10; i++)
         {
-            VehicleCrashParticle::Create(train->colours, trainLoc);
+            VehicleCrashParticle::create(train->colours, trainLoc);
         }
 
         train->flags.set(VehicleFlag::crashed);
@@ -147,8 +147,8 @@ void Vehicle::UpdateCollisionSetup()
     }
 
     // Remove the current train from the ride linked list of trains
-    auto prevTrain = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
-    auto nextTrain = getGameState().entities.GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
+    auto prevTrain = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
+    auto nextTrain = getGameState().entities.getEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
         LOG_ERROR("Corrupted vehicle list for ride!");
@@ -187,7 +187,7 @@ void Vehicle::UpdateCrashSetup()
     auto spriteId = id;
     for (Vehicle* trainVehicle; !spriteId.IsNull(); spriteId = trainVehicle->next_vehicle_on_train)
     {
-        trainVehicle = getGameState().entities.GetEntity<Vehicle>(spriteId);
+        trainVehicle = getGameState().entities.getEntity<Vehicle>(spriteId);
         if (trainVehicle == nullptr)
         {
             break;
@@ -225,8 +225,8 @@ void Vehicle::UpdateCrashSetup()
     }
 
     // Remove the current train from the ride linked list of trains
-    auto prevTrain = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
-    auto nextTrain = getGameState().entities.GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
+    auto prevTrain = getGameState().entities.getEntity<Vehicle>(prev_vehicle_on_ride);
+    auto nextTrain = getGameState().entities.getEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
         LOG_ERROR("Corrupted vehicle list for ride!");
@@ -297,8 +297,8 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
         {
             ride.formatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
-                ride.id.ToUnderlying(), ft);
+                getGameState().park.newsItems, News::ItemType::ride,
+                numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride.id.ToUnderlying(), ft);
         }
 
         // TODO: get park id from ride/vehicle
@@ -321,8 +321,8 @@ void Vehicle::KillAllPassengersInTrain()
 
     ride_train_crash(*curRide, NumPeepsUntilTrainTail());
 
-    for (Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(id); trainCar != nullptr;
-         trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+    for (Vehicle* trainCar = getGameState().entities.getEntity<Vehicle>(id); trainCar != nullptr;
+         trainCar = getGameState().entities.getEntity<Vehicle>(trainCar->next_vehicle_on_train))
     {
         trainCar->KillPassengers(*curRide);
     }
@@ -338,7 +338,7 @@ void Vehicle::KillPassengers(const Ride& curRide)
 
     for (auto i = 0; i < num_peeps; i++)
     {
-        auto* curPeep = getGameState().entities.GetEntity<Guest>(peep[i]);
+        auto* curPeep = getGameState().entities.getEntity<Guest>(peep[i]);
         if (curPeep == nullptr)
             continue;
 
@@ -403,13 +403,13 @@ void Vehicle::CrashOnLand()
     const auto curLoc = getLocation();
     Play3D(SoundId::crash, curLoc);
 
-    ExplosionCloud::Create(curLoc);
-    ExplosionFlare::Create(curLoc);
+    ExplosionCloud::create(curLoc);
+    ExplosionFlare::create(curLoc);
 
     uint8_t numParticles = std::min(spriteData.width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
-        VehicleCrashParticle::Create(colours, curLoc);
+        VehicleCrashParticle::create(colours, curLoc);
 
     flags.set(VehicleFlag::crashed);
     animation_frame = 0;
@@ -471,14 +471,14 @@ void Vehicle::CrashOnWater()
     const auto curLoc = getLocation();
     Play3D(SoundId::water1, curLoc);
 
-    CrashSplashParticle::Create(curLoc);
-    CrashSplashParticle::Create(curLoc + CoordsXYZ{ -8, -9, 0 });
-    CrashSplashParticle::Create(curLoc + CoordsXYZ{ 11, -9, 0 });
-    CrashSplashParticle::Create(curLoc + CoordsXYZ{ 11, 8, 0 });
-    CrashSplashParticle::Create(curLoc + CoordsXYZ{ -4, 8, 0 });
+    CrashSplashParticle::create(curLoc);
+    CrashSplashParticle::create(curLoc + CoordsXYZ{ -8, -9, 0 });
+    CrashSplashParticle::create(curLoc + CoordsXYZ{ 11, -9, 0 });
+    CrashSplashParticle::create(curLoc + CoordsXYZ{ 11, 8, 0 });
+    CrashSplashParticle::create(curLoc + CoordsXYZ{ -4, 8, 0 });
 
     for (int32_t i = 0; i < 10; ++i)
-        VehicleCrashParticle::Create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
+        VehicleCrashParticle::create(colours, curLoc + CoordsXYZ{ -4, 8, 0 });
 
     flags.set(VehicleFlag::crashed);
     animation_frame = 0;
@@ -498,8 +498,8 @@ void Vehicle::CrashOnWater()
  */
 void Vehicle::UpdateCrash()
 {
-    for (Vehicle* curVehicle = getGameState().entities.GetEntity<Vehicle>(id); curVehicle != nullptr;
-         curVehicle = getGameState().entities.GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
+    for (Vehicle* curVehicle = getGameState().entities.getEntity<Vehicle>(id); curVehicle != nullptr;
+         curVehicle = getGameState().entities.getEntity<Vehicle>(curVehicle->next_vehicle_on_train))
     {
         CoordsXYZ curPos = curVehicle->getLocation();
 
@@ -513,7 +513,7 @@ void Vehicle::UpdateCrash()
                     int32_t xOffset = (ScenarioRand() & 2) - 1;
                     int32_t yOffset = (ScenarioRand() & 2) - 1;
 
-                    ExplosionCloud::Create(curPos + CoordsXYZ{ xOffset, yOffset, 0 });
+                    ExplosionCloud::create(curPos + CoordsXYZ{ xOffset, yOffset, 0 });
                 }
             }
             if (curVehicle->animationState <= 0xe388)

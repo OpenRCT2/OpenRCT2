@@ -12,13 +12,13 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../config/Config.h"
 #include "../../management/Finance.h"
 #include "../../management/Research.h"
 #include "../../object/ObjectManager.h"
-#include "../../object/ObjectRepository.h"
 #include "../../ride/RideConstruction.h"
 #include "../../ride/TrackDesign.h"
+#include "../../scenario/Scenario.h"
+#include "../../util/Util.h"
 #include "../GameActionRunner.h"
 #include "../ride/RideCreateAction.h"
 #include "../ride/RideDemolishAction.h"
@@ -224,7 +224,9 @@ namespace OpenRCT2::GameActions
 
         if (entryIndex != kObjectEntryIndexNull)
         {
-            auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
+            // Local previews must not advance the shared simulation RNG.
+            auto randomValue = (GetActionFlags() & Flags::ClientOnly) ? UtilRand() : ScenarioRand();
+            auto colour = RideGetUnusedPresetVehicleColour(entryIndex, randomValue);
             auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::rideEntry, entryIndex, colour);
             ExecuteNested(&rideSetVehicleAction, gameState);
         }

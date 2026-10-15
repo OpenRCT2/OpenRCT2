@@ -11,7 +11,7 @@
 
 #include "../core/CodepointView.hpp"
 #include "../core/String.hpp"
-#include "../localisation/Formatting.h"
+#include "../localisation/FormatCodes.h"
 #include "../object/ObjectList.h"
 #include "../rct1/Tables.h"
 #include "../rct12/CSStringConverter.h"
@@ -19,8 +19,8 @@
 #include "../ride/Ride.h"
 #include "../ride/ted/TrackElemType.h"
 #include "../scenario/Scenario.h"
-#include "../world/Footpath.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
 #include "../world/tile_element/SmallSceneryElement.h"
@@ -98,9 +98,11 @@ uint8_t RCT12SurfaceElement::GetGrassLength() const
     return GrassLength;
 }
 
-uint8_t RCT12SurfaceElement::GetOwnership() const
+OwnershipFlags RCT12SurfaceElement::GetOwnership() const
 {
-    return (Ownership & kTileElementSurfaceOwnershipMask);
+    OwnershipFlags ret;
+    ret.holder = (Ownership & kTileElementSurfaceOwnershipMask) >> 4;
+    return ret;
 }
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
@@ -432,7 +434,7 @@ uint8_t RCT12WallElement::GetRCT1Slope() const
     return EntryIndex & 0b00011111;
 }
 
-uint8_t RCT12EntranceElement::GetEntranceType() const
+OpenRCT2::EntranceType RCT12EntranceElement::GetEntranceType() const
 {
     return EntranceType;
 }
@@ -447,9 +449,9 @@ uint8_t RCT12EntranceElement::GetStationIndex() const
     return (Index & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
-uint8_t RCT12EntranceElement::GetSequenceIndex() const
+OpenRCT2::ParkEntranceSequence RCT12EntranceElement::GetSequenceIndex() const
 {
-    return Index & 0xF;
+    return static_cast<OpenRCT2::ParkEntranceSequence>(Index & 0xF);
 }
 
 uint8_t RCT12EntranceElement::GetPathType() const

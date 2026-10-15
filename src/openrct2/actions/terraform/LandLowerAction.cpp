@@ -9,19 +9,14 @@
 
 #include "LandLowerAction.h"
 
-#include "../../Context.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../audio/Audio.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../ride/RideConstruction.h"
-#include "../../ride/RideData.h"
-#include "../../windows/Intent.h"
 #include "../../world/Map.h"
 #include "../../world/MapSelection.h"
-#include "../../world/Park.h"
-#include "../../world/Scenery.h"
 #include "../../world/SurfaceData.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
@@ -88,9 +83,9 @@ namespace OpenRCT2::GameActions
         uint8_t maxHeight = MapGetHighestLandHeight(validRange);
         bool withinOwnership = false;
 
-        for (int32_t y = validRange.GetY1(); y <= validRange.GetY2(); y += kCoordsXYStep)
+        for (int32_t y = validRange.getY1(); y <= validRange.getY2(); y += kCoordsXYStep)
         {
-            for (int32_t x = validRange.GetX1(); x <= validRange.GetX2(); x += kCoordsXYStep)
+            for (int32_t x = validRange.getX1(); x <= validRange.getX2(); x += kCoordsXYStep)
             {
                 if (!LocationValid({ x, y }))
                     continue;
@@ -108,16 +103,16 @@ namespace OpenRCT2::GameActions
                 withinOwnership = true;
 
                 uint8_t height = surfaceElement->baseHeight;
-                if (surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask)
+                if (surfaceElement->getSlope() & kTileSlopeRaisedCornersMask)
                     height += 2;
-                if (surfaceElement->GetSlope() & kTileSlopeDiagonalFlag)
+                if (surfaceElement->getSlope() & kTileSlopeDiagonalFlag)
                     height += 2;
 
                 if (height < maxHeight)
                     continue;
 
                 height = surfaceElement->baseHeight;
-                uint8_t currentSlope = surfaceElement->GetSlope();
+                uint8_t currentSlope = surfaceElement->getSlope();
                 uint8_t newSlope = LowerSurfaceCornerFlags(tableRow, currentSlope);
                 if (newSlope & kTileSlopeRaiseOrLowerBaseHeight)
                     height -= 2;

@@ -106,7 +106,7 @@ namespace OpenRCT2::String
     /**
      * Converts a multi-byte string from one code page to UTF-8.
      */
-    std::string convertToUtf8(std::string_view src, int32_t srcCodePage);
+    std::string convertToUtf8(std::string_view src, CodePage srcCodePage);
 
     /**
      * Returns an uppercased version of a UTF-8 string.

@@ -15,8 +15,6 @@
 #include "core/Random.hpp"
 #include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
-#include "management/Finance.h"
-#include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
 #include "scenario/ScenarioOptions.h"
@@ -49,7 +47,6 @@ namespace OpenRCT2
 
         uint32_t nextGuestNumber;
 
-        uint16_t scenarioParkRatingWarningDays;
         money64 scenarioCompletedCompanyValue;
         money64 scenarioCompanyValueRecord;
         random_engine_t scenarioRand;
@@ -74,8 +71,6 @@ namespace OpenRCT2
         std::vector<ScenerySelection> restrictedScenery;
 
         std::vector<PeepSpawn> peepSpawns;
-
-        News::ItemQueues newsItems;
 
         uint16_t grassSceneryTileLoopPosition;
         CoordsXY widePathTileLoopPosition;

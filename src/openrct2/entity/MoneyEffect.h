@@ -24,7 +24,7 @@ namespace OpenRCT2
 
     struct MoneyEffect : EntityBase
     {
-        static constexpr auto cEntityType = EntityType::moneyEffect;
+        static constexpr auto kEntityType = EntityType::moneyEffect;
 
         uint16_t frame;
         uint16_t moveDelay;
@@ -34,12 +34,11 @@ namespace OpenRCT2
         int16_t offsetX;
         uint16_t wiggle;
 
-        static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase);
-        static void Create(money64 value, const CoordsXYZ& loc);
-        void SetValue(money64 value);
-        void Update();
-        std::pair<StringId, money64> GetStringId() const;
+        static void createAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase);
+        static void create(money64 value, const CoordsXYZ& loc);
+        void setValue(money64 value);
+        void update();
+        std::pair<StringId, money64> getStringId() const;
         void serialise(DataSerialiser& stream);
-        void Paint(PaintSession& session, int32_t imageDirection) const;
     };
 } // namespace OpenRCT2

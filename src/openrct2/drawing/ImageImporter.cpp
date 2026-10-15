@@ -29,12 +29,12 @@ namespace OpenRCT2::Drawing
         if (meta.srcSize.height == 0)
             meta.srcSize.height = image.Height;
 
-        if (meta.srcSize.width > 256 || meta.srcSize.height > 256)
+        if (meta.srcSize.width > 300 || meta.srcSize.height > 300)
         {
-            throw std::invalid_argument("Only images 256x256 or less are supported.");
+            throw std::invalid_argument("Only images 300x300 or less are supported.");
         }
 
-        if (meta.palette == Palette::KeepIndices && image.Depth != 8)
+        if (meta.palette == Palette::keepIndices && image.Depth != 8)
         {
             throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
         }
@@ -43,15 +43,19 @@ namespace OpenRCT2::Drawing
         auto pixels = GetPixels(image, meta);
         auto buffer = isRLE ? EncodeRLE(pixels.data(), meta.srcSize) : EncodeRaw(pixels.data(), meta.srcSize);
 
+        G1Flags flags = { G1Flag::hasTransparency };
+        flags.set(G1Flag::hasRLECompression, isRLE);
         G1Element outElement;
         outElement.width = meta.srcSize.width;
         outElement.height = meta.srcSize.height;
-        outElement.flags = { isRLE ? G1Flag::hasRLECompression : G1Flag::hasTransparency };
+        outElement.flags = flags;
         outElement.xOffset = meta.offset.x;
         outElement.yOffset = meta.offset.y;
         outElement.zoomedOffset = meta.zoomedOffset;
         if (meta.importFlags.has(ImportFlag::noDrawOnZoom))
             outElement.flags.set(G1Flag::noZoomDraw);
+        if (meta.zoomedOffset != 0)
+            outElement.flags.set(G1Flag::hasZoomSprite);
 
         ImageImportResult result;
         result.Element = outElement;
@@ -116,13 +120,13 @@ namespace OpenRCT2::Drawing
         // A larger range is needed for proper dithering
         auto palettedSrc = pixels;
         std::unique_ptr<int16_t[]> rgbaSrcBuffer;
-        if (meta.palette != Palette::KeepIndices)
+        if (meta.palette != Palette::keepIndices)
         {
             rgbaSrcBuffer = std::make_unique<int16_t[]>(meta.srcSize.height * meta.srcSize.width * 4);
         }
 
         auto rgbaSrc = rgbaSrcBuffer.get();
-        if (meta.palette != Palette::KeepIndices)
+        if (meta.palette != Palette::keepIndices)
         {
             auto src = pixels + (meta.srcOffset.y * image.Stride) + (meta.srcOffset.x * 4);
             auto dst = rgbaSrc;
@@ -138,7 +142,7 @@ namespace OpenRCT2::Drawing
             }
         }
 
-        if (meta.palette == Palette::KeepIndices)
+        if (meta.palette == Palette::keepIndices)
         {
             palettedSrc += meta.srcOffset.x + meta.srcOffset.y * image.Stride;
             for (auto y = 0; y < meta.srcSize.height; y++)
@@ -246,13 +250,15 @@ namespace OpenRCT2::Drawing
                         currentCode->NumPixels = npixels;
                         currentCode->OffsetX = startX;
 
-                        if (x == size.width - 1)
+                        auto isLastPixel = x == size.width - 1;
+                        if (isLastPixel)
                         {
                             currentCode->NumPixels |= 0x80;
                         }
 
                         currentCode = reinterpret_cast<RLECode*>(dst);
-                        dst += 2;
+                        if (!isLastPixel)
+                            dst += 2;
                     }
                     else
                     {
@@ -285,10 +291,10 @@ namespace OpenRCT2::Drawing
     {
         auto& palette = StandardPalette;
         auto paletteIndex = GetPaletteIndex(palette, rgbaSrc);
-        if ((mode == ImportMode::Closest || mode == ImportMode::Dithering) && !IsInPalette(palette, rgbaSrc))
+        if ((mode == ImportMode::closest || mode == ImportMode::dithering) && !IsInPalette(palette, rgbaSrc))
         {
             paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
-            if (mode == ImportMode::Dithering)
+            if (mode == ImportMode::dithering)
             {
                 auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].red);
                 auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].green);
@@ -385,7 +391,7 @@ namespace OpenRCT2::Drawing
     bool ImageImporter::IsChangablePixel(int32_t paletteIndex)
     {
         PaletteIndexType entryType = GetPaletteIndexType(paletteIndex);
-        return entryType != PaletteIndexType::Special && entryType != PaletteIndexType::PrimaryRemap;
+        return entryType != PaletteIndexType::special && entryType != PaletteIndexType::primaryRemap;
     }
 
     /**
@@ -394,18 +400,18 @@ namespace OpenRCT2::Drawing
     ImageImporter::PaletteIndexType ImageImporter::GetPaletteIndexType(int32_t paletteIndex)
     {
         if (paletteIndex <= 9)
-            return PaletteIndexType::Special;
+            return PaletteIndexType::special;
         if (paletteIndex >= 230 && paletteIndex <= 239)
-            return PaletteIndexType::Special;
+            return PaletteIndexType::special;
         if (paletteIndex == 255)
-            return PaletteIndexType::Special;
+            return PaletteIndexType::special;
         if (paletteIndex >= 243 && paletteIndex <= 254)
-            return PaletteIndexType::PrimaryRemap;
+            return PaletteIndexType::primaryRemap;
         if (paletteIndex >= 202 && paletteIndex <= 213)
-            return PaletteIndexType::SecondaryRemap;
+            return PaletteIndexType::secondaryRemap;
         if (paletteIndex >= 46 && paletteIndex <= 57)
-            return PaletteIndexType::TertiaryRemap;
-        return PaletteIndexType::Normal;
+            return PaletteIndexType::tertiaryRemap;
+        return PaletteIndexType::normal;
     }
 
     int32_t ImageImporter::GetClosestPaletteIndex(const GamePalette& palette, const int16_t* colour)
@@ -437,7 +443,7 @@ namespace OpenRCT2::Drawing
         auto xOffset = Json::GetNumber<int16_t>(input["x"]);
         auto yOffset = Json::GetNumber<int16_t>(input["y"]);
         auto keepPalette = Json::GetString(input["palette"]) == "keep";
-        auto palette = keepPalette ? Palette::KeepIndices : Palette::OpenRCT2;
+        auto palette = keepPalette ? Palette::keepIndices : Palette::openRCT2;
         ImportFlags flags = {};
 
         auto raw = Json::GetString(input["format"]) == "raw";
@@ -453,7 +459,7 @@ namespace OpenRCT2::Drawing
         auto srcHeight = Json::GetNumber<int16_t>(input["srcHeight"]);
         auto zoomedOffset = Json::GetNumber<int32_t>(input["zoom"]);
 
-        return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::Default, { srcX, srcY },
+        return ImageImportMeta{ { xOffset, yOffset },    palette,     flags, ImportMode::standard, { srcX, srcY },
                                 { srcWidth, srcHeight }, zoomedOffset };
     }
 } // namespace OpenRCT2::Drawing

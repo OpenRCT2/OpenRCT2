@@ -12,8 +12,8 @@
 #include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../drawing/ImageId.hpp"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/StringIdType.h"
-#include "../world/Location.hpp"
 
 #include <cstdint>
 
@@ -74,10 +74,10 @@ namespace OpenRCT2
         SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
     };
 
-    constexpr const char* kCloseBoxStringBlackNormal = u8"{BLACK}❌";
-    constexpr const char* kCloseBoxStringBlackLarge = u8"{BLACK}X";
-    constexpr const char* kCloseBoxStringWhiteNormal = u8"{WHITE}❌";
-    constexpr const char* kCloseBoxStringWhiteLarge = u8"{WHITE}X";
+    constexpr const char* kCloseBoxStringBlackNormal = u8"{BLACK}✕";
+    constexpr const char* kCloseBoxStringBlackLarge = u8"{BLACK}❌";
+    constexpr const char* kCloseBoxStringWhiteNormal = u8"{WHITE}✕";
+    constexpr const char* kCloseBoxStringWhiteLarge = u8"{WHITE}❌";
 
     struct Widget
     {
@@ -166,9 +166,24 @@ namespace OpenRCT2
             moveDown(y - top);
         }
 
+        bool isHidden() const
+        {
+            return flags.has(WidgetFlag::isHidden);
+        }
+
         bool isVisible() const
         {
-            return !flags.has(WidgetFlag::isHidden);
+            return !isHidden();
+        }
+
+        void setHidden(bool state = true)
+        {
+            flags.set(WidgetFlag::isHidden, state);
+        }
+
+        void setVisible(bool state = true)
+        {
+            setHidden(!state);
         }
 
         void setString(StringId newStringId)
@@ -196,18 +211,18 @@ namespace OpenRCT2
         }
     };
 
-    constexpr uint8_t kTitleHeightNormal = 13;
-    constexpr uint8_t kTitleHeightLarge = 24;
+    constexpr uint8_t kTitleHeightNormal = 14;
+    constexpr uint8_t kTitleHeightLarge = 25;
 
-    constexpr uint8_t kCloseButtonSize = 10;
-    constexpr uint8_t kCloseButtonSizeTouch = 20;
+    constexpr ScreenSize kCloseButtonSize = { 11, kTitleHeightNormal - 2 };
+    constexpr ScreenSize kCloseButtonSizeTouch = { 21, kTitleHeightLarge - 2 };
 
     constexpr int32_t kScrollableRowHeight = 12;
     constexpr uint8_t kListRowHeight = 12;
     constexpr uint8_t kTableCellHeight = 12;
-    constexpr uint8_t kButtonFaceHeight = 12;
-    constexpr uint8_t kSpinnerHeight = 12;
-    constexpr uint8_t kDropdownHeight = 12;
+    constexpr uint8_t kButtonFaceHeight = 14;
+    constexpr uint8_t kSpinnerHeight = 14;
+    constexpr uint8_t kDropdownHeight = 14;
 
     constexpr uint16_t kTextInputSize = 1024;
     constexpr uint16_t kTopToolbarHeight = 27;

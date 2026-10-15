@@ -12,6 +12,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
 
@@ -55,7 +56,7 @@ namespace OpenRCT2
         _pathRailingsDescriptor.name = _legacyType.string_idx;
         _pathRailingsDescriptor.bridgeImage = _legacyType.bridge_image;
         _pathRailingsDescriptor.previewImage = _legacyType.GetPreviewImage();
-        _pathRailingsDescriptor.flags = _legacyType.flags;
+        _pathRailingsDescriptor.flags.holder = _legacyType.flags;
         _pathRailingsDescriptor.scrollingMode = _legacyType.scrolling_mode;
         _pathRailingsDescriptor.supportType = _legacyType.support_type;
         _pathRailingsDescriptor.railingsImage = _legacyType.GetRailingsImage();

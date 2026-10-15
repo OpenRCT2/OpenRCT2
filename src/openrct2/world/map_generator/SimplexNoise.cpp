@@ -168,7 +168,7 @@ namespace OpenRCT2::World::MapGenerator
                     {
                         for (auto xx = -1; xx <= 1; xx++)
                         {
-                            avg += copyHeight[{ y + yy, x + xx }];
+                            avg += copyHeight[{ x + xx, y + yy }];
                         }
                     }
                     avg /= 9;

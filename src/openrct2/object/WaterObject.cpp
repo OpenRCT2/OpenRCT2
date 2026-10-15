@@ -7,31 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma warning(disable : 4706) // assignment within conditional expression
-
 #include "WaterObject.h"
 
-#include "../OpenRCT2.h"
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Drawing.h"
 #include "../drawing/ImageImporter.h"
+#include "../drawing/Palette.h"
 #include "../drawing/Text.h"
-#include "../localisation/Formatter.h"
+#include "../interface/ScreenCoords.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
-#include "../world/Location.hpp"
-
-#include <array>
-#include <cstring>
-#include <memory>
 
 namespace OpenRCT2
 {
     void WaterObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         stream->Seek(14, STREAM_SEEK_CURRENT);
-        _legacyType.flags = stream->ReadValue<uint16_t>();
+        _legacyType.flags = stream->ReadValue<WaterObjectFlags>();
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
         GetImageTable().Read(context, stream);
@@ -45,7 +38,7 @@ namespace OpenRCT2
         _legacyType.waterWavesPalette = _legacyType.mainPalette + 1;
         _legacyType.waterSparklesPalette = _legacyType.mainPalette + 4;
 
-        LoadPalette();
+        Drawing::LoadPalette();
     }
 
     void WaterObject::Unload()
@@ -76,10 +69,10 @@ namespace OpenRCT2
 
         if (properties.is_object())
         {
-            _legacyType.flags = Json::GetFlags<uint16_t>(
+            _legacyType.flags = Json::GetFlagHolder<WaterObjectFlags, WaterObjectFlag>(
                 properties,
                 {
-                    { "allowDucks", WATER_FLAGS_ALLOW_DUCKS },
+                    { "allowDucks", WaterObjectFlag::allowDucks },
                 });
 
             auto jPalettes = properties["palettes"];

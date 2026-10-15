@@ -58,7 +58,7 @@ static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
 static std::mutex _uploadFilesMutex;
 
-    #define BACKTRACE_TOKEN "c222e43bff83198721498d777c8ee3e17c30a6d5831fbd9ffe4e8352b2fcc200"
+    #define BACKTRACE_TOKEN "f509d427f8ee73ef96c59c46a0c8ef5f79d9cac9ed5f014da986e3bb15a24389"
 
 using namespace OpenRCT2;
 
@@ -216,7 +216,7 @@ static bool OnCrash(
     // 1. Create the screenshot with software renderer - requires allocations
     // 2. Not create screenshot at all.
     // Discovering which of the approaches got implemented is left as an excercise for the reader.
-    if (OpenRCT2::GetContext()->GetDrawingEngineType() != DrawingEngine::OpenGL)
+    if (OpenRCT2::GetContext()->GetDrawingEngineType() != DrawingEngine::openGL)
     {
         std::string screenshotPath = ScreenshotDump();
         if (!screenshotPath.empty())

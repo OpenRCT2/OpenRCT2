@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -17,7 +18,6 @@ struct SDL_Window;
 
 namespace OpenRCT2
 {
-    struct IContext;
     struct IPlatformEnvironment;
 } // namespace OpenRCT2
 

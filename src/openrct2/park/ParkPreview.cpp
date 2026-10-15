@@ -13,11 +13,13 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../SpriteIds.h"
-#include "../core/Numerics.hpp"
+#include "../drawing/Drawing.Sprite.h"
 #include "../drawing/Drawing.h"
+#include "../drawing/NewDrawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
+#include "../interface/WindowTypes.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../ride/RideManager.hpp"
 #include "../world/Map.h"
 #include "../world/tile_element/SurfaceElement.h"
@@ -40,7 +42,7 @@ namespace OpenRCT2
             .year = gameState.date.GetYear(),
             .month = gameState.date.GetMonth(),
             .day = gameState.date.GetDay(),
-            .parkUsesMoney = !(gameState.park.flags & PARK_FLAGS_NO_MONEY),
+            .parkUsesMoney = !gameState.park.flags.has(ParkFlag::noMoney),
             .cash = gameState.park.cash,
             .numRides = static_cast<uint16_t>(RideManager(gameState).size()),
             .numGuests = static_cast<uint16_t>(gameState.park.numGuestsInPark),
@@ -71,7 +73,7 @@ namespace OpenRCT2
         {
             switch (tileElement->getType())
             {
-                case TileElementType::Surface:
+                case TileElementType::surface:
                 {
                     auto* surfaceElement = tileElement->asSurface();
                     if (surfaceElement == nullptr)
@@ -80,37 +82,38 @@ namespace OpenRCT2
                         break;
                     }
 
-                    if (surfaceElement->GetWaterHeight() > 0)
+                    if (surfaceElement->getWaterHeight() > 0)
                     {
                         surfaceColour = paletteIndex = PaletteIndex::pi195;
                     }
                     else
                     {
-                        const auto* surfaceObject = surfaceElement->GetSurfaceObject();
+                        const auto* surfaceObject = surfaceElement->getSurfaceObject();
                         if (surfaceObject != nullptr)
                         {
-                            surfaceColour = paletteIndex = surfaceObject->MapColours[_tileColourIndex];
+                            auto mapColours = surfaceObject->getMapColours(surfaceElement->getPrimarySurfaceColour());
+                            surfaceColour = paletteIndex = mapColours[_tileColourIndex];
                         }
                     }
 
-                    isOutsidePark |= !(surfaceElement->GetOwnership() & OWNERSHIP_OWNED);
+                    isOutsidePark |= !(surfaceElement->hasOwnership(OwnershipFlag::landOwned));
                     break;
                 }
 
-                case TileElementType::Path:
+                case TileElementType::path:
                     paletteIndex = PaletteIndex::pi17;
                     break;
 
-                case TileElementType::Track:
+                case TileElementType::track:
                     paletteIndex = PaletteIndex::pi183;
                     break;
 
-                case TileElementType::SmallScenery:
-                case TileElementType::LargeScenery:
+                case TileElementType::smallScenery:
+                case TileElementType::largeScenery:
                     paletteIndex = PaletteIndex::pi99;
                     break;
 
-                case TileElementType::Entrance:
+                case TileElementType::entrance:
                     paletteIndex = PaletteIndex::pi186;
                     break;
 
@@ -213,7 +216,7 @@ namespace OpenRCT2
         Viewport saveVp{
             .width = image.width,
             .height = image.height,
-            .flags = 0,
+            .flags = {},
             .zoom = ZoomLevel{ 1 },
             .rotation = mapPosXYZD.direction,
         };

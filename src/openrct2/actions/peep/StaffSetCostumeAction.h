@@ -9,12 +9,11 @@
 
 #pragma once
 
-#include "../../entity/Staff.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {
-    class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>
+    class StaffSetCostumeAction final : public GameActionBase<GameCommand::setStaffCostume>
     {
     private:
         EntityId _spriteIndex{ EntityId::GetNull() };

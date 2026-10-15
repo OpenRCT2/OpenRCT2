@@ -1,0 +1,10 @@
+{
+    "scenario_name": "Lucky Lake",
+    "sha256": "b3629768297db3cd56eb52d3bafc73536ac245a20d31c26fba9f5103de5e786e",
+    "rides": [
+        {
+            "id": [ 0, 1, 2, 3, 4, 5, 6 ],
+            "operation": "clear_name"
+        }
+    ]
+}

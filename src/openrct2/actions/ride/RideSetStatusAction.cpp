@@ -9,16 +9,13 @@
 
 #include "RideSetStatusAction.h"
 
-#include "../../Cheats.h"
 #include "../../Diagnostic.h"
-#include "../../core/MemoryStream.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../ride/Ride.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Map.h"
-#include "../../world/Park.h"
 #include "../ResultWithMessage.h"
 
 namespace OpenRCT2::GameActions
@@ -137,9 +134,9 @@ namespace OpenRCT2::GameActions
         Formatter ft(res.errorMessageArgs.data());
         ft.Increment(6);
         ride->formatNameTo(ft);
-        if (!ride->overallView.IsNull())
+        if (!ride->overallView.isNull())
         {
-            auto location = ride->overallView.ToTileCentre();
+            auto location = ride->overallView.toTileCentre();
             res.position = { location, TileElementHeight(location) };
         }
 

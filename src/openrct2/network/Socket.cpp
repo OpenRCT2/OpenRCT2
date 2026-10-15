@@ -13,16 +13,12 @@
 
     #include <atomic>
     #include <chrono>
-    #include <cmath>
     #include <cstring>
     #include <future>
     #include <string>
     #include <thread>
 
 // clang-format off
-// MSVC: include <math.h> here otherwise PI gets defined twice
-#include <cmath>
-
 #ifdef _WIN32
     #pragma comment(lib, "Ws2_32.lib")
 
@@ -57,7 +53,6 @@
     #include <sys/ioctl.h>
     #include <sys/select.h>
     #include <sys/socket.h>
-    #include <sys/time.h>
     #include <unistd.h>
 
     using SOCKET = int32_t;
@@ -663,7 +658,7 @@ namespace OpenRCT2::Network
             }
             else if (addr->sin_family == AF_INET6)
             {
-                auto addrv6 = reinterpret_cast<const sockaddr_in6*>(&addr);
+                auto addrv6 = reinterpret_cast<const sockaddr_in6*>(addr);
                 char str[INET6_ADDRSTRLEN]{};
                 inet_ntop(AF_INET6, &addrv6->sin6_addr, str, sizeof(str));
                 result = str;

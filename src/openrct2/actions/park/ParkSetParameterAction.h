@@ -21,7 +21,7 @@ namespace OpenRCT2::GameActions
         count
     };
 
-    class ParkSetParameterAction final : public GameActionBase<GameCommand::SetParkOpen>
+    class ParkSetParameterAction final : public GameActionBase<GameCommand::setParkOpen>
     {
     private:
         ParkParameter _parameter{ ParkParameter::count };

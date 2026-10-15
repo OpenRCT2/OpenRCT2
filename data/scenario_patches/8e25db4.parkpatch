@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Fiasco Forest",
+    "sha256": "8e25db401be6e8f4fd7be5f78e17bb1f60198886140bec5200b51a520fd8b302",
+    "rides": [
+        {
+            "id": 8,
+            "operation": "set_name",
+            "name": "Boat Jam"
+        }
+    ]
+}

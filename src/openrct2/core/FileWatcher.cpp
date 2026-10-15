@@ -9,9 +9,6 @@
 
 #include "../Diagnostic.h"
 
-#include <algorithm>
-#include <array>
-#include <cstdio>
 #include <stdexcept>
 
 #ifdef _WIN32
@@ -25,15 +22,13 @@
     #include <sys/inotify.h>
     #include <sys/types.h>
     #include <unistd.h>
-#elif defined(__APPLE__)
-    #include <CoreServices/CoreServices.h>
 #endif
 
-#include "../core/Guard.hpp"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
 #include "FileSystem.hpp"
 #include "FileWatcher.h"
+#include "Guard.hpp"
+#include "Path.hpp"
+#include "String.hpp"
 
 using namespace OpenRCT2;
 

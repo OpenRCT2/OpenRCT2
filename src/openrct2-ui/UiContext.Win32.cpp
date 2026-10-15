@@ -22,7 +22,6 @@
     // Then the rest
     #include "UiContext.h"
 
-    #include <SDL.h>
     #include <SDL_syswm.h>
     #include <openrct2/Diagnostic.h>
     #include <openrct2/core/Path.hpp>
@@ -134,7 +133,7 @@ namespace OpenRCT2::Ui
             {
                 CLSID dialogId = CLSID_FileOpenDialog;
                 DWORD flagsToSet = FOS_FORCEFILESYSTEM;
-                if (desc.Type == FileDialogType::Save)
+                if (desc.Type == FileDialogType::save)
                 {
                     dialogId = CLSID_FileSaveDialog;
                     flagsToSet |= FOS_OVERWRITEPROMPT | FOS_CREATEPROMPT | FOS_STRICTFILETYPES;

@@ -18,19 +18,19 @@ using namespace OpenRCT2;
 
 BaseImageAndOffset PaintPeepGetBaseImageAndOffset(const Peep& peep, Direction direction)
 {
-    PeepAnimationType actionAnimationGroup = peep.AnimationType;
-    uint8_t imageOffset = peep.AnimationImageIdOffset;
+    PeepAnimationType actionAnimationGroup = peep.animationType;
+    uint8_t imageOffset = peep.animationImageIdOffset;
 
-    if (peep.Action == PeepActionType::idle)
+    if (peep.action == PeepActionType::idle)
     {
-        actionAnimationGroup = peep.NextAnimationType;
+        actionAnimationGroup = peep.nextAnimationType;
         imageOffset = 0;
     }
 
     auto& objManager = GetContext()->GetObjectManager();
-    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep.AnimationObjectIndex);
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep.animationObjectIndex);
 
-    ImageIndex baseImageId = animObj->GetPeepAnimation(peep.AnimationGroup, actionAnimationGroup).baseImage;
+    ImageIndex baseImageId = animObj->GetPeepAnimation(peep.animationGroup, actionAnimationGroup).baseImage;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
     if (actionAnimationGroup != PeepAnimationType::hanging)

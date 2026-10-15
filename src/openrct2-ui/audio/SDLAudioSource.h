@@ -11,7 +11,7 @@
 
 #include "AudioFormat.h"
 
-#include <SDL.h>
+#include <SDL_audio.h>
 #include <atomic>
 #include <memory>
 #include <openrct2/audio/AudioSource.h>

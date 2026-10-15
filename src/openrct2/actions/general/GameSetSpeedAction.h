@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class GameSetSpeedAction final : public GameActionBase<GameCommand::SetGameSpeed>
+    class GameSetSpeedAction final : public GameActionBase<GameCommand::setGameSpeed>
     {
     private:
         uint8_t _speed{ 1 };

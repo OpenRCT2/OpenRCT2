@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../core/OrcaStream.hpp"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -22,6 +23,8 @@
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/ted/TrackElemType.h"
+#include "../world/TileElementsView.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "ParkFile.h"
 
@@ -29,6 +32,7 @@
 #include <unordered_map>
 
 using namespace OpenRCT2;
+using OpenRCT2::Drawing::Colour;
 
 static const std::unordered_map<std::string_view, std::string_view> kOldObjectIds = {
     { "official.scgpanda", "rct2dlc.scenery_group.scgpanda" },
@@ -2230,7 +2234,7 @@ const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& des
 
     // GetFootpathSurfaceId expects an old-style DAT identifier. In early versions of the NSF,
     // we used JSON ids for legacy paths, so we have to map those to old DAT identifiers first.
-    if (desc.Generation == ObjectGeneration::JSON)
+    if (desc.Generation == ObjectGeneration::json)
     {
         auto datPathName = GetDATPathName(desc.Identifier);
         if (datPathName.has_value())
@@ -2327,14 +2331,14 @@ static AnimObjectConversionTable BuildPeepAnimObjectConversionTable()
 template<typename TPeepType>
 static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable& table)
 {
-    if (peep->AnimationObjectIndex != kObjectEntryIndexNull)
+    if (peep->animationObjectIndex != kObjectEntryIndexNull)
         return false;
 
     // TODO: catch missings
-    auto legacyPAG = RCT12PeepAnimationGroup(peep->AnimationGroup);
+    auto legacyPAG = RCT12PeepAnimationGroup(peep->animationGroup);
     auto& conversion = table[legacyPAG];
-    peep->AnimationObjectIndex = conversion.first;
-    peep->AnimationGroup = static_cast<PeepAnimationGroup>(conversion.second);
+    peep->animationObjectIndex = conversion.first;
+    peep->animationGroup = static_cast<PeepAnimationGroup>(conversion.second);
 
     if (!peep->template is<Staff>())
         return true;
@@ -2343,12 +2347,12 @@ static bool ConvertPeepAnimationType(TPeepType* peep, AnimObjectConversionTable&
     // Assigned sprites were found to be identical to those of 'Wave2', hence the mapping.
     // However, it appears to have been used by JavaScript plugins, still, hence the
     // need to convert any existing sprites.
-    if (peep->AnimationType == PeepAnimationType::eatFood)
-        peep->AnimationType = PeepAnimationType::wave2;
+    if (peep->animationType == PeepAnimationType::eatFood)
+        peep->animationType = PeepAnimationType::wave2;
 
     // NB: this is likely unnecessary, but a precautionary measure considering the above.
-    if (peep->NextAnimationType == PeepAnimationType::eatFood)
-        peep->NextAnimationType = PeepAnimationType::wave2;
+    if (peep->nextAnimationType == PeepAnimationType::eatFood)
+        peep->nextAnimationType = PeepAnimationType::wave2;
 
     return true;
 }
@@ -2391,9 +2395,9 @@ std::string_view GetClimateObjectIdFromLegacyClimateType(RCT12::ClimateType clim
 
 bool TrackTypeMustBeMadeInvisible(const OpenRCT2::TrackElement& trackElement, const int32_t parkFileVersion)
 {
-    const auto rideType = trackElement.GetRideType();
-    const auto trackType = trackElement.GetTrackType();
-    const auto isInverted = trackElement.IsInverted();
+    const auto rideType = trackElement.getRideType();
+    const auto trackType = trackElement.getTrackType();
+    const auto isInverted = trackElement.isInverted();
 
     // Lots of Log Flumes exist where the downward slopes are simulated by using other track
     // types like the Splash Boats, but not actually made invisible, because they never needed
@@ -3148,4 +3152,59 @@ std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedVa
     uint8_t numPoweredLifts = combinedValue >> 6;
 
     return std::make_pair(numDrops, numPoweredLifts);
+}
+
+void updateSurfaceElementsColour(
+    GameState_t& gameState, std::span<const TerrainSurfaceMapping> terrainSurfaceMap,
+    std::span<const Drawing::Colour> terrainEdgeMap)
+{
+    for (int32_t y = 0; y < gameState.mapSize.y; y++)
+    {
+        for (int32_t x = 0; x < gameState.mapSize.x; x++)
+        {
+            for (auto* surfaceElement : TileElementsView<SurfaceElement>(TileCoordsXY{ x, y }))
+            {
+                const auto originalSurfaceIndex = surfaceElement->getSurfaceObjectIndex();
+                const auto& surfaceMapping = terrainSurfaceMap[originalSurfaceIndex];
+                surfaceElement->setSurfaceObjectIndex(surfaceMapping.newEntryIndex);
+                surfaceElement->setPrimarySurfaceColour(surfaceMapping.colour);
+
+                const auto edgeIndex = surfaceElement->getEdgeObjectIndex();
+                surfaceElement->setPrimaryEdgeColour(terrainEdgeMap[edgeIndex]);
+            }
+        }
+    }
+}
+
+Colour convertPre63Colour(uint8_t colour)
+{
+    // In many cases, colours are interpreted as FilterPaletteId. Of course, this has been abused to render rides
+    // using e.g. water effects (which start right after the last valid colour). Account for this by shifting the
+    // number by the number of newly added colours.
+    constexpr auto kOldNumColours = 56;
+    constexpr auto kNumNewColours = 18;
+    if (colour >= kOldNumColours)
+    {
+        colour += kNumNewColours;
+    }
+
+    return static_cast<Colour>(colour);
+}
+
+Colour convertPre63Colour(Colour colour)
+{
+    return convertPre63Colour(EnumValue(colour));
+}
+
+void readWriteColour(OrcaStream::ChunkStream& cs, Colour& colourField, uint32_t parkFileVersion)
+{
+    if (parkFileVersion >= kExtendedColoursGoldVersion)
+    {
+        cs.readWrite(colourField);
+        return;
+    }
+
+    uint8_t tempColour{};
+    cs.readWrite(tempColour);
+    colourField = convertPre63Colour(tempColour);
 }

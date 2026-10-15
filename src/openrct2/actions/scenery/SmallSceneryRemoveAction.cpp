@@ -13,17 +13,13 @@
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
-#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Finance.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/SmallSceneryEntry.h"
-#include "../../ride/Ride.h"
 #include "../../world/Map.h"
-#include "../../world/Park.h"
 #include "../../world/TileElementsView.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
-#include "SmallSceneryPlaceAction.h"
 
 namespace OpenRCT2::GameActions
 {
@@ -76,7 +72,7 @@ namespace OpenRCT2::GameActions
         if (gLegacyScene != LegacyScene::scenarioEditor && !GetFlags().has(CommandFlag::ghost) && !gameState.cheats.sandboxMode)
         {
             // Check if allowed to remove item
-            if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (park.flags.has(ParkFlag::forbidTreeRemoval))
             {
                 if (entry->flags.has(SmallSceneryFlag::isTree))
                 {
@@ -142,13 +138,13 @@ namespace OpenRCT2::GameActions
             if (isGhost && sceneryElement->isGhost() == false)
                 continue;
 
-            if (sceneryElement->GetSceneryQuadrant() != _quadrant)
+            if (sceneryElement->getSceneryQuadrant() != _quadrant)
                 continue;
 
             if (sceneryElement->getBaseZ() != _loc.z)
                 continue;
 
-            if (sceneryElement->GetEntryIndex() != _sceneryType)
+            if (sceneryElement->getEntryIndex() != _sceneryType)
                 continue;
 
             return sceneryElement->as<TileElement>();

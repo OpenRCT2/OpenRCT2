@@ -9,7 +9,7 @@
 
 #include "SDLException.h"
 
-#include <SDL.h>
+#include <SDL_error.h>
 
 using namespace OpenRCT2::Ui;
 

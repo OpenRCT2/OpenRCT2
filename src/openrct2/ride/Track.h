@@ -11,7 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
-#include "../world/Location.hpp"
+#include "../world/MapLimits.h"
 #include "RideTypes.h"
 
 #include <optional>
@@ -37,6 +37,9 @@ namespace OpenRCT2
     } // namespace TrackMetadata
 } // namespace OpenRCT2
 
+struct CoordsXYE;
+struct CoordsXYZ;
+struct CoordsXYZD;
 struct ResultWithMessage;
 
 int32_t TrackIsConnectedByShape(OpenRCT2::TileElement* a, OpenRCT2::TileElement* b);

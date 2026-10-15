@@ -13,15 +13,12 @@
 #include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../core/MemoryStream.h"
-#include "../../localisation/Localisation.Date.h"
 #include "../../localisation/StringIds.h"
 #include "../../object/ObjectLimits.h"
 #include "../../object/ObjectManager.h"
 #include "../../ride/Ride.h"
 #include "../../ride/RideData.h"
 #include "../../ride/ShopItem.h"
-#include "../../ride/Station.h"
 #include "../../ui/WindowManager.h"
 #include "../../world/Park.h"
 
@@ -148,14 +145,14 @@ namespace OpenRCT2::GameActions
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
         ride->setColourPreset(_trackColourPreset, _vehicleColourPreset);
-        ride->overallView.SetNull();
+        ride->overallView.setNull();
         ride->setNameToDefault();
 
         // Default initialize all stations.
         RideStation station{};
-        station.Start.SetNull();
-        station.Entrance.SetNull();
-        station.Exit.SetNull();
+        station.start.setNull();
+        station.entrance.setNull();
+        station.exit.setNull();
         std::ranges::fill(ride->getStations(), station);
 
         ride->status = RideStatus::closed;
@@ -205,7 +202,7 @@ namespace OpenRCT2::GameActions
 
         ride->ratings.setNull();
 
-        if (!(park.flags & PARK_FLAGS_NO_MONEY))
+        if (!park.flags.has(ParkFlag::noMoney))
         {
             for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
             {

@@ -11,11 +11,8 @@
 
 #include "../AssetPackManager.h"
 #include "../Context.h"
-#include "../PlatformEnvironment.h"
-#include "../audio/AudioContext.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
-#include "../core/Path.hpp"
 
 namespace OpenRCT2
 {

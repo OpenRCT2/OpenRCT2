@@ -60,10 +60,10 @@ namespace OpenRCT2::GameActions
                 const TileCoordsXY tileCoords{ x, y };
                 for (auto* trackElement : TileElementsView<TrackElement>(tileCoords))
                 {
-                    if (trackElement->GetRideIndex() == _rideIndex)
+                    if (trackElement->getRideIndex() == _rideIndex)
                     {
                         trackElement->setInvisible(_visibility == RideSetVisibilityType::invisible);
-                        MapInvalidateTileFull(tileCoords.ToCoordsXY());
+                        MapInvalidateTileFull(tileCoords.toCoordsXY());
                     }
                 }
             }

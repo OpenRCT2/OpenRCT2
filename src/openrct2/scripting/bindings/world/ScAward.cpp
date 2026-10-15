@@ -15,7 +15,6 @@
     #include "../../../localisation/Formatter.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../management/Award.h"
-    #include "../../../windows/Intent.h"
 
 namespace OpenRCT2::Scripting
 {

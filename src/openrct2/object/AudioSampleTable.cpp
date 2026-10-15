@@ -10,11 +10,8 @@
 #include "AudioSampleTable.h"
 
 #include "../Context.h"
-#include "../PlatformEnvironment.h"
 #include "../audio/AudioContext.h"
-#include "../core/File.h"
 #include "../core/Json.hpp"
-#include "../core/Path.hpp"
 #include "../localisation/Formatting.h"
 #include "../localisation/StringIds.h"
 #include "../ui/UiContext.h"

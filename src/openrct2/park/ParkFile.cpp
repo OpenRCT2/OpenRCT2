@@ -12,21 +12,18 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
-#include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../Version.h"
-#include "../config/Config.h"
 #include "../core/Console.hpp"
-#include "../core/Crypt.h"
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/OrcaStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../drawing/Drawing.h"
+#include "../drawing/Drawing.Screen.h"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
@@ -37,7 +34,6 @@
 #include "../entity/Particle.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
-#include "../interface/Viewport.h"
 #include "../localisation/Formatter.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
@@ -46,9 +42,8 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
-#include "../rct2/RCT2.h"
+#include "../rct12/RCT12.h"
 #include "../ride/RideManager.hpp"
-#include "../ride/ShopItem.h"
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
@@ -57,19 +52,22 @@
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
-#include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "../world/Weather.h"
+#include "../world/tile_element/BannerElement.h"
+#include "../world/tile_element/LargeSceneryElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "../world/tile_element/WallElement.h"
 #include "Legacy.h"
 #include "ParkPreview.h"
 
 #include <cassert>
 #include <cstdint>
 #include <ctime>
-#include <numeric>
 #include <optional>
 #include <string_view>
 #include <vector>
@@ -105,6 +103,13 @@ namespace OpenRCT2
         // clang-format on
     };
 
+    constexpr auto kGridMap = std::to_array<std::pair<u8string_view, Drawing::Colour>>({
+        { "#RCT2SIR", Drawing::Colour::brightRed },
+        { "#RCT2SIY", Drawing::Colour::yellow },
+        { "#RCT2SIG", Drawing::Colour::brightGreen },
+        { "#RCT2SIP", Drawing::Colour::brightPurple },
+    });
+
     class ParkFile
     {
     public:
@@ -117,6 +122,9 @@ namespace OpenRCT2
         ObjectEntryIndex _pathToSurfaceMap[kMaxPathObjects];
         ObjectEntryIndex _pathToQueueSurfaceMap[kMaxPathObjects];
         ObjectEntryIndex _pathToRailingsMap[kMaxPathObjects];
+
+        std::array<TerrainSurfaceMapping, kMaxTerrainSurfaceObjects> _terrainSurfaceMap{};
+        std::array<Drawing::Colour, kMaxTerrainEdgeObjects> _terrainEdgeMap{};
 
         void ThrowIfIncompatibleVersion()
         {
@@ -167,17 +175,25 @@ namespace OpenRCT2
             ReadWriteParkChunk(gameState, os);
             ReadWriteClimateChunk(gameState, os);
             ReadWriteResearchChunk(gameState, os);
-            ReadWriteNotificationsChunk(gameState, os);
+            ReadWriteNotificationsChunk(gameState.park.newsItems, os);
             ReadWriteInterfaceChunk(gameState, os);
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
-            if (os.getHeader().targetVersion < 0x4)
+
+            auto targetVersion = os.getHeader().targetVersion;
+
+            if (targetVersion < 0x4)
             {
                 UpdateTrackElementsRideType();
             }
+            if (targetVersion < kColourableTerrainVersion)
+            {
+                updateSurfaceElementsColour(gameState, _terrainSurfaceMap, _terrainEdgeMap);
+            }
 
-            // Initial cash will eventually be removed
+            // Initial cash is currently a legacy variable. However, it should be reworked
+            // so parks that share a map can start with the same amount.
             gameState.scenarioOptions.initialCash = gameState.park.cash;
         }
 
@@ -201,7 +217,7 @@ namespace OpenRCT2
             ReadWriteParkChunk(gameState, os);
             ReadWriteClimateChunk(gameState, os);
             ReadWriteResearchChunk(gameState, os);
-            ReadWriteNotificationsChunk(gameState, os);
+            ReadWriteNotificationsChunk(gameState.park.newsItems, os);
             ReadWriteInterfaceChunk(gameState, os);
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
@@ -241,7 +257,7 @@ namespace OpenRCT2
                 entry.ObjectiveArg3 = cs.read<uint16_t>();
                 entry.ObjectiveArg2 = cs.read<int32_t>();
 
-                entry.SourceGame = ScenarioSource::Other;
+                entry.SourceGame = ScenarioSource::other;
             });
             return entry;
         }
@@ -324,8 +340,20 @@ namespace OpenRCT2
                     const RCT2::FootpathMapping& mapping;
                 };
                 std::vector<LegacyFootpathMapping> legacyPathMappings;
+
+                for (ObjectEntryIndex i = 0; i < _terrainSurfaceMap.size(); i++)
+                {
+                    _terrainSurfaceMap[i] = { i, Drawing::Colour::black };
+                }
+                std::fill(_terrainEdgeMap.begin(), _terrainEdgeMap.end(), Drawing::Colour::black);
+                ObjectEntryIndex newGridIndex = kObjectEntryIndexNull;
+                auto& terrainSurfaceMap = _terrainSurfaceMap;
+                auto& terrainEdgeMap = _terrainEdgeMap;
+
                 os.readWriteChunk(
-                    ParkFileChunkType::objects, [&requiredObjects, version, &legacyPathMappings](OrcaStream::ChunkStream& cs) {
+                    ParkFileChunkType::objects,
+                    [&requiredObjects, version, &legacyPathMappings, &terrainSurfaceMap, &terrainEdgeMap,
+                     &newGridIndex](OrcaStream::ChunkStream& cs) {
                         auto numSubLists = cs.read<uint16_t>();
                         for (size_t i = 0; i < numSubLists; i++)
                         {
@@ -353,6 +381,45 @@ namespace OpenRCT2
                                                 continue;
                                             }
                                         }
+                                        // Void surface and edges are not handled specifically as the default colour is black
+                                        // anyway. This saves us some cycles.
+                                        if (version < kColourableTerrainVersion)
+                                        {
+                                            auto datName = u8string(datEntry.GetName());
+                                            // Grey sandstone
+                                            if (datName == "#RCT1ESG")
+                                            {
+                                                terrainEdgeMap[j] = Drawing::Colour::grey;
+                                            }
+                                            else if (datName.starts_with("#RCT2SI"))
+                                            {
+                                                // There were four grid objects. Make sure we only try to allocate one.
+                                                auto skip = false;
+
+                                                for (const auto& pair : kGridMap)
+                                                {
+                                                    if (datName == pair.first)
+                                                    {
+                                                        if (newGridIndex == kObjectEntryIndexNull)
+                                                            newGridIndex = j;
+                                                        else
+                                                            skip = true;
+
+                                                        terrainSurfaceMap[j] = { newGridIndex, pair.second };
+
+                                                        desc = ObjectEntryDescriptor();
+                                                        desc.Type = objectType;
+                                                        desc.Identifier = "rct2.terrain_surface.grid";
+                                                        desc.Version = std::make_tuple(1, 0, 0);
+
+                                                        break;
+                                                    }
+                                                }
+
+                                                if (skip)
+                                                    continue;
+                                            }
+                                        }
 
                                         requiredObjects.SetObject(j, desc);
                                         break;
@@ -370,7 +437,7 @@ namespace OpenRCT2
                                                 identifier = newIdentifier;
                                             }
                                         }
-                                        else if (version <= 12)
+                                        if (version <= 12)
                                         {
                                             if (identifier == "openrct2.ride.rmct1")
                                             {
@@ -381,13 +448,20 @@ namespace OpenRCT2
                                                 identifier = "openrct2.ride.single_rail_coaster";
                                             }
                                         }
-                                        else if (version <= 14)
+                                        if (version <= 14)
                                         {
                                             if (identifier == "openrct2.ride.alp1")
                                             {
                                                 identifier = "openrct2.ride.alpine_coaster";
                                             }
                                         }
+
+                                        if (identifier == "rct1beta.terrain_edge.brick"
+                                            || identifier == "rct1beta.terrain_edge.rock")
+                                        {
+                                            terrainEdgeMap[j] = Drawing::Colour::lightBrown;
+                                        }
+
                                         desc.Identifier = identifier;
                                         desc.Version = VersionTuple(cs.read<std::string>());
 
@@ -462,7 +536,7 @@ namespace OpenRCT2
                         {
                             if (entry.HasValue())
                             {
-                                if (entry.Generation == ObjectGeneration::JSON)
+                                if (entry.Generation == ObjectGeneration::json)
                                 {
                                     cs.write(kDescriptorJson);
                                     cs.write(entry.Identifier);
@@ -497,7 +571,7 @@ namespace OpenRCT2
                 cs.readWrite(gameState.scenarioOptions.objective.NumGuests);
                 cs.readWrite(gameState.scenarioOptions.objective.Currency);
 
-                cs.readWrite(gameState.scenarioParkRatingWarningDays);
+                cs.readWrite(gameState.park.scenarioParkRatingWarningDays);
 
                 cs.readWrite(gameState.scenarioCompletedCompanyValue);
                 if (gameState.scenarioCompletedCompanyValue == kMoney64Undefined
@@ -804,7 +878,7 @@ namespace OpenRCT2
                             if (objRepository.FindObjectLegacy(legacyIdentifier) == nullptr)
                             {
                                 objRepository.AddObjectFromFile(
-                                    ObjectGeneration::DAT, legacyIdentifier, data.data(), data.size());
+                                    ObjectGeneration::dat, legacyIdentifier, data.data(), data.size());
                             }
                         }
                         else if (type == kDescriptorParkObj)
@@ -816,7 +890,7 @@ namespace OpenRCT2
                             cs.read(data.data(), data.size());
                             if (objRepository.FindObject(identifier) == nullptr)
                             {
-                                objRepository.AddObjectFromFile(ObjectGeneration::JSON, identifier, data.data(), data.size());
+                                objRepository.AddObjectFromFile(ObjectGeneration::json, identifier, data.data(), data.size());
                             }
                         }
                         else
@@ -903,7 +977,7 @@ namespace OpenRCT2
                     cs.readWrite(park.bankLoan);
                     cs.readWrite(park.maxBankLoan);
                     cs.readWrite(park.bankLoanInterestRate);
-                    cs.readWrite(park.flags);
+                    cs.readWrite(park.flags.holder);
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};
@@ -915,9 +989,9 @@ namespace OpenRCT2
                         cs.readWrite(park.entranceFee);
                     }
 
-                    cs.readWrite(park.staffHandymanColour);
-                    cs.readWrite(park.staffMechanicColour);
-                    cs.readWrite(park.staffSecurityColour);
+                    readWriteColour(cs, park.staffHandymanColour, version);
+                    readWriteColour(cs, park.staffMechanicColour, version);
+                    readWriteColour(cs, park.staffSecurityColour, version);
                     cs.readWrite(park.samePriceThroughoutPark);
 
                     // Finances
@@ -1138,9 +1212,9 @@ namespace OpenRCT2
             cs.readWrite(item.category);
         }
 
-        void ReadWriteNotificationsChunk(GameState_t& gameState, OrcaStream& os)
+        void ReadWriteNotificationsChunk(News::ItemQueues& queues, OrcaStream& os)
         {
-            os.readWriteChunk(ParkFileChunkType::notifications, [&gameState](OrcaStream::ChunkStream& cs) {
+            os.readWriteChunk(ParkFileChunkType::notifications, [&queues](OrcaStream::ChunkStream& cs) {
                 if (cs.getMode() == OrcaStream::Mode::reading)
                 {
                     std::vector<News::Item> recent;
@@ -1149,16 +1223,14 @@ namespace OpenRCT2
                     std::vector<News::Item> archived;
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
-                    News::importNewsItems(gameState, recent, archived);
+                    News::importNewsItems(queues, recent, archived);
                 }
                 else
                 {
-                    std::vector<News::Item> recent(
-                        std::begin(gameState.newsItems.getRecent()), std::end(gameState.newsItems.getRecent()));
+                    std::vector<News::Item> recent(std::begin(queues.getRecent()), std::end(queues.getRecent()));
                     cs.readWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
-                    std::vector<News::Item> archived(
-                        std::begin(gameState.newsItems.getArchived()), std::end(gameState.newsItems.getArchived()));
+                    std::vector<News::Item> archived(std::begin(queues.getArchived()), std::end(queues.getArchived()));
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });
@@ -1211,56 +1283,115 @@ namespace OpenRCT2
                     cs.read(tileElements.data(), tileElements.size() * sizeof(TileElement));
                     SetTileElements(gameState, std::move(tileElements));
 
+                    auto targetVersion = os.getHeader().targetVersion;
                     TileElementIterator it;
                     TileElementIteratorBegin(&it);
                     while (TileElementIteratorNext(&it))
                     {
-                        if (it.element->getType() == TileElementType::Path)
+                        switch (it.element->getType())
                         {
-                            auto* pathElement = it.element->asPath();
-                            if (pathElement->HasLegacyPathEntry())
+                            case TileElementType::banner:
                             {
-                                auto pathEntryIndex = pathElement->GetLegacyPathEntryIndex();
-                                if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
+                                if (targetVersion < kExtendedColoursGoldVersion)
                                 {
-                                    if (pathElement->IsQueue())
-                                        pathElement->SetSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
-                                    else
-                                        pathElement->SetSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
-
-                                    pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                    auto* banner = it.element->asBanner()->getBanner();
+                                    if (banner != nullptr)
+                                    {
+                                        banner->colour = convertPre63Colour(banner->colour);
+                                    }
                                 }
+                                break;
                             }
-                        }
-                        else if (it.element->getType() == TileElementType::Track)
-                        {
-                            auto* trackElement = it.element->asTrack();
-                            auto trackType = trackElement->GetTrackType();
-                            if (TrackTypeMustBeMadeInvisible(*trackElement, os.getHeader().targetVersion))
+                            case TileElementType::surface:
+                                break;
+                            case TileElementType::path:
                             {
-                                it.element->setInvisible(true);
+                                auto* pathElement = it.element->asPath();
+                                if (pathElement->hasLegacyPathEntry())
+                                {
+                                    auto pathEntryIndex = pathElement->getLegacyPathEntryIndex();
+                                    if (pathToRailingsMap[pathEntryIndex] != kObjectEntryIndexNull)
+                                    {
+                                        if (pathElement->isQueue())
+                                            pathElement->setSurfaceEntryIndex(pathToQueueSurfaceMap[pathEntryIndex]);
+                                        else
+                                            pathElement->setSurfaceEntryIndex(pathToSurfaceMap[pathEntryIndex]);
+
+                                        pathElement->setRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
+                                    }
+                                }
+                                break;
                             }
-                            if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
+                            case TileElementType::track:
                             {
-                                if (trackType == TrackElemType::brakes)
-                                    trackElement->SetBrakeClosed(true);
-                                if (trackType == TrackElemType::blockBrakes)
-                                    trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                                auto* trackElement = it.element->asTrack();
+                                auto trackType = trackElement->getTrackType();
+                                if (TrackTypeMustBeMadeInvisible(*trackElement, targetVersion))
+                                {
+                                    it.element->setInvisible(true);
+                                }
+                                if (targetVersion < kBlockBrakeImprovementsVersion)
+                                {
+                                    if (trackType == TrackElemType::brakes)
+                                        trackElement->setBrakeClosed(true);
+                                    if (trackType == TrackElemType::blockBrakes)
+                                        trackElement->setBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                                }
+                                break;
                             }
-                        }
-                        else if (it.element->getType() == TileElementType::SmallScenery && os.getHeader().targetVersion < 23)
-                        {
-                            auto* sceneryElement = it.element->asSmallScenery();
-                            // Previous formats stored the needs supports flag in the primary colour
-                            // We have moved it into a flags field to support extended colour sets
-                            bool needsSupports = EnumValue(sceneryElement->GetPrimaryColour())
-                                & kRCT12SmallSceneryElementNeedsSupportsFlag;
-                            if (needsSupports)
+                            case TileElementType::smallScenery:
                             {
-                                const auto valueWithoutFlag = EnumValue(sceneryElement->GetPrimaryColour())
-                                    & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
-                                sceneryElement->SetPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
-                                sceneryElement->SetNeedsSupports();
+                                if (targetVersion < 23)
+                                {
+                                    auto* sceneryElement = it.element->asSmallScenery();
+                                    // Previous formats stored the needs supports flag in the primary colour
+                                    // We have moved it into a flags field to support extended colour sets
+                                    bool needsSupports = EnumValue(sceneryElement->getPrimaryColour())
+                                        & kRCT12SmallSceneryElementNeedsSupportsFlag;
+                                    if (needsSupports)
+                                    {
+                                        const auto valueWithoutFlag = EnumValue(sceneryElement->getPrimaryColour())
+                                            & ~kRCT12SmallSceneryElementNeedsSupportsFlag;
+                                        sceneryElement->setPrimaryColour(static_cast<Drawing::Colour>(valueWithoutFlag));
+                                        sceneryElement->setNeedsSupports();
+                                    }
+                                }
+                                if (targetVersion < kExtendedColoursGoldVersion)
+                                {
+                                    auto* sceneryElement = it.element->asSmallScenery();
+                                    sceneryElement->setPrimaryColour(
+                                        convertPre63Colour(sceneryElement->getPrimaryColour()), true);
+                                    sceneryElement->setSecondaryColour(
+                                        convertPre63Colour(sceneryElement->getSecondaryColour()), true);
+                                    sceneryElement->setTertiaryColour(
+                                        convertPre63Colour(sceneryElement->getTertiaryColour()), true);
+                                }
+                                break;
+                            }
+                            case TileElementType::entrance:
+                                break;
+                            case TileElementType::wall:
+                            {
+                                if (targetVersion < kExtendedColoursGoldVersion)
+                                {
+                                    auto* wallElement = it.element->asWall();
+                                    wallElement->setPrimaryColour(convertPre63Colour(wallElement->getPrimaryColour()));
+                                    wallElement->setSecondaryColour(convertPre63Colour(wallElement->getSecondaryColour()));
+                                    wallElement->setTertiaryColour(convertPre63Colour(wallElement->getTertiaryColour()));
+                                }
+                                break;
+                            }
+                            case TileElementType::largeScenery:
+                            {
+                                if (targetVersion < kExtendedColoursGoldVersion)
+                                {
+                                    auto* sceneryElement = it.element->asLargeScenery();
+                                    sceneryElement->setPrimaryColour(convertPre63Colour(sceneryElement->getPrimaryColour()));
+                                    sceneryElement->setSecondaryColour(
+                                        convertPre63Colour(sceneryElement->getSecondaryColour()));
+                                    sceneryElement->setTertiaryColour(convertPre63Colour(sceneryElement->getTertiaryColour()));
+                                }
+                                break;
                             }
                         }
                     }
@@ -1280,22 +1411,14 @@ namespace OpenRCT2
             {
                 for (int32_t x = 0; x < gameState.mapSize.x; x++)
                 {
-                    TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
-                    if (tileElement == nullptr)
-                        continue;
-                    do
+                    for (auto* trackElement : TileElementsView<TrackElement>(TileCoordsXY{ x, y }))
                     {
-                        if (tileElement->getType() != TileElementType::Track)
-                            continue;
-
-                        auto* trackElement = tileElement->asTrack();
-                        const auto* ride = GetRide(trackElement->GetRideIndex());
+                        const auto* ride = GetRide(trackElement->getRideIndex());
                         if (ride != nullptr)
                         {
-                            trackElement->SetRideType(ride->type);
+                            trackElement->setRideType(ride->type);
                         }
-
-                    } while (!(tileElement++)->isLastForTile());
+                    }
                 }
             }
         }
@@ -1371,7 +1494,7 @@ namespace OpenRCT2
             cs.readWrite(banner.type);
             cs.readWrite(banner.flags.holder);
             cs.readWrite(banner.text);
-            cs.readWrite(banner.colour);
+            readWriteColour(cs, banner.colour, version);
             cs.readWrite(banner.rideIndex);
             cs.readWrite(banner.textColour);
             cs.readWrite(banner.position.x);
@@ -1453,35 +1576,35 @@ namespace OpenRCT2
                     // Colours
                     cs.readWrite(ride.entranceStyle);
                     cs.readWrite(ride.vehicleColourSettings);
-                    cs.readWriteArray(ride.trackColours, [&cs](TrackColour& tc) {
-                        cs.readWrite(tc.main);
-                        cs.readWrite(tc.additional);
-                        cs.readWrite(tc.supports);
+                    cs.readWriteArray(ride.trackColours, [&cs, version](TrackColour& tc) {
+                        readWriteColour(cs, tc.main, version);
+                        readWriteColour(cs, tc.additional, version);
+                        readWriteColour(cs, tc.supports, version);
                         return true;
                     });
 
-                    cs.readWriteArray(ride.vehicleColours, [&cs](VehicleColour& vc) {
-                        cs.readWrite(vc.Body);
-                        cs.readWrite(vc.Trim);
-                        cs.readWrite(vc.Tertiary);
+                    cs.readWriteArray(ride.vehicleColours, [&cs, version](VehicleColour& vc) {
+                        readWriteColour(cs, vc.Body, version);
+                        readWriteColour(cs, vc.Trim, version);
+                        readWriteColour(cs, vc.Tertiary, version);
                         return true;
                     });
 
                     // Stations
                     cs.readWrite(ride.numStations);
                     cs.readWriteArray(ride.getStations(), [&cs](RideStation& station) {
-                        cs.readWrite(station.Start);
-                        cs.readWrite(station.Height);
-                        cs.readWrite(station.Length);
-                        cs.readWrite(station.Depart);
-                        cs.readWrite(station.TrainAtStation);
-                        cs.readWrite(station.Entrance);
-                        cs.readWrite(station.Exit);
-                        cs.readWrite(station.SegmentLength);
-                        cs.readWrite(station.SegmentTime);
-                        cs.readWrite(station.QueueTime);
-                        cs.readWrite(station.QueueLength);
-                        cs.readWrite(station.LastPeepInQueue);
+                        cs.readWrite(station.start);
+                        cs.readWrite(station.height);
+                        cs.readWrite(station.length);
+                        cs.readWrite(station.depart);
+                        cs.readWrite(station.trainAtStation);
+                        cs.readWrite(station.entrance);
+                        cs.readWrite(station.exit);
+                        cs.readWrite(station.segmentLength);
+                        cs.readWrite(station.segmentTime);
+                        cs.readWrite(station.queueTime);
+                        cs.readWrite(station.queueLength);
+                        cs.readWrite(station.lastPeepInQueue);
                         return true;
                     });
 
@@ -1527,7 +1650,7 @@ namespace OpenRCT2
                     cs.readWrite(ride.chairliftBullwheelRotation);
                     cs.readWrite(ride.slideInUse);
                     cs.readWrite(ride.slidePeep);
-                    cs.readWrite(ride.slidePeepTShirtColour);
+                    readWriteColour(cs, ride.slidePeepTShirtColour, version);
                     cs.readWrite(ride.spiralSlideProgress);
                     cs.readWrite(ride.raceWinner);
                     cs.readWrite(ride.cableLift);
@@ -1803,15 +1926,15 @@ namespace OpenRCT2
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
                 auto name = cs.read<std::string>();
-                entity.SetName(name);
+                entity.setName(name);
             }
             else
             {
-                cs.write(static_cast<const char*>(entity.Name));
+                cs.write(static_cast<const char*>(entity.name));
             }
 
-            cs.readWrite(entity.NextLoc);
-            cs.readWrite(entity.NextFlags);
+            cs.readWrite(entity.nextLoc);
+            cs.readWrite(entity.nextFlags);
 
             if (version <= 1)
             {
@@ -1825,15 +1948,15 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.State);
-            cs.readWrite(entity.SubState);
+            cs.readWrite(entity.state);
+            cs.readWrite(entity.subState);
 
             if (version >= kPeepAnimationObjectsVersion)
-                cs.readWrite(entity.AnimationObjectIndex);
+                cs.readWrite(entity.animationObjectIndex);
             else
-                entity.AnimationObjectIndex = kObjectEntryIndexNull;
+                entity.animationObjectIndex = kObjectEntryIndexNull;
 
-            cs.readWrite(entity.AnimationGroup);
+            cs.readWrite(entity.animationGroup);
 
             if (version <= 1)
             {
@@ -1847,14 +1970,14 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.TshirtColour);
-            cs.readWrite(entity.TrousersColour);
-            cs.readWrite(entity.DestinationX);
-            cs.readWrite(entity.DestinationY);
-            cs.readWrite(entity.DestinationTolerance);
-            cs.readWrite(entity.Var37);
-            cs.readWrite(entity.Energy);
-            cs.readWrite(entity.EnergyTarget);
+            readWriteColour(cs, entity.tShirtColour, version);
+            readWriteColour(cs, entity.trousersColour, version);
+            cs.readWrite(entity.destinationX);
+            cs.readWrite(entity.destinationY);
+            cs.readWrite(entity.destinationTolerance);
+            cs.readWrite(entity.var37);
+            cs.readWrite(entity.energy);
+            cs.readWrite(entity.energyTarget);
 
             if (version <= 1)
             {
@@ -1880,7 +2003,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.Mass);
+            cs.readWrite(entity.mass);
 
             if (version <= 1)
             {
@@ -1916,7 +2039,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.WindowInvalidateFlags);
+            cs.readWrite(entity.windowInvalidateFlags);
 
             if (version <= 1)
             {
@@ -1931,7 +2054,7 @@ namespace OpenRCT2
                         return true;
                     });
                     RideUse::GetTypeHistory().Set(guest->id, LegacyGetRideTypesBeenOn(rideTypeBeenOn));
-                    cs.readWrite(guest->itemFlags);
+                    cs.readWrite(guest->itemFlags.holder);
                     cs.readWrite(guest->photo2RideRef);
                     cs.readWrite(guest->photo3RideRef);
                     cs.readWrite(guest->photo4RideRef);
@@ -1952,17 +2075,17 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.CurrentRide);
-            cs.readWrite(entity.CurrentRideStation);
-            cs.readWrite(entity.CurrentTrain);
-            cs.readWrite(entity.TimeToSitdown);
-            cs.readWrite(entity.SpecialSprite);
-            cs.readWrite(entity.AnimationType);
-            cs.readWrite(entity.NextAnimationType);
-            cs.readWrite(entity.AnimationImageIdOffset);
-            cs.readWrite(entity.Action);
-            cs.readWrite(entity.AnimationFrameNum);
-            cs.readWrite(entity.StepProgress);
+            cs.readWrite(entity.currentRide);
+            cs.readWrite(entity.currentRideStation);
+            cs.readWrite(entity.currentTrain);
+            cs.readWrite(entity.timeToSitdown);
+            cs.readWrite(entity.specialSprite);
+            cs.readWrite(entity.animationType);
+            cs.readWrite(entity.nextAnimationType);
+            cs.readWrite(entity.animationImageIdOffset);
+            cs.readWrite(entity.action);
+            cs.readWrite(entity.animationFrameNum);
+            cs.readWrite(entity.stepProgress);
 
             if (version <= 1)
             {
@@ -1976,8 +2099,8 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PeepDirection);
-            cs.readWrite(entity.InteractionRideIndex);
+            cs.readWrite(entity.peepDirection);
+            cs.readWrite(entity.interactionRideIndex);
 
             if (version <= 1)
             {
@@ -2003,7 +2126,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PeepId);
+            cs.readWrite(entity.peepId);
 
             if (version <= 1)
             {
@@ -2059,7 +2182,7 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PathCheckOptimisation);
+            cs.readWrite(entity.pathCheckOptimisation);
 
             if (version <= 1)
             {
@@ -2077,19 +2200,19 @@ namespace OpenRCT2
                 }
             }
 
-            cs.readWrite(entity.PeepFlags);
-            cs.readWrite(entity.PathfindGoal.x);
-            cs.readWrite(entity.PathfindGoal.y);
-            cs.readWrite(entity.PathfindGoal.z);
-            cs.readWrite(entity.PathfindGoal.direction);
-            for (size_t i = 0; i < std::size(entity.PathfindHistory); i++)
+            cs.readWrite(entity.peepFlags.holder);
+            cs.readWrite(entity.pathfindGoal.x);
+            cs.readWrite(entity.pathfindGoal.y);
+            cs.readWrite(entity.pathfindGoal.z);
+            cs.readWrite(entity.pathfindGoal.direction);
+            for (size_t i = 0; i < std::size(entity.pathfindHistory); i++)
             {
-                cs.readWrite(entity.PathfindHistory[i].x);
-                cs.readWrite(entity.PathfindHistory[i].y);
-                cs.readWrite(entity.PathfindHistory[i].z);
-                cs.readWrite(entity.PathfindHistory[i].direction);
+                cs.readWrite(entity.pathfindHistory[i].x);
+                cs.readWrite(entity.pathfindHistory[i].y);
+                cs.readWrite(entity.pathfindHistory[i].z);
+                cs.readWrite(entity.pathfindHistory[i].direction);
             }
-            cs.readWrite(entity.WalkingAnimationFrameNum);
+            cs.readWrite(entity.walkingAnimationFrameNum);
 
             if (version <= 1)
             {
@@ -2119,9 +2242,9 @@ namespace OpenRCT2
                     cs.readWrite(guest->angriness);
                     cs.readWrite(guest->timeLost);
                     cs.readWrite(guest->daysInQueue);
-                    cs.readWrite(guest->balloonColour);
-                    cs.readWrite(guest->umbrellaColour);
-                    cs.readWrite(guest->hatColour);
+                    readWriteColour(cs, guest->balloonColour, version);
+                    readWriteColour(cs, guest->umbrellaColour, version);
+                    readWriteColour(cs, guest->hatColour, version);
                     cs.readWrite(guest->favouriteRide);
                     cs.readWrite(guest->favouriteRideRating);
                 }
@@ -2201,6 +2324,7 @@ namespace OpenRCT2
     template<>
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Vehicle& entity)
     {
+        auto version = os.getHeader().targetVersion;
         ReadWriteEntityCommon(cs, entity);
         cs.readWrite(entity.SubType);
         cs.readWrite(entity.pitch);
@@ -2210,8 +2334,8 @@ namespace OpenRCT2
         cs.readWrite(entity.acceleration);
         cs.readWrite(entity.ride);
         cs.readWrite(entity.vehicle_type);
-        cs.readWrite(entity.colours.Body);
-        cs.readWrite(entity.colours.Trim);
+        readWriteColour(cs, entity.colours.Body, version);
+        readWriteColour(cs, entity.colours.Trim, version);
         cs.readWrite(entity.track_progress);
         cs.readWrite(entity.BoatLocation);
         cs.readWrite(entity.TrackTypeAndDirection);
@@ -2223,7 +2347,7 @@ namespace OpenRCT2
         cs.readWrite(entity.next_vehicle_on_ride);
         cs.readWrite(entity.var_44);
         cs.readWrite(entity.mass);
-        if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < 18)
+        if (cs.getMode() == OrcaStream::Mode::reading && version < 18)
         {
             uint16_t updateFlags = 0;
             cs.readWrite(updateFlags);
@@ -2242,7 +2366,7 @@ namespace OpenRCT2
         for (size_t i = 0; i < std::size(entity.peep); i++)
         {
             cs.readWrite(entity.peep[i]);
-            cs.readWrite(entity.peep_tshirt_colours[i]);
+            readWriteColour(cs, entity.peep_tshirt_colours[i], version);
         }
         cs.readWrite(entity.num_seats);
         cs.readWrite(entity.num_peeps);
@@ -2293,7 +2417,7 @@ namespace OpenRCT2
         cs.readWrite(entity.mini_golf_current_animation);
         cs.readWrite(entity.miniGolfFlags.holder);
         cs.readWrite(entity.ride_subtype);
-        cs.readWrite(entity.colours.Tertiary);
+        readWriteColour(cs, entity.colours.Tertiary, version);
         cs.readWrite(entity.seat_rotation);
         cs.readWrite(entity.target_seat_rotation);
         if (cs.getMode() == OrcaStream::Mode::reading && os.getHeader().targetVersion < 18)
@@ -2480,12 +2604,12 @@ namespace OpenRCT2
         cs.readWrite(guest.angriness);
         cs.readWrite(guest.timeLost);
         cs.readWrite(guest.daysInQueue);
-        cs.readWrite(guest.balloonColour);
-        cs.readWrite(guest.umbrellaColour);
-        cs.readWrite(guest.hatColour);
+        readWriteColour(cs, guest.balloonColour, version);
+        readWriteColour(cs, guest.umbrellaColour, version);
+        readWriteColour(cs, guest.hatColour, version);
         cs.readWrite(guest.favouriteRide);
         cs.readWrite(guest.favouriteRideRating);
-        cs.readWrite(guest.itemFlags);
+        cs.readWrite(guest.itemFlags.holder);
     }
 
     template<>
@@ -2496,7 +2620,7 @@ namespace OpenRCT2
         std::vector<TileCoordsXY> patrolArea;
         if (cs.getMode() == OrcaStream::Mode::writing && entity.patrolInfo != nullptr)
         {
-            patrolArea = entity.patrolInfo->ToVector();
+            patrolArea = entity.patrolInfo->toVector();
         }
         cs.readWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.readWrite(value); });
         if (cs.getMode() == OrcaStream::Mode::reading)
@@ -2510,8 +2634,8 @@ namespace OpenRCT2
                 if (entity.patrolInfo == nullptr)
                     entity.patrolInfo = new PatrolArea();
                 else
-                    entity.patrolInfo->Clear();
-                entity.patrolInfo->Union(patrolArea);
+                    entity.patrolInfo->clear();
+                entity.patrolInfo->unify(patrolArea);
             }
         }
 
@@ -2539,7 +2663,7 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
     {
         ReadWriteEntityCommon(cs, steamParticle);
-        cs.readWrite(steamParticle.time_to_move);
+        cs.readWrite(steamParticle.timeToMove);
         cs.readWrite(steamParticle.frame);
     }
 
@@ -2558,19 +2682,20 @@ namespace OpenRCT2
     template<>
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, VehicleCrashParticle& vehicleCrashParticle)
     {
+        auto version = os.getHeader().targetVersion;
         ReadWriteEntityCommon(cs, vehicleCrashParticle);
         cs.readWrite(vehicleCrashParticle.frame);
-        cs.readWrite(vehicleCrashParticle.time_to_live);
+        cs.readWrite(vehicleCrashParticle.timeToLive);
         cs.readWrite(vehicleCrashParticle.frame);
-        cs.readWrite(vehicleCrashParticle.colour[0]);
-        cs.readWrite(vehicleCrashParticle.colour[1]);
-        cs.readWrite(vehicleCrashParticle.crashed_sprite_base);
-        cs.readWrite(vehicleCrashParticle.velocity_x);
-        cs.readWrite(vehicleCrashParticle.velocity_y);
-        cs.readWrite(vehicleCrashParticle.velocity_z);
-        cs.readWrite(vehicleCrashParticle.acceleration_x);
-        cs.readWrite(vehicleCrashParticle.acceleration_y);
-        cs.readWrite(vehicleCrashParticle.acceleration_z);
+        readWriteColour(cs, vehicleCrashParticle.colour[0], version);
+        readWriteColour(cs, vehicleCrashParticle.colour[1], version);
+        cs.readWrite(vehicleCrashParticle.crashedSpriteBase);
+        cs.readWrite(vehicleCrashParticle.velocityX);
+        cs.readWrite(vehicleCrashParticle.velocityY);
+        cs.readWrite(vehicleCrashParticle.velocityZ);
+        cs.readWrite(vehicleCrashParticle.accelerationX);
+        cs.readWrite(vehicleCrashParticle.accelerationY);
+        cs.readWrite(vehicleCrashParticle.accelerationZ);
     }
 
     template<>
@@ -2598,13 +2723,13 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, JumpingFountain& fountain)
     {
         ReadWriteEntityCommon(cs, fountain);
-        cs.readWrite(fountain.NumTicksAlive);
+        cs.readWrite(fountain.numTicksAlive);
         cs.readWrite(fountain.frame);
         cs.readWrite(fountain.fountainFlags.holder);
-        cs.readWrite(fountain.TargetX);
-        cs.readWrite(fountain.TargetY);
-        cs.readWrite(fountain.TargetY);
-        cs.readWrite(fountain.Iteration);
+        cs.readWrite(fountain.targetX);
+        cs.readWrite(fountain.targetY);
+        cs.readWrite(fountain.targetY);
+        cs.readWrite(fountain.iteration);
     }
 
     template<>
@@ -2612,9 +2737,9 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, balloon);
         cs.readWrite(balloon.popped);
-        cs.readWrite(balloon.time_to_move);
+        cs.readWrite(balloon.timeToMove);
         cs.readWrite(balloon.frame);
-        cs.readWrite(balloon.colour);
+        readWriteColour(cs, balloon.colour, os.getHeader().targetVersion);
     }
 
     template<>
@@ -2622,8 +2747,8 @@ namespace OpenRCT2
     {
         ReadWriteEntityCommon(cs, duck);
         cs.readWrite(duck.frame);
-        cs.readWrite(duck.target_x);
-        cs.readWrite(duck.target_y);
+        cs.readWrite(duck.targetX);
+        cs.readWrite(duck.targetY);
         cs.readWrite(duck.state);
     }
 
@@ -2648,7 +2773,7 @@ namespace OpenRCT2
             }
             return res;
         }();
-        cs.write(T::cEntityType);
+        cs.write(T::kEntityType);
         cs.write(count);
         for (auto* ent : entityList)
         {
@@ -2667,14 +2792,14 @@ namespace OpenRCT2
     void ParkFile::ReadEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
         [[maybe_unused]] auto t = cs.read<EntityType>();
-        assert(t == T::cEntityType);
+        assert(t == T::kEntityType);
         auto count = cs.read<uint16_t>();
         for (auto i = 0; i < count; ++i)
         {
             T placeholder{};
 
             auto index = cs.read<EntityId>();
-            auto* ent = getGameState().entities.CreateEntityAt<T>(index);
+            auto* ent = gameState.entities.createEntityAt<T>(index);
             if (ent == nullptr)
             {
                 // Unable to allocate entity
@@ -2695,7 +2820,7 @@ namespace OpenRCT2
         os.readWriteChunk(ParkFileChunkType::entities, [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
-                getGameState().entities.ResetAllEntities();
+                gameState.entities.resetAllEntities();
             }
 
             std::vector<uint16_t> entityIndices;
@@ -2723,6 +2848,7 @@ namespace OpenRCT2
     void ParkFileExporter::Export(GameState_t& gameState, std::string_view path, int16_t compressionLevel)
     {
         auto parkFile = std::make_unique<ParkFile>();
+        parkFile->ExportObjectsList = ExportObjectsList;
         parkFile->Save(gameState, path, compressionLevel);
     }
 
@@ -2734,16 +2860,9 @@ namespace OpenRCT2
     }
 } // namespace OpenRCT2
 
-enum : uint32_t
+int32_t ScenarioSave(GameState_t& gameState, u8string_view path, SaveFlags flags)
 {
-    S6_SAVE_FLAG_EXPORT = 1 << 0,
-    S6_SAVE_FLAG_SCENARIO = 1 << 1,
-    S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
-};
-
-int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
-{
-    if (flags & S6_SAVE_FLAG_SCENARIO)
+    if (flags.has(SaveFlag::scenario))
     {
         LOG_VERBOSE("saving scenario");
     }
@@ -2752,7 +2871,7 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         LOG_VERBOSE("saving game");
     }
 
-    gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
+    gIsAutosave = flags.has(SaveFlag::automatic);
     if (!gIsAutosave)
     {
         auto* windowMgr = Ui::GetWindowManager();
@@ -2765,13 +2884,13 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
     auto parkFile = std::make_unique<ParkFile>();
     try
     {
-        if (flags & S6_SAVE_FLAG_EXPORT)
+        if (flags.has(SaveFlag::exportObjects))
         {
             auto& objManager = GetContext()->GetObjectManager();
             parkFile->ExportObjectsList = objManager.GetPackableObjects();
         }
         parkFile->OmitTracklessRides = true;
-        if (flags & S6_SAVE_FLAG_SCENARIO)
+        if (flags.has(SaveFlag::scenario))
         {
             // s6exporter->SaveScenario(path);
         }
@@ -2789,12 +2908,12 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         Formatter ft;
         ft.Add<const char*>(e.what());
         ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
-        GfxInvalidateScreen();
+        Drawing::GfxInvalidateScreen();
     }
 
-    GfxInvalidateScreen();
+    Drawing::GfxInvalidateScreen();
 
-    if (result && !(flags & S6_SAVE_FLAG_AUTOMATIC))
+    if (result && !flags.has(SaveFlag::automatic))
     {
         gScreenAge = 0;
     }

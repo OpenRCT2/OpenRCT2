@@ -9,10 +9,8 @@
 
 #include "ParkSetResearchFundingAction.h"
 
-#include "../../Context.h"
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
-#include "../../core/MemoryStream.h"
 #include "../../localisation/StringIds.h"
 #include "../../management/Research.h"
 #include "../../ui/WindowManager.h"

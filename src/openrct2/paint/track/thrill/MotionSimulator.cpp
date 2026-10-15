@@ -18,7 +18,6 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -47,7 +46,7 @@ static void PaintMotionSimulatorVehicle(
     Vehicle* vehicle = nullptr;
     if (ride.flags.has(RideFlag::onTrack))
     {
-        vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+        vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::entity;
@@ -55,7 +54,7 @@ static void PaintMotionSimulatorVehicle(
         }
     }
 
-    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
+    auto imageIndex = rideEntry->Cars[0].baseImageId + direction;
     if (vehicle != nullptr)
     {
         if (vehicle->restraints_position >= 64)

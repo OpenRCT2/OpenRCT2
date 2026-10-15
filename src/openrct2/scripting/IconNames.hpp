@@ -175,6 +175,8 @@ namespace OpenRCT2::Scripting
         { "palette_invisible_pressed_large", SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED_LARGE },
         { "monitor_start", SPR_G2_MONITOR_TAB_START },
         { "monitor_end", SPR_G2_MONITOR_TAB_END },
+        { "path_additions", SPR_G2_BUTTON_PATH_ADDITIONS },
+        { "walls", SPR_G2_BUTTON_WALLS },
     };
 
     // Maps legacy G2 icons sprite indices to new sprite indices

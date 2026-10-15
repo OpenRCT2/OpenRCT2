@@ -13,7 +13,6 @@
 #include "../OpenRCT2.h"
 #include "../audio/Audio.h"
 #include "../audio/AudioChannel.h"
-#include "../audio/AudioContext.h"
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -177,7 +176,7 @@ namespace OpenRCT2::RideAudio
             auto source = musicObj->GetTrackSample(instance.TrackIndex);
             if (source != nullptr)
             {
-                auto channel = CreateAudioChannel(source, MixerGroup::RideMusic, shouldLoop, 0);
+                auto channel = CreateAudioChannel(source, MixerGroup::rideMusic, shouldLoop, 0);
                 if (channel != nullptr)
                 {
                     _musicChannels.emplace_back(instance, channel, source);
@@ -195,7 +194,7 @@ namespace OpenRCT2::RideAudio
             auto source = audioObj->GetSample(0);
             if (source != nullptr)
             {
-                auto channel = CreateAudioChannel(source, MixerGroup::Sound, false, 0);
+                auto channel = CreateAudioChannel(source, MixerGroup::sound, false, 0);
                 if (channel != nullptr)
                 {
                     _musicChannels.emplace_back(instance, channel, nullptr);

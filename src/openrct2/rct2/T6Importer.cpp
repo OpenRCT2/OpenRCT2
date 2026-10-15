@@ -127,7 +127,7 @@ namespace OpenRCT2::RCT2
                 TrackDesignSceneryElement sceneryElement{};
                 sceneryElement.sceneryObject = ObjectEntryDescriptor(t6SceneryElement.SceneryObject);
                 TileCoordsXYZ tileCoords = { t6SceneryElement.x, t6SceneryElement.y, t6SceneryElement.z };
-                sceneryElement.loc = tileCoords.ToCoordsXYZ();
+                sceneryElement.loc = tileCoords.toCoordsXYZ();
                 sceneryElement.flags = t6SceneryElement.Flags;
                 sceneryElement.primaryColour = t6SceneryElement.PrimaryColour;
                 sceneryElement.secondaryColour = t6SceneryElement.SecondaryColour;

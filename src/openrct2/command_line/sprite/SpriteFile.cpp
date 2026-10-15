@@ -106,17 +106,23 @@ namespace OpenRCT2::CommandLine::Sprite
             {
                 ScopedRelativeSpriteFile scopedRelative(*this);
 
+                // To simulate how Sawyer’s tools built g1, and make comparing outputs easier,
+                // re-use the same structure and allow some values to linger.
+                StoredG1Element entry32bit{};
                 for (const auto& entry : Entries)
                 {
-                    StoredG1Element entry32bit{};
-
                     entry32bit.offset = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(const_cast<uint8_t*>(entry.offset)));
                     entry32bit.width = entry.width;
-                    entry32bit.height = entry.height;
+                    if (!entry.flags.has(G1Flag::isPalette))
+                    {
+                        entry32bit.height = entry.height;
+                        entry32bit.yOffset = entry.yOffset;
+                    }
+
                     entry32bit.xOffset = entry.xOffset;
-                    entry32bit.yOffset = entry.yOffset;
                     entry32bit.flags = entry.flags;
-                    entry32bit.zoomedOffset = entry.zoomedOffset;
+                    if (entry.flags.has(G1Flag::hasZoomSprite))
+                        entry32bit.zoomedOffset = entry.zoomedOffset;
 
                     stream.Write(&entry32bit, sizeof(entry32bit));
                 }

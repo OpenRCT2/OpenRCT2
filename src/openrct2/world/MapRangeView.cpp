@@ -39,7 +39,7 @@ namespace OpenRCT2::Map
 
     MapRangeView getClampedRange(const MapRange& range)
     {
-        return getClampedRange(range.Point1, range.Point2);
+        return getClampedRange(range.point1, range.point2);
     }
 
     MapRangeView getDrawableTileRange()

@@ -23,7 +23,7 @@ void WallRemoveAt(const CoordsXYRangedZ& wallPos)
 {
     for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr; wallElement = MapGetWallElementAt(wallPos))
     {
-        reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
+        reinterpret_cast<TileElement*>(wallElement)->removeBannerEntry();
         MapInvalidateTileZoom1({ wallPos, wallElement->getBaseZ(), wallElement->getBaseZ() + 72 });
         TileElementRemove(reinterpret_cast<TileElement*>(wallElement));
     }
@@ -49,7 +49,7 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
         return;
     do
     {
-        if (tileElement->getType() != TileElementType::Wall)
+        if (tileElement->getType() != TileElementType::wall)
             continue;
 
         if (tileElement->getClearanceZ() <= wallPos.baseZ || tileElement->getBaseZ() >= wallPos.clearanceZ)
@@ -58,7 +58,7 @@ void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direc
         if (direction != tileElement->getDirection())
             continue;
 
-        tileElement->RemoveBannerEntry();
+        tileElement->removeBannerEntry();
         MapInvalidateTileZoom1({ wallPos, tileElement->getBaseZ(), tileElement->getBaseZ() + 72 });
         TileElementRemove(tileElement);
         tileElement--;
@@ -121,14 +121,14 @@ uint8_t GetWallSlopeFromEdgeSlope(uint8_t Slope, uint8_t Edge)
  *
  *  rct2: 0x006E59DC
  */
-bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
+bool WallInTheWay(const CoordsXYRangedZ& fencePos, Direction direction)
 {
     TileElement* tileElement = MapGetFirstElementAt(fencePos);
     if (tileElement == nullptr)
         return false;
     do
     {
-        if (tileElement->getType() != TileElementType::Wall)
+        if (tileElement->getType() != TileElementType::wall)
             continue;
         if (tileElement->isGhost())
             continue;

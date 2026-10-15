@@ -11,9 +11,9 @@
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -39,7 +39,10 @@
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Rectangle.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/drawing/Text.h>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/WidgetIndexGlobals.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/Network.h>
@@ -47,9 +50,7 @@
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/ObjectLimits.h>
-#include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/PathAdditionEntry.h>
 #include <openrct2/object/SceneryGroupEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
@@ -61,7 +62,6 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
-#include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/tile_element/BannerElement.h>
 #include <openrct2/world/tile_element/LargeSceneryElement.h>
@@ -723,31 +723,31 @@ namespace OpenRCT2::Ui::Windows
             setWidgetPressed(WIDX_SCENERY_EYEDROPPER_BUTTON, gWindowSceneryEyedropperEnabled);
             setWidgetPressed(WIDX_SCENERY_BUILD_CLUSTER_BUTTON, gWindowSceneryScatterEnabled);
 
-            widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::empty;
-            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::empty;
-            widgets[WIDX_RESTRICT_SCENERY].type = WidgetType::empty;
+            widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].setHidden();
+            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].setHidden();
+            widgets[WIDX_RESTRICT_SCENERY].setHidden();
 
             const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
             if (!tabSelectedScenery.IsUndefined())
             {
                 if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
                 {
-                    widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::flatBtn;
+                    widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].setVisible();
 
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr && sceneryEntry->flags.has(SmallSceneryFlag::isRotatable))
                     {
-                        widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::flatBtn;
+                        widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].setVisible();
                     }
                 }
                 else if (tabSelectedScenery.SceneryType >= SCENERY_TYPE_LARGE)
                 {
-                    widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::flatBtn;
+                    widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].setVisible();
                 }
 
                 if (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode)
                 {
-                    widgets[WIDX_RESTRICT_SCENERY].type = WidgetType::button;
+                    widgets[WIDX_RESTRICT_SCENERY].setVisible();
                     setWidgetPressed(WIDX_RESTRICT_SCENERY, IsSceneryItemRestricted(tabSelectedScenery));
                 }
             }
@@ -756,24 +756,24 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = getColourButtonImage(_scenerySecondaryColour);
             widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = getColourButtonImage(_sceneryTertiaryColour);
 
-            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::empty;
-            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::empty;
-            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::empty;
+            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setHidden();
+            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].setHidden();
+            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].setHidden();
 
             if (_sceneryPaintEnabled)
             { // repaint coloured scenery tool is on
-                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
-                widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
-                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setVisible();
+                widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].setVisible();
+                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].setVisible();
             }
             else if (!tabSelectedScenery.IsUndefined())
             {
                 if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
                 {
                     auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(tabSelectedScenery.EntryIndex);
-                    if (bannerEntry != nullptr && bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                    if (bannerEntry != nullptr && bannerEntry->flags.has(BannerEntryFlag::hasPrimaryColour))
                     {
-                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setVisible();
                     }
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
@@ -784,34 +784,35 @@ namespace OpenRCT2::Ui::Windows
                         if (sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour)
                             && !sceneryEntry->flags.has(LargeSceneryFlag::hidePrimaryRemapButton))
                         {
-                            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setVisible();
                         }
                         if (sceneryEntry->flags.has(LargeSceneryFlag::hasSecondaryColour)
                             && !sceneryEntry->flags.has(LargeSceneryFlag::hideSecondaryRemapButton))
                         {
-                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].setVisible();
                         }
                         if (sceneryEntry->flags.has(LargeSceneryFlag::hasTertiaryColour))
                         {
-                            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].setVisible();
                         }
                     }
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
                 {
                     auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex);
-                    if (wallEntry != nullptr && wallEntry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS))
+                    if (wallEntry != nullptr
+                        && wallEntry->flags.hasAny(WallSceneryFlag::hasPrimaryColour, WallSceneryFlag::hasGlass))
                     {
-                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setVisible();
 
-                        if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                        if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                         {
-                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].setVisible();
 
-                            if (wallEntry->flags2 & WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR)
-                                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::empty;
-                            if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
-                                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                            if (wallEntry->flags2.has(WallSceneryFlag2::disablePrimaryColour))
+                                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setHidden();
+                            if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
+                                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].setVisible();
                         }
                     }
                 }
@@ -822,12 +823,12 @@ namespace OpenRCT2::Ui::Windows
                     if (sceneryEntry != nullptr
                         && sceneryEntry->flags.hasAny(SmallSceneryFlag::hasPrimaryColour, SmallSceneryFlag::hasGlass))
                     {
-                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].setVisible();
 
                         if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
-                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].setVisible();
                         if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
-                            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].setVisible();
                     }
                 }
             }
@@ -881,8 +882,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].right = windowWidth - 8;
 
             const bool canFit = widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].top < height;
-            widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = canFit ? WidgetType::flatBtn : WidgetType::empty;
-            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WidgetType::flatBtn : WidgetType::empty;
+            widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].setVisible(canFit);
+            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].setVisible(canFit);
         }
 
         void onDraw(RenderTarget& rt) override
@@ -904,7 +905,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
+            if (price != kMoney64Undefined && !getGameState().park.flags.has(ParkFlag::noMoney))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
@@ -1634,10 +1635,10 @@ namespace OpenRCT2::Ui::Windows
 
                 auto imageId = ImageId(wallEntry->image);
                 auto spriteTop = (wallEntry->height * 2) + 0x32;
-                if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
+                if (wallEntry->flags.has(WallSceneryFlag::hasGlass))
                 {
                     imageId = imageId.WithPrimary(_sceneryPrimaryColour);
-                    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                     {
                         imageId = imageId.WithSecondary(_scenerySecondaryColour);
                     }
@@ -1649,17 +1650,17 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     imageId = imageId.WithPrimary(_sceneryPrimaryColour);
-                    if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+                    if (wallEntry->flags.has(WallSceneryFlag::hasSecondaryColour))
                     {
                         imageId = imageId.WithSecondary(_scenerySecondaryColour);
-                        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
+                        if (wallEntry->flags.has(WallSceneryFlag::hasTertiaryColour))
                         {
                             imageId = imageId.WithTertiary(_sceneryTertiaryColour);
                         }
                     }
                     GfxDrawSprite(rt, imageId, { 47, spriteTop });
 
-                    if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
+                    if (wallEntry->flags.has(WallSceneryFlag::isDoor))
                     {
                         GfxDrawSprite(rt, imageId.WithIndexOffset(1), { 47, spriteTop });
                     }
@@ -1783,7 +1784,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementSmallScenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -1860,7 +1861,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementPathItem(screenPos, selection.EntryIndex, mapTile, &z);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -1900,7 +1901,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementWall(screenPos, selection.EntryIndex, mapTile, &edge);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -1950,7 +1951,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementLargeScenery(screenPos, selection.EntryIndex, mapTile, &direction);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -1971,7 +1972,7 @@ namespace OpenRCT2::Ui::Windows
             MapSelection::clearSelectedTiles();
             for (auto& tile : sceneryEntry->tiles)
             {
-                MapSelection::addSelectedTile(mapTile + tile.offset.Rotate(direction));
+                MapSelection::addSelectedTile(mapTile + tile.offset.rotate(direction));
             }
 
             SceneryRemoveGhostToolPlacement();
@@ -2009,7 +2010,7 @@ namespace OpenRCT2::Ui::Windows
 
             updatePlacementBanner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
 
-            if (mapTile.IsNull())
+            if (mapTile.isNull())
             {
                 SceneryRemoveGhostToolPlacement();
                 return;
@@ -2233,24 +2234,24 @@ namespace OpenRCT2::Ui::Windows
          */
         void RepaintSceneryToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
-            constexpr auto flag = EnumsToFlags(
-                ViewportInteractionItem::scenery, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery,
-                ViewportInteractionItem::banner);
-            auto info = GetMapCoordinatesFromPos(screenCoords, flag);
+            constexpr ViewportInteractionItems kFlags = { ViewportInteractionItem::scenery, ViewportInteractionItem::wall,
+                                                          ViewportInteractionItem::largeScenery,
+                                                          ViewportInteractionItem::banner };
+            auto info = GetMapCoordinatesFromPos(screenCoords, kFlags);
             auto& gameState = getGameState();
             switch (info.interactionType)
             {
                 case ViewportInteractionItem::scenery:
                 {
-                    auto* sceneryEntry = info.Element->asSmallScenery()->GetEntry();
+                    auto* sceneryEntry = info.Element->asSmallScenery()->getEntry();
 
                     // If can't repaint
                     if (!sceneryEntry->flags.hasAny(SmallSceneryFlag::hasPrimaryColour, SmallSceneryFlag::hasGlass))
                         return;
 
-                    uint8_t quadrant = info.Element->asSmallScenery()->GetSceneryQuadrant();
+                    uint8_t quadrant = info.Element->asSmallScenery()->getSceneryQuadrant();
                     auto repaintScenery = GameActions::SmallScenerySetColourAction(
-                        { info.Loc, info.Element->getBaseZ() }, quadrant, info.Element->asSmallScenery()->GetEntryIndex(),
+                        { info.Loc, info.Element->getBaseZ() }, quadrant, info.Element->asSmallScenery()->getEntryIndex(),
                         _sceneryPrimaryColour, _scenerySecondaryColour, _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2258,10 +2259,10 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::wall:
                 {
-                    auto* scenery_entry = info.Element->asWall()->GetEntry();
+                    auto* scenery_entry = info.Element->asWall()->getEntry();
 
                     // If can't repaint
-                    if (!(scenery_entry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
+                    if (!scenery_entry->flags.hasAny(WallSceneryFlag::hasPrimaryColour, WallSceneryFlag::hasGlass))
                         return;
 
                     auto repaintScenery = GameActions::WallSetColourAction(
@@ -2273,7 +2274,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::largeScenery:
                 {
-                    auto* sceneryEntry = info.Element->asLargeScenery()->GetEntry();
+                    auto* sceneryEntry = info.Element->asLargeScenery()->getEntry();
 
                     // If can't repaint
                     if (!sceneryEntry->flags.has(LargeSceneryFlag::hasPrimaryColour))
@@ -2281,7 +2282,7 @@ namespace OpenRCT2::Ui::Windows
 
                     auto repaintScenery = GameActions::LargeScenerySetColourAction(
                         { info.Loc, info.Element->getBaseZ(), info.Element->getDirection() },
-                        info.Element->asLargeScenery()->GetSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
+                        info.Element->asLargeScenery()->getSequenceIndex(), _sceneryPrimaryColour, _scenerySecondaryColour,
                         _sceneryTertiaryColour);
 
                     GameActions::Execute(&repaintScenery, gameState);
@@ -2289,14 +2290,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::banner:
                 {
-                    auto banner = info.Element->asBanner()->GetBanner();
+                    auto banner = info.Element->asBanner()->getBanner();
                     if (banner != nullptr)
                     {
                         auto* bannerEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
-                        if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+                        if (bannerEntry->flags.has(BannerEntryFlag::hasPrimaryColour))
                         {
                             auto repaintScenery = GameActions::BannerSetColourAction(
-                                { info.Loc, info.Element->getBaseZ(), info.Element->asBanner()->GetPosition() },
+                                { info.Loc, info.Element->getBaseZ(), info.Element->asBanner()->getPosition() },
                                 _sceneryPrimaryColour);
 
                             GameActions::Execute(&repaintScenery, gameState);
@@ -2311,56 +2312,57 @@ namespace OpenRCT2::Ui::Windows
 
         void SceneryEyedropperToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
-            constexpr auto flag = EnumsToFlags(
-                ViewportInteractionItem::scenery, ViewportInteractionItem::wall, ViewportInteractionItem::largeScenery,
-                ViewportInteractionItem::banner, ViewportInteractionItem::pathAddition);
-            auto info = GetMapCoordinatesFromPos(screenCoords, flag);
+            constexpr ViewportInteractionItems kFlags = { ViewportInteractionItem::scenery, ViewportInteractionItem::wall,
+                                                          ViewportInteractionItem::largeScenery,
+                                                          ViewportInteractionItem::banner,
+                                                          ViewportInteractionItem::pathAddition };
+            auto info = GetMapCoordinatesFromPos(screenCoords, kFlags);
             switch (info.interactionType)
             {
                 case ViewportInteractionItem::scenery:
                 {
                     SmallSceneryElement* sceneryElement = info.Element->asSmallScenery();
-                    auto entryIndex = sceneryElement->GetEntryIndex();
+                    auto entryIndex = sceneryElement->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
-                            sceneryElement->GetSecondaryColour(), sceneryElement->GetTertiaryColour(),
+                            { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->getPrimaryColour(),
+                            sceneryElement->getSecondaryColour(), sceneryElement->getTertiaryColour(),
                             sceneryElement->getDirectionWithOffset(GetCurrentRotation()));
                     }
                     break;
                 }
                 case ViewportInteractionItem::wall:
                 {
-                    auto entryIndex = info.Element->asWall()->GetEntryIndex();
+                    auto entryIndex = info.Element->asWall()->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_WALL, entryIndex }, info.Element->asWall()->GetPrimaryColour(),
-                            info.Element->asWall()->GetSecondaryColour(), info.Element->asWall()->GetTertiaryColour(),
+                            { SCENERY_TYPE_WALL, entryIndex }, info.Element->asWall()->getPrimaryColour(),
+                            info.Element->asWall()->getSecondaryColour(), info.Element->asWall()->getTertiaryColour(),
                             std::nullopt);
                     }
                     break;
                 }
                 case ViewportInteractionItem::largeScenery:
                 {
-                    auto entryIndex = info.Element->asLargeScenery()->GetEntryIndex();
+                    auto entryIndex = info.Element->asLargeScenery()->getEntryIndex();
                     auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(entryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         WindowScenerySetSelectedItem(
-                            { SCENERY_TYPE_LARGE, entryIndex }, info.Element->asLargeScenery()->GetPrimaryColour(),
-                            info.Element->asLargeScenery()->GetSecondaryColour(),
-                            info.Element->asLargeScenery()->GetTertiaryColour(),
+                            { SCENERY_TYPE_LARGE, entryIndex }, info.Element->asLargeScenery()->getPrimaryColour(),
+                            info.Element->asLargeScenery()->getSecondaryColour(),
+                            info.Element->asLargeScenery()->getTertiaryColour(),
                             (GetCurrentRotation() + info.Element->getDirection()) & 3);
                     }
                     break;
                 }
                 case ViewportInteractionItem::banner:
                 {
-                    auto banner = info.Element->asBanner()->GetBanner();
+                    auto banner = info.Element->asBanner()->getBanner();
                     if (banner != nullptr)
                     {
                         auto sceneryEntry = ObjectEntryManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
@@ -2374,7 +2376,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case ViewportInteractionItem::pathAddition:
                 {
-                    auto entryIndex = info.Element->asPath()->GetAdditionEntryIndex();
+                    auto entryIndex = info.Element->asPath()->getAdditionEntryIndex();
                     auto* pathAdditionEntry = ObjectEntryManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
                     if (pathAdditionEntry != nullptr)
                     {
@@ -2403,11 +2405,12 @@ namespace OpenRCT2::Ui::Windows
                     if (im.isModifierKeyPressed(ModifierKey::ctrl))
                     {
                         // CTRL pressed
-                        constexpr auto flag = EnumsToFlags(
-                            ViewportInteractionItem::terrain, ViewportInteractionItem::ride, ViewportInteractionItem::scenery,
-                            ViewportInteractionItem::footpath, ViewportInteractionItem::wall,
-                            ViewportInteractionItem::largeScenery);
-                        auto info = GetMapCoordinatesFromPos(screenPos, flag);
+                        constexpr ViewportInteractionItems kFlags = {
+                            ViewportInteractionItem::terrain, ViewportInteractionItem::ride,
+                            ViewportInteractionItem::scenery, ViewportInteractionItem::footpath,
+                            ViewportInteractionItem::wall,    ViewportInteractionItem::largeScenery
+                        };
+                        auto info = GetMapCoordinatesFromPos(screenPos, kFlags);
 
                         if (info.interactionType != ViewportInteractionItem::none)
                         {
@@ -2474,7 +2477,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
             if (sceneryEntry == nullptr)
             {
-                gridPos.SetNull();
+                gridPos.setNull();
                 return;
             }
 
@@ -2497,7 +2500,7 @@ namespace OpenRCT2::Ui::Windows
                     auto gridCoords = ScreenGetMapXYQuadrant(screenPos, &quadrant);
                     if (!gridCoords.has_value())
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
                     gridPos = gridCoords.value();
@@ -2511,7 +2514,7 @@ namespace OpenRCT2::Ui::Windows
 
                         if (surfaceElement == nullptr)
                         {
-                            gridPos.SetNull();
+                            gridPos.setNull();
                             return;
                         }
 
@@ -2530,7 +2533,7 @@ namespace OpenRCT2::Ui::Windows
                     auto mapCoords = ScreenGetMapXYQuadrantWithZ(screenPos, z, &quadrant);
                     if (!mapCoords.has_value())
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
                     gridPos = mapCoords.value();
@@ -2546,7 +2549,7 @@ namespace OpenRCT2::Ui::Windows
                     gSceneryPlaceZ = z;
                 }
 
-                if (gridPos.IsNull())
+                if (gridPos.isNull())
                     return;
 
                 uint8_t rotation = gWindowSceneryRotation;
@@ -2573,14 +2576,15 @@ namespace OpenRCT2::Ui::Windows
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                constexpr auto flag = EnumsToFlags(ViewportInteractionItem::terrain, ViewportInteractionItem::water);
+                constexpr ViewportInteractionItems kFlags = { ViewportInteractionItem::terrain,
+                                                              ViewportInteractionItem::water };
 
-                auto info = GetMapCoordinatesFromPos(screenPos, flag);
+                auto info = GetMapCoordinatesFromPos(screenPos, kFlags);
                 gridPos = info.Loc;
 
                 if (info.interactionType == ViewportInteractionItem::none)
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                     return;
                 }
 
@@ -2594,7 +2598,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
 
@@ -2616,7 +2620,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                 }
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
@@ -2629,10 +2633,10 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
-            gridPos = gridPos.ToTileStart();
+            gridPos = gridPos.toTileStart();
             uint8_t rotation = gWindowSceneryRotation;
 
             if (!sceneryEntry->flags.has(SmallSceneryFlag::isRotatable))
@@ -2659,13 +2663,14 @@ namespace OpenRCT2::Ui::Windows
             updatePlacementUpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
             // Path additions
-            constexpr auto flag = EnumsToFlags(ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition);
-            auto info = GetMapCoordinatesFromPos(screenPos, flag);
+            constexpr ViewportInteractionItems kFlags = { ViewportInteractionItem::footpath,
+                                                          ViewportInteractionItem::pathAddition };
+            auto info = GetMapCoordinatesFromPos(screenPos, kFlags);
             gridPos = info.Loc;
 
             if (info.interactionType == ViewportInteractionItem::none)
             {
-                gridPos.SetNull();
+                gridPos.setNull();
                 return;
             }
 
@@ -2700,7 +2705,7 @@ namespace OpenRCT2::Ui::Windows
                 auto gridCoords = ScreenGetMapXYSide(screenPos, &edge);
                 if (!gridCoords.has_value())
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                     return;
                 }
                 gridPos = gridCoords.value();
@@ -2714,7 +2719,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
 
@@ -2732,7 +2737,7 @@ namespace OpenRCT2::Ui::Windows
                 auto mapCoords = ScreenGetMapXYSideWithZ(screenPos, z, &edge);
                 if (!mapCoords.has_value())
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                     return;
                 }
                 gridPos = mapCoords.value();
@@ -2748,10 +2753,10 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
-            gridPos = gridPos.ToTileStart();
+            gridPos = gridPos.toTileStart();
 
             if (Config::Get().general.virtualFloorStyle != VirtualFloorStyles::off)
             {
@@ -2788,7 +2793,7 @@ namespace OpenRCT2::Ui::Windows
                 const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenPos);
                 gridPos = mapCoords;
 
-                if (gridPos.IsNull())
+                if (gridPos.isNull())
                     return;
 
                 gSceneryPlaceZ = 0;
@@ -2800,7 +2805,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (surfaceElement == nullptr)
                     {
-                        gridPos.SetNull();
+                        gridPos.setNull();
                         return;
                     }
 
@@ -2822,7 +2827,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gridPos.SetNull();
+                    gridPos.setNull();
                 }
 
                 // If SHIFT pressed
@@ -2836,10 +2841,10 @@ namespace OpenRCT2::Ui::Windows
                 gSceneryPlaceZ = z;
             }
 
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
-            gridPos = gridPos.ToTileStart();
+            gridPos = gridPos.toTileStart();
 
             Direction rotation = gWindowSceneryRotation;
             rotation -= GetCurrentRotation();
@@ -2861,13 +2866,14 @@ namespace OpenRCT2::Ui::Windows
             updatePlacementUpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
             // Banner
-            constexpr auto flag = EnumsToFlags(ViewportInteractionItem::footpath, ViewportInteractionItem::pathAddition);
-            auto info = GetMapCoordinatesFromPos(screenPos, flag);
+            constexpr ViewportInteractionItems kFlags = { ViewportInteractionItem::footpath,
+                                                          ViewportInteractionItem::pathAddition };
+            auto info = GetMapCoordinatesFromPos(screenPos, kFlags);
             gridPos = info.Loc;
 
             if (info.interactionType == ViewportInteractionItem::none)
             {
-                gridPos.SetNull();
+                gridPos.setNull();
                 return;
             }
 
@@ -2877,9 +2883,9 @@ namespace OpenRCT2::Ui::Windows
 
             auto z = info.Element->getBaseZ();
 
-            if (info.Element->asPath()->IsSloped())
+            if (info.Element->asPath()->isSloped())
             {
-                if (rotation != DirectionReverse(info.Element->asPath()->GetSlopeDirection()))
+                if (rotation != DirectionReverse(info.Element->asPath()->getSlopeDirection()))
                 {
                     z += (2 * kCoordsZStep);
                 }
@@ -2901,7 +2907,7 @@ namespace OpenRCT2::Ui::Windows
             Direction rotation;
 
             updatePlacementSmallScenery(screenCoords, selectedScenery, gridPos, &quadrant, &rotation);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             int32_t quantity = 1;
@@ -2913,15 +2919,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 switch (gWindowSceneryScatterDensity)
                 {
-                    case ScatterToolDensity::LowDensity:
+                    case ScatterToolDensity::lowDensity:
                         quantity = gWindowSceneryScatterSize;
                         break;
 
-                    case ScatterToolDensity::MediumDensity:
+                    case ScatterToolDensity::mediumDensity:
                         quantity = gWindowSceneryScatterSize * 2;
                         break;
 
-                    case ScatterToolDensity::HighDensity:
+                    case ScatterToolDensity::highDensity:
                         quantity = gWindowSceneryScatterSize * 3;
                         break;
                 }
@@ -3028,7 +3034,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t z;
 
             updatePlacementPathItem(screenCoords, selectedScenery, gridPos, &z);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             auto footpathAdditionPlaceAction = GameActions::FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery);
@@ -3058,7 +3064,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto info = GetMapCoordinatesFromPos(screenCoords, EnumsToFlags(ViewportInteractionItem::terrain));
+                auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItem::terrain);
 
                 if (info.interactionType == ViewportInteractionItem::none)
                     return std::nullopt;
@@ -3066,7 +3072,7 @@ namespace OpenRCT2::Ui::Windows
                 coords = info.Loc;
             }
 
-            coords = coords.ToTileStart();
+            coords = coords.toTileStart();
             return coords;
         }
 
@@ -3075,7 +3081,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY gridPos;
             uint8_t edges;
             updatePlacementWall(screenCoords, selectedScenery, gridPos, &edges);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             uint8_t zAttemptRange = 1;
@@ -3174,9 +3180,9 @@ namespace OpenRCT2::Ui::Windows
             _lastProvisionalError = {};
 
             auto mapRange = getMapSelectRange();
-            for (auto y = mapRange.GetY1(); y <= mapRange.GetY2(); y += kCoordsXYStep)
+            for (auto y = mapRange.getY1(); y <= mapRange.getY2(); y += kCoordsXYStep)
             {
-                for (auto x = mapRange.GetX1(); x <= mapRange.GetX2(); x += kCoordsXYStep)
+                for (auto x = mapRange.getX1(); x <= mapRange.getX2(); x += kCoordsXYStep)
                 {
                     auto wallPlaceAction = GameActions::WallPlaceAction(
                         tabSelection.EntryIndex, { x, y, gSceneryPlaceZ }, _startEdge, _sceneryPrimaryColour,
@@ -3245,7 +3251,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto mapRange = getMapSelectRange();
-            CoordsXYZ lastLocation = { mapRange.Point2, gSceneryPlaceZ };
+            CoordsXYZ lastLocation = { mapRange.point2, gSceneryPlaceZ };
             auto& gameState = getGameState();
 
             // First query all tiles to get total cost and check for errors
@@ -3291,7 +3297,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY) && totalCost > getGameState().park.cash)
+            if (!getGameState().park.flags.has(ParkFlag::noMoney) && totalCost > getGameState().park.cash)
             {
                 Audio::Play3D(Audio::SoundId::error, lastLocation);
 
@@ -3346,7 +3352,7 @@ namespace OpenRCT2::Ui::Windows
             CoordsXY gridPos;
             Direction direction;
             updatePlacementLargeScenery(screenCoords, selectedScenery, gridPos, &direction);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             uint8_t zAttemptRange = 1;
@@ -3408,7 +3414,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t z;
             Direction direction;
             updatePlacementBanner(screenCoords, selectedScenery, gridPos, &z, &direction);
-            if (gridPos.IsNull())
+            if (gridPos.isNull())
                 return;
 
             CoordsXYZD loc{ gridPos, z, direction };

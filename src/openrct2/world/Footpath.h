@@ -11,6 +11,7 @@
 
 #include "../Identifiers.h"
 #include "../actions/CommandFlag.h"
+#include "../core/FlagHolder.hpp"
 #include "../drawing/Colour.h"
 #include "../drawing/ImageIndexType.h"
 #include "../drawing/ScrollingText.h"
@@ -42,6 +43,14 @@ namespace OpenRCT2
         count
     };
 
+    enum class RailingEntryFlag : uint8_t
+    {
+        hasSupportBaseSprite,
+        drawPathOverSupports, // When elevated
+        noQueueBanner,
+    };
+    using RailingEntryFlags = FlagHolder<uint8_t, RailingEntryFlag>;
+
     struct PathSurfaceDescriptor
     {
         StringId name = kStringIdNone;
@@ -49,7 +58,6 @@ namespace OpenRCT2
         ImageIndex previewImage{};
         uint8_t flags{};
     };
-    constexpr PathSurfaceDescriptor kPathSurfaceDescriptorDummy{};
 
     struct PathRailingsDescriptor
     {
@@ -59,10 +67,9 @@ namespace OpenRCT2
         ImageIndex railingsImage{};
         RailingEntrySupportType supportType{};
         Drawing::Colour supportColour = Drawing::kColourNull;
-        uint8_t flags{};
+        RailingEntryFlags flags{};
         uint8_t scrollingMode = kScrollingModeNone;
     };
-    constexpr PathRailingsDescriptor kPathRailingsDescriptorDummy{};
 
     using PathConstructFlags = uint8_t;
     namespace PathConstructFlag
@@ -120,13 +127,6 @@ namespace OpenRCT2
         {
             return baseZ > 0;
         }
-    };
-
-    enum
-    {
-        RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
-        RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS = (1 << 1), // When elevated
-        RAILING_ENTRY_FLAG_NO_QUEUE_BANNER = (1 << 2),
     };
 
     enum
@@ -200,7 +200,7 @@ namespace OpenRCT2
     void FootpathQueueChainReset();
     void FootpathQueueChainPush(RideId rideIndex);
     int32_t FootpathQueueCountConnections(const CoordsXY& position, const PathElement& pathElement);
-    bool FootpathIsZAndDirectionValid(const PathElement& tileElement, int32_t currentZ, int32_t currentDirection);
+    bool FootpathIsZAndDirectionValid(const PathElement& tileElement, int32_t currentZ, Direction currentDirection);
 
     FootpathPlacementResult FootpathGetOnTerrainPlacement(const TileCoordsXY& location);
     FootpathPlacementResult FootpathGetOnTerrainPlacement(const SurfaceElement& surfaceElement);

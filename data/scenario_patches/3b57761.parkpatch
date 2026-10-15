@@ -1,0 +1,16 @@
+{
+    "scenario_name": "Sunny Swamps",
+    "sha256": "3b57761c331addff61bcbf89f0f47485785b7808d6545deb1c099863d8e86f08",
+    "rides": [
+        {
+            "id": 0,
+            "operation": "set_name",
+            "name": "Swamp Boats"
+        },
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Swamp Rafts"
+        }
+    ]
+}

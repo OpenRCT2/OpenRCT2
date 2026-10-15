@@ -14,7 +14,6 @@
 
 struct CoordsXYZ;
 struct CoordsXYZD;
-struct PaintSession;
 
 namespace OpenRCT2
 {
@@ -38,11 +37,13 @@ namespace OpenRCT2
             emptyBowlBlue,
         };
 
-        static constexpr auto cEntityType = EntityType::litter;
+        static constexpr auto kEntityType = EntityType::litter;
+
         Type subType;
         uint32_t creationTick;
-        static void Create(const CoordsXYZD& litterPos, Type type);
-        static void RemoveAt(const CoordsXYZ& litterPos);
+
+        static void create(const CoordsXYZD& litterPos, Type type);
+        static void removeAt(const CoordsXYZ& litterPos);
         void serialise(DataSerialiser& stream);
         StringId getName() const;
         uint32_t getAge() const;

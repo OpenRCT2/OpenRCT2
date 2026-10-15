@@ -10,12 +10,13 @@
 #pragma once
 
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor FirstAidRTD =
+constexpr RideTypeDescriptor kFirstAidRTD =
 {
     .Category = RideCategory::shop,
     .StartTrackPiece = TrackElemType::flatTrack1x1A,
@@ -29,11 +30,11 @@ constexpr RideTypeDescriptor FirstAidRTD =
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::guestsShouldGoInsideFacility,
                      RtdFlag::describeAsInside, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .rideModes = { RideMode::shopStall },
     .DefaultMode = RideMode::shopStall,
     .OperatingSettings = { 8, 8 },
     .Naming = { STR_RIDE_NAME_FIRST_AID, STR_RIDE_DESCRIPTION_FIRST_AID },
-    .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
+    .NameConvention = { RideComponentType::car, RideComponentType::building, RideComponentType::station },
     .availableBreakdowns = {},
     .Heights = { 12, kDefaultFirstAidHeight, 0, 0, },
     .MaxMass = 255,
@@ -47,21 +48,21 @@ constexpr RideTypeDescriptor FirstAidRTD =
     .BonusValue = 5,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::FirstAid,
+    .ColourKey = RideColourKey::firstAid,
     .Name = "first_aid",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::Stall,
+        RatingsCalculationType::stall,
         { 1, 1, 1 },
         1,
         kDynamicRideShelterRating,
         false,
-        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+        { { RatingsModifierType::noModifier, 0, 0, 0, 0 } }
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
     .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
-    .DesignCreateMode = TrackDesignCreateMode::Default,
+    .DesignCreateMode = TrackDesignCreateMode::standard,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::kioskOrFacility,
     .specialType = RtdSpecialType::firstAid,

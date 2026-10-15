@@ -9,58 +9,48 @@
 
 #include "SmallSceneryElement.h"
 
-#include "../../Cheats.h"
-#include "../../Context.h"
-#include "../../Game.h"
-#include "../../OpenRCT2.h"
-#include "../../management/Finance.h"
-#include "../../network/Network.h"
+#include "../../drawing/Colour.h"
 #include "../../object/ObjectEntryManager.h"
-#include "../../object/ObjectManager.h"
 #include "../../object/SmallSceneryEntry.h"
-#include "../../ride/TrackDesign.h"
-#include "../Footpath.h"
 #include "../Map.h"
-#include "../MapAnimation.h"
-#include "../Park.h"
 #include "../Scenery.h"
 
 #include <cassert>
 
 namespace OpenRCT2
 {
-    uint8_t SmallSceneryElement::GetSceneryQuadrant() const
+    uint8_t SmallSceneryElement::getSceneryQuadrant() const
     {
         return (this->type & kTileElementQuadrantMask) >> 6;
     }
 
-    void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
+    void SmallSceneryElement::setSceneryQuadrant(uint8_t newQuadrant)
     {
         type &= ~kTileElementQuadrantMask;
         type |= (newQuadrant << 6);
     }
 
-    uint16_t SmallSceneryElement::GetEntryIndex() const
+    uint16_t SmallSceneryElement::getEntryIndex() const
     {
         return this->entryIndex;
     }
 
-    void SmallSceneryElement::SetEntryIndex(uint16_t newIndex)
+    void SmallSceneryElement::setEntryIndex(uint16_t newIndex)
     {
         this->entryIndex = newIndex;
     }
 
-    uint8_t SmallSceneryElement::GetAge() const
+    uint8_t SmallSceneryElement::getAge() const
     {
         return this->age;
     }
 
-    void SmallSceneryElement::SetAge(uint8_t newAge)
+    void SmallSceneryElement::setAge(uint8_t newAge)
     {
         this->age = newAge;
     }
 
-    void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
+    void SmallSceneryElement::increaseAge(const CoordsXY& sceneryPos)
     {
         if (isGhost())
             return;
@@ -72,7 +62,7 @@ namespace OpenRCT2
             // Only invalidate tiles when scenery crosses the withering thresholds, and can be withered.
             if (newAge == kSceneryWitherAgeThreshold1 || newAge == kSceneryWitherAgeThreshold2)
             {
-                auto* sceneryEntry = GetEntry();
+                auto* sceneryEntry = getEntry();
 
                 if (sceneryEntry->flags.has(SmallSceneryFlag::canWither))
                 {
@@ -82,50 +72,56 @@ namespace OpenRCT2
         }
     }
 
-    Drawing::Colour SmallSceneryElement::GetPrimaryColour() const
+    Drawing::Colour SmallSceneryElement::getPrimaryColour() const
     {
-        return Colour[0];
+        return colour[0];
     }
 
-    Drawing::Colour SmallSceneryElement::GetSecondaryColour() const
+    Drawing::Colour SmallSceneryElement::getSecondaryColour() const
     {
-        return Colour[1];
+        return colour[1];
     }
 
-    Drawing::Colour SmallSceneryElement::GetTertiaryColour() const
+    Drawing::Colour SmallSceneryElement::getTertiaryColour() const
     {
-        return Colour[2];
+        return colour[2];
     }
 
-    void SmallSceneryElement::SetPrimaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::setPrimaryColour(Drawing::Colour newColour, bool fromImport)
     {
-        assert(Drawing::colourIsValid(newColour));
-        Colour[0] = newColour;
+        if (!fromImport)
+            newColour = Drawing::clampColour(newColour);
+
+        colour[0] = newColour;
     }
 
-    void SmallSceneryElement::SetSecondaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::setSecondaryColour(Drawing::Colour newColour, bool fromImport)
     {
-        assert(Drawing::colourIsValid(newColour));
-        Colour[1] = newColour;
+        if (!fromImport)
+            newColour = Drawing::clampColour(newColour);
+
+        colour[1] = newColour;
     }
 
-    void SmallSceneryElement::SetTertiaryColour(Drawing::Colour newColour)
+    void SmallSceneryElement::setTertiaryColour(Drawing::Colour newColour, bool fromImport)
     {
-        assert(Drawing::colourIsValid(newColour));
-        Colour[2] = newColour;
+        if (!fromImport)
+            newColour = Drawing::clampColour(newColour);
+
+        colour[2] = newColour;
     }
 
-    bool SmallSceneryElement::NeedsSupports() const
+    bool SmallSceneryElement::needsSupports() const
     {
-        return static_cast<bool>(Flags2 & MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS);
+        return flags2.has(SmallSceneryElementFlag::needsSupports);
     }
 
-    void SmallSceneryElement::SetNeedsSupports()
+    void SmallSceneryElement::setNeedsSupports()
     {
-        Flags2 |= MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS;
+        return flags2.set(SmallSceneryElementFlag::needsSupports);
     }
 
-    const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
+    const SmallSceneryEntry* SmallSceneryElement::getEntry() const
     {
         return ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
     }

@@ -15,64 +15,64 @@
 
 namespace OpenRCT2
 {
-    uint8_t WallElement::GetSlope() const
+    uint8_t WallElement::getSlope() const
     {
         return (type & kTileElementQuadrantMask) >> 6;
     }
 
-    void WallElement::SetSlope(uint8_t newSlope)
+    void WallElement::setSlope(uint8_t newSlope)
     {
         type &= ~kTileElementQuadrantMask;
         type |= (newSlope << 6);
     }
 
-    Drawing::Colour WallElement::GetPrimaryColour() const
+    Drawing::Colour WallElement::getPrimaryColour() const
     {
-        return colour_1;
+        return colour1;
     }
 
-    Drawing::Colour WallElement::GetSecondaryColour() const
+    Drawing::Colour WallElement::getSecondaryColour() const
     {
-        return colour_2;
+        return colour2;
     }
 
-    Drawing::Colour WallElement::GetTertiaryColour() const
+    Drawing::Colour WallElement::getTertiaryColour() const
     {
-        return colour_3;
+        return colour3;
     }
 
-    void WallElement::SetPrimaryColour(Drawing::Colour newColour)
+    void WallElement::setPrimaryColour(Drawing::Colour newColour)
     {
-        colour_1 = newColour;
+        colour1 = newColour;
     }
 
-    void WallElement::SetSecondaryColour(Drawing::Colour newColour)
+    void WallElement::setSecondaryColour(Drawing::Colour newColour)
     {
-        colour_2 = newColour;
+        colour2 = newColour;
     }
 
-    void WallElement::SetTertiaryColour(Drawing::Colour newColour)
+    void WallElement::setTertiaryColour(Drawing::Colour newColour)
     {
-        colour_3 = newColour;
+        colour3 = newColour;
     }
 
-    uint8_t WallElement::GetAnimationFrame() const
+    uint8_t WallElement::getAnimationFrame() const
     {
         return (animation >> 3) & 0xF;
     }
 
-    void WallElement::SetAnimationFrame(uint8_t frameNum)
+    void WallElement::setAnimationFrame(uint8_t frameNum)
     {
         animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
         animation |= (frameNum & 0xF) << 3;
     }
 
-    bool WallElement::IsAnimating() const
+    bool WallElement::isAnimating() const
     {
         return (animation & WALL_ANIMATION_FLAG_IS_ANIMATING) != 0;
     }
 
-    void WallElement::SetIsAnimating(const bool isAnimating)
+    void WallElement::setIsAnimating(const bool isAnimating)
     {
         if (isAnimating)
             animation |= WALL_ANIMATION_FLAG_IS_ANIMATING;
@@ -80,54 +80,54 @@ namespace OpenRCT2
             animation &= ~WALL_ANIMATION_FLAG_IS_ANIMATING;
     }
 
-    uint16_t WallElement::GetEntryIndex() const
+    uint16_t WallElement::getEntryIndex() const
     {
         return entryIndex;
     }
 
-    const WallSceneryEntry* WallElement::GetEntry() const
+    const WallSceneryEntry* WallElement::getEntry() const
     {
         return ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
     }
 
-    void WallElement::SetEntryIndex(uint16_t newIndex)
+    void WallElement::setEntryIndex(uint16_t newIndex)
     {
         entryIndex = newIndex;
     }
 
-    Banner* WallElement::GetBanner() const
+    Banner* WallElement::getBanner() const
     {
-        return ::GetBanner(GetBannerIndex());
+        return ::GetBanner(getBannerIndex());
     }
 
-    BannerIndex WallElement::GetBannerIndex() const
+    BannerIndex WallElement::getBannerIndex() const
     {
-        return banner_index;
+        return bannerIndex;
     }
 
-    void WallElement::SetBannerIndex(BannerIndex newIndex)
+    void WallElement::setBannerIndex(BannerIndex newIndex)
     {
-        banner_index = newIndex;
+        bannerIndex = newIndex;
     }
 
-    bool WallElement::IsAcrossTrack() const
+    bool WallElement::isAcrossTrack() const
     {
         return (animation & WALL_ANIMATION_FLAG_ACROSS_TRACK) != 0;
     }
 
-    void WallElement::SetAcrossTrack(bool acrossTrack)
+    void WallElement::setAcrossTrack(bool acrossTrack)
     {
         animation &= ~WALL_ANIMATION_FLAG_ACROSS_TRACK;
         if (acrossTrack)
             animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
     }
 
-    bool WallElement::AnimationIsBackwards() const
+    bool WallElement::animationIsBackwards() const
     {
         return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
     }
 
-    void WallElement::SetAnimationIsBackwards(bool isBackwards)
+    void WallElement::setAnimationIsBackwards(bool isBackwards)
     {
         animation &= ~WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
         if (isBackwards)

@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/FlagHolder.hpp"
-#include "ColourPalette.h"
+#include "PaletteType.h"
 #include "WeatherDrawer.h"
 
 #include <memory>
@@ -18,10 +18,10 @@
 
 enum class DrawingEngine : int32_t
 {
-    None = -1,
-    SoftwareWithHardwareDisplay,
-    OpenGL,
-    Count,
+    none = -1,
+    softwareWithHardwareDisplay,
+    openGL,
+    count,
 };
 
 enum DrawingEngineFlag

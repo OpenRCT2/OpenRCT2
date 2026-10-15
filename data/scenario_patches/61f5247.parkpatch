@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Future World",
+    "sha256": "61f5247b45417cff7ce7aeff6bc293f2609f7c92c50db297940576d8374dd2ba",
+    "rides": [
+        {
+            "id": 1,
+            "operation": "set_name",
+            "name": "Lunavator"
+        }
+    ]
+}

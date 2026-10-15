@@ -19,7 +19,6 @@
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
-#include "../../track/Segment.h"
 
 using namespace OpenRCT2;
 
@@ -51,12 +50,12 @@ static void PaintFerrisWheelRiders(
 {
     for (int32_t i = 0; i < 32; i += 2)
     {
-        auto* peep = getGameState().entities.GetEntity<Guest>(vehicle.peep[i]);
-        if (peep == nullptr || peep->State != PeepState::onRide)
+        auto* peep = getGameState().entities.getEntity<Guest>(vehicle.peep[i]);
+        if (peep == nullptr || peep->state != PeepState::onRide)
             continue;
 
         auto frameNum = (vehicle.flatRideAnimationFrame + i * 4) % 128;
-        auto imageIndex = rideEntry.Cars[0].base_image_id + 32 + direction * 128 + frameNum;
+        auto imageIndex = rideEntry.Cars[0].baseImageId + 32 + direction * 128 + frameNum;
         auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[i], vehicle.peep_tshirt_colours[i + 1]);
         PaintAddImageAsChild(session, imageId, offset, bb);
     }
@@ -69,7 +68,7 @@ static void PaintFerrisWheelStructure(
     if (rideEntry == nullptr)
         return;
 
-    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
+    auto vehicle = getGameState().entities.getEntity<Vehicle>(ride.vehicles[0]);
     if (ride.flags.has(RideFlag::onTrack) && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::entity;
@@ -89,7 +88,7 @@ static void PaintFerrisWheelStructure(
 
     auto imageOffset = vehicle != nullptr ? vehicle->flatRideAnimationFrame % 8 : 0;
     auto leftSupportImageId = supportsImageTemplate.WithIndex(22150 + (direction & 1) * 2);
-    auto wheelImageId = wheelImageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction * 8 + imageOffset);
+    auto wheelImageId = wheelImageTemplate.WithIndex(rideEntry->Cars[0].baseImageId + direction * 8 + imageOffset);
     auto rightSupportImageId = leftSupportImageId.WithIndexOffset(1);
 
     PaintAddImageAsParent(session, leftSupportImageId, offset, bb);

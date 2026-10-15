@@ -9,12 +9,11 @@
 
 #pragma once
 
-#include "../../world/Entrance.h"
 #include "../GameAction.hpp"
 
 namespace OpenRCT2::GameActions
 {
-    class RideEntranceExitPlaceAction final : public GameActionBase<GameCommand::PlaceRideEntranceOrExit>
+    class RideEntranceExitPlaceAction final : public GameActionBase<GameCommand::placeRideEntranceOrExit>
     {
     private:
         CoordsXY _loc;

@@ -42,7 +42,7 @@ protected:
         ASSERT_TRUE(initialised);
 
         GetContext()->LoadParkFromFile(parkPath);
-        GameLoadInit();
+        GameLoadInit(); // NB: calls `setActiveScene`
 
         // Changed in some tests. Store to restore its value
         _gLegacyScene = gLegacyScene;
@@ -133,7 +133,7 @@ void CheckMapTiles()
     {
         for (int x = 0; x < kMaximumMapSizeTechnical; ++x)
         {
-            auto pos = TileCoordsXY(x, y).ToCoordsXY();
+            auto pos = TileCoordsXY(x, y).toCoordsXY();
 
             bool matches = CompareLists<T>(pos);
             EXPECT_TRUE(matches) << "x = " << x << ", y = " << y;

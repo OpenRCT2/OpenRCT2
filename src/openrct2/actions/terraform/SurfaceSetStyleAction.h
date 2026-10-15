@@ -11,18 +11,31 @@
 
 #include "../GameAction.hpp"
 
+namespace OpenRCT2
+{
+    class TerrainEdgeObject;
+    class TerrainSurfaceObject;
+} // namespace OpenRCT2
+
 namespace OpenRCT2::GameActions
 {
-    class SurfaceSetStyleAction final : public GameActionBase<GameCommand::ChangeSurfaceStyle>
+    class SurfaceSetStyleAction final : public GameActionBase<GameCommand::changeSurfaceStyle>
     {
     private:
         MapRange _range;
         ObjectEntryIndex _surfaceStyle{};
         ObjectEntryIndex _edgeStyle{};
+        Drawing::Colour _surfaceColour1{};
+        Drawing::Colour _edgeColour1{};
+
+        bool surfaceColour1NeedsRecolour(const SurfaceElement& surfaceElement, const TerrainSurfaceObject& surfaceObject) const;
+        bool edgeColour1NeedsRecolour(const SurfaceElement& surfaceElement, const TerrainEdgeObject& surfaceObject) const;
 
     public:
         SurfaceSetStyleAction() = default;
-        SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle);
+        SurfaceSetStyleAction(
+            MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle, Drawing::Colour surfaceColour1,
+            Drawing::Colour edgeColour1);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

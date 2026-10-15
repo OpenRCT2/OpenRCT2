@@ -9,11 +9,9 @@
 
 #pragma once
 
-#include "core/BackgroundWorker.hpp"
 #include "core/StringTypes.h"
 #include "interface/WindowClasses.h"
 #include "localisation/StringIdType.h"
-#include "world/Location.hpp"
 
 #include <memory>
 
@@ -23,7 +21,7 @@ struct IGameStateSnapshots;
 struct IScenarioRepository;
 struct ITrackDesignRepository;
 struct NewVersionInfo;
-struct TTFFontDescriptor;
+struct ScreenCoordsXY;
 
 namespace OpenRCT2
 {
@@ -31,7 +29,7 @@ namespace OpenRCT2
     enum class WindowView : uint8_t;
 
     class AssetPackManager;
-    class Formatter;
+    class BackgroundWorker;
     class Intent;
     class ISceneManager;
 

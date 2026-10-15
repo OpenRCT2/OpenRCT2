@@ -34,8 +34,6 @@
 #include "StringBuilder.h"
 
 #include <cassert>
-#include <cstdarg>
-#include <cstdio>
 #include <cstdlib>
 #include <sstream>
 
@@ -107,7 +105,7 @@ namespace OpenRCT2::Guard
             _lastAssertMessage = std::make_optional(formattedMessage);
         }
 
-#ifdef DEBUG
+#if DEBUG > 0
         Debug::Break();
 #endif
 

@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "ApplyTransparencyShader.h"
-#include "OpenGLAPI.h"
 #include "OpenGLFramebuffer.h"
 
 namespace OpenRCT2::Ui
 {
+    class ApplyTransparencyShader;
+
     /**
      * Class to maintain two different framebuffers where the active framebuffer
      * will swap between the two, copying the other's pixels in the process for

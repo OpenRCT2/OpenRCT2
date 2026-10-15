@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../Input.h"
 #include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -24,7 +23,6 @@
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"
 #include "Paint.h"
-#include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <limits>
@@ -237,13 +235,13 @@ static void VirtualFloorGetTileProperties(
     {
         const auto elementType = tileElement->getType();
 
-        if (elementType == TileElementType::Surface)
+        if (elementType == TileElementType::surface)
         {
             if (height < tileElement->getClearanceZ())
             {
                 *outBelowGround = true;
             }
-            else if (height < (tileElement->getBaseZ() + kLandHeightStep) && tileElement->asSurface()->GetSlope() != 0)
+            else if (height < (tileElement->getBaseZ() + kLandHeightStep) && tileElement->asSurface()->getSlope() != 0)
             {
                 *outBelowGround = true;
                 *outOccupied = true;
@@ -260,7 +258,7 @@ static void VirtualFloorGetTileProperties(
             continue;
         }
 
-        if (elementType == TileElementType::Wall || elementType == TileElementType::Banner)
+        if (elementType == TileElementType::wall || elementType == TileElementType::banner)
         {
             int32_t direction = tileElement->getDirection();
             *outOccupiedEdges |= 1 << direction;
@@ -318,9 +316,9 @@ void VirtualFloorPaint(PaintSession& session)
 
     // Try the four tiles next to us for the same parameters as above,
     //  if our parameters differ we set an edge towards that tile
-    for (uint8_t i = 0; i < kNumOrthogonalDirections; i++)
+    for (Direction i : kAllDirections)
     {
-        uint8_t effectiveRotation = (kNumOrthogonalDirections + i - direction) % kNumOrthogonalDirections;
+        Direction effectiveRotation = (kNumOrthogonalDirections + i - direction) % kNumOrthogonalDirections;
         CoordsXY theirLocation = session.MapPosition + scenery_half_tile_offsets[effectiveRotation];
 
         bool theyAreOccupied;

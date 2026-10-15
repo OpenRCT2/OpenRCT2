@@ -31,6 +31,7 @@
     #include "../Version.h"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
+    #include "../drawing/Font.h"
     #include "../localisation/Language.h"
 
     #include <cassert>
@@ -882,7 +883,7 @@ namespace OpenRCT2::Platform
         return false;
     }
 
-    std::vector<std::string_view> GetSearchablePathsRCT1()
+    std::vector<std::string> GetSearchablePathsRCT1()
     {
         return {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
@@ -895,7 +896,7 @@ namespace OpenRCT2::Platform
         };
     }
 
-    std::vector<std::string_view> GetSearchablePathsRCT2()
+    std::vector<std::string> GetSearchablePathsRCT2()
     {
         return {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",

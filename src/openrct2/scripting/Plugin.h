@@ -27,19 +27,19 @@ namespace OpenRCT2::Scripting
          * Scripts that can run on servers or clients with no impact on the game state and will not
          * be uploaded to clients.
          */
-        Local,
+        local,
 
         /**
          * Scripts that can run on servers and will be uploaded to clients with ability to
          * modify game state in certain contexts.
          */
-        Remote,
+        remote,
 
         /**
          * Scripts that run when the game starts and only unload explicitly rather than when the
          * park changes.
          */
-        Intransient,
+        intransient,
     };
 
     struct PluginMetadata

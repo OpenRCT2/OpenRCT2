@@ -10,10 +10,17 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "Location.hpp"
 #include "ScenerySelection.h"
 
 #include <vector>
+
+struct CoordsXY;
+struct CoordsXYZ;
+
+namespace OpenRCT2
+{
+    enum class ObjectType : uint8_t;
+}
 
 constexpr uint8_t kSceneryWitherAgeThreshold1 = 0x28;
 constexpr uint8_t kSceneryWitherAgeThreshold2 = 0x37;
@@ -40,9 +47,9 @@ enum
 
 enum class ScatterToolDensity : uint8_t
 {
-    LowDensity,
-    MediumDensity,
-    HighDensity
+    lowDensity,
+    mediumDensity,
+    highDensity
 };
 
 extern uint8_t gSceneryQuadrant;

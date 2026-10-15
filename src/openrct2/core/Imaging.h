@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include "../drawing/ColourPalette.h"
+#include "../drawing/PaletteType.h"
 
 #include <functional>
 #include <istream>
-#include <memory>
 #include <optional>
 #include <string_view>
 #include <vector>

@@ -13,7 +13,6 @@
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
 #include "../../ride/Ride.h"
-#include "../../ride/TrackPaint.h"
 #include "../../ride/Vehicle.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
@@ -118,15 +117,15 @@ namespace OpenRCT2
         if (rideEntry == nullptr)
             return;
 
-        auto* peep = getGameState().entities.GetEntity<Guest>(vehicle->peep[0]);
+        auto* peep = getGameState().entities.getEntity<Guest>(vehicle->peep[0]);
         if (peep == nullptr)
             return;
 
         uint8_t frame = MiniGolfPeepAnimationFrames[EnumValue(vehicle->mini_golf_current_animation)][vehicle->animation_frame];
         uint32_t ebx = (frame << 2) + Entity::Yaw::YawTo4(imageDirection);
 
-        ImageIndex index = rideEntry->Cars[0].base_image_id + 1 + ebx;
-        auto image = ImageId(index, peep->TshirtColour, peep->TrousersColour);
+        ImageIndex index = rideEntry->Cars[0].baseImageId + 1 + ebx;
+        auto image = ImageId(index, peep->tShirtColour, peep->trousersColour);
         PaintAddImageAsParent(session, image, { 0, 0, z }, { { 0, 0, z + 5 }, { 1, 1, 11 } });
     }
 
@@ -136,7 +135,7 @@ namespace OpenRCT2
     void VehicleVisualMiniGolfBall(
         PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
     {
-        if (vehicle->mini_golf_current_animation != MiniGolfAnimation::PlaceBallDown)
+        if (vehicle->mini_golf_current_animation != MiniGolfAnimation::placeBallDown)
         {
             return;
         }
@@ -154,7 +153,7 @@ namespace OpenRCT2
         if (rideEntry == nullptr)
             return;
 
-        uint32_t image_id = rideEntry->Cars[0].base_image_id;
+        uint32_t image_id = rideEntry->Cars[0].baseImageId;
         PaintAddImageAsParent(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z + 3 }, { 1, 1, 0 } });
     }
 } // namespace OpenRCT2

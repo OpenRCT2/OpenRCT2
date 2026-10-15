@@ -8,18 +8,16 @@
  *****************************************************************************/
 
 #include "../Context.h"
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../config/ConfigTypes.h"
 #include "../core/Console.hpp"
 #include "../entity/EntityRegistry.h"
-#include "../network/Network.h"
-#include "../platform/Platform.h"
+#include "../network/NetworkTypes.h"
 #include "CommandLine.hpp"
 
-#include <cstdlib>
 #include <memory>
+
+using namespace OpenRCT2::CommandLine;
 
 namespace OpenRCT2
 {
@@ -29,7 +27,7 @@ namespace OpenRCT2
         kOptionTableEnd
     };
 
-    static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator);
+    static ExitCode HandleSimulate(CommandLineArgEnumerator* argEnumerator);
 
     const CommandLineCommand CommandLine::kSimulateCommands[]{
         // Main commands
@@ -38,20 +36,20 @@ namespace OpenRCT2
     };
     // clang-format on
 
-    static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
+    static ExitCode HandleSimulate(CommandLineArgEnumerator* argEnumerator)
     {
         const utf8* inputPath;
         if (!argEnumerator->TryPopString(&inputPath))
         {
             Console::Error::WriteLine("Expected a save file path");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         int32_t ticks;
         if (!argEnumerator->TryPopInteger(&ticks))
         {
             Console::Error::WriteLine("Expected a number of ticks to simulate");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         gOpenRCT2Headless = true;
@@ -65,7 +63,7 @@ namespace OpenRCT2
         {
             if (!context->LoadParkFromFile(inputPath))
             {
-                return EXITCODE_FAIL;
+                return ExitCode::fail;
             }
 
             Console::WriteLine("Running %d ticks...", ticks);
@@ -73,14 +71,14 @@ namespace OpenRCT2
             {
                 gameStateUpdateLogic();
             }
-            Console::WriteLine("Completed: %s", getGameState().entities.GetAllEntitiesChecksum().ToString().c_str());
+            Console::WriteLine("Completed: %s", getGameState().entities.getAllEntitiesChecksum().toString().c_str());
         }
         else
         {
             Console::Error::WriteLine("Context initialization failed.");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
-        return EXITCODE_OK;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2

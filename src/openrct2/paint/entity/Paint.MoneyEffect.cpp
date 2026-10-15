@@ -45,7 +45,7 @@ void PaintMoneyEffect(PaintSession& session, const MoneyEffect& moneyEffect)
         0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
     };
 
-    auto [stringId, stringValue] = moneyEffect.GetStringId();
+    auto [stringId, stringValue] = moneyEffect.getStringId();
     PaintFloatingMoneyEffect(
         session, stringValue, stringId, moneyEffect.y, moneyEffect.z,
         const_cast<int8_t*>(&kWaveOffset[moneyEffect.wiggle % 22]), moneyEffect.offsetX, session.CurrentRotation);

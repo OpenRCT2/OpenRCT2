@@ -11,7 +11,6 @@
 
 #include <cstdint>
 #include <memory>
-#include <set>
 #include <string>
 
 namespace OpenRCT2::GameActions
@@ -39,8 +38,8 @@ namespace OpenRCT2
     public:
         enum class RecordType
         {
-            NORMAL,
-            SILENT,
+            normal,
+            silent,
         };
 
         virtual ~IReplayManager() = default;
@@ -55,7 +54,7 @@ namespace OpenRCT2
         virtual void AddGameAction(uint32_t tick, const GameActions::GameAction* action) = 0;
 
         virtual bool StartRecording(
-            const std::string& name, uint32_t maxTicks = k_MaxReplayTicks, RecordType rt = RecordType::NORMAL)
+            const std::string& name, uint32_t maxTicks = k_MaxReplayTicks, RecordType rt = RecordType::normal)
             = 0;
         virtual bool StopRecording(bool discard = false) = 0;
         virtual bool GetCurrentReplayInfo(ReplayRecordInfo& info) const = 0;

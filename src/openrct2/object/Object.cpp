@@ -9,16 +9,12 @@
 
 #include "Object.h"
 
-#include "../Context.h"
 #include "../Diagnostic.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/String.hpp"
 #include "../core/ZipStream.hpp"
 #include "../drawing/Image.h"
-#include "../localisation/Language.h"
-#include "../localisation/StringIds.h"
-#include "../world/Scenery.h"
 #include "ObjectLimits.h"
 #include "ObjectRepository.h"
 
@@ -39,20 +35,20 @@ namespace OpenRCT2
     {
         if (!newEntry.IsEmpty())
         {
-            Generation = ObjectGeneration::DAT;
+            Generation = ObjectGeneration::dat;
             Entry = newEntry;
         }
     }
 
     ObjectEntryDescriptor::ObjectEntryDescriptor(std::string_view newIdentifier)
     {
-        Generation = ObjectGeneration::JSON;
+        Generation = ObjectGeneration::json;
         Identifier = std::string(newIdentifier);
     }
 
     ObjectEntryDescriptor::ObjectEntryDescriptor(ObjectType type, std::string_view newIdentifier)
     {
-        Generation = ObjectGeneration::JSON;
+        Generation = ObjectGeneration::json;
         Identifier = std::string(newIdentifier);
         Type = type;
     }
@@ -61,34 +57,34 @@ namespace OpenRCT2
     {
         if (!ori.Identifier.empty())
         {
-            Generation = ObjectGeneration::JSON;
+            Generation = ObjectGeneration::json;
             Identifier = std::string(ori.Identifier);
         }
         else
         {
-            Generation = ObjectGeneration::DAT;
+            Generation = ObjectGeneration::dat;
             Entry = ori.ObjectEntry;
         }
     }
 
     bool ObjectEntryDescriptor::HasValue() const
     {
-        return Generation != ObjectGeneration::JSON || !Identifier.empty();
+        return Generation != ObjectGeneration::json || !Identifier.empty();
     }
 
     ObjectType ObjectEntryDescriptor::GetType() const
     {
-        return Generation == ObjectGeneration::JSON ? Type : Entry.GetType();
+        return Generation == ObjectGeneration::json ? Type : Entry.GetType();
     }
 
     std::string_view ObjectEntryDescriptor::GetName() const
     {
-        return Generation == ObjectGeneration::JSON ? Identifier : Entry.GetName();
+        return Generation == ObjectGeneration::json ? Identifier : Entry.GetName();
     }
 
     std::string ObjectEntryDescriptor::ToString() const
     {
-        if (Generation == ObjectGeneration::DAT)
+        if (Generation == ObjectGeneration::dat)
         {
             char buffer[32];
             std::snprintf(&buffer[0], 9, "%08X", Entry.flags);
@@ -131,7 +127,7 @@ namespace OpenRCT2
     {
         if (Generation != rhs.Generation)
             return false;
-        if (Generation == ObjectGeneration::DAT)
+        if (Generation == ObjectGeneration::dat)
         {
             return Entry == rhs.Entry;
         }
@@ -310,97 +306,6 @@ namespace OpenRCT2
     bool RCTObjectEntry::operator!=(const RCTObjectEntry& rhs) const
     {
         return !(*this == rhs);
-    }
-
-    bool ObjectAsset::IsAvailable() const
-    {
-        if (_zipPath.empty())
-        {
-            return File::Exists(_path);
-        }
-
-        auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
-        return zipArchive != nullptr && zipArchive->Exists(_path);
-    }
-
-    uint64_t ObjectAsset::GetSize() const
-    {
-        if (_zipPath.empty())
-        {
-            return File::GetSize(_path);
-        }
-
-        auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
-        if (zipArchive != nullptr)
-        {
-            auto index = zipArchive->GetIndexFromPath(_path);
-            if (index.has_value())
-            {
-                auto size = zipArchive->GetFileSize(index.value());
-                return size;
-            }
-        }
-        return 0;
-    }
-
-    std::vector<uint8_t> ObjectAsset::GetData() const
-    {
-        if (_zipPath.empty())
-        {
-            return File::ReadAllBytes(_path);
-        }
-
-        auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
-        if (zipArchive != nullptr)
-        {
-            return zipArchive->GetFileData(_path);
-        }
-        return {};
-    }
-
-    std::unique_ptr<IStream> ObjectAsset::GetStream() const
-    {
-        try
-        {
-            if (_zipPath.empty())
-            {
-                return std::make_unique<FileStream>(_path, FileMode::open);
-            }
-
-            auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
-            if (zipArchive != nullptr)
-            {
-                auto stream = zipArchive->GetFileStream(_path);
-                if (stream != nullptr)
-                {
-                    return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
-                }
-            }
-        }
-        catch (...)
-        {
-        }
-        return {};
-    }
-
-    const std::string& ObjectAsset::GetZipPath() const
-    {
-        return _zipPath;
-    }
-
-    const std::string& ObjectAsset::GetPath() const
-    {
-        return _path;
-    }
-
-    size_t ObjectAsset::GetHash() const
-    {
-        // Combine hashes of zipPath and path
-        std::hash<std::string> hasher;
-        auto h1 = hasher(_zipPath);
-        auto h2 = hasher(_path);
-        // Combine the hashes based on example from https://en.cppreference.com/w/cpp/utility/hash.html
-        return h1 ^ (h2 << 1);
     }
 
     u8string VersionString(const ObjectVersion& version)

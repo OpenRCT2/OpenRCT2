@@ -9,21 +9,14 @@
 
 #include "../Paint.h"
 
-#include "../../Game.h"
-#include "../../GameState.h"
-#include "../../config/Config.h"
-#include "../../drawing/Drawing.h"
+#include "../../drawing/PaletteIndex.h"
+#include "../../drawing/ScrollingText.h"
 #include "../../interface/Viewport.h"
-#include "../../localisation/Formatter.h"
-#include "../../localisation/Formatting.h"
-#include "../../localisation/StringIds.h"
-#include "../../object/BannerObject.h"
+#include "../../object/BannerSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Banner.h"
-#include "../../world/Scenery.h"
-#include "../../world/TileInspector.h"
 #include "../../world/tile_element/BannerElement.h"
 #include "Paint.Banner.h"
 #include "Paint.TileElement.h"
@@ -67,10 +60,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     PROFILED_FUNCTION();
 
     if (session.rt.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
-        || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+        || session.ViewFlags.has(ViewportFlag::highlightPathIssues))
         return;
 
-    auto banner = bannerElement.GetBanner();
+    auto banner = bannerElement.getBanner();
     if (banner == nullptr)
     {
         return;
@@ -86,7 +79,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
 
     height -= 16;
 
-    direction += bannerElement.GetPosition();
+    direction += bannerElement.getPosition();
     direction &= 3;
 
     ImageId imageTemplate;

@@ -11,16 +11,14 @@
 
     #include "CustomMenu.h"
 
-    #include "../interface/Viewport.h"
-
     #include <openrct2-ui/UiContext.h>
     #include <openrct2-ui/input/ShortcutManager.h>
-    #include <openrct2/Input.h>
     #include <openrct2/core/EnumMap.hpp>
+    #include <openrct2/interface/Viewport.h>
     #include <openrct2/scripting/ScriptUtil.hpp>
-    #include <openrct2/ui/UiContext.h>
     #include <openrct2/ui/WindowManager.h>
     #include <openrct2/world/Map.h>
+    #include <openrct2/world/TileElementsView.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -64,7 +62,7 @@ namespace OpenRCT2::Scripting
         scriptEngine.ExecutePluginCall(Owner, Callback.callback, {}, false);
     }
 
-    static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
+    static constexpr std::array<std::string_view, EnumValue(CursorID::count)> kCursorNames = {
         "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
         "picker",        "tree_down",  "fountain_down", "statue_down",   "bench_down", "cross_hair",  "bin_down",
         "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
@@ -74,9 +72,9 @@ namespace OpenRCT2::Scripting
     JSValue CursorIDToJSValue(JSContext* ctx, CursorID id)
     {
         auto idVal = EnumValue(id);
-        if (idVal < CursorNames.size())
+        if (idVal < kCursorNames.size())
         {
-            return JSFromStdString(ctx, CursorNames[idVal]);
+            return JSFromStdString(ctx, kCursorNames[idVal]);
         }
         return JS_UNDEFINED;
     }
@@ -86,15 +84,15 @@ namespace OpenRCT2::Scripting
         if (JS_IsString(value))
         {
             std::string valueStr = JSToStdString(ctx, value);
-            for (uint8_t i = 0; i < EnumValue(CursorID::Count); i++)
+            for (uint8_t i = 0; i < EnumValue(CursorID::count); i++)
             {
-                if (CursorNames[i] == valueStr)
+                if (kCursorNames[i] == valueStr)
                 {
                     return static_cast<CursorID>(i);
                 }
             }
         }
-        return CursorID::Arrow;
+        return CursorID::arrow;
     }
 
     static const EnumMap<ViewportInteractionItem> ToolFilterMap{
@@ -218,19 +216,15 @@ namespace OpenRCT2::Scripting
             }
             else if (info.Element != nullptr)
             {
-                auto el = MapGetFirstElementAt(info.Loc);
-                if (el != nullptr)
+                int32_t index = 0;
+                for (auto* el : TileElementsView(info.Loc))
                 {
-                    int32_t index = 0;
-                    do
+                    if (el == info.Element)
                     {
-                        if (el == info.Element)
-                        {
-                            JS_SetPropertyStr(ctx, obj, "tileElementIndex", JS_NewInt32(ctx, index));
-                            break;
-                        }
-                        index++;
-                    } while (!(el++)->isLastForTile());
+                        JS_SetPropertyStr(ctx, obj, "tileElementIndex", JS_NewInt32(ctx, index));
+                        break;
+                    }
+                    index++;
                 }
             }
 
@@ -266,14 +260,14 @@ namespace OpenRCT2::Scripting
             JSValue filter = JS_GetPropertyStr(ctx, value, "filter");
             if (JS_IsArray(filter))
             {
-                customTool.Filter = 0;
+                customTool.Filter.clearAll();
                 int64_t len = -1;
                 JS_GetLength(ctx, filter, &len);
                 for (int64_t i = 0; i < len; i++)
                 {
                     JSValue curFilter = JS_GetPropertyInt64(ctx, filter, i);
                     auto elem = FilterJSValToEnum(ctx, curFilter);
-                    customTool.Filter |= static_cast<uint32_t>(EnumToFlag(elem));
+                    customTool.Filter.set(elem);
                     JS_FreeValue(ctx, curFilter);
                 }
             }

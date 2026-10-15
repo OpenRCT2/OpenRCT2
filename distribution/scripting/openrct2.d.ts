@@ -224,6 +224,11 @@ declare global {
         readonly mode: GameMode;
 
         /**
+         * Current game speed (0=normal, 1=fast, 2=turbo, 3=super fast, 4=hyper). Matches gamesetspeed action.
+         */
+        readonly gameSpeed: number;
+
+        /**
          * Whether the game is currently paused or not. Readonly in network mode.
          */
         paused: boolean;
@@ -234,6 +239,13 @@ declare global {
          * @param options Options that control the capture and output file.
          */
         captureImage(options: CaptureOptions): void;
+
+        /**
+         * Save the current game to disc.
+         * If no options are passed and the game has not been saved before the save menu will be shown.
+         * @param options Options that control the save output.
+         */
+        saveGame(options?: SaveGameOptions): void;
 
         /**
          * @deprecated Use {@link ObjectManager.getObject} instead.
@@ -508,6 +520,7 @@ declare global {
         subscribe(hook: "interval.day", callback: () => void): IDisposable;
         subscribe(hook: "interval.tick", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
+        subscribe(hook: "map.resize", callback: (e: MapChangeSizeArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
         subscribe(hook: "network.authenticate", callback: (e: NetworkAuthenticateEventArgs) => void): IDisposable;
         subscribe(hook: "network.chat", callback: (e: NetworkChatEventArgs) => void): IDisposable;
@@ -599,6 +612,16 @@ declare global {
          * Whether to enable transparency in the screenshot.
          */
         transparent?: boolean;
+    }
+
+    interface SaveGameOptions {
+        /**
+         * A relative filename from the savegame directory to save the game as.
+         * The .park extension will be appended automatically.
+         * If not specified, the game will save to the existing path,
+         * or show a save menu if the game has not been saved before.
+         */
+        filename?: string;
     }
 
     type GameMode =
@@ -816,9 +839,11 @@ declare global {
         /**
          * Bitmask.
          *
-         * - `1`: `(001)`: Small scenery and walls
-         * - `2`: `(010)`: Large scenery
-         * - `4`: `(100)`: Footpaths
+         * -  `1`: `(00001)`: Small scenery (and walls prior to API version 117)
+         * -  `2`: `(00010)`: Large scenery
+         * -  `4`: `(00100)`: Footpaths
+         * -  `8`: `(01000)`: Walls
+         * - `16`: `(10000)`: Footpath additions
          */
         itemsToClear: number;
     }
@@ -846,7 +871,7 @@ declare global {
         object: number;
         railingsObject: number;
         /** 0 if flat, 1 if sloped */
-        slopeType: number; // 
+        slopeType: number; //
         /** direction if sloped, otherwise ignored */
         slopeDirection: Direction;
         constructFlags: number;
@@ -1649,7 +1674,7 @@ declare global {
 		readonly rideId: number;
 		breakdownReason: string;
 	}
- 
+
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
         excitement: number;
@@ -1760,6 +1785,25 @@ declare global {
          */
         getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
 
+        /**
+         * Gets a {@link PathNavigator} for the given footpath element. This can be used
+         * to explore the footpath network as a graph for pathfinding.
+         * @param location The tile coordinates.
+         * @param elementIndex The index of the footpath element on the tile.
+         * @param options Optional traversal rules; persist for the lifetime of the navigator
+         *                and apply to {@link PathNavigator.getConnectedPaths},
+         *                {@link PathNavigator.moveTo}, and {@link PathNavigator.permittedEdges}.
+         */
+        getPathNavigator(location: CoordsXY, elementIndex: number, options?: PathNavigationOptions): PathNavigator | null;
+
+        /**
+         * Gets a {@link PathNavigator} for the footpath at the given world coordinates.
+         * This is a convenience method for A* pathfinding where the element index is not known.
+         * @param position The world coordinates (x, y, z) of the footpath.
+         * @param options Optional traversal rules; see the other overload for details.
+         */
+        getPathNavigator(position: CoordsXYZ, options?: PathNavigationOptions): PathNavigator | null;
+
     }
 
     type TileElementType =
@@ -1825,8 +1869,13 @@ declare global {
         station: number | null;
 
         addition: number | null;
+        /**
+         * Raw path addition status: 2-bit slot per edge (3 = empty, 0 = full), 255 = all empty.
+         */
         additionStatus: number | null;
         isAdditionBroken: boolean | null;
+        /** True when a litter bin has a fully-filled slot (visibly full / emptiable). Null if not a bin. */
+        readonly isAdditionFull: boolean | null;
         isAdditionGhost: boolean | null;
     }
 
@@ -2447,6 +2496,25 @@ declare global {
         readonly downtime: number;
 
         /**
+         * Reliability percentage shown on the Maintenance tab (0–100).
+         */
+        readonly reliability: number;
+
+        /**
+         * Number of guests currently on the ride (vehicles and queue cars).
+         */
+        readonly guestCount: number;
+
+        /** True when no guests are currently on the ride. */
+        readonly isEmpty: boolean;
+
+        /** Current hourly income shown on the ride Finance tab. */
+        readonly incomePerHour: number;
+
+        /** Current hourly profit shown on the ride Finance tab. */
+        readonly profit: number;
+
+        /**
          * The currently set chain lift speed in miles per hour. Use `context.formatString()` to convert speed values to a localised value/unit string. Ex: `formatString('{VELOCITY}', ride.liftHillSpeed)`.
          */
         liftHillSpeed: number;
@@ -2567,6 +2635,8 @@ declare global {
         length: number;
         entrance: CoordsXYZD;
         exit: CoordsXYZD;
+        /** Queue wait time in minutes for this station. */
+        readonly queueTime: number;
     }
 
     interface TrackSegment {
@@ -2812,6 +2882,90 @@ declare global {
         next(): boolean;
     }
 
+    /**
+     * Describes a footpath tile, either the {@link PathNavigator}'s current
+     * position or an adjacent reachable neighbor returned by
+     * {@link PathNavigator.getConnectedPaths}.
+     */
+    interface PathConnection {
+        /** World coordinates of the path tile. */
+        readonly position: CoordsXYZ;
+        /** The index of the footpath element on the tile. */
+        readonly elementIndex: number;
+        /**
+         * The cardinal direction (0-3) of entry into this tile, or null if
+         * this represents a navigator's starting position.
+         */
+        readonly direction: Direction | null;
+        /** Whether the path is sloped. */
+        readonly isSloped: boolean;
+        /** The slope direction, if sloped. */
+        readonly slopeDirection: Direction | null;
+        /** Whether the path is a queue line. */
+        readonly isQueue: boolean;
+        /** Whether the path is wide. */
+        readonly isWide: boolean;
+        /** The ride index if this is a queue path, otherwise null. */
+        readonly ride: number | null;
+        /** The station index if this is a queue path, otherwise null. */
+        readonly station: number | null;
+    }
+
+    /**
+     * Traversal rules for a {@link PathNavigator}. By default the navigator only
+     * traverses regular paths. Set any option to `true` to include that kind of path.
+     * All fields are optional and default to `false`.
+     */
+    interface PathNavigationOptions {
+        /** If true, no-entry signs (banners) block traversal. Default: false. */
+        respectBanners?: boolean;
+
+        /** If true, ghost (preview / not-yet-built) path elements are included. Default: false. */
+        includeGhosts?: boolean;
+
+        /** If true, queue paths are included during traversal. Default: false. */
+        includeQueues?: boolean;
+
+        /** If true, wide paths are included during traversal. Default: false. */
+        includeWidePaths?: boolean;
+    }
+
+    /**
+     * Allows exploring the footpath network as a graph.
+     * Unlike {@link TrackIterator} which follows a linear circuit,
+     * PathNavigator sits on a path tile and lets you discover all
+     * connected neighbors for graph traversal (e.g. A* pathfinding).
+     *
+     * Traversal behavior is controlled by the {@link PathNavigationOptions}
+     * passed to {@link Map.getPathNavigator}.
+     */
+    interface PathNavigator {
+        /** The current path tile as a {@link PathConnection}. */
+        readonly current: PathConnection;
+        /** The raw edge connection bitmask (lower 4 bits, directions 0-3). */
+        readonly edges: number;
+        /**
+         * Edge bitmask after applying the navigator's banner rules.
+         * If `respectBanners` is false (the default), this returns the raw edges.
+         */
+        readonly permittedEdges: number;
+
+        /**
+         * Returns all reachable neighboring path tiles from the current position.
+         * Takes into account edge connections, slopes, height differences,
+         * and the {@link PathNavigationOptions} the navigator was created with.
+         */
+        getConnectedPaths(): PathConnection[];
+
+        /**
+         * Moves the navigator to the connected path in the given direction.
+         * Honours the navigator's {@link PathNavigationOptions}.
+         * @param direction The cardinal direction (0-3) to move.
+         * @returns true if the move was successful, false otherwise.
+         */
+        moveTo(direction: Direction): boolean;
+    }
+
     type EntityType =
         "balloon" |
         "car" |
@@ -3000,7 +3154,7 @@ declare global {
          * The type of subposition coordinates that this vehicle is using to find its
          * position on the track.
          */
-        readonly subposition: number;
+        subposition: number;
 
         /**
          * List of guest IDs ordered by seat.
@@ -3836,6 +3990,11 @@ declare global {
 
     interface Entertainer extends BaseStaff {
         staffType: "entertainer";
+
+        /**
+         * The number of guests entertained by the entertainer.
+         */
+        readonly guestsEntertained: number;
     }
 
     interface PatrolArea {
@@ -4126,7 +4285,8 @@ declare global {
         "toggle_scenery_cluster" |
         "passwordless_login" |
         "modify_tile" |
-        "edit_scenario_options";
+        "edit_scenario_options" |
+        "drag_path_area";
 
     /**
      * Park APIs
@@ -4282,10 +4442,11 @@ declare global {
         readonly guestGenerationProbability: number;
 
         /**
-         * Spawns a new guest at a random peep spawn point.
+         * Spawns a new guest at a random peep spawn point, or null if a guest could not
+         * spawn due to entity limits or no spawn points.
          * Note: The "guest.generation" hook will be called before this function returns.
          */
-        generateGuest(): Guest;
+        generateGuest(): Guest | null;
 
         /**
          * The average amount of cash guests will spawn with.
@@ -4998,18 +5159,19 @@ declare global {
         "mountain_tool_even" | "mountain_tool_odd" | "multiplayer" | "multiplayer_desync" | "multiplayer_sync" |
         "multiplayer_toolbar" | "multiplayer_toolbar_pressed" | "music" | "mute" | "mute_pressed" | "news_messages" |
         "new_ride" | "next" | "no_entry" | "open" | "paintbrush" | "palette_invisible" | "palette_invisible_pressed" | "park" |
-        "paste" | "path_railings" | "path_surfaces" | "paths" | "patrol" | "pause" | "pickup" | "placeholder" | "previous" |
-        "question" | "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed" | "rct1_open_off" |
-        "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" | "rct1_simulate_off_pressed" |
-        "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" | "rct1_test_off_pressed" | "rct1_test_on" |
-        "rct1_test_on_pressed" | "reload" | "rename" | "research" | "ride" | "ride_stations" | "rides_gentle" |
-        "rides_rollercoasters" | "rides_shop" | "rides_thrill" | "rides_transport" | "rides_water" | "rotate_arrow" | "scenery" |
-        "scenery_cluster" | "scenery_paths" | "scenery_paths_items" | "scenery_scatter_high" | "scenery_scatter_low" |
-        "scenery_scatter_medium" | "scenery_signage" | "scenery_statues" | "scenery_trees" | "scenery_urban" | "scenery_walls" |
-        "search" | "selection_edge_ne" | "selection_edge_nw" | "selection_edge_se" | "selection_edge_sw" | "server_password" |
-        "shops_and_stalls" | "sideways_tab" | "sideways_tab_active" | "simulate" | "small_scenery" | "sort" | "stats" | "testing" |
-        "terrain_edges" | "title_play" | "title_restart" | "title_skip" | "title_stop" | "unmute" | "unmute_pressed" | "view" |
-        "water" | "zoom_in" | "zoom_in_background" | "zoom_out" | "zoom_out_background";
+        "paste" | "path_additions" | "path_railings" | "path_surfaces" | "paths" | "patrol" | "pause" | "pickup" | "placeholder" |
+        "previous" | "question" | "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed" |
+        "rct1_open_off" | "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" |
+        "rct1_simulate_off_pressed" | "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" |
+        "rct1_test_off_pressed" | "rct1_test_on" | "rct1_test_on_pressed" | "reload" | "rename" | "research" | "ride" |
+        "ride_stations" | "rides_gentle" | "rides_rollercoasters" | "rides_shop" | "rides_thrill" | "rides_transport" |
+        "rides_water" | "rotate_arrow" | "scenery" | "scenery_cluster" | "scenery_paths" | "scenery_paths_items" |
+        "scenery_scatter_high" | "scenery_scatter_low" | "scenery_scatter_medium" | "scenery_signage" | "scenery_statues" |
+        "scenery_trees" | "scenery_urban" | "scenery_walls" | "search" | "selection_edge_ne" | "selection_edge_nw" |
+        "selection_edge_se" | "selection_edge_sw" | "server_password" | "shops_and_stalls" | "sideways_tab" |
+        "sideways_tab_active" | "simulate" | "small_scenery" | "sort" | "stats" | "testing" | "terrain_edges" | "title_play" |
+        "title_restart" | "title_skip" | "title_stop" | "unmute" | "unmute_pressed" | "view" | "walls" | "water" | "zoom_in" |
+        "zoom_in_background" | "zoom_out" | "zoom_out_background";
 
     interface WidgetBase {
         readonly window: Window;
@@ -5092,6 +5254,12 @@ declare global {
         column: number;
     }
 
+    /**
+     * A single row of a list view.
+     * - Use a `string` for a single-column list (one label for the row).
+     * - Use a `string[]` for a multi-column list, with one entry per column, in the same order as `columns`.
+     * - Use a {@link ListViewItemSeparator} to render a separator row instead of data.
+     */
     type ListViewItem = ListViewItemSeparator | string[] | string;
 
     interface ListViewWidget extends WidgetBase {
@@ -5100,6 +5268,10 @@ declare global {
         isStriped: boolean;
         showColumnHeaders: boolean;
         columns: ListViewColumn[];
+        /**
+         * The rows of the list. For a list with multiple `columns`, this is an array of rows,
+         * where each row is a `string[]` containing one value per column (i.e. `string[][]` overall).
+         */
         items: ListViewItem[];
         selectedCell: RowColumn | null;
         readonly highlightedCell: RowColumn;
@@ -5114,6 +5286,11 @@ declare global {
     interface TextBoxWidget extends WidgetBase {
         type: "textbox";
         text: string;
+        /**
+         * The position of the text cursor while typing into the textbox.
+         * Only available when the textbox is in focus.
+         */
+        caret: number;
         maxLength: number;
         focus(): void;
     }

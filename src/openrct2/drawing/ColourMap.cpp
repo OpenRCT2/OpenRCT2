@@ -11,9 +11,8 @@
 
 #include "../SpriteIds.h"
 #include "../core/Guard.hpp"
-
-// FIXME: only included for GfxGetG1Element()
-#include "Drawing.h"
+#include "Colour.h"
+#include "Drawing.Sprite.h"
 
 namespace OpenRCT2::Drawing
 {
@@ -59,5 +58,12 @@ namespace OpenRCT2::Drawing
     {
         Guard::Assert(EnumValue(colour) < _colourMap.size());
         return _colourMap[EnumValue(colour)];
+    }
+
+    PaletteIndex getColourMapShade(Colour colour, uint8_t shade)
+    {
+        const auto& map = getColourMap(colour);
+        const auto* pointer = &map.colour0;
+        return *(pointer + shade);
     }
 } // namespace OpenRCT2::Drawing

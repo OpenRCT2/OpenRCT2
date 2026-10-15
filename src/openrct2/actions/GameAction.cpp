@@ -15,9 +15,6 @@
 #include "../scripting/ScriptEngine.h"
 #include "../world/Map.h"
 #include "GameActionRegistry.h"
-#include "GameActionRunner.h"
-
-#include <iterator>
 
 namespace OpenRCT2::GameActions
 {
@@ -84,7 +81,7 @@ namespace OpenRCT2::GameActions
         action->Serialise(dsOut);
 
         // Serialise into new action.
-        IStream& stream = dsOut.GetStream();
+        IStream& stream = dsOut.getStream();
         stream.SetPosition(0);
 
         DataSerialiser dsIn(false, stream);

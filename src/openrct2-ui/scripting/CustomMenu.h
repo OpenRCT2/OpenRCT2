@@ -14,18 +14,17 @@
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/interface/Cursors.h>
+    #include <openrct2/interface/Viewport.h>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <string>
     #include <vector>
-
-enum class CursorID : uint8_t;
 
 namespace OpenRCT2::Scripting
 {
     enum class CustomToolbarMenuItemKind
     {
-        Standard,
-        Toolbox,
+        standard,
+        toolbox,
     };
 
     class CustomToolbarMenuItem
@@ -78,8 +77,8 @@ namespace OpenRCT2::Scripting
     {
         std::shared_ptr<Plugin> Owner;
         std::string Id;
-        CursorID Cursor = CursorID::Undefined;
-        uint32_t Filter{};
+        CursorID Cursor = CursorID::undefined;
+        ViewportInteractionItems Filter{};
         bool MouseDown{};
 
         // Event handlers

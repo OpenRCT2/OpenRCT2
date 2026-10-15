@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../core/FileStream.h"
-#include "../../drawing/Drawing.h"
 #include "SpriteCommands.h"
 #include "SpriteFile.h"
 
@@ -18,12 +16,12 @@ using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::CommandLine::Sprite
 {
-    int32_t append(const char** argv, int32_t argc, ImportMode spriteMode)
+    ExitCode append(const char** argv, int32_t argc, ImportMode spriteMode)
     {
         if (argc != 3 && argc != 5)
         {
             fprintf(stderr, "usage: sprite append <spritefile> <input> [<x offset> <y offset>]\n");
-            return -1;
+            return ExitCode::fail;
         }
 
         const utf8* spriteFilePath = argv[1];
@@ -39,22 +37,22 @@ namespace OpenRCT2::CommandLine::Sprite
             if (*endptr != 0)
             {
                 fprintf(stderr, "X offset must be an integer\n");
-                return -1;
+                return ExitCode::fail;
             }
 
             yOffset = strtol(argv[4], &endptr, 0);
             if (*endptr != 0)
             {
                 fprintf(stderr, "Y offset must be an integer\n");
-                return -1;
+                return ExitCode::fail;
             }
         }
 
         constexpr ImportFlags importFlags = { ImportFlag::rle };
-        ImageImportMeta meta = { { xOffset, yOffset }, Palette::OpenRCT2, importFlags, spriteMode };
+        ImageImportMeta meta = { { xOffset, yOffset }, Palette::openRCT2, importFlags, spriteMode };
         const auto image = SpriteImageLoad(imagePath, meta);
         if (!image.has_value())
-            return -1;
+            return ExitCode::fail;
         ImageImporter importer;
         auto importResult = importer.Import(image.value(), meta);
 
@@ -62,14 +60,14 @@ namespace OpenRCT2::CommandLine::Sprite
         if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
-            return -1;
+            return ExitCode::fail;
         }
 
         spriteFile->AddImage(importResult);
 
         if (!spriteFile->Save(spriteFilePath))
-            return -1;
+            return ExitCode::fail;
 
-        return 0;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

@@ -9,14 +9,14 @@
 
 #pragma once
 
-#include "../../../SpriteIds.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor SpaceRingsRTD =
+constexpr RideTypeDescriptor kSpaceRingsRTD =
 {
     .Category = RideCategory::gentle,
     .StartTrackPiece = TrackElemType::flatTrack3x3,
@@ -30,10 +30,10 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::spaceRings),
+    .rideModes = { RideMode::spaceRings },
     .DefaultMode = RideMode::spaceRings,
     .Naming = { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS },
-    .NameConvention = { RideComponentType::Ring, RideComponentType::Structure, RideComponentType::Station },
+    .NameConvention = { RideComponentType::ring, RideComponentType::structure, RideComponentType::station },
     .availableBreakdowns = { Breakdown::safetyCutOut },
     .Heights = { 16, 48, 3, 2, },
     .MaxMass = 255,
@@ -47,17 +47,17 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
     .BonusValue = 30,
     .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "space_rings",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::FlatRide,
+        RatingsCalculationType::flatRide,
         { RideRating::make(1, 50), RideRating::make(2, 10), RideRating::make(6, 50) },
         7,
         0,
         false,
         {
-            { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
+            { RatingsModifierType::bonusScenery,          0,                25098, 0, 0 },
         },
     },
     .specialType = RtdSpecialType::spaceRings,

@@ -10,11 +10,12 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "../world/Location.hpp"
 
 #include <cstdint>
 #include <string>
 #include <vector>
+
+struct ScreenCoordsXY;
 
 namespace OpenRCT2::Drawing
 {

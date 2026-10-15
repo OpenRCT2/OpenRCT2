@@ -10,11 +10,11 @@
 #pragma once
 
 #include "../../SpriteIds.h"
-#include "../../world/Location.hpp"
 
 #include <cstdint>
 #include <optional>
 
+struct CoordsXY;
 struct PaintSession;
 
 namespace OpenRCT2

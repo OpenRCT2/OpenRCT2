@@ -9,18 +9,16 @@
 
 #pragma once
 
-#include "../core/IStream.hpp"
-#include "../drawing/ImageId.hpp"
 #include "../ride/RideEntry.h"
 #include "../ride/RideTypes.h"
 #include "Object.h"
 
 #include <vector>
 
-enum class RideCategory : uint8_t;
-
 namespace OpenRCT2
 {
+    enum class RideCategory : uint8_t;
+
     class RideObject final : public Object
     {
     private:

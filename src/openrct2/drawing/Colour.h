@@ -80,10 +80,28 @@ namespace OpenRCT2::Drawing
         beige,
         invisible,
         voidBackground,
+        gold,
+        amber,
+        amethyst,
+        asparagus,
+        brown,
+        burntPink,
+        cactus,
+        caramel,
+        copper,
+        crimson,
+        darkerWater,
+        emerald,
+        indigo,
+        pesto,
+        pineGreen,
+        ruby,
+        deepBlue,
+        silver,
     };
 
-    constexpr uint8_t kColourNumNormal = 54;
-    constexpr uint8_t kColourNumTotal = 56;
+    constexpr uint8_t kColourNumNormal = 72;
+    constexpr uint8_t kColourNumTotal = 74;
 
     constexpr auto kColourNull = static_cast<Colour>(255);
 
@@ -92,6 +110,22 @@ namespace OpenRCT2::Drawing
         return EnumValue(colour) < kColourNumTotal;
     }
 
+    Colour clampColour(uint8_t colour);
+    Colour clampColour(Colour colour);
+
     Colour colourFromString(u8string s, Colour defaultValue = Colour::black);
     u8string colourToString(Colour colour);
+
+    /**
+     * Get a random colour. NOT network safe!
+     */
+    Colour getRandomColour();
+    /**
+     * Get a random colour in a way that works the same across all clients.
+     */
+    Colour getRandomColourNetworkSafe();
+    /**
+     * Get a colour based on the current time (in ticks), which will cycle through all available colours.
+     */
+    Colour getCycleColour(uint32_t ticks);
 } // namespace OpenRCT2::Drawing

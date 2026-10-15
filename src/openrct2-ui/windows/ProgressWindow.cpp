@@ -9,17 +9,18 @@
 
 #include <array>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/drawing/Drawing.Sprite.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/Text.h>
+#include <openrct2/drawing/RenderTarget.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ui/WindowManager.h>
 #include <random>
-#include <sstream>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -122,10 +123,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            if (_onClose != nullptr)
-                widgets[WIDX_CLOSE].type = WidgetType::closeBox;
-            else
-                widgets[WIDX_CLOSE].type = WidgetType::empty;
+            widgets[WIDX_CLOSE].setVisible(_onClose != nullptr);
 
             PrepareCaption();
         }

@@ -10,14 +10,13 @@
 #include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
-#include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/actions/GameActionRunner.h>
 #include <openrct2/actions/park/ParkMarketingAction.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Marketing.h>
@@ -222,8 +221,7 @@ namespace OpenRCT2::Ui::Windows
 
                             WindowDropdownShowTextCustomWidth(
                                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top },
-                                dropdownWidget->height(), colours[1], 0, Dropdown::Flag::StayOpen, numItems,
-                                dropdownWidget->width() - 4);
+                                dropdownWidget->height(), colours[1], 0, {}, numItems, dropdownWidget->width() - 4);
                         }
                     }
                     else
@@ -243,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
 
                         WindowDropdownShowTextCustomWidth(
                             { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(),
-                            colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 4);
+                            colours[1], 0, {}, numItems, dropdownWidget->width() - 4);
                     }
                     break;
                     // In RCT2, the maximum was 6 weeks
@@ -310,17 +308,17 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            widgets[WIDX_RIDE_LABEL].type = WidgetType::empty;
-            widgets[WIDX_RIDE_DROPDOWN].type = WidgetType::empty;
-            widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WidgetType::empty;
+            widgets[WIDX_RIDE_LABEL].setHidden();
+            widgets[WIDX_RIDE_DROPDOWN].setHidden();
+            widgets[WIDX_RIDE_DROPDOWN_BUTTON].setHidden();
             widgets[WIDX_RIDE_DROPDOWN].text = STR_MARKETING_NOT_SELECTED;
             switch (Campaign.campaign_type)
             {
                 case ADVERTISING_CAMPAIGN_RIDE_FREE:
                 case ADVERTISING_CAMPAIGN_RIDE:
-                    widgets[WIDX_RIDE_LABEL].type = WidgetType::label;
-                    widgets[WIDX_RIDE_DROPDOWN].type = WidgetType::dropdownMenu;
-                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WidgetType::button;
+                    widgets[WIDX_RIDE_LABEL].setVisible();
+                    widgets[WIDX_RIDE_DROPDOWN].setVisible();
+                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].setVisible();
                     widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
                     if (Campaign.RideId != RideId::GetNull())
                     {
@@ -333,9 +331,9 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                    widgets[WIDX_RIDE_LABEL].type = WidgetType::label;
-                    widgets[WIDX_RIDE_DROPDOWN].type = WidgetType::dropdownMenu;
-                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WidgetType::button;
+                    widgets[WIDX_RIDE_LABEL].setVisible();
+                    widgets[WIDX_RIDE_DROPDOWN].setVisible();
+                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].setVisible();
                     widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
                     if (Campaign.ShopItemId != kSelectedItemUndefined)
                     {
@@ -348,9 +346,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_WEEKS_SPINNER].text = kStringIdNone;
 
             // Enable / disable start button based on ride dropdown
-            widgetSetDisabled(*this, WIDX_START_BUTTON, false);
-            if (widgets[WIDX_RIDE_DROPDOWN].type == WidgetType::dropdownMenu && Campaign.RideId == RideId::GetNull())
-                widgetSetDisabled(*this, WIDX_START_BUTTON, true);
+            const bool pendingRideSelection = widgets[WIDX_RIDE_DROPDOWN].isVisible() && Campaign.RideId == RideId::GetNull();
+            widgetSetDisabled(*this, WIDX_START_BUTTON, pendingRideSelection);
         }
 
         void onDraw(Drawing::RenderTarget& rt) override

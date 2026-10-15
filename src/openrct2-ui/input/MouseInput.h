@@ -9,7 +9,9 @@
 
 #pragma once
 
-#include <openrct2/interface/Window.h>
+#include <cstdint>
+
+struct ScreenCoordsXY;
 
 namespace OpenRCT2
 {
@@ -21,6 +23,10 @@ namespace OpenRCT2
         rightPress,
         rightRelease,
     };
+
+    using WidgetIndex = uint16_t;
+
+    struct WindowBase;
 
     extern ScreenCoordsXY gInputDragLast;
 

@@ -137,4 +137,7 @@ struct RideObjectEntry
     }
 };
 
-RideNaming GetRideNaming(ride_type_t rideType, const RideObjectEntry* rideEntry);
+namespace OpenRCT2
+{
+    RideNaming GetRideNaming(ride_type_t rideType, const RideObjectEntry* rideEntry);
+}

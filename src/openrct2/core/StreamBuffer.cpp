@@ -10,6 +10,7 @@
 #include "StreamBuffer.hpp"
 
 #include "Guard.hpp"
+#include "IStream.hpp"
 #include "Memory.hpp"
 
 namespace OpenRCT2

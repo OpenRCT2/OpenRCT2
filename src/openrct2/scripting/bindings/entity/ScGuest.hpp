@@ -11,14 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-    #include "../../../entity/Guest.h"
-    #include "../../../management/Marketing.h"
     #include "ScPeep.hpp"
-
-namespace OpenRCT2
-{
-    enum class PeepAnimationType : uint8_t;
-}
 
 namespace OpenRCT2::Scripting
 {

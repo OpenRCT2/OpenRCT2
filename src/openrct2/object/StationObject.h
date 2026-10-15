@@ -9,19 +9,19 @@
 
 #pragma once
 
-#include "../drawing/ImageId.hpp"
 #include "Object.h"
 
 namespace OpenRCT2
 {
-    namespace StationObjectFlags
+    enum class StationObjectFlag : uint8_t
     {
-        const uint32_t hasPrimaryColour = 1 << 0;
-        const uint32_t hasSecondaryColour = 1 << 1;
-        const uint32_t isTransparent = 1 << 2;
-        const uint32_t noPlatforms = 1 << 3;
-        const uint32_t hasShelter = 1 << 4;
-    } // namespace StationObjectFlags
+        hasPrimaryColour,
+        hasSecondaryColour,
+        isTransparent,
+        noPlatforms,
+        hasShelter,
+    };
+    using StationObjectFlags = FlagHolder<uint32_t, StationObjectFlag>;
 
     enum
     {
@@ -58,7 +58,7 @@ namespace OpenRCT2
 
         ImageIndex iconIndex = kImageIndexUndefined;
 
-        uint32_t Flags{};
+        StationObjectFlags Flags{};
         int32_t Height{};
         uint8_t ScrollingMode{};
 

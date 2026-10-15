@@ -15,11 +15,12 @@
 
 #include <array>
 
-struct Ride;
-
 namespace OpenRCT2
 {
     enum class TrackElemType : uint16_t;
+
+    struct Ride;
+
     using RideRating_t = fixed16_2dp;
     namespace RideRating
     {
@@ -73,9 +74,12 @@ namespace OpenRCT2
         void UpdateRide(const Ride& ride);
         void UpdateAll();
     } // namespace RideRating
-} // namespace OpenRCT2
 
-// Special Track Element Adjustment functions for RTDs
-void SpecialTrackElementRatingsAjustment_Default(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
-void SpecialTrackElementRatingsAjustment_GhostTrain(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
-void SpecialTrackElementRatingsAjustment_LogFlume(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+    // Special Track Element Adjustment functions for RTDs
+    void SpecialTrackElementRatingsAdjustment_Default(
+        const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+    void SpecialTrackElementRatingsAdjustment_GhostTrain(
+        const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+    void SpecialTrackElementRatingsAdjustment_LogFlume(
+        const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+} // namespace OpenRCT2

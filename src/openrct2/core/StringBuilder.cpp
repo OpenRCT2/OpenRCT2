@@ -11,8 +11,6 @@
 
 #include "String.hpp"
 
-#include <iterator>
-
 using namespace OpenRCT2;
 
 StringBuilder::StringBuilder(size_t capacity)

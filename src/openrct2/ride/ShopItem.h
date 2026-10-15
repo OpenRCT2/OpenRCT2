@@ -9,15 +9,16 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../core/Money.hpp"
 #include "../entity/Litter.h"
-
-struct Ride;
 
 namespace OpenRCT2
 {
     enum class PeepThoughtType : uint8_t;
-}
+
+    struct Ride;
+} // namespace OpenRCT2
 
 enum class ShopItem : uint8_t
 {
@@ -75,6 +76,7 @@ enum class ShopItem : uint8_t
     count = 56,
     none = 255
 };
+using ShopItems = FlagHolder<uint64_t, ShopItem>;
 
 ShopItem& operator++(ShopItem& d, int);
 
@@ -117,9 +119,9 @@ struct ShopItemDescriptor
     bool IsRecolourable() const;
 };
 
-uint64_t ShopItemsGetAllFoods();
-uint64_t ShopItemsGetAllDrinks();
-uint64_t ShopItemsGetAllContainers();
+ShopItems ShopItemsGetAllFoods();
+ShopItems ShopItemsGetAllDrinks();
+ShopItems ShopItemsGetAllContainers();
 
 enum
 {
@@ -131,7 +133,7 @@ enum
     SHOP_ITEM_FLAG_IS_RECOLOURABLE = (1 << 5),
 };
 
-money64 ShopItemGetCommonPrice(Ride* forRide, ShopItem shopItem);
+money64 ShopItemGetCommonPrice(OpenRCT2::Ride* forRide, ShopItem shopItem);
 bool ShopItemHasCommonPrice(ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

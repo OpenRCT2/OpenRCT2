@@ -10,7 +10,6 @@
 #pragma once
 
 #include <cstdint>
-#include <istream>
 #include <memory>
 #include <optional>
 #include <string_view>

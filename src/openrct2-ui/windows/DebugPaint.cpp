@@ -8,17 +8,19 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/drawing/Drawing.Screen.h>
 #include <openrct2/drawing/Drawing.String.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Font.h>
 #include <openrct2/interface/ColourWithFlags.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
-#include <openrct2/ride/TrackPaint.h>
 #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -75,37 +77,37 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_TOGGLE_SHOW_WIDE_PATHS:
                     gPaintWidePathsAsGhost = !gPaintWidePathsAsGhost;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
 
                 case WIDX_TOGGLE_SHOW_BLOCKED_TILES:
                     gPaintBlockedTiles = !gPaintBlockedTiles;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
 
                 case WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS:
                     gShowSupportSegmentHeights = !gShowSupportSegmentHeights;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
 
                 case WIDX_TOGGLE_SHOW_BOUND_BOXES:
                     gPaintBoundingBoxes = !gPaintBoundingBoxes;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
 
                 case WIDX_TOGGLE_SHOW_DIRTY_VISUALS:
                     gShowDirtyVisuals = !gShowDirtyVisuals;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
 
                 case WIDX_TOGGLE_STABLE_PAINT_SORT:
                     gPaintStableSort = !gPaintStableSort;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
 
                 case WIDX_TOGGLE_FORCE_REDRAW:
                     gPaintForceRedraw = !gPaintForceRedraw;
-                    GfxInvalidateScreen();
+                    Drawing::GfxInvalidateScreen();
                     break;
             }
         }

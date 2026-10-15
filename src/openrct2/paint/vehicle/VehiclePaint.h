@@ -13,7 +13,11 @@
 
 struct PaintSession;
 struct CarEntry;
-struct Vehicle;
+
+namespace OpenRCT2
+{
+    struct Vehicle;
+}
 
 struct VehicleBoundBox
 {
@@ -28,40 +32,40 @@ struct VehicleBoundBox
 extern const VehicleBoundBox VehicleBoundboxes[16][224];
 
 void VehicleVisualDefault(
-    PaintSession& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry);
-void VehicleVisualSplashEffect(PaintSession& session, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry);
+    PaintSession& session, int32_t imageDirection, int32_t z, const OpenRCT2::Vehicle* vehicle, const CarEntry* carEntry);
+void VehicleVisualSplashEffect(PaintSession& session, int32_t z, const OpenRCT2::Vehicle* vehicle, const CarEntry* carEntry);
 
 namespace OpenRCT2
 {
     void VehicleVisualRotoDrop(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
     void VehicleVisualObservationTower(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
     void VehicleVisualRiverRapids(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
     void VehicleVisualReverser(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
     void VehicleVisualSplashBoatsOrWaterCoaster(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
     void VehicleVisualLaunchedFreefall(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
     void VehicleVisualVirginiaReel(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
     void VehicleVisualSubmarine(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
     void VehicleVisualMiniGolfPlayer(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle);
     void VehicleVisualMiniGolfBall(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle);
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle);
     void VehicleVisualClassicMiniSpinning(
-        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+        PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const OpenRCT2::Vehicle* vehicle,
         const CarEntry* carEntry);
 } // namespace OpenRCT2

@@ -9,15 +9,12 @@
 
 #include "../Paint.h"
 
-#include "../../Game.h"
 #include "../../GameState.h"
-#include "../../core/EnumUtils.hpp"
 #include "../../interface/Viewport.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Scenery.h"
-#include "../../world/TileInspector.h"
 #include "../../world/tile_element/SmallSceneryElement.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.SmallScenery.h"
@@ -41,7 +38,7 @@ static void PaintSmallScenerySupports(
 {
     PROFILED_FUNCTION();
 
-    if (!sceneryElement.NeedsSupports())
+    if (!sceneryElement.needsSupports())
         return;
 
     if (sceneryEntry.flags.has(SmallSceneryFlag::hasNoSupports))
@@ -58,7 +55,7 @@ static void PaintSmallScenerySupports(
     auto supportImageTemplate = ImageId().WithRemap(0);
     if (sceneryEntry.flags.has(SmallSceneryFlag::supportsHavePrimaryColour))
     {
-        supportImageTemplate = ImageId().WithPrimary(sceneryElement.GetPrimaryColour());
+        supportImageTemplate = ImageId().WithPrimary(sceneryElement.getPrimaryColour());
     }
     if (imageTemplate.IsRemap())
     {
@@ -80,36 +77,34 @@ static void SetSupportHeights(
     {
         if (sceneryEntry.flags.has(SmallSceneryFlag::occupiesFullTile))
         {
-            PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), height, 0x20);
+            PaintUtilSetSegmentSupportHeight(session, PaintSegment::centre, height, 0x20);
             if (sceneryEntry.flags.has(SmallSceneryFlag::vOffsetCentre))
             {
-                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), height, 0x20);
+                PaintUtilSetSegmentSupportHeight(session, kSegmentsAll.without(PaintSegment::centre), height, 0x20);
             }
         }
         else if (sceneryEntry.flags.has(SmallSceneryFlag::vOffsetCentre))
         {
-            auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
+            auto direction = (sceneryElement.getSceneryQuadrant() + session.CurrentRotation) % 4;
             PaintUtilSetSegmentSupportHeight(
                 session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
+                PaintUtilRotateSegments({ PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight }, direction),
                 height, 0x20);
         }
     }
     else if (sceneryEntry.flags.hasAny(SmallSceneryFlag::flag27, SmallSceneryFlag::occupiesFullTile))
     {
-        PaintUtilSetSegmentSupportHeight(session, EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, PaintSegment::centre, 0xFFFF, 0);
         if (sceneryEntry.flags.has(SmallSceneryFlag::vOffsetCentre))
         {
-            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
+            PaintUtilSetSegmentSupportHeight(session, kSegmentsAll.without(PaintSegment::centre), 0xFFFF, 0);
         }
     }
     else if (sceneryEntry.flags.has(SmallSceneryFlag::vOffsetCentre))
     {
-        auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
+        auto direction = (sceneryElement.getSceneryQuadrant() + session.CurrentRotation) % 4;
         PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight), direction),
+            session, PaintUtilRotateSegments({ PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight }, direction),
             0xFFFF, 0);
     }
 }
@@ -164,7 +159,7 @@ static void PaintSmallSceneryBody(
     }
     else
     {
-        uint8_t quadrant = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) & 3;
+        uint8_t quadrant = (sceneryElement.getSceneryQuadrant() + session.CurrentRotation) & 3;
         // -1 to maintain compatibility with existing CSOs in context of issue #17616
         offset.x = SceneryQuadrantOffsets[quadrant].x - 1;
         offset.y = SceneryQuadrantOffsets[quadrant].y - 1;
@@ -181,11 +176,11 @@ static void PaintSmallSceneryBody(
     ImageIndex baseImageIndex = sceneryEntry->image + direction;
     if (sceneryEntry->flags.has(SmallSceneryFlag::canWither))
     {
-        if (sceneryElement.GetAge() >= kSceneryWitherAgeThreshold1)
+        if (sceneryElement.getAge() >= kSceneryWitherAgeThreshold1)
         {
             baseImageIndex += 4;
         }
-        if (sceneryElement.GetAge() >= kSceneryWitherAgeThreshold2)
+        if (sceneryElement.getAge() >= kSceneryWitherAgeThreshold2)
         {
             baseImageIndex += 4;
         }
@@ -197,15 +192,15 @@ static void PaintSmallSceneryBody(
         {
             if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
             {
-                imageId = imageId.WithPrimary(sceneryElement.GetPrimaryColour());
+                imageId = imageId.WithPrimary(sceneryElement.getPrimaryColour());
                 if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
                 {
-                    imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                    imageId = imageId.WithSecondary(sceneryElement.getSecondaryColour());
                 }
             }
             if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
             {
-                imageId = imageId.WithTertiary(sceneryElement.GetTertiaryColour());
+                imageId = imageId.WithTertiary(sceneryElement.getTertiaryColour());
             }
         }
         PaintAddImageAsParent(session, imageId, offset, boundBox);
@@ -213,7 +208,7 @@ static void PaintSmallSceneryBody(
 
     if (sceneryEntry->flags.has(SmallSceneryFlag::hasGlass) && !imageTemplate.IsRemap())
     {
-        auto imageId = ImageId(baseImageIndex + 4).WithTransparency(sceneryElement.GetPrimaryColour());
+        auto imageId = ImageId(baseImageIndex + 4).WithTransparency(sceneryElement.getPrimaryColour());
         PaintAddImageAsChild(session, imageId, offset, boundBox);
     }
 
@@ -281,7 +276,7 @@ static void PaintSmallSceneryBody(
                 if (!sceneryEntry->flags.has(SmallSceneryFlag::isCogwheel))
                 {
                     frame += ((session.SpritePosition.x / 4) + (session.SpritePosition.y / 4));
-                    frame += sceneryElement.GetSceneryQuadrant() << 2;
+                    frame += sceneryElement.getSceneryQuadrant() << 2;
                 }
                 frame = (frame >> delay) & sceneryEntry->animation_mask;
 
@@ -301,15 +296,15 @@ static void PaintSmallSceneryBody(
                 {
                     if (sceneryEntry->flags.has(SmallSceneryFlag::hasPrimaryColour))
                     {
-                        imageId = ImageId(imageIndex).WithPrimary(sceneryElement.GetPrimaryColour());
+                        imageId = ImageId(imageIndex).WithPrimary(sceneryElement.getPrimaryColour());
                         if (sceneryEntry->flags.has(SmallSceneryFlag::hasSecondaryColour))
                         {
-                            imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                            imageId = imageId.WithSecondary(sceneryElement.getSecondaryColour());
                         }
                     }
                     if (sceneryEntry->flags.has(SmallSceneryFlag::hasTertiaryColour))
                     {
-                        imageId = imageId.WithTertiary(sceneryElement.GetTertiaryColour());
+                        imageId = imageId.WithTertiary(sceneryElement.getTertiaryColour());
                     }
                 }
 
@@ -330,12 +325,12 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
 {
     PROFILED_FUNCTION();
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session.ViewFlags.has(ViewportFlag::highlightPathIssues))
     {
         return;
     }
 
-    auto* sceneryEntry = sceneryElement.GetEntry();
+    auto* sceneryEntry = sceneryElement.getEntry();
     if (sceneryEntry == nullptr)
     {
         return;

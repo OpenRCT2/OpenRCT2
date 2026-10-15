@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../localisation/StringIdType.h"
-#include "ObjectTypes.h"
 
 namespace OpenRCT2
 {

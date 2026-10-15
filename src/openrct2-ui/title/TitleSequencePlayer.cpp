@@ -9,8 +9,6 @@
 
 #include "TitleSequencePlayer.h"
 
-#include "../interface/Window.h"
-
 #include <memory>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
@@ -20,18 +18,16 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/core/Console.hpp>
-#include <openrct2/core/Guard.hpp>
-#include <openrct2/core/Path.hpp>
-#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Palette.h>
 #include <openrct2/drawing/ScrollingText.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/WindowBase.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/scenario/ScenarioRepository.h>
-#include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/scenes/title/TitleScene.h>
 #include <openrct2/scenes/title/TitleSequence.h>
 #include <openrct2/scenes/title/TitleSequenceManager.h>
@@ -39,7 +35,6 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/MapAnimation.h>
-#include <openrct2/world/Scenery.h>
 #include <stdexcept>
 
 namespace OpenRCT2::Title
@@ -313,7 +308,7 @@ namespace OpenRCT2::Title
                 else
                 {
                     // Inhibit viewport rendering while we're loading
-                    WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+                    WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, true);
 
                     ReportProgress(0);
                     auto parkImporter = ParkImporter::Create(path);
@@ -346,7 +341,7 @@ namespace OpenRCT2::Title
             }
 
             // Reset viewport rendering inhibition
-            WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
+            WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
 
             gLoadKeepWindowsOpen = false;
             return success;
@@ -371,7 +366,7 @@ namespace OpenRCT2::Title
                 else
                 {
                     // Inhibit viewport rendering while we're loading
-                    WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
+                    WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, true);
 
                     ReportProgress(0);
                     bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
@@ -402,7 +397,7 @@ namespace OpenRCT2::Title
             }
 
             // Reset viewport rendering inhibition
-            WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, false);
+            WindowSetFlagForAllViewports(ViewportFlag::renderingInhibited, false);
 
             gLoadKeepWindowsOpen = false;
             return success;
@@ -437,7 +432,7 @@ namespace OpenRCT2::Title
             auto windowManager = Ui::GetWindowManager();
             auto& gameState = getGameState();
             windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
-            gameState.entities.ResetEntitySpatialIndices();
+            gameState.entities.resetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
 
             // Invalidate scrolling text cache to prevent stale text from previous park
@@ -446,8 +441,8 @@ namespace OpenRCT2::Title
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
             Ui::Windows::WindowScenerySetDefaultPlacementConfiguration();
-            News::InitQueue(gameState);
-            LoadPalette();
+            News::InitQueue(gameState.park);
+            Drawing::LoadPalette();
             gScreenAge = 0;
             gGamePaused = false;
             gGameSpeed = 1;

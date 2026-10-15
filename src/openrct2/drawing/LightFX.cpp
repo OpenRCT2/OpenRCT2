@@ -9,21 +9,17 @@
 
 #include "LightFX.h"
 
-#include "../Diagnostic.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
-#include "../interface/WindowBase.h"
 #include "../paint/Paint.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
 #include "../util/Util.h"
 #include "../world/tile_element/TileElement.h"
-#include "Drawing.h"
 
 #include <cmath>
 #include <cstring>
@@ -49,8 +45,8 @@ namespace OpenRCT2::Drawing::LightFx
 
     enum class Qualifier : uint8_t
     {
-        Entity,
-        Map,
+        entity,
+        map,
     };
 
     struct LightListEntry
@@ -289,7 +285,7 @@ namespace OpenRCT2::Drawing::LightFx
                 int32_t totalSamplePoints = 5;
                 int32_t startSamplePoint = 1;
 
-                if (entry.qualifier == Qualifier::Map)
+                if (entry.qualifier == Qualifier::map)
                 {
                     startSamplePoint = 0;
                     totalSamplePoints = 1;
@@ -303,8 +299,8 @@ namespace OpenRCT2::Drawing::LightFx
 
                     ViewportInteractionItem interactionType = ViewportInteractionItem::none;
 
-                    // NOTE: When the flag VIEWPORT_FLAG_RENDERING_INHIBITED is set we can not create a paint graph.
-                    if ((vp.flags & VIEWPORT_FLAG_RENDERING_INHIBITED) == 0)
+                    // NOTE: When ViewportFlag::renderingInhibited is set we cannot create a paint graph.
+                    if (!vp.flags.has(ViewportFlag::renderingInhibited))
                     {
                         // based on GetMapCoordinatesFromPosWindow
                         RenderTarget rt;
@@ -678,12 +674,12 @@ namespace OpenRCT2::Drawing::LightFx
 
     static void Add3DLight(const CoordsXYZ& loc, const LightType lightType)
     {
-        Add3DLight(((loc.x << 16) | loc.y), Qualifier::Map, loc.z, loc, lightType);
+        Add3DLight(((loc.x << 16) | loc.y), Qualifier::map, loc.z, loc, lightType);
     }
 
     void Add3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType)
     {
-        Add3DLight(entity.id.ToUnderlying(), Qualifier::Entity, id, loc, lightType);
+        Add3DLight(entity.id.ToUnderlying(), Qualifier::entity, id, loc, lightType);
     }
 
     void Add3DLightMagicFromDrawingTile(
@@ -728,7 +724,7 @@ namespace OpenRCT2::Drawing::LightFx
     void AddLightsMagicVehicle_BoatHire(const Vehicle* vehicle)
     {
         Vehicle* vehicle_draw = vehicle->TrainHead();
-        auto* nextVeh = getGameState().entities.GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
+        auto* nextVeh = getGameState().entities.getEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
         if (nextVeh != nullptr)
         {
             vehicle_draw = nextVeh;
@@ -797,8 +793,8 @@ namespace OpenRCT2::Drawing::LightFx
     void AddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset)
     {
         uint8_t relativeRotation = (4 - GetCurrentRotation()) % 4;
-        CoordsXY lanternOffset1 = CoordsXY(0, 16).Rotate(relativeRotation);
-        CoordsXY lanternOffset2 = CoordsXY(16, 0).Rotate(relativeRotation);
+        CoordsXY lanternOffset1 = CoordsXY(0, 16).rotate(relativeRotation);
+        CoordsXY lanternOffset2 = CoordsXY(16, 0).rotate(relativeRotation);
         Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset1.x, lanternOffset1.y, height + zOffset, LightType::lantern3);
         Add3DLightMagicFromDrawingTile(mapPosition, lanternOffset2.x, lanternOffset2.y, height + zOffset, LightType::lantern3);
         Add3DLightMagicFromDrawingTile(mapPosition, 8, 32, height, LightType::spot1);
@@ -815,23 +811,23 @@ namespace OpenRCT2::Drawing::LightFx
     {
         if (direction == (4 - GetCurrentRotation()) % 4) // Back Right Facing Stall
         {
-            CoordsXY spotOffset1 = CoordsXY(-32, 8).Rotate(direction);
-            CoordsXY spotOffset2 = CoordsXY(-32, 4).Rotate(direction);
+            CoordsXY spotOffset1 = CoordsXY(-32, 8).rotate(direction);
+            CoordsXY spotOffset2 = CoordsXY(-32, 4).rotate(direction);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::spot2);
         }
         else if (direction == (7 - GetCurrentRotation()) % 4) // Back left Facing Stall
         {
-            CoordsXY spotOffset1 = CoordsXY(-32, -8).Rotate(direction);
-            CoordsXY spotOffset2 = CoordsXY(-32, -4).Rotate(direction);
+            CoordsXY spotOffset1 = CoordsXY(-32, -8).rotate(direction);
+            CoordsXY spotOffset2 = CoordsXY(-32, -4).rotate(direction);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset2.x, spotOffset2.y, height, LightType::spot2);
         }
         else // Forward Facing Stall
         {
-            CoordsXY spotOffset1 = CoordsXY(-32, 8).Rotate(direction);
-            CoordsXY spotOffset2 = CoordsXY(-32, -8).Rotate(direction);
-            CoordsXY lanternOffset = CoordsXY(-16, 0).Rotate(direction);
+            CoordsXY spotOffset1 = CoordsXY(-32, 8).rotate(direction);
+            CoordsXY spotOffset2 = CoordsXY(-32, -8).rotate(direction);
+            CoordsXY lanternOffset = CoordsXY(-16, 0).rotate(direction);
             Add3DLightMagicFromDrawingTile(
                 mapPosition, lanternOffset.x, lanternOffset.y, height + zOffset, LightType::lantern3);
             Add3DLightMagicFromDrawingTile(mapPosition, spotOffset1.x, spotOffset1.y, height, LightType::spot1);

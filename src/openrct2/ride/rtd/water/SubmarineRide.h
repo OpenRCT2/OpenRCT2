@@ -12,12 +12,13 @@
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../RideData.h"
+#include "../../RideStringIds.h"
 #include "../../ShopItem.h"
 
 // clang-format off
 namespace OpenRCT2
 {
-constexpr RideTypeDescriptor SubmarineRideRTD =
+constexpr RideTypeDescriptor kSubmarineRideRTD =
 {
     .Category = RideCategory::water,
     .StartTrackPiece = TrackElemType::endStation,
@@ -31,12 +32,12 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .flags = kRtdFlagsHasThreeColours | RtdFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,
                      RtdFlag::trackMustBeOnWater, RtdFlag::hasLoadOptions, RtdFlag::guestsWillRideAgain,
                      RtdFlag::hasVehicleColours, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes,
-                     RtdFlag::allowMusic, RtdFlag::checkGForces, RtdFlag::hasEntranceAndExit, 
+                     RtdFlag::allowMusic, RtdFlag::checkGForces, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits),
-    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .rideModes = { RideMode::continuousCircuit },
     .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_SUBMARINE_RIDE, STR_RIDE_DESCRIPTION_SUBMARINE_RIDE },
-    .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::DockingPlatform },
+    .NameConvention = { RideComponentType::boat, RideComponentType::track, RideComponentType::dockingPlatform },
     .availableBreakdowns = { Breakdown::safetyCutOut, Breakdown::vehicleMalfunction },
     .Heights = { 255, 16, 0, 3, },
     .MaxMass = 255,
@@ -52,19 +53,19 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
         { Drawing::Colour::grey, Drawing::Colour::grey, Drawing::Colour::black },
     ),
     .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_SUPPORTS },
-    .ColourKey = RideColourKey::Ride,
+    .ColourKey = RideColourKey::ride,
     .Name = "submarine_ride",
-    .RatingsData = 
+    .RatingsData =
     {
-        RatingsCalculationType::Normal,
+        RatingsCalculationType::normal,
         { RideRating::make(2, 20), RideRating::make(1, 80), RideRating::make(1, 40) },
         7,
         kDynamicRideShelterRating,
         false,
         {
-            { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusProximity,        0,                11183, 0, 0 },
-            { RatingsModifierType::BonusScenery,          0,                22310, 0, 0 },
+            { RatingsModifierType::bonusLength,           6000,             764, 0, 0 },
+            { RatingsModifierType::bonusProximity,        0,                11183, 0, 0 },
+            { RatingsModifierType::bonusScenery,          0,                22310, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,

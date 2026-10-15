@@ -13,7 +13,7 @@
 
 namespace OpenRCT2::GameActions
 {
-    class CheatSetAction final : public GameActionBase<GameCommand::Cheat>
+    class CheatSetAction final : public GameActionBase<GameCommand::cheat>
     {
         using ParametersRange = std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>;
 

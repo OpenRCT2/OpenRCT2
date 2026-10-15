@@ -9,18 +9,15 @@
 
 #include "SpriteCommands.h"
 
-#include "../../Context.h"
 #include "../../OpenRCT2.h"
+#include "../../core/Imaging.h"
 #include "../../core/String.hpp"
-#include "../../drawing/Drawing.h"
-#include "../../object/ObjectFactory.h"
+#include "../../drawing/Drawing.Sprite.h"
+#include "../../drawing/RenderTarget.h"
 #include "../CommandLine.hpp"
 
 #include <cstring>
 #include <optional>
-
-// TODO: Remove when C++20 is enabled and std::format can be used
-#include <iomanip>
 #include <sstream>
 
 // FIXME: replace with a constexpr that will also work for string interpolation.
@@ -44,7 +41,7 @@ namespace OpenRCT2::CommandLine::Sprite
         kOptionTableEnd
     };
 
-    static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator);
+    static ExitCode HandleSprite(CommandLineArgEnumerator *argEnumerator);
 
     const CommandLineCommand kSpriteCommands[]
     {
@@ -62,20 +59,20 @@ namespace OpenRCT2::CommandLine::Sprite
     };
     // clang-format on
 
-    static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
+    static ExitCode HandleSprite(CommandLineArgEnumerator* argEnumerator)
     {
-        auto spriteMode = ImportMode::Default;
+        auto spriteMode = ImportMode::standard;
         if (String::iequals(_mode, SZ_CLOSEST))
-            spriteMode = ImportMode::Closest;
+            spriteMode = ImportMode::closest;
         else if (String::iequals(_mode, SZ_DITHERING))
-            spriteMode = ImportMode::Dithering;
+            spriteMode = ImportMode::dithering;
 
         const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;
         int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
 
         gOpenRCT2Headless = true;
         if (argc == 0)
-            return -1;
+            return ExitCode::fail;
 
         if (String::iequals(argv[0], "details"))
         {
@@ -118,7 +115,7 @@ namespace OpenRCT2::CommandLine::Sprite
         }
 
         fprintf(stderr, "Unknown sprite command.\n");
-        return EXITCODE_FAIL;
+        return ExitCode::fail;
     }
 
     bool SpriteImageExport(const G1Element& spriteElement, u8string_view outPath)
@@ -166,7 +163,7 @@ namespace OpenRCT2::CommandLine::Sprite
         try
         {
             auto format = ImageFormat::png32;
-            if (meta.palette == Palette::KeepIndices)
+            if (meta.palette == Palette::keepIndices)
             {
                 format = ImageFormat::png;
             }

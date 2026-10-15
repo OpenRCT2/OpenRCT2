@@ -8,8 +8,9 @@
  *****************************************************************************/
 
 #pragma once
+
+#include "../Identifiers.h"
 #include "../core/GroupVector.hpp"
-#include "../ride/RideTypes.h"
 
 namespace OpenRCT2::RideUse
 {

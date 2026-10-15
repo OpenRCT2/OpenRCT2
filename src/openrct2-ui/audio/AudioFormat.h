@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <SDL.h>
+#include <SDL_audio.h>
 #include <cstdint>
 
 namespace OpenRCT2::Audio

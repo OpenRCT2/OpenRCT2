@@ -8,16 +8,15 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../Version.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
-#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../localisation/Language.h"
 #include "../network/Network.h"
 #include "../object/ObjectRepository.h"
 #include "../park/ParkFile.h"
@@ -27,7 +26,6 @@
 #include "CommandLine.hpp"
 
 #include <ctime>
-#include <iterator>
 #include <string>
 
 #ifdef USE_BREAKPAD
@@ -35,6 +33,8 @@
 #else
     #define IMPLIES_SILENT_BREAKPAD
 #endif // USE_BREAKPAD
+
+using namespace OpenRCT2::CommandLine;
 
 namespace OpenRCT2
 {
@@ -89,15 +89,15 @@ namespace OpenRCT2
         kOptionTableEnd
     };
 
-    static exitcode_t HandleNoCommand(CommandLineArgEnumerator * enumerator);
-    static exitcode_t HandleCommandEdit(CommandLineArgEnumerator * enumerator);
-    static exitcode_t HandleCommandIntro(CommandLineArgEnumerator * enumerator);
+    static ExitCode HandleNoCommand(CommandLineArgEnumerator * enumerator);
+    static ExitCode HandleCommandEdit(CommandLineArgEnumerator * enumerator);
+    static ExitCode HandleCommandIntro(CommandLineArgEnumerator * enumerator);
     #ifndef DISABLE_NETWORK
-    static exitcode_t HandleCommandHost(CommandLineArgEnumerator * enumerator);
-    static exitcode_t HandleCommandJoin(CommandLineArgEnumerator * enumerator);
+    static ExitCode HandleCommandHost(CommandLineArgEnumerator * enumerator);
+    static ExitCode HandleCommandJoin(CommandLineArgEnumerator * enumerator);
     #endif
-    static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
-    static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
+    static ExitCode HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator);
+    static ExitCode HandleCommandScanObjects(CommandLineArgEnumerator * enumerator);
 
     #if defined(_WIN32)
 
@@ -108,7 +108,7 @@ namespace OpenRCT2
         { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
     };
 
-    static exitcode_t HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator);
+    static ExitCode HandleCommandRegisterShell(CommandLineArgEnumerator * enumerator);
 
     #endif
 
@@ -164,14 +164,14 @@ namespace OpenRCT2
     };
     // clang-format on
 
-    exitcode_t CommandLine::HandleCommandDefault()
+    ExitCode CommandLine::HandleCommandDefault()
     {
-        exitcode_t result = EXITCODE_CONTINUE;
+        ExitCode result = ExitCode::launch;
 
         if (_about)
         {
             PrintAbout();
-            result = EXITCODE_OK;
+            result = ExitCode::ok;
         }
         else
         {
@@ -187,14 +187,14 @@ namespace OpenRCT2
                 {
                     PrintVersion();
                 }
-                result = EXITCODE_OK;
+                result = ExitCode::ok;
             }
         }
 
         if (_help || _all)
         {
             PrintHelp(_all);
-            result = EXITCODE_OK;
+            result = ExitCode::ok;
         }
 
         gOpenRCT2Headless = _headless;
@@ -234,10 +234,10 @@ namespace OpenRCT2
         return result;
     }
 
-    exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
+    ExitCode HandleNoCommand(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -249,13 +249,13 @@ namespace OpenRCT2
             gOpenRCT2StartupAction = StartupAction::open;
         }
 
-        return EXITCODE_CONTINUE;
+        return ExitCode::launch;
     }
 
-    exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
+    ExitCode HandleCommandEdit(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -267,27 +267,27 @@ namespace OpenRCT2
         }
 
         gOpenRCT2StartupAction = StartupAction::edit;
-        return EXITCODE_CONTINUE;
+        return ExitCode::launch;
     }
 
-    exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    ExitCode HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
 
         gOpenRCT2StartupAction = StartupAction::intro;
-        return EXITCODE_CONTINUE;
+        return ExitCode::launch;
     }
 
 #ifndef DISABLE_NETWORK
 
-    exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
+    ExitCode HandleCommandHost(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -296,7 +296,7 @@ namespace OpenRCT2
         if (!enumerator->TryPopString(&parkUri))
         {
             Console::Error::WriteLine("Expected path or URL to a scenario or saved park.");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         gOpenRCT2StartupAction = StartupAction::open;
@@ -306,13 +306,13 @@ namespace OpenRCT2
         gNetworkStartPort = _port;
         gNetworkStartAddress = _address;
 
-        return EXITCODE_CONTINUE;
+        return ExitCode::launch;
     }
 
-    exitcode_t HandleCommandJoin(CommandLineArgEnumerator* enumerator)
+    ExitCode HandleCommandJoin(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -321,21 +321,21 @@ namespace OpenRCT2
         if (!enumerator->TryPopString(&hostname))
         {
             Console::Error::WriteLine("Expected a hostname or IP address to the server to connect to.");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         gNetworkStart = Network::Mode::client;
         gNetworkStartPort = _port;
         gNetworkStartHost = hostname;
-        return EXITCODE_CONTINUE;
+        return ExitCode::launch;
     }
 
 #endif // DISABLE_NETWORK
 
-    static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
+    static ExitCode HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -345,7 +345,7 @@ namespace OpenRCT2
         if (!enumerator->TryPopString(&rawPath))
         {
             Console::Error::WriteLine("Expected a path.");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         const auto path = Path::GetAbsolute(rawPath);
@@ -355,7 +355,7 @@ namespace OpenRCT2
         if (!Path::DirectoryExists(path))
         {
             Console::Error::WriteLine("The path '%s' does not exist", path.c_str());
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         // Check if g1.dat exists (naive but good check)
@@ -366,7 +366,7 @@ namespace OpenRCT2
         {
             Console::Error::WriteLine("RCT2 path not valid.");
             Console::Error::WriteLine("Unable to find %s.", pathG1Check.c_str());
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         // Update RCT2 path in config
@@ -380,17 +380,17 @@ namespace OpenRCT2
             Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
             Console::WriteLine();
             Console::WriteLine("Updated config.ini");
-            return EXITCODE_OK;
+            return ExitCode::ok;
         }
 
         Console::Error::WriteLine("Unable to update config.ini");
-        return EXITCODE_FAIL;
+        return ExitCode::fail;
     }
 
-    static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    static ExitCode HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -402,14 +402,14 @@ namespace OpenRCT2
         auto& env = context->GetPlatformEnvironment();
         auto objectRepository = CreateObjectRepository(env);
         objectRepository->Construct(Config::Get().general.language);
-        return EXITCODE_OK;
+        return ExitCode::ok;
     }
 
 #if defined(_WIN32)
-    static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    static ExitCode HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -422,7 +422,7 @@ namespace OpenRCT2
         {
             Platform::RemoveFileAssociations();
         }
-        return EXITCODE_OK;
+        return ExitCode::ok;
     }
 #endif // defined(_WIN32)
 
@@ -495,13 +495,13 @@ namespace OpenRCT2
         // TODO Print other potential information (e.g. user, hardware)
     }
 
-    exitcode_t CommandLine::HandleCommandTriggerSteamDownload([[maybe_unused]] CommandLineArgEnumerator* enumerator)
+    ExitCode CommandLine::HandleCommandTriggerSteamDownload([[maybe_unused]] CommandLineArgEnumerator* enumerator)
     {
         if (!Platform::triggerSteamDownload())
         {
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
-        return EXITCODE_OK;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2

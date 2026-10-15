@@ -20,17 +20,12 @@
 #include "../localisation/Formatter.h"
 #include "../network/Network.h"
 #include "../platform/Platform.h"
-#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
-#include "../world/Map.h"
-#include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "GameActionRegistry.h"
 
-#include <iterator>
+#include <set>
 
 namespace OpenRCT2::GameActions
 {
@@ -127,10 +122,10 @@ namespace OpenRCT2::GameActions
             // Remove ghost scenery so it doesn't interfere with incoming network command
             switch (queued.action->GetType())
             {
-                case GameCommand::PlaceWall:
-                case GameCommand::PlaceLargeScenery:
-                case GameCommand::PlaceBanner:
-                case GameCommand::PlaceScenery:
+                case GameCommand::placeWall:
+                case GameCommand::placeLargeScenery:
+                case GameCommand::placeBanner:
+                case GameCommand::placeScenery:
                     SceneryRemoveGhostToolPlacement();
                     break;
                 default:
@@ -364,7 +359,7 @@ namespace OpenRCT2::GameActions
             if (result.error == Status::ok && FinanceCheckMoneyRequired(flags) && result.cost != 0)
             {
                 FinancePayment(result.cost, result.expenditure);
-                MoneyEffect::Create(result.cost, result.position);
+                MoneyEffect::create(result.cost, result.position);
             }
 
             if (!(actionFlags & Flags::ClientOnly) && result.error == Status::ok)
@@ -384,7 +379,7 @@ namespace OpenRCT2::GameActions
                         Network::AddPlayerMoneySpent(playerIndex, result.cost);
                     }
 
-                    if (!result.position.IsNull())
+                    if (!result.position.isNull())
                     {
                         Network::SetPlayerLastActionCoord(playerIndex, result.position);
                     }

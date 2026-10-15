@@ -29,7 +29,11 @@ bool gOpenRCT2SilentBreakpad;
 uint32_t gCurrentDrawCount = 0;
 LegacyScene gLegacyScene;
 uint32_t gScreenAge;
-PromptMode gSavePromptMode;
+
+namespace OpenRCT2
+{
+    PromptMode gSavePromptMode;
+}
 
 bool gSilentReplays = false;
 

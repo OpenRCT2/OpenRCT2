@@ -17,8 +17,6 @@
 #include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 
-#include <iterator>
-
 namespace OpenRCT2
 {
     template<>
@@ -51,40 +49,40 @@ namespace OpenRCT2
         return type == EntityType::crashSplash;
     }
 
-    void VehicleCrashParticle::SetSpriteData()
+    void VehicleCrashParticle::setSpriteData()
     {
         spriteData.width = 8;
         spriteData.heightMin = 8;
         spriteData.heightMax = 8;
     }
 
-    void VehicleCrashParticle::Launch()
+    void VehicleCrashParticle::launch()
     {
         frame = (ScenarioRand() & 0xFF) * kCrashedVehicleParticleNumberSprites;
-        time_to_live = (ScenarioRand() & 0x7F) + 140;
-        crashed_sprite_base = ScenarioRandMax(kCrashedVehicleParticleNumberTypes);
-        acceleration_x = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
-        acceleration_y = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
-        acceleration_z = (ScenarioRand() & 0xFFFF) * 4 + 0x10000;
-        velocity_x = 0;
-        velocity_y = 0;
-        velocity_z = 0;
+        timeToLive = (ScenarioRand() & 0x7F) + 140;
+        crashedSpriteBase = ScenarioRandMax(kCrashedVehicleParticleNumberTypes);
+        accelerationX = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
+        accelerationY = (static_cast<int16_t>(ScenarioRand() & 0xFFFF)) * 4;
+        accelerationZ = (ScenarioRand() & 0xFFFF) * 4 + 0x10000;
+        velocityX = 0;
+        velocityY = 0;
+        velocityZ = 0;
     }
 
     /**
      *
      *  rct2: 0x006735A1
      */
-    void VehicleCrashParticle::Create(VehicleColour& colours, const CoordsXYZ& vehiclePos)
+    void VehicleCrashParticle::create(VehicleColour& colours, const CoordsXYZ& vehiclePos)
     {
-        VehicleCrashParticle* sprite = getGameState().entities.CreateEntity<VehicleCrashParticle>();
+        VehicleCrashParticle* sprite = getGameState().entities.createEntity<VehicleCrashParticle>();
         if (sprite != nullptr)
         {
             sprite->moveTo(vehiclePos);
             sprite->colour[0] = colours.Body;
             sprite->colour[1] = colours.Trim;
-            sprite->SetSpriteData();
-            sprite->Launch();
+            sprite->setSpriteData();
+            sprite->launch();
         }
     }
 
@@ -92,34 +90,34 @@ namespace OpenRCT2
      *
      *  rct2: 0x00673298
      */
-    void VehicleCrashParticle::Update()
+    void VehicleCrashParticle::update()
     {
         invalidate();
-        time_to_live--;
-        if (time_to_live == 0)
+        timeToLive--;
+        if (timeToLive == 0)
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
             return;
         }
 
         // Apply gravity
-        acceleration_z -= 5041;
+        accelerationZ -= 5041;
 
         // Apply air resistance
-        acceleration_x -= (acceleration_x / 256);
-        acceleration_y -= (acceleration_y / 256);
-        acceleration_z -= (acceleration_z / 256);
+        accelerationX -= (accelerationX / 256);
+        accelerationY -= (accelerationY / 256);
+        accelerationZ -= (accelerationZ / 256);
 
         // Update velocity and position
-        int32_t vx = velocity_x + acceleration_x;
-        int32_t vy = velocity_y + acceleration_y;
-        int32_t vz = velocity_z + acceleration_z;
+        int32_t vx = velocityX + accelerationX;
+        int32_t vy = velocityY + accelerationY;
+        int32_t vz = velocityZ + accelerationZ;
 
         CoordsXYZ newLoc = { x + (vx >> 16), y + (vy >> 16), z + (vz >> 16) };
 
-        velocity_x = vx & 0xFFFF;
-        velocity_y = vy & 0xFFFF;
-        velocity_z = vz & 0xFFFF;
+        velocityX = vx & 0xFFFF;
+        velocityY = vy & 0xFFFF;
+        velocityZ = vz & 0xFFFF;
 
         // Check collision with land / water
         int16_t landZ = TileElementHeight(newLoc);
@@ -129,15 +127,15 @@ namespace OpenRCT2
         {
             // Splash
             Audio::Play3D(Audio::SoundId::water2, { x, y, waterZ });
-            CrashSplashParticle::Create({ x, y, waterZ });
-            getGameState().entities.EntityRemove(this);
+            CrashSplashParticle::create({ x, y, waterZ });
+            getGameState().entities.entityRemove(this);
             return;
         }
 
         if (z >= landZ && newLoc.z <= landZ)
         {
             // Bounce
-            acceleration_z *= -1;
+            accelerationZ *= -1;
             newLoc.z = landZ;
         }
         moveTo(newLoc);
@@ -149,28 +147,28 @@ namespace OpenRCT2
         }
     }
 
-    void VehicleCrashParticle::Serialise(DataSerialiser& stream)
+    void VehicleCrashParticle::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;
-        stream << time_to_live;
+        stream << timeToLive;
         stream << colour;
-        stream << crashed_sprite_base;
-        stream << velocity_x;
-        stream << velocity_y;
-        stream << velocity_z;
-        stream << acceleration_x;
-        stream << acceleration_y;
-        stream << acceleration_z;
+        stream << crashedSpriteBase;
+        stream << velocityX;
+        stream << velocityY;
+        stream << velocityZ;
+        stream << accelerationX;
+        stream << accelerationY;
+        stream << accelerationZ;
     }
 
     /**
      *
      *  rct2: 0x00673699
      */
-    void CrashSplashParticle::Create(const CoordsXYZ& splashPos)
+    void CrashSplashParticle::create(const CoordsXYZ& splashPos)
     {
-        auto* sprite = getGameState().entities.CreateEntity<CrashSplashParticle>();
+        auto* sprite = getGameState().entities.createEntity<CrashSplashParticle>();
         if (sprite != nullptr)
         {
             sprite->spriteData.width = 33;
@@ -185,17 +183,17 @@ namespace OpenRCT2
      *
      *  rct2: 0x0067339D
      */
-    void CrashSplashParticle::Update()
+    void CrashSplashParticle::update()
     {
         invalidate();
         frame += 85;
         if (frame >= 7168)
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 
-    void CrashSplashParticle::Serialise(DataSerialiser& stream)
+    void CrashSplashParticle::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;
@@ -205,12 +203,12 @@ namespace OpenRCT2
      *
      *  rct2: 0x006734B2
      */
-    void SteamParticle::Create(const CoordsXYZ& coords)
+    void SteamParticle::create(const CoordsXYZ& coords)
     {
         auto surfaceElement = MapGetSurfaceElementAt(coords);
         if (surfaceElement != nullptr && coords.z > surfaceElement->getBaseZ())
         {
-            SteamParticle* steam = getGameState().entities.CreateEntity<SteamParticle>();
+            SteamParticle* steam = getGameState().entities.createEntity<SteamParticle>();
             if (steam == nullptr)
                 return;
 
@@ -218,7 +216,7 @@ namespace OpenRCT2
             steam->spriteData.heightMin = 18;
             steam->spriteData.heightMax = 16;
             steam->frame = 256;
-            steam->time_to_move = 0;
+            steam->timeToMove = 0;
             steam->moveTo(coords);
         }
     }
@@ -227,20 +225,20 @@ namespace OpenRCT2
      *
      *  rct2: 0x00673200
      */
-    void SteamParticle::Update()
+    void SteamParticle::update()
     {
         // Move up 1 z every 3 ticks (Starts after 4 ticks)
         invalidate();
-        time_to_move++;
-        if (time_to_move >= 4)
+        timeToMove++;
+        if (timeToMove >= 4)
         {
-            time_to_move = 1;
+            timeToMove = 1;
             moveTo({ x, y, z + 1 });
         }
         frame += 64;
         if (frame >= (56 * 64))
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 
@@ -248,16 +246,16 @@ namespace OpenRCT2
     {
         EntityBase::serialise(stream);
         stream << frame;
-        stream << time_to_move;
+        stream << timeToMove;
     }
 
     /**
      *
      *  rct2: 0x0067363D
      */
-    void ExplosionCloud::Create(const CoordsXYZ& cloudPos)
+    void ExplosionCloud::create(const CoordsXYZ& cloudPos)
     {
-        auto* entity = getGameState().entities.CreateEntity<ExplosionCloud>();
+        auto* entity = getGameState().entities.createEntity<ExplosionCloud>();
         if (entity != nullptr)
         {
             entity->spriteData.width = 44;
@@ -272,17 +270,17 @@ namespace OpenRCT2
      *
      *  rct2: 0x00673385
      */
-    void ExplosionCloud::Update()
+    void ExplosionCloud::update()
     {
         invalidate();
         frame += 128;
         if (frame >= (36 * 128))
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 
-    void ExplosionCloud::Serialise(DataSerialiser& stream)
+    void ExplosionCloud::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;
@@ -292,9 +290,9 @@ namespace OpenRCT2
      *
      *  rct2: 0x0067366B
      */
-    void ExplosionFlare::Create(const CoordsXYZ& flarePos)
+    void ExplosionFlare::create(const CoordsXYZ& flarePos)
     {
-        auto* entity = getGameState().entities.CreateEntity<ExplosionFlare>();
+        auto* entity = getGameState().entities.createEntity<ExplosionFlare>();
         if (entity != nullptr)
         {
             entity->spriteData.width = 25;
@@ -309,17 +307,17 @@ namespace OpenRCT2
      *
      *  rct2: 0x006733B4
      */
-    void ExplosionFlare::Update()
+    void ExplosionFlare::update()
     {
         invalidate();
         frame += 64;
         if (frame >= (124 * 64))
         {
-            getGameState().entities.EntityRemove(this);
+            getGameState().entities.entityRemove(this);
         }
     }
 
-    void ExplosionFlare::Serialise(DataSerialiser& stream)
+    void ExplosionFlare::serialise(DataSerialiser& stream)
     {
         EntityBase::serialise(stream);
         stream << frame;

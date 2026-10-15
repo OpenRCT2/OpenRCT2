@@ -14,17 +14,21 @@
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/Limits.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/core/FlagHolder.hpp>
 #include <openrct2/core/StringTypes.h>
+#include <openrct2/drawing/Colour.h>
+#include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/interface/Window.h>
 #include <optional>
 #include <span>
 
-struct ImageId;
+struct ScreenCoordsXY;
 
 namespace OpenRCT2
 {
     struct ColourWithFlags;
     class Formatter;
+    struct Widget;
 } // namespace OpenRCT2
 
 namespace OpenRCT2::Dropdown
@@ -39,6 +43,13 @@ namespace OpenRCT2::Dropdown
 
     using CellDrawFunction = std::function<void(Drawing::RenderTarget&, const Item&, int32_t)>;
 
+    enum class Flag : uint8_t
+    {
+        customHeight,
+        autoClose
+    };
+    using Flags = FlagHolder<uint8_t, Flag>;
+
 } // namespace OpenRCT2::Dropdown
 
 namespace OpenRCT2::Ui::Windows
@@ -46,23 +57,23 @@ namespace OpenRCT2::Ui::Windows
     extern Dropdown::DropdownState gDropdown;
 
     void WindowDropdownShowText(
-        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items,
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, Dropdown::Flags flags, size_t num_items,
         size_t prefRowsPerColumn = 0);
     void WindowDropdownShowText(
-        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags,
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, Dropdown::Flags flags,
         std::span<const Dropdown::Item> items, size_t prefRowsPerColumn = 0);
     void WindowDropdownShowTextCustomWidth(
-        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, Dropdown::Flags flags,
         size_t num_items, int32_t width, size_t prefRowsPerColumn = 0);
     void WindowDropdownShowTextCustomWidth(
-        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, Dropdown::Flags flags,
         std::span<const Dropdown::Item> items, int32_t width, size_t prefRowsPerColumn = 0);
 
     void WindowDropdownShowImage(
-        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems,
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, Dropdown::Flags flags, int32_t numItems,
         int32_t itemWidth, int32_t itemHeight, int32_t numColumns);
     void WindowDropdownShowCustom(
-        const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, uint8_t flags,
+        const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, Dropdown::Flags flags,
         Dropdown::CellDrawFunction drawFunction, int32_t numItems, int32_t itemWidth, int32_t itemHeight, int32_t numColumns);
 
     void WindowDropdownClose();
@@ -80,12 +91,6 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Dropdown
 {
-    enum Flag
-    {
-        CustomHeight = (1 << 6), // never set?
-        StayOpen = (1 << 7)
-    };
-
     enum class ItemFlag : uint8_t
     {
         isDisabled = 0,

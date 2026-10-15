@@ -9,14 +9,20 @@
 
 #pragma once
 
-#include <openrct2/core/EnumUtils.hpp>
-#include <openrct2/ride/RideTypes.h>
-#include <openrct2/ride/Track.h>
-#include <openrct2/ride/ted/TrackElemType.h>
+#include <cstddef>
+#include <cstdint>
 #include <vector>
+
+struct CoordsXYZD;
+struct RideSelection;
+struct ScreenCoordsXY;
 
 namespace OpenRCT2
 {
+    enum class TrackElemType : uint16_t;
+
+    struct Ride;
+
     namespace TrackMetadata
     {
         enum class TrackPitch : uint8_t;
@@ -25,7 +31,7 @@ namespace OpenRCT2
 
     enum class RideConstructionState : uint8_t;
 
-    struct SpecialElement
+    struct SpecialDropdownElement
     {
         TrackElemType TrackType;
         bool Disabled;
@@ -34,7 +40,7 @@ namespace OpenRCT2
     struct SpecialElementsDropdownState
     {
         bool HasActiveElements = false;
-        std::vector<SpecialElement> Elements{};
+        std::vector<SpecialDropdownElement> Elements{};
         size_t PreferredNumRows{};
     };
 

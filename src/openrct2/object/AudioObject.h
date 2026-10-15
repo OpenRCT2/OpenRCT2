@@ -9,12 +9,8 @@
 
 #pragma once
 
-#include "../audio/AudioSource.h"
-#include "../core/IStream.hpp"
 #include "AudioSampleTable.h"
 #include "Object.h"
-
-#include <optional>
 
 namespace OpenRCT2
 {

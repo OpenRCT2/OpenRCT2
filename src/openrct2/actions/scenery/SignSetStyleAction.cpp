@@ -11,13 +11,10 @@
 
 #include "../../Context.h"
 #include "../../Diagnostic.h"
-#include "../../core/MemoryStream.h"
-#include "../../drawing/Drawing.h"
 #include "../../localisation/StringIds.h"
 #include "../../windows/Intent.h"
 #include "../../world/Banner.h"
 #include "../../world/Map.h"
-#include "../../world/Scenery.h"
 #include "../../world/tile_element/LargeSceneryElement.h"
 #include "../../world/tile_element/WallElement.h"
 
@@ -70,14 +67,14 @@ namespace OpenRCT2::GameActions
                 LOG_ERROR("Banner tile element not found for bannerIndex %u", _bannerIndex);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            if (tileElement->getType() != TileElementType::LargeScenery)
+            if (tileElement->getType() != TileElementType::largeScenery)
             {
                 LOG_ERROR(
                     "Tile element has type %u, expected %d (LargeScenery)", tileElement->getType(),
-                    TileElementType::LargeScenery);
+                    TileElementType::largeScenery);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            loc = { banner->position.ToCoordsXY(), tileElement->getBaseZ() };
+            loc = { banner->position.toCoordsXY(), tileElement->getBaseZ() };
         }
         else
         {
@@ -88,7 +85,7 @@ namespace OpenRCT2::GameActions
                 LOG_ERROR("Wall element not found for bannerIndex", _bannerIndex);
                 return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
-            loc = { banner->position.ToCoordsXY(), wallElement->getBaseZ() };
+            loc = { banner->position.toCoordsXY(), wallElement->getBaseZ() };
         }
 
         if (!LocationValid(loc))
@@ -112,14 +109,14 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
         }
 
-        CoordsXY coords = banner->position.ToCoordsXY();
+        CoordsXY coords = banner->position.toCoordsXY();
 
         if (_isLarge)
         {
             TileElement* tileElement = BannerGetTileElement(_bannerIndex);
             if (!MapLargeScenerySignSetColour(
                     { coords, tileElement->getBaseZ(), tileElement->getDirection() },
-                    tileElement->asLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
+                    tileElement->asLargeScenery()->getSequenceIndex(), _mainColour, _textColour))
             {
                 return Result(Status::unknown, STR_CANT_REPAINT_THIS, kStringIdNone);
             }
@@ -128,8 +125,8 @@ namespace OpenRCT2::GameActions
         {
             WallElement* wallElement = BannerGetScrollingWallTileElement(_bannerIndex);
 
-            wallElement->SetPrimaryColour(_mainColour);
-            wallElement->SetSecondaryColour(_textColour);
+            wallElement->setPrimaryColour(_mainColour);
+            wallElement->setSecondaryColour(_textColour);
             MapInvalidateTile({ coords, wallElement->getBaseZ(), wallElement->getClearanceZ() });
         }
 

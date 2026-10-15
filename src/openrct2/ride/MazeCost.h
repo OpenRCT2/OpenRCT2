@@ -10,10 +10,12 @@
 #pragma once
 
 #include "../core/Money.hpp"
-#include "../world/Location.hpp"
-#include "Ride.h"
+
+struct CoordsXYZ;
 
 namespace OpenRCT2
 {
+    struct Ride;
+
     money64 MazeCalculateCost(money64 constructionCost, const Ride& ride, const CoordsXYZ& loc);
-}
+} // namespace OpenRCT2

@@ -9,12 +9,15 @@
 
 #include "../Context.h"
 #include "../FileClassifier.h"
+#include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
 #include "../core/Path.hpp"
 #include "../object/ObjectRepository.h"
 #include "CommandLine.hpp"
+
+using namespace OpenRCT2::CommandLine;
 
 namespace OpenRCT2
 {
@@ -24,7 +27,7 @@ namespace OpenRCT2
         kOptionTableEnd
     };
 
-    static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
+    static ExitCode HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
 
     const CommandLineCommand CommandLine::kParkInfoCommands[]{
         // Main commands
@@ -34,10 +37,10 @@ namespace OpenRCT2
     };
     // clang-format on
 
-    static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
+    static ExitCode HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
     {
-        exitcode_t result = CommandLine::HandleCommandDefault();
-        if (result != EXITCODE_CONTINUE)
+        ExitCode result = CommandLine::HandleCommandDefault();
+        if (result != ExitCode::launch)
         {
             return result;
         }
@@ -47,12 +50,14 @@ namespace OpenRCT2
         if (!argEnumerator->TryPopString(&rawSourcePath))
         {
             Console::Error::WriteLine("Expected a source save file path.");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         auto sourcePath = Path::GetAbsolute(rawSourcePath);
 
         auto context = CreateContext();
+        // Needed for Context::Initialise(), because it will try and load the game proper otherwise, and crash.
+        gOpenRCT2Headless = true;
         context->Initialise();
 
         auto stream = FileStream(sourcePath, FileMode::open);
@@ -60,13 +65,13 @@ namespace OpenRCT2
         if (!TryClassifyFile(&stream, &info))
         {
             Console::Error::WriteLine("Unable to detect file type");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         if (info.Type != FileType::park && info.Type != FileType::savedGame && info.Type != FileType::scenario)
         {
             Console::Error::WriteLine("Invalid file type.");
-            return EXITCODE_FAIL;
+            return ExitCode::fail;
         }
 
         auto& objectRepository = context->GetObjectRepository();
@@ -85,16 +90,19 @@ namespace OpenRCT2
             // Save is an S6 (RCT2 format)
             parkImporter = ParkImporter::CreateS6(objectRepository);
         }
-        auto loadResult = parkImporter->LoadSavedGame(sourcePath.c_str());
+        auto loadResult = parkImporter->Load(sourcePath.c_str(), false);
 
         Console::WriteLine("File contains the following objects: ");
         Console::WriteLine();
 
-        constexpr std::array typeToName = {
-            "Ride",          "SmallScenery", "LargeScenery", "Walls",           "Banners",          "Paths",
-            "PathAdditions", "SceneryGroup", "ParkEntrance", "Water",           "ScenarioMeta",     "TerrainSurface",
-            "TerrainEdge",   "Station",      "Music",        "FootpathSurface", "FootpathRailings",
+        constexpr std::array kTypeToName = {
+            "Ride",          "SmallScenery",   "LargeScenery", "Walls",           "Banners",          "Paths",
+            "PathAdditions", "SceneryGroup",   "ParkEntrance", "Water",           "ScenarioMeta",     "TerrainSurface",
+            "TerrainEdge",   "Station",        "Music",        "FootpathSurface", "FootpathRailings", "Audio",
+            "PeepNames",     "PeepAnimations", "Climate",
         };
+        static_assert(kTypeToName.size() == static_cast<size_t>(ObjectType::count));
+
         constexpr std::array sourceGameToName = {
             "Custom", "WackyWorlds", "TimeTwister", "OpenRCT2Official", "RCT1", "AddedAttractions", "LoopyLandscapes",
             "",       "RCT2",
@@ -118,22 +126,28 @@ namespace OpenRCT2
                  ObjectType::music,
                  ObjectType::footpathSurface,
                  ObjectType::footpathRailings,
+                 ObjectType::peepNames,
+                 ObjectType::peepAnimations,
+                 ObjectType::climate,
              })
         {
             auto& list = loadResult.RequiredObjects.GetList(objType);
-            Console::WriteLine("ObjectType: %s, Number of Objects: %d", typeToName[EnumValue(objType)], list.size());
+            Console::WriteLine("ObjectType: %s, Number of Objects: %d", kTypeToName[EnumValue(objType)], list.size());
             for (auto& obj : list)
             {
-                if (obj.Generation == ObjectGeneration::JSON && obj.Identifier.empty())
+                if (obj.Generation == ObjectGeneration::json && obj.Identifier.empty())
                 {
-                    // Empty object slot don't output anything
+                    // Empty object slot, don't output anything
                     continue;
                 }
                 auto* ori = GetContext()->GetObjectRepository().FindObject(obj);
-                Console::WriteFormat("%s Object: ", sourceGameToName[EnumValue(ori->GetFirstSourceGame())]);
+                auto sourceGame = ObjectSourceGame::custom;
+                if (ori != nullptr)
+                    sourceGame = ori->GetFirstSourceGame();
+                Console::WriteFormat("%s Object: ", sourceGameToName[EnumValue(sourceGame)]);
 
                 std::string name{ obj.GetName() };
-                if (obj.Generation == ObjectGeneration::DAT)
+                if (obj.Generation == ObjectGeneration::dat)
                 {
                     Console::WriteLine("%08X|%s|%08X", obj.Entry.flags, name.c_str(), obj.Entry.checksum);
                 }
@@ -144,6 +158,6 @@ namespace OpenRCT2
             }
             Console::WriteLine();
         }
-        return EXITCODE_OK;
+        return ExitCode::ok;
     }
 } // namespace OpenRCT2

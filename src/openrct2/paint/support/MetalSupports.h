@@ -9,10 +9,9 @@
 
 #pragma once
 
-#include "../../drawing/ImageId.hpp"
-#include "../../world/Location.hpp"
-
 #include <cstdint>
+
+using Direction = uint8_t;
 
 enum class MetalSupportType
 {
@@ -85,6 +84,8 @@ enum class MetalSupportPlace : uint8_t
 
     none = 255,
 };
+
+struct ImageId;
 
 namespace OpenRCT2
 {

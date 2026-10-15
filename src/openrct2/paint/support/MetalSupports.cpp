@@ -10,7 +10,6 @@
 #include "MetalSupports.h"
 
 #include "../../core/EnumUtils.hpp"
-#include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../world/Footpath.h"
 #include "../../world/tile_element/Slope.h"
@@ -369,9 +368,9 @@ static bool MetalSupportsPaintSetupCommon(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    if (session.ViewFlags.has(ViewportFlag::hideSupports))
     {
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        if (session.ViewFlags.has(ViewportFlag::invisibleSupports))
         {
             return false;
         }
@@ -587,9 +586,9 @@ bool PathPoleSupportsPaintSetup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+    if (session.ViewFlags.has(ViewportFlag::hideSupports))
     {
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        if (session.ViewFlags.has(ViewportFlag::invisibleSupports))
         {
             return false;
         }
@@ -604,7 +603,7 @@ bool PathPoleSupportsPaintSetup(
     uint16_t baseHeight;
 
     if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (height - supportSegments[segment].height < 6)
-        || !(railings.flags & RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE))
+        || !railings.flags.has(RailingEntryFlag::hasSupportBaseSprite))
     {
         baseHeight = supportSegments[segment].height;
     }

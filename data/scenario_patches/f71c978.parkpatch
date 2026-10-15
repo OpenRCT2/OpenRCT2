@@ -9,5 +9,11 @@
                 [ 56, 105 ]
             ]
         }
-    }
+    },
+    "rides": [
+        {
+            "id": 13,
+            "operation": "open_ride"
+        }
+    ]
 }
