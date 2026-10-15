@@ -907,9 +907,9 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_1);
             invalidateWidget(WIDX_TAB_2);
 
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::action))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::action);
                 invalidateWidget(WIDX_ACTION_LBL);
             }
 
@@ -1091,7 +1091,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_STATS;
+            peep->windowInvalidateFlags.unset(PeepInvalidateFlag::stats);
 
             invalidate();
         }
@@ -1256,6 +1256,12 @@ namespace OpenRCT2::Ui::Windows
             // If there are new items
             if (oldSize != _riddenRides.size())
             {
+                invalidate();
+            }
+
+            if (guest->windowInvalidateFlags.has(PeepInvalidateFlag::favouriteRide))
+            {
+                guest->windowInvalidateFlags.unset(PeepInvalidateFlag::favouriteRide);
                 invalidate();
             }
         }
@@ -1546,9 +1552,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_THOUGHTS)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::thoughts))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::thoughts);
                 invalidate();
             }
         }
@@ -1617,9 +1623,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_INVENTORY)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::inventory))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::inventory);
                 invalidate();
             }
         }

@@ -1011,9 +1011,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            if (staff->windowInvalidateFlags & PEEP_INVALIDATE_STAFF_STATS)
+            if (staff->windowInvalidateFlags.has(PeepInvalidateFlag::staffStats))
             {
-                staff->windowInvalidateFlags &= ~PEEP_INVALIDATE_STAFF_STATS;
+                staff->windowInvalidateFlags.unset(PeepInvalidateFlag::staffStats);
                 invalidate();
             }
         }
