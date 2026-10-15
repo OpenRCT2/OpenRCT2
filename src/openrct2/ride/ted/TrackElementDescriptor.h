@@ -226,6 +226,11 @@ namespace OpenRCT2::TrackMetadata
         MetalSupportPlace place = MetalSupportPlace::none;
         uint8_t alternates = false;
         int8_t height = 0;
+
+        constexpr SequenceMetalSupport flipXAxis() const
+        {
+            return SequenceMetalSupport{ metalSupportPlaceFlipXAxis(place), alternates, height };
+        }
     };
 
     using BlockedSegmentsPerType = std::array<PaintSegments, kBlockedSegmentsTypeCount>;
