@@ -10341,6 +10341,30 @@ namespace OpenRCT2::TrackMetadata
         .sequenceData = { 4, { kDiagDown25Seq0, kDiagDown25Seq1, kDiagDown25Seq2, kDiagDown25Seq3 } },
     };
 
+    constexpr auto kTEDUp60Booster = TrackElementDescriptor{
+        .description = STR_STEEP_BOOSTER,
+        .coordinates = { 0, 0, 0, 64, 0, 0 },
+        .pieceLength = 40,
+        .curveChain = { TrackElemType::up60Booster, TrackElemType::up60Booster },
+        .priceModifier = 137216,
+        .mirrorElement = TrackElemType::up60Booster,
+        .flags = { TrackElementFlag::up, TrackElementFlag::startsAtHalfHeight, TrackElementFlag::isSteepUp },
+        .definition = { TrackGroup::boosterSteep, TrackPitch::up60, TrackPitch::up60, TrackRoll::none, TrackRoll::none, 0 },
+        .sequenceData = { 1, { kUp60Seq0 } },
+    };
+
+    constexpr auto kTEDUp90Booster = TrackElementDescriptor{
+        .description = STR_VERTICAL_BOOSTER,
+        .coordinates = { 0, 0, 0, 32, 32, 0 },
+        .pieceLength = 32,
+        .curveChain = { TrackElemType::up90Booster, TrackElemType::up90Booster },
+        .priceModifier = 83968,
+        .mirrorElement = TrackElemType::up90Booster,
+        .flags = { TrackElementFlag::up },
+        .definition = { TrackGroup::boosterVertical, TrackPitch::up90, TrackPitch::up90, TrackRoll::none, TrackRoll::none, 0 },
+        .sequenceData = { 2, { kUp90Seq0, kUp90Seq1 } },
+    };
+
     static constexpr auto kTrackElementDescriptors = std::to_array<TrackElementDescriptor>({
         kTEDFlat,
         kTEDEndStation,
@@ -10692,6 +10716,8 @@ namespace OpenRCT2::TrackMetadata
         kTEDLeftEighthDiveLoopDownToDiag,
         kTEDRightEighthDiveLoopDownToDiag,
         kTEDDiagDown25Brakes,
+        kTEDUp60Booster,
+        kTEDUp90Booster,
     });
     static_assert(kTrackElementDescriptors.size() == EnumValue(TrackElemType::count));
 
