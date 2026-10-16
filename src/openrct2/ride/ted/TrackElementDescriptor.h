@@ -203,6 +203,28 @@ namespace OpenRCT2::TrackMetadata
         QuarterTile quarterTile = { 0, 0 };
         ClearanceFlags flags{};
 
+        constexpr SequenceClearance offset(const CoordsXYZ offset) const
+        {
+            auto sequenceClearance = *this;
+            sequenceClearance.x += offset.x;
+            sequenceClearance.y += offset.y;
+            sequenceClearance.z += offset.z;
+            return sequenceClearance;
+        }
+
+        constexpr SequenceClearance rotate(const Direction rotation) const
+        {
+            const CoordsXY coords = CoordsXY(static_cast<int32_t>(x), static_cast<int32_t>(y)).rotate(rotation);
+            return SequenceClearance{
+                static_cast<int16_t>(coords.x),
+                static_cast<int16_t>(coords.y),
+                z,
+                clearanceZ,
+                quarterTile.Rotate(rotation),
+                flags,
+            };
+        }
+
         constexpr SequenceClearance flipXAxis() const
         {
             return SequenceClearance{ x, static_cast<int16_t>(-y), z, clearanceZ, quarterTile.flipXAxis(), flags };
@@ -358,6 +380,30 @@ namespace OpenRCT2::TrackMetadata
                 reversedTrackSequence,
             };
         }
+
+        constexpr SequenceDescriptor offset(const CoordsXYZ offset) const
+        {
+            SequenceDescriptor sequenceDescriptor = *this;
+            sequenceDescriptor.clearance = sequenceDescriptor.clearance.offset(offset);
+            return sequenceDescriptor;
+        }
+
+        constexpr SequenceDescriptor rotate(const Direction rotation) const
+        {
+            return SequenceDescriptor{
+                clearance.rotate(rotation),
+                Numerics::rol4(allowedWallEdges, rotation),
+                flags,
+                woodenSupports,
+                metalSupports,
+                DirectionRotate(extraSupportRotation, rotation),
+                invertSegmentBlocking,
+                blockedSegmentsRotate(blockedSegments, rotation),
+                generalSupportHeight,
+                sequenceTunnelsRotate(tunnels, DirectionFlipXAxis(rotation)),
+                reversedTrackSequence,
+            };
+        }
     };
 
     struct TrackDefinition
@@ -381,6 +427,38 @@ namespace OpenRCT2::TrackMetadata
             for (size_t i = 0; i < numSequences; i++)
             {
                 newSequences[i] = sequences[i].flipXAxis();
+            }
+            return SequenceTable{ numSequences, newSequences };
+        }
+
+        constexpr SequenceTable rotate(const Direction rotation) const
+        {
+            auto newSequences = sequences;
+            for (size_t i = 0; i < numSequences; i++)
+            {
+                newSequences[i] = sequences[i].rotate(rotation);
+            }
+            return SequenceTable{ numSequences, newSequences };
+        }
+
+        constexpr SequenceTable offset(const CoordsXYZ offset) const
+        {
+            auto newSequences = sequences;
+            for (size_t i = 0; i < numSequences; i++)
+            {
+                newSequences[i] = sequences[i].offset(offset);
+            }
+            return SequenceTable{ numSequences, newSequences };
+        }
+
+        template<const size_t reversedSequencesCount>
+        constexpr SequenceTable reverse(const uint8_t (&reversedSequences)[reversedSequencesCount]) const
+        {
+            auto newSequences = sequences;
+            for (size_t i = 0; i < numSequences; i++)
+            {
+                newSequences[i] = sequences[reversedSequences[i]];
+                newSequences[i].reversedTrackSequence = reversedSequences[i];
             }
             return SequenceTable{ numSequences, newSequences };
         }
