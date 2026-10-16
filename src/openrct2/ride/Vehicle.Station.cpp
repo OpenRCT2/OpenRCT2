@@ -1329,8 +1329,8 @@ void Vehicle::CheckIfMissing()
         curRide->formatNameTo(ft);
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
 
-        News::AddItemToQueue(
-            getGameState().park.newsItems, News::ItemType::ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
+        getGameState().park.newsItems.addItemToQueue(
+            News::ItemType::ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
     }
 }
 

@@ -32,78 +32,20 @@
 
 using namespace OpenRCT2;
 
-News::Item& News::ItemQueues::current()
-{
-    return _recent.front();
-}
-
-const News::Item& News::ItemQueues::current() const
-{
-    return _recent.front();
-}
-
-bool News::IsValidIndex(int32_t index)
-{
-    if (index >= MaxItems)
-    {
-        LOG_ERROR("Tried to get news item past MAX_NEWS.");
-        return false;
-    }
-    return true;
-}
-
-News::Item* News::GetItem(ItemQueues& queues, int32_t index)
-{
-    return queues.at(index);
-}
-
-News::Item& News::ItemQueues::operator[](size_t index)
-{
-    return const_cast<Item&>(const_cast<const ItemQueues&>(*this)[index]);
-}
-
-const News::Item& News::ItemQueues::operator[](size_t index) const
-{
-    if (index < _recent.capacity())
-        return _recent[index];
-
-    return _archived[index - _recent.capacity()];
-}
-
-News::Item* News::ItemQueues::at(int32_t index)
-{
-    return const_cast<Item*>(const_cast<const ItemQueues&>(*this).at(index));
-}
-
-const News::Item* News::ItemQueues::at(int32_t index) const
-{
-    if (IsValidIndex(index))
-    {
-        return &(*this)[index];
-    }
-
-    return nullptr;
-}
-
-bool News::ItemQueues::isEmpty() const
-{
-    return _recent.empty();
-}
-
 /**
  *
  *  rct2: 0x0066DF32
  */
-void News::ItemQueues::clear()
+void News::Items::clear()
 {
-    _recent.clear();
-    _archived.clear();
+    queue.clear();
+    archive.clear();
 }
 
 void News::InitQueue(Park::ParkData& park)
 {
     park.newsItems.clear();
-    assert(park.newsItems.isEmpty());
+    assert(park.newsItems.archive.empty() && park.newsItems.queue.empty());
 
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : park.peepWarningThrottle)
@@ -115,14 +57,9 @@ void News::InitQueue(Park::ParkData& park)
     ContextBroadcastIntent(&intent);
 }
 
-uint16_t News::ItemQueues::incrementTicks()
+void News::Items::tickActiveItem()
 {
-    return ++current().ticks;
-}
-
-static void TickCurrent(News::ItemQueues& queues)
-{
-    int32_t ticks = queues.incrementTicks();
+    int32_t ticks = ++queue.front().ticks;
     // Only play news item sound when in normal playing mode
     if (ticks == 1 && (gLegacyScene == LegacyScene::playing))
     {
@@ -131,66 +68,57 @@ static void TickCurrent(News::ItemQueues& queues)
     }
 }
 
-int32_t News::ItemQueues::removeTime() const
+int32_t News::Items::removeTime() const
 {
-    if (!_recent[5].isEmpty() && !_recent[4].isEmpty() && !_recent[3].isEmpty() && !_recent[2].isEmpty())
+    if (!queue[5].isEmpty() && !queue[4].isEmpty() && !queue[3].isEmpty() && !queue[2].isEmpty())
     {
         return 256;
     }
     return 320;
 }
 
-bool News::ItemQueues::currentShouldBeArchived() const
+bool News::Items::activeItemShouldBeArchived() const
 {
-    return current().ticks >= removeTime();
+    return queue.front().ticks >= removeTime();
 }
 
 /**
  *
  *  rct2: 0x0066E252
  */
-void News::UpdateCurrentItem(ItemQueues& queues)
+void News::Items::updateActiveItem()
 {
     PROFILED_FUNCTION();
 
     // Check if there is a current news item
-    if (queues.isEmpty())
+    if (queue.empty())
         return;
 
     auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
     ContextBroadcastIntent(&intent);
 
     // Update the current news item
-    TickCurrent(queues);
+    tickActiveItem();
 
     // Removal of current news item
-    if (queues.currentShouldBeArchived())
-        queues.archiveCurrent();
+    if (activeItemShouldBeArchived())
+        archiveActiveItem();
 }
 
-/**
- *
- *  rct2: 0x0066E377
- */
-void News::CloseCurrentItem(ItemQueues& queues)
-{
-    queues.archiveCurrent();
-}
-
-void News::ItemQueues::archiveCurrent()
+void News::Items::archiveActiveItem()
 {
     // Check if there is a current message
-    if (isEmpty())
+    if (queue.empty())
         return;
 
-    _archived.push_back(current());
+    archive.push_back(queue.front());
 
     // Invalidate the news window
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::recentNews);
 
     // Dequeue the current news item, shift news up
-    _recent.pop_front();
+    queue.pop_front();
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
@@ -285,47 +213,50 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(ItemType type, int32_t subject
     return subjectLoc;
 }
 
-News::Item* News::ItemQueues::firstOpenOrNewSlot()
+News::Item* News::Items::firstOpenOrNewSlot()
 {
-    for (auto emptySlots = _recent.capacity() - _recent.size(); emptySlots < 2; ++emptySlots)
+    for (auto emptySlots = queue.capacity() - queue.size(); emptySlots < 2; ++emptySlots)
     {
-        archiveCurrent();
+        archiveActiveItem();
     }
 
-    auto res = _recent.end();
+    auto res = queue.end();
     // The for loop above guarantees there is always an extra element to use
-    assert(_recent.capacity() - _recent.size() >= 2);
+    assert(queue.capacity() - queue.size() >= 2);
     auto newsItem = res + 1;
     newsItem->type = ItemType::null;
 
     return &*res;
 }
 
+const News::Item* News::Items::getActiveMessage() const
+{
+    return queue.at(0);
+}
+
 /**
  *
  *  rct2: 0x0066DF55
  */
-News::Item* News::AddItemToQueue(
-    ItemQueues& queues, ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter)
+News::Item* News::Items::addItemToQueue(ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter)
 {
     utf8 buffer[256];
 
     // overflows possible?
     FormatStringLegacy(buffer, 256, string_id, formatter.Data());
-    return AddItemToQueue(queues, type, buffer, assoc);
+    return addItemToQueue(type, buffer, assoc);
 }
 
 // TODO: Use variant for assoc, requires strong type for each possible input.
-News::Item* News::AddItemToQueue(
-    ItemQueues& queues, ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter)
+News::Item* News::Items::addItemToQueue(ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter)
 {
-    return AddItemToQueue(queues, type, string_id, assoc.ToUnderlying(), formatter);
+    return addItemToQueue(type, string_id, assoc.ToUnderlying(), formatter);
 }
 
-News::Item* News::AddItemToQueue(ItemQueues& queues, ItemType type, const utf8* text, uint32_t assoc)
+News::Item* News::Items::addItemToQueue(ItemType type, const utf8* text, uint32_t assoc)
 {
     auto& date = GetDate();
-    Item* newsItem = queues.firstOpenOrNewSlot();
+    Item* newsItem = firstOpenOrNewSlot();
     newsItem->type = type;
     newsItem->flags = 0;
     newsItem->assoc = assoc; // Make optional for Award, Money, Graph and Null
@@ -433,64 +364,29 @@ void News::OpenSubject(ItemType type, int32_t subject)
  *
  *  rct2: 0x0066E407
  */
-void News::DisableNewsItems(ItemQueues& queues, ItemType type, uint32_t assoc)
+void News::DisableNewsItems(Items& newsItems, ItemType type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
-    queues.foreachRecentNews([type, assoc, &queues](auto& newsItem) {
+    for (auto& newsItem : newsItems.queue)
+    {
         if (type == newsItem.type && assoc == newsItem.assoc)
         {
             newsItem.setFlags(ItemFlags::hasButton);
-            if (&newsItem == &queues.current())
+            if (&newsItem == &newsItems.queue.front())
             {
                 auto intent = Intent(INTENT_ACTION_UPDATE_NEWS_TICKER);
                 ContextBroadcastIntent(&intent);
             }
         }
-    });
+    }
 
-    queues.foreachArchivedNews([type, assoc](auto& newsItem) {
+    for (auto& newsItem : newsItems.archive)
+    {
         if (type == newsItem.type && assoc == newsItem.assoc)
         {
             newsItem.setFlags(ItemFlags::hasButton);
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::recentNews);
         }
-    });
-}
-
-void News::AddItemToQueue(ItemQueues& queues, Item* newNewsItem)
-{
-    Item* newsItem = queues.firstOpenOrNewSlot();
-    *newsItem = *newNewsItem;
-}
-
-void News::RemoveItem(ItemQueues& queues, int32_t index)
-{
-    if (index < 0 || index >= MaxItems)
-        return;
-
-    // News item is already null, no need to remove it
-    if (queues[index].type == ItemType::null)
-        return;
-
-    size_t newsBoundary = index < ItemHistoryStart ? ItemHistoryStart : MaxItems;
-    for (size_t i = index; i < newsBoundary - 1; i++)
-    {
-        queues[i] = queues[i + 1];
-    }
-    queues[newsBoundary - 1].type = ItemType::null;
-}
-
-void News::importNewsItems(ItemQueues& queues, const std::span<const Item> recent, const std::span<const Item> archived)
-{
-    queues.clear();
-
-    for (size_t i = 0; i < std::min<size_t>(recent.size(), ItemHistoryStart); i++)
-    {
-        queues[i] = recent[i];
-    }
-    for (size_t i = 0; i < std::min<size_t>(archived.size(), MaxItemsArchive); i++)
-    {
-        queues[ItemHistoryStart + i] = archived[i];
     }
 }

@@ -1345,8 +1345,9 @@ namespace OpenRCT2
         {
             Formatter ft;
             ride.formatNameTo(ft);
-            News::AddItemToQueue(
-                getGameState().park.newsItems, News::ItemType::ride, STR_RIDE_IS_BROKEN_DOWN, ride.id.ToUnderlying(), ft);
+
+            getGameState().park.newsItems.addItemToQueue(
+                News::ItemType::ride, STR_RIDE_IS_BROKEN_DOWN, ride.id.ToUnderlying(), ft);
         }
     }
 
@@ -1373,9 +1374,8 @@ namespace OpenRCT2
                 {
                     Formatter ft;
                     ride.formatNameTo(ft);
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::ride, STR_RIDE_IS_STILL_NOT_FIXED,
-                        ride.id.ToUnderlying(), ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::ride, STR_RIDE_IS_STILL_NOT_FIXED, ride.id.ToUnderlying(), ft);
                 }
             }
         }
@@ -2065,9 +2065,8 @@ namespace OpenRCT2
                 ride.formatNameTo(ft);
                 if (Config::Get().notifications.rideWarnings)
                 {
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(),
-                        ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
                 }
                 ride.connectedMessageThrottle = 3;
             }
@@ -2079,9 +2078,8 @@ namespace OpenRCT2
                 ride.formatNameTo(ft);
                 if (Config::Get().notifications.rideWarnings)
                 {
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(),
-                        ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
                 }
                 ride.connectedMessageThrottle = 3;
             }
@@ -2148,8 +2146,9 @@ namespace OpenRCT2
         {
             Formatter ft;
             ride2->formatNameTo(ft);
-            News::AddItemToQueue(
-                getGameState().park.newsItems, News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride2->id.ToUnderlying(), ft);
+
+            getGameState().park.newsItems.addItemToQueue(
+                News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride2->id.ToUnderlying(), ft);
         }
 
         ride2->connectedMessageThrottle = 3;
@@ -5047,8 +5046,8 @@ namespace OpenRCT2
         {
             Formatter ft;
             formatNameTo(ft);
-            News::AddItemToQueue(
-                getGameState().park.newsItems, News::ItemType::ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
+
+            getGameState().park.newsItems.addItemToQueue(News::ItemType::ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
         }
     }
 
