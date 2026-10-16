@@ -1212,25 +1212,25 @@ namespace OpenRCT2
             cs.readWrite(item.category);
         }
 
-        void ReadWriteNotificationsChunk(News::ItemQueues& queues, OrcaStream& os)
+        void ReadWriteNotificationsChunk(News::Items& queues, OrcaStream& os)
         {
             os.readWriteChunk(ParkFileChunkType::notifications, [&queues](OrcaStream::ChunkStream& cs) {
                 if (cs.getMode() == OrcaStream::Mode::reading)
                 {
                     std::vector<News::Item> recent;
                     cs.readWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
+                    queues.queue.importQueue(recent);
 
                     std::vector<News::Item> archived;
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
-
-                    News::importNewsItems(queues, recent, archived);
+                    queues.archive.importQueue(archived);
                 }
                 else
                 {
-                    std::vector<News::Item> recent(std::begin(queues.getRecent()), std::end(queues.getRecent()));
+                    std::vector<News::Item> recent(std::begin(queues.queue), std::end(queues.queue));
                     cs.readWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
-                    std::vector<News::Item> archived(std::begin(queues.getArchived()), std::end(queues.getArchived()));
+                    std::vector<News::Item> archived(std::begin(queues.archive), std::end(queues.archive));
                     cs.readWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });

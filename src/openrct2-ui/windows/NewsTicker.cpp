@@ -53,11 +53,11 @@ namespace OpenRCT2::Ui::Windows
     class NewsTicker final : public Window
     {
     private:
-        News::ItemQueues& _queues;
+        News::Items& _queues;
 
         void drawNewsItem(RenderTarget& rt)
         {
-            const auto* newsItem = News::GetItem(_queues, 0);
+            const auto* newsItem = _queues.getActiveMessage();
             if (newsItem == nullptr)
                 return;
 
@@ -184,14 +184,14 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseUp(WidgetIndex widgetIndex) override
         {
-            const auto* newsItem = News::GetItem(_queues, 0);
+            const auto* newsItem = _queues.getActiveMessage();
             if (newsItem == nullptr)
                 return;
 
             switch (widgetIndex)
             {
                 case WIDX_PANEL_INSET:
-                    News::CloseCurrentItem(_queues);
+                    _queues.archiveActiveItem();
                     break;
                 case WIDX_NEWS_SUBJECT:
                     News::OpenSubject(newsItem->type, newsItem->assoc);
@@ -230,7 +230,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEWS_LOCATE].right = width - 6;
             widgets[WIDX_NEWS_LOCATE].left = widgets[WIDX_NEWS_LOCATE].right - 24;
 
-            auto* newsItem = News::GetItem(_queues, 0);
+            auto* newsItem = _queues.getActiveMessage();
+            if (newsItem == nullptr)
+                return;
+
             setWidgetDisabled(WIDX_NEWS_SUBJECT, false);
             setWidgetDisabled(WIDX_NEWS_LOCATE, false);
 
@@ -265,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
             if (currentFrame >= 24)
                 currentFrame = 0;
 
-            if (_queues.isEmpty())
+            if (_queues.queue.empty())
                 close();
         }
     };
