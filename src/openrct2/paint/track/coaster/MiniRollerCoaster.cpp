@@ -13842,18 +13842,26 @@ static void MiniRCTrackLeftQuarterTurn1(
     {
         case 0:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 2, height }, { 26, 24, 2 } });
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::topLeftSide, 8, height, session.SupportColours);
             break;
         case 1:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 26, 2 });
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::topRightSide, 8, height, session.SupportColours);
             break;
         case 2:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 6, height }, { 24, 26, 2 } });
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::bottomRightSide, 8, height, session.SupportColours);
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 6, height }, { 24, 24, 2 } });
+            MetalASupportsPaintSetup(
+                session, supportType.metal, MetalSupportPlace::bottomLeftSide, 8, height, session.SupportColours);
             break;
     }
-    MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::topRightSide, 8, height, session.SupportColours);
+
     TrackPaintUtilLeftQuarterTurn1TileTunnel(
         session, kTunnelGroup, direction, height, 0, TunnelSubType::flat, 0, TunnelSubType::flat);
     PaintUtilSetSegmentSupportHeight(
