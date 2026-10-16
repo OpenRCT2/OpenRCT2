@@ -98,6 +98,8 @@
     <ClCompile Include="NetworkTests.cpp" />
     <ClCompile Include="ReplayTests.cpp" />
     <ClCompile Include="PlayTests.cpp" />
+    <ClCompile Include="Rct1CsgTests.cpp" />
+    <ClCompile Include="Rct1TablesTests.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="RideRatings.cpp" />
     <ClCompile Include="EntityImportTests.cpp" />
