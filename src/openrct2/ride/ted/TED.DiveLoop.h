@@ -106,114 +106,6 @@ namespace OpenRCT2::TrackMetadata
             kSegmentsUnimplemented,                                                       // wide
         } },
     };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq0 = {
-        .clearance = { 0, 0, 0, 64, { 0b1101, 0 }, {} },
-        .allowedWallEdges = 0b0000,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsRotate(
-            blockedSegmentsFlipXAxis(kLeftEighthDiveLoopUpToOrthogonalSeq0.blockedSegments), 1),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq1 = {
-        .clearance = { -32, 0, 0, 88, { 0b0001, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsRotate(
-            blockedSegmentsFlipXAxis(kLeftEighthDiveLoopUpToOrthogonalSeq1.blockedSegments), 1),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq2 = {
-        .clearance = { 0, 32, 0, 88, { 0b0100, 0 }, {} },
-        .allowedWallEdges = 0b0110,
-        .blockedSegments = blockedSegmentsRotate(
-            blockedSegmentsFlipXAxis(kLeftEighthDiveLoopUpToOrthogonalSeq2.blockedSegments), 1),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq3 = {
-        .clearance = { -32, 32, 32, 80, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0001,
-        .blockedSegments = blockedSegmentsRotate(
-            blockedSegmentsFlipXAxis(kLeftEighthDiveLoopUpToOrthogonalSeq3.blockedSegments), 1),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq4 = {
-        .clearance = { -32, 64, 80, 48, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(
-            blockedSegmentsFlipXAxis(kLeftEighthDiveLoopUpToOrthogonalSeq4.blockedSegments), 1),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopUpToOrthogonalSeq5 = {
-        .clearance = { -32, 96, 112, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(
-            blockedSegmentsFlipXAxis(kLeftEighthDiveLoopUpToOrthogonalSeq5.blockedSegments), 1),
-    };
-    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq0 = {
-        .clearance = { 0, 0, 112, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(kRightEighthDiveLoopUpToOrthogonalSeq5.blockedSegments, 1),
-    };
-    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq1 = {
-        .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(kRightEighthDiveLoopUpToOrthogonalSeq4.blockedSegments, 1),
-    };
-    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq2 = {
-        .clearance = { -64, 0, 32, 80, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = blockedSegmentsRotate(kRightEighthDiveLoopUpToOrthogonalSeq3.blockedSegments, 1),
-    };
-    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq3 = {
-        .clearance = { -64, -32, 0, 88, { 0b1000, 0 }, {} },
-        .allowedWallEdges = 0b1100,
-        .blockedSegments = blockedSegmentsRotate(kRightEighthDiveLoopUpToOrthogonalSeq2.blockedSegments, 1),
-    };
-    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq4 = {
-        .clearance = { -96, 0, 0, 88, { 0b0010, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsRotate(kRightEighthDiveLoopUpToOrthogonalSeq1.blockedSegments, 1),
-    };
-    static constexpr SequenceDescriptor kLeftEighthDiveLoopDownToDiagSeq5 = {
-        .clearance = { -96, -32, 0, 64, { 0b0001, 0 }, {} },
-        .allowedWallEdges = 0b0000,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsRotate(kRightEighthDiveLoopUpToOrthogonalSeq0.blockedSegments, 1),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq0 = {
-        .clearance = { 0, 0, 112, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(kLeftEighthDiveLoopUpToOrthogonalSeq5.blockedSegments, 2),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq1 = {
-        .clearance = { -32, 0, 80, 48, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(kLeftEighthDiveLoopUpToOrthogonalSeq4.blockedSegments, 2),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq2 = {
-        .clearance = { -64, 0, 32, 80, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsRotate(kLeftEighthDiveLoopUpToOrthogonalSeq3.blockedSegments, 2),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq3 = {
-        .clearance = { -64, 32, 0, 88, { 0b0100, 0 }, {} },
-        .allowedWallEdges = 0b0110,
-        .blockedSegments = blockedSegmentsRotate(kLeftEighthDiveLoopUpToOrthogonalSeq2.blockedSegments, 2),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq4 = {
-        .clearance = { -96, 0, 0, 88, { 0b0001, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsRotate(kLeftEighthDiveLoopUpToOrthogonalSeq1.blockedSegments, 2),
-    };
-    static constexpr SequenceDescriptor kRightEighthDiveLoopDownToDiagSeq5 = {
-        .clearance = { -96, 32, 0, 64, { 0b0010, 0 }, {} },
-        .allowedWallEdges = 0b0000,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsRotate(kLeftEighthDiveLoopUpToOrthogonalSeq0.blockedSegments, 2),
-    };
 
     constexpr auto kTEDLeftEighthDiveLoopUpToOrthogonal = TrackElementDescriptor{
         .description = STR_DIVE_LOOP_LEFT,
@@ -247,10 +139,7 @@ namespace OpenRCT2::TrackMetadata
         .spinFunction = SpinFunction::r9,
         .verticalFactor = EvaluatorDiveLoopUp,
         .lateralFactor = EvaluatorDiveLoopUpRight,
-        .sequenceData = { 6,
-                          { kRightEighthDiveLoopUpToOrthogonalSeq0, kRightEighthDiveLoopUpToOrthogonalSeq1,
-                            kRightEighthDiveLoopUpToOrthogonalSeq2, kRightEighthDiveLoopUpToOrthogonalSeq3,
-                            kRightEighthDiveLoopUpToOrthogonalSeq4, kRightEighthDiveLoopUpToOrthogonalSeq5 } },
+        .sequenceData = kTEDLeftEighthDiveLoopUpToOrthogonal.sequenceData.flipDiagonal(),
     };
 
     constexpr auto kTEDLeftEighthDiveLoopDownToDiag = TrackElementDescriptor{
@@ -266,10 +155,14 @@ namespace OpenRCT2::TrackMetadata
         .spinFunction = SpinFunction::l9,
         .verticalFactor = EvaluatorDiveLoopDown,
         .lateralFactor = EvaluatorDiveLoopDownLeft,
-        .sequenceData = { 6,
-                          { kLeftEighthDiveLoopDownToDiagSeq0, kLeftEighthDiveLoopDownToDiagSeq1,
-                            kLeftEighthDiveLoopDownToDiagSeq2, kLeftEighthDiveLoopDownToDiagSeq3,
-                            kLeftEighthDiveLoopDownToDiagSeq4, kLeftEighthDiveLoopDownToDiagSeq5 } },
+        .sequenceData =
+            [] { // TED sequence override! (diagonal connection) (#27299)
+                auto sequenceData = kTEDRightEighthDiveLoopUpToOrthogonal.sequenceData.rotate(1)
+                                        .offset({ -96, -32, 0 })
+                                        .reverse({ 5, 4, 3, 2, 1, 0 });
+                sequenceData.sequences[5].clearance.quarterTile = QuarterTile(0b0001);
+                return sequenceData;
+            }(),
     };
 
     constexpr auto kTEDRightEighthDiveLoopDownToDiag = TrackElementDescriptor{
@@ -285,10 +178,7 @@ namespace OpenRCT2::TrackMetadata
         .spinFunction = SpinFunction::r9,
         .verticalFactor = EvaluatorDiveLoopDown,
         .lateralFactor = EvaluatorDiveLoopDownRight,
-        .sequenceData = { 6,
-                          { kRightEighthDiveLoopDownToDiagSeq0, kRightEighthDiveLoopDownToDiagSeq1,
-                            kRightEighthDiveLoopDownToDiagSeq2, kRightEighthDiveLoopDownToDiagSeq3,
-                            kRightEighthDiveLoopDownToDiagSeq4, kRightEighthDiveLoopDownToDiagSeq5 } },
+        .sequenceData = kTEDLeftEighthDiveLoopDownToDiag.sequenceData.flipDiagonal().rotate(3),
     };
 
 } // namespace OpenRCT2::TrackMetadata

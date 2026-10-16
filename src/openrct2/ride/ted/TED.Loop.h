@@ -156,66 +156,6 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq0 = {
-        .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1000,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq1 = {
-        .clearance = { -32, 0, 16, 16, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq2 = {
-        .clearance = { -64, 0, 32, 96, { 0b0001, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq3 = {
-        .clearance = { -32, 0, 120, 16, { 0b1001, 0 }, {} },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq4 = {
-        .clearance = { -32, 32, 120, 0, { 0b0000, 0 }, {} },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq5 = {
-        .clearance = { 0, 0, 120, 0, { 0b0000, 0 }, {} },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq5.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq6 = {
-        .clearance = { 0, 32, 120, 16, { 0b0110, 0 }, {} },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq6.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq7 = {
-        .clearance = { 32, 32, 32, 96, { 0b0100, 0 }, {} },
-        .allowedWallEdges = 0b0110,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq7.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq8 = {
-        .clearance = { 0, 32, 16, 16, { 0b1111, 0b0011 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq8.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightVerticalLoopSeq9 = {
-        .clearance = { -32, 32, 0, 16, { 0b1111, 0b0011 }, {} },
-        .allowedWallEdges = 0b0010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftVerticalLoopSeq9.blockedSegments),
-    };
-
     static constexpr SequenceDescriptor kHalfLoopUpSeq0 = {
         .clearance = { 0, 0, 0, 16, { 0b1111, 0b1100 }, {} },
         .allowedWallEdges = 0b1010,
@@ -252,49 +192,6 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kHalfLoopUpSeq3 = {
         .clearance = { -32, 0, 120, 16, { 0b1111, 0 }, {} },
         .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = { {
-            { PS::centre, PS::topRight, PS::bottomLeft }, // narrow
-            { PS::centre, PS::topRight, PS::bottomLeft }, // inverted
-            kSegmentsUnimplemented,                       // wide
-        } },
-    };
-
-    static constexpr SequenceDescriptor kHalfLoopDownSeq0 = {
-        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, {} },
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = { {
-            { PS::centre, PS::topRight, PS::bottomLeft }, // narrow
-            { PS::centre, PS::topRight, PS::bottomLeft }, // inverted
-            kSegmentsUnimplemented,                       // wide
-        } },
-    };
-
-    static constexpr SequenceDescriptor kHalfLoopDownSeq1 = {
-        .clearance = { -32, 0, -120, 96, { 0b0011, 0 }, {} },
-        .allowedWallEdges = 0b1011,
-        .blockedSegments = { {
-            { PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
-            { PS::left, PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // inverted
-            kSegmentsUnimplemented,                                                             // wide
-        } },
-    };
-
-    static constexpr SequenceDescriptor kHalfLoopDownSeq2 = {
-        .clearance = { 0, 0, -136, 16, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = { {
-            kSegmentsAll,           // narrow
-            kSegmentsAll,           // inverted
-            kSegmentsUnimplemented, // wide
-        } },
-    };
-
-    static constexpr SequenceDescriptor kHalfLoopDownSeq3 = {
-        .clearance = { 32, 0, -152, 16, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = { {
             { PS::centre, PS::topRight, PS::bottomLeft }, // narrow
             { PS::centre, PS::topRight, PS::bottomLeft }, // inverted
@@ -375,134 +272,6 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq0 = {
-        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq1 = {
-        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq2 = {
-        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq3 = {
-        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq4 = {
-        .clearance = { -128, 32, 120, 96, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq5 = {
-        .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq5.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopUpSeq6 = {
-        .clearance = { -64, 32, 248, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeHalfLoopUpSeq6.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq0 = {
-        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = kRightLargeHalfLoopUpSeq6.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq1 = {
-        .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = kRightLargeHalfLoopUpSeq5.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq2 = {
-        .clearance = { -64, 0, -160, 96, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = kRightLargeHalfLoopUpSeq4.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq3 = {
-        .clearance = { -32, -32, -216, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = kRightLargeHalfLoopUpSeq3.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq4 = {
-        .clearance = { 0, -32, -248, 56, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = kRightLargeHalfLoopUpSeq2.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq5 = {
-        .clearance = { 32, -32, -264, 40, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .blockedSegments = kRightLargeHalfLoopUpSeq1.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeHalfLoopDownSeq6 = {
-        .clearance = { 64, -32, -280, 24, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = kRightLargeHalfLoopUpSeq0.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq0 = {
-        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = kLeftLargeHalfLoopUpSeq6.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq1 = {
-        .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = kLeftLargeHalfLoopUpSeq5.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq2 = {
-        .clearance = { -64, 0, -160, 96, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = kLeftLargeHalfLoopUpSeq4.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq3 = {
-        .clearance = { -32, 32, -216, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = kLeftLargeHalfLoopUpSeq3.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq4 = {
-        .clearance = { 0, 32, -248, 56, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = kLeftLargeHalfLoopUpSeq2.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq5 = {
-        .clearance = { 32, 32, -264, 40, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .blockedSegments = kLeftLargeHalfLoopUpSeq1.blockedSegments,
-    };
-
     static constexpr SequenceDescriptor kLeftMediumHalfLoopUpSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
@@ -553,102 +322,6 @@ namespace OpenRCT2::TrackMetadata
             kSegmentsUnimplemented,                                                               // inverted
             kSegmentsUnimplemented,                                                               // wide
         } },
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq0 = {
-        .clearance = { 0, 0, 0, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopUpSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq1 = {
-        .clearance = { -32, 0, 16, 48, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopUpSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq2 = {
-        .clearance = { -64, 0, 56, 120, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopUpSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq3 = {
-        .clearance = { -64, 32, 56, 120, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopUpSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopUpSeq4 = {
-        .clearance = { -32, 32, 168, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopUpSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq0 = {
-        .clearance = { 0, 0, -48, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = kRightMediumHalfLoopUpSeq4.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq1 = {
-        .clearance = { -32, 0, -160, 120, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = kRightMediumHalfLoopUpSeq3.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq2 = {
-        .clearance = { -32, -32, -160, 120, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = kRightMediumHalfLoopUpSeq2.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq3 = {
-        .clearance = { 0, -32, -200, 48, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = kRightMediumHalfLoopUpSeq1.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kLeftMediumHalfLoopDownSeq4 = {
-        .clearance = { 32, -32, -216, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = kRightMediumHalfLoopUpSeq0.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq0 = {
-        .clearance = { 0, 0, -48, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopDownSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq1 = {
-        .clearance = { -32, 0, -160, 120, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopDownSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq2 = {
-        .clearance = { -32, 32, -160, 120, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopDownSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq3 = {
-        .clearance = { 0, 32, -200, 48, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopDownSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightMediumHalfLoopDownSeq4 = {
-        .clearance = { 32, 32, -216, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftMediumHalfLoopDownSeq4.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedUpSeq0 = {
@@ -722,51 +395,6 @@ namespace OpenRCT2::TrackMetadata
             kSegmentsUnimplemented,                                                               // inverted
             kSegmentsUnimplemented,                                                               // wide
         } },
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq0 = {
-        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq1 = {
-        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq2 = {
-        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq3 = {
-        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq4 = {
-        .clearance = { -128, 32, 120, 96, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq5 = {
-        .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq5.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedUpSeq6 = {
-        .clearance = { -64, 32, 248, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedUpSeq6.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedDownSeq0 = {
@@ -845,54 +473,6 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq0 = {
-        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq1 = {
-        .clearance = { -32, 0, -184, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq2 = {
-        .clearance = { -64, 0, -128, 96, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq3 = {
-        .clearance = { -32, 32, -184, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq4 = {
-        .clearance = { 0, 32, -216, 56, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq5 = {
-        .clearance = { 32, 32, -232, 40, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq5.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedDownSeq6 = {
-        .clearance = { 64, 32, -248, 24, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedDownSeq6.blockedSegments),
-    };
-
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopInvertedUpSeq0 = {
         .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, {} },
         .allowedWallEdges = 0b1010,
@@ -966,51 +546,6 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq0 = {
-        .clearance = { 0, 0, 0, 24, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq1 = {
-        .clearance = { -32, 0, 16, 40, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq2 = {
-        .clearance = { -64, 0, 32, 56, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq3 = {
-        .clearance = { -96, 0, 64, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq4 = {
-        .clearance = { -128, 32, 120, 96, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq5 = {
-        .clearance = { -96, 32, 64, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq5.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopInvertedUpSeq6 = {
-        .clearance = { -64, 32, 248, 32, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopInvertedUpSeq6.blockedSegments),
-    };
-
     static constexpr SequenceDescriptor kLeftFlyerLargeHalfLoopUninvertedDownSeq0 = {
         .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
@@ -1082,51 +617,6 @@ namespace OpenRCT2::TrackMetadata
             kSegmentsUnimplemented,                       // inverted
             kSegmentsUnimplemented,                       // wide
         } },
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq0 = {
-        .clearance = { 0, 0, -32, 32, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq1 = {
-        .clearance = { -32, 0, -216, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq2 = {
-        .clearance = { -64, 0, -160, 96, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq3 = {
-        .clearance = { -32, 32, -216, 192, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq4 = {
-        .clearance = { 0, 32, -248, 56, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq5 = {
-        .clearance = { 32, 32, -264, 40, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq5.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerLargeHalfLoopUninvertedDownSeq6 = {
-        .clearance = { 64, 32, -280, 24, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerLargeHalfLoopUninvertedDownSeq6.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopInvertedUpSeq0 = {
@@ -1211,13 +701,6 @@ namespace OpenRCT2::TrackMetadata
             kSegmentsUnimplemented,                       // inverted
             kSegmentsUnimplemented,                       // wide
         } },
-    };
-
-    static constexpr SequenceDescriptor kRightLargeHalfLoopDownSeq6 = {
-        .clearance = { 64, 32, -280, 24, { 0b1111, 0b1100 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = kLeftLargeHalfLoopUpSeq0.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kFlyerHalfLoopUninvertedUpSeq0 = {
@@ -1318,10 +801,7 @@ namespace OpenRCT2::TrackMetadata
                    TrackElementFlag::inversionToNormal },
         .definition = { TrackGroup::verticalLoop, TrackPitch::down25, TrackPitch::up25, TrackRoll::none, TrackRoll::none, -48 },
         .verticalFactor = EvaluatorVerticalLoop,
-        .sequenceData = { 10,
-                          { kRightVerticalLoopSeq0, kRightVerticalLoopSeq1, kRightVerticalLoopSeq2, kRightVerticalLoopSeq3,
-                            kRightVerticalLoopSeq4, kRightVerticalLoopSeq5, kRightVerticalLoopSeq6, kRightVerticalLoopSeq7,
-                            kRightVerticalLoopSeq8, kRightVerticalLoopSeq9 } },
+        .sequenceData = kTEDLeftVerticalLoop.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDHalfLoopUp = TrackElementDescriptor{
@@ -1349,7 +829,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::halfLoop, TrackPitch::down25, TrackPitch::none, TrackRoll::none, TrackRoll::upsideDown,
                         -64 },
         .verticalFactor = EvaluatorHalfLoopDown,
-        .sequenceData = { 4, { kHalfLoopDownSeq0, kHalfLoopDownSeq1, kHalfLoopDownSeq2, kHalfLoopDownSeq3 } },
+        .sequenceData = kTEDHalfLoopUp.sequenceData.offset({ 32, 0, -152 }).reverse({ 3, 2, 1, 0 }),
     };
 
     constexpr auto kTEDLeftLargeHalfLoopUp = TrackElementDescriptor{
@@ -1382,10 +862,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::halfLoopLarge, TrackPitch::none, TrackPitch::up25, TrackRoll::upsideDown, TrackRoll::none,
                         64 },
         .verticalFactor = EvaluatorLargeHalfLoopUp,
-        .sequenceData = { 7,
-                          { kRightLargeHalfLoopUpSeq0, kRightLargeHalfLoopUpSeq1, kRightLargeHalfLoopUpSeq2,
-                            kRightLargeHalfLoopUpSeq3, kRightLargeHalfLoopUpSeq4, kRightLargeHalfLoopUpSeq5,
-                            kRightLargeHalfLoopUpSeq6 } },
+        .sequenceData = kTEDLeftLargeHalfLoopUp.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftLargeHalfLoopDown = TrackElementDescriptor{
@@ -1399,10 +876,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::halfLoopLarge, TrackPitch::down25, TrackPitch::none, TrackRoll::none, TrackRoll::upsideDown,
                         -64 },
         .verticalFactor = EvaluatorLargeHalfLoopDown,
-        .sequenceData = { 7,
-                          { kLeftLargeHalfLoopDownSeq0, kLeftLargeHalfLoopDownSeq1, kLeftLargeHalfLoopDownSeq2,
-                            kLeftLargeHalfLoopDownSeq3, kLeftLargeHalfLoopDownSeq4, kLeftLargeHalfLoopDownSeq5,
-                            kLeftLargeHalfLoopDownSeq6 } },
+        .sequenceData = kTEDRightLargeHalfLoopUp.sequenceData.offset({ 64, -32, -280 }).reverse({ 6, 5, 4, 3, 2, 1, 0 }),
     };
 
     constexpr auto kTEDRightLargeHalfLoopDown = TrackElementDescriptor{
@@ -1416,10 +890,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::halfLoopLarge, TrackPitch::down25, TrackPitch::none, TrackRoll::none, TrackRoll::upsideDown,
                         -64 },
         .verticalFactor = EvaluatorLargeHalfLoopDown,
-        .sequenceData = { 7,
-                          { kRightLargeHalfLoopDownSeq0, kRightLargeHalfLoopDownSeq1, kRightLargeHalfLoopDownSeq2,
-                            kRightLargeHalfLoopDownSeq3, kRightLargeHalfLoopDownSeq4, kRightLargeHalfLoopDownSeq5,
-                            kRightLargeHalfLoopDownSeq6 } },
+        .sequenceData = kTEDLeftLargeHalfLoopDown.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDFlyerHalfLoopUninvertedUp = TrackElementDescriptor{
@@ -1484,9 +955,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::halfLoopMedium, TrackPitch::none, TrackPitch::up25, TrackRoll::upsideDown, TrackRoll::none,
                         64 },
         .verticalFactor = EvaluatorMediumHalfLoopUp,
-        .sequenceData = { 5,
-                          { kRightMediumHalfLoopUpSeq0, kRightMediumHalfLoopUpSeq1, kRightMediumHalfLoopUpSeq2,
-                            kRightMediumHalfLoopUpSeq3, kRightMediumHalfLoopUpSeq4 } },
+        .sequenceData = kTEDLeftMediumHalfLoopUp.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftMediumHalfLoopDown = TrackElementDescriptor{
@@ -1500,9 +969,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::halfLoopMedium, TrackPitch::down25, TrackPitch::none, TrackRoll::none,
                         TrackRoll::upsideDown, -64 },
         .verticalFactor = EvaluatorMediumHalfLoopDown,
-        .sequenceData = { 5,
-                          { kLeftMediumHalfLoopDownSeq0, kLeftMediumHalfLoopDownSeq1, kLeftMediumHalfLoopDownSeq2,
-                            kLeftMediumHalfLoopDownSeq3, kLeftMediumHalfLoopDownSeq4 } },
+        .sequenceData = kTEDRightMediumHalfLoopUp.sequenceData.offset({ 32, -32, -216 }).reverse({ 4, 3, 2, 1, 0 }),
     };
 
     constexpr auto kTEDRightMediumHalfLoopDown = TrackElementDescriptor{
@@ -1516,9 +983,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::halfLoopMedium, TrackPitch::down25, TrackPitch::none, TrackRoll::none,
                         TrackRoll::upsideDown, -64 },
         .verticalFactor = EvaluatorMediumHalfLoopDown,
-        .sequenceData = { 5,
-                          { kRightMediumHalfLoopDownSeq0, kRightMediumHalfLoopDownSeq1, kRightMediumHalfLoopDownSeq2,
-                            kRightMediumHalfLoopDownSeq3, kRightMediumHalfLoopDownSeq4 } },
+        .sequenceData = kTEDLeftMediumHalfLoopDown.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftFlyerLargeHalfLoopUninvertedUp = TrackElementDescriptor{
@@ -1550,11 +1015,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::flyingLargeHalfLoopUninvertedUp, TrackPitch::none, TrackPitch::up25, TrackRoll::upsideDown,
                         TrackRoll::none, 64 },
         .verticalFactor = EvaluatorLargeHalfLoopUp,
-        .sequenceData = { 7,
-                          { kRightFlyerLargeHalfLoopUninvertedUpSeq0, kRightFlyerLargeHalfLoopUninvertedUpSeq1,
-                            kRightFlyerLargeHalfLoopUninvertedUpSeq2, kRightFlyerLargeHalfLoopUninvertedUpSeq3,
-                            kRightFlyerLargeHalfLoopUninvertedUpSeq4, kRightFlyerLargeHalfLoopUninvertedUpSeq5,
-                            kRightFlyerLargeHalfLoopUninvertedUpSeq6 } },
+        .sequenceData = kTEDLeftFlyerLargeHalfLoopUninvertedUp.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftFlyerLargeHalfLoopInvertedDown = TrackElementDescriptor{
@@ -1586,11 +1047,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::flyingLargeHalfLoopInvertedDown, TrackPitch::down25, TrackPitch::none,
                         TrackRoll::upsideDown, TrackRoll::none, -64 },
         .verticalFactor = EvaluatorLargeHalfLoopDown,
-        .sequenceData = { 7,
-                          { kRightFlyerLargeHalfLoopInvertedDownSeq0, kRightFlyerLargeHalfLoopInvertedDownSeq1,
-                            kRightFlyerLargeHalfLoopInvertedDownSeq2, kRightFlyerLargeHalfLoopInvertedDownSeq3,
-                            kRightFlyerLargeHalfLoopInvertedDownSeq4, kRightFlyerLargeHalfLoopInvertedDownSeq5,
-                            kRightFlyerLargeHalfLoopInvertedDownSeq6 } },
+        .sequenceData = kTEDLeftFlyerLargeHalfLoopInvertedDown.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftFlyerLargeHalfLoopInvertedUp = TrackElementDescriptor{
@@ -1622,11 +1079,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::flyingLargeHalfLoopInvertedUp, TrackPitch::none, TrackPitch::up25, TrackRoll::upsideDown,
                         TrackRoll::none, 64 },
         .verticalFactor = EvaluatorLargeHalfLoopUp,
-        .sequenceData = { 7,
-                          { kRightFlyerLargeHalfLoopInvertedUpSeq0, kRightFlyerLargeHalfLoopInvertedUpSeq1,
-                            kRightFlyerLargeHalfLoopInvertedUpSeq2, kRightFlyerLargeHalfLoopInvertedUpSeq3,
-                            kRightFlyerLargeHalfLoopInvertedUpSeq4, kRightFlyerLargeHalfLoopInvertedUpSeq5,
-                            kRightFlyerLargeHalfLoopInvertedUpSeq6 } },
+        .sequenceData = kTEDLeftFlyerLargeHalfLoopInvertedUp.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftFlyerLargeHalfLoopUninvertedDown = TrackElementDescriptor{
@@ -1658,11 +1111,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::flyingLargeHalfLoopUninvertedDown, TrackPitch::down25, TrackPitch::none,
                         TrackRoll::upsideDown, TrackRoll::none, -64 },
         .verticalFactor = EvaluatorLargeHalfLoopDown,
-        .sequenceData = { 7,
-                          { kRightFlyerLargeHalfLoopUninvertedDownSeq0, kRightFlyerLargeHalfLoopUninvertedDownSeq1,
-                            kRightFlyerLargeHalfLoopUninvertedDownSeq2, kRightFlyerLargeHalfLoopUninvertedDownSeq3,
-                            kRightFlyerLargeHalfLoopUninvertedDownSeq4, kRightFlyerLargeHalfLoopUninvertedDownSeq5,
-                            kRightFlyerLargeHalfLoopUninvertedDownSeq6 } },
+        .sequenceData = kTEDLeftFlyerLargeHalfLoopUninvertedDown.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDFlyerHalfLoopInvertedUp = TrackElementDescriptor{
