@@ -345,13 +345,13 @@ namespace OpenRCT2::Audio
         AudioEngineGroup engineGroup;
         switch (group)
         {
-            case MixerGroup::RideMusic:
+            case MixerGroup::rideMusic:
                 engineGroup = AudioEngineGroup::rideMusic;
                 break;
-            case MixerGroup::TitleMusic:
+            case MixerGroup::titleMusic:
                 engineGroup = AudioEngineGroup::titleMusic;
                 break;
-            case MixerGroup::Sound:
+            case MixerGroup::sound:
             default:
                 engineGroup = AudioEngineGroup::sound;
                 break;
