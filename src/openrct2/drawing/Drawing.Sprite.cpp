@@ -812,11 +812,10 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     int32_t y = coords.y;
 
     const auto* g1 = GfxGetG1Element(imageId);
-    if (g1 == nullptr)
+    if (g1 == nullptr || g1->offset == nullptr || g1->width <= 0 || g1->height <= 0)
     {
         return;
     }
-
     if (zoomLevel > ZoomLevel{ 0 } && g1->flags.has(G1Flag::hasZoomSprite))
     {
         RenderTarget zoomedRT = rt;
@@ -1229,6 +1228,11 @@ bool IsCsgLoaded()
 
 size_t G1CalculateDataSize(const G1Element* g1)
 {
+    if (g1->width < 0 || g1->height < 0)
+    {
+        throw std::runtime_error("Invalid sprite dimensions detected in G1 object.");
+    }
+
     if (const auto* asPalette = g1->asPalette())
     {
         return asPalette->numColours * 3;

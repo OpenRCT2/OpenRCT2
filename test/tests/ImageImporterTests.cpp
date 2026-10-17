@@ -12,6 +12,7 @@
 #include <gtest/gtest.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/drawing/ImageImporter.h>
+#include <openrct2/drawing/Drawing.Sprite.h>
 #include <string_view>
 
 using namespace OpenRCT2;
@@ -57,4 +58,14 @@ TEST_F(ImageImporterTests, Import_Logo)
     ASSERT_NE(nullptr, result.Buffer.data());
     auto hash = GetHash(result.Buffer.data(), result.Buffer.size());
     ASSERT_EQ(uint32_t(0x212A99BC), hash);
+}
+
+// Added test for rejecting corrupted dimensions
+TEST(G1CalculateDataSizeTest, RejectCorruptedDimensions)
+{
+    OpenRCT2::G1Element corruptedElement = {};
+    corruptedElement.width = -50;
+    corruptedElement.height = -50;
+    
+    EXPECT_THROW(G1CalculateDataSize(&corruptedElement), std::runtime_error);
 }

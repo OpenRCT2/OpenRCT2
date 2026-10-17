@@ -35,7 +35,7 @@ static void FASTCALL DrawBMPSpriteMagnify(RenderTarget& rt, const DrawSpriteArgs
         {
             PaletteIndex* src = reinterpret_cast<PaletteIndex*>(
                 src0 + (srcLineWidth * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x)));
-            BlitPixel<TBlendOp>(src, dst, paletteMap);
+            BlitPixel<TBlendOp, false>(src, dst, paletteMap, nullptr, nullptr);
         }
         dst = nextDst;
     }
@@ -45,28 +45,38 @@ template<DrawBlendOp TBlendOp>
 static void FASTCALL DrawBMPSpriteMinify(RenderTarget& rt, const DrawSpriteArgs& args)
 {
     auto& g1 = args.SourceImage;
-    auto* src = reinterpret_cast<PaletteIndex*>(g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX));
+
+    // FIX: Use ptrdiff_t to safely handle potentially negative SrcX or SrcY values
+    ptrdiff_t start_offset = (static_cast<ptrdiff_t>(g1.width) * args.SrcY) + args.SrcX;
+    auto* src = reinterpret_cast<PaletteIndex*>(g1.offset) + start_offset;
+
     auto* dst = reinterpret_cast<PaletteIndex*>(args.DestinationBits);
     auto& paletteMap = args.PalMap;
+
     auto width = args.Width;
     auto height = args.Height;
     auto zoomLevel = rt.zoom_level;
     size_t srcLineWidth = zoomLevel.ApplyTo(g1.width);
     size_t dstLineWidth = rt.LineStride();
     uint8_t zoom = zoomLevel.ApplyTo(1);
+
+    auto* src_start = reinterpret_cast<PaletteIndex*>(g1.offset);
+    auto* src_end = src_start + (static_cast<size_t>(g1.width) * std::max(1, static_cast<int>(g1.height)));
+
     for (; height > 0; height -= zoom)
     {
         auto nextSrc = src + srcLineWidth;
         auto nextDst = dst + dstLineWidth;
+
         for (int32_t widthRemaining = width; widthRemaining > 0; widthRemaining -= zoom, src += zoom, dst++)
         {
-            BlitPixel<TBlendOp>(src, dst, paletteMap);
+             BlitPixel<TBlendOp, true>(src, dst, paletteMap, src_start, src_end);
         }
+
         src = nextSrc;
         dst = nextDst;
     }
 }
-
 template<DrawBlendOp TBlendOp>
 static void FASTCALL DrawBMPSprite(RenderTarget& rt, const DrawSpriteArgs& args)
 {
