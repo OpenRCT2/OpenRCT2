@@ -1228,6 +1228,11 @@ bool IsCsgLoaded()
 
 size_t G1CalculateDataSize(const G1Element* g1)
 {
+    if (g1->width < 0 || g1->height < 0)
+    {
+        throw std::runtime_error("Invalid sprite dimensions detected in G1 object.");
+    }
+
     if (const auto* asPalette = g1->asPalette())
     {
         return asPalette->numColours * 3;

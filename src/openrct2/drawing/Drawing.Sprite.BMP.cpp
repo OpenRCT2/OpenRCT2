@@ -35,7 +35,7 @@ static void FASTCALL DrawBMPSpriteMagnify(RenderTarget& rt, const DrawSpriteArgs
         {
             PaletteIndex* src = reinterpret_cast<PaletteIndex*>(
                 src0 + (srcLineWidth * zoom.ApplyTo(srcY + y) + zoom.ApplyTo(srcX + x)));
-            BlitPixel<TBlendOp>(src, dst, paletteMap);
+            BlitPixel<TBlendOp, false>(src, dst, paletteMap, nullptr, nullptr);
         }
         dst = nextDst;
     }
@@ -70,10 +70,7 @@ static void FASTCALL DrawBMPSpriteMinify(RenderTarget& rt, const DrawSpriteArgs&
 
         for (int32_t widthRemaining = width; widthRemaining > 0; widthRemaining -= zoom, src += zoom, dst++)
         {
-            if (src >= src_start && src < src_end)
-            {
-                BlitPixel<TBlendOp>(src, dst, paletteMap);
-            }
+             BlitPixel<TBlendOp, true>(src, dst, paletteMap, src_start, src_end);
         }
 
         src = nextSrc;
