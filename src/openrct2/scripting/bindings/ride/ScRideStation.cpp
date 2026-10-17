@@ -9,9 +9,10 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#include "../../../core/UnitConversion.h"
-#include "ScRideStation.hpp"
-#include "../../../ride/Ride.h"
+    #include "ScRideStation.hpp"
+
+    #include "../../../core/UnitConversion.h"
+    #include "../../../ride/Ride.h"
 
 namespace OpenRCT2::Scripting
 {
