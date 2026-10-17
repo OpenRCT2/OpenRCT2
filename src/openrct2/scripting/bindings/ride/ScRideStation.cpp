@@ -9,7 +9,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#include "openrct2/core/UnitConversion.h"
+#include "../../../core/UnitConversion.h"
 #include "ScRideStation.hpp"
 #include "../../../ride/Ride.h"
 
