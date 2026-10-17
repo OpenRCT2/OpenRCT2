@@ -20,6 +20,11 @@ namespace OpenRCT2
     {
         return ((quarters & 0b1010) >> 1) | ((quarters & 0b0101) << 1);
     }
+
+    constexpr uint8_t quartersFlipDiagonal(const uint8_t quarters)
+    {
+        return (quarters & 0b1010) | ((quarters & 0b0100) >> 2) | ((quarters & 0b0001) << 2);
+    }
 } // namespace OpenRCT2
 
 class QuarterTile
@@ -95,6 +100,12 @@ public:
     {
         return QuarterTile(
             OpenRCT2::quartersFlipXAxis(GetBaseQuarterOccupied()), OpenRCT2::quartersFlipXAxis(GetZQuarterOccupied()));
+    }
+
+    constexpr QuarterTile flipDiagonal() const
+    {
+        return QuarterTile(
+            OpenRCT2::quartersFlipDiagonal(GetBaseQuarterOccupied()), OpenRCT2::quartersFlipDiagonal(GetZQuarterOccupied()));
     }
 };
 
