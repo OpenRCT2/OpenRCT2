@@ -107,3 +107,23 @@ TEST_F(RideRatings, EverythingPark)
 {
     TestRatings("EverythingPark.park", 529);
 }
+
+TEST(RideRatingsHelpers, GetTrackShelteredEighths)
+{
+    Ride ride;
+    ride.numStations = 2;
+    ride.getStation(StationIndex::FromUnderlying(0)).segmentLength = 400;
+    ride.getStation(StationIndex::FromUnderlying(1)).segmentLength = 400;
+
+    ride.shelteredLength = 99;
+    EXPECT_EQ(ride.getTrackShelteredEighths(), 0);
+
+    ride.shelteredLength = 100;
+    EXPECT_EQ(ride.getTrackShelteredEighths(), 1);
+
+    ride.shelteredLength = 400;
+    EXPECT_EQ(ride.getTrackShelteredEighths(), 4);
+
+    ride.shelteredLength = 800;
+    EXPECT_EQ(ride.getTrackShelteredEighths(), 7);
+}

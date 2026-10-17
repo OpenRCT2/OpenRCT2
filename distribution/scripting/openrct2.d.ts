@@ -1670,10 +1670,10 @@ declare global {
         cancel: boolean;
     }
 
-	interface RideBreakdownArgs {
-		readonly rideId: number;
-		breakdownReason: string;
-	}
+    interface RideBreakdownArgs {
+        readonly rideId: number;
+        breakdownReason: string;
+    }
 
     interface RideRatingsCalculateArgs {
         readonly rideId: number;
@@ -2588,6 +2588,34 @@ declare global {
          * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
+
+        /**
+         * Number of inversions traversed during testing. This matches the value
+         * shown on the ride stats window. Note that a shuttle loop counts its single
+         * loop twice, and unreachable inversions are not counted at all.
+         */
+        readonly numInversions: number;
+
+        /**
+         * Number of holes traversed during testing. Only applicable to the mini-golf
+         * and only meaningful after the ride has been tested.
+         */
+        readonly numHoles: number;
+
+        /**
+         * Number of sheltered eighths of the tested track, clamped to the range
+         * 0 to 7. This is the value used by the unsheltered ride rating
+         * requirement and is only meaningful after the ride has been tested.
+         */
+        readonly trackShelteredEighths: number;
+
+        /**
+         * Whether testing detected a water splash or spinning tunnel element.
+         * This exposes the internal `hasWaterSplash()` check, which also returns
+         * true for spinning tunnels because they share the same special element
+         * type ID. Only meaningful after the ride has been tested.
+         */
+        readonly hasWaterSplashOrSpinningTunnel: boolean;
 
         /**
         * The current breakdown of the ride.
