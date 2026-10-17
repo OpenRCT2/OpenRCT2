@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <SDL_mouse.h>
+#include <SDL3/SDL.h>
 #include <functional>
 #include <map>
 #include <openrct2/core/EnumUtils.hpp>
@@ -40,7 +40,7 @@ namespace OpenRCT2::Ui
             {
                 for (size_t i = 0; i < EnumValue(CursorID::count); i++)
                 {
-                    SDL_FreeCursor(_cursors[i]);
+                    SDL_DestroyCursor(_cursors[i]);
                 }
             }
 

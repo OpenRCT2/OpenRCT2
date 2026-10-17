@@ -10,8 +10,7 @@
 #include "../UiStringIds.h"
 #include "ShortcutManager.h"
 
-#include <SDL_joystick.h>
-#include <SDL_keyboard.h>
+#include <SDL3/SDL.h>
 #include <cstring>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatting.h>
@@ -21,57 +20,57 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
-constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
+constexpr uint32_t kUsefulModifiers = SDL_KMOD_SHIFT | SDL_KMOD_CTRL | SDL_KMOD_ALT | SDL_KMOD_GUI;
 
 static uint32_t ParseModifier(std::string_view text)
 {
     if (String::iequals(text, "CTRL"))
     {
-        return KMOD_CTRL;
+        return SDL_KMOD_CTRL;
     }
     if (String::iequals(text, "LCTRL"))
     {
-        return KMOD_LCTRL;
+        return SDL_KMOD_LCTRL;
     }
     if (String::iequals(text, "RCTRL"))
     {
-        return KMOD_RCTRL;
+        return SDL_KMOD_RCTRL;
     }
     if (String::iequals(text, "SHIFT"))
     {
-        return KMOD_SHIFT;
+        return SDL_KMOD_SHIFT;
     }
     if (String::iequals(text, "LSHIFT"))
     {
-        return KMOD_LSHIFT;
+        return SDL_KMOD_LSHIFT;
     }
     if (String::iequals(text, "RSHIFT"))
     {
-        return KMOD_RSHIFT;
+        return SDL_KMOD_RSHIFT;
     }
     if (String::iequals(text, "ALT"))
     {
-        return KMOD_ALT;
+        return SDL_KMOD_ALT;
     }
     if (String::iequals(text, "LALT"))
     {
-        return KMOD_LALT;
+        return SDL_KMOD_LALT;
     }
     if (String::iequals(text, "RALT"))
     {
-        return KMOD_RALT;
+        return SDL_KMOD_RALT;
     }
     if (String::iequals(text, "GUI"))
     {
-        return KMOD_GUI;
+        return SDL_KMOD_GUI;
     }
     if (String::iequals(text, "LCTRL"))
     {
-        return KMOD_LGUI;
+        return SDL_KMOD_LGUI;
     }
     if (String::iequals(text, "RGUI"))
     {
-        return KMOD_RGUI;
+        return SDL_KMOD_RGUI;
     }
 
     return 0;
@@ -192,12 +191,12 @@ ShortcutInput::ShortcutInput(std::string_view value)
 std::string_view ShortcutInput::getModifierName(uint32_t key, bool localised)
 {
     static std::unordered_map<uint32_t, std::pair<const char*, StringId>> _keys{
-        { KMOD_SHIFT, { "SHIFT", STR_SHORTCUT_MOD_SHIFT } },    { KMOD_LSHIFT, { "LSHIFT", STR_SHORTCUT_MOD_LSHIFT } },
-        { KMOD_RSHIFT, { "RSHIFT", STR_SHORTCUT_MOD_RSHIFT } }, { KMOD_CTRL, { "CTRL", STR_SHORTCUT_MOD_CTRL } },
-        { KMOD_LCTRL, { "LCTRL", STR_SHORTCUT_MOD_LCTRL } },    { KMOD_RCTRL, { "RCTRL", STR_SHORTCUT_MOD_RCTRL } },
-        { KMOD_ALT, { "ALT", STR_SHORTCUT_MOD_ALT } },          { KMOD_LALT, { "LALT", STR_SHORTCUT_MOD_LALT } },
-        { KMOD_RALT, { "RALT", STR_SHORTCUT_MOD_RALT } },       { KMOD_GUI, { "GUI", STR_SHORTCUT_MOD_GUI } },
-        { KMOD_LGUI, { "LGUI", STR_SHORTCUT_MOD_LGUI } },       { KMOD_RGUI, { "RGUI", STR_SHORTCUT_MOD_RGUI } },
+        { SDL_KMOD_SHIFT, { "SHIFT", STR_SHORTCUT_MOD_SHIFT } },    { SDL_KMOD_LSHIFT, { "LSHIFT", STR_SHORTCUT_MOD_LSHIFT } },
+        { SDL_KMOD_RSHIFT, { "RSHIFT", STR_SHORTCUT_MOD_RSHIFT } }, { SDL_KMOD_CTRL, { "CTRL", STR_SHORTCUT_MOD_CTRL } },
+        { SDL_KMOD_LCTRL, { "LCTRL", STR_SHORTCUT_MOD_LCTRL } },    { SDL_KMOD_RCTRL, { "RCTRL", STR_SHORTCUT_MOD_RCTRL } },
+        { SDL_KMOD_ALT, { "ALT", STR_SHORTCUT_MOD_ALT } },          { SDL_KMOD_LALT, { "LALT", STR_SHORTCUT_MOD_LALT } },
+        { SDL_KMOD_RALT, { "RALT", STR_SHORTCUT_MOD_RALT } },       { SDL_KMOD_GUI, { "GUI", STR_SHORTCUT_MOD_GUI } },
+        { SDL_KMOD_LGUI, { "LGUI", STR_SHORTCUT_MOD_LGUI } },       { SDL_KMOD_RGUI, { "RGUI", STR_SHORTCUT_MOD_RGUI } },
     };
 
     auto r = _keys.find(key);
@@ -283,10 +282,10 @@ std::string ShortcutInput::toLocalisedString() const
 std::string ShortcutInput::toString(bool localised) const
 {
     std::string result;
-    appendModifier(result, KMOD_LSHIFT, KMOD_RSHIFT, localised);
-    appendModifier(result, KMOD_LCTRL, KMOD_RCTRL, localised);
-    appendModifier(result, KMOD_LALT, KMOD_RALT, localised);
-    appendModifier(result, KMOD_LGUI, KMOD_RGUI, localised);
+    appendModifier(result, SDL_KMOD_LSHIFT, SDL_KMOD_RSHIFT, localised);
+    appendModifier(result, SDL_KMOD_LCTRL, SDL_KMOD_RCTRL, localised);
+    appendModifier(result, SDL_KMOD_LALT, SDL_KMOD_RALT, localised);
+    appendModifier(result, SDL_KMOD_LGUI, SDL_KMOD_RGUI, localised);
 
     if (kind == InputDeviceKind::keyboard)
     {
@@ -393,8 +392,8 @@ static bool HasModifier(uint32_t shortcut, uint32_t actual, uint32_t left, uint3
 static bool CompareModifiers(uint32_t shortcut, uint32_t actual)
 {
     shortcut &= kUsefulModifiers;
-    return HasModifier(shortcut, actual, KMOD_LCTRL, KMOD_RCTRL) && HasModifier(shortcut, actual, KMOD_LSHIFT, KMOD_RSHIFT)
-        && HasModifier(shortcut, actual, KMOD_LALT, KMOD_RALT) && HasModifier(shortcut, actual, KMOD_LGUI, KMOD_RGUI);
+    return HasModifier(shortcut, actual, SDL_KMOD_LCTRL, SDL_KMOD_RCTRL) && HasModifier(shortcut, actual, SDL_KMOD_LSHIFT, SDL_KMOD_RSHIFT)
+        && HasModifier(shortcut, actual, SDL_KMOD_LALT, SDL_KMOD_RALT) && HasModifier(shortcut, actual, SDL_KMOD_LGUI, SDL_KMOD_RGUI);
 }
 
 bool ShortcutInput::matches(const InputEvent& e) const
@@ -413,7 +412,7 @@ std::optional<ShortcutInput> ShortcutInput::fromInputEvent(const InputEvent& e)
 {
     // Assume any side modifier (more specific configurations can be done by manually editing config file)
     auto modifiers = e.modifiers & kUsefulModifiers;
-    for (auto mod : { KMOD_CTRL, KMOD_SHIFT, KMOD_ALT, KMOD_GUI })
+    for (auto mod : { SDL_KMOD_CTRL, SDL_KMOD_SHIFT, SDL_KMOD_ALT, SDL_KMOD_GUI })
     {
         if (modifiers & mod)
         {
