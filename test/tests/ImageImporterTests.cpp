@@ -11,8 +11,8 @@
 
 #include <gtest/gtest.h>
 #include <openrct2/core/Path.hpp>
-#include <openrct2/drawing/ImageImporter.h>
 #include <openrct2/drawing/Drawing.Sprite.h>
+#include <openrct2/drawing/ImageImporter.h>
 #include <string_view>
 
 using namespace OpenRCT2;
@@ -66,6 +66,6 @@ TEST(G1CalculateDataSizeTest, RejectCorruptedDimensions)
     OpenRCT2::G1Element corruptedElement = {};
     corruptedElement.width = -50;
     corruptedElement.height = -50;
-    
+
     EXPECT_THROW(G1CalculateDataSize(&corruptedElement), std::runtime_error);
-}
+}

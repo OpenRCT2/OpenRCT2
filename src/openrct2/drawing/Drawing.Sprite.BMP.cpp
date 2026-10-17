@@ -70,7 +70,7 @@ static void FASTCALL DrawBMPSpriteMinify(RenderTarget& rt, const DrawSpriteArgs&
 
         for (int32_t widthRemaining = width; widthRemaining > 0; widthRemaining -= zoom, src += zoom, dst++)
         {
-             BlitPixel<TBlendOp, true>(src, dst, paletteMap, src_start, src_end);
+            BlitPixel<TBlendOp, true>(src, dst, paletteMap, src_start, src_end);
         }
 
         src = nextSrc;

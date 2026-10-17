@@ -82,8 +82,7 @@ struct DrawSpriteArgs
 template<DrawBlendOp TBlendOp, bool ValidateBounds = false>
 bool FASTCALL BlitPixel(
     const OpenRCT2::Drawing::PaletteIndex* src, OpenRCT2::Drawing::PaletteIndex* dst,
-    const OpenRCT2::Drawing::PaletteMap& paletteMap,
-    const OpenRCT2::Drawing::PaletteIndex* src_start = nullptr, 
+    const OpenRCT2::Drawing::PaletteMap& paletteMap, const OpenRCT2::Drawing::PaletteIndex* src_start = nullptr,
     const OpenRCT2::Drawing::PaletteIndex* src_end = nullptr)
 {
     if constexpr (ValidateBounds)
