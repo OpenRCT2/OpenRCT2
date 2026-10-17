@@ -2637,6 +2637,7 @@ declare global {
         exit: CoordsXYZD;
         /** Queue wait time in minutes for this station. */
         readonly queueTime: number;
+        readonly segmentLength: number;
     }
 
     interface TrackSegment {
