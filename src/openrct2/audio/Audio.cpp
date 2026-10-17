@@ -202,6 +202,23 @@ namespace OpenRCT2::Audio
 
     static void Play(IAudioSource* audioSource, int32_t volume, int32_t pan)
     {
+        auto& audioContext = GetContext()->GetAudioContext();
+
+        if (audioContext.IsNewEngine())
+        {
+            int32_t mixerPan = 0;
+            if (pan != kAudioPlayAtCentre)
+            {
+                int32_t x2 = pan << 16;
+                uint16_t screenWidth = std::max<int32_t>(64, ContextGetWidth());
+                mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
+            }
+            float normalizedVolume = std::pow(10.0f, static_cast<float>(volume) / 2000.0f);
+            float normalizedPan = DStoMixerPan(mixerPan);
+            audioContext.PlayOneShot(audioSource, normalizedVolume, normalizedPan);
+            return;
+        }
+
         int32_t mixerPan = 0;
         if (pan != kAudioPlayAtCentre)
         {
@@ -333,6 +350,12 @@ namespace OpenRCT2::Audio
         StopSFX();
         StopTitleMusic();
         RideAudio::StopAllChannels();
+
+        auto& audioContext = GetContext()->GetAudioContext();
+        if (audioContext.IsNewEngine())
+        {
+            audioContext.StopAll();
+        }
     }
 
     int32_t GetDeviceCount()
@@ -450,6 +473,8 @@ namespace OpenRCT2::Audio
                 }
             }
         }
+
+        GetContext()->GetAudioContext().StopVehicleSounds();
     }
 
     static IAudioMixer* GetMixer()
@@ -477,6 +502,13 @@ namespace OpenRCT2::Audio
     std::shared_ptr<IAudioChannel> CreateAudioChannel(
         IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate, bool forget)
     {
+        auto& audioContext = GetContext()->GetAudioContext();
+
+        if (audioContext.IsNewEngine())
+        {
+            return audioContext.CreateChannel(source, group, loop, volume, pan, rate);
+        }
+
         auto* mixer = GetMixer();
         if (mixer == nullptr)
         {
