@@ -733,13 +733,17 @@ namespace OpenRCT2::Scripting
     JSValue ScRide::satisfaction_get(JSContext* ctx, JSValue thisVal)
     {
         auto ride = GetRide(thisVal);
-        return JS_NewUint32(ctx, ride != nullptr ? ride->satisfaction * 5 : 0);
+        if (ride == nullptr || ride->satisfaction == 255)
+            return JS_NULL;
+        return JS_NewUint32(ctx, ride->satisfaction * 5);
     }
 
     JSValue ScRide::popularity_get(JSContext* ctx, JSValue thisVal)
     {
         auto ride = GetRide(thisVal);
-        return JS_NewUint32(ctx, ride != nullptr ? ride->popularity * 4 : 0);
+        if (ride == nullptr || ride->popularity == 255)
+            return JS_NULL;
+        return JS_NewUint32(ctx, ride->popularity * 4);
     }
 
     JSValue ScRide::maxSpeed_get(JSContext* ctx, JSValue thisVal)
