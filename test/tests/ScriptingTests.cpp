@@ -78,7 +78,7 @@ TEST_F(ScriptingTests, MultipleSubscribersToSameEventShouldNotCrash)
 
 TEST(ScriptingActionNames, AllGameActionsHaveScriptName)
 {
-    for (uint32_t id = 0; id < EnumValue(GameCommand::count); id++)
+    for (int32_t id = 0; id < EnumValue(GameCommand::count); id++)
     {
         // Skip IDs with no registered action.
         if (!GameActions::IsValidId(id))
