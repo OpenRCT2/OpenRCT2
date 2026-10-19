@@ -4534,7 +4534,6 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq0 = {
         .clearance = { 0, 0, 0, 208, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
@@ -4546,6 +4545,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq1 = {
         .clearance = { 32, 0, 0, 208, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1110,
+        .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
@@ -4590,7 +4590,6 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq5 = {
         .clearance = { -128, 0, 0, 32, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
@@ -4602,6 +4601,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq6 = {
         .clearance = { -160, 0, 0, 16, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
+        .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
