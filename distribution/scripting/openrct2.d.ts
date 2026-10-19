@@ -2532,12 +2532,12 @@ declare global {
         /**
          * The satisfaction rating of the ride from 0 to 100, or NULL if not yet calculated.
          */
-        readonly satisfaction: number;
+        readonly satisfaction: number | null;
 
         /**
          * The popularity rating of the ride from 0 to 100, or NULL if not calculated.
          */
-        readonly popularity: number;
+        readonly popularity: number | null;
 
         /**
          * The max speed in miles per hour.
