@@ -2288,6 +2288,7 @@ namespace OpenRCT2::TrackMetadata
 
     static constexpr SequenceDescriptor kReverseFreefallSlopeSeq6 = {
         .clearance = { -160, 0, 0, 208, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = kFlatStraightBlockedSegments,
     };
@@ -4544,7 +4545,7 @@ namespace OpenRCT2::TrackMetadata
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq1 = {
         .clearance = { 32, 0, 0, 208, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
+        .allowedWallEdges = 0b1110,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
@@ -4600,6 +4601,7 @@ namespace OpenRCT2::TrackMetadata
 
     static constexpr SequenceDescriptor kAirThrustVerticalDownToLevelSeq6 = {
         .clearance = { -160, 0, 0, 16, { 0b1111, 0 }, {} },
+        .allowedWallEdges = 0b1010,
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = { {
             kSegmentsUnimplemented, // narrow
