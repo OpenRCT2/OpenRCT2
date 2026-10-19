@@ -11,6 +11,7 @@
 
 #include <cstdint>
 
+using Direction = uint8_t;
 struct TileCornersZ;
 
 class QuarterTile
@@ -30,7 +31,7 @@ public:
     }
 
     // Rotate both of the values amount. Returns new RValue QuarterTile
-    const QuarterTile Rotate(uint8_t amount) const;
+    const QuarterTile Rotate(Direction amount) const;
     uint8_t GetBaseQuarterOccupied() const;
     uint8_t GetZQuarterOccupied() const;
     TileCornersZ GetQuarterHeights(int32_t height) const;

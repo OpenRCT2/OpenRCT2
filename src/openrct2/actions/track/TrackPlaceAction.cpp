@@ -513,7 +513,7 @@ namespace OpenRCT2::GameActions
                     uint8_t intersectingDirections = ted.sequenceData.sequences[blockIndex].allowedWallEdges;
                     intersectingDirections ^= 0x0F;
                     intersectingDirections = rol4(intersectingDirections, _origin.direction);
-                    for (int32_t i = 0; i < kNumOrthogonalDirections; i++)
+                    for (Direction i : kAllDirections)
                     {
                         if (intersectingDirections & (1 << i))
                         {

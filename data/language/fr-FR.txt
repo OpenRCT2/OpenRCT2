@@ -2685,8 +2685,8 @@ STR_5582    :Toujours garder le curseur dans la fenêtre
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :Débloque les limites d’exploitation des attractions, permettant par exemple une remontée à {VELOCITY}
-STR_5586    :Ouvrir les magasins et boutiques automatiquement
-STR_5587    :Ouvre automatiquement les magasins et boutiques après leur construction
+STR_5586    :Ouvrir/fermer les magasins et boutiques automatiquement
+STR_5587    :Ouvre automatiquement les magasins et boutiques après leur construction, et les ferme automatiquement avant leur démolition
 STR_5588    :Jouer avec d’autres joueurs
 STR_5589    :Paramètres de notifications
 STR_5590    :Prix du parc
@@ -3851,3 +3851,21 @@ STR_7060    :Visiteurs regardant la construction de {STRINGID}
 STR_7061    :Visiteurs regardant le décor
 STR_7062    :Visiteurs quittant le parc
 STR_7063    :Visiteurs regardant la construction d’une nouvelle attraction
+STR_7064    :Or
+STR_7065    :Ambre
+STR_7066    :Améthyste
+STR_7067    :Asperge
+STR_7068    :Marron
+STR_7069    :Rose brûlé
+STR_7070    :Cactus
+STR_7071    :Caramel
+STR_7072    :Cuivre
+STR_7073    :Pourpre
+STR_7074    :Eau sombre
+STR_7075    :Émeraude
+STR_7076    :Indigo
+STR_7077    :Pesto
+STR_7078    :Vert sapin
+STR_7079    :Rubis
+STR_7080    :Bleu profond
+STR_7081    :Argent

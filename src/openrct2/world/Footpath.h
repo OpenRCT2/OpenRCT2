@@ -200,7 +200,7 @@ namespace OpenRCT2
     void FootpathQueueChainReset();
     void FootpathQueueChainPush(RideId rideIndex);
     int32_t FootpathQueueCountConnections(const CoordsXY& position, const PathElement& pathElement);
-    bool FootpathIsZAndDirectionValid(const PathElement& tileElement, int32_t currentZ, int32_t currentDirection);
+    bool FootpathIsZAndDirectionValid(const PathElement& tileElement, int32_t currentZ, Direction currentDirection);
 
     FootpathPlacementResult FootpathGetOnTerrainPlacement(const TileCoordsXY& location);
     FootpathPlacementResult FootpathGetOnTerrainPlacement(const SurfaceElement& surfaceElement);

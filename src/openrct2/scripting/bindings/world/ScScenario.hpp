@@ -207,6 +207,7 @@ namespace OpenRCT2::Scripting
                 JS_CGETSET_DEF("guests", ScScenarioObjective::guests_get, ScScenarioObjective::guests_set),
                 JS_CGETSET_DEF("year", ScScenarioObjective::year_get, ScScenarioObjective::year_set),
                 JS_CGETSET_DEF("excitement", ScScenarioObjective::excitement_get, ScScenarioObjective::excitement_set),
+                JS_CGETSET_DEF("length", ScScenarioObjective::length_get, ScScenarioObjective::length_set),
                 JS_CGETSET_DEF("monthlyIncome", ScScenarioObjective::monthlyIncome_get, ScScenarioObjective::monthlyIncome_set),
                 JS_CGETSET_DEF("parkValue", ScScenarioObjective::parkValue_get, ScScenarioObjective::parkValue_set),
             };

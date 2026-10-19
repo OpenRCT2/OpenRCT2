@@ -513,7 +513,7 @@ namespace OpenRCT2::GameActions
                 continue;
             if (elementType == TileElementType::wall)
             {
-                int32_t direction = tileElement->getDirection();
+                Direction direction = tileElement->getDirection();
                 if (_edge == direction)
                 {
                     auto res = Result(Status::noClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);

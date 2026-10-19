@@ -35,6 +35,7 @@
 #include "LargeSceneryObject.h"
 #include "MusicObject.h"
 #include "Object.h"
+#include "ObjectAsset.h"
 #include "ObjectLimits.h"
 #include "PathAdditionObject.h"
 #include "PeepAnimationsObject.h"
@@ -529,9 +530,15 @@ namespace OpenRCT2::ObjectFactory
     std::unique_ptr<Object> CreateObjectFromJson(
         json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable, const std::string_view path)
     {
-        if (!jRoot.is_object())
+        if (!jRoot.is_object() || !jRoot.contains("objectType"))
         {
-            throw std::runtime_error("Object JSON root was not an object");
+            LOG_VERBOSE("Ignoring JSON file (%.*s): not an object file", static_cast<int>(path.length()), path.data());
+            return nullptr;
+        }
+        if (!jRoot["objectType"].is_string())
+        {
+            LOG_VERBOSE("Ignoring JSON file (%.*s): objectType is not a string", static_cast<int>(path.length()), path.data());
+            return nullptr;
         }
 
         LOG_VERBOSE("CreateObjectFromJson(...)");

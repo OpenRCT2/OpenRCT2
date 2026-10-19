@@ -27,7 +27,7 @@ namespace OpenRCT2
     {
         const size_t directionOffset = sequenceCount * spriteCount;
         uint64_t spriteMap = 0;
-        for (size_t direction = 0; direction < kNumOrthogonalDirections; direction++)
+        for (Direction direction : kAllDirections)
         {
             for (size_t sequence = 0; sequence < sequenceCount; sequence++)
             {

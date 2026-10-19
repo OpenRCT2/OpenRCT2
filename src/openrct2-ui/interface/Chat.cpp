@@ -245,9 +245,6 @@ namespace OpenRCT2
         _chatHistory.push_front(buffer);
         _chatHistoryTime.push_front(Platform::GetTicks());
 
-        // Log to file (src only as logging does its own timestamp)
-        Network::AppendChatLog(s);
-
         CreateAudioChannel(SoundId::newsItem, false, kMixerVolumeMax, 0.5f, 1.5f, true);
     }
 
