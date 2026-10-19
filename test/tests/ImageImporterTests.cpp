@@ -68,4 +68,4 @@ TEST(G1CalculateDataSizeTest, RejectCorruptedDimensions)
     corruptedElement.height = -50;
 
     EXPECT_THROW(G1CalculateDataSize(&corruptedElement), std::runtime_error);
-}
+}
