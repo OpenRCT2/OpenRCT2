@@ -5,6 +5,7 @@
 - Fix: [#24524] Some build types (like AppImage) lack information about their specific build.
 - Fix: [#27264] Headless server crashes when loading a recolourable terrain surface.
 - Fix: [#27286] Headless servers no longer write chat logs.
+- Fix: [#27300] Walls cannot be placed on every edge of the Reverse Freefall/Air Powered flat to vertical slopes (original bug).
 
 0.5.6 (2026-10-10)
 ------------------------------------------------------------------------
