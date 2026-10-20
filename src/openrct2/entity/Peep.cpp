@@ -42,6 +42,8 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
+#include "../ride/Vehicle.h"
+#include "../ride/VehicleSubpositionData.h"
 #include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
@@ -512,6 +514,113 @@ namespace OpenRCT2
         return true;
     }
 
+    bool Peep::isSmoothTurning() const
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(animationObjectIndex);
+        return animObj != nullptr && animObj->IsSmoothTurning(animationGroup);
+    }
+
+    static constexpr uint8_t kNumPeepOrientations = 32;
+    static constexpr uint8_t kPeepOrientationsPerDirection = kNumPeepOrientations / kNumOrthogonalDirections;
+
+    // Walk along whichever axis is further from the destination
+    static Direction getWalkingDirection(const CoordsXY& differenceLoc)
+    {
+        if (abs(differenceLoc.x) < abs(differenceLoc.y))
+        {
+            return differenceLoc.y >= 0 ? 3 : 1;
+        }
+        return differenceLoc.x >= 0 ? 0 : 2;
+    }
+
+    /**
+     * Smooth-turning peeps round corners along a curve, taking its heading as their orientation. The curve is
+     * the ride 1-tile quarter turn path, borrowed from the track subposition data. No extra state is saved:
+     * the position within the tile picks the point on the curve, so builds without this feature just resume
+     * normal walking.
+     */
+    static std::optional<CoordsXY> updateSmoothCorner(Peep& peep, const CoordsXY& differenceLoc)
+    {
+        // Only while off both axes of the destination
+        if (differenceLoc.x == 0 || differenceLoc.y == 0)
+        {
+            return std::nullopt;
+        }
+
+        // The destination must be the centre of an adjacent tile, which gives the direction the turn ends in
+        const CoordsXY pos = { peep.x, peep.y };
+        const CoordsXY destinationOffset = peep.getDestination() - pos.toTileCentre();
+        const auto directionsEnd = CoordsDirectionDelta.begin() + kNumOrthogonalDirections;
+        const auto exitIt = std::find(CoordsDirectionDelta.begin(), directionsEnd, destinationOffset);
+        if (exitIt == directionsEnd)
+        {
+            return std::nullopt;
+        }
+        const Direction exitDirection = static_cast<Direction>(exitIt - CoordsDirectionDelta.begin());
+
+        // Find the nearest point on either turn that ends in that direction
+        constexpr int32_t kMaxSnapDistance = 2;
+        const CoordsXY tileStart = pos.toTileStart();
+        const CoordsXY tileOffset = pos - tileStart;
+        const VehicleInfoList* bestPath = nullptr;
+        int32_t bestIndex = 0;
+        int32_t bestDistance = kMaxSnapDistance + 1;
+        for (auto trackType : { TrackElemType::leftQuarterTurn1Tile, TrackElemType::rightQuarterTurn1Tile })
+        {
+            const Direction entryDirection = trackType == TrackElemType::leftQuarterTurn1Tile ? DirectionNext(exitDirection)
+                                                                                              : DirectionPrev(exitDirection);
+            const uint16_t typeAndDirection = (EnumValue(trackType) << 2) | entryDirection;
+            const auto* path = gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::standard)][typeAndDirection];
+            if (path == nullptr)
+            {
+                continue;
+            }
+
+            for (int32_t i = 0; i < path->size; i++)
+            {
+                const auto& info = path->info[i];
+                const int32_t distance = abs(info.x - tileOffset.x) + abs(info.y - tileOffset.y);
+                if (distance < bestDistance)
+                {
+                    bestPath = path;
+                    bestIndex = i;
+                    bestDistance = distance;
+                }
+            }
+        }
+        if (bestPath == nullptr)
+        {
+            return std::nullopt;
+        }
+
+        // Advance 2 points, matching the 2 units per step of normal walking
+        const auto& next = bestPath->info[std::min<int32_t>(bestIndex + 2, bestPath->size - 1)];
+        peep.orientation = next.yaw;
+        return tileStart + CoordsXY{ next.x, next.y };
+    }
+
+    /**
+     * Smooth-turning peeps about-face (destination straight behind) by turning in place one orientation per step
+     * instead of snapping round. Progress is the orientation itself, so no extra state is saved.
+     */
+    static std::optional<CoordsXY> updateSmoothAboutFace(Peep& peep, Direction walkingDirection)
+    {
+        const uint8_t current = peep.orientation % kNumPeepOrientations;
+        const uint8_t remaining = (walkingDirection * kPeepOrientationsPerDirection + kNumPeepOrientations - current)
+            % kNumPeepOrientations;
+        const bool isMidTurn = (current % kPeepOrientationsPerDirection) != 0;
+        if (remaining == 0 || (remaining != kNumPeepOrientations / 2 && !isMidTurn))
+        {
+            return std::nullopt;
+        }
+
+        // Turn the shorter way round; a full about-face always turns the same way
+        const uint8_t step = remaining > kNumPeepOrientations / 2 ? kNumPeepOrientations - 1 : 1;
+        peep.orientation = (current + step) % kNumPeepOrientations;
+        return CoordsXY{ peep.x, peep.y };
+    }
+
     std::optional<CoordsXY> Peep::updateWalkingAction(const CoordsXY& differenceLoc, int16_t& xy_distance)
     {
         if (!isActionWalking())
@@ -524,28 +633,23 @@ namespace OpenRCT2
             return std::nullopt;
         }
 
-        int32_t x_delta = abs(differenceLoc.x);
-        int32_t y_delta = abs(differenceLoc.y);
+        const Direction nextDirection = getWalkingDirection(differenceLoc);
 
-        int32_t nextDirection = 0;
-        if (x_delta < y_delta)
+        if (isSmoothTurning())
         {
-            nextDirection = 1;
-            if (differenceLoc.y >= 0)
+            auto loc = updateSmoothCorner(*this, differenceLoc);
+            if (!loc.has_value())
             {
-                nextDirection = 3;
+                loc = updateSmoothAboutFace(*this, nextDirection);
             }
-        }
-        else
-        {
-            nextDirection = 2;
-            if (differenceLoc.x >= 0)
+            if (loc.has_value())
             {
-                nextDirection = 0;
+                updateWalkingAnimation();
+                return loc;
             }
         }
 
-        orientation = nextDirection * 8;
+        orientation = nextDirection * kPeepOrientationsPerDirection;
 
         CoordsXY loc = { x, y };
         loc += kWalkingOffsetByDirection[nextDirection];
