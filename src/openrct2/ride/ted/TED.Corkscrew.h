@@ -45,7 +45,7 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            { PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight },                     // narrow
+            { PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight },                   // narrow
             { PS::top, PS::right, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight }, // inverted
             kSegmentsUnimplemented,                                                                     // wide
         } },
@@ -71,11 +71,7 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .metalSupports = { MetalSupportPlace::centre },
         .invertSegmentBlocking = true,
-        .blockedSegments = { {
-            { PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight },                   // narrow
-            { PS::top, PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight }, // inverted
-            kSegmentsUnimplemented,                                                                   // wide
-        } },
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftCorkscrewUpSeq2.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kLeftCorkscrewDownSeq0 = {
@@ -203,11 +199,7 @@ namespace OpenRCT2::TrackMetadata
         .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = { {
-            kSegmentsUnimplemented,                                                    // narrow
-            { PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight }, // inverted
-            kSegmentsUnimplemented,                                                    // wide
-        } },
+        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerCorkscrewDownSeq0.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq1 = {
