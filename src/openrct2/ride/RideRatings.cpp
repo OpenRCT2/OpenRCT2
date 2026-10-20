@@ -1412,36 +1412,20 @@ namespace OpenRCT2
         return result;
     }
 
-    /**
-     * Calculates how much of the track is sheltered in eighths.
-     *  rct2: 0x0065E72D
-     */
+    // Applies the covered-ride override to the track's sheltered-eighth value.
     static ShelteredEights GetNumOfShelteredEighths(const Ride& ride)
     {
-        int32_t totalLength = ride.getTotalLength();
-        int32_t shelteredLength = ride.shelteredLength;
-        int32_t lengthEighth = totalLength / 8;
-        int32_t lengthCounter = lengthEighth;
-        uint8_t numShelteredEighths = 0;
-        for (int32_t i = 0; i < 7; i++)
-        {
-            if (shelteredLength >= lengthCounter)
-            {
-                lengthCounter += lengthEighth;
-                numShelteredEighths++;
-            }
-        }
-
-        uint8_t trackShelteredEighths = numShelteredEighths;
+        const uint8_t trackShelteredEighths = ride.getTrackShelteredEighths();
+        uint8_t totalShelteredEighths = trackShelteredEighths;
         const auto* rideType = GetRideEntryByIndex(ride.subtype);
         if (rideType == nullptr)
         {
             return { 0, 0 };
         }
         if (rideType->flags.has(RideEntryFlag::isACoveredRide))
-            numShelteredEighths = 7;
+            totalShelteredEighths = 7;
 
-        return { trackShelteredEighths, numShelteredEighths };
+        return { trackShelteredEighths, totalShelteredEighths };
     }
 
     static RideRating::Tuple get_flat_turns_rating(const Ride& ride)
