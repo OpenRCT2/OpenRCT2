@@ -1312,7 +1312,7 @@ static void LimLaunchedRCTrackLeftCorkscrewUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    { PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
+                    { PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
                       PaintSegment::bottomRight },
                     direction),
                 0xFFFF, 0);
