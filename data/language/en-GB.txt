@@ -3790,6 +3790,9 @@ STR_6796    :•{MOVE_X}{10}{STRINGID}
 STR_6797    :No preview
 STR_6798    :Screenshot
 STR_6799    :Mini map
+STR_6800    :This park references missing objects from Wacky Worlds.
+STR_6801    :This park references missing objects from Time Twister.
+STR_6802    :This park references missing objects from Wacky Worlds and Time Twister.
 STR_7000    :or
 STR_7001    :Ride name
 STR_7002    :{STRINGID} {STRINGID}
