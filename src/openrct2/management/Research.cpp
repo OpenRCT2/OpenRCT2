@@ -1100,20 +1100,12 @@ void ResearchDetermineFirstOfType()
     if (gameState.researchNextItem.has_value())
     {
         ResearchUpdateFirstOfType(&gameState.researchNextItem.value());
-        ResearchMarkRideTypeAsSeen(gameState.researchNextItem.value());
+        // The next research item is (sometimes?) also present in gameState.researchItemsUninvented. To make things worse,
+        // the base ride entry or the entry index of researchNextItem may be corrupted.
     }
 
     for (auto& researchItem : gameState.researchItemsUninvented)
     {
-        // The next research item is (sometimes?) also present in gameState.researchItemsUninvented
-        if (gameState.researchNextItem.has_value() && !gameState.researchNextItem->isNull()
-            && researchItem.baseRideType == gameState.researchNextItem.value().baseRideType)
-        {
-            // Copy the "first of type" flag.
-            researchItem.flags = gameState.researchNextItem->flags;
-            continue;
-        }
-
         ResearchUpdateFirstOfType(&researchItem);
         ResearchMarkRideTypeAsSeen(researchItem);
     }
