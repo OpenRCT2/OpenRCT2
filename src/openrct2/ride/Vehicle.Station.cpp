@@ -165,7 +165,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
      *  is found we allow for space between that and the next.
      */
 
-    int32_t direction = tileElement->getDirectionWithOffset(1);
+    Direction direction = tileElement->getDirectionWithOffset(1);
     constexpr uint8_t maxCheckDistance = kRideAdjacencyCheckDistance;
     uint8_t spaceBetween = maxCheckDistance;
 

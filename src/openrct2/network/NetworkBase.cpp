@@ -47,7 +47,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 2;
+constexpr uint8_t kStreamVersion = 1;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -105,6 +105,8 @@ namespace OpenRCT2::Network
 
     static void ChatAddHistory(const u8string& text)
     {
+        AppendChatLog(text);
+
         auto intent = Intent(INTENT_ACTION_CHAT_ADD_HISTORY);
         intent.PutExtra(INTENT_EXTRA_MESSAGE, text);
         ContextBroadcastIntent(&intent);

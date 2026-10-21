@@ -208,7 +208,7 @@ namespace OpenRCT2::Scripting
         JSValue result = JS_NewArray(ctx);
         int32_t resultIndex = 0;
 
-        for (int32_t direction = 0; direction < 4; direction++)
+        for (Direction direction : kAllDirections)
         {
             if (!(edges & (1 << direction)))
                 continue;

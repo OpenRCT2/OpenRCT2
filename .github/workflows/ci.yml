@@ -34,7 +34,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.5.5
+  OPENRCT2_VERSION: 0.5.6
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
@@ -345,6 +345,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -490,6 +491,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -519,6 +521,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -574,6 +577,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -590,6 +594,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:
@@ -738,6 +743,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+      - run: git config --global --add safe.directory $PWD
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.21
         with:

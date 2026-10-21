@@ -725,7 +725,7 @@ namespace OpenRCT2::Ui::Windows
             if (_currentTrackRollEnd != TrackRoll::none || _previousTrackRollEnd != TrackRoll::none)
             {
                 newDisabledWidgets |= (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_UP_STEEP)
-                    | (1uLL << WIDX_CHAIN_LIFT);
+                    | (1uLL << WIDX_CHAIN_LIFT) | (1uLL << WIDX_LEFT_CURVE_VERY_SMALL) | (1uLL << WIDX_RIGHT_CURVE_VERY_SMALL);
             }
             if (_currentlySelectedTrack != TrackCurve::none)
             {
@@ -3467,7 +3467,7 @@ namespace OpenRCT2::Ui::Windows
             PathElement* pathsByDir[kNumOrthogonalDirections];
 
             bool keepOrientation = false;
-            for (int8_t i = 0; i < kNumOrthogonalDirections; i++)
+            for (Direction i : kAllDirections)
             {
                 const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
                 if (!MapIsLocationOwned(testLoc))
@@ -3509,7 +3509,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!keepOrientation)
             {
-                for (int8_t i = 0; i < kNumOrthogonalDirections; i++)
+                for (Direction i : kAllDirections)
                 {
                     if (pathsByDir[i] != nullptr)
                     {
