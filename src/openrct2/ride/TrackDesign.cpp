@@ -829,15 +829,7 @@ static void TrackDesignMirrorScenery(TrackDesign& td)
                 auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
                 scenery.loc.y = -scenery.loc.y;
 
-                if (sceneryEntry->flags.has(SmallSceneryFlag::isDiagonal))
-                {
-                    scenery.setRotation(scenery.getRotation() ^ (1 << 0));
-                    if (!sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile))
-                    {
-                        scenery.setQuadrant(scenery.getQuadrant() ^ (1 << 0));
-                    }
-                    break;
-                }
+                const auto quadrant = sceneryEntry->normaliseQuadrant(_quadrant);
 
                 scenery.setRotation(DirectionFlipXAxis(scenery.getRotation()));
                 scenery.setQuadrant(scenery.getQuadrant() ^ (1 << 0));

@@ -76,5 +76,6 @@ namespace OpenRCT2
         uint16_t animation_mask;
         uint16_t num_frames;
         ObjectEntryIndex scenery_tab_id;
+        uint8_t normaliseQuadrant(uint8_t quadrant) const; //refactoring
     };
 } // namespace OpenRCT2
