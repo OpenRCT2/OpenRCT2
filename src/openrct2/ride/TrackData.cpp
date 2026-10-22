@@ -6173,7 +6173,6 @@ namespace OpenRCT2::TrackMetadata
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, {} },
-        .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -6193,6 +6192,7 @@ namespace OpenRCT2::TrackMetadata
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, {} },
+        .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
