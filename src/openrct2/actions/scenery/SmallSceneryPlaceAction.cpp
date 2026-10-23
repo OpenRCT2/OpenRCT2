@@ -124,16 +124,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
-        auto quadrant = _quadrant;
-        if (sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile)
-            || !sceneryEntry->flags.has(SmallSceneryFlag::isDiagonal))
-        {
-            if (sceneryEntry->flags.hasAny(
-                    SmallSceneryFlag::isDiagonal, SmallSceneryFlag::occupiesHalfTile, SmallSceneryFlag::occupiesThreeQuarters))
-            {
-                quadrant = 0;
-            }
-        }
+        const auto quadrant = sceneryEntry->normaliseQuadrant(_quadrant);
 
         // Check if sub tile height is any different compared to actual surface tile height
         auto loc2 = _loc;
@@ -315,16 +306,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::invalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
         }
 
-        auto quadrant = _quadrant;
-        if (sceneryEntry->flags.has(SmallSceneryFlag::occupiesFullTile)
-            || !sceneryEntry->flags.has(SmallSceneryFlag::isDiagonal))
-        {
-            if (sceneryEntry->flags.hasAny(
-                    SmallSceneryFlag::isDiagonal, SmallSceneryFlag::occupiesHalfTile, SmallSceneryFlag::occupiesThreeQuarters))
-            {
-                quadrant = 0;
-            }
-        }
+        const auto quadrant = sceneryEntry->normaliseQuadrant(_quadrant);
 
         // Check if sub tile height is any different compared to actual surface tile height
         int32_t x2 = _loc.x;
