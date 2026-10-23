@@ -45,6 +45,10 @@ namespace OpenRCT2
             for (auto& [typeStr, typeEnum] : requiredAnimationMap)
             {
                 group[typeEnum].baseImage = _imageOffsetId + group[typeEnum].imageTableOffset;
+                if (group[typeEnum].imageTableOffset32 != 0)
+                {
+                    group[typeEnum].baseImage32 = _imageOffsetId + group[typeEnum].imageTableOffset32;
+                }
                 group[typeEnum].bounds = inferMaxAnimationDimensions(group[typeEnum]);
 
                 // Balloons, hats and umbrellas are painted separately, so the inference
@@ -98,6 +102,7 @@ namespace OpenRCT2
             }
 
             group.isSlowWalking = Json::GetBoolean(groupJson["isSlowWalking"], false);
+            group.smoothTurning = Json::GetBoolean(groupJson["smoothTurning"], false);
             group.scriptName = Json::GetString(groupJson["scriptName"], std::string(GetIdentifier()));
 
             _animationGroups.push_back(group);
@@ -123,6 +128,7 @@ namespace OpenRCT2
                         group[typeEnum] = {
                             .imageTableOffset = referenceAnim.imageTableOffset,
                             .frameOffsets = sequence,
+                            .imageTableOffset32 = referenceAnim.imageTableOffset32,
                         };
                         continue;
                     }
@@ -143,6 +149,7 @@ namespace OpenRCT2
             group[typeEnum] = {
                 .imageTableOffset = Json::GetNumber<uint16_t>(animJson["offset"]),
                 .frameOffsets = sequence,
+                .imageTableOffset32 = Json::GetNumber<uint16_t>(animJson["offset32"]),
             };
         }
 
@@ -198,6 +205,11 @@ namespace OpenRCT2
     std::string_view PeepAnimationsObject::GetScriptName(PeepAnimationGroup animGroup) const
     {
         return _animationGroups[EnumValue(animGroup)].scriptName;
+    }
+
+    bool PeepAnimationsObject::IsSmoothTurning(PeepAnimationGroup animGroup) const
+    {
+        return _animationGroups[EnumValue(animGroup)].smoothTurning;
     }
 
     bool PeepAnimationsObject::IsSlowWalking(PeepAnimationGroup animGroup) const
