@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor kSwingingShipRTD =
         RatingsCalculationType::flatRide,
         { RideRating::make(1, 50), RideRating::make(1, 90), RideRating::make(1, 41) },
         10,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::bonusOperationOption, 0, 5, 5, 10 },
