@@ -5561,6 +5561,7 @@ namespace OpenRCT2::TrackMetadata
     static constexpr SequenceDescriptor kLeftEighthToOrthogonalUp25Seq4 = {
         .clearance = { -64, 32, 32, 16, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b0010,
+        .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .blockedSegments = blockedSegmentsRotate(kRightEighthToDiagUp25Seq0.blockedSegments, 2),
     };
@@ -6172,7 +6173,6 @@ namespace OpenRCT2::TrackMetadata
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq0 = {
         .clearance = { 0, 0, 0, 8, { 0b1101, 0 }, {} },
-        .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = kDiagFlatSeq0.blockedSegments,
     };
 
@@ -6192,6 +6192,7 @@ namespace OpenRCT2::TrackMetadata
 
     static constexpr SequenceDescriptor kDiagFlatToLeftBankedDown25Seq3 = {
         .clearance = { -32, 32, 0, 8, { 0b0010, 0 }, {} },
+        .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = kDiagFlatSeq3.blockedSegments,
     };
 
@@ -6617,7 +6618,6 @@ namespace OpenRCT2::TrackMetadata
 
     static constexpr SequenceDescriptor kRightEighthBankToOrthogonalDown25Seq0 = {
         .clearance = { 0, 0, -16, 24, { 0b1101, 0 }, {} },
-        .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25Deg },
         .extraSupportRotation = 2,
         .blockedSegments = kRightEighthBankToOrthogonalUp25Seq0.blockedSegments,
