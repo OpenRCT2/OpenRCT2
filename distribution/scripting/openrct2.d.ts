@@ -4084,6 +4084,45 @@ declare global {
     }
 
     /**
+     * Represents duck entity.
+     */
+    interface Duck extends Entity {
+        /**
+         * Whether the duck's position is frozen in place. The duck will not move, but its
+         * animation will continue to play unless `animationFrozen` is also set.
+         */
+        positionFrozen: boolean;
+
+        /**
+         * Whether the duck's animation is frozen. The duck's sprite will not update, but it
+         * may still move unless `positionFrozen` is also set.
+         */
+        animationFrozen: boolean;
+
+        /**
+         * The orientation of the duck, from 0 to 31.
+         */
+        orientation: number;
+
+        /**
+         * The current frame offset in the duck's animation.
+         */
+        animationFrame: number;
+
+        /**
+         * The animation the duck is currently exhibiting.
+         */
+        animation: DuckAnimation;
+    }
+
+    type DuckAnimation =
+        "flyToWater" |
+        "swim" |
+        "drink" |
+        "doubleDrink" |
+        "flyAway";
+
+    /**
      * Network APIs
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.
      */
