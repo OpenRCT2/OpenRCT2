@@ -9,6 +9,8 @@
 
 #include "JobPool.h"
 
+#include "../config/Config.h"
+
 #include <cassert>
 
 JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> completionFn)
@@ -19,6 +21,11 @@ JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> 
 
 JobPool::JobPool(size_t maxThreads)
 {
+    if (!OpenRCT2::Config::Get().general.multiThreading)
+    {
+        return;
+    }
+
     maxThreads = std::min<size_t>(maxThreads, std::max(1u, std::thread::hardware_concurrency()));
     for (size_t n = 0; n < maxThreads; n++)
     {
@@ -43,6 +50,15 @@ JobPool::~JobPool()
 
 void JobPool::AddTask(std::function<void()> workFn, std::function<void()> completionFn)
 {
+    if (_threads.empty())
+    {
+        workFn();
+        // Keep completion callbacks on the caller of Join(), as in threaded mode.
+        std::lock_guard lock(_mutex);
+        _completed.emplace_back(std::move(workFn), std::move(completionFn));
+        return;
+    }
+
     {
         std::lock_guard lock(_mutex);
         _pending.emplace_back(workFn, completionFn);
