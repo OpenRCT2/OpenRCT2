@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <SDL_keyboard.h>
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_keycode.h>
+#include <iterator>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -322,7 +324,7 @@ namespace OpenRCT2::Ui::Windows
         static void IMEComposition(int32_t cursorX, int32_t cursorY)
         {
             SDL_Rect rect = { cursorX, cursorY, 100, 100 };
-            SDL_SetTextInputRect(&rect);
+            SDL_SetTextInputArea(SDL_GetKeyboardFocus(), &rect, 0);
         }
 
         void ExecuteCallback(bool hasValue)
