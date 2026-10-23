@@ -26,6 +26,18 @@ namespace OpenRCT2::Drawing
 {
     struct RenderTarget;
 
+    struct StringWrapMetrics
+    {
+        int32_t maxWidth{};
+        int32_t lineCount{};
+    };
+
+    struct WrappedString
+    {
+        u8string text;
+        StringWrapMetrics metrics;
+    };
+
     enum class TextDrawFlag : uint8_t
     {
         noFormatting,
@@ -59,7 +71,9 @@ namespace OpenRCT2::Drawing
         RenderTarget& rt, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
         bool forceSpriteFont, FontStyle fontStyle);
 
-    int32_t wrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines);
+    u8string wrapString(u8string_view text, int32_t width, FontStyle fontStyle);
+    StringWrapMetrics measureWrappedString(u8string_view text, int32_t width, FontStyle fontStyle);
+    WrappedString wrapStringAndMeasure(u8string_view text, int32_t width, FontStyle fontStyle);
     int32_t getStringWidthNewlined(std::string_view text, FontStyle fontStyle);
     int32_t getStringHeightRaw(std::string_view text, FontStyle fontStyle);
     int32_t clipString(char* buffer, int32_t width, FontStyle fontStyle);
