@@ -88,7 +88,7 @@ namespace OpenRCT2::GameActions
         }
 
         auto zLow = _loc.z;
-        auto zHigh = zLow + ParkEntranceHeight;
+        auto zHigh = zLow + kParkEntranceHeight;
         CoordsXYZ entranceLoc = _loc;
         for (uint8_t index = 0; index < 3; index++)
         {
@@ -130,7 +130,7 @@ namespace OpenRCT2::GameActions
         park.entrances.push_back(_loc);
 
         auto zLow = _loc.z;
-        auto zHigh = zLow + ParkEntranceHeight;
+        auto zHigh = zLow + kParkEntranceHeight;
         CoordsXY entranceLoc = { _loc.x, _loc.y };
 
         constexpr auto kEntranceSequences = std::to_array(

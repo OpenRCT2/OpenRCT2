@@ -363,7 +363,7 @@ namespace OpenRCT2::Scripting
         }
         for (size_t i = 0, newsSize = newsItems.getArchived().size(); i < newsSize; i++)
         {
-            auto offset = i + News::ItemHistoryStart;
+            auto offset = i + News::kItemHistoryStart;
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, offset));
         }
         return result;
@@ -372,14 +372,14 @@ namespace OpenRCT2::Scripting
     JSValue ScPark::messages_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
         int32_t index = 0;
-        int32_t archiveIndex = News::ItemHistoryStart;
+        int32_t archiveIndex = News::kItemHistoryStart;
         auto& newsItems = getGameState().park.newsItems;
         JSIterateArray(ctx, value, [&index, &archiveIndex, &newsItems](JSContext* ctx2, JSValue item) {
             auto isArchived = AsOrDefault(ctx2, item, "isArchived", false);
             auto newsItem = NewsItemFromJS(ctx2, item);
             if (isArchived)
             {
-                if (archiveIndex < News::MaxItems)
+                if (archiveIndex < News::kMaxItems)
                 {
                     newsItems[archiveIndex] = newsItem;
                     archiveIndex++;
@@ -387,7 +387,7 @@ namespace OpenRCT2::Scripting
             }
             else
             {
-                if (index < News::ItemHistoryStart)
+                if (index < News::kItemHistoryStart)
                 {
                     newsItems[index] = newsItem;
                     index++;
@@ -396,11 +396,11 @@ namespace OpenRCT2::Scripting
         });
 
         // End the lists by setting next item to null
-        if (index < News::ItemHistoryStart)
+        if (index < News::kItemHistoryStart)
         {
             newsItems[index].type = News::ItemType::null;
         }
-        if (archiveIndex < News::MaxItems)
+        if (archiveIndex < News::kMaxItems)
         {
             newsItems[archiveIndex].type = News::ItemType::null;
         }

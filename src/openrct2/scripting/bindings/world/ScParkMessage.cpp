@@ -29,7 +29,7 @@ namespace OpenRCT2::Scripting
     JSValue ScParkMessage::isArchived_get(JSContext* ctx, JSValue thisVal)
     {
         auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
-        return JS_NewBool(ctx, index >= News::ItemHistoryStart);
+        return JS_NewBool(ctx, index >= News::kItemHistoryStart);
     }
 
     JSValue ScParkMessage::month_get(JSContext* ctx, JSValue thisVal)
