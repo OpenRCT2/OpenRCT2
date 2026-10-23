@@ -32,7 +32,7 @@ static std::vector<std::string> GetCommandLineArgs(int argc, wchar_t** argvW);
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
-int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
+int wmain(int argc, wchar_t** argvW)
 {
     auto argvStrings = GetCommandLineArgs(argc, argvW);
 
