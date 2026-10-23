@@ -1663,7 +1663,7 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
         }
     }
 
-    News::AddItemToQueue(getGameState().park.newsItems, itemType, msg, assoc);
+    getGameState().park.newsItems.addItemToQueue(itemType, msg, assoc);
     console.WriteLine("Successfully added News Item");
 }
 

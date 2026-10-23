@@ -266,8 +266,8 @@ void ResearchFinishItem(const ResearchItem& researchItem)
             {
                 if (Config::Get().notifications.rideResearched)
                 {
-                    News::AddItemToQueue(
-                        gameState.park.newsItems, News::ItemType::research, availabilityString, researchItem.rawValue, ft);
+                    gameState.park.newsItems.addItemToQueue(
+                        News::ItemType::research, availabilityString, researchItem.rawValue, ft);
                 }
             }
 
@@ -290,9 +290,8 @@ void ResearchFinishItem(const ResearchItem& researchItem)
             {
                 if (Config::Get().notifications.rideResearched)
                 {
-                    News::AddItemToQueue(
-                        gameState.park.newsItems, News::ItemType::research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE,
-                        researchItem.rawValue, ft);
+                    gameState.park.newsItems.addItemToQueue(
+                        News::ItemType::research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem.rawValue, ft);
                 }
             }
 
