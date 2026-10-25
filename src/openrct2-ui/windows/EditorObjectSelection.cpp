@@ -642,7 +642,8 @@ namespace OpenRCT2::Ui::Windows
                 auto& objRepository = GetContext()->GetObjectRepository();
                 _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
                 auto& objManager = GetContext()->GetObjectManager();
-                objManager.LoadObject(_loadedObject.get()->GetIdentifier());
+                // DAT objects have no identifier, so load by descriptor.
+                objManager.LoadObject(_loadedObject->GetDescriptor());
 
                 windowMgr->ForceClose(WindowClass::editorObjectSelection);
 
@@ -1602,11 +1603,20 @@ namespace OpenRCT2::Ui::Windows
 
             getGameState().editorStep = Editor::Step::designsManager;
 
+            const auto maxEntries = static_cast<int32_t>(getObjectEntryGroupCount(ObjectType::ride));
             int32_t entry_index = 0;
-            for (; ObjectEntryGetChunk(ObjectType::ride, entry_index) == nullptr; entry_index++)
-                ;
+            while (entry_index < maxEntries && ObjectEntryGetChunk(ObjectType::ride, entry_index) == nullptr)
+            {
+                entry_index++;
+            }
 
-            const auto* rideEntry = GetRideEntryByIndex(entry_index);
+            const auto* rideEntry = entry_index < maxEntries ? GetRideEntryByIndex(entry_index) : nullptr;
+            if (rideEntry == nullptr)
+            {
+                // The object could not be loaded, so let the player pick another one.
+                ContextOpenWindow(WindowClass::editorObjectSelection);
+                return;
+            }
             auto rideType = rideEntry->GetFirstNonNullRideType();
 
             auto intent = Intent(WindowClass::trackDesignList);
