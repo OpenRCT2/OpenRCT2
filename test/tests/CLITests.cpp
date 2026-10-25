@@ -5,6 +5,7 @@
 #include <fstream>
 #include <gtest/gtest.h>
 #include <iterator>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/command_line/sprite/SpriteCommands.h>
 #include <openrct2/core/Path.hpp>
 
@@ -99,4 +100,14 @@ TEST_F(CommandLineTests, command_line_for_sprite_failed_build)
     ASSERT_EQ(result, ExitCode::fail);
     // validate the target file was unchanged
     ASSERT_TRUE(CompareSpriteFiles(ExampleSpriteFilePath(), outputfilePath));
+}
+
+TEST_F(CommandLineTests, command_line_help_for_sub_command)
+{
+    // Before the fix, -h was rejected as an unknown option of the first sub command.
+    const char* argv[] = { "openrct2", "sprite", "-h" };
+    ASSERT_EQ(CommandLineRun(argv, 3), ExitCode::ok);
+
+    const char* argvLong[] = { "openrct2", "sprite", "details", "--help" };
+    ASSERT_EQ(CommandLineRun(argvLong, 4), ExitCode::ok);
 }
