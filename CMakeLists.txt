@@ -413,7 +413,8 @@ if (NOT CMAKE_CROSSCOMPILING)
         list(APPEND output_files "${output_file}")
     endforeach()
 
-    add_custom_target(graphics DEPENDS OpenRCT2::openrct2-cli ${output_files})
+    # Part of the default build, so the files exist for install even when only openrct2-cli is built (DISABLE_GUI).
+    add_custom_target(graphics ALL DEPENDS OpenRCT2::openrct2-cli ${output_files})
 
     if(NOT DISABLE_GUI)
         add_dependencies(openrct2 graphics)
