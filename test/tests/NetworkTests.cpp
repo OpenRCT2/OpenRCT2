@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <filesystem>
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
@@ -154,11 +153,11 @@ class NetworkGroupsTests : public NetworkTests
 protected:
     void SetUp() override
     {
-        std::filesystem::create_directories(_userDir);
+        Path::CreateDirectory(_userDir);
         auto groupsJson = std::string_view(R"({ "default_group": 0, "groups": [] })");
-        File::WriteAllBytes(Path::Combine(_userDir.u8string(), u8"groups.json"), groupsJson.data(), groupsJson.size());
+        File::WriteAllBytes(Path::Combine(_userDir, u8"groups.json"), groupsJson.data(), groupsJson.size());
 
-        gCustomUserDataPath = _userDir.u8string();
+        gCustomUserDataPath = _userDir;
         NetworkTests::SetUp();
     }
 
@@ -166,10 +165,10 @@ protected:
     {
         _context.reset();
         gCustomUserDataPath = {};
-        std::filesystem::remove_all(_userDir);
+        Path::DeleteDirectory(_userDir);
     }
 
-    std::filesystem::path _userDir = std::filesystem::temp_directory_path() / "openrct2-test-empty-groups";
+    u8string _userDir = u8"test-empty-groups";
 };
 
 TEST_F(NetworkGroupsTests, LoadGroupsWithEmptyGroupsArraySetsUpDefaultGroups)
