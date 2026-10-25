@@ -154,3 +154,26 @@ TEST(SocketTests, ConnectToClosedPortThrows)
     EXPECT_ANY_THROW(socket->Connect("127.0.0.1", 1));
     EXPECT_NE(socket->GetStatus(), SocketStatus::connected);
 }
+
+TEST(SocketTests, ConnectToLocalhostReachesIPv4OnlyListener)
+{
+    // localhost usually resolves to ::1 first, so this needs the remaining addresses to be tried as well.
+    auto listener = CreateTcpSocket();
+    uint16_t port = 0;
+    for (uint16_t candidate = 41234; candidate < 41264 && port == 0; candidate++)
+    {
+        try
+        {
+            listener->Listen("127.0.0.1", candidate);
+            port = candidate;
+        }
+        catch (const std::exception&)
+        {
+        }
+    }
+    ASSERT_NE(port, 0);
+
+    auto socket = CreateTcpSocket();
+    EXPECT_NO_THROW(socket->Connect("localhost", port));
+    EXPECT_EQ(socket->GetStatus(), SocketStatus::connected);
+}
