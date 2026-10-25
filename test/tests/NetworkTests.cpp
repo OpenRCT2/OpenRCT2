@@ -7,9 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <filesystem>
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/core/File.h>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/network/NetworkBase.h>
 #include <openrct2/network/NetworkConnection.h>
 #include <openrct2/network/NetworkPacket.h>
@@ -144,4 +147,37 @@ TEST_F(NetworkTests, MapRequestWithoutPlayerDisconnectsAndDoesNotCrash)
     network.ServerHandleMapRequest(connection, packet);
 
     EXPECT_TRUE(connection.shouldDisconnect);
+}
+
+class NetworkGroupsTests : public NetworkTests
+{
+protected:
+    void SetUp() override
+    {
+        std::filesystem::create_directories(_userDir);
+        auto groupsJson = std::string_view(R"({ "default_group": 0, "groups": [] })");
+        File::WriteAllBytes(Path::Combine(_userDir.u8string(), u8"groups.json"), groupsJson.data(), groupsJson.size());
+
+        gCustomUserDataPath = _userDir.u8string();
+        NetworkTests::SetUp();
+    }
+
+    void TearDown() override
+    {
+        _context.reset();
+        gCustomUserDataPath = {};
+        std::filesystem::remove_all(_userDir);
+    }
+
+    std::filesystem::path _userDir = std::filesystem::temp_directory_path() / "openrct2-test-empty-groups";
+};
+
+TEST_F(NetworkGroupsTests, LoadGroupsWithEmptyGroupsArraySetsUpDefaultGroups)
+{
+    NetworkBase network(*_context);
+
+    // Before the fix, this aborted with std::out_of_range as there was no host group.
+    network.LoadGroups();
+
+    EXPECT_EQ(network.group_list.size(), 3u);
 }

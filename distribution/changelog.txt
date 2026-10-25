@@ -6,6 +6,7 @@
 - Fix: [#27264] Headless server crashes when loading a recolourable terrain surface.
 - Fix: [#27286] Headless servers no longer write chat logs.
 - Fix: [#27300] Walls cannot be placed on every edge of the Reverse Freefall/Air Powered flat to vertical slopes (original bug).
+- Fix: [#27308] Hosting a server crashes when groups.json has no groups.
 - Fix: [#27316] Height markers are incorrect on diagonal flat to left banked down, large gentle turn left and right banked large gentle turn pieces.
 
 0.5.6 (2026-10-10)
