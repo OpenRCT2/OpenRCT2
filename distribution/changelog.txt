@@ -3,6 +3,7 @@
 - Fix: [#16807] Error messages when trying to load regular JSON files as custom objects.
 - Fix: [#21030, #26981] Slow object loading and index building when using RCT Classic or running from a Flatpak.
 - Fix: [#24524] Some build types (like AppImage) lack information about their specific build.
+- Fix: [#27253] Crash when demolishing a sign from its window after the sign was replaced by another kind of sign.
 - Fix: [#27264] Headless server crashes when loading a recolourable terrain surface.
 - Fix: [#27286] Headless servers no longer write chat logs.
 - Fix: [#27300] Walls cannot be placed on every edge of the Reverse Freefall/Air Powered flat to vertical slopes (original bug).
