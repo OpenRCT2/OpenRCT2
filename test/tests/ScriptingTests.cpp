@@ -73,4 +73,36 @@ TEST_F(ScriptingTests, MultipleSubscribersToSameEventShouldNotCrash)
     hookEngine.Call(HookType::intervalTick, arg, false);
 }
 
+TEST_F(ScriptingTests, CaptureImageOnHeadlessThrowsScriptError)
+{
+    auto& scriptEngine = static_cast<ScriptEngine&>(_context->GetScriptEngine());
+
+    // Before the fix, this asserted as a headless instance has no sprites to draw with.
+    const char* pluginCode = R"(
+        registerPlugin({
+            name: 'test-plugin-capture-image',
+            version: '1.0.0',
+            authors: ['openrct2-test'],
+            type: 'remote',
+            licence: 'MIT',
+            targetApiVersion: 110,
+            main: function () {
+                var result = 'no error';
+                try {
+                    context.captureImage({ zoom: 0, rotation: 0 });
+                } catch (e) {
+                    result = e.message;
+                }
+                context.getParkStorage().set('result', result);
+            }
+        });
+    )";
+
+    scriptEngine.AddNetworkPlugin(pluginCode);
+    scriptEngine.LoadTransientPlugins();
+    scriptEngine.Tick();
+
+    EXPECT_NE(scriptEngine.GetParkStorageAsJSON().find("headless"), std::string::npos);
+}
+
 #endif
