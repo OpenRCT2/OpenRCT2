@@ -1,6 +1,7 @@
 0.5.7 (in development)
 ------------------------------------------------------------------------
 - Fix: [#16807] Error messages when trying to load regular JSON files as custom objects.
+- Fix: [#20627] The Track Designs Manager hangs when selecting a ride whose object is a DAT file.
 - Fix: [#21030, #26981] Slow object loading and index building when using RCT Classic or running from a Flatpak.
 - Fix: [#24524] Some build types (like AppImage) lack information about their specific build.
 - Fix: [#27264] Headless server crashes when loading a recolourable terrain surface.
