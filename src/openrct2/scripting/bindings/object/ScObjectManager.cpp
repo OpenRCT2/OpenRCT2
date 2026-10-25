@@ -62,7 +62,13 @@ JSValue ScObjectManager::getInstalledObject(JSContext* ctx, JSValue thisVal, int
 
     auto context = GetContext();
     auto& objectRepository = context->GetObjectRepository();
-    auto object = objectRepository.FindObject(identifier);
+    // Accept the same identifiers as load(), including "flags|name|checksum" for DAT objects.
+    auto object = objectRepository.FindObject(ObjectEntryDescriptor::Parse(identifier));
+    if (object == nullptr && identifier.size() <= 8)
+    {
+        // A plain DAT name such as "AE-SWING".
+        object = objectRepository.FindObjectLegacy(identifier);
+    }
     return object != nullptr ? gScInstalledObject.New(ctx, object->Id) : JS_NULL;
 }
 

@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Fix: [#16807] Error messages when trying to load regular JSON files as custom objects.
 - Fix: [#21030, #26981] Slow object loading and index building when using RCT Classic or running from a Flatpak.
+- Fix: [#24082] [Plugin] `objectManager.getInstalledObject()` returns null for DAT objects.
 - Fix: [#24524] Some build types (like AppImage) lack information about their specific build.
 - Fix: [#27264] Headless server crashes when loading a recolourable terrain surface.
 - Fix: [#27286] Headless servers no longer write chat logs.
