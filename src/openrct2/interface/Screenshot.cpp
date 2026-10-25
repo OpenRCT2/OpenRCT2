@@ -630,6 +630,12 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
 
 void CaptureImage(const CaptureOptions& options)
 {
+    // Headless instances load no sprites, so there is nothing to draw with.
+    if (gOpenRCT2NoGraphics)
+    {
+        throw std::runtime_error("Images cannot be captured on a headless instance.");
+    }
+
     Viewport viewport{};
     if (options.View.has_value())
     {
