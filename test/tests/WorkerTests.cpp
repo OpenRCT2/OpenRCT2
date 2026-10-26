@@ -13,22 +13,26 @@
 #include <openrct2/core/BackgroundWorker.hpp>
 #include <openrct2/core/JobPool.h>
 #include <thread>
+#include <tuple>
 
 using namespace OpenRCT2;
 
-class WorkerTests : public testing::TestWithParam<bool>
+class WorkerTests : public testing::TestWithParam<std::tuple<bool, bool>>
 {
-    uint8_t _previousValue{};
+    bool _previousValue{};
+    uint8_t _previousMultithreading{};
 
 protected:
     void SetUp() override
     {
-        _previousValue = Config::Get().general.multiThreading.exchange(GetParam());
+        _previousValue = Config::Get().general.disableBackgroundProcessing.exchange(std::get<0>(GetParam()));
+        _previousMultithreading = Config::Get().general.multiThreading.exchange(std::get<1>(GetParam()));
     }
 
     void TearDown() override
     {
-        Config::Get().general.multiThreading = _previousValue;
+        Config::Get().general.disableBackgroundProcessing = _previousValue;
+        Config::Get().general.multiThreading = _previousMultithreading;
     }
 
     void Drain(BackgroundWorker& worker)
@@ -43,7 +47,7 @@ protected:
     }
 };
 
-INSTANTIATE_TEST_SUITE_P(Multithreading, WorkerTests, testing::Bool());
+INSTANTIATE_TEST_SUITE_P(BackgroundProcessing, WorkerTests, testing::Combine(testing::Bool(), testing::Bool()));
 
 TEST_P(WorkerTests, JobPoolPreservesCompletionDispatch)
 {
@@ -61,13 +65,13 @@ TEST_P(WorkerTests, JobPoolPreservesCompletionDispatch)
             pool.AddTask([] {}, [&] { ++completions; });
         });
     EXPECT_EQ(completions, 0);
-    if (!GetParam())
+    if (std::get<0>(GetParam()))
     {
         EXPECT_EQ(workThread, caller);
         EXPECT_FALSE(pool.IsBusy());
     }
     pool.Join([&] { ++reports; });
-    EXPECT_EQ(workThread == caller, !GetParam());
+    EXPECT_EQ(workThread == caller, std::get<0>(GetParam()));
     EXPECT_EQ(completions, 2);
     EXPECT_GT(reports, 0);
     EXPECT_FALSE(pool.IsBusy());
@@ -83,7 +87,7 @@ TEST_P(WorkerTests, BackgroundWorkerPreservesResultsAndDispatch)
     auto job = worker.addJob(
         [] { return std::this_thread::get_id(); },
         [&](std::thread::id workThread) {
-            EXPECT_EQ(workThread == caller, !GetParam());
+            EXPECT_EQ(workThread == caller, std::get<0>(GetParam()));
             EXPECT_EQ(std::this_thread::get_id(), caller);
             ++completions;
             worker.addJob([] {}, [&] { ++completions; });
@@ -116,10 +120,10 @@ TEST_P(WorkerTests, BackgroundWorkerSupportsCancellationAndStopToken)
             workThread = std::this_thread::get_id();
         },
         [&] {
-            EXPECT_EQ(workThread == caller, !GetParam());
+            EXPECT_EQ(workThread == caller, std::get<0>(GetParam()));
             ++completions;
         });
-    if (!GetParam())
+    if (std::get<0>(GetParam()))
     {
         EXPECT_EQ(workThread, caller);
     }
