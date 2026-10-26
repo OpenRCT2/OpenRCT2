@@ -180,7 +180,7 @@ namespace OpenRCT2
     public:
         BackgroundWorker()
         {
-            if (!Config::Get().general.multiThreading)
+            if (Config::Get().general.disableBackgroundProcessing)
             {
                 return;
             }

@@ -3875,3 +3875,5 @@ STR_7081    :Silver
 STR_7082    :Track design installed successfully
 STR_7083    :Track design was already installed
 STR_7084    :Land style picker. Click any tile on the map to select the same style for terraforming.
+STR_7085    :Disable background processing
+STR_7086    :Run background tasks on the main thread. May cause pauses while tasks finish. Useful for TAS replay RNG stability. Requires a restart.
