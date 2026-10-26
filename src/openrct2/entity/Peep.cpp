@@ -71,7 +71,6 @@ namespace OpenRCT2
     using namespace OpenRCT2::Drawing;
 
     static uint8_t _backupAnimationImageIdOffset;
-    static TileElement* _peepRideEntranceExitElement;
 
     static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
@@ -1563,12 +1562,10 @@ namespace OpenRCT2
         if (entranceType == EntranceType::rideExit)
         {
             pathing_result |= PATHING_RIDE_EXIT;
-            _peepRideEntranceExitElement = tile_element;
         }
         else if (entranceType == EntranceType::rideEntrance)
         {
             pathing_result |= PATHING_RIDE_ENTRANCE;
-            _peepRideEntranceExitElement = tile_element;
         }
 
         if (entranceType == EntranceType::rideExit)
