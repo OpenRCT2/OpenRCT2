@@ -21,7 +21,7 @@ JobPool::TaskData::TaskData(std::function<void()> workFn, std::function<void()> 
 
 JobPool::JobPool(size_t maxThreads)
 {
-    if (!OpenRCT2::Config::Get().general.multiThreading)
+    if (OpenRCT2::Config::Get().general.disableBackgroundProcessing)
     {
         return;
     }
