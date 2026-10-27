@@ -5,6 +5,7 @@
 - Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
 - Change: [#27226] Crash Particles are now also visible when zoomed out.
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
+- Fix: [#6142] `openrct2 <track file>` does not install the track design.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
 - Fix: [#27353] Some hacked colours appear differently between OpenGL and software drawing modes.
 - Fix: [#27385] Crash in `BannerSetNameAction` when called on something that is not a banner.
