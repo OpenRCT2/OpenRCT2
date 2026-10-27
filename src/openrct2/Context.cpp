@@ -104,6 +104,21 @@ namespace OpenRCT2
     class Context final : public IContext
     {
     private:
+        enum class StartupOpenStatus
+        {
+            // Opening the file has failed
+            fail,
+            // The opened file is a park and the game should switch the active scene to it
+            park,
+            // The opened file is content, which has been installed, and the game should show the title screen
+            installedContent,
+        };
+        struct StartupOpenResult
+        {
+            StartupOpenStatus status;
+            StringId message = kStringIdNone;
+        };
+
         // Dependencies
         std::unique_ptr<IPlatformEnvironment> const _env;
         std::unique_ptr<IAudioContext> const _audioContext;
@@ -1018,8 +1033,105 @@ namespace OpenRCT2
             Config::Save();
         }
 
+        StartupOpenResult loadStartupFileFromStream(IStream& stream, const u8string& originalPath = {})
+        {
+            ClassifiedFileInfo info;
+            if (!TryClassifyFile(&stream, &info))
+            {
+                return { StartupOpenStatus::fail };
+            }
+
+            switch (info.Type)
+            {
+                case FileType::savedGame:
+                case FileType::scenario:
+                case FileType::park:
+                    if (!LoadParkFromStream(&stream, originalPath, true))
+                        return { StartupOpenStatus::fail };
+
+                    return { StartupOpenStatus::park };
+
+                case FileType::trackDesign:
+                {
+                    // All the receiving functions currently expect a real file.
+                    // TODO: refactor these functions to take a stream.
+                    if (originalPath.empty())
+                    {
+                        return { StartupOpenStatus::fail, STR_UNABLE_TO_LOAD_FILE };
+                    }
+
+                    auto trackDesign = TrackDesignImport(originalPath.c_str());
+                    if (trackDesign == nullptr)
+                    {
+                        return { StartupOpenStatus::fail, STR_UNABLE_TO_LOAD_FILE };
+                    }
+
+                    auto destPath = _env->GetDirectoryPath(DirBase::user, DirId::trackDesigns);
+                    auto trackName = GetNameFromTrackPath(originalPath);
+
+                    auto extension = trackDesignGetExtension(trackDesign->version);
+                    destPath = Path::Combine(destPath, trackName + extension);
+                    if (!Path::ResolveCasing(destPath).empty())
+                    {
+                        return { StartupOpenStatus::installedContent, STR_TRACK_DESIGN_ALREADY_INSTALLED };
+                    }
+
+                    if (!TrackRepositoryInstall(originalPath, trackName))
+                    {
+                        return { StartupOpenStatus::fail, STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN };
+                    }
+
+                    return { StartupOpenStatus::installedContent, STR_TRACK_DESIGN_INSTALLED_SUCCESSFULLY };
+                }
+                case FileType::undefined:
+                case FileType::object:
+                    return { StartupOpenStatus::fail };
+            }
+
+            return { StartupOpenStatus::fail };
+        }
+
+        StartupOpenResult loadStartupFile()
+        {
+            // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
+            // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
+            if (strstr(gOpenRCT2StartupActionPath, "://") != nullptr)
+            {
+#ifdef DISABLE_HTTP
+                return { StartupOpenStatus::fail };
+#else
+                // Download file and open it using its temporary filename
+                auto data = downloadFile(gOpenRCT2StartupActionPath);
+                if (data.empty())
+                {
+                    return { StartupOpenStatus::fail };
+                }
+
+                auto ms = MemoryStream(data.data(), data.size(), MemoryAccess::read);
+                return loadStartupFileFromStream(ms);
+#endif
+            }
+
+            // Local file
+            try
+            {
+                auto fs = FileStream(gOpenRCT2StartupActionPath, FileMode::open);
+                auto result = loadStartupFileFromStream(fs, gOpenRCT2StartupActionPath);
+                if (result.status == StartupOpenStatus::park)
+                    rememberStartUpParkDirectory();
+
+                return result;
+            }
+            catch (const std::exception& ex)
+            {
+                LOG_ERROR("Unable to open %s: %s", gOpenRCT2StartupActionPath, ex.what());
+                return { StartupOpenStatus::fail };
+            }
+        }
+
         void SwitchToStartUpScene()
         {
+            StringId message = kStringIdNone;
             if (gOpenRCT2Headless)
             {
                 // NONE or OPEN are the only allowed actions for headless mode
@@ -1053,51 +1165,21 @@ namespace OpenRCT2
 
                 case StartupAction::open:
                 {
-                    // A path that includes "://" is illegal with all common filesystems, so it is almost certainly a URL
-                    // This way all cURL supported protocols, like http, ftp, scp and smb are automatically handled
-                    if (strstr(gOpenRCT2StartupActionPath, "://") != nullptr)
+                    auto result = loadStartupFile();
+                    switch (result.status)
                     {
-#ifndef DISABLE_HTTP
-                        // Download park and open it using its temporary filename
-                        auto data = DownloadPark(gOpenRCT2StartupActionPath);
-                        if (data.empty())
-                        {
-                            nextScene = _sceneManager->getTitleScene();
-                            break;
-                        }
-
-                        auto ms = MemoryStream(data.data(), data.size(), MemoryAccess::read);
-                        if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
-                        {
+                        case StartupOpenStatus::fail:
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
                             nextScene = _sceneManager->getTitleScene();
                             break;
-                        }
-#endif
-                    }
-                    else
-                    {
-                        try
-                        {
-                            if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
-                            {
-                                nextScene = _sceneManager->getTitleScene();
-                                break;
-                            }
-                        }
-                        catch (const std::exception& ex)
-                        {
-                            Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            Console::Error::WriteLine("%s", ex.what());
+                        case StartupOpenStatus::park:
+                            nextScene = _sceneManager->getGameScene();
+                            break;
+                        case StartupOpenStatus::installedContent:
                             nextScene = _sceneManager->getTitleScene();
                             break;
-                        }
-
-                        rememberStartUpParkDirectory();
                     }
-
-                    // Successfully loaded a file
-                    nextScene = _sceneManager->getGameScene();
+                    message = result.message;
                     break;
                 }
 
@@ -1128,6 +1210,8 @@ namespace OpenRCT2
 
             _sceneManager->setActiveScene(nextScene);
             InitNetworkGame(nextScene == _sceneManager->getGameScene());
+            if (message != kStringIdNone)
+                ContextShowError(message, kStringIdNone, {});
         }
 
         void InitNetworkGame(bool isGameScene)
@@ -1504,7 +1588,7 @@ namespace OpenRCT2
         }
 
 #ifndef DISABLE_HTTP
-        std::vector<uint8_t> DownloadPark(const std::string& url)
+        std::vector<uint8_t> downloadFile(const std::string& url)
         {
             // Download park to buffer in memory
             Http::Request request;
