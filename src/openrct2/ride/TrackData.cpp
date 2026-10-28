@@ -10395,6 +10395,18 @@ namespace OpenRCT2::TrackMetadata
         .sequenceData = { 2, { kUp90Seq0, kUp90Seq1 } },
     };
 
+    constexpr auto kTEDUp25Booster = TrackElementDescriptor{
+        .description = STR_GENTLE_BOOSTER,
+        .coordinates = { 0, 0, 0, 16, 0, 0 },
+        .pieceLength = 33,
+        .curveChain = { TrackElemType::up25Booster, TrackElemType::up25Booster },
+        .priceModifier = 96256,
+        .mirrorElement = TrackElemType::up25Booster,
+        .flags = { TrackElementFlag::up, TrackElementFlag::startsAtHalfHeight },
+        .definition = { TrackGroup::boosterGentle, TrackPitch::up25, TrackPitch::up25, TrackRoll::none, TrackRoll::none, 0 },
+        .sequenceData = { 1, { kUp25Seq0 } },
+    };
+
     static constexpr auto kTrackElementDescriptors = std::to_array<TrackElementDescriptor>({
         kTEDFlat,
         kTEDEndStation,
@@ -10748,6 +10760,7 @@ namespace OpenRCT2::TrackMetadata
         kTEDDiagDown25Brakes,
         kTEDUp60Booster,
         kTEDUp90Booster,
+        kTEDUp25Booster,
     });
     static_assert(kTrackElementDescriptors.size() == EnumValue(TrackElemType::count));
 

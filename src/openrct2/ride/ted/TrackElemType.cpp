@@ -127,6 +127,7 @@ namespace OpenRCT2
             case TrackElemType::diagBooster:
             case TrackElemType::up60Booster:
             case TrackElemType::up90Booster:
+            case TrackElemType::up25Booster:
                 return true;
             default:
                 return false;

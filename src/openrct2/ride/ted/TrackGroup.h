@@ -118,6 +118,7 @@ namespace OpenRCT2
 
         boosterSteep,
         boosterVertical,
+        boosterGentle,
 
         count,
     };

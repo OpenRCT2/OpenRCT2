@@ -1797,6 +1797,7 @@ enum : StringId
 
     STR_STEEP_BOOSTER = 7082,
     STR_VERTICAL_BOOSTER = 7083,
+    STR_GENTLE_BOOSTER = 7084,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

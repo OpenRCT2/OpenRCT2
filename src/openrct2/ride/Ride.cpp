@@ -4703,6 +4703,7 @@ namespace OpenRCT2
               SpriteGroupType::slopes50, SpritePrecision::sprites4 }, // TrackGroup::diagSlopeSteepDown
             { SpriteGroupType::slopes60, SpritePrecision::sprites4 }, // TrackGroup::boosterSteep
             { SpriteGroupType::slopes90, SpritePrecision::sprites4 }, // TrackGroup::boosterVertical
+            { SpriteGroupType::slopes25, SpritePrecision::sprites4 }, // TrackGroup::boosterGentle
         };
 
         static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));

@@ -50453,5 +50453,29 @@
         "x": -9,
         "y": -28,
         "palette": "keep"
+    },
+    {
+        "path": "track/lim/gentle_booster_1.png",
+        "x": -22,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/gentle_booster_2.png",
+        "x": -22,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/gentle_booster_3.png",
+        "x": -24,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/gentle_booster_4.png",
+        "x": -25,
+        "y": -18,
+        "palette": "keep"
     }
 ]
