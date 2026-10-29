@@ -50408,74 +50408,194 @@
     },
     {
         "path": "track/lim/steep_booster_1.png",
-        "x": -25,
-        "y": -62,
+        "x": -32,
+        "y": -66,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_booster_2.png",
-        "x": -24,
-        "y": -48,
+        "x": -13,
+        "y": -54,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_booster_3.png",
-        "x": -22,
-        "y": -47,
+        "x": -26,
+        "y": -54,
         "palette": "keep"
     },
     {
         "path": "track/lim/steep_booster_4.png",
-        "x": -22,
-        "y": -62,
+        "x": -14,
+        "y": -66,
         "palette": "keep"
     },
     {
         "path": "track/lim/vertical_booster_1.png",
-        "x": -7,
-        "y": -28,
+        "x": -19,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lim/vertical_booster_2.png",
-        "x": -7,
-        "y": -27,
+        "x": 0,
+        "y": -33,
         "palette": "keep"
     },
     {
         "path": "track/lim/vertical_booster_3.png",
-        "x": -9,
-        "y": -27,
+        "x": -16,
+        "y": -33,
         "palette": "keep"
     },
     {
         "path": "track/lim/vertical_booster_4.png",
-        "x": -9,
-        "y": -28,
+        "x": -6,
+        "y": -29,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_booster_1.png",
-        "x": -22,
-        "y": -18,
+        "x": -30,
+        "y": -23,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_booster_2.png",
-        "x": -22,
-        "y": 0,
+        "x": -11,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_booster_3.png",
-        "x": -24,
-        "y": 0,
+        "x": -26,
+        "y": -11,
         "palette": "keep"
     },
     {
         "path": "track/lim/gentle_booster_4.png",
-        "x": -25,
-        "y": -18,
+        "x": -12,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_booster_1.png",
+        "x": -27,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_booster_2.png",
+        "x": -9,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_booster_3.png",
+        "x": -27,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_booster_4.png",
+        "x": -9,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_booster_near_1.png",
+        "x": -13,
+        "y": -57,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_booster_near_2.png",
+        "x": -32,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_booster_near_3.png",
+        "x": -14,
+        "y": -45,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/steep_booster_near_4.png",
+        "x": -26,
+        "y": -57,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/vertical_booster_near_1.png",
+        "x": 0,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/vertical_booster_near_2.png",
+        "x": -19,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/vertical_booster_near_3.png",
+        "x": -6,
+        "y": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/vertical_booster_near_4.png",
+        "x": -16,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/gentle_booster_near_1.png",
+        "x": -11,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/gentle_booster_near_2.png",
+        "x": -30,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/gentle_booster_near_3.png",
+        "x": -12,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/gentle_booster_near_4.png",
+        "x": -26,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_booster_near_1.png",
+        "x": -9,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_booster_near_2.png",
+        "x": -27,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_booster_near_3.png",
+        "x": -9,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/lim/flat_booster_near_4.png",
+        "x": -27,
+        "y": 0,
         "palette": "keep"
     }
 ]
