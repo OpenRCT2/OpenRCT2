@@ -5661,8 +5661,8 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
     }
 }
 
- // The grey fins on the sides of the trains are meant to "slot in" between the LIMs, so this layering
- // is needed to ensure that the fins disappear while inside of the LIMs instead of appearing above them
+// The grey fins on the sides of the trains are meant to "slot in" between the LIMs, so this layering
+// is needed to ensure that the fins disappear while inside of the LIMs instead of appearing above them
 static void LimLaunchedRCTrackBoosterMotors(
     PaintSession& session, uint8_t direction, int32_t height, ImageIndex farBase, ImageIndex nearBase, int32_t boxHeight)
 {
