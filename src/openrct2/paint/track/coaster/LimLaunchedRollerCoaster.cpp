@@ -5661,11 +5661,8 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
     }
 }
 
-// The grey linear induction motors either side of the track, with mounting brackets in the track's main colour. The far
-// row is drawn with the track, behind the train. The near row is drawn as a wall along the near edge of the tile, like the
-// front walls of other tracks, so it sorts in front of the train and hides the fins on the cars inside the motors. The wall
-// is kept a unit clear of the y = 27 wall that the steep track sprites use, and is at least as tall as it, so it also sorts
-// in front of the track in every view rotation (the sort treats touching boxes differently depending on the rotation).
+ // The grey fins on the sides of the trains are meant to "slot in" between the LIMs, so this layering
+ // is needed to ensure that the fins disappear while inside of the LIMs instead of appearing above them
 static void LimLaunchedRCTrackBoosterMotors(
     PaintSession& session, uint8_t direction, int32_t height, ImageIndex farBase, ImageIndex nearBase, int32_t boxHeight)
 {
@@ -5676,6 +5673,7 @@ static void LimLaunchedRCTrackBoosterMotors(
         session, direction, session.TrackColours.WithIndex(nearBase + direction), { 0, 0, height },
         { { 0, 29, height }, { 32, 1, boxHeight } });
 }
+
 static void LimLaunchedRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
@@ -5713,7 +5711,6 @@ static void LimLaunchedRCTrackUp25Booster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    // Same track sprites as the regular 25 degree up piece
     switch (direction)
     {
         case 0:
