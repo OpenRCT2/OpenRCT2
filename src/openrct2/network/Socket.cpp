@@ -17,6 +17,7 @@
     #include <future>
     #include <string>
     #include <thread>
+    #include <vector>
 
 // clang-format off
 #ifdef _WIN32
@@ -190,6 +191,17 @@ namespace OpenRCT2::Network
     class Socket
     {
     protected:
+        struct ResolvedAddress
+        {
+            sockaddr_storage ss;
+            socklen_t ss_len;
+        };
+
+        static std::vector<ResolvedAddress> ResolveAddressesTcp(const std::string& address, uint16_t port)
+        {
+            return ResolveAddresses(AF_UNSPEC, SOCK_STREAM, address, port);
+        }
+
         static bool ResolveAddress(const std::string& address, uint16_t port, sockaddr_storage* ss, socklen_t* ss_len)
         {
             return ResolveAddress(AF_UNSPEC, address, port, ss, ss_len);
@@ -221,10 +233,25 @@ namespace OpenRCT2::Network
         static bool ResolveAddress(
             int32_t family, const std::string& address, uint16_t port, sockaddr_storage* ss, socklen_t* ss_len)
         {
+            auto addresses = ResolveAddresses(family, 0, address, port);
+            if (addresses.empty())
+            {
+                return false;
+            }
+
+            *ss = addresses[0].ss;
+            *ss_len = addresses[0].ss_len;
+            return true;
+        }
+
+        static std::vector<ResolvedAddress> ResolveAddresses(
+            int32_t family, int32_t socketType, const std::string& address, uint16_t port)
+        {
             std::string serviceName = std::to_string(port);
 
             addrinfo hints = {};
             hints.ai_family = family;
+            hints.ai_socktype = socketType;
             if (address.empty())
             {
                 hints.ai_flags = AI_PASSIVE;
@@ -236,18 +263,19 @@ namespace OpenRCT2::Network
             {
                 LOG_ERROR("Resolving address failed: Code %d.", errorcode);
                 LOG_ERROR("Resolution error message: %s.", gai_strerror(errorcode));
-                return false;
+                return {};
             }
 
-            if (result == nullptr)
+            std::vector<ResolvedAddress> addresses;
+            for (auto* info = result; info != nullptr; info = info->ai_next)
             {
-                return false;
+                ResolvedAddress resolved{};
+                std::memcpy(&resolved.ss, info->ai_addr, info->ai_addrlen);
+                resolved.ss_len = static_cast<socklen_t>(info->ai_addrlen);
+                addresses.push_back(resolved);
             }
-
-            std::memcpy(ss, result->ai_addr, result->ai_addrlen);
-            *ss_len = static_cast<socklen_t>(result->ai_addrlen);
             freeaddrinfo(result);
-            return true;
+            return addresses;
         }
     };
 
@@ -426,78 +454,30 @@ namespace OpenRCT2::Network
                 // Resolve address
                 _status = SocketStatus::resolving;
 
-                sockaddr_storage ss{};
-                socklen_t ss_len;
-                if (!ResolveAddress(address, port, &ss, &ss_len))
+                auto addresses = ResolveAddressesTcp(address, port);
+                if (addresses.empty())
                 {
                     throw SocketException("Unable to resolve address.");
                 }
 
-                _status = SocketStatus::connecting;
-                _socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
-                if (_socket == INVALID_SOCKET)
+                // Try each address in turn, e.g. localhost resolves to ::1 first but the listener may be IPv4 only.
+                for (size_t i = 0; i < addresses.size(); i++)
                 {
-                    throw SocketException("Unable to create socket.");
-                }
-
-                SetNoDelay(true);
-                if (!SetNonBlocking(_socket, true))
-                {
-                    throw SocketException("Failed to set non-blocking mode.");
-                }
-
-                // Connect
-                int32_t connectResult = connect(_socket, reinterpret_cast<sockaddr*>(&ss), ss_len);
-                if (connectResult != SOCKET_ERROR || (LAST_SOCKET_ERROR() != EINPROGRESS && LAST_SOCKET_ERROR() != EWOULDBLOCK))
-                {
-                    throw SocketException("Failed to connect.");
-                }
-
-                auto connectStartTime = std::chrono::system_clock::now();
-
-                int32_t error = 0;
-                socklen_t len = sizeof(error);
-                if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, reinterpret_cast<char*>(&error), &len) != 0)
-                {
-                    throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
-                }
-                if (error != 0)
-                {
-                    throw SocketException("Connection failed: " + std::to_string(error));
-                }
-
-                do
-                {
-                    // Sleep for a bit
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-                    fd_set writeFD;
-                    FD_ZERO(&writeFD);
-    #pragma warning(push)
-    #pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
-                    FD_SET(_socket, &writeFD);
-    #pragma warning(pop)
-                    timeval timeout{};
-                    timeout.tv_sec = 0;
-                    timeout.tv_usec = 0;
-                    if (select(static_cast<int32_t>(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
+                    try
                     {
-                        error = 0;
-                        len = sizeof(error);
-                        if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, reinterpret_cast<char*>(&error), &len) != 0)
-                        {
-                            throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
-                        }
-                        if (error == 0)
-                        {
-                            _status = SocketStatus::connected;
-                            return;
-                        }
+                        ConnectTo(addresses[i].ss, addresses[i].ss_len);
+                        _status = SocketStatus::connected;
+                        return;
                     }
-                } while ((std::chrono::system_clock::now() - connectStartTime) < kConnectTimeout);
-
-                // Connection request timed out
-                throw SocketException("Connection timed out.");
+                    catch (const SocketException&)
+                    {
+                        if (i + 1 == addresses.size())
+                        {
+                            throw;
+                        }
+                        CloseSocket();
+                    }
+                }
             }
             catch (const std::exception&)
             {
@@ -637,6 +617,80 @@ namespace OpenRCT2::Network
         }
 
     private:
+        void ConnectTo(const sockaddr_storage& ss, socklen_t ss_len)
+        {
+            _status = SocketStatus::connecting;
+            _socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
+            if (_socket == INVALID_SOCKET)
+            {
+                throw SocketException("Unable to create socket.");
+            }
+
+            SetNoDelay(true);
+            if (!SetNonBlocking(_socket, true))
+            {
+                throw SocketException("Failed to set non-blocking mode.");
+            }
+
+            // Connect
+            int32_t connectResult = connect(_socket, reinterpret_cast<const sockaddr*>(&ss), ss_len);
+            if (connectResult == 0)
+            {
+                return;
+            }
+            if (LAST_SOCKET_ERROR() != EINPROGRESS && LAST_SOCKET_ERROR() != EWOULDBLOCK)
+            {
+                throw SocketException("Failed to connect.");
+            }
+
+            auto connectStartTime = std::chrono::system_clock::now();
+
+            int32_t error = 0;
+            socklen_t len = sizeof(error);
+            if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, reinterpret_cast<char*>(&error), &len) != 0)
+            {
+                throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
+            }
+            if (error != 0)
+            {
+                throw SocketException("Connection failed: " + std::to_string(error));
+            }
+
+            do
+            {
+                // Sleep for a bit
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+                fd_set writeFD;
+                FD_ZERO(&writeFD);
+    #pragma warning(push)
+    #pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
+                FD_SET(_socket, &writeFD);
+    #pragma warning(pop)
+                timeval timeout{};
+                timeout.tv_sec = 0;
+                timeout.tv_usec = 0;
+                if (select(static_cast<int32_t>(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
+                {
+                    error = 0;
+                    len = sizeof(error);
+                    if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, reinterpret_cast<char*>(&error), &len) != 0)
+                    {
+                        throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
+                    }
+                    // Reading SO_ERROR clears it, so a failed connect has to be reported now.
+                    if (error != 0)
+                    {
+                        throw SocketException("Connection failed: " + std::to_string(error));
+                    }
+                    return;
+                }
+            } while ((std::chrono::system_clock::now() - connectStartTime) < kConnectTimeout);
+
+            // Connection request timed out
+            throw SocketException("Connection timed out.");
+        }
+
         void CloseSocket()
         {
             if (_socket != INVALID_SOCKET)

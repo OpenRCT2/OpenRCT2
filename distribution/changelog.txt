@@ -4,6 +4,7 @@
 - Fix: [#18954] When researching Classic Mini Roller Coaster vehicles in Bumbly Beach, they all appear as new rides. 
 - Fix: [#21030, #26981] Slow object loading and index building when using RCT Classic or running from a Flatpak.
 - Fix: [#24524] Some build types (like AppImage) lack information about their specific build.
+- Fix: [#26929] Connecting to a server or plugin socket that refuses the connection is reported as connected.
 - Fix: [#27264] Headless server crashes when loading a recolourable terrain surface.
 - Fix: [#27286] Headless servers no longer write chat logs.
 - Fix: [#27300] Walls cannot be placed on every edge of the Reverse Freefall/Air Powered flat to vertical slopes (original bug).
