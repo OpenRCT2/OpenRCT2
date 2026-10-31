@@ -1347,6 +1347,8 @@ namespace OpenRCT2::Ui::Windows
             auto& objManager = GetContext()->GetObjectManager();
             auto sceneryObjectType = GetObjectTypeFromSceneryType(selection.SceneryType);
             auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selection.EntryIndex);
+            if (sceneryObject == nullptr)
+                return false;
 
             return IsFilterInName(*sceneryObject) || IsFilterInAuthors(*sceneryObject) || IsFilterInIdentifier(*sceneryObject)
                 || IsFilterInFilename(*sceneryObject);
@@ -1512,7 +1514,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             auto lastScenery = GetSelectedScenery(_activeTabIndex);
-            if (lastScenery != scenery && !MatchFilter(lastScenery))
+            // Only a previous selection was added to the front of the filtered list.
+            if (!lastScenery.IsUndefined() && lastScenery != scenery && !MatchFilter(lastScenery))
             {
                 _filteredSceneryTab.Entries.pop_front();
             }
