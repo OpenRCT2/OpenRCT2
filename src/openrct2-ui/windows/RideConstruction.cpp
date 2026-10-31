@@ -1217,6 +1217,8 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_SLOPE_DOWN_VERTICAL:
                     RideConstructionInvalidateCurrentTrack();
+                    if (_currentlySelectedTrack.isTrackType)
+                        _currentlySelectedTrack = TrackCurve::none;
                     UpdateLiftHillSelected(TrackPitch::down90);
                     break;
                 case WIDX_SLOPE_DOWN_STEEP:
@@ -1442,6 +1444,8 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_SLOPE_UP_VERTICAL:
                     RideConstructionInvalidateCurrentTrack();
+                    if (_currentlySelectedTrack.isTrackType)
+                        _currentlySelectedTrack = TrackCurve::none;
                     UpdateLiftHillSelected(TrackPitch::up90);
                     break;
                 case WIDX_CHAIN_LIFT:
