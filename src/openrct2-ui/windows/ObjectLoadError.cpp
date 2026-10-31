@@ -11,6 +11,7 @@
 #include <mutex>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/core/Console.hpp>
@@ -26,6 +27,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/ObjectSourceGame.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
@@ -361,12 +363,42 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
+    static StringId GetMissingDlcWarning(const std::vector<ObjectEntryDescriptor>& entries)
+    {
+        bool missingWackyWorlds = false;
+        bool missingTimeTwister = false;
+
+        for (const auto& entry : entries)
+        {
+            if (entry.Generation == ObjectGeneration::dat)
+            {
+                const auto sourceGame = entry.Entry.GetSourceGame();
+                missingWackyWorlds |= sourceGame == ObjectSourceGame::wackyWorlds;
+                missingTimeTwister |= sourceGame == ObjectSourceGame::timeTwister;
+            }
+            else
+            {
+                missingWackyWorlds |= entry.Identifier.compare(0, 7, "rct2ww.") == 0;
+                missingTimeTwister |= entry.Identifier.compare(0, 7, "rct2tt.") == 0;
+            }
+        }
+
+        if (missingWackyWorlds && missingTimeTwister)
+            return STR_OBJECT_ERROR_WINDOW_MISSING_WW_TT;
+        if (missingWackyWorlds)
+            return STR_OBJECT_ERROR_WINDOW_MISSING_WW;
+        if (missingTimeTwister)
+            return STR_OBJECT_ERROR_WINDOW_MISSING_TT;
+        return kStringIdEmpty;
+    }
+
     class ObjectLoadErrorWindow final : public Window
     {
     private:
         std::vector<ObjectEntryDescriptor> _invalidEntries;
         int32_t _highlightedIndex = -1;
         std::string _filePath;
+        StringId _missingDlcWarning = kStringIdEmpty;
 #ifndef DISABLE_HTTP
         ObjectDownloader _objDownloader;
         bool _updatedListAfterDownload{};
@@ -528,16 +560,25 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenPos = windowPos + ScreenCoordsXY{ 5, widgets[WIDX_TITLE].bottom };
 
-            // Draw explanatory message
             auto ft = Formatter();
-            ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-            drawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 4 }, kWindowSize.width - 10, STR_BLACK_STRING, ft);
+            auto fileNameY = 29;
+            if (_missingDlcWarning != kStringIdEmpty)
+            {
+                ft.Add<StringId>(_missingDlcWarning);
+                drawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 4 }, kWindowSize.width - 10, STR_BLACK_STRING, ft);
+                fileNameY = 43;
+            }
 
-            // Draw file name
+            ft = Formatter();
+            ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
+            drawTextWrapped(
+                rt, screenPos + ScreenCoordsXY{ 0, _missingDlcWarning == kStringIdEmpty ? 4 : 17 },
+                kWindowSize.width - 10, STR_BLACK_STRING, ft);
+
             ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
             ft.Add<utf8*>(_filePath.c_str());
-            drawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, kWindowSize.width - 5, STR_BLACK_STRING, ft);
+            drawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, fileNameY }, kWindowSize.width - 5, STR_BLACK_STRING, ft);
         }
 
         void onScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
@@ -591,6 +632,7 @@ namespace OpenRCT2::Ui::Windows
         void initialise(utf8* path, const size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
         {
             _invalidEntries = std::vector<ObjectEntryDescriptor>(missingObjects, missingObjects + numMissingObjects);
+            _missingDlcWarning = GetMissingDlcWarning(_invalidEntries);
 
             // Refresh list items and path
             numListItems = static_cast<uint16_t>(numMissingObjects);
