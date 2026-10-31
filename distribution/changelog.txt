@@ -1,5 +1,6 @@
 0.5.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#27306] Peep animation objects can opt in to smooth turning (staff round corners and turn around gradually) and 32-direction sprites.
 - Fix: [#16807] Error messages when trying to load regular JSON files as custom objects.
 - Fix: [#18954] When researching Classic Mini Roller Coaster vehicles in Bumbly Beach, they all appear as new rides. 
 - Fix: [#21030, #26981] Slow object loading and index building when using RCT Classic or running from a Flatpak.

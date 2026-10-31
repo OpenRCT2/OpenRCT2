@@ -305,6 +305,13 @@ namespace OpenRCT2
         {
             GfxDrawSpriteSoftware(rt, ImageId(anim.baseImage + i), { 0, 0 });
         }
+        if (anim.baseImage32 != 0)
+        {
+            for (int32_t i = 0; i < numImages * 32; ++i)
+            {
+                GfxDrawSpriteSoftware(rt, ImageId(anim.baseImage32 + i), { 0, 0 });
+            }
+        }
 
         int32_t spriteWidth = -1;
         for (int32_t i = kCentreX - 1; i != 0; --i)
