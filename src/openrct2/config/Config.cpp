@@ -204,6 +204,7 @@ namespace OpenRCT2::Config
                 "measurement_format", Platform::GetLocaleMeasurementFormat(), Enum_MeasurementFormat);
             model->playIntro = reader->GetBoolean("play_intro", false);
             model->savePluginData = reader->GetBoolean("save_plugin_data", true);
+            model->disableBackgroundProcessing = reader->GetBoolean("disable_background_processing", false);
             model->debuggingTools = reader->GetBoolean("debugging_tools", false);
             model->showHeightAsUnits = reader->GetBoolean("show_height_as_units", false);
             model->temperatureFormat = reader->GetEnum<TemperatureUnit>(
@@ -314,6 +315,7 @@ namespace OpenRCT2::Config
         writer->WriteEnum<MeasurementFormat>("measurement_format", model->measurementFormat, Enum_MeasurementFormat);
         writer->WriteBoolean("play_intro", model->playIntro);
         writer->WriteBoolean("save_plugin_data", model->savePluginData);
+        writer->WriteBoolean("disable_background_processing", model->disableBackgroundProcessing);
         writer->WriteBoolean("debugging_tools", model->debuggingTools);
         writer->WriteBoolean("show_height_as_units", model->showHeightAsUnits);
         writer->WriteEnum<TemperatureUnit>("temperature_format", model->temperatureFormat, Enum_Temperature);
