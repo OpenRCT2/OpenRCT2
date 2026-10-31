@@ -123,7 +123,7 @@ namespace OpenRCT2::SawyerCoding
         return encodedLength + 4;
     }
 
-    size_t DecodeTD6(const uint8_t* src, uint8_t* dst, size_t length)
+    size_t DecodeTD467(const uint8_t* src, uint8_t* dst, size_t length)
     {
         return DecodeChunkRLE(src, dst, length - 4);
     }
