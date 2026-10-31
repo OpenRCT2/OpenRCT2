@@ -488,11 +488,13 @@ namespace OpenRCT2::Network
                         {
                             throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
                         }
-                        if (error == 0)
+                        // Reading SO_ERROR clears it, so a failed connect has to be reported now.
+                        if (error != 0)
                         {
-                            _status = SocketStatus::connected;
-                            return;
+                            throw SocketException("Connection failed: " + std::to_string(error));
                         }
+                        _status = SocketStatus::connected;
+                        return;
                     }
                 } while ((std::chrono::system_clock::now() - connectStartTime) < kConnectTimeout);
 
