@@ -53,4 +53,14 @@
     <glob weight="60" pattern="*.sea"/>
   </mime-type>
 
+  <mime-type type="application/x-openrct2-trackdesign">
+    <icon name="openrct2" />
+    <generic-icon name="applications-games"/>
+    <comment>OpenRCT2 Track Design</comment>
+    <comment xml:lang="nl">Baanontwerp voor OpenRCT2</comment>
+    <glob weight="60" pattern="*.td4"/>
+    <glob weight="60" pattern="*.td6"/>
+    <glob weight="60" pattern="*.td7"/>
+  </mime-type>
+
 </mime-info>
