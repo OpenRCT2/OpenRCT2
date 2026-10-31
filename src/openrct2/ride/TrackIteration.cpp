@@ -494,4 +494,41 @@ namespace OpenRCT2
 
         return false;
     }
+
+    /**
+     *
+     * Gets the next track block coordinates from the
+     * coordinates of the input element of a track block.
+     * Useful for iterating over flat ride 'track'. Start with
+     * input = ride.GetStation(RideGetFirstValidStationStart(ride)).GetStart()
+     */
+    bool TrackSequenceGetNext(const CoordsXYE& input, CoordsXYE* output)
+    {
+        auto inputElement = input.element->asTrack();
+        auto sequenceIndex = inputElement->getSequenceIndex();
+        auto trackType = inputElement->getTrackType();
+        const auto& ted = TrackMetadata::GetTrackElementDescriptor(trackType);
+
+        if (sequenceIndex >= ted.sequenceData.numSequences - 1)
+            return false;
+
+        uint8_t rotation = inputElement->getDirection();
+        const auto& inputClearance = ted.sequenceData.sequences[sequenceIndex].clearance;
+        CoordsXY inputOffset = { inputClearance.x, inputClearance.y };
+        CoordsXY inputCoords = { input.x, input.y };
+        auto origin = inputCoords + inputOffset.rotate(DirectionReverse(rotation));
+
+        const auto& nextClearance = ted.sequenceData.sequences[sequenceIndex + 1].clearance;
+        CoordsXY nextOffset = { nextClearance.x, nextClearance.y };
+        CoordsXY nextCoords = origin + nextOffset.rotate(rotation);
+
+        auto inputZ = inputElement->getBaseZ();
+        auto rideIndex = inputElement->getRideIndex();
+        auto* tileElement = MapGetTrackElementAtOfTypeFromRide({ nextCoords, inputZ }, trackType, rideIndex);
+
+        *output = { nextCoords, tileElement };
+
+        return true;
+    }
+
 } // namespace OpenRCT2

@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor kTwistRTD =
         RatingsCalculationType::flatRide,
         { RideRating::make(1, 13), RideRating::make(0, 97), RideRating::make(1, 90) },
         16,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::bonusRotations,        0,                20, 20, 20 },
