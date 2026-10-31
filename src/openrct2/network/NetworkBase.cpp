@@ -1159,6 +1159,12 @@ namespace OpenRCT2::Network
             }
         }
 
+        // The host group below must exist, so a config without any groups gets the defaults.
+        if (group_list.empty())
+        {
+            SetupDefaultGroups();
+        }
+
         // Host group should always contain all permissions.
         group_list.at(0)->actionsAllowed.fill(0xFF);
     }
