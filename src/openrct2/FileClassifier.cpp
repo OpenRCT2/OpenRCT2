@@ -17,6 +17,7 @@
 #include "park/ParkFile.h"
 #include "rct1/RCT1File.h"
 #include "rct2/RCT2.h"
+#include "ride/TrackDesign.h"
 #include "sawyer_coding/SawyerChunkReader.h"
 #include "sawyer_coding/SawyerCoding.h"
 
@@ -26,7 +27,7 @@ using namespace OpenRCT2::SawyerCoding;
 static bool TryClassifyAsPark(IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result);
-static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsTD467(IStream* stream, ClassifiedFileInfo* result);
 
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
 {
@@ -67,7 +68,7 @@ bool TryClassifyFile(IStream* stream, ClassifiedFileInfo* result)
     }
 
     // TD6 detection
-    if (TryClassifyAsTD4_TD6(stream, result))
+    if (TryClassifyAsTD467(stream, result))
     {
         return true;
     }
@@ -133,6 +134,15 @@ static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
     try
     {
         size_t dataLength = static_cast<size_t>(stream->GetLength());
+        // Assume that files under 50 KiB are either corrupted or track designs (which use the same checksum).
+        // Even Micro Park is about 5 times bigger, while the biggest TD6 vanilla will write is 24,735 bytes after un-RLE’ing
+        // (though TD7 can go higher).
+        if (dataLength <= 51200)
+        {
+            stream->SetPosition(originalPosition);
+            return false;
+        }
+
         auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
         auto fileTypeVersion = RCT1::detectFileType(data.get(), dataLength);
@@ -159,7 +169,7 @@ static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
     return success;
 }
 
-static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsTD467(IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
@@ -172,12 +182,12 @@ static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result)
 
         if (ValidateTrackChecksum(data.get(), dataLength))
         {
-            const auto td6data = std::make_unique_for_overwrite<uint8_t[]>(0x10000);
-            size_t td6len = DecodeTD6(data.get(), td6data.get(), dataLength);
-            if (td6data != nullptr && td6len >= 8)
+            const auto td467data = std::make_unique_for_overwrite<uint8_t[]>(0x10000);
+            size_t td467len = DecodeTD467(data.get(), td467data.get(), dataLength);
+            if (td467data != nullptr && td467len >= 8)
             {
-                uint8_t version = (td6data.get()[7] >> 2) & 3;
-                if (version <= 2)
+                uint8_t version = (td467data.get()[7] >> 2) & 3;
+                if (version <= EnumValue(RCT12::TD46Version::td7))
                 {
                     result->Type = FileType::trackDesign;
                     result->Version = version;
