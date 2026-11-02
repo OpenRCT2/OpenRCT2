@@ -629,12 +629,22 @@ namespace OpenRCT2::Ui::Windows
 
                 // position of y relative to the current class
                 int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_classIndex + 1) - numColours) * (_button_size + 2);
-                _buttonIndex = (y2 / _button_size);
+
+                // The palette buttons and checkboxes are drawn at different vertical offsets,
+                // so work out the row from the offset of the column that was clicked.
+                const bool isPaletteColumn = screenCoords.x >= _button_offset_x
+                    && screenCoords.x < _button_offset_x + (_button_size + 2);
+                const int32_t buttonTop = isPaletteColumn ? _button_offset_y + 1 : _check_offset_y;
+                if (y2 < buttonTop)
+                {
+                    _buttonIndex = -1;
+                    return;
+                }
+                _buttonIndex = (y2 - buttonTop) / _button_size;
 
                 if (_buttonIndex < numColours)
                 {
-                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + (_button_size + 2)
-                        && y2 >= _button_offset_y && y2 < _button_offset_y + (_button_size + 2) * 6)
+                    if (isPaletteColumn && y2 >= _button_offset_y && y2 < _button_offset_y + (_button_size + 2) * 6)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -809,7 +819,7 @@ namespace OpenRCT2::Ui::Windows
 
                 numRows += numColours;
 
-                if ((numRows * (_button_size + 2)) >= y)
+                if ((numRows * (_button_size + 2)) > y)
                 {
                     return i;
                 }
