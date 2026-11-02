@@ -75,6 +75,8 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 [Our website](https://openrct2.io/download) offers portable builds and installers with the latest versions of the `master` and `develop` branches. There is also a [launcher](https://openrct2.io/download/launcher) available for Windows, macOS and Linux that will automatically update your build of the game so that you always have the latest version.
 
+To keep user data, configuration, and cache files within a portable installation, create an empty `portable.txt` file beside the OpenRCT2 executable. OpenRCT2 will then use `.config/OpenRCT2/` in that same directory. An explicit `--user-data-path` overrides this location.
+
 Alternatively to using the launcher, for most Linux distributions, we recommend the [latest Flatpak release](https://flathub.org/apps/details/io.openrct2.OpenRCT2). When downloading from Flathub, you will always receive the latest updates regardless of which Linux distribution you use.
 
 Some Linux distributions offer native packages:

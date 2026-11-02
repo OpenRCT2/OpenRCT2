@@ -399,6 +399,18 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     basePaths[EnumValue(DirBase::cache)] = Path::Combine(Platform::GetFolderPath(SpecialFolder::userCache), subDirectory);
     basePaths[EnumValue(DirBase::documentation)] = Platform::GetDocsPath();
 
+#if !defined(__ANDROID__) && !defined(__EMSCRIPTEN__)
+    // A marker beside the executable keeps all user files within the portable installation.
+    const auto executableDirectory = Path::GetDirectory(Platform::GetCurrentExecutablePath());
+    if (!executableDirectory.empty() && File::Exists(Path::Combine(executableDirectory, "portable.txt")))
+    {
+        const auto portablePath = Path::Combine(executableDirectory, ".config", "OpenRCT2");
+        basePaths[EnumValue(DirBase::user)] = portablePath;
+        basePaths[EnumValue(DirBase::config)] = portablePath;
+        basePaths[EnumValue(DirBase::cache)] = portablePath;
+    }
+#endif
+
     // Override paths that have been specified via the command line
     if (!gCustomRCT1DataPath.empty())
     {
