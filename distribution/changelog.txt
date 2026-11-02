@@ -22,6 +22,7 @@
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
 - Fix: [#27319] Crash when clicking an item in the Scenery window while a search filter is active.
 - Fix: [#27353] Some hacked colours appear differently between OpenGL and software drawing modes.
+- Fix: [#27361] Clicking the lower part of a colour button in the Themes window selects the colour below it.
 - Fix: [#27385] Crash in `BannerSetNameAction` when called on something that is not a banner.
 - Fix: [#27392] Crash in `BannerSetStyleAction` when called on something that is not a banner.
 - Fix: [#27409] The ‘not enough cash’ message and track design costs show the wrong amount on big-endian systems.
