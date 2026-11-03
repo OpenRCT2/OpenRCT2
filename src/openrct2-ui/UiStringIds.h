@@ -731,6 +731,7 @@ namespace OpenRCT2
         STR_SLOPE_DOWN_TIP = 1186,
         STR_SLOPE_UP_TIP = 1188,
         STR_TYPE = 1182,
+        STR_FOOTPATH_EYEDROPPER_TIP = 7082,
 
         // Window: GameStatusBar
         STR_STATUS_BAR_OPENRCT2 = 7049,
