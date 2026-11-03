@@ -57,6 +57,7 @@ public class HttpAndroid {
         Method method;
         String body;
         boolean forceIPv4;
+        int timeout;
 
         public Request() {
             this.method = Method.GET; // Default method
@@ -75,8 +76,8 @@ public class HttpAndroid {
                 URL url = new URL(request.url);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod(request.method.toString());
-                connection.setConnectTimeout(10000);
-                connection.setReadTimeout(10000);
+                connection.setConnectTimeout(request.timeout);
+                connection.setReadTimeout(request.timeout);
                 connection.setUseCaches(false);
                 connection.setDoInput(true);
                 connection.setInstanceFollowRedirects(true);

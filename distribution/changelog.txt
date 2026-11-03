@@ -1,5 +1,6 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
+- Fix: [#26335] Leaving an advertised server hangs for minutes when the master server does not respond.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
 
 0.5.7 (2026-11-01)

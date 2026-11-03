@@ -7,12 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "helpers/LoopbackServers.hpp"
+
+#include <chrono>
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/core/Http.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/network/NetworkBase.h>
 #include <openrct2/network/NetworkConnection.h>
 #include <openrct2/network/NetworkPacket.h>
+#include <openrct2/network/NetworkServerAdvertiser.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Network;
@@ -145,3 +152,51 @@ TEST_F(NetworkTests, MapRequestWithoutPlayerDisconnectsAndDoesNotCrash)
 
     EXPECT_TRUE(connection.shouldDisconnect);
 }
+
+#ifndef DISABLE_HTTP
+
+class NetworkServerAdvertiserTests : public testing::Test
+{
+protected:
+    void SetUp() override
+    {
+        auto& networkConfig = Config::Get().network;
+        _previousMasterServerUrl = networkConfig.masterServerUrl;
+        _previousAdvertise = networkConfig.advertise;
+        networkConfig.masterServerUrl = _masterServer.getUrl();
+        networkConfig.advertise = true;
+    }
+
+    void TearDown() override
+    {
+        auto& networkConfig = Config::Get().network;
+        networkConfig.masterServerUrl = _previousMasterServerUrl;
+        networkConfig.advertise = _previousAdvertise;
+    }
+
+private:
+    UnresponsiveTcpServer _masterServer;
+    std::string _previousMasterServerUrl;
+    bool _previousAdvertise{};
+};
+
+TEST_F(NetworkServerAdvertiserTests, DestructionIsBoundedWhenMasterServerNeverResponds)
+{
+    // Generous upper bound so the assertion holds on slow CI machines.
+    constexpr auto kMaxShutdownTime = Http::kDefaultTimeout + std::chrono::seconds(5);
+
+    auto start = std::chrono::steady_clock::now();
+    {
+        auto advertiser = CreateServerAdvertiser(kDefaultPort);
+        // The first update sends the registration request, which the master server never answers.
+        advertiser->update();
+        EXPECT_EQ(advertiser->getStatus(), AdvertiseStatus::registering);
+    }
+    auto elapsed = std::chrono::steady_clock::now() - start;
+
+    // Destruction must actually have waited for the pending request rather than found none.
+    EXPECT_GE(elapsed, Http::kDefaultTimeout);
+    EXPECT_LT(elapsed, kMaxShutdownTime);
+}
+
+#endif // DISABLE_HTTP

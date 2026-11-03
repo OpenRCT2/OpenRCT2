@@ -11,6 +11,7 @@
 
 #ifndef DISABLE_HTTP
 
+    #include <chrono>
     #include <functional>
     #include <future>
     #include <map>
@@ -33,6 +34,8 @@ namespace OpenRCT2::Http
         put
     };
 
+    constexpr auto kDefaultTimeout = std::chrono::seconds(10);
+
     struct Response
     {
         Status status{};
@@ -49,6 +52,7 @@ namespace OpenRCT2::Http
         Method method = Method::get;
         std::string body;
         bool forceIPv4{};
+        std::chrono::seconds timeout = kDefaultTimeout;
     };
 
     Response Do(const Request& req);
