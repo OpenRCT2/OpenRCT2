@@ -10,6 +10,7 @@
 #include "DrawingEngineFactory.hpp"
 
 #include <SDL_hints.h>
+#include <SDL_pixels.h>
 #include <SDL_render.h>
 #include <SDL_version.h>
 #include <cmath>
@@ -115,16 +116,7 @@ public:
             LOG_WARNING("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
             return;
         }
-        uint32_t pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
-        for (uint32_t i = 0; i < rendererInfo.num_texture_formats; i++)
-        {
-            uint32_t format = rendererInfo.texture_formats[i];
-            if (!SDL_ISPIXELFORMAT_FOURCC(format) && !SDL_ISPIXELFORMAT_INDEXED(format)
-                && (pixelFormat == SDL_PIXELFORMAT_UNKNOWN || SDL_BYTESPERPIXEL(format) < SDL_BYTESPERPIXEL(pixelFormat)))
-            {
-                pixelFormat = format;
-            }
-        }
+        const uint32_t pixelFormat = GetScreenTextureFormat(rendererInfo);
 
         ScaleQuality scaleQuality = GetContext()->GetUiContext().GetScaleQuality();
         if (scaleQuality == ScaleQuality::smoothNearestNeighbour)
@@ -274,49 +266,43 @@ private:
         SDL_RenderPresent(_sdlRenderer);
     }
 
+    /**
+     * Picks the renderer's preferred 32-bit, 8 bits per channel texture format. The mapped palettes and
+     * CopyBitsToTexture write one uint32_t per pixel, so a narrower format (such as the 16-bit formats SDL3's Metal
+     * renderer advertises when used through sdl2-compat) would leave the texture untouched and the window black.
+     * SDL converts to a native format internally if the fallback is not supported by the renderer.
+     */
+    static uint32_t GetScreenTextureFormat(const SDL_RendererInfo& rendererInfo)
+    {
+        for (uint32_t i = 0; i < rendererInfo.num_texture_formats; i++)
+        {
+            const uint32_t format = rendererInfo.texture_formats[i];
+            if (!SDL_ISPIXELFORMAT_FOURCC(format) && SDL_BYTESPERPIXEL(format) == 4
+                && SDL_PIXELLAYOUT(format) == SDL_PACKEDLAYOUT_8888)
+            {
+                return format;
+            }
+        }
+        LOG_WARNING(
+            "HWDisplayDrawingEngine: renderer %s advertises no 32-bit texture format, using ARGB8888", rendererInfo.name);
+        return SDL_PIXELFORMAT_ARGB8888;
+    }
+
     void CopyBitsToTexture(SDL_Texture* texture, PaletteIndex* src, int32_t width, int32_t height, const uint32_t* palette)
     {
         void* pixels;
         int32_t pitch;
         if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0)
         {
-            int32_t padding = pitch - (width * 4);
-            if (pitch == width * 4)
+            auto* dstRow = static_cast<uint8_t*>(pixels);
+            for (int32_t y = 0; y < height; y++)
             {
-                uint32_t* dst = static_cast<uint32_t*>(pixels);
-                for (int32_t i = width * height; i > 0; i--)
+                auto* dst = reinterpret_cast<uint32_t*>(dstRow);
+                for (int32_t x = 0; x < width; x++)
                 {
                     *dst++ = palette[EnumValue(*src++)];
                 }
-            }
-            else
-            {
-                if (pitch == (width * 2) + padding)
-                {
-                    uint16_t* dst = static_cast<uint16_t*>(pixels);
-                    for (int32_t y = height; y > 0; y--)
-                    {
-                        for (int32_t x = width; x > 0; x--)
-                        {
-                            const uint8_t lower = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
-                            const uint8_t upper = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
-                            *dst++ = (lower << 8) | upper;
-                        }
-                        dst = reinterpret_cast<uint16_t*>(reinterpret_cast<uint8_t*>(dst) + padding);
-                    }
-                }
-                else if (pitch == width + padding)
-                {
-                    uint8_t* dst = static_cast<uint8_t*>(pixels);
-                    for (int32_t y = height; y > 0; y--)
-                    {
-                        for (int32_t x = width; x > 0; x--)
-                        {
-                            *dst++ = *reinterpret_cast<const uint8_t*>(&palette[EnumValue(*src++)]);
-                        }
-                        dst += padding;
-                    }
-                }
+                dstRow += pitch;
             }
             SDL_UnlockTexture(texture);
         }
