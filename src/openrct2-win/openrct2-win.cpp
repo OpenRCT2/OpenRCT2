@@ -24,6 +24,7 @@
 #include <openrct2-ui/Ui.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/platform/Crash.h>
 #include <string>
 #include <vector>
 
@@ -34,6 +35,8 @@ static std::vector<std::string> GetCommandLineArgs(int argc, wchar_t** argvW);
  */
 int wmain(int argc, wchar_t** argvW)
 {
+    CrashInit();
+
     auto argvStrings = GetCommandLineArgs(argc, argvW);
 
     SetConsoleCP(EnumValue(OpenRCT2::CodePage::utf8));

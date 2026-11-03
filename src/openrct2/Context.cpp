@@ -352,8 +352,6 @@ namespace OpenRCT2
             }
             _initialised = true;
 
-            CrashInit();
-
             if (String::equals(Config::Get().general.lastRunVersion, kOpenRCT2Version))
             {
                 gOpenRCT2ShowChangelog = false;
