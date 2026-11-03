@@ -55,49 +55,72 @@ namespace OpenRCT2
         PaintSession& session, const Direction direction, const int32_t height, const TrackMetadata::SequenceTunnel& tunnel,
         const TrackMetadata::SequenceTunnelType tunnelType, const TunnelGroup tunnelGroup);
 
+    struct TrackPaintFunctionConfig
+    {
+        uint8_t spriteCount{};
+        uint8_t tunnelCount{};
+        bool woodenSupports{};
+        bool reversed{};
+        bool trackSupportColours{};
+    };
+
+    struct TrackPaintTrackArgs
+    {
+        BlockedSegmentsType blockedSegmentsType{};
+        TunnelGroup tunnelGroup{};
+        TrackMetadata::SequenceTunnelType tunnelType{};
+        uint8_t clearanceHeight{};
+    };
+
+    struct TrackPaintElementArgs
+    {
+        uint64_t spriteMap{};
+        const BoundBoxXYZ* boundingBoxes{};
+        ImageIndex imageIndex{};
+        uint8_t mapSpriteCount{};
+        std::array<std::array<int8_t, kNumOrthogonalDirections>, TrackMetadata::kMaxSequencesPerPiece> supportHeights{};
+    };
+
     template<
-        const size_t sequenceCount, const size_t mapSpriteCount, const size_t sequenceSpriteCount, const ImageIndex imageIndex,
-        const uint64_t spriteMap,
-        const std::array<std::array<std::array<BoundBoxXYZ, mapSpriteCount>, sequenceCount>, kNumOrthogonalDirections>&
-            boundingBoxes,
-        const bool woodenSupports,
-        const std::array<std::array<int8_t, kNumOrthogonalDirections>, sequenceCount>& supportHeightExtras,
-        const OpenRCT2::BlockedSegmentsType blockedSegmentsType, const TunnelGroup tunnelGroup,
-        const TrackMetadata::SequenceTunnelType tunnelType, const uint8_t tunnelCount, const int16_t trackClearanceHeight,
-        const bool down, const bool trackSupportColours>
+        const TrackPaintFunctionConfig config, const TrackPaintTrackArgs trackArgs, const TrackPaintElementArgs elementArgs>
     void trackPaintGeneric(
         PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
         const OpenRCT2::TrackElement& trackElement, const SupportType supportType)
     {
-        static_assert(tunnelCount <= TrackMetadata::kSequenceTunnelMaxPerSequence);
+        static_assert(config.tunnelCount <= TrackMetadata::kSequenceTunnelMaxPerSequence);
 
         const auto& ted = OpenRCT2::TrackMetadata::GetTrackElementDescriptor(trackElement.getTrackType());
         const auto& sequenceDescriptor = ted.sequenceData.sequences[trackSequence];
 
         uint8_t modifiedTrackSequence = trackSequence;
         Direction modifiedDirection = direction;
-        if constexpr (down)
+        if constexpr (config.reversed)
         {
             modifiedTrackSequence = sequenceDescriptor.reversedTrackSequence;
             modifiedDirection = (direction + ted.reversedRotationOffset) & 3;
         }
 
-        ImageId imageId = trackSupportColours ? getPrimaryTrackColourWithSecondarySupportColour(session) : session.TrackColours;
-        imageId = imageId.WithIndex(imageIndex);
-        if constexpr (sequenceSpriteCount >= 1)
+        ImageId imageId;
+        if constexpr (config.trackSupportColours)
+            imageId = getPrimaryTrackColourWithSecondarySupportColour(session);
+        else
+            imageId = session.TrackColours;
+        imageId = imageId.WithIndex(elementArgs.imageIndex);
+
+        if constexpr (config.spriteCount >= 1)
         {
             paintTrackSprite(
-                session, modifiedDirection, sequenceCount, modifiedTrackSequence, mapSpriteCount, 0, spriteMap, imageId, height,
-                &boundingBoxes[0][0][0]);
+                session, modifiedDirection, ted.sequenceData.numSequences, modifiedTrackSequence, elementArgs.mapSpriteCount, 0,
+                elementArgs.spriteMap, imageId, height, elementArgs.boundingBoxes);
         }
-        if constexpr (sequenceSpriteCount >= 2)
+        if constexpr (config.spriteCount >= 2)
         {
             paintTrackSprite(
-                session, modifiedDirection, sequenceCount, modifiedTrackSequence, mapSpriteCount, 1, spriteMap, imageId, height,
-                &boundingBoxes[0][0][0]);
+                session, modifiedDirection, ted.sequenceData.numSequences, modifiedTrackSequence, elementArgs.mapSpriteCount, 1,
+                elementArgs.spriteMap, imageId, height, elementArgs.boundingBoxes);
         }
 
-        if constexpr (woodenSupports)
+        if constexpr (config.woodenSupports)
         {
             if (sequenceDescriptor.woodenSupports.subType != WoodenSupportSubType::null)
             {
@@ -115,27 +138,51 @@ namespace OpenRCT2
                 const Direction supportRotation = (direction + sequenceDescriptor.extraSupportRotation) & 3;
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, sequenceDescriptor.metalSupports.place, supportRotation,
-                    supportHeightExtras[modifiedTrackSequence][modifiedDirection],
+                    elementArgs.supportHeights[modifiedTrackSequence][modifiedDirection],
                     height + sequenceDescriptor.metalSupports.height, session.SupportColours);
             }
         }
 
-        const auto segments = sequenceDescriptor.blockedSegments[EnumValue(blockedSegmentsType)];
+        const auto segments = sequenceDescriptor.blockedSegments[EnumValue(trackArgs.blockedSegmentsType)];
         PaintUtilSetSegmentSupportHeight(session, paintSegmentsRotate(segments, direction), 0xFFFF, 0);
 
-        constexpr int16_t trackClearanceHeightCeil = Numerics::ceil2(trackClearanceHeight, kLandHeightStep);
+        constexpr int16_t trackClearanceHeightCeil = Numerics::ceil2(trackArgs.clearanceHeight, kLandHeightStep);
         const auto generalSupportHeight = height + trackClearanceHeightCeil + sequenceDescriptor.generalSupportHeight;
         const bool setGeneralSupportHeight = sequenceDescriptor.generalSupportHeight
             != TrackMetadata::kDoNotSetGeneralSupportHeight;
         PaintUtilSetGeneralSupportHeight(session, generalSupportHeight * setGeneralSupportHeight);
 
-        if constexpr (tunnelCount >= 1)
+        if constexpr (config.tunnelCount >= 1)
         {
-            paintTrackTunnel(session, direction, height, sequenceDescriptor.tunnels[0], tunnelType, tunnelGroup);
+            paintTrackTunnel(
+                session, direction, height, sequenceDescriptor.tunnels[0], trackArgs.tunnelType, trackArgs.tunnelGroup);
         }
-        if constexpr (tunnelCount >= 2)
+        if constexpr (config.tunnelCount >= 2)
         {
-            paintTrackTunnel(session, direction, height, sequenceDescriptor.tunnels[1], tunnelType, tunnelGroup);
+            paintTrackTunnel(
+                session, direction, height, sequenceDescriptor.tunnels[1], trackArgs.tunnelType, trackArgs.tunnelGroup);
         }
     }
+
+    constexpr auto kTPFC1Spr1TunMetA = TrackPaintFunctionConfig{
+        .spriteCount = 1,
+        .tunnelCount = 1,
+    };
+
+    constexpr auto kTPFC1Spr1TunMetARev = TrackPaintFunctionConfig{
+        .spriteCount = 1,
+        .tunnelCount = 1,
+        .reversed = true,
+    };
+
+    constexpr auto kTPFC2Spr1TunMetA = TrackPaintFunctionConfig{
+        .spriteCount = 2,
+        .tunnelCount = 1,
+    };
+
+    constexpr auto kTPFC2Spr1TunMetARev = TrackPaintFunctionConfig{
+        .spriteCount = 2,
+        .tunnelCount = 1,
+        .reversed = true,
+    };
 } // namespace OpenRCT2
