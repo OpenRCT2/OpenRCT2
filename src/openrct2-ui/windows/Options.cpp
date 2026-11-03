@@ -254,6 +254,7 @@ namespace OpenRCT2::Ui::Windows
 
         WIDX_GROUP_ADVANCED,
         WIDX_DEBUGGING_TOOLS,
+        WIDX_DISABLE_BACKGROUND_PROCESSING,
         WIDX_STAY_CONNECTED_AFTER_DESYNC,
 #ifdef __EMSCRIPTEN__
         WIDX_EXPORT_EMSCRIPTEN_DATA,
@@ -461,14 +462,15 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({ 23, kSavingStart + 63}, {135, 12}, WidgetType::label,        WindowColour::secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
         makeSpinnerWidgets({165, kSavingStart + 62}, {135, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
 
-        makeWidget        ({  5, kAdvancedStart +  0}, {300, 97}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_ADVANCED                                                                      ),
+        makeWidget        ({  5, kAdvancedStart +  0}, {300, 111}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_ADVANCED                                                                      ),
         makeWidget        ({ 10, kAdvancedStart + 16}, {295, 12}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
-        makeWidget        ({ 10, kAdvancedStart + 30}, {295, 12}, WidgetType::checkbox,     WindowColour::tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
+        makeWidget        ({ 10, kAdvancedStart + 30}, {295, 12}, WidgetType::checkbox,     WindowColour::tertiary,  STR_DISABLE_BACKGROUND_PROCESSING,        STR_DISABLE_BACKGROUND_PROCESSING_TIP       ), // Disable background processing
+        makeWidget        ({ 10, kAdvancedStart + 44}, {295, 12}, WidgetType::checkbox,     WindowColour::tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
 #ifdef __EMSCRIPTEN__
-        makeWidget        ({ 10, kAdvancedStart + 46}, {135, 14}, WidgetType::button,       WindowColour::secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
-        makeWidget        ({150, kAdvancedStart + 46}, {150, 14}, WidgetType::button,       WindowColour::secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
+        makeWidget        ({ 10, kAdvancedStart + 60}, {135, 14}, WidgetType::button,       WindowColour::secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        makeWidget        ({150, kAdvancedStart + 60}, {150, 14}, WidgetType::button,       WindowColour::secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
 #endif
-        makeWidget        ({150, kAdvancedStart + 64}, {150, 14}, WidgetType::button,       WindowColour::secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                )  // Asset packs
+        makeWidget        ({150, kAdvancedStart + 78}, {150, 14}, WidgetType::button,       WindowColour::secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                )  // Asset packs
     );
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {
@@ -2014,6 +2016,12 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
+                case WIDX_DISABLE_BACKGROUND_PROCESSING:
+                    Config::Get().general.disableBackgroundProcessing = !Config::Get().general.disableBackgroundProcessing;
+                    Config::Save();
+                    invalidate();
+                    ContextShowError(STR_RESTART_REQUIRED, kStringIdNone, {});
+                    break;
                 case WIDX_DEBUGGING_TOOLS:
                     Config::Get().general.debuggingTools ^= 1;
                     Config::Save();
@@ -2174,13 +2182,14 @@ namespace OpenRCT2::Ui::Windows
             setCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.useNativeBrowseDialog);
             widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.autosaveFrequency];
 
+            setCheckboxValue(WIDX_DISABLE_BACKGROUND_PROCESSING, Config::Get().general.disableBackgroundProcessing);
             setCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.debuggingTools);
             setCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.stayConnected);
 
 #ifdef __EMSCRIPTEN__
-            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 84 + getTitleBarDiffNormal();
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 98 + getTitleBarDiffNormal();
 #else
-            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 64 + getTitleBarDiffNormal();
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 78 + getTitleBarDiffNormal();
 #endif
 
             widgets[WIDX_ASSET_PACKS].top = widgets[WIDX_GROUP_ADVANCED].bottom - 20;
