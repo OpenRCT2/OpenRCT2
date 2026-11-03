@@ -11,6 +11,7 @@
 
 #include "../GameState.h"
 #include "../localisation/Formatter.h"
+#include "../localisation/Formatting.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
@@ -336,6 +337,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
 {
     Ride* ride;
 
+    res.errorMessageText.clear();
     res.errorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->getType())
     {
@@ -351,17 +353,19 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             {
                 res.errorMessage = STR_X_IN_THE_WAY;
 
-                Formatter ft(res.errorMessageArgs.data());
-                ride->formatNameTo(ft);
+                Formatter formatter;
+                ride->formatNameTo(formatter);
+                res.errorMessageText = FormatStringIDLegacy(STR_X_IN_THE_WAY, formatter.Data());
             }
             break;
         case TileElementType::smallScenery:
         {
             auto* sceneryEntry = tileElement->asSmallScenery()->getEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
-            auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
-            ft.Add<StringId>(stringId);
+            Formatter formatter;
+            formatter.Add<StringId>(stringId);
+            res.errorMessageText = FormatStringIDLegacy(STR_X_IN_THE_WAY, formatter.Data());
             break;
         }
         case TileElementType::entrance:
@@ -382,18 +386,20 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
         {
             auto* wallEntry = tileElement->asWall()->getEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
-            auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(kStringIdEmpty);
-            ft.Add<StringId>(stringId);
+            Formatter formatter;
+            formatter.Add<StringId>(stringId);
+            res.errorMessageText = FormatStringIDLegacy(STR_X_IN_THE_WAY, formatter.Data());
             break;
         }
         case TileElementType::largeScenery:
         {
             auto* sceneryEntry = tileElement->asLargeScenery()->getEntry();
             res.errorMessage = STR_X_IN_THE_WAY;
-            auto ft = Formatter(res.errorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
-            ft.Add<StringId>(stringId);
+            Formatter formatter;
+            formatter.Add<StringId>(stringId);
+            res.errorMessageText = FormatStringIDLegacy(STR_X_IN_THE_WAY, formatter.Data());
             break;
         }
         case TileElementType::banner:
