@@ -65,4 +65,9 @@ namespace OpenRCT2
         RCT1,
         RCT2,
     };
+    enum class AudioEngineType : int32_t
+    {
+        legacy,
+        newEngine,
+    };
 } // namespace OpenRCT2
