@@ -11,6 +11,7 @@
 
     #include "ScRideStation.hpp"
 
+    #include "../../../core/UnitConversion.h"
     #include "../../../ride/Ride.h"
 
 namespace OpenRCT2::Scripting
@@ -23,6 +24,7 @@ namespace OpenRCT2::Scripting
             JS_CGETSET_DEF("entrance", ScRideStation::entrance_get, ScRideStation::entrance_set),
             JS_CGETSET_DEF("exit", ScRideStation::exit_get, ScRideStation::exit_set),
             JS_CGETSET_DEF("queueTime", ScRideStation::queueTime_get, nullptr),
+            JS_CGETSET_DEF("segmentLength", ScRideStation::segmentLength_get, nullptr),
         };
         RegisterBase(ctx, "RideStation", Finalize, funcs);
     }
@@ -100,6 +102,12 @@ namespace OpenRCT2::Scripting
             station->length = valueInt;
         }
         return JS_UNDEFINED;
+    }
+
+    JSValue ScRideStation::segmentLength_get(JSContext* ctx, JSValue thisVal)
+    {
+        auto station = GetRideStation(thisVal);
+        return JS_NewInt32(ctx, station != nullptr ? ToHumanReadableRideLength(station->segmentLength) : 0);
     }
 
     JSValue ScRideStation::entrance_get(JSContext* ctx, JSValue thisVal)

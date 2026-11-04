@@ -333,6 +333,8 @@ namespace OpenRCT2::Scripting
             classId = JS_INVALID_CLASS_ID;
             if (protoCtx != nullptr)
                 JS_FreeValue(protoCtx, proto);
+            proto = JS_NULL;
+            protoCtx = nullptr;
         }
 
         [[nodiscard]] JSValue GetProto() const

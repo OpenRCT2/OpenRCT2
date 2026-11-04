@@ -53,13 +53,13 @@ struct ttf_getwidth_cache_entry
 
 static ttf_cache_entry _ttfSurfaceCache[kTTFSurfaceCacheSize] = {};
 static int32_t _ttfSurfaceCacheCount = 0;
-static int32_t _ttfSurfaceCacheHitCount = 0;
-static int32_t _ttfSurfaceCacheMissCount = 0;
+// static int32_t _ttfSurfaceCacheHitCount = 0;
+// static int32_t _ttfSurfaceCacheMissCount = 0;
 
 static ttf_getwidth_cache_entry _ttfGetWidthCache[kTTFGetWidthCacheSize] = {};
-static int32_t _ttfGetWidthCacheCount = 0;
-static int32_t _ttfGetWidthCacheHitCount = 0;
-static int32_t _ttfGetWidthCacheMissCount = 0;
+// static int32_t _ttfGetWidthCacheCount = 0;
+// static int32_t _ttfGetWidthCacheHitCount = 0;
+// static int32_t _ttfGetWidthCacheMissCount = 0;
 
 static std::mutex _mutex;
 
@@ -220,7 +220,7 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
             break;
         if (entry->font == font && String::equals(entry->text, text))
         {
-            _ttfSurfaceCacheHitCount++;
+            // _ttfSurfaceCacheHitCount++;
             entry->lastUseTick = gCurrentDrawCount;
             return entry->surface;
         }
@@ -246,7 +246,7 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
         return nullptr;
     }
 
-    _ttfSurfaceCacheMissCount++;
+    // _ttfSurfaceCacheMissCount++;
     // printf("CACHE HITS: %d   MISSES: %d)\n", _ttfSurfaceCacheHitCount, _ttfSurfaceCacheMissCount);
 
     _ttfSurfaceCacheCount++;
@@ -272,7 +272,7 @@ static void TTFGetWidthCacheDisposeAll()
     for (int32_t i = 0; i < kTTFGetWidthCacheSize; i++)
     {
         TTFGetWidthCacheDispose(&_ttfGetWidthCache[i]);
-        _ttfGetWidthCacheCount--;
+        // _ttfGetWidthCacheCount--;
     }
 }
 
@@ -294,7 +294,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
             break;
         if (entry->font == font && String::equals(entry->text, text))
         {
-            _ttfGetWidthCacheHitCount++;
+            // _ttfGetWidthCacheHitCount++;
             entry->lastUseTick = gCurrentDrawCount;
             return entry->width;
         }
@@ -317,9 +317,9 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
     int32_t width, height;
     TTFGetSize(font, text, &width, &height);
 
-    _ttfGetWidthCacheMissCount++;
+    // _ttfGetWidthCacheMissCount++;
 
-    _ttfGetWidthCacheCount++;
+    // _ttfGetWidthCacheCount++;
     entry->width = width;
     entry->font = font;
     entry->text = text;

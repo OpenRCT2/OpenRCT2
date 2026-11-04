@@ -1619,9 +1619,8 @@ namespace OpenRCT2
             ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
             if (Config::Get().notifications.guestBoughtItem)
             {
-                News::AddItemToQueue(
-                    getGameState().park.newsItems, News::ItemType::peepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X,
-                    guest.id, ft);
+                getGameState().park.newsItems.addItemToQueue(
+                    News::ItemType::peepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, guest.id, ft);
             }
         }
 
@@ -3553,9 +3552,8 @@ namespace OpenRCT2
             ride.formatNameTo(ft);
             if (Config::Get().notifications.rideWarnings)
             {
-                News::AddItemToQueue(
-                    getGameState().park.newsItems, News::ItemType::ride, STR_GUESTS_GETTING_STUCK_ON_RIDE,
-                    guest.currentRide.ToUnderlying(), ft);
+                getGameState().park.newsItems.addItemToQueue(
+                    News::ItemType::ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, guest.currentRide.ToUnderlying(), ft);
             }
         }
     }
@@ -3860,7 +3858,7 @@ namespace OpenRCT2
 
             if (Config::Get().notifications.guestOnRide)
             {
-                News::AddItemToQueue(getGameState().park.newsItems, News::ItemType::peepOnRide, msg_string, id, ft);
+                getGameState().park.newsItems.addItemToQueue(News::ItemType::peepOnRide, msg_string, id, ft);
             }
         }
 
@@ -4908,7 +4906,7 @@ namespace OpenRCT2
         uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
         uint8_t openCount = 0;
         uint8_t mazeReverseLastEdge = DirectionReverse(mazeLastEdge);
-        for (uint8_t i = 0; i < kNumOrthogonalDirections; ++i)
+        for (Direction i : kAllDirections)
         {
             if (!(mazeEntry & (1 << kMazeCurrentDirectionToOpenHedge[var37 / 4][i])) && i != mazeReverseLastEdge)
             {
@@ -5019,8 +5017,8 @@ namespace OpenRCT2
 
                 if (Config::Get().notifications.guestLeftRide)
                 {
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, id, ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, id, ft);
                 }
             }
         }

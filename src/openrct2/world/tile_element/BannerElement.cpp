@@ -31,12 +31,12 @@ namespace OpenRCT2
         index = newIndex;
     }
 
-    uint8_t BannerElement::getPosition() const
+    Direction BannerElement::getPosition() const
     {
         return position;
     }
 
-    void BannerElement::setPosition(uint8_t newPosition)
+    void BannerElement::setPosition(Direction newPosition)
     {
         position = newPosition;
     }

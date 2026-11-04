@@ -74,7 +74,7 @@ namespace OpenRCT2
     TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type);
     void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements);
     int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
-    BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t position);
+    BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, Direction position);
     SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords);
     SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
     PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
@@ -86,7 +86,7 @@ namespace OpenRCT2
     EntranceElement* MapGetRideExitElementAt(const CoordsXYZ& exitCoords, bool ghost);
     uint8_t MapGetHighestLandHeight(const MapRange& range);
     uint8_t MapGetLowestLandHeight(const MapRange& range);
-    bool MapCoordIsConnected(const TileCoordsXYZ& loc, uint8_t faceDirection);
+    bool MapCoordIsConnected(const TileCoordsXYZ& loc, Direction faceDirection);
     void MapUpdatePathWideFlags();
     bool MapIsLocationValid(const CoordsXY& coords);
     bool MapIsEdge(const CoordsXY& coords);

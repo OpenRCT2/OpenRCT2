@@ -55,7 +55,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -1,
+        .extraSupportRotation = 3,
         .blockedSegments = { {
             { PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
             kSegmentsUnimplemented,                                                   // inverted
@@ -68,7 +68,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -1,
+        .extraSupportRotation = 3,
         .blockedSegments = { {
             { PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -103,7 +103,7 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -2,
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             { PS::right, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight }, // narrow
             kSegmentsUnimplemented,                                                   // inverted
@@ -201,7 +201,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner2 },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -1,
+        .extraSupportRotation = 3,
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq3.blockedSegments,
     };
 
@@ -210,7 +210,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -1,
+        .extraSupportRotation = 3,
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq4.blockedSegments,
     };
 
@@ -233,7 +233,7 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::corner3 },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -2,
+        .extraSupportRotation = 2,
         .blockedSegments = kLeftHalfBankedHelixUpSmallSeq7.blockedSegments,
     };
 
@@ -370,7 +370,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -1,
+        .extraSupportRotation = 3,
         .blockedSegments = { {
             { PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
             kSegmentsUnimplemented,                                                   // inverted
@@ -383,7 +383,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -1,
+        .extraSupportRotation = 3,
         .blockedSegments = { {
             { PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // narrow
             kSegmentsUnimplemented,                                                 // inverted
@@ -449,7 +449,7 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -2,
+        .extraSupportRotation = 2,
         .blockedSegments = { {
             { PS::right, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight }, // narrow
             kSegmentsUnimplemented,                                                   // inverted
@@ -604,7 +604,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -1,
+        .extraSupportRotation = 3,
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq6.blockedSegments,
     };
 
@@ -613,7 +613,7 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b0001,
         .woodenSupports = { WoodenSupportSubType::nwSe },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -1,
+        .extraSupportRotation = 3,
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq7.blockedSegments,
     };
 
@@ -655,7 +655,7 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .woodenSupports = { WoodenSupportSubType::neSw },
         .metalSupports = { MetalSupportPlace::centre },
-        .extraSupportRotation = -2,
+        .extraSupportRotation = 2,
         .blockedSegments = kLeftHalfBankedHelixUpLargeSeq13.blockedSegments,
     };
 

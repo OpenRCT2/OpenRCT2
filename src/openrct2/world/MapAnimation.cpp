@@ -166,7 +166,7 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
             // Don't apply anything to peeps when the scenery is a ghost.
             if (!scenery.isGhost() && !(getGameState().currentTicks & 0x3FF))
             {
-                const int32_t direction = scenery.getDirection();
+                const Direction direction = scenery.getDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc.x, loc.y } - CoordsDirectionDelta[direction]);
                 for (auto peep : quad)
                 {
