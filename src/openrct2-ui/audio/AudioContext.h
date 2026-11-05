@@ -14,7 +14,7 @@
 #include <openrct2/audio/AudioSource.h>
 #include <string>
 
-struct SDL_RWops;
+struct SDL_IOStream;
 
 namespace OpenRCT2::Audio
 {
