@@ -1,6 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
+- Fix: [#27370] Black window with the hardware display renderer when built against sdl2-compat (SDL3).
 
 0.5.7 (2026-11-01)
 ------------------------------------------------------------------------
