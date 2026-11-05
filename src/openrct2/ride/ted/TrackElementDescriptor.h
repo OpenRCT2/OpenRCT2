@@ -296,7 +296,7 @@ namespace OpenRCT2::TrackMetadata
         SequenceFlags flags{};
         SequenceWoodenSupport woodenSupports{};
         SequenceMetalSupport metalSupports{};
-        int8_t extraSupportRotation = 0;
+        Direction extraSupportRotation = 0;
         bool invertSegmentBlocking = false;
         BlockedSegmentsPerType blockedSegments{ kSegmentsNone, kSegmentsNone, kSegmentsNone };
         int16_t generalSupportHeight = kDoNotSetGeneralSupportHeight;

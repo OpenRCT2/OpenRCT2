@@ -133,6 +133,7 @@ namespace OpenRCT2::Scripting
         static JSValue maxLiftHillSpeed_get(JSContext* ctx, JSValue thisVal);
         static JSValue minLiftHillSpeed_get(JSContext* ctx, JSValue thisVal);
         static JSValue satisfaction_get(JSContext* ctx, JSValue thisVal);
+        static JSValue popularity_get(JSContext* ctx, JSValue thisVal);
         static JSValue maxSpeed_get(JSContext* ctx, JSValue thisVal);
         static JSValue averageSpeed_get(JSContext* ctx, JSValue thisVal);
         static JSValue rideTime_get(JSContext* ctx, JSValue thisVal);

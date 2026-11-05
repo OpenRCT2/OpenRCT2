@@ -10,6 +10,7 @@
 #include "TerrainSurfaceObject.h"
 
 #include "../Context.h"
+#include "../OpenRCT2.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/ColourMap.h"
@@ -34,6 +35,9 @@ namespace OpenRCT2
 
     void TerrainSurfaceObject::precolourPatternImages()
     {
+        if (gOpenRCT2NoGraphics)
+            return;
+
         for (size_t colourNum = 0; colourNum < Drawing::kColourNumTotal; colourNum++)
         {
             for (uint8_t patternOffset = 0; patternOffset < kNumSmoothingPatternImages; patternOffset++)
@@ -76,6 +80,9 @@ namespace OpenRCT2
 
     void TerrainSurfaceObject::unloadPrecolouredPatternImages()
     {
+        if (gOpenRCT2NoGraphics)
+            return;
+
         GfxObjectFreeImages(precolouredPatternImageId, precolouredPatternImages.GetCount());
         precolouredPatternImageId = 0;
     }

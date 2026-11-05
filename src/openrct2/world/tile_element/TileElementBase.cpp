@@ -47,7 +47,7 @@ namespace OpenRCT2
 
     Direction TileElementBase::getDirectionWithOffset(uint8_t offset) const
     {
-        return ((this->type & kTileElementDirectionMask) + offset) & kTileElementDirectionMask;
+        return DirectionRotate(getDirection(), offset);
     }
 
     bool TileElementBase::isLastForTile() const

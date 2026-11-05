@@ -165,7 +165,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
      *  is found we allow for space between that and the next.
      */
 
-    int32_t direction = tileElement->getDirectionWithOffset(1);
+    Direction direction = tileElement->getDirectionWithOffset(1);
     constexpr uint8_t maxCheckDistance = kRideAdjacencyCheckDistance;
     uint8_t spaceBetween = maxCheckDistance;
 
@@ -1329,8 +1329,8 @@ void Vehicle::CheckIfMissing()
         curRide->formatNameTo(ft);
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
 
-        News::AddItemToQueue(
-            getGameState().park.newsItems, News::ItemType::ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
+        getGameState().park.newsItems.addItemToQueue(
+            News::ItemType::ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
     }
 }
 

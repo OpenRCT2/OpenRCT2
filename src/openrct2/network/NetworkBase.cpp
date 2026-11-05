@@ -105,6 +105,8 @@ namespace OpenRCT2::Network
 
     static void ChatAddHistory(const u8string& text)
     {
+        AppendChatLog(text);
+
         auto intent = Intent(INTENT_ACTION_CHAT_ADD_HISTORY);
         intent.PutExtra(INTENT_EXTRA_MESSAGE, text);
         ContextBroadcastIntent(&intent);

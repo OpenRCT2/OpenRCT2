@@ -16,14 +16,14 @@ struct CoordsXYE;
 struct CoordsXYZ;
 struct CoordsXYZD;
 
-constexpr uint8_t ParkEntranceHeight = 12 * kCoordsZStep;
-constexpr uint8_t RideEntranceHeight = 7 * kCoordsZStep;
-constexpr uint8_t RideExitHeight = 5 * kCoordsZStep;
+constexpr uint8_t kParkEntranceHeight = 12 * kCoordsZStep;
+constexpr uint8_t kRideEntranceHeight = 7 * kCoordsZStep;
+constexpr uint8_t kRideExitHeight = 5 * kCoordsZStep;
 
 extern bool gParkEntranceGhostExists;
 extern CoordsXYZD gParkEntranceGhostPosition;
 
-constexpr int32_t MaxRideEntranceOrExitHeight = 244 * kCoordsZStep;
+constexpr int32_t kMaxRideEntranceOrExitHeight = 244 * kCoordsZStep;
 
 extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern StationIndex gRideEntranceExitGhostStationIndex;

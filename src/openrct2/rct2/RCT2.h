@@ -324,7 +324,7 @@ namespace OpenRCT2::RCT2
 
         constexpr Direction GetDirection() const
         {
-            return (direction & 0b00001111);
+            return direction & 0b00000011;
         }
 
         constexpr bool IsExit() const

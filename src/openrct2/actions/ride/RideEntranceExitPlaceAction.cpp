@@ -117,7 +117,7 @@ namespace OpenRCT2::GameActions
         {
             return Result(Status::noFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
-        auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
+        auto clear_z = z + (_isExit ? kRideExitHeight : kRideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags());
         if (canBuild.error != Status::ok)
@@ -132,7 +132,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if (z > MaxRideEntranceOrExitHeight)
+        if (z > kMaxRideEntranceOrExitHeight)
         {
             return Result(Status::disallowed, errorTitle, STR_TOO_HIGH);
         }
@@ -186,7 +186,7 @@ namespace OpenRCT2::GameActions
             WallRemoveAtZ({ _loc, z });
         }
 
-        auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
+        auto clear_z = z + (_isExit ? kRideExitHeight : kRideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt(
             { _loc, z, clear_z }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, GetFlags().with(CommandFlag::apply));
         if (canBuild.error != Status::ok)
@@ -253,7 +253,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::noFreeElements, errorTitle, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
         int16_t baseZ = loc.z;
-        int16_t clearZ = baseZ + (isExit ? RideExitHeight : RideEntranceHeight);
+        int16_t clearZ = baseZ + (isExit ? kRideExitHeight : kRideEntranceHeight);
         auto canBuild = MapCanConstructWithClearAt({ loc, baseZ, clearZ }, MapPlaceNonSceneryClearFunc, { 0b1111, 0 }, {});
         if (canBuild.error != Status::ok)
         {
@@ -267,7 +267,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
-        if (baseZ > MaxRideEntranceOrExitHeight)
+        if (baseZ > kMaxRideEntranceOrExitHeight)
         {
             return Result(Status::disallowed, errorTitle, STR_TOO_HIGH);
         }

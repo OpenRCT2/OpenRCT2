@@ -121,7 +121,7 @@ uint8_t GetWallSlopeFromEdgeSlope(uint8_t Slope, uint8_t Edge)
  *
  *  rct2: 0x006E59DC
  */
-bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction)
+bool WallInTheWay(const CoordsXYRangedZ& fencePos, Direction direction)
 {
     TileElement* tileElement = MapGetFirstElementAt(fencePos);
     if (tileElement == nullptr)

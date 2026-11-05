@@ -23,13 +23,17 @@ namespace OpenRCT2::Scripting
     News::Item* ScParkMessage::GetMessage(JSValue thisVal)
     {
         auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
-        return &getGameState().park.newsItems[index];
+
+        if (index < News::kNewsQueueSize)
+            return &getGameState().park.newsItems.queue[index];
+
+        return &getGameState().park.newsItems.archive[index - News::kNewsQueueSize];
     }
 
     JSValue ScParkMessage::isArchived_get(JSContext* ctx, JSValue thisVal)
     {
         auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
-        return JS_NewBool(ctx, index >= News::ItemHistoryStart);
+        return JS_NewBool(ctx, index >= News::kNewsQueueSize);
     }
 
     JSValue ScParkMessage::month_get(JSContext* ctx, JSValue thisVal)
@@ -173,7 +177,12 @@ namespace OpenRCT2::Scripting
     JSValue ScParkMessage::remove(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         auto index = gScParkMessage.GetOpaque<OpaqueParkMessageData*>(thisVal)->index;
-        News::RemoveItem(getGameState().park.newsItems, static_cast<int32_t>(index));
+
+        if (index < News::kNewsQueueSize)
+            getGameState().park.newsItems.queue.remove(static_cast<int32_t>(index));
+        else
+            getGameState().park.newsItems.archive.remove(static_cast<int32_t>(index - News::kNewsQueueSize));
+
         return JS_UNDEFINED;
     }
 

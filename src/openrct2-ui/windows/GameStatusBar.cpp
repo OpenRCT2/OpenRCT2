@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PANEL_OUTSET].right = width - 1;
             widgets[WIDX_PANEL_INSET].right = width - 3;
 
-            bool useFullToolbar = getGameState().park.newsItems.isEmpty()
+            bool useFullToolbar = getGameState().park.newsItems.queue.empty()
                 && (ThemeGetFlags() & UITHEME_FLAG_USE_GAME_STATUS_BAR) && gLegacyScene == LegacyScene::playing;
 
             widgets[WIDX_PANEL_OUTSET].setVisible(useFullToolbar);

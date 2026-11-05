@@ -2679,8 +2679,8 @@ STR_5582    :Capturar cursor do rato na xanela
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :Desbloquea os límites de operación da atracción, permitindo cousas como pendentes de elevación a {VELOCITY}
-STR_5586    :Abrir tendas e postos automaticamente
-STR_5587    :As tendas e os postos abriranse automaticamente despois de seren construidos.
+STR_5586    :Abrir e pechar automaticamente as tendas e os postos
+STR_5587    :As tendas e os postos abriranse automaticamente despois de construílos e pecharanse automaticamente antes de comezar a construción.
 STR_5588    :Xogar con outros xogadores
 STR_5589    :Configuración de notificacións
 STR_5590    :Premios do parque
@@ -3844,3 +3844,22 @@ STR_7060    :Visitantes mirando a construción de {STRINGID}
 STR_7061    :Visitantes mirando a decoración
 STR_7062    :Visitantes saíndo do parque
 STR_7063    :Visitantes mirando a construción dunha nova atracción
+STR_7064    :Dourado
+STR_7065    :Ámbar
+STR_7066    :Amatista
+STR_7067    :Espárrago
+STR_7068    :Marrón
+STR_7069    :Rosa queimado
+STR_7070    :Cacto
+STR_7071    :Caramelo
+STR_7072    :Cobre
+STR_7073    :Carmesí
+STR_7074    :Auga escura
+STR_7075    :Esmeralda
+STR_7076    :Indigo
+STR_7077    :Pesto
+STR_7078    :Verde piñeiro
+STR_7079    :Rubí
+STR_7080    :Azul intenso
+STR_7081    :Prata
+

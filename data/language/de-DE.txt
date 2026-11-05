@@ -2680,8 +2680,8 @@ STR_5582    :Mauszeiger im Fenster fangen
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :Hebt Beschränkungen von Attraktionen auf, um Dinge wie {VELOCITY} schnelle Lifthügel zu erlauben
-STR_5586    :Läden und Stände automatisch öffnen
-STR_5587    :Läden und Stände werden nach dem{NEWLINE}Bauen automatisch geöffnet
+STR_5586    :Läden und Stände automatisch öffnen und schließen
+STR_5587    :Läden und Stände werden nach dem Bau automatisch geöffnet und vor dem Bau automatisch geschlossen
 STR_5588    :Mit anderen Spielern spielen
 STR_5589    :Benachrichtigungseinstellungen
 STR_5590    :Parkauszeichnungen
@@ -3841,3 +3841,21 @@ STR_7060    :Besucher, die beim Bau von {STRINGID} zuschauen
 STR_7061    :Besucher, die die Landschaft betrachten
 STR_7062    :Besucher, die den Park verlassen
 STR_7063    :Besucher, die beim Bau eines neuen Fahrgeschäfts zuschauen
+STR_7064    :Gold
+STR_7065    :Bernstein
+STR_7066    :Amethyst
+STR_7067    :Spargel
+STR_7068    :Braun
+STR_7069    :Verbranntes Rosa
+STR_7070    :Kaktus
+STR_7071    :Karamell
+STR_7072    :Kupfer
+STR_7073    :Karmesinrot
+STR_7074    :Dunkleres Wasser
+STR_7075    :Smaragd
+STR_7076    :Indigo
+STR_7077    :Pesto
+STR_7078    :Kieferngrün
+STR_7079    :Rubin
+STR_7080    :Tiefblau
+STR_7081    :Silber

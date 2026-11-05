@@ -1623,7 +1623,7 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
     if (argv.size() < 2)
     {
         console.WriteLineWarning("Too few arguments");
-        static_assert(News::ItemTypeCount == 11, "News::ItemType::count changed, update console command!");
+        static_assert(News::kItemTypeCount == 11, "News::ItemType::count changed, update console command!");
         console.WriteLine("add_news_item <type> <message> [assoc]");
         console.WriteLine("type is one of:");
         console.WriteLine("    0 (News::ItemType::null)");
@@ -1663,7 +1663,7 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
         }
     }
 
-    News::AddItemToQueue(getGameState().park.newsItems, itemType, msg, assoc);
+    getGameState().park.newsItems.addItemToQueue(itemType, msg, assoc);
     console.WriteLine("Successfully added News Item");
 }
 

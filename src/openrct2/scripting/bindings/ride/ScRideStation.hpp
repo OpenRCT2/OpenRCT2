@@ -51,6 +51,7 @@ namespace OpenRCT2::Scripting
         static JSValue exit_get(JSContext* ctx, JSValue thisVal);
         static JSValue exit_set(JSContext* ctx, JSValue thisVal, JSValue value);
         static JSValue queueTime_get(JSContext* ctx, JSValue thisVal);
+        static JSValue segmentLength_get(JSContext* ctx, JSValue thisVal);
     };
 
 } // namespace OpenRCT2::Scripting

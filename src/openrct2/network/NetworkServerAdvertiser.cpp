@@ -25,6 +25,7 @@
 
     #include <chrono>
     #include <cstring>
+    #include <future>
     #include <iterator>
     #include <memory>
     #include <random>

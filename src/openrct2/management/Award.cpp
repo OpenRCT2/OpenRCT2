@@ -624,7 +624,7 @@ static void AwardAdd(AwardType type)
     park.currentAwards.push_back(Award{ 5u, type });
     if (Config::Get().notifications.parkAward)
     {
-        News::AddItemToQueue(park.newsItems, News::ItemType::award, AwardGetNews(type), 0, {});
+        park.newsItems.addItemToQueue(News::ItemType::award, AwardGetNews(type), 0, {});
     }
     Ui::GetWindowManager()->InvalidateByClass(WindowClass::parkInformation);
 }

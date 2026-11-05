@@ -357,13 +357,13 @@ namespace OpenRCT2::Scripting
         JSValue result = JS_NewArray(ctx);
         int64_t resultIdx = 0;
         auto& newsItems = getGameState().park.newsItems;
-        for (size_t i = 0, newsSize = newsItems.getRecent().size(); i < newsSize; i++)
+        for (size_t i = 0, newsSize = newsItems.queue.size(); i < newsSize; i++)
         {
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, i));
         }
-        for (size_t i = 0, newsSize = newsItems.getArchived().size(); i < newsSize; i++)
+        for (size_t i = 0, newsSize = newsItems.archive.size(); i < newsSize; i++)
         {
-            auto offset = i + News::ItemHistoryStart;
+            auto offset = i + News::kNewsQueueSize;
             JS_SetPropertyInt64(ctx, result, resultIdx++, gScParkMessage.New(ctx, offset));
         }
         return result;
@@ -371,38 +371,38 @@ namespace OpenRCT2::Scripting
 
     JSValue ScPark::messages_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
-        int32_t index = 0;
-        int32_t archiveIndex = News::ItemHistoryStart;
+        size_t queueIndex = 0;
+        size_t archiveIndex = 0;
         auto& newsItems = getGameState().park.newsItems;
-        JSIterateArray(ctx, value, [&index, &archiveIndex, &newsItems](JSContext* ctx2, JSValue item) {
+        JSIterateArray(ctx, value, [&queueIndex, &archiveIndex, &newsItems](JSContext* ctx2, JSValue item) {
             auto isArchived = AsOrDefault(ctx2, item, "isArchived", false);
             auto newsItem = NewsItemFromJS(ctx2, item);
             if (isArchived)
             {
-                if (archiveIndex < News::MaxItems)
+                if (archiveIndex < newsItems.archive.capacity())
                 {
-                    newsItems[archiveIndex] = newsItem;
+                    newsItems.archive[archiveIndex] = newsItem;
                     archiveIndex++;
                 }
             }
             else
             {
-                if (index < News::ItemHistoryStart)
+                if (queueIndex < newsItems.queue.capacity())
                 {
-                    newsItems[index] = newsItem;
-                    index++;
+                    newsItems.queue[queueIndex] = newsItem;
+                    queueIndex++;
                 }
             }
         });
 
         // End the lists by setting next item to null
-        if (index < News::ItemHistoryStart)
+        if (queueIndex < newsItems.queue.capacity())
         {
-            newsItems[index].type = News::ItemType::null;
+            newsItems.queue[queueIndex].type = News::ItemType::null;
         }
-        if (archiveIndex < News::MaxItems)
+        if (archiveIndex < newsItems.archive.capacity())
         {
-            newsItems[archiveIndex].type = News::ItemType::null;
+            newsItems.archive[archiveIndex].type = News::ItemType::null;
         }
         return JS_UNDEFINED;
     }
@@ -440,7 +440,7 @@ namespace OpenRCT2::Scripting
                 assoc = JSToUint(ctx, subject);
             }
         }
-        News::AddItemToQueue(getGameState().park.newsItems, type, text.c_str(), assoc);
+        getGameState().park.newsItems.addItemToQueue(type, text.c_str(), assoc);
         return JS_UNDEFINED;
     }
 
