@@ -859,6 +859,12 @@ namespace OpenRCT2
 
         peepDirection = newDirection;
         auto tolerance = (ScenarioRand() & 7) + 2;
+        if (isSmoothTurning())
+        {
+            // Arrive where the corner curve starts. ScenarioRand is still called above to keep the random sequence.
+            constexpr int32_t kSmoothTurnTolerance = 14;
+            tolerance = kSmoothTurnTolerance;
+        }
         setDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
         return false;

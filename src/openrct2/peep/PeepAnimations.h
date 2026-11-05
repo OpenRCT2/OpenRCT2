@@ -50,12 +50,18 @@ namespace OpenRCT2
         std::vector<uint8_t> frameOffsets;
         uint32_t baseImage{};
         SpriteBounds bounds{};
+
+        // Optional 32-rotation images ("offset32"): image = base + orientation + frame * 32.
+        // Zero when absent, in which case the 4-rotation images at imageTableOffset are used.
+        ImageIndex imageTableOffset32{};
+        uint32_t baseImage32{};
     };
 
     struct PeepAnimations
     {
     public:
         bool isSlowWalking = false;
+        bool smoothTurning = false; // Round corners on a curve and turn in place gradually (see Peep.cpp)
         RCT12PeepAnimationGroup legacyPosition;
         std::string scriptName{};
 
