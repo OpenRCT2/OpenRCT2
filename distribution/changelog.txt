@@ -1,6 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
+- Fix: [#27361] Clicking the lower part of a colour button in the Themes window selects the colour below it.
 
 0.5.7 (2026-11-01)
 ------------------------------------------------------------------------
