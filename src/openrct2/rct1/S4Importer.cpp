@@ -3167,7 +3167,7 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
         dst->targetX = src->TargetX;
         dst->targetY = src->TargetY;
-        dst->state = static_cast<Duck::DuckState>(src->State);
+        dst->setState(static_cast<Duck::DuckState>(src->State));
     }
 
     void S4Importer::ImportEntity(GameState_t& gameState, const RCT12EntityBase& src)
