@@ -152,7 +152,7 @@ namespace OpenRCT2
     {
         _shouldLoadImages = context->ShouldLoadImages();
 
-        stream->Seek(8, STREAM_SEEK_CURRENT);
+        stream->Seek(8, StreamSeekOrigin::STREAM_SEEK_CURRENT);
         _legacyType.flags.holder = stream->ReadValue<uint32_t>();
         for (auto& rideType : _legacyType.ride_type)
         {
@@ -173,19 +173,19 @@ namespace OpenRCT2
 
         _legacyType.BuildMenuPriority = 0;
         // Skip Pad019
-        stream->Seek(1, STREAM_SEEK_CURRENT);
+        stream->Seek(1, StreamSeekOrigin::STREAM_SEEK_CURRENT);
 
         for (auto& carEntry : _legacyType.Cars)
         {
             ReadLegacyCar(context, stream, carEntry);
         }
-        stream->Seek(4, STREAM_SEEK_CURRENT);
+        stream->Seek(4, StreamSeekOrigin::STREAM_SEEK_CURRENT);
         _legacyType.excitement_multiplier = stream->ReadValue<int8_t>();
         _legacyType.intensity_multiplier = stream->ReadValue<int8_t>();
         _legacyType.nausea_multiplier = stream->ReadValue<int8_t>();
         _legacyType.maxHeight = stream->ReadValue<uint8_t>();
         // Skipping a uint64_t for the enabled track pieces and two uint8_ts for the categories.
-        stream->Seek(10, STREAM_SEEK_CURRENT);
+        stream->Seek(10, StreamSeekOrigin::STREAM_SEEK_CURRENT);
         _legacyType.shop_item[0] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
         _legacyType.shop_item[1] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
 
@@ -419,7 +419,7 @@ namespace OpenRCT2
     void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, IStream* stream, CarEntry& car)
     {
         car.tabRotationMask = stream->ReadValue<uint16_t>();
-        stream->Seek(2 * 1, STREAM_SEEK_CURRENT);
+        stream->Seek(2 * 1, StreamSeekOrigin::STREAM_SEEK_CURRENT);
         car.spacing = stream->ReadValue<uint32_t>();
         car.carMass = stream->ReadValue<uint16_t>();
         car.tabHeight = stream->ReadValue<int8_t>();
@@ -434,7 +434,7 @@ namespace OpenRCT2
         // Implied in vanilla, but can be turned off in OpenRCT2.
         car.flags.set(CarEntryFlag::enableBodyColour);
         car.baseNumFrames = stream->ReadValue<uint16_t>();
-        stream->Seek(15 * 4, STREAM_SEEK_CURRENT);
+        stream->Seek(15 * 4, StreamSeekOrigin::STREAM_SEEK_CURRENT);
         car.numSeatingRows = stream->ReadValue<uint8_t>();
         car.spinningInertia = stream->ReadValue<uint8_t>();
         car.spinningFriction = stream->ReadValue<uint8_t>();
@@ -451,7 +451,7 @@ namespace OpenRCT2
         car.effectVisual = stream->ReadValue<EffectVisual>();
         car.drawOrder = stream->ReadValue<uint8_t>();
         car.numVerticalFramesOverride = stream->ReadValue<uint8_t>();
-        stream->Seek(4, STREAM_SEEK_CURRENT);
+        stream->Seek(4, StreamSeekOrigin::STREAM_SEEK_CURRENT);
 
         // OpenRCT2-specific features below
         auto animationProperties = GetDefaultAnimationParameters(legacyAnimation);

@@ -25,7 +25,7 @@ namespace OpenRCT2
 
     void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, STREAM_SEEK_CURRENT);
+        stream->Seek(6, StreamSeekOrigin::STREAM_SEEK_CURRENT);
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
         _legacyType.flags = static_cast<WallSceneryFlags>(stream->ReadValue<uint8_t>());
         _legacyType.height = stream->ReadValue<uint8_t>();
@@ -36,7 +36,7 @@ namespace OpenRCT2
         _legacyType.doorSound = static_cast<Audio::DoorSoundType>(doorSound);
         _legacyType.price = stream->ReadValue<money16>();
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
-        stream->Seek(1, STREAM_SEEK_CURRENT);
+        stream->Seek(1, StreamSeekOrigin::STREAM_SEEK_CURRENT);
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
 
         GetStringTable().Read(context, stream, ObjectStringID::name);

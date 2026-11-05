@@ -25,7 +25,7 @@
 
 namespace OpenRCT2
 {
-    enum
+    enum class StreamSeekOrigin : uint8_t
     {
         STREAM_SEEK_BEGIN,
         STREAM_SEEK_CURRENT,
@@ -51,7 +51,7 @@ namespace OpenRCT2
         virtual uint64_t GetLength() const = 0;
         virtual uint64_t GetPosition() const = 0;
         virtual void SetPosition(uint64_t position) = 0;
-        virtual void Seek(int64_t offset, int32_t origin) = 0;
+        virtual void Seek(int64_t offset, StreamSeekOrigin origin) = 0;
 
         virtual void Read(void* buffer, uint64_t length) = 0;
         virtual void Write(const void* buffer, uint64_t length) = 0;

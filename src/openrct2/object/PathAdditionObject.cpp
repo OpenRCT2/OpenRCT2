@@ -20,13 +20,13 @@ namespace OpenRCT2
 {
     void PathAdditionObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, STREAM_SEEK_CURRENT);
+        stream->Seek(6, StreamSeekOrigin::STREAM_SEEK_CURRENT);
         _legacyType.flags = stream->ReadValue<PathAdditionFlags>();
         _legacyType.draw_type = static_cast<PathAdditionDrawType>(stream->ReadValue<uint8_t>());
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
         _legacyType.price = stream->ReadValue<money16>();
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
-        stream->Seek(2, STREAM_SEEK_CURRENT);
+        stream->Seek(2, StreamSeekOrigin::STREAM_SEEK_CURRENT);
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
 
