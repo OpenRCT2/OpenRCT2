@@ -99,7 +99,7 @@ namespace OpenRCT2
             "Ride",          "SmallScenery",   "LargeScenery", "Walls",           "Banners",          "Paths",
             "PathAdditions", "SceneryGroup",   "ParkEntrance", "Water",           "ScenarioMeta",     "TerrainSurface",
             "TerrainEdge",   "Station",        "Music",        "FootpathSurface", "FootpathRailings", "Audio",
-            "PeepNames",     "PeepAnimations", "Climate",
+            "PeepNames",     "PeepAnimations", "Climate",      "Campaign",
         };
         static_assert(kTypeToName.size() == static_cast<size_t>(ObjectType::count));
 

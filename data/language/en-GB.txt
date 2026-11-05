@@ -3872,3 +3872,14 @@ STR_7078    :Pine green
 STR_7079    :Ruby
 STR_7080    :Deep blue
 STR_7081    :Silver
+STR_7082    :Bonus parks
+STR_7083    :Graphite Group
+STR_7084    :Emerald Group
+STR_7085    :Ruby Group
+STR_7086    :Sapphire Group
+STR_7087    :Amethyst Group
+STR_7088    :Coral Group
+STR_7089    :Ivory Group
+STR_7090    :Bronze Group
+STR_7091    :Silver Group
+STR_7092    :Gold Group

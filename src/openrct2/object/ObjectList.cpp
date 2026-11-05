@@ -20,6 +20,7 @@
 
 namespace OpenRCT2
 {
+    // clang-format off
     // 0x0098DA00
     static constexpr std::array<int32_t, EnumValue(ObjectType::count)> kObjectEntryGroupCounts = {
         kMaxRideObjects,         // rides
@@ -33,11 +34,19 @@ namespace OpenRCT2
         kMaxParkEntranceObjects, // park entrance
         kMaxWaterObjects,        // water
         kMaxScenarioMetaObjects, // scenario meta
-        kMaxTerrainSurfaceObjects, kMaxTerrainEdgeObjects,     kMaxStationObjects,
-        kMaxMusicObjects,          kMaxFootpathSurfaceObjects, kMaxFootpathRailingsObjects,
-        kMaxAudioObjects,          kMaxPeepNamesObjects,       kMaxPeepAnimationsObjects,
+        kMaxTerrainSurfaceObjects,
+        kMaxTerrainEdgeObjects,
+        kMaxStationObjects,
+        kMaxMusicObjects,
+        kMaxFootpathSurfaceObjects,
+        kMaxFootpathRailingsObjects,
+        kMaxAudioObjects,
+        kMaxPeepNamesObjects,
+        kMaxPeepAnimationsObjects,
         kMaxClimateObjects,
+        kMaxCampaignObjects,
     };
+    // clang-format on
     static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::count));
 
     size_t getObjectEntryGroupCount(ObjectType objectType)
