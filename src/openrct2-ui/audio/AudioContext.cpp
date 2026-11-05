@@ -162,39 +162,39 @@ namespace OpenRCT2::Audio
         {
         }
 
-        private:
-            IAudioSource* AddSource(std::unique_ptr<SDLAudioSource> source)
-            {
-                return _audioMixer->AddSource(std::move(source));
-            }
+    private:
+        IAudioSource* AddSource(std::unique_ptr<SDLAudioSource> source)
+        {
+            return _audioMixer->AddSource(std::move(source));
+        }
 
-            static SDL_RWops* StreamToSDL2(std::unique_ptr<IStream> stream)
-            {
-                auto* rw = SDL_AllocRW();
-                if (rw == nullptr)
-                    return nullptr;
-                *rw = {};   
+        static SDL_RWops* StreamToSDL2(std::unique_ptr<IStream> stream)
+        {
+            auto* rw = SDL_AllocRW();
+            if (rw == nullptr)
+                return nullptr;
+            *rw = {};
 
-                rw->type = SDL_RWOPS_UNKNOWN;
-                rw->hidden.unknown.data1 = stream.release();
-                rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) {
-                    auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+            rw->type = SDL_RWOPS_UNKNOWN;
+            rw->hidden.unknown.data1 = stream.release();
+            rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) -> Sint64 {
+                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
                 // Convert SDL's seek origin to the stream's strongly typed origin.
                 StreamSeekOrigin origin;
                 switch (whence)
-                    {   
-                case RW_SEEK_SET:
-                    origin = StreamSeekOrigin::STREAM_SEEK_BEGIN;
-                    break;
-                case RW_SEEK_CUR:
-                    origin = StreamSeekOrigin::STREAM_SEEK_CURRENT;
-                   break;
-               case RW_SEEK_END:
-                   origin = StreamSeekOrigin::STREAM_SEEK_END;
-                   break;
-               default:
-                   return -1;
-                }        
+                {
+                    case RW_SEEK_SET:
+                        origin = StreamSeekOrigin::STREAM_SEEK_BEGIN;
+                        break;
+                    case RW_SEEK_CUR:
+                        origin = StreamSeekOrigin::STREAM_SEEK_CURRENT;
+                        break;
+                    case RW_SEEK_END:
+                        origin = StreamSeekOrigin::STREAM_SEEK_END;
+                        break;
+                    default:
+                        return -1;
+                }
                 ptr->Seek(offset, origin);
                 return static_cast<Sint64>(ptr->GetPosition());
             };

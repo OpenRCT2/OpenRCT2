@@ -177,7 +177,7 @@ namespace OpenRCT2
         Seek(position, StreamSeekOrigin::STREAM_SEEK_BEGIN);
     }
 
-    void FileStream::Seek(int64_t offset,  StreamSeekOrigin origin)
+    void FileStream::Seek(int64_t offset, StreamSeekOrigin origin)
     {
         if (_asset != nullptr)
         {

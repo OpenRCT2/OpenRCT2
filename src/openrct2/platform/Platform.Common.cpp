@@ -125,7 +125,7 @@ namespace OpenRCT2::Platform
         return 0;
     }
 
-    void SeekAsset([[maybe_unused]] void* handle, [[maybe_unused]] int64_t offset, [[maybe_unused]] int32_t origin)
+    void SeekAsset([[maybe_unused]] void* handle, [[maybe_unused]] int64_t offset, [[maybe_unused]] StreamSeekOrigin origin)
     {
     }
 
