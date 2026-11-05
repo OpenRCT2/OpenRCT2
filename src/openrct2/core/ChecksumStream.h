@@ -64,7 +64,7 @@ namespace OpenRCT2
         {
         }
 
-        void Seek(int64_t offset, int32_t origin) override
+        void Seek(int64_t offset, StreamSeekOrigin origin) override
         {
         }
 

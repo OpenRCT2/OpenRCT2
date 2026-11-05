@@ -177,9 +177,25 @@ namespace OpenRCT2::Audio
 
             rw->type = SDL_RWOPS_UNKNOWN;
             rw->hidden.unknown.data1 = stream.release();
-            rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) {
+            rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) -> Sint64 {
                 auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
-                ptr->Seek(offset, whence);
+                // Convert SDL's seek origin to the stream's strongly typed origin.
+                StreamSeekOrigin origin;
+                switch (whence)
+                {
+                    case RW_SEEK_SET:
+                        origin = StreamSeekOrigin::begin;
+                        break;
+                    case RW_SEEK_CUR:
+                        origin = StreamSeekOrigin::current;
+                        break;
+                    case RW_SEEK_END:
+                        origin = StreamSeekOrigin::end;
+                        break;
+                    default:
+                        return -1;
+                }
+                ptr->Seek(offset, origin);
                 return static_cast<Sint64>(ptr->GetPosition());
             };
             rw->read = [](SDL_RWops* ctx, void* buf, size_t size, size_t maxnum) {

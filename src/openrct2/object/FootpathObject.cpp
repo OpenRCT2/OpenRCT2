@@ -20,11 +20,11 @@ namespace OpenRCT2
 {
     void FootpathObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(10, STREAM_SEEK_CURRENT);
+        stream->Seek(10, StreamSeekOrigin::current);
         _legacyType.support_type = static_cast<RailingEntrySupportType>(stream->ReadValue<uint8_t>());
         _legacyType.flags = stream->ReadValue<uint8_t>();
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
-        stream->Seek(1, STREAM_SEEK_CURRENT);
+        stream->Seek(1, StreamSeekOrigin::current);
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
         GetImageTable().Read(context, stream);
