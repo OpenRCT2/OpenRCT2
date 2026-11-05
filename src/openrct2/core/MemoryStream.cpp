@@ -115,13 +115,13 @@ namespace OpenRCT2
         switch (origin)
         {
             default:
-            case StreamSeekOrigin::STREAM_SEEK_BEGIN:
+            case StreamSeekOrigin::begin:
                 SetPosition(offset);
                 break;
-            case StreamSeekOrigin::STREAM_SEEK_CURRENT:
+            case StreamSeekOrigin::current:
                 SetPosition(_position + offset);
                 break;
-            case StreamSeekOrigin::STREAM_SEEK_END:
+            case StreamSeekOrigin::end:
                 SetPosition(_dataSize + offset);
                 break;
         }

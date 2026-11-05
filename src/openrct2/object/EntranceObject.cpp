@@ -21,7 +21,7 @@ namespace OpenRCT2
 {
     void EntranceObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+        stream->Seek(6, StreamSeekOrigin::current);
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
         _legacyType.text_height = stream->ReadValue<uint8_t>();
 

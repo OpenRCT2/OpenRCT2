@@ -374,13 +374,13 @@ namespace OpenRCT2::Platform
         int whence;
         switch (origin)
         {
-            case StreamSeekOrigin::STREAM_SEEK_BEGIN:
+            case StreamSeekOrigin::begin:
                 whence = SEEK_SET;
                 break;
-            case StreamSeekOrigin::STREAM_SEEK_CURRENT:
+            case StreamSeekOrigin::current:
                 whence = SEEK_CUR;
                 break;
-            case StreamSeekOrigin::STREAM_SEEK_END:
+            case StreamSeekOrigin::end:
                 whence = SEEK_END;
                 break;
             default:

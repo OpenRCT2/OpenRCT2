@@ -23,7 +23,7 @@ namespace OpenRCT2
 {
     void WaterObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(14, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+        stream->Seek(14, StreamSeekOrigin::current);
         _legacyType.flags = stream->ReadValue<WaterObjectFlags>();
 
         GetStringTable().Read(context, stream, ObjectStringID::name);

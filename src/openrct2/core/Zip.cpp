@@ -276,13 +276,13 @@ private:
         {
             switch (origin)
             {
-                case StreamSeekOrigin::STREAM_SEEK_BEGIN:
+                case StreamSeekOrigin::begin:
                     SetPosition(offset);
                     break;
-                case StreamSeekOrigin::STREAM_SEEK_CURRENT:
+                case StreamSeekOrigin::current:
                     SetPosition(_pos + offset);
                     break;
-                case StreamSeekOrigin::STREAM_SEEK_END:
+                case StreamSeekOrigin::end:
                     SetPosition(_len - offset);
                     break;
             }

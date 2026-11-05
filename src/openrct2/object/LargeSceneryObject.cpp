@@ -52,15 +52,15 @@ namespace OpenRCT2
 
     void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+        stream->Seek(6, StreamSeekOrigin::current);
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
         _legacyType.flags.holder = stream->ReadValue<uint8_t>();
         _legacyType.price = stream->ReadValue<int16_t>() * 10;
         _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
-        stream->Seek(5, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+        stream->Seek(5, StreamSeekOrigin::current);
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
-        stream->Seek(4, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+        stream->Seek(4, StreamSeekOrigin::current);
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
 
@@ -182,7 +182,7 @@ namespace OpenRCT2
 
         while (stream->ReadValue<uint16_t>() != 0xFFFF)
         {
-            stream->Seek(-2, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+            stream->Seek(-2, StreamSeekOrigin::current);
             tiles.push_back(ReadLegacyTile());
         }
         uint8_t index = 0;

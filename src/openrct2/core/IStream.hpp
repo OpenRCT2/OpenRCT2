@@ -27,9 +27,9 @@ namespace OpenRCT2
 {
     enum class StreamSeekOrigin : uint8_t
     {
-        STREAM_SEEK_BEGIN,
-        STREAM_SEEK_CURRENT,
-        STREAM_SEEK_END
+        begin,
+        current,
+        end
     };
 
     /**

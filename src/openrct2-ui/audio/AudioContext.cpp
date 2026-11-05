@@ -184,13 +184,13 @@ namespace OpenRCT2::Audio
                 switch (whence)
                 {
                     case RW_SEEK_SET:
-                        origin = StreamSeekOrigin::STREAM_SEEK_BEGIN;
+                        origin = StreamSeekOrigin::begin;
                         break;
                     case RW_SEEK_CUR:
-                        origin = StreamSeekOrigin::STREAM_SEEK_CURRENT;
+                        origin = StreamSeekOrigin::current;
                         break;
                     case RW_SEEK_END:
-                        origin = StreamSeekOrigin::STREAM_SEEK_END;
+                        origin = StreamSeekOrigin::end;
                         break;
                     default:
                         return -1;

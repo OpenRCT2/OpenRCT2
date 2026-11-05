@@ -21,19 +21,19 @@ namespace OpenRCT2
 {
     void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+        stream->Seek(6, StreamSeekOrigin::current);
         _legacyType.flags = stream->ReadValue<SmallSceneryFlags>();
         _legacyType.height = stream->ReadValue<uint8_t>();
         _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
         _legacyType.price = stream->ReadValue<int16_t>() * 10;
         _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
-        stream->Seek(4, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+        stream->Seek(4, StreamSeekOrigin::current);
         _legacyType.animation_delay = stream->ReadValue<uint16_t>();
         _legacyType.animation_mask = stream->ReadValue<uint16_t>();
         _legacyType.num_frames = stream->ReadValue<uint16_t>();
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
         // Skip past the reserved space for the scenery_tab_id and an unused byte - the string table starts at offset 0x1C.
-        stream->Seek(2, StreamSeekOrigin::STREAM_SEEK_CURRENT);
+        stream->Seek(2, StreamSeekOrigin::current);
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
 
