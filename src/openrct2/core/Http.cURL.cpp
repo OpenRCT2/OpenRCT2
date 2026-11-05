@@ -13,9 +13,11 @@
 
     #include "../Version.h"
 
+    #include <chrono>
     #include <cstring>
     #include <memory>
     #include <stdexcept>
+    #include <string>
 
     #if defined(_WIN32) && !defined(WIN32_LEAN_AND_MEAN)
         // cURL includes windows.h, but we don't need all of it.
@@ -80,6 +82,51 @@ namespace OpenRCT2::Http
         return 0;
     }
 
+    struct TransferActivity
+    {
+        std::chrono::steady_clock::time_point lastProgress;
+        std::chrono::seconds timeout;
+        curl_off_t bytesTransferred{};
+        bool stalled{};
+    };
+
+    /**
+     * Aborts the transfer when no bytes have been sent or received for the request's timeout.
+     * Unlike a total transfer time limit this never cuts off a slow but progressing download,
+     * and unlike cURL's low speed options it does not average over a window of several seconds.
+     */
+    static int AbortWhenStalled(void* userdata, curl_off_t, curl_off_t dlnow, curl_off_t, curl_off_t ulnow)
+    {
+        auto* activity = static_cast<TransferActivity*>(userdata);
+        auto now = std::chrono::steady_clock::now();
+        auto bytesTransferred = dlnow + ulnow;
+        if (bytesTransferred != activity->bytesTransferred)
+        {
+            activity->bytesTransferred = bytesTransferred;
+            activity->lastProgress = now;
+        }
+        else if (now - activity->lastProgress >= activity->timeout)
+        {
+            activity->stalled = true;
+            return 1;
+        }
+        return 0;
+    }
+
+    #if LIBCURL_VERSION_NUM >= 0x075000
+    /**
+     * Restarts the stall clock once the connection is ready and the request is about to be sent,
+     * so that resolving, connecting and the TLS handshake do not eat into the time the server gets
+     * to answer. libcurl before 7.80.0 has no such hook and charges those phases to that budget.
+     */
+    static int RestartStallClock(void* userdata, char*, char*, int, int)
+    {
+        auto* activity = static_cast<TransferActivity*>(userdata);
+        activity->lastProgress = std::chrono::steady_clock::now();
+        return CURL_PREREQFUNC_OK;
+    }
+    #endif
+
     Response Do(const Request& req)
     {
         try
@@ -122,6 +169,19 @@ namespace OpenRCT2::Http
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
             curl_easy_setopt(curl, CURLOPT_USERAGENT, kOpenRCT2UserAgent);
 
+            auto timeoutSeconds = static_cast<long>(std::chrono::duration_cast<std::chrono::seconds>(req.timeout).count());
+            TransferActivity activity{ std::chrono::steady_clock::now(), req.timeout };
+            curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, timeoutSeconds);
+            // Timeouts must not be enforced with signals in a multithreaded process.
+            curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
+            curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+            curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION, AbortWhenStalled);
+            curl_easy_setopt(curl, CURLOPT_XFERINFODATA, &activity);
+    #if LIBCURL_VERSION_NUM >= 0x075000
+            curl_easy_setopt(curl, CURLOPT_PREREQFUNCTION, RestartStallClock);
+            curl_easy_setopt(curl, CURLOPT_PREREQDATA, &activity);
+    #endif
+
             curl_slist* chunk = nullptr;
             std::shared_ptr<void> __(nullptr, [chunk](...) { curl_slist_free_all(chunk); });
             for (auto header : req.header)
@@ -139,6 +199,11 @@ namespace OpenRCT2::Http
             }
 
             CURLcode curl_code = curl_easy_perform(curl);
+            if (activity.stalled)
+            {
+                throw std::runtime_error(
+                    "Failed to perform request. No data was transferred for " + std::to_string(timeoutSeconds) + " seconds.");
+            }
             if (curl_code != CURLE_OK)
             {
                 using namespace std::literals;

@@ -77,6 +77,7 @@
   <!-- Files -->
   <ItemGroup>
     <ClInclude Include="AssertHelpers.hpp" />
+    <ClInclude Include="helpers\LoopbackServers.hpp" />
     <ClInclude Include="helpers\StringHelpers.hpp" />
     <ClInclude Include="TestData.h" />
     <ClInclude Include="tests_pch.h" />
@@ -89,6 +90,8 @@
     <ClCompile Include="Endianness.cpp" />
     <ClCompile Include="EnumMapTest.cpp" />
     <ClCompile Include="FormattingTests.cpp" />
+    <ClCompile Include="HttpTests.cpp" />
+    <ClCompile Include="helpers\LoopbackServers.cpp" />
     <ClCompile Include="LanguagePackTest.cpp" />
     <ClCompile Include="ImageImporterTests.cpp" />
     <ClCompile Include="IniReaderTest.cpp" />

@@ -15,6 +15,7 @@
     #include "../core/Console.hpp"
     #include "String.hpp"
 
+    #include <chrono>
     #include <cstdio>
     #include <stdexcept>
 
@@ -175,6 +176,12 @@ namespace OpenRCT2::Http
                 userAgent.c_str(), WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, WINHTTP_NO_PROXY_NAME, WINHTTP_NO_PROXY_BYPASS, 0);
             if (hSession == nullptr)
                 ThrowWin32Exception("WinHttpOpen");
+
+            auto timeoutMilliseconds = static_cast<int>(
+                std::chrono::duration_cast<std::chrono::milliseconds>(req.timeout).count());
+            if (!WinHttpSetTimeouts(
+                    hSession, timeoutMilliseconds, timeoutMilliseconds, timeoutMilliseconds, timeoutMilliseconds))
+                ThrowWin32Exception("WinHttpSetTimeouts");
 
             auto wHostName = std::wstring(url.lpszHostName, url.dwHostNameLength);
             hConnect = WinHttpConnect(hSession, wHostName.c_str(), url.nPort, 0);

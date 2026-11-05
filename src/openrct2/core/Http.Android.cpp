@@ -16,6 +16,7 @@
 
     #include <SDL_system.h>
     #include <android/log.h>
+    #include <chrono>
     #include <jni.h>
 
     #define kOpenRCT2UserAgent "OpenRCT2/" kOpenRCT2Version
@@ -73,6 +74,9 @@ namespace OpenRCT2::Http
         {
             env->ReleaseStringUTFChars(url, env->GetStringUTFChars(url, nullptr));
         }
+        auto timeoutMilliseconds = static_cast<jint>(
+            std::chrono::duration_cast<std::chrono::milliseconds>(req.timeout).count());
+        env->SetIntField(jniRequest, env->GetFieldID(req_class, "timeout", "I"), timeoutMilliseconds);
         std::string method = "GET";
         switch (req.method)
         {
