@@ -503,7 +503,9 @@ namespace OpenRCT2::Ui::Windows
             case WIDX_SCENERY_AND_THEMING:
             {
                 auto activeResearchTypes = gameState.researchPriorities;
-                activeResearchTypes ^= 1uLL << (widgetIndex - (WIDX_TRANSPORT_RIDES + widgetOffset));
+                const ResearchCategory category = static_cast<ResearchCategory>(
+                    widgetIndex - (WIDX_TRANSPORT_RIDES + widgetOffset));
+                activeResearchTypes.flip(category);
                 auto gameAction = GameActions::ParkSetResearchFundingAction(
                     activeResearchTypes, gameState.researchFundingLevel);
                 GameActions::Execute(&gameAction, getGameState());
@@ -545,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
         w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].text = kResearchFundingLevelNames[currentResearchLevel];
 
         // Checkboxes
-        uint8_t activeResearchTypes = gameState.researchPriorities;
+        const ResearchPriorities activeResearchTypes = gameState.researchPriorities;
         int32_t uncompletedResearchTypes = gameState.researchUncompletedCategories;
         for (int32_t i = 0; i < 7; i++)
         {
@@ -553,7 +555,7 @@ namespace OpenRCT2::Ui::Windows
             const WidgetIndex widgetIdx = static_cast<WidgetIndex>(i + WIDX_TRANSPORT_RIDES + widgetOffset);
             const bool uncompleted = (uncompletedResearchTypes & mask) != 0;
             widgetSetDisabled(*w, widgetIdx, !uncompleted);
-            widgetSetPressed(*w, widgetIdx, uncompleted && (activeResearchTypes & mask) != 0);
+            widgetSetPressed(*w, widgetIdx, uncompleted && activeResearchTypes.has(static_cast<ResearchCategory>(i)));
         }
     }
 

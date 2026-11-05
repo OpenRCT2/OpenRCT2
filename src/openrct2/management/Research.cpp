@@ -155,7 +155,7 @@ static void ResearchNextDesign()
     // Try to find a research item of a matching type, if none found, use any first item
     auto it = std::find_if(
         gameState.researchItemsUninvented.begin(), gameState.researchItemsUninvented.end(),
-        [&gameState](const auto& e) { return (gameState.researchPriorities & EnumToFlag(e.category)) != 0; });
+        [&gameState](const auto& e) { return gameState.researchPriorities.has(e.category); });
     if (it == gameState.researchItemsUninvented.end())
     {
         it = gameState.researchItemsUninvented.begin();
