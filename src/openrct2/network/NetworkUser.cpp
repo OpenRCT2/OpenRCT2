@@ -111,6 +111,12 @@ namespace OpenRCT2::Network
         {
         }
 
+        // load() ignores anything but a list of users too, and it can't be updated in place.
+        if (!jsonUsers.is_array())
+        {
+            jsonUsers = json_t::array();
+        }
+
         // Update existing users
         std::unordered_set<std::string> savedHashes;
         for (auto it = jsonUsers.begin(); it != jsonUsers.end();)
@@ -118,6 +124,7 @@ namespace OpenRCT2::Network
             json_t jsonUser = *it;
             if (!jsonUser.is_object())
             {
+                it++;
                 continue;
             }
             std::string hashString = Json::GetString(jsonUser["hash"]);
