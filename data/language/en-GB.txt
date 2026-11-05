@@ -3833,6 +3833,8 @@ STR_7039    :Ride type
 STR_7040    :Footpath additions
 STR_7041    :Park info panel
 STR_7042    :Date info panel
+STR_7043    :Use macOS mouse controls
+STR_7044    :Use two-finger scrolling to pan and pinch to zoom
 STR_7043    :Can’t change land height here…
 STR_7044    :News ticker
 STR_7045    :RCT1 style status bar
