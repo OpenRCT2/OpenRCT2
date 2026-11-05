@@ -1,4 +1,8 @@
-0.5.7 (in development)
+0.5.8 (in development)
+------------------------------------------------------------------------
+- Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
+
+0.5.7 (2026-11-01)
 ------------------------------------------------------------------------
 - Fix: [#16807] Error messages when trying to load regular JSON files as custom objects.
 - Fix: [#18954] When researching Classic Mini Roller Coaster vehicles in Bumbly Beach, they all appear as new rides. 
