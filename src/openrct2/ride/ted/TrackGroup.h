@@ -116,6 +116,10 @@ namespace OpenRCT2
         diagSlopeSteepUp,
         diagSlopeSteepDown,
 
+        boosterSteep,
+        boosterVertical,
+        boosterGentle,
+
         count,
     };
 } // namespace OpenRCT2

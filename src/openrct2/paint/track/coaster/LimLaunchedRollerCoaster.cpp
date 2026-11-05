@@ -5661,38 +5661,30 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
     }
 }
 
+// The grey fins on the sides of the trains are meant to "slot in" between the LIMs, so this layering
+// is needed to ensure that the fins disappear while inside of the LIMs instead of appearing above them
+static void LimLaunchedRCTrackBoosterMotors(
+    PaintSession& session, uint8_t direction, int32_t height, ImageIndex farBase, ImageIndex nearBase, int32_t boxHeight)
+{
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(farBase + direction), { 0, 0, height },
+        { { 0, 2, height }, { 32, 1, boxHeight } });
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(nearBase + direction), { 0, 0, height },
+        { { 0, 29, height }, { 32, 1, boxHeight } });
+}
+
+// Boosters are drawn as the regular track piece of the same slope with the motors added on top
+template<TrackElemType baseTrackType, ImageIndex farBase, ImageIndex nearBase, int32_t boxHeight>
 static void LimLaunchedRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(15012), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(15014), { 0, 0, height },
-                { { 0, 27, height }, { 32, 1, 26 } });
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(15013), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(15015), { 0, 0, height },
-                { { 0, 27, height }, { 32, 1, 26 } });
-            break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height, session.SupportColours);
-    }
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::flat);
-    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
+    GetTrackPaintFunctionLimLaunchedRC(baseTrackType)(
+        session, ride, trackSequence, direction, height, trackElement, supportType);
+
+    if (trackSequence == 0)
+        LimLaunchedRCTrackBoosterMotors(session, direction, height, farBase, nearBase, boxHeight);
 }
 
 TrackPaintFunction GetTrackPaintFunctionLimLaunchedRC(TrackElemType trackType)
@@ -5860,6 +5852,24 @@ TrackPaintFunction GetTrackPaintFunctionLimLaunchedRC(TrackElemType trackType)
             return LimLaunchedRCTrack90DegUp;
         case TrackElemType::down90:
             return LimLaunchedRCTrack90DegDown;
+        case TrackElemType::booster:
+            // Original sprite drawn on the bottom, LIM sprite drawn below the LIM train's fins,
+            // LIM sprite drawn above the LIM train's fins, box height
+            return LimLaunchedRCTrackBooster<
+                TrackElemType::flat, SPR_TRACKS_LIM_LAUNCHED_TRACK_FLAT_BOOSTER,
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_FLAT_BOOSTER_NEAR, 16>;
+        case TrackElemType::up25Booster:
+            return LimLaunchedRCTrackBooster<
+                TrackElemType::up25, SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_BOOSTER,
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_GENTLE_BOOSTER_NEAR, 32>;
+        case TrackElemType::up60Booster:
+            return LimLaunchedRCTrackBooster<
+                TrackElemType::up60, SPR_TRACKS_LIM_LAUNCHED_TRACK_STEEP_BOOSTER,
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_STEEP_BOOSTER_NEAR, 104>;
+        case TrackElemType::up90Booster:
+            return LimLaunchedRCTrackBooster<
+                TrackElemType::up90, SPR_TRACKS_LIM_LAUNCHED_TRACK_VERTICAL_BOOSTER,
+                SPR_TRACKS_LIM_LAUNCHED_TRACK_VERTICAL_BOOSTER_NEAR, 48>;
         case TrackElemType::up60ToUp90:
             return LimLaunchedRCTrack60DegUpTo90DegUp;
         case TrackElemType::down90ToDown60:
@@ -5966,8 +5976,6 @@ TrackPaintFunction GetTrackPaintFunctionLimLaunchedRC(TrackElemType trackType)
             return LimLaunchedRCTrackLeftLargeZeroGRollDown;
         case TrackElemType::rightLargeZeroGRollDown:
             return LimLaunchedRCTrackRightLargeZeroGRollDown;
-        case TrackElemType::booster:
-            return LimLaunchedRCTrackBooster;
         case TrackElemType::leftQuarterHelixLargeUp:
             return OpenRCT2::trackPaintLeftQuarterHelixLargeUp<
                 SPR_TRACKS_LIM_LAUNCHED_TRACK_QUARTER_HELIX_LEFT, OpenRCT2::kLeftQuarterHelixLargeUpSpriteMap, false,
