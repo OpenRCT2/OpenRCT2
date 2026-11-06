@@ -608,7 +608,7 @@ void GameAutosave()
     auto currentDate = Platform::GetDateLocal();
     auto currentTime = Platform::GetTimeLocal();
 
-    utf8 timeName[44];
+    utf8 timeName[34];
     snprintf(
         timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s", currentDate.year, currentDate.month,
         currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
