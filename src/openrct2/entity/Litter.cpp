@@ -6,6 +6,7 @@
 #include "../localisation/StringIds.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
+#include "../world/TileElementsView.h"
 #include "../world/tile_element/PathElement.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
@@ -25,10 +26,7 @@ namespace OpenRCT2
         if (!MapIsLocationOwned(mapPos))
             return false;
 
-        TileElement* tileElement = MapGetFirstElementAt(mapPos);
-        if (tileElement == nullptr)
-            return false;
-        do
+        for (auto* tileElement : TileElementsView(mapPos))
         {
             if (tileElement->getType() != TileElementType::path)
                 continue;
@@ -39,7 +37,8 @@ namespace OpenRCT2
                 continue;
 
             return !tileElementIsUnderground(tileElement);
-        } while (!(tileElement++)->isLastForTile());
+        }
+
         return false;
     }
 

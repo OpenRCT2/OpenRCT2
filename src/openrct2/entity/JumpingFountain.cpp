@@ -15,6 +15,7 @@
 #include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
+#include "../world/TileElementsView.h"
 #include "../world/tile_element/PathElement.h"
 #include "EntityRegistry.h"
 
@@ -256,26 +257,21 @@ namespace OpenRCT2
             ? PathAdditionFlag::jumpingFountainSnow
             : PathAdditionFlag::jumpingFountainWater;
 
-        TileElement* tileElement = MapGetFirstElementAt(newLoc);
-        if (tileElement == nullptr)
-            return false;
-        do
+        for (const auto* pathElement : TileElementsView<PathElement>(newLoc))
         {
-            if (tileElement->getType() != TileElementType::path)
+            if (pathElement->getBaseZ() != newLoc.z)
                 continue;
-            if (tileElement->getBaseZ() != newLoc.z)
+            if (pathElement->additionIsGhost())
                 continue;
-            if (tileElement->asPath()->additionIsGhost())
-                continue;
-            if (!tileElement->asPath()->hasAddition())
+            if (pathElement->asPath()->hasAddition())
                 continue;
 
-            auto* pathAdditionEntry = tileElement->asPath()->getAdditionEntry();
+            auto* pathAdditionEntry = pathElement->getAdditionEntry();
             if (pathAdditionEntry != nullptr && pathAdditionEntry->flags.has(jumpingFountainFlag))
             {
                 return true;
             }
-        } while (!(tileElement++)->isLastForTile());
+        }
 
         return false;
     }
