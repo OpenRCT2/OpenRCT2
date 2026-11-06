@@ -277,12 +277,26 @@ namespace OpenRCT2::TrackMetadata
 
     using SequenceTunnels = std::array<SequenceTunnel, kSequenceTunnelMaxPerSequence>;
 
-    template<Direction (&directionFunction)(Direction)>
-    constexpr SequenceTunnels sequenceTunnelsModify(SequenceTunnels sequenceTunnels)
+    constexpr SequenceTunnels sequenceTunnelsRotate(SequenceTunnels sequenceTunnels, const Direction rotation)
     {
         for (auto& tunnel : sequenceTunnels)
         {
-            tunnel.direction = directionFunction(tunnel.direction);
+            if (DirectionValid(tunnel.direction))
+            {
+                tunnel.direction = DirectionRotate(tunnel.direction, rotation);
+            }
+        }
+        return sequenceTunnels;
+    }
+
+    constexpr SequenceTunnels sequenceTunnelsFlipXAxis(SequenceTunnels sequenceTunnels)
+    {
+        for (auto& tunnel : sequenceTunnels)
+        {
+            if (DirectionValid(tunnel.direction))
+            {
+                tunnel.direction = DirectionFlipXAxis(tunnel.direction);
+            }
         }
         return sequenceTunnels;
     }
