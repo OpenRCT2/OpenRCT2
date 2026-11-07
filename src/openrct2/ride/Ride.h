@@ -811,6 +811,7 @@ namespace OpenRCT2
     std::string_view GetRideEntryName(ObjectEntryIndex index);
 
     int32_t RideGetCount();
+    bool RideCountIsBelow(int32_t n);
     void RideInitAll();
     void ResetAllRideBuildDates();
     void RideUpdateFavouritedStat();
