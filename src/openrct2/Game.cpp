@@ -53,6 +53,7 @@
 #include "world/Map.h"
 #include "world/tile_element/SurfaceElement.h"
 
+#include <format>
 #include <memory>
 
 using namespace OpenRCT2;
