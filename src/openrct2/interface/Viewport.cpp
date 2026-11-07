@@ -966,7 +966,13 @@ namespace OpenRCT2
             }
             else
             {
+                // Single-threaded: paint and release the column right away, so the next column
+                // reuses the same session (the free list hands back the last one released) while
+                // its paint structs are still in the CPU cache.
                 ViewportFillColumn(*session);
+                ViewportPaintColumn(*session);
+                PaintSessionFree(session);
+                _paintColumns.pop_back();
             }
         }
 
