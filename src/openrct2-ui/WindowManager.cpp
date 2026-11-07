@@ -928,6 +928,8 @@ public:
             Audio::Play(Audio::SoundId::windowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
+        auto destIndex = static_cast<size_t>(std::distance(gWindowList.begin(), itDestPos));
+
         wp->windowPos = pos;
         wp->width = windowSize.width;
         wp->height = windowSize.height;
@@ -942,7 +944,10 @@ public:
         wp->invalidate();
         wp->onOpen();
 
-        auto itNew = gWindowList.insert(itDestPos, std::move(wp));
+        // onOpen() can open or close other windows, which may reallocate gWindowList and invalidate
+        // itDestPos: insert by index instead.
+        destIndex = std::min(destIndex, gWindowList.size());
+        auto itNew = gWindowList.insert(gWindowList.begin() + destIndex, std::move(wp));
         return itNew->get();
     }
 
