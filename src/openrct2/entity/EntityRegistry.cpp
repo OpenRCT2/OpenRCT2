@@ -190,6 +190,7 @@ namespace OpenRCT2
         {
             vec.clear();
         }
+        _entitySpatialDirty.clear();
         for (EntityId::UnderlyingType i = 0; i < kMaxEntities; i++)
         {
             auto* entity = getEntity(EntityId::FromUnderlying(i));
@@ -404,19 +405,32 @@ namespace OpenRCT2
         }
     }
 
+    void EntityRegistry::markEntitySpatialIndexDirty(EntityBase& entity)
+    {
+        entity.spatialIndex |= kSpatialIndexDirtyMask;
+        _entitySpatialDirty.push_back(entity.id);
+    }
+
+    // Only the entities that changed tile since the last update: visiting every entity each tick
+    // reads all of them from memory, which on a large park costs more than the update itself.
     void EntityRegistry::updateEntitiesSpatialIndex()
     {
-        for (auto& entityList : _entityLists)
+        // Take the list: updating can rebuild the whole index (resetEntitySpatialIndices), which
+        // clears it.
+        std::vector<EntityId> dirty;
+        dirty.swap(_entitySpatialDirty);
+        for (auto entityId : dirty)
         {
-            for (auto& entityId : entityList)
+            auto* entity = tryGetEntity(entityId);
+            if (entity != nullptr && entity->type != EntityType::null)
             {
-                auto* entity = tryGetEntity(entityId);
-                if (entity != nullptr && entity->type != EntityType::null)
-                {
-                    updateEntitySpatialIndex(*entity);
-                }
+                updateEntitySpatialIndex(*entity);
             }
         }
+        // Keep the allocation for the next tick
+        dirty.clear();
+        if (_entitySpatialDirty.empty())
+            _entitySpatialDirty.swap(dirty);
     }
 
     /**
@@ -530,7 +544,7 @@ void EntityBase::setLocation(const CoordsXYZ& newLocation)
         return;
     }
 
-    spatialIndex |= kSpatialIndexDirtyMask;
+    getGameState().entities.markEntitySpatialIndexDirty(*this);
 }
 
 static void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
