@@ -240,7 +240,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        uint8_t clearanceHeight = targetHeight / 8;
+        uint16_t clearanceHeight = targetHeight / 8;
         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
         {
             if (wallEntry->flags.has(WallSceneryFlag::cannotBuildOnSlope))
@@ -250,6 +250,10 @@ namespace OpenRCT2::GameActions
             clearanceHeight += 2;
         }
         clearanceHeight += wallEntry->height;
+        if (clearanceHeight > std::numeric_limits<uint8_t>::max())
+        {
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_HIGH);
+        }
 
         bool wallAcrossTrack = false;
         if (!GetFlags().has(CommandFlag::trackDesign) && !gameState.cheats.disableClearanceChecks)
