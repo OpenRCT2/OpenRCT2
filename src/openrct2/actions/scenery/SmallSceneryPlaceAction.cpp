@@ -167,6 +167,11 @@ namespace OpenRCT2::GameActions
             res.position.z = targetHeight;
         }
 
+        if (targetHeight + ceil2(sceneryEntry->height, 8) > std::numeric_limits<decltype(TileElement::baseHeight)>::max() * 8)
+        {
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_HIGH);
+        }
+
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
             && !MapIsLocationOwned({ _loc.x, _loc.y, targetHeight }))
         {

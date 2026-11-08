@@ -16,6 +16,8 @@
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
 - Change: [#27418] Bumped the minimum macOS version to 13.3 (Ventura) and AppImage to Ubuntu Noble (24.04).
 - Fix: [#6142] `openrct2 <track file>` does not install the track design.
+- Fix: [#20015] Scenery built with clearance above max supported height behave bugged.
+- Fix: [#21418] Cannot place scenery in top 30 or so units, unless atop surface.
 - Fix: [#23866] The `object_count` console command stops counting at the first empty object slot.
 - Fix: [#24082] [Plugin] `objectManager.getInstalledObject()` returns null for DAT objects.
 - Fix: [#25395] `openrct2 <command> -h` fails instead of showing help for the command, and `openrct2 -ha` leaves out the command name.
