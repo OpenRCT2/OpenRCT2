@@ -17,6 +17,7 @@
 #include "park/ParkFile.h"
 #include "rct1/RCT1File.h"
 #include "rct2/RCT2.h"
+#include "ride/TrackDesign.h"
 #include "sawyer_coding/SawyerChunkReader.h"
 #include "sawyer_coding/SawyerCoding.h"
 
@@ -185,8 +186,8 @@ static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result)
             size_t td6len = DecodeTD6(data.get(), td6data.get(), dataLength);
             if (td6data != nullptr && td6len >= 8)
             {
-                uint8_t version = (td6data.get()[7] >> 2) & 3;
-                if (version <= 2)
+                uint8_t version = (td6data.get()[7] >> 2);
+                if (version <= EnumValue(RCT12::TD46Version::td7))
                 {
                     result->Type = FileType::trackDesign;
                     result->Version = version;
