@@ -1,7 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
-- Fix: [#20015] Scenery built with clearance above max supported height behave bugged.
-- Fix: [#21418] Cannot place scenery in top 30 or so units, unless atop surface.
+- Fix: [#20015] When placing scenery in very high places, the height may overflow, causing buggy behaviour.
+- Fix: [#21418] Cannot place scenery in top 30 or so units, unless the terrain is raised.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
 
 0.5.7 (2026-11-01)
