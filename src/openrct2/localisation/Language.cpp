@@ -36,6 +36,7 @@ namespace OpenRCT2
         { "es-ES", "Spanish",               u8"Español",             LANGUAGE_UNDEFINED, kFamilyOpenRCT2Sprite,                false }, // LANGUAGE_SPANISH
         { "fr-FR", "French",                u8"Français",            LANGUAGE_UNDEFINED, kFamilyOpenRCT2Sprite,                false }, // LANGUAGE_FRENCH
         { "fr-CA", "French (CA)",           u8"Français (CA)",       LANGUAGE_FRENCH,    kFamilyOpenRCT2Sprite,                false }, // LANGUAGE_FRENCH_CA
+        { "ga-IE", "Irish",                 "Gaeilge",               LANGUAGE_UNDEFINED, kFamilyOpenRCT2Sprite,                false }, // LANGUAGE_IRISH
         { "gl-ES", "Galician",              "Galego",                LANGUAGE_UNDEFINED, kFamilyOpenRCT2Sprite,                false }, // LANGUAGE_GALICIAN
         { "it-IT", "Italian",               "Italiano",              LANGUAGE_UNDEFINED, kFamilyOpenRCT2Sprite,                false }, // LANGUAGE_ITALIAN
         { "ja-JP", "Japanese",              "Japanese",              LANGUAGE_UNDEFINED, FAMILY(&TTFFamilyJapanese),           false }, // LANGUAGE_JAPANESE
