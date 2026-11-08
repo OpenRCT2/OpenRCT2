@@ -145,6 +145,15 @@ static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
         }
         else if (fileTypeVersion.fileType == RCT1::RCT1FileType::sc4)
         {
+            // Assume that files under 50 KiB are either corrupted or track designs (which use the same checksum).
+            // Even Micro Park is about 5 times bigger, while the biggest TD6 vanilla will write is 24,735 bytes after
+            // un-RLE’ing (though TD7 can go higher).
+            if (dataLength <= 51200)
+            {
+                stream->SetPosition(originalPosition);
+                return false;
+            }
+
             result->Type = FileType::scenario;
             result->Version = EnumValue(fileTypeVersion.version);
             success = true;
