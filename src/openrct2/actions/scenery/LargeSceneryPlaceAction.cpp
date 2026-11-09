@@ -9,6 +9,8 @@
 
 #include "LargeSceneryPlaceAction.h"
 
+#include "../../rct12/Limits.h"
+
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
@@ -136,7 +138,7 @@ namespace OpenRCT2::GameActions
             int32_t zLow = tile.offset.z + maxHeight;
             int32_t zHigh = tile.zClearance + zLow;
 
-            if (zHigh > std::numeric_limits<uint8_t>::max() * kCoordsZStep)
+            if (zHigh > RCT12::Limits::kMaxElementHeight * kCoordsZStep)
             {
                 return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_HIGH);
             }

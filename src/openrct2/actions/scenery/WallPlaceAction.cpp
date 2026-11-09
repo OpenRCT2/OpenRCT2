@@ -18,6 +18,7 @@
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/SmallSceneryEntry.h"
 #include "../../object/WallSceneryEntry.h"
+#include "../../rct12/Limits.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackData.h"
 #include "../../ride/TrackDesign.h"
@@ -250,7 +251,7 @@ namespace OpenRCT2::GameActions
             clearanceHeight += 2;
         }
         clearanceHeight += wallEntry->height;
-        if (clearanceHeight > std::numeric_limits<uint8_t>::max())
+        if (clearanceHeight > RCT12::Limits::kMaxElementHeight)
         {
             return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_HIGH);
         }
