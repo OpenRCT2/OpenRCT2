@@ -1,6 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
+- Fix: [#27392] Crash occurs at `bannerElement` when using `BannerSetStyleAction`.
 
 0.5.7 (2026-11-01)
 ------------------------------------------------------------------------
