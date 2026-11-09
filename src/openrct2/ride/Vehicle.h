@@ -294,6 +294,7 @@ namespace OpenRCT2
             TrackTypeAndDirection |= trackDirection & kVehicleTrackDirectionMask;
         }
         void ApplyMass(int16_t appliedMass);
+        bool isAnyCarOnVerticalHoldingBrake() const;
         void serialise(DataSerialiser& stream);
         bool IsCableLift() const;
 
