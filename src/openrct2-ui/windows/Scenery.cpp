@@ -56,6 +56,7 @@
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
+#include <openrct2/rct12/Limits.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/ConstructionClearance.h>
@@ -2470,7 +2471,7 @@ namespace OpenRCT2::Ui::Windows
             Direction* outRotation)
         {
             auto screenPos = sourceScreenPos;
-            uint16_t maxPossibleHeight = std::numeric_limits<decltype(TileElement::baseHeight)>::max() * kCoordsZStep;
+            uint16_t maxPossibleHeight = RCT12::Limits::kMaxElementHeight * kCoordsZStep;
             bool can_raise_item = false;
 
             const auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<SmallSceneryEntry>(sceneryIndex);
@@ -2685,7 +2686,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outEdges)
         {
             auto screenPos = sourceScreenPos;
-            uint16_t maxPossibleHeight = std::numeric_limits<decltype(TileElement::baseHeight)>::max() * kCoordsZStep;
+            uint16_t maxPossibleHeight = RCT12::Limits::kMaxElementHeight * kCoordsZStep;
 
             auto* wallEntry = ObjectEntryManager::GetObjectEntry<WallSceneryEntry>(sceneryIndex);
             if (wallEntry != nullptr)
@@ -2768,7 +2769,7 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, Direction* outDirection)
         {
             auto screenPos = sourceScreenPos;
-            uint16_t maxPossibleHeight = std::numeric_limits<decltype(TileElement::baseHeight)>::max() * kCoordsZStep;
+            uint16_t maxPossibleHeight = RCT12::Limits::kMaxElementHeight * kCoordsZStep;
 
             auto* sceneryEntry = ObjectEntryManager::GetObjectEntry<LargeSceneryEntry>(sceneryIndex);
             if (sceneryEntry)
