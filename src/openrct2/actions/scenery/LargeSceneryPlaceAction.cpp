@@ -9,8 +9,6 @@
 
 #include "LargeSceneryPlaceAction.h"
 
-#include "../../rct12/Limits.h"
-
 #include "../../Diagnostic.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
@@ -20,6 +18,7 @@
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectLimits.h"
+#include "../../rct12/Limits.h"
 #include "../../ride/RideConstruction.h"
 #include "../../world/Banner.h"
 #include "../../world/ConstructionClearance.h"
