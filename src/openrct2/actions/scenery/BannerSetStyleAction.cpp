@@ -81,8 +81,9 @@ namespace OpenRCT2::GameActions
         if (bannerElement == nullptr)
         {
             LOG_ERROR("Tile element was not a banner.");
-            return Result(Status::unknown, errorTitle, _type != BannerSetStyleType::noEntry ? STR_ERR_BANNER_ELEMENT_NOT_FOUND
-                : kStringIdNone);
+            return Result(
+                Status::unknown, errorTitle,
+                _type != BannerSetStyleType::noEntry ? STR_ERR_BANNER_ELEMENT_NOT_FOUND : kStringIdNone);
         }
 
         CoordsXYZ loc = { banner->position.toCoordsXY(), bannerElement->getBaseZ() };
