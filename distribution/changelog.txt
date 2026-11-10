@@ -1,5 +1,6 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
+- Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
 
 0.5.7 (2026-11-01)
