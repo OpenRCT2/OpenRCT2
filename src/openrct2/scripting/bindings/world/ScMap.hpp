@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue getPathNavigator(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
-        static JSValue GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite);
+        static JSValue GetEntityAsJSValue(JSContext* ctx, const EntityBase* sprite);
 
     public:
         JSValue New(JSContext* ctx);
