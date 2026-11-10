@@ -274,6 +274,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * James Cranston (jcranston)
 * Yoshi Tacke (YoshKoz)
 * (GhostCoder6969)
+* Nazem Aldroubi (nazem-droubi)
 
 ## Toolchain
 * (Balletie) - macOS
