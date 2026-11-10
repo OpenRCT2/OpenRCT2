@@ -18,6 +18,7 @@
 #include "../../object/LargeSceneryEntry.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/ObjectLimits.h"
+#include "../../rct12/Limits.h"
 #include "../../ride/RideConstruction.h"
 #include "../../world/Banner.h"
 #include "../../world/ConstructionClearance.h"
@@ -135,6 +136,11 @@ namespace OpenRCT2::GameActions
 
             int32_t zLow = tile.offset.z + maxHeight;
             int32_t zHigh = tile.zClearance + zLow;
+
+            if (zHigh > RCT12::Limits::kMaxElementHeight * kCoordsZStep)
+            {
+                return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_HIGH);
+            }
 
             QuarterTile quarterTile = QuarterTile{ tile.corners, 0 }.Rotate(_loc.direction);
             const auto isTree = sceneryEntry->flags.has(LargeSceneryFlag::isTree);
