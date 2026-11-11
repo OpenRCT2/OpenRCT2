@@ -3,7 +3,7 @@
 - Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
-- Fix: [#27409] The 'not enough cash' message and track design costs show the wrong amount on big-endian systems.
+- Fix: [#27409] The ‘not enough cash’ message and track design costs show the wrong amount on big-endian systems.
 
 0.5.7 (2026-11-01)
 ------------------------------------------------------------------------
