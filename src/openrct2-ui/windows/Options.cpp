@@ -503,7 +503,10 @@ namespace OpenRCT2::Ui::Windows
         void onClose() override
         {
             if (_sliderConfigChanged)
+            {
                 Config::Save();
+                _sliderConfigChanged = false;
+            }
         }
 
         void onOpen() override
