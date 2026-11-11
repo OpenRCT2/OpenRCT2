@@ -4,6 +4,7 @@
 - Feature: [#27420] CLI command to create a screenshot of a track design.
 - Improved: [#27357] Set up .td4, .td6 and .td7 file associations on Linux.
 - Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
+- Improved: [#27410] The options window's sliders no longer rewrite the configuration file on every change while being dragged.
 - Change: [#27226] Crash Particles are now also visible when zoomed out.
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
 - Fix: [#6142] `openrct2 <track file>` does not install the track design.
