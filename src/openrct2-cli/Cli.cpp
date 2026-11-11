@@ -10,6 +10,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/command_line/CommandLine.hpp>
+#include <openrct2/platform/Crash.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::CommandLine;
@@ -19,6 +20,8 @@ using namespace OpenRCT2::CommandLine;
  */
 int main(int argc, const char** argv)
 {
+    CrashInit();
+
     int32_t rc = EXIT_SUCCESS;
     auto runGame = CommandLineRun(argv, argc);
     if (runGame == ExitCode::launch)
