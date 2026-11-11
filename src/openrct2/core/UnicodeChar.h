@@ -196,6 +196,7 @@ namespace OpenRCT2
         bullet = 0x2022,
         ellipsis = 0x2026,
         narrowNonBreakingSpace = 0x202F,
+        tironianEt = 0x204A,
         quoteOpen = 0x201C,
         quoteClose = 0x201D,
 
