@@ -3,6 +3,7 @@
 - Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
+- Fix: [#27406] Window list iterator used after it may have been invalidated when a window opens or closes other windows while opening.
 
 0.5.7 (2026-11-01)
 ------------------------------------------------------------------------
