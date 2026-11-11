@@ -495,8 +495,17 @@ namespace OpenRCT2::Ui::Windows
     class OptionsWindow final : public Window
     {
         u8string _dropdownCaption{};
+        // Slider settings change many times per second while dragged: they are saved once, when
+        // the window closes, instead of rewriting the config file for every step.
+        bool _sliderConfigChanged{};
 
     public:
+        void onClose() override
+        {
+            if (_sliderConfigChanged)
+                Config::Save();
+        }
+
         void onOpen() override
         {
             setPage(WINDOW_OPTIONS_PAGE_DISPLAY);
@@ -1506,7 +1515,7 @@ namespace OpenRCT2::Ui::Windows
             if (masterVolume != Config::Get().sound.masterVolume)
             {
                 Config::Get().sound.masterVolume = masterVolume;
-                Config::Save();
+                _sliderConfigChanged = true;
                 invalidateWidget(WIDX_MASTER_VOLUME);
             }
 
@@ -1516,7 +1525,7 @@ namespace OpenRCT2::Ui::Windows
             if (soundVolume != Config::Get().sound.soundVolume)
             {
                 Config::Get().sound.soundVolume = soundVolume;
-                Config::Save();
+                _sliderConfigChanged = true;
                 invalidateWidget(WIDX_SOUND_VOLUME);
             }
 
@@ -1526,7 +1535,7 @@ namespace OpenRCT2::Ui::Windows
             if (rideMusicVolume != Config::Get().sound.rideMusicVolume)
             {
                 Config::Get().sound.rideMusicVolume = rideMusicVolume;
-                Config::Save();
+                _sliderConfigChanged = true;
                 invalidateWidget(WIDX_MUSIC_VOLUME);
             }
         }
@@ -1540,7 +1549,7 @@ namespace OpenRCT2::Ui::Windows
             if (deadzoneValue != Config::Get().general.gamepadDeadzone)
             {
                 Config::Get().general.gamepadDeadzone = deadzoneValue;
-                Config::Save();
+                _sliderConfigChanged = true;
             }
 
             const auto& sensitivityWidget = widgets[WIDX_GAMEPAD_SENSITIVITY];
@@ -1550,7 +1559,7 @@ namespace OpenRCT2::Ui::Windows
             if (std::abs(sensitivityValue - Config::Get().general.gamepadSensitivity) > 0.01f)
             {
                 Config::Get().general.gamepadSensitivity = sensitivityValue;
-                Config::Save();
+                _sliderConfigChanged = true;
             }
         }
 
