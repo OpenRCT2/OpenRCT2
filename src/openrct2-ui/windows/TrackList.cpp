@@ -664,7 +664,7 @@ namespace OpenRCT2::Ui::Windows
             if (_loadedTrackDesign->gameStateData.cost != 0)
             {
                 ft = Formatter();
-                ft.Add<uint32_t>(_loadedTrackDesign->gameStateData.cost);
+                ft.Add<money64>(_loadedTrackDesign->gameStateData.cost);
                 drawText(rt, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
             }
         }
