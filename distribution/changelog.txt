@@ -1,7 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
-- Fix: [#27385] Crash occurs at `bannerElement` during `BannerSetNameAction`.
+- Fix: [#27385] Crash in `BannerSetNameAction` when called on something that is not a banner.
 
 0.5.7 (2026-11-01)
 ------------------------------------------------------------------------
