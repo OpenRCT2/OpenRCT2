@@ -1704,7 +1704,7 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq0.blockedSegments),
         .generalSupportHeight = calculateGeneralSupportHeight(kRightQuarterBankedHelixLargeUpSeq0.clearance, 0, false),
-        .tunnels = sequenceTunnelsModify<DirectionFlipXAxis>(kLeftQuarterBankedHelixLargeUpSeq0.tunnels),
+        .tunnels = sequenceTunnelsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq0.tunnels),
     };
 
     static constexpr SequenceDescriptor kRightQuarterBankedHelixLargeUpSeq1 = {
@@ -1755,7 +1755,7 @@ namespace OpenRCT2::TrackMetadata
         .extraSupportRotation = 1,
         .blockedSegments = blockedSegmentsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq6.blockedSegments),
         .generalSupportHeight = calculateGeneralSupportHeight(kRightQuarterBankedHelixLargeUpSeq6.clearance, 0, false),
-        .tunnels = sequenceTunnelsModify<DirectionFlipXAxis>(kLeftQuarterBankedHelixLargeUpSeq6.tunnels),
+        .tunnels = sequenceTunnelsFlipXAxis(kLeftQuarterBankedHelixLargeUpSeq6.tunnels),
     };
 
     static constexpr SequenceDescriptor kLeftQuarterBankedHelixLargeDownSeq0 = {
@@ -1767,7 +1767,7 @@ namespace OpenRCT2::TrackMetadata
         .extraSupportRotation = 2,
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq0.blockedSegments,
         .generalSupportHeight = calculateGeneralSupportHeight(kLeftQuarterBankedHelixLargeDownSeq0.clearance, 0, false),
-        .tunnels = sequenceTunnelsModify<DirectionPrev>(kRightQuarterBankedHelixLargeUpSeq6.tunnels),
+        .tunnels = sequenceTunnelsRotate(kRightQuarterBankedHelixLargeUpSeq6.tunnels, 3),
         .reversedTrackSequence = 6,
     };
 
@@ -1823,7 +1823,7 @@ namespace OpenRCT2::TrackMetadata
         .extraSupportRotation = 3,
         .blockedSegments = kLeftQuarterBankedHelixLargeUpSeq6.blockedSegments,
         .generalSupportHeight = calculateGeneralSupportHeight(kLeftQuarterBankedHelixLargeDownSeq6.clearance, 0, false),
-        .tunnels = sequenceTunnelsModify<DirectionPrev>(kRightQuarterBankedHelixLargeUpSeq0.tunnels),
+        .tunnels = sequenceTunnelsRotate(kRightQuarterBankedHelixLargeUpSeq0.tunnels, 3),
         .reversedTrackSequence = 0,
     };
 
@@ -1836,7 +1836,7 @@ namespace OpenRCT2::TrackMetadata
         .extraSupportRotation = 2,
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq0.blockedSegments,
         .generalSupportHeight = calculateGeneralSupportHeight(kRightQuarterBankedHelixLargeDownSeq0.clearance, 0, false),
-        .tunnels = sequenceTunnelsModify<DirectionFlipXAxis>(kLeftQuarterBankedHelixLargeDownSeq0.tunnels),
+        .tunnels = sequenceTunnelsFlipXAxis(kLeftQuarterBankedHelixLargeDownSeq0.tunnels),
         .reversedTrackSequence = 6,
     };
 
@@ -1892,7 +1892,7 @@ namespace OpenRCT2::TrackMetadata
         .extraSupportRotation = 1,
         .blockedSegments = kRightQuarterBankedHelixLargeUpSeq6.blockedSegments,
         .generalSupportHeight = calculateGeneralSupportHeight(kRightQuarterBankedHelixLargeDownSeq6.clearance, 0, false),
-        .tunnels = sequenceTunnelsModify<DirectionFlipXAxis>(kLeftQuarterBankedHelixLargeDownSeq6.tunnels),
+        .tunnels = sequenceTunnelsFlipXAxis(kLeftQuarterBankedHelixLargeDownSeq6.tunnels),
         .reversedTrackSequence = 0,
     };
 

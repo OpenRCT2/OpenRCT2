@@ -98,7 +98,7 @@ namespace OpenRCT2::Scripting
             auto sprite = getGameState().entities.getEntity(spriteId);
             if (sprite != nullptr && sprite->type != EntityType::null)
             {
-                return GetEntityAsDukValue(ctx, sprite);
+                return getEntityAsJSValue(ctx, sprite);
             }
         }
         return JS_NULL;
@@ -528,7 +528,7 @@ namespace OpenRCT2::Scripting
         return MakeWithOpaque(ctx, nullptr);
     }
 
-    JSValue ScMap::GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite)
+    JSValue ScMap::getEntityAsJSValue(JSContext* ctx, const EntityBase* sprite)
     {
         auto spriteId = sprite->id;
         switch (sprite->type)
