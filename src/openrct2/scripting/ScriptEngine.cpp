@@ -723,6 +723,14 @@ ScriptEngine::~ScriptEngine()
         JS_FreeContext(_replContext);
         _replContext = nullptr;
     }
+    if (_scriptedSessionContext)
+    {
+        _scriptedSessionNext = {};
+        JS_FreeValue(_scriptedSessionContext, _scriptedSessionGenerator);
+        _scriptedSessionGenerator = JS_UNDEFINED;
+        JS_FreeContext(_scriptedSessionContext);
+        _scriptedSessionContext = nullptr;
+    }
     for (const ExtensionCallbacks& ext : _extensions)
     {
         ext.unregister();
@@ -1993,6 +2001,48 @@ void ScriptEngine::SetParkStorageFromJSON(const std::string& value, const std::s
     {
         ClearParkStorage();
         Console::Error::WriteLine("Could not load park storage");
+    }
+}
+
+void ScriptEngine::SetScriptedSession(const std::string& filename)
+{
+    if (_scriptedSessionContext != nullptr)
+        throw std::runtime_error("Scripted session can only be set once");
+
+    std::string code = File::ReadAllText(filename);
+
+    _scriptedSessionContext = this->CreateContext();
+
+    try
+    {
+        _scriptedSessionGenerator = JS_Eval(_scriptedSessionContext, code.c_str(), code.length(), filename.c_str(), JS_EVAL_TYPE_GLOBAL);
+        if (JS_IsException(_scriptedSessionGenerator))
+        {
+            JSValue exceptionVal = JS_GetException(_scriptedSessionContext);
+            std::string details = Stringify(_scriptedSessionContext, exceptionVal);
+            JS_FreeValue(_scriptedSessionContext, exceptionVal);
+            throw std::runtime_error("Failed to load session script: " + filename + "\n" + details);
+        }
+
+        if (!JS_IsObject(_scriptedSessionGenerator))
+        {
+            throw std::runtime_error("Session script must return a Generator object");
+        }
+
+        _scriptedSessionNext = JSToCallback(_scriptedSessionContext, _scriptedSessionGenerator, "next");
+        if (!_scriptedSessionNext.IsValid())
+        {
+            throw std::runtime_error("Session script returned an object, but it has no next() function");
+        }
+    }
+    catch (const std::exception&)
+    {
+        _scriptedSessionNext = {};
+        JS_FreeValue(_scriptedSessionContext, _scriptedSessionGenerator);
+        _scriptedSessionGenerator = JS_UNDEFINED;
+        JS_FreeContext(_scriptedSessionContext);
+        _scriptedSessionContext = nullptr;
+        throw;
     }
 }
 

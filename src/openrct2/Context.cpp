@@ -502,6 +502,11 @@ namespace OpenRCT2
             // quickjs script engine is single-threaded and must be set up on the main thread
             _scriptEngine.Initialise();
             _uiContext->InitialiseScriptExtensions();
+
+            if (!gScriptedSessionPath.empty())
+            {
+                _scriptEngine.SetScriptedSession(gScriptedSessionPath);
+            }
 #endif
 
             return true;

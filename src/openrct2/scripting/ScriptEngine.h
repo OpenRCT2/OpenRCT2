@@ -126,6 +126,9 @@ namespace OpenRCT2::Scripting
         IPlatformEnvironment& _env;
         static JSRuntime* _runtime;
         JSContext* _replContext = nullptr;
+        JSContext* _scriptedSessionContext = nullptr;
+        JSValue _scriptedSessionGenerator = JS_UNDEFINED;
+        JSCallback _scriptedSessionNext{};
         bool _initialised{};
         bool _hotReloadingInitialised{};
         bool _transientPluginsEnabled{};
@@ -222,6 +225,8 @@ namespace OpenRCT2::Scripting
         void ClearParkStorage();
         std::string GetParkStorageAsJSON();
         void SetParkStorageFromJSON(const std::string& value, const std::string& filename);
+
+        void SetScriptedSession(const std::string& filename);
 
         void Initialise();
         JSContext* CreateContext() const;
