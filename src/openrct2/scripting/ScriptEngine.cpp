@@ -77,7 +77,7 @@ using namespace OpenRCT2::Scripting;
 using OpenRCT2::TrackMetadata::TrackPitch;
 using OpenRCT2::TrackMetadata::TrackRoll;
 
-static const EnumMap<ScriptedSessionTickKind> kScriptedSessionYieldKindNames{
+static const EnumMap<ScriptedSessionTickKind> kScriptedSessionTickKindNames{
     { "scripting", ScriptedSessionTickKind::scripting },
     { "simulation", ScriptedSessionTickKind::simulation },
 };
@@ -1325,7 +1325,7 @@ void ScriptEngine::TickScriptedSession(ScriptedSessionTickKind tickKind)
     uint32_t count = AsOrDefault(_scriptedSessionContext, value, "count", 0u);
     JS_FreeValue(_scriptedSessionContext, value);
 
-    auto delayKind = kScriptedSessionYieldKindNames.TryGet(kind);
+    auto delayKind = kScriptedSessionTickKindNames.TryGet(kind);
     if (!delayKind.has_value())
     {
         LOG_ERROR("Session script yielded an unrecognised delay of kind %s", kind.c_str());
@@ -2093,7 +2093,7 @@ static JSValue MakeSimulationTicks(JSContext* ctx, JSValue, int argc, JSValue* a
     JSValue obj = JS_NewObject(ctx);
     JS_SetPropertyStr(
         ctx, obj, "kind",
-        JS_NewString(ctx, std::string(kScriptedSessionYieldKindNames[ScriptedSessionTickKind::simulation]).c_str()));
+        JS_NewString(ctx, std::string(kScriptedSessionTickKindNames[ScriptedSessionTickKind::simulation]).c_str()));
     JS_SetPropertyStr(ctx, obj, "count", JS_NewUint32(ctx, static_cast<uint32_t>(count)));
     return obj;
 }
