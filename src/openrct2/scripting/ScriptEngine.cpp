@@ -2091,7 +2091,9 @@ static JSValue MakeSimulationTicks(JSContext* ctx, JSValue, int argc, JSValue* a
     }
 
     JSValue obj = JS_NewObject(ctx);
-    JS_SetPropertyStr(ctx, obj, "kind", JS_NewString(ctx, std::string(kScriptedSessionYieldKindNames[ScriptedSessionTickKind::simulation]).c_str()));
+    JS_SetPropertyStr(
+        ctx, obj, "kind",
+        JS_NewString(ctx, std::string(kScriptedSessionYieldKindNames[ScriptedSessionTickKind::simulation]).c_str()));
     JS_SetPropertyStr(ctx, obj, "count", JS_NewUint32(ctx, static_cast<uint32_t>(count)));
     return obj;
 }
@@ -2107,12 +2109,15 @@ void ScriptEngine::SetScriptedSession(const std::string& filename)
 
     // Register helpers the script may want to use
     JSValue glb = JS_GetGlobalObject(_scriptedSessionContext);
-    JS_SetPropertyStr(_scriptedSessionContext, glb, "SimulationTicks", JS_NewCFunction(_scriptedSessionContext, MakeSimulationTicks, "SimulationTicks", 1));
+    JS_SetPropertyStr(
+        _scriptedSessionContext, glb, "SimulationTicks",
+        JS_NewCFunction(_scriptedSessionContext, MakeSimulationTicks, "SimulationTicks", 1));
     JS_FreeValue(_scriptedSessionContext, glb);
 
     try
     {
-        _scriptedSessionGenerator = JS_Eval(_scriptedSessionContext, code.c_str(), code.length(), filename.c_str(), JS_EVAL_TYPE_GLOBAL);
+        _scriptedSessionGenerator = JS_Eval(
+            _scriptedSessionContext, code.c_str(), code.length(), filename.c_str(), JS_EVAL_TYPE_GLOBAL);
         if (JS_IsException(_scriptedSessionGenerator))
         {
             JSValue exceptionVal = JS_GetException(_scriptedSessionContext);
