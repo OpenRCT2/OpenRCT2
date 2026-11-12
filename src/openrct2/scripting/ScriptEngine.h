@@ -58,7 +58,7 @@ namespace OpenRCT2::Scripting
     // to get the end of the reserved stack space.
     static constexpr size_t kJsStackSize = 1024 * 1024 * 7;
 
-    enum class ScriptedSessionYieldKind
+    enum class ScriptedSessionTickKind
     {
         scripting,
         simulation
@@ -135,7 +135,7 @@ namespace OpenRCT2::Scripting
         JSContext* _scriptedSessionContext = nullptr;
         JSValue _scriptedSessionGenerator = JS_UNDEFINED;
         JSCallback _scriptedSessionNext{};
-        ScriptedSessionYieldKind _scriptedSessionCurrentYieldKind{};
+        ScriptedSessionTickKind _scriptedSessionCurrentYieldKind{};
         uint32_t _scriptedSessionYieldCounter = 0;
         bool _initialised{};
         bool _hotReloadingInitialised{};
@@ -291,7 +291,7 @@ namespace OpenRCT2::Scripting
         void AddSocket(const std::shared_ptr<SocketDataBase>& data);
     #endif
 
-        void TickScriptedSession(ScriptedSessionYieldKind tickKind);
+        void TickScriptedSession(ScriptedSessionTickKind tickKind);
 
     private:
         static void RegisterClasses(JSContext* ctx);

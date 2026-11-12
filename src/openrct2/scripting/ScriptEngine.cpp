@@ -77,9 +77,9 @@ using namespace OpenRCT2::Scripting;
 using OpenRCT2::TrackMetadata::TrackPitch;
 using OpenRCT2::TrackMetadata::TrackRoll;
 
-static const EnumMap<ScriptedSessionYieldKind> kScriptedSessionYieldKindNames{
-    { "scripting", ScriptedSessionYieldKind::scripting },
-    { "simulation", ScriptedSessionYieldKind::simulation },
+static const EnumMap<ScriptedSessionTickKind> kScriptedSessionYieldKindNames{
+    { "scripting", ScriptedSessionTickKind::scripting },
+    { "simulation", ScriptedSessionTickKind::simulation },
 };
 
 struct ExpressionStringifier final
@@ -1214,7 +1214,7 @@ void ScriptEngine::Tick()
     UpdateSockets();
     ProcessREPL();
     DoAutoReloadPluginCheck();
-    TickScriptedSession(ScriptedSessionYieldKind::scripting);
+    TickScriptedSession(ScriptedSessionTickKind::scripting);
 }
 
 void ScriptEngine::CheckAndStartPlugins()
@@ -1263,7 +1263,7 @@ void ScriptEngine::ProcessREPL()
     }
 }
 
-void ScriptEngine::TickScriptedSession(ScriptedSessionYieldKind tickKind)
+void ScriptEngine::TickScriptedSession(ScriptedSessionTickKind tickKind)
 {
     if (_scriptedSessionContext == nullptr)
     {
@@ -1308,7 +1308,7 @@ void ScriptEngine::TickScriptedSession(ScriptedSessionYieldKind tickKind)
     // If the value is 'undefined', resume on the next scripting tick
     if (JS_IsUndefined(value))
     {
-        _scriptedSessionCurrentYieldKind = ScriptedSessionYieldKind::scripting;
+        _scriptedSessionCurrentYieldKind = ScriptedSessionTickKind::scripting;
         _scriptedSessionYieldCounter = 0;
         return;
     }
@@ -2091,7 +2091,7 @@ static JSValue MakeSimulationTicks(JSContext* ctx, JSValue, int argc, JSValue* a
     }
 
     JSValue obj = JS_NewObject(ctx);
-    JS_SetPropertyStr(ctx, obj, "kind", JS_NewString(ctx, std::string(kScriptedSessionYieldKindNames[ScriptedSessionYieldKind::simulation]).c_str()));
+    JS_SetPropertyStr(ctx, obj, "kind", JS_NewString(ctx, std::string(kScriptedSessionYieldKindNames[ScriptedSessionTickKind::simulation]).c_str()));
     JS_SetPropertyStr(ctx, obj, "count", JS_NewUint32(ctx, static_cast<uint32_t>(count)));
     return obj;
 }

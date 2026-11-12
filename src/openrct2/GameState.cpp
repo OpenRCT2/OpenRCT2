@@ -368,7 +368,7 @@ namespace OpenRCT2
             hookEngine.Call(HookType::intervalDay, true);
         }
 
-        GetContext()->GetScriptEngine().TickScriptedSession(ScriptedSessionYieldKind::simulation);
+        GetContext()->GetScriptEngine().TickScriptedSession(ScriptedSessionTickKind::simulation);
 #endif
 
         gInUpdateCode = false;
