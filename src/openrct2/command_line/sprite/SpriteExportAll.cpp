@@ -15,7 +15,7 @@
 
 #include <cmath>
 #include <cstdint>
-#include <sstream>
+#include <format>
 
 namespace OpenRCT2::CommandLine::Sprite
 {
@@ -48,14 +48,12 @@ namespace OpenRCT2::CommandLine::Sprite
 
         auto jsonEntries = nlohmann::json::array();
 
-        std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
         for (uint32_t spriteIndex = 0; spriteIndex < numEntries; spriteIndex++)
         {
             // Status indicator
             printf("\r%u / %u, %u%%", spriteIndex + 1, numEntries, ((spriteIndex + 1) * 100) / numEntries);
 
-            oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
-            auto localFilename = PopStr(oss);
+            auto localFilename = std::format("{:0{}}.png", spriteIndex, numbers);
 
             const auto& spriteHeader = spriteFile->Entries[spriteIndex];
 
