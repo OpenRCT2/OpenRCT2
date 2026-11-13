@@ -3825,3 +3825,28 @@ STR_7035    :Affärsstil
 STR_7036    :Fordonsstil
 STR_7037    :Körläge
 STR_7038    :väntetid och last
+STR_1820    :{WINDOW_COLOUR_2}{STRINGID}
+STR_7018    :{SPRITE}{MOVE_X}{17}{STRINGID}
+STR_7019    :{SPRITE}{MOVE_X}{27}{STRINGID}
+STR_7020    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{36}{STRINGID}
+STR_7021    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}»{MOVE_X}{36}{STRINGID}
+STR_7022    :{STRING} - -
+STR_7027    :{MOVE_X}{29}{STRINGID}
+STR_7064    :Guld
+STR_7065    :Bärnsten
+STR_7066    :Ametist
+STR_7067    :Sparrisgrön
+STR_7068    :Brun
+STR_7069    :Bränd rosa
+STR_7070    :Kaktusgrön
+STR_7071    :Karamell
+STR_7072    :Koppar
+STR_7073    :Karmosinröd
+STR_7074    :Mörkare vatten
+STR_7075    :Smaragdgrön
+STR_7076    :Indigo
+STR_7077    :Pestogrön
+STR_7078    :Tallgrön
+STR_7079    :Rubinröd
+STR_7080    :Djupblå
+STR_7081    :Silver
