@@ -26,7 +26,6 @@ namespace OpenRCT2::CommandLine::Sprite
     using namespace OpenRCT2::Drawing;
     bool SpriteImageExport(const G1Element& spriteElement, u8string_view outPath);
     std::optional<Image> SpriteImageLoad(u8string_view path, ImageImportMeta meta);
-    std::string PopStr(std::ostringstream& oss);
 
     ExitCode append(const char** argv, int32_t argc, ImportMode spriteMode);
     ExitCode build(const char** argv, int32_t argc, ImportMode spriteMode);
