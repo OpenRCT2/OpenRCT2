@@ -89,6 +89,12 @@ private:
     std::array<uint8_t, sizeof(PaintStruct)> data;
 
 public:
+    // Storage only: As*() constructs (and zeroes) the struct. Value-initialising the storage too
+    // cleared every entry twice; paint structs are the largest stream of memory writes in a frame.
+    PaintEntry() noexcept
+    {
+    }
+
     PaintStruct* AsBasic()
     {
         auto* res = reinterpret_cast<PaintStruct*>(data.data());
