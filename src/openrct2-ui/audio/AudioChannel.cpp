@@ -230,7 +230,8 @@ namespace OpenRCT2::Audio
             size_t bytesToRead = len;
             while (bytesToRead > 0 && !_done)
             {
-                size_t readLen = _source->Read(dst, _offset, bytesToRead);
+                size_t readLen = _source->Read(
+                    dst, _offset, std::min(bytesToRead, static_cast<size_t>(_source->GetLoopEnd() - _offset)));
                 if (readLen > 0)
                 {
                     dst = static_cast<void*>(static_cast<uint8_t*>(dst) + readLen);
@@ -238,7 +239,11 @@ namespace OpenRCT2::Audio
                     bytesRead += readLen;
                     _offset += readLen;
                 }
-                if (readLen == 0 || _offset >= _source->GetLength())
+                if (_offset >= _source->GetLoopEnd() && _loop == kMixerLoopInfinite)
+                {
+                    _offset = _source->GetLoopStart();
+                }
+                else if (readLen == 0 || _offset >= _source->GetLength())
                 {
                     if (_loop == 0)
                     {
@@ -246,7 +251,7 @@ namespace OpenRCT2::Audio
                     }
                     else if (_loop == kMixerLoopInfinite)
                     {
-                        _offset = 0;
+                        _offset = _source->GetLoopStart();
                     }
                     else
                     {

@@ -113,6 +113,16 @@ namespace OpenRCT2::Audio
             return _dataLength;
         }
 
+        [[nodiscard]] uint64_t GetLoopStart() const override
+        {
+            return 0;
+        }
+
+        [[nodiscard]] uint64_t GetLoopEnd() const override
+        {
+            return _dataLength;
+        }
+
         size_t Read(void* dst, uint64_t offset, size_t len) override
         {
             size_t bytesRead = 0;

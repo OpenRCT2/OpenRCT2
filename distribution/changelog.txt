@@ -1,6 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
 - Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
+- Improved: [#27413] Add support for LOOPSTART and LOOPLENGTH parameters for .OGG-based custom music objects.
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
 - Fix: [#27392] Crash in `BannerSetStyleAction` when called on something that is not a banner.

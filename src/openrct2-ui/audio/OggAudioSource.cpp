@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "SDLAudioSource.h"
+#include "openrct2/core/String.hpp"
 
 #include <cassert>
 #include <openrct2/Diagnostic.h>
@@ -34,6 +35,8 @@ namespace OpenRCT2::Audio
 
         std::optional<OggVorbis_File> _file;
         uint64_t _dataLength{};
+        uint64_t _loopStart{};
+        uint64_t _loopEnd{};
         uint32_t _totalSamples{};
         int32_t _section{};
         size_t _currentOffset{};
@@ -47,6 +50,16 @@ namespace OpenRCT2::Audio
         [[nodiscard]] uint64_t GetLength() const override
         {
             return _dataLength;
+        }
+
+        [[nodiscard]] uint64_t GetLoopStart() const override
+        {
+            return _loopStart;
+        }
+
+        [[nodiscard]] uint64_t GetLoopEnd() const override
+        {
+            return _loopEnd;
         }
 
         [[nodiscard]] AudioFormat GetFormat() const override
@@ -81,6 +94,34 @@ namespace OpenRCT2::Audio
             _format.freq = vi->rate;
             _totalSamples = ov_pcm_total(&*_file, -1);
             _dataLength = _totalSamples * _format.channels * sizeof(int16_t);
+
+            _loopStart = 0;
+            _loopEnd = _dataLength;
+            // Check for LOOPSTART / LOOPLENGTH file markers
+            auto* comments = ov_comment(&*_file, -1);
+            uint64_t loopLength = 0;
+            for (int i = 0; i < comments->comments; ++i)
+            {
+                auto kv = String::split(comments->user_comments[i], "=");
+                if (kv.size() == 2)
+                {
+                    if (String::iequals(std::string(kv.at(0)), "LOOPSTART"))
+                    {
+                        _loopStart = static_cast<uint64_t>(std::stol(std::string(kv.at(1)))) * _format.channels
+                            * sizeof(int16_t);
+                    }
+                    if (String::iequals(std::string(kv.at(0)), "LOOPLENGTH"))
+                    {
+                        loopLength = static_cast<uint64_t>(std::stol(std::string(kv.at(1)))) * _format.channels
+                            * sizeof(int16_t);
+                    }
+                }
+            }
+            if (loopLength > 0)
+            {
+                _loopEnd = std::min(_loopStart + loopLength, _dataLength);
+            }
+
             _currentOffset = 0;
             _section = -1;
             return true;
