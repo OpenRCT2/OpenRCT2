@@ -130,7 +130,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Kendall Frey (kendfrey) - Add plugin API for spawning guests
 * Marino Rottier (rinode) - Plugin API & UI
 * Ben Spurlock (BenDaSpur) - Plugin API automation helpers
-* (frozensnowy) - Draggable path slopes, self-intersecting track designs, refactors, bug fixes, misc.
+* (frozensnowy) - New audio engine, draggable path slopes, self-intersecting track designs, refactors, bug fixes, misc.
 * Arjan van Dijk (Manticore-007) - Added guests entertained to API.
 * Mark Alliban (MarkAlliban) - Added plugin API fields.
 

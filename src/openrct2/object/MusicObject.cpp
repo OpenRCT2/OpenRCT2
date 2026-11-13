@@ -49,12 +49,11 @@ namespace OpenRCT2
             auto stream = track.Asset.GetStream();
             if (stream != nullptr)
             {
-                auto source = audioContext.CreateStreamFromWAV(std::move(stream));
-                if (source != nullptr)
+                auto info = audioContext.ProbeStream(std::move(stream));
+                if (info.bytesPerSecond > 0)
                 {
-                    track.BytesPerTick = source->GetBytesPerSecond() / 40;
-                    track.Size = source->GetLength();
-                    source->Release();
+                    track.BytesPerTick = info.bytesPerSecond / 40;
+                    track.Size = info.length;
                 }
                 else
                 {
@@ -69,18 +68,27 @@ namespace OpenRCT2
             }
         }
 
+        _loadedSampleTable.Load();
+
         _hasPreview = !!GetImageTable().GetCount();
         _previewImageId = LoadImages();
     }
 
     void MusicObject::Unload()
     {
+        _loadedSampleTable.Unload();
+
         LanguageFreeObjectString(NameStringId);
         UnloadImages();
 
         _hasPreview = false;
         _previewImageId = 0;
         NameStringId = 0;
+    }
+
+    void MusicObject::InvalidateSamples()
+    {
+        _loadedSampleTable.Unload();
     }
 
     void MusicObject::DrawPreview(Drawing::RenderTarget& rt, int32_t width, int32_t height) const
@@ -215,7 +223,7 @@ namespace OpenRCT2
 
     Audio::IAudioSource* MusicObject::GetTrackSample(size_t trackIndex) const
     {
-        return _loadedSampleTable.LoadSample(static_cast<uint32_t>(trackIndex));
+        return _loadedSampleTable.GetSample(static_cast<uint32_t>(trackIndex));
     }
 
     ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view path)
