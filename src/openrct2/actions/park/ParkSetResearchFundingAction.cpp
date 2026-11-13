@@ -18,8 +18,8 @@
 
 namespace OpenRCT2::GameActions
 {
-    ParkSetResearchFundingAction::ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount)
-        : _priorities(priorities)
+    ParkSetResearchFundingAction::ParkSetResearchFundingAction(ResearchPriorities priorities, uint8_t fundingAmount)
+        : _priorities(priorities.holder)
         , _fundingAmount(fundingAmount)
     {
     }
@@ -53,7 +53,7 @@ namespace OpenRCT2::GameActions
 
     Result ParkSetResearchFundingAction::Execute(GameState_t& gameState, Park::ParkData& park) const
     {
-        gameState.researchPriorities = _priorities;
+        gameState.researchPriorities = ResearchPriorities(static_cast<uint8_t>(_priorities));
         gameState.researchFundingLevel = _fundingAmount;
 
         auto windowManager = Ui::GetWindowManager();
