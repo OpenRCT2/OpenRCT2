@@ -37,7 +37,9 @@ namespace OpenRCT2
 struct ResultWithMessage;
 enum class ViewportInteractionItem : uint8_t;
 
-constexpr uint32_t kTrackPreviewImageSize = 370 * 217;
+constexpr uint32_t kTrackPreviewWidth = 370;
+constexpr uint32_t kTrackPreviewHeight = 217;
+constexpr uint32_t kTrackPreviewImageSize = kTrackPreviewWidth * kTrackPreviewHeight;
 
 namespace OpenRCT2::Drawing
 {
