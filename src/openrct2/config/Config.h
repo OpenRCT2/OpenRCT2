@@ -98,6 +98,7 @@ namespace OpenRCT2::Config
         int32_t windowSnapProximity;
         bool savePluginData;
         bool debuggingTools;
+        std::atomic_bool disableBackgroundProcessing;
         int32_t autosaveFrequency;
         int32_t autosaveAmount;
         bool autoStaffPlacement;
