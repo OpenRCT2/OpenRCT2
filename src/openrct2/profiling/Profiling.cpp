@@ -35,7 +35,9 @@ namespace OpenRCT2::Profiling
 
     bool isEnabled()
     {
-        return _enabled.load(std::memory_order_acquire);
+        // Checked on entry to every profiled function, also per tile while painting. The flag
+        // publishes no data, so relaxed is enough: acquire costs a barrier (isync) on PowerPC.
+        return _enabled.load(std::memory_order_relaxed);
     }
 
     namespace Detail

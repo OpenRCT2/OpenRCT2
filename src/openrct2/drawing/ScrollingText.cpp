@@ -1422,6 +1422,10 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
 
     ImageId setup(PaintSession& session, u8string_view string, uint16_t scrollingMode, PaletteIndex colour)
     {
+        // Zoomed out the text is not drawn: skip formatting and measuring it
+        if (session.rt.zoom_level > ZoomLevel{ 0 })
+            return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
+
         u8string formattedString = FormatStringID(STR_BANNER_TEXT_FORMAT, string);
         if (Config::Get().general.upperCaseBanners)
         {
@@ -1433,9 +1437,6 @@ static constexpr const int16_t* kScrollPositions[kMaxModes] = {
         std::scoped_lock<std::mutex> lock(_mutex);
 
         assert(scrollingMode < kMaxModes);
-
-        if (session.rt.zoom_level > ZoomLevel{ 0 })
-            return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
         _drawScrollNextIndex++;
         uint32_t scrollIndex = getMatchingOrOldest(formattedString, scroll, scrollingMode, colour);

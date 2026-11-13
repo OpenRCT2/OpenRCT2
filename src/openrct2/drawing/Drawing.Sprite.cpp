@@ -28,6 +28,7 @@
 #include "ScrollingText.h"
 
 #include <cassert>
+#include <cstring>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -433,7 +434,35 @@ void MaskScalar(
 {
     for (int32_t yy = 0; yy < height; yy++)
     {
-        for (int32_t xx = 0; xx < width; xx++)
+        int32_t xx = 0;
+        // Four pixels at a time: masks are mostly all clear or all set, so most groups are either
+        // skipped or stored as one word.
+        for (; xx + 4 <= width; xx += 4)
+        {
+            uint32_t mask, colour;
+            std::memcpy(&mask, maskSrc, sizeof(mask));
+            std::memcpy(&colour, colourSrc, sizeof(colour));
+            const uint32_t v = mask & colour;
+            if (v != 0)
+            {
+                if (((v - 0x01010101u) & ~v & 0x80808080u) == 0)
+                {
+                    std::memcpy(dst, &v, sizeof(v));
+                }
+                else
+                {
+                    for (int32_t i = 0; i < 4; i++)
+                    {
+                        if (const uint8_t c = maskSrc[i] & colourSrc[i]; c != 0)
+                            dst[i] = static_cast<PaletteIndex>(c);
+                    }
+                }
+            }
+            maskSrc += 4;
+            colourSrc += 4;
+            dst += 4;
+        }
+        for (; xx < width; xx++)
         {
             auto colour = static_cast<PaletteIndex>((*colourSrc) & (*maskSrc));
             if (colour != PaletteIndex::transparent)

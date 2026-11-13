@@ -134,10 +134,33 @@ static void FASTCALL DrawRLESpriteMinify(RenderTarget& rt, const DrawSpriteArgs&
             auto dst = dstLineStart + (x >> TZoom);
             if constexpr ((TBlendOp & kBlendSrc) == 0 && (TBlendOp & kBlendDst) == 0 && TZoom == 0)
             {
-                // Since we're sampling each pixel at this zoom level, just do a straight std::memcpy
-                if (numPixels > 0)
+                // Since we're sampling each pixel at this zoom level, just do a straight copy. Most runs
+                // are a few pixels long, where a library memcpy call costs more than the copy itself.
+                if (numPixels > 32)
                 {
                     std::memcpy(dst, src, numPixels);
+                }
+                else if (numPixels > 0)
+                {
+                    auto* d = reinterpret_cast<uint8_t*>(dst);
+                    for (; numPixels >= 4; numPixels -= 4, src += 4, d += 4)
+                    {
+                        uint32_t word;
+                        std::memcpy(&word, src, sizeof(word));
+                        std::memcpy(d, &word, sizeof(word));
+                    }
+                    if (numPixels & 2)
+                    {
+                        uint16_t half;
+                        std::memcpy(&half, src, sizeof(half));
+                        std::memcpy(d, &half, sizeof(half));
+                        src += 2;
+                        d += 2;
+                    }
+                    if (numPixels & 1)
+                    {
+                        *d = *src;
+                    }
                 }
             }
             else
