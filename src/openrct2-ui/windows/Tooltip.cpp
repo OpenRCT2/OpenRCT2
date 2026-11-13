@@ -37,7 +37,7 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         u8string _tooltipText;
-        int16_t _tooltipNumLines = 1;
+        int16_t _tooltipLineCount = 1;
         int32_t _textWidth;
         int32_t _textHeight;
 
@@ -45,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
         TooltipWindow(const StringWithArgs& message, ScreenCoordsXY screenCoords)
         {
             _textWidth = FormatTextForTooltip(message);
-            _textHeight = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::small));
+            _textHeight = _tooltipLineCount * FontGetLineHeight(FontStyle::small);
 
             width = _textWidth + 5;
             height = _textHeight + 4;
@@ -132,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
             // Text
             left = windowPos.x + ((width + 1) / 2) - 1;
             top = windowPos.y + 1;
-            drawStringCentredRaw(rt, { left, top }, _tooltipNumLines, _tooltipText.data(), FontStyle::small);
+            drawStringCentredRaw(rt, { left, top }, _tooltipLineCount - 1, _tooltipText.data(), FontStyle::small);
         }
 
     private:
@@ -148,10 +148,10 @@ namespace OpenRCT2::Ui::Windows
             auto textWidth = getStringWidthNewlined(tooltipTextUnwrapped, FontStyle::small);
             textWidth = std::min(textWidth, 196);
 
-            int32_t numLines;
-            textWidth = wrapString(tooltipTextUnwrapped, textWidth + 1, FontStyle::small, &_tooltipText, &numLines);
-            _tooltipNumLines = numLines;
-            return textWidth;
+            auto wrappedString = wrapStringAndMeasure(tooltipTextUnwrapped, textWidth + 1, FontStyle::small);
+            _tooltipText = std::move(wrappedString.text);
+            _tooltipLineCount = wrappedString.metrics.lineCount;
+            return wrappedString.metrics.maxWidth;
         }
     };
 
