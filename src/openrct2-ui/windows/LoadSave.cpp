@@ -809,7 +809,7 @@ namespace OpenRCT2::Ui::Windows
                     u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath, _trackDesign);
                     if (!path.empty())
                     {
-                        Select(path.c_str(), action, type, _trackDesign);
+                        Select(path, action, type, _trackDesign);
                     }
                     else
                     {
@@ -881,7 +881,7 @@ namespace OpenRCT2::Ui::Windows
                     if (File::Exists(path))
                         WindowOverwritePromptOpen(_currentFilename, path, action, type, _trackDesign);
                     else
-                        Select(path.c_str(), action, type, _trackDesign);
+                        Select(path, action, type, _trackDesign);
                 }
             }
         }
@@ -1056,7 +1056,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    Select(_listItems[selectedItem].path.c_str(), action, type, _trackDesign);
+                    Select(_listItems[selectedItem].path, action, type, _trackDesign);
                 }
             }
         }

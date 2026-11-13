@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui::FileBrowser
 
     bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b);
     void SetAndSaveConfigPath(u8string& config_str, u8string_view path);
-    bool IsValidPath(const char* path);
+    bool IsValidPath(u8string_view path);
     u8string GetLastDirectoryByType(LoadSaveType type);
     u8string GetInitialDirectoryByType(LoadSaveType type);
     u8string GetFilterPatternByType(LoadSaveType type, bool isSave, const TrackDesign* trackDesign = nullptr);
@@ -61,13 +61,16 @@ namespace OpenRCT2::Ui::FileBrowser
     u8string GetDir(LoadSaveType type);
     void RegisterCallback(LoadSaveCallback callback, bool isJsCallback);
     void UnregisterJSCallback();
-    void InvokeCallback(ModalResult result, const utf8* path);
-    void Select(const char* path, LoadSaveAction action, LoadSaveType type, TrackDesign* trackDesignPtr);
+    void InvokeCallback(ModalResult result, u8string_view path);
+    void Select(
+        u8string path, LoadSaveAction action, LoadSaveType type,
+        TrackDesign* trackDesignPtr); // Passing 'path' by value, as callers may lose this path throughout!
     StringId GetTitleStringId(LoadSaveType type, bool isSave);
     u8string OpenSystemFileBrowser(
-        bool isSave, LoadSaveType type, u8string defaultDirectory, u8string defaultPath, const TrackDesign* trackDesign);
+        bool isSave, LoadSaveType type, u8string_view defaultDirectory, u8string_view defaultPath,
+        const TrackDesign* trackDesign);
     WindowBase* OpenPreferred(
-        LoadSaveAction action, LoadSaveType type, u8string defaultPath, LoadSaveCallback callback, bool isJsCallback,
+        LoadSaveAction action, LoadSaveType type, u8string_view defaultPath, LoadSaveCallback callback, bool isJsCallback,
         TrackDesign* trackDesign);
 } // namespace OpenRCT2::Ui::FileBrowser
 
