@@ -1,6 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
 - Feature: [#27404] Add Irish translation.
+- Feature: [#27420] CLI command to create a screenshot of a track design.
 - Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
 - Change: [#27226] Crash Particles are now also visible when zoomed out.
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.

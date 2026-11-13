@@ -90,6 +90,8 @@ namespace OpenRCT2
                                                                                          nullptr };
     constexpr CommandLineCommand kCommandTableEnd = CommandLineCommand{ nullptr, nullptr, nullptr, nullptr, nullptr };
 
+    static constexpr CommandLineOptionDefinition kNoOptions[]{ kOptionTableEnd };
+
     consteval CommandLineCommand DefineCommand(
         const char* name, const char* params, const CommandLineOptionDefinition* options, const CommandLineFunc func)
     {
@@ -112,6 +114,10 @@ namespace OpenRCT2
         }
         extern const CommandLineCommand kSimulateCommands[];
         extern const CommandLineCommand kParkInfoCommands[];
+        namespace Track
+        {
+            extern const CommandLineCommand kTrackCommands[];
+        }
 
         extern const CommandLineExample kRootExamples[];
 

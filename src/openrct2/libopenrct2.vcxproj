@@ -180,6 +180,7 @@
     <ClInclude Include="Cheats.h" />
     <ClInclude Include="command_line\sprite\SpriteCommands.h" />
     <ClInclude Include="command_line\sprite\SpriteFile.h" />
+    <ClInclude Include="command_line\track\TrackCommands.h" />
     <ClInclude Include="command_line\CommandLine.hpp" />
     <ClInclude Include="command_line\ExitCode.h" />
     <ClInclude Include="config\Config.h" />
@@ -857,6 +858,8 @@
     <ClCompile Include="command_line\sprite\SpriteExportAll.cpp" />
     <ClCompile Include="command_line\sprite\SpriteExportObject.cpp" />
     <ClCompile Include="command_line\sprite\SpriteFile.cpp" />
+    <ClCompile Include="command_line\track\TrackCommands.cpp" />
+    <ClCompile Include="command_line\track\TrackScreenshot.cpp" />
     <ClCompile Include="command_line\CommandLine.cpp" />
     <ClCompile Include="command_line\ConvertCommand.cpp" />
     <ClCompile Include="command_line\ParkInfoCommands.cpp" />

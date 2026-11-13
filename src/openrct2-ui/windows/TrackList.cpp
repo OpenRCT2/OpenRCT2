@@ -243,7 +243,7 @@ namespace OpenRCT2::Ui::Windows
             }
             gTrackDesignSceneryToggle = false;
             WindowPushOthersRight(*this);
-            _currentTrackPieceDirection = 2;
+            _currentTrackPieceDirection = kTrackPreviewDefaultDirection;
             std::fill(_trackDesignPreviewPixels.begin(), _trackDesignPreviewPixels.end(), PaletteIndex::transparent);
 
             _loadedTrackDesign = nullptr;

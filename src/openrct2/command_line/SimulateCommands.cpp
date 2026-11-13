@@ -22,11 +22,6 @@ using namespace OpenRCT2::CommandLine;
 namespace OpenRCT2
 {
     // clang-format off
-    static constexpr CommandLineOptionDefinition kNoOptions[]
-    {
-        kOptionTableEnd
-    };
-
     static ExitCode HandleSimulate(CommandLineArgEnumerator* argEnumerator);
 
     const CommandLineCommand CommandLine::kSimulateCommands[]{

@@ -41,6 +41,8 @@ constexpr uint32_t kTrackPreviewWidth = 370;
 constexpr uint32_t kTrackPreviewHeight = 217;
 constexpr uint32_t kTrackPreviewImageSize = kTrackPreviewWidth * kTrackPreviewHeight;
 
+constexpr Direction kTrackPreviewDefaultDirection = 2;
+
 namespace OpenRCT2::Drawing
 {
     enum class PaletteIndex : uint8_t;
@@ -256,7 +258,7 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, OpenRCT2::Ride& ride, co
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
 using TrackDesignPreviewBuffer = std::array<OpenRCT2::Drawing::PaletteIndex, kTrackPreviewImageSize * kNumOrthogonalDirections>;
-void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery);
+void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery, bool autoloadScenery = false);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

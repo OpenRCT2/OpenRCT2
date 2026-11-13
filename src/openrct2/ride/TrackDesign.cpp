@@ -2085,12 +2085,12 @@ bool TrackDesignSceneryElement::operator!=(const TrackDesignSceneryElement& rhs)
  *
  *  rct2: 0x006D1EF0
  */
-void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery)
+void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery, bool autoloadScenery)
 {
     StashMap();
     TrackDesignPreviewClearMap();
 
-    if (gLegacyScene == LegacyScene::trackDesignsManager)
+    if (gLegacyScene == LegacyScene::trackDesignsManager || autoloadScenery)
     {
         TrackDesignLoadSceneryObjects(td);
     }
