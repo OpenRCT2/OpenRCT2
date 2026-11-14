@@ -1629,19 +1629,19 @@ namespace OpenRCT2
 
         if (shopItemDescriptor.IsFood())
         {
-            guest.amountOfFood++;
+            guest.amountOfFood = AddClamp<uint8_t>(guest.amountOfFood, 1);
             expend_type = &guest.paidOnFood;
             expenditure = ExpenditureType::foodDrinkStock;
         }
         else if (shopItemDescriptor.IsDrink())
         {
-            guest.amountOfDrinks++;
+            guest.amountOfDrinks = AddClamp<uint8_t>(guest.amountOfDrinks, 1);
             expend_type = &guest.paidOnDrink;
             expenditure = ExpenditureType::foodDrinkStock;
         }
         else if (shopItemDescriptor.IsSouvenir())
         {
-            guest.amountOfSouvenirs++;
+            guest.amountOfSouvenirs = AddClamp<uint8_t>(guest.amountOfSouvenirs, 1);
         }
 
         if (!gameState.park.flags.has(ParkFlag::noMoney))
