@@ -8,6 +8,8 @@
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
 - Fix: [#6142] `openrct2 <track file>` does not install the track design.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
+- Fix: [#27319] Crash when clicking an item in the Scenery window while a search filter is active.
+- Fix: [#25395] `openrct2 <command> -h` fails instead of showing help for the command, and `openrct2 -ha` leaves out the command name.
 - Fix: [#27353] Some hacked colours appear differently between OpenGL and software drawing modes.
 - Fix: [#27385] Crash in `BannerSetNameAction` when called on something that is not a banner.
 - Fix: [#27392] Crash in `BannerSetStyleAction` when called on something that is not a banner.
@@ -19,12 +21,10 @@
 - Fix: [#18954] When researching Classic Mini Roller Coaster vehicles in Bumbly Beach, they all appear as new rides. 
 - Fix: [#21030, #26981] Slow object loading and index building when using RCT Classic or running from a Flatpak.
 - Fix: [#24524] Some build types (like AppImage) lack information about their specific build.
-- Fix: [#25395] `openrct2 <command> -h` fails instead of showing help for the command, and `openrct2 -ha` leaves out the command name.
 - Fix: [#27264] Headless server crashes when loading a recolourable terrain surface.
 - Fix: [#27286] Headless servers no longer write chat logs.
 - Fix: [#27300] Walls cannot be placed on every edge of the Reverse Freefall/Air Powered flat to vertical slopes (original bug).
 - Fix: [#27316] Height markers are incorrect on diagonal flat to left banked down, large gentle turn left and right banked large gentle turn pieces.
-- Fix: [#27319] Crash when clicking an item in the Scenery window while a search filter is active.
 
 0.5.6 (2026-10-10)
 ------------------------------------------------------------------------
