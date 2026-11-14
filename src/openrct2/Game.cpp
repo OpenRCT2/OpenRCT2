@@ -609,7 +609,7 @@ void GameAutosave()
     auto currentDate = Platform::GetDateLocal();
     auto currentTime = Platform::GetTimeLocal();
 
-    const auto& fileName = std::format(
+    auto fileName = std::format(
         "autosave_{0:04}-{1:02}-{2:02}_{3:02}-{4:02}-{5:02}{6}", currentDate.year, currentDate.month, currentDate.day,
         currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
