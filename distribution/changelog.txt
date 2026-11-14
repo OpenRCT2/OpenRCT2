@@ -5,6 +5,7 @@
 - Change: [#27226] Crash Particles are now also visible when zoomed out.
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
+- Fix: [#27385] Crash in `BannerSetNameAction` when called on something that is not a banner.
 - Fix: [#27392] Crash in `BannerSetStyleAction` when called on something that is not a banner.
 - Fix: [#27409] The ‘not enough cash’ message and track design costs show the wrong amount on big-endian systems.
 
