@@ -133,6 +133,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * (frozensnowy) - Draggable path slopes, self-intersecting track designs, refactors, bug fixes, misc.
 * Arjan van Dijk (Manticore-007) - Added guests entertained to API.
 * Mark Alliban (MarkAlliban) - Added plugin API fields.
+* Max Mallon (MaxArceus) - Various plugin API fields and other small changes and bugfixes
 
 ## Bug fixes & Refactors
 * Claudio Tiecher (janclod)
