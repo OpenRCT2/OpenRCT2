@@ -12,6 +12,7 @@
     #include "ScriptEngine.h"
 
     #include "../Context.h"
+    #include "../Diagnostic.h"
     #include "../PlatformEnvironment.h"
     #include "../actions/GameAction.hpp"
     #include "../actions/general/CustomAction.h"
@@ -75,6 +76,11 @@ using namespace OpenRCT2::Scripting;
 
 using OpenRCT2::TrackMetadata::TrackPitch;
 using OpenRCT2::TrackMetadata::TrackRoll;
+
+static const EnumMap<ScriptedSessionTickKind> kScriptedSessionTickKindNames{
+    { "scripting", ScriptedSessionTickKind::scripting },
+    { "simulation", ScriptedSessionTickKind::simulation },
+};
 
 struct ExpressionStringifier final
 {
@@ -723,6 +729,7 @@ ScriptEngine::~ScriptEngine()
         JS_FreeContext(_replContext);
         _replContext = nullptr;
     }
+    CleanupScriptedSession();
     for (const ExtensionCallbacks& ext : _extensions)
     {
         ext.unregister();
@@ -1207,6 +1214,7 @@ void ScriptEngine::Tick()
     UpdateSockets();
     ProcessREPL();
     DoAutoReloadPluginCheck();
+    TickScriptedSession(ScriptedSessionTickKind::scripting);
 }
 
 void ScriptEngine::CheckAndStartPlugins()
@@ -1253,6 +1261,80 @@ void ScriptEngine::ProcessREPL()
         // Signal the promise so caller can continue
         promise.set_value();
     }
+}
+
+void ScriptEngine::TickScriptedSession(ScriptedSessionTickKind tickKind)
+{
+    if (_scriptedSessionContext == nullptr)
+    {
+        return;
+    }
+
+    if (_scriptedSessionCurrentYieldKind != tickKind)
+    {
+        return;
+    }
+
+    // Compare to 1, not 0, so that 'SimulationTicks(1)' resumes on the
+    // next tick, which is a more natural way to read it
+    if (_scriptedSessionYieldCounter > 1)
+    {
+        _scriptedSessionYieldCounter--;
+        return;
+    }
+
+    JSValue ret = JS_Call(_scriptedSessionNext.context, _scriptedSessionNext.callback, _scriptedSessionGenerator, 0, nullptr);
+    if (JS_IsException(ret))
+    {
+        JSValue exceptionVal = JS_GetException(_scriptedSessionContext);
+        std::string details = Stringify(_scriptedSessionContext, exceptionVal);
+        JS_FreeValue(_scriptedSessionContext, exceptionVal);
+        LOG_ERROR("Session script threw an exception: %s", details.c_str());
+        CleanupScriptedSession();
+        return;
+    }
+
+    bool isDone = Scripting::AsOrDefault(_scriptedSessionContext, ret, "done", false);
+    JSValue value = JS_GetPropertyStr(_scriptedSessionContext, ret, "value");
+    JS_FreeValue(_scriptedSessionContext, ret);
+
+    if (isDone)
+    {
+        JS_FreeValue(_scriptedSessionContext, value);
+        CleanupScriptedSession();
+        return;
+    }
+
+    // If the value is 'undefined', resume on the next scripting tick
+    if (JS_IsUndefined(value))
+    {
+        _scriptedSessionCurrentYieldKind = ScriptedSessionTickKind::scripting;
+        _scriptedSessionYieldCounter = 0;
+        return;
+    }
+
+    if (!JS_IsObject(value))
+    {
+        LOG_ERROR("Session script yielded a non-object value");
+        JS_FreeValue(_scriptedSessionContext, value);
+        CleanupScriptedSession();
+        return;
+    }
+
+    std::string kind = AsOrDefault(_scriptedSessionContext, value, "kind", "");
+    uint32_t count = AsOrDefault(_scriptedSessionContext, value, "count", 0u);
+    JS_FreeValue(_scriptedSessionContext, value);
+
+    auto delayKind = kScriptedSessionTickKindNames.TryGet(kind);
+    if (!delayKind.has_value())
+    {
+        LOG_ERROR("Session script yielded an unrecognised delay of kind %s", kind.c_str());
+        CleanupScriptedSession();
+        return;
+    }
+
+    _scriptedSessionCurrentYieldKind = delayKind.value();
+    _scriptedSessionYieldCounter = count;
 }
 
 std::future<void> ScriptEngine::Eval(const std::string& s)
@@ -1993,6 +2075,84 @@ void ScriptEngine::SetParkStorageFromJSON(const std::string& value, const std::s
     {
         ClearParkStorage();
         Console::Error::WriteLine("Could not load park storage");
+    }
+}
+
+static JSValue MakeSimulationTicks(JSContext* ctx, JSValue, int argc, JSValue* argv)
+{
+    int32_t count = 0;
+    if (argc > 0 && JS_ToInt32(ctx, &count, argv[0]) < 0)
+    {
+        return JS_EXCEPTION;
+    }
+    if (count < 0)
+    {
+        return JS_ThrowRangeError(ctx, "Tick count must be at least 0 (got %d)", count);
+    }
+
+    JSValue obj = JS_NewObject(ctx);
+    JS_SetPropertyStr(
+        ctx, obj, "kind",
+        JS_NewString(ctx, std::string(kScriptedSessionTickKindNames[ScriptedSessionTickKind::simulation]).c_str()));
+    JS_SetPropertyStr(ctx, obj, "count", JS_NewUint32(ctx, static_cast<uint32_t>(count)));
+    return obj;
+}
+
+void ScriptEngine::SetScriptedSession(const std::string& filename)
+{
+    if (_scriptedSessionContext != nullptr)
+        throw std::runtime_error("Scripted session can only be set once");
+
+    std::string code = File::ReadAllText(filename);
+
+    _scriptedSessionContext = this->CreateContext();
+
+    // Register helpers the script may want to use
+    JSValue glb = JS_GetGlobalObject(_scriptedSessionContext);
+    JS_SetPropertyStr(
+        _scriptedSessionContext, glb, "SimulationTicks",
+        JS_NewCFunction(_scriptedSessionContext, MakeSimulationTicks, "SimulationTicks", 1));
+    JS_FreeValue(_scriptedSessionContext, glb);
+
+    try
+    {
+        _scriptedSessionGenerator = JS_Eval(
+            _scriptedSessionContext, code.c_str(), code.length(), filename.c_str(), JS_EVAL_TYPE_GLOBAL);
+        if (JS_IsException(_scriptedSessionGenerator))
+        {
+            JSValue exceptionVal = JS_GetException(_scriptedSessionContext);
+            std::string details = Stringify(_scriptedSessionContext, exceptionVal);
+            JS_FreeValue(_scriptedSessionContext, exceptionVal);
+            throw std::runtime_error("Failed to load session script: " + filename + "\n" + details);
+        }
+
+        if (!JS_IsObject(_scriptedSessionGenerator))
+        {
+            throw std::runtime_error("Session script must return a Generator object");
+        }
+
+        _scriptedSessionNext = JSToCallback(_scriptedSessionContext, _scriptedSessionGenerator, "next");
+        if (!_scriptedSessionNext.IsValid())
+        {
+            throw std::runtime_error("Session script returned an object, but it has no next() function");
+        }
+    }
+    catch (const std::exception&)
+    {
+        CleanupScriptedSession();
+        throw;
+    }
+}
+
+void ScriptEngine::CleanupScriptedSession()
+{
+    if (_scriptedSessionContext != nullptr)
+    {
+        _scriptedSessionNext = {};
+        JS_FreeValue(_scriptedSessionContext, _scriptedSessionGenerator);
+        _scriptedSessionGenerator = JS_UNDEFINED;
+        JS_FreeContext(_scriptedSessionContext);
+        _scriptedSessionContext = nullptr;
     }
 }
 

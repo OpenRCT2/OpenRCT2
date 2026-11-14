@@ -61,6 +61,7 @@ namespace OpenRCT2
     static u8string _openrct2DataPath = {};
     static u8string _rct1DataPath = {};
     static u8string _rct2DataPath = {};
+    static u8string _scriptedSessionPath = {};
     static bool _silentBreakpad = false;
 
     // clang-format off
@@ -86,6 +87,9 @@ namespace OpenRCT2
     #ifdef USE_BREAKPAD
         { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  kNAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
     #endif // USE_BREAKPAD
+    #ifdef ENABLE_SCRIPTING
+        { CMDLINE_TYPE_STRING,  &_scriptedSessionPath, kNAC, "scripted-session", "path to a JS file that will operate the session" },
+    #endif
         kOptionTableEnd
     };
 
@@ -230,6 +234,11 @@ namespace OpenRCT2
         if (_silentReplays)
         {
             gSilentReplays = _silentReplays;
+        }
+
+        if (!_scriptedSessionPath.empty())
+        {
+            gScriptedSessionPath = Path::GetAbsolute(_scriptedSessionPath);
         }
 
         return result;

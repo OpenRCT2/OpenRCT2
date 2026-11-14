@@ -58,6 +58,12 @@ namespace OpenRCT2::Scripting
     // to get the end of the reserved stack space.
     static constexpr size_t kJsStackSize = 1024 * 1024 * 7;
 
+    enum class ScriptedSessionTickKind
+    {
+        scripting,
+        simulation
+    };
+
     #ifndef DISABLE_NETWORK
     struct SocketDataBase;
     #endif
@@ -126,6 +132,11 @@ namespace OpenRCT2::Scripting
         IPlatformEnvironment& _env;
         static JSRuntime* _runtime;
         JSContext* _replContext = nullptr;
+        JSContext* _scriptedSessionContext = nullptr;
+        JSValue _scriptedSessionGenerator = JS_UNDEFINED;
+        JSCallback _scriptedSessionNext{};
+        ScriptedSessionTickKind _scriptedSessionCurrentYieldKind{};
+        uint32_t _scriptedSessionYieldCounter = 0;
         bool _initialised{};
         bool _hotReloadingInitialised{};
         bool _transientPluginsEnabled{};
@@ -223,6 +234,9 @@ namespace OpenRCT2::Scripting
         std::string GetParkStorageAsJSON();
         void SetParkStorageFromJSON(const std::string& value, const std::string& filename);
 
+        void SetScriptedSession(const std::string& filename);
+        void CleanupScriptedSession();
+
         void Initialise();
         JSContext* CreateContext() const;
         void LoadTransientPlugins();
@@ -276,6 +290,8 @@ namespace OpenRCT2::Scripting
     #ifndef DISABLE_NETWORK
         void AddSocket(const std::shared_ptr<SocketDataBase>& data);
     #endif
+
+        void TickScriptedSession(ScriptedSessionTickKind tickKind);
 
     private:
         static void RegisterClasses(JSContext* ctx);
