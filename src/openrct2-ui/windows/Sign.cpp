@@ -160,7 +160,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_SIGN_DEMOLISH:
                 {
                     auto* tileElement = BannerGetTileElement(GetBannerIndex());
-                    if (tileElement == nullptr)
+                    // The banner can belong to another kind of sign by now, e.g. after its index was reused.
+                    if (tileElement == nullptr
+                        || (_isSmall ? tileElement->asWall() == nullptr : tileElement->asLargeScenery() == nullptr))
                     {
                         close();
                         return;
