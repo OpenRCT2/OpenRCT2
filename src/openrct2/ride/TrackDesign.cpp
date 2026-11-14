@@ -2085,12 +2085,12 @@ bool TrackDesignSceneryElement::operator!=(const TrackDesignSceneryElement& rhs)
  *
  *  rct2: 0x006D1EF0
  */
-void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery)
+void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery, bool autoloadScenery)
 {
     StashMap();
     TrackDesignPreviewClearMap();
 
-    if (gLegacyScene == LegacyScene::trackDesignsManager)
+    if (gLegacyScene == LegacyScene::trackDesignsManager || autoloadScenery)
     {
         TrackDesignLoadSceneryObjects(td);
     }
@@ -2138,12 +2138,12 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
         zoom_level = ZoomLevel{ 3 };
     }
 
-    size_x = zoom_level.ApplyTo(370);
-    size_y = zoom_level.ApplyTo(217);
+    size_x = zoom_level.ApplyTo(kTrackPreviewWidth);
+    size_y = zoom_level.ApplyTo(kTrackPreviewHeight);
 
     Viewport view;
-    view.width = 370;
-    view.height = 217;
+    view.width = kTrackPreviewWidth;
+    view.height = kTrackPreviewHeight;
     view.pos = { 0, 0 };
     view.zoom = zoom_level;
     view.flags = ViewportFlags(ViewportFlag::hideBase, ViewportFlag::hideEntities);
@@ -2151,8 +2151,8 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
     RenderTarget rt;
     rt.x = 0;
     rt.y = 0;
-    rt.width = 370;
-    rt.height = 217;
+    rt.width = kTrackPreviewWidth;
+    rt.height = kTrackPreviewHeight;
     rt.pitch = 0;
     rt.bits = pixels.data();
 
