@@ -260,10 +260,10 @@ if(MACOS_BUNDLE)
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/Info.plist
         RESOURCE "${BUNDLE_RESOURCES}")
 
-
+    # Collect and fix up shared library dependencies
     install(CODE "
         include(BundleUtilities)
         fixup_bundle(${CMAKE_BINARY_DIR}/${MACOS_APP_NAME} \"\" \"\")
-        "  BUNDLE DESTINATION ${CMAKE_BINARY_DIR}
+        "
     )
 endif ()
