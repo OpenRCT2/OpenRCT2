@@ -21,7 +21,7 @@ namespace OpenRCT2::SawyerCoding
     size_t DecodeSV4(const uint8_t* src, uint8_t* dst, size_t length, size_t bufferLength);
     size_t DecodeSC4(const uint8_t* src, uint8_t* dst, size_t length, size_t bufferLength);
     size_t EncodeSV4(const uint8_t* src, uint8_t* dst, size_t length);
-    size_t DecodeTD6(const uint8_t* src, uint8_t* dst, size_t length);
+    size_t DecodeTD467(const uint8_t* src, uint8_t* dst, size_t length);
     size_t EncodeTD6(const uint8_t* src, uint8_t* dst, size_t length);
     int32_t ValidateTrackChecksum(const uint8_t* src, size_t length);
     size_t EncodeChunkRLE(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);

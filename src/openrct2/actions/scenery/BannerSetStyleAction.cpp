@@ -78,6 +78,12 @@ namespace OpenRCT2::GameActions
         }
 
         BannerElement* bannerElement = tileElement->asBanner();
+        if (bannerElement == nullptr)
+        {
+            LOG_ERROR("Tile element was not a banner.");
+            return Result(Status::unknown, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+        }
+
         CoordsXYZ loc = { banner->position.toCoordsXY(), bannerElement->getBaseZ() };
 
         if (!LocationValid(loc))
@@ -107,11 +113,6 @@ namespace OpenRCT2::GameActions
                 }
                 break;
             case BannerSetStyleType::noEntry:
-                if (tileElement->asBanner() == nullptr)
-                {
-                    LOG_ERROR("Tile element was not a banner.");
-                    return Result(Status::unknown, STR_CANT_RENAME_BANNER, kStringIdNone);
-                }
                 break;
             default:
                 LOG_ERROR("Invalid banner style type %u", _type);
