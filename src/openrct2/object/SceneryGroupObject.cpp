@@ -36,12 +36,12 @@ namespace OpenRCT2
 
     void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, STREAM_SEEK_CURRENT);
-        stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
-        stream->Seek(1, STREAM_SEEK_CURRENT); // entry_count
-        stream->Seek(1, STREAM_SEEK_CURRENT); // Pad107;
+        stream->Seek(6, StreamSeekOrigin::current);
+        stream->Seek(0x80 * 2, StreamSeekOrigin::current);
+        stream->Seek(1, StreamSeekOrigin::current); // entry_count
+        stream->Seek(1, StreamSeekOrigin::current); // Pad107;
         _legacyType.priority = stream->ReadValue<uint8_t>();
-        stream->Seek(1, STREAM_SEEK_CURRENT); // Pad109;
+        stream->Seek(1, StreamSeekOrigin::current); // Pad109;
         _legacyType.entertainer_costumes = stream->ReadValue<uint32_t>();
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
@@ -134,7 +134,7 @@ namespace OpenRCT2
         auto items = std::vector<ObjectEntryDescriptor>();
         while (stream->ReadValue<uint8_t>() != 0xFF)
         {
-            stream->Seek(-1, STREAM_SEEK_CURRENT);
+            stream->Seek(-1, StreamSeekOrigin::current);
             auto entry = stream->ReadValue<RCTObjectEntry>();
             items.emplace_back(entry);
         }
