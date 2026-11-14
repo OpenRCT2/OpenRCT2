@@ -441,6 +441,7 @@ namespace OpenRCT2
         [[nodiscard]] std::string getName() const;
         bool setName(std::string_view value);
         bool isActionWalking() const;
+        bool isSmoothTurning() const;
         bool isActionIdle() const;
         bool isActionInterruptable() const;
         bool isActionInterruptableSafely() const;

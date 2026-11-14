@@ -40,4 +40,4 @@ struct BaseImageAndOffset
     OpenRCT2::PeepAnimationType actionAnimationGroup;
 };
 
-BaseImageAndOffset PaintPeepGetBaseImageAndOffset(const OpenRCT2::Peep& peep, Direction direction);
+BaseImageAndOffset PaintPeepGetBaseImageAndOffset(const OpenRCT2::Peep& peep, uint8_t imageDirection);

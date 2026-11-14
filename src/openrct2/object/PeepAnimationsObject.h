@@ -50,6 +50,7 @@ namespace OpenRCT2
         std::string_view GetScriptName(PeepAnimationGroup animGroup) const;
 
         bool IsSlowWalking(PeepAnimationGroup animGroup) const;
+        bool IsSmoothTurning(PeepAnimationGroup animGroup) const;
 
         bool ShouldExcludeFromRandomPlacement() const
         {
