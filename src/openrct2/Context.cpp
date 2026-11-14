@@ -24,6 +24,7 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
+#include "StartupHelpers.h"
 #include "Version.h"
 #include "actions/GameActionRunner.h"
 #include "audio/Audio.h"
@@ -1020,6 +1021,7 @@ namespace OpenRCT2
 
         void SwitchToStartUpScene()
         {
+            StringId message = kStringIdNone;
             if (gOpenRCT2Headless)
             {
                 // NONE or OPEN are the only allowed actions for headless mode
@@ -1074,30 +1076,37 @@ namespace OpenRCT2
                             break;
                         }
 #endif
+                        nextScene = _sceneManager->getGameScene();
                     }
                     else
                     {
+                        StartupOpenResult result;
                         try
                         {
-                            if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
-                            {
-                                nextScene = _sceneManager->getTitleScene();
-                                break;
-                            }
+                            result = loadStartupFile(*this, *_env, gOpenRCT2StartupActionPath);
                         }
                         catch (const std::exception& ex)
                         {
-                            Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            Console::Error::WriteLine("%s", ex.what());
-                            nextScene = _sceneManager->getTitleScene();
-                            break;
+                            LOG_ERROR("Unable to open %s: %s", gOpenRCT2StartupActionPath, ex.what());
+                            result = { StartupOpenStatus::fileOpenFailure };
                         }
 
-                        rememberStartUpParkDirectory();
+                        switch (result.status)
+                        {
+                            case StartupOpenStatus::fileOpenFailure:
+                                Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
+                                nextScene = _sceneManager->getTitleScene();
+                                break;
+                            case StartupOpenStatus::loadedParkFile:
+                                rememberStartUpParkDirectory();
+                                nextScene = _sceneManager->getGameScene();
+                                break;
+                            case StartupOpenStatus::installedContent:
+                                nextScene = _sceneManager->getTitleScene();
+                                break;
+                        }
+                        message = result.message;
                     }
-
-                    // Successfully loaded a file
-                    nextScene = _sceneManager->getGameScene();
                     break;
                 }
 
@@ -1128,6 +1137,8 @@ namespace OpenRCT2
 
             _sceneManager->setActiveScene(nextScene);
             InitNetworkGame(nextScene == _sceneManager->getGameScene());
+            if (message != kStringIdNone)
+                ContextShowError(message, kStringIdNone, {});
         }
 
         void InitNetworkGame(bool isGameScene)
