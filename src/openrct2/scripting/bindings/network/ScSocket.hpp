@@ -120,11 +120,11 @@ namespace OpenRCT2::Scripting
 
     struct SocketData final : SocketDataBase
     {
-        static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
-        static constexpr uint32_t EVENT_CLOSE = 0;
-        static constexpr uint32_t EVENT_DATA = 1;
-        static constexpr uint32_t EVENT_CONNECT_ONCE = 2;
-        static constexpr uint32_t EVENT_ERROR = 3;
+        static constexpr uint32_t kEventNone = std::numeric_limits<uint32_t>::max();
+        static constexpr uint32_t kEventClose = 0;
+        static constexpr uint32_t kEventData = 1;
+        static constexpr uint32_t kEventConnectOnce = 2;
+        static constexpr uint32_t kEventError = 3;
 
         bool _connecting{};
         bool _wasConnected{};
@@ -153,24 +153,24 @@ namespace OpenRCT2::Scripting
         void RaiseOnClose(bool hadError)
         {
             JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
-            _eventList.Raise(EVENT_CLOSE, _plugin, { JS_NewBool(ctx, hadError) }, false);
+            _eventList.Raise(kEventClose, _plugin, { JS_NewBool(ctx, hadError) }, false);
         }
 
         void RaiseOnData(std::string_view data)
         {
             JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
-            _eventList.Raise(EVENT_DATA, _plugin, { JSFromStdString(ctx, data) }, false);
+            _eventList.Raise(kEventData, _plugin, { JSFromStdString(ctx, data) }, false);
         }
 
         static uint32_t GetEventType(std::string_view name)
         {
             if (name == "close")
-                return EVENT_CLOSE;
+                return kEventClose;
             if (name == "data")
-                return EVENT_DATA;
+                return kEventData;
             if (name == "error")
-                return EVENT_ERROR;
-            return EVENT_NONE;
+                return kEventError;
+            return kEventNone;
         }
 
         void Update() override
@@ -187,8 +187,8 @@ namespace OpenRCT2::Scripting
                     {
                         _connecting = false;
                         _wasConnected = true;
-                        _eventList.Raise(EVENT_CONNECT_ONCE, _plugin, {}, false);
-                        _eventList.RemoveAllListeners(EVENT_CONNECT_ONCE);
+                        _eventList.Raise(kEventConnectOnce, _plugin, {}, false);
+                        _eventList.RemoveAllListeners(kEventConnectOnce);
                     }
                     else if (status == Network::SocketStatus::closed)
                     {
@@ -201,7 +201,7 @@ namespace OpenRCT2::Scripting
                             err = "";
                         }
                         auto jsErr = JSFromStdString(ctx, std::string_view(err));
-                        _eventList.Raise(EVENT_ERROR, _plugin, { jsErr }, true);
+                        _eventList.Raise(kEventError, _plugin, { jsErr }, true);
                     }
                 }
                 else if (status == Network::SocketStatus::connected)
@@ -310,7 +310,7 @@ namespace OpenRCT2::Scripting
                     data->_socket->ConnectAsync(host, port);
                     if (JS_IsFunction(ctx, argv[2]))
                     {
-                        data->_eventList.AddListener(SocketData::EVENT_CONNECT_ONCE, JSCallback(ctx, argv[2]));
+                        data->_eventList.AddListener(SocketData::kEventConnectOnce, JSCallback(ctx, argv[2]));
                     }
                     data->_connecting = true;
                 }
@@ -395,7 +395,7 @@ namespace OpenRCT2::Scripting
                 return JS_ThrowInternalError(ctx, "Invalid socket");
 
             auto eventId = SocketData::GetEventType(eventType);
-            if (eventId != SocketData::EVENT_NONE)
+            if (eventId != SocketData::kEventNone)
             {
                 data->_eventList.AddListener(eventId, callback);
             }
@@ -412,7 +412,7 @@ namespace OpenRCT2::Scripting
                 return JS_ThrowInternalError(ctx, "Invalid socket");
 
             auto eventId = SocketData::GetEventType(eventType);
-            if (eventId != SocketData::EVENT_NONE)
+            if (eventId != SocketData::kEventNone)
             {
                 data->_eventList.RemoveListener(eventId, callback);
             }
@@ -461,8 +461,8 @@ namespace OpenRCT2::Scripting
 
     struct ListenerData final : SocketDataBase
     {
-        static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
-        static constexpr uint32_t EVENT_CONNECTION = 0;
+        static constexpr uint32_t kEventNone = std::numeric_limits<uint32_t>::max();
+        static constexpr uint32_t kEventConnection = 0;
 
         ~ListenerData() override
         {
@@ -487,7 +487,7 @@ namespace OpenRCT2::Scripting
 
                     JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
                     auto clientSocket = gScSocket.New(ctx, _plugin, std::move(client));
-                    _eventList.Raise(EVENT_CONNECTION, _plugin, { clientSocket }, false);
+                    _eventList.Raise(kEventConnection, _plugin, { clientSocket }, false);
                 }
             }
         }
@@ -602,7 +602,7 @@ namespace OpenRCT2::Scripting
                 return JS_ThrowInternalError(ctx, "Invalid listener");
 
             auto eventId = GetEventType(eventType);
-            if (eventId != ListenerData::EVENT_NONE)
+            if (eventId != ListenerData::kEventNone)
             {
                 data->_eventList.AddListener(eventId, callback);
             }
@@ -619,7 +619,7 @@ namespace OpenRCT2::Scripting
                 return JS_ThrowInternalError(ctx, "Invalid listener");
 
             auto eventId = GetEventType(eventType);
-            if (eventId != ListenerData::EVENT_NONE)
+            if (eventId != ListenerData::kEventNone)
             {
                 data->_eventList.RemoveListener(eventId, callback);
             }
@@ -629,8 +629,8 @@ namespace OpenRCT2::Scripting
         static uint32_t GetEventType(std::string_view name)
         {
             if (name == "connection")
-                return ListenerData::EVENT_CONNECTION;
-            return ListenerData::EVENT_NONE;
+                return ListenerData::kEventConnection;
+            return ListenerData::kEventNone;
         }
 
     public:
