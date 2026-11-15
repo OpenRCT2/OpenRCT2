@@ -14,6 +14,7 @@
 #include "../audio/Audio.h"
 #include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
+#include "../audio/ManagedSounds.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../object/AudioObject.h"
@@ -363,18 +364,6 @@ namespace OpenRCT2::RideAudio
         }
     }
 
-    static uint8_t CalculateVolume(int32_t pan)
-    {
-        uint8_t result = 255;
-        int32_t v = std::min(std::abs(pan), 6143) - 2048;
-        if (v > 0)
-        {
-            v = -((v / 4) - 1024) / 4;
-            result = static_cast<uint8_t>(std::clamp(v, 0, 255));
-        }
-        return result;
-    }
-
     /**
      * Register an instance of audible ride music for this frame at the given coordinates.
      */
@@ -382,50 +371,15 @@ namespace OpenRCT2::RideAudio
     {
         if (gLegacyScene != LegacyScene::scenarioEditor && !gGameSoundsOff && gMusicTrackingViewport != nullptr)
         {
-            auto rotatedCoords = Translate3DTo2DWithZ(GetCurrentRotation(), rideCoords);
-            auto viewport = gMusicTrackingViewport;
-            auto viewWidth = viewport->ViewWidth();
-            auto viewWidth2 = viewWidth * 2;
-            auto viewX = viewport->viewPos.x - viewWidth2;
-            auto viewY = viewport->viewPos.y - viewWidth;
-            auto viewX2 = viewWidth2 + viewWidth2 + viewport->ViewWidth() + viewX;
-            auto viewY2 = viewWidth + viewWidth + viewport->ViewHeight() + viewY;
-            if (viewX >= rotatedCoords.x || viewY >= rotatedCoords.y || viewX2 < rotatedCoords.x || viewY2 < rotatedCoords.y)
+            int16_t volume{};
+            int16_t pan{};
+            if (ManagedSounds::GetMusicLocationParams(rideCoords, volume, pan))
             {
-                RideUpdateMusicPosition(ride);
+                RideUpdateMusicPosition(ride, volume, pan, sampleRate);
             }
             else
             {
-                auto x2 = (viewport->pos.x + viewport->zoom.ApplyInversedTo(rotatedCoords.x - viewport->viewPos.x)) * 0x10000;
-                auto screenWidth = std::max(ContextGetWidth(), 64);
-                auto panX = ((x2 / screenWidth) - 0x8000) >> 4;
-
-                auto y2 = (viewport->pos.y + viewport->zoom.ApplyInversedTo(rotatedCoords.y - viewport->viewPos.y)) * 0x10000;
-                auto screenHeight = std::max(ContextGetHeight(), 64);
-                auto panY = ((y2 / screenHeight) - 0x8000) >> 4;
-
-                auto volX = CalculateVolume(panX);
-                auto volY = CalculateVolume(panY);
-                auto volXY = std::min(volX, volY);
-                if (volXY < gVolumeAdjustZoom * 3)
-                {
-                    volXY = 0;
-                }
-                else
-                {
-                    volXY = volXY - (gVolumeAdjustZoom * 3);
-                }
-
-                int16_t newVolume = -((static_cast<uint8_t>(-volXY - 1) * static_cast<uint8_t>(-volXY - 1)) / 16) - 700;
-                if (volXY != 0 && newVolume >= -4000)
-                {
-                    auto newPan = std::clamp(panX, -10000, 10000);
-                    RideUpdateMusicPosition(ride, newVolume, newPan, sampleRate);
-                }
-                else
-                {
-                    RideUpdateMusicPosition(ride);
-                }
+                RideUpdateMusicPosition(ride);
             }
         }
     }

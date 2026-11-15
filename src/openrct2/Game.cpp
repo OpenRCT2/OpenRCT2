@@ -21,6 +21,7 @@
 #include "actions/general/GameSetSpeedAction.h"
 #include "actions/general/LoadOrQuitAction.h"
 #include "audio/Audio.h"
+#include "audio/ManagedSounds.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/File.h"
@@ -136,6 +137,8 @@ void PauseToggle()
     {
         Audio::StopAll();
     }
+
+    Audio::ManagedSounds::SetPaused((gGamePaused & GAME_PAUSED_NORMAL) != 0);
 }
 
 bool GameIsPaused()

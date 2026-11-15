@@ -19,6 +19,7 @@
     #include "../actions/scenery/BannerPlaceAction.h"
     #include "../actions/scenery/LargeSceneryPlaceAction.h"
     #include "../actions/scenery/WallPlaceAction.h"
+    #include "../audio/ManagedSounds.h"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
     #include "../core/EnumMap.hpp"
@@ -41,6 +42,7 @@
     #include "bindings/game/ScCheats.hpp"
     #include "bindings/game/ScConsole.hpp"
     #include "bindings/game/ScContext.hpp"
+    #include "bindings/game/ScAudio.hpp"
     #include "bindings/game/ScDisposable.hpp"
     #include "bindings/game/ScPlugin.hpp"
     #include "bindings/game/ScProfiler.hpp"
@@ -515,6 +517,7 @@ ScWeatherState Scripting::gScWeatherState;
 ScConfiguration Scripting::gScConfiguration;
 ScConsole Scripting::gScConsole;
 ScContext Scripting::gScContext;
+ScAudio Scripting::gScAudio;
 ScDate Scripting::gScDate;
 ScDisposable Scripting::gScDisposable;
 ScMap Scripting::gScMap;
@@ -564,6 +567,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScConfiguration.Register(ctx);
     gScConsole.Register(ctx);
     gScContext.Register(ctx);
+    gScAudio.Register(ctx);
     gScDate.Register(ctx);
     gScDisposable.Register(ctx);
     gScMap.Register(ctx);
@@ -627,6 +631,7 @@ void ScriptEngine::UnregisterClasses()
     gScConfiguration.Unregister();
     gScConsole.Unregister();
     gScContext.Unregister();
+    gScAudio.Unregister();
     gScDate.Unregister();
     gScDisposable.Unregister();
     gScMap.Unregister();
@@ -704,6 +709,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     JS_SetPropertyStr(ctx, glb, "climate", gScWeather.New(ctx));
     JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
     JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));
+    JS_SetPropertyStr(ctx, glb, "audio", gScAudio.New(ctx));
     JS_SetPropertyStr(ctx, glb, "date", gScDate.New(ctx));
     JS_SetPropertyStr(ctx, glb, "map", gScMap.New(ctx));
     JS_SetPropertyStr(ctx, glb, "network", gScNetwork.New(ctx));
@@ -1210,6 +1216,7 @@ void ScriptEngine::Tick()
     UpdateSockets();
     ProcessREPL();
     DoAutoReloadPluginCheck();
+    Audio::ManagedSounds::Update();
 }
 
 void ScriptEngine::CheckAndStartPlugins()
