@@ -570,6 +570,8 @@ namespace OpenRCT2::Scripting
                 return ScMoneyEffect::New(ctx, spriteId);
             case EntityType::crashedVehicleParticle:
                 return ScCrashedVehicleParticle::New(ctx, spriteId);
+            case EntityType::duck:
+                return ScDuck::New(ctx, spriteId);
             default:
                 return ScEntity::New(ctx, spriteId);
         }

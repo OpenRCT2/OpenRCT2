@@ -86,5 +86,6 @@ namespace OpenRCT2
         void updateDrink();
         void updateDoubleDrink();
         void updateFlyAway();
+        void advanceFrozenAnimation();
     };
 } // namespace OpenRCT2

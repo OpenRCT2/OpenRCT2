@@ -70,22 +70,28 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         kDuckAnimationFlyAway,     //  DuckState::FlyAway,
     };
 
-    namespace
+    void Duck::advanceFrozenAnimation()
     {
-        void AdvanceFrozenAnimation(Duck& duck)
+        if ((getGameState().currentTicks & 3) != 0
+            && (getState() != DuckState::drink && getState() != DuckState::doubleDrink))
+            return;
+
+        if (getState() == DuckState::flyToWater)
         {
-            if ((getGameState().currentTicks & 3) != 0)
-                return;
-
-            const auto length = Duck::getAnimationLength(duck.getState());
-            if (length == 0)
-                return;
-
-            duck.frame++;
-            duck.frame %= static_cast<uint16_t>(length);
-            duck.invalidate();
+            // While frozen, flying to water only alternates between frames 1 and 2 (the landing flap).
+            frame = frame == 1 ? 2 : 1;
+            invalidate();
+            return;
         }
-    } // namespace
+
+        const auto length = Duck::getAnimationLength(getState());
+        if (length == 0)
+            return;
+
+        frame++;
+        frame %= static_cast<uint16_t>(length);
+        invalidate();
+    }
 
     size_t Duck::getAnimationLength(DuckState state)
     {
@@ -369,7 +375,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         {
             if (!getAnimationFrozen())
             {
-                AdvanceFrozenAnimation(*this);
+                advanceFrozenAnimation();
             }
             return;
         }

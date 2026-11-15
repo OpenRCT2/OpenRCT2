@@ -1768,6 +1768,7 @@ declare global {
         getAllEntities(type: "litter"): Litter[];
         getAllEntities(type: "balloon"): Balloon[];
         getAllEntities(type: "money_effect"): MoneyEffect[];
+        getAllEntities(type: "duck"): Duck[];
         getAllEntitiesOnTile(type: EntityType, tilePos: CoordsXY): Entity[];
         getAllEntitiesOnTile(type: "guest", tilePos: CoordsXY): Guest[];
         getAllEntitiesOnTile(type: "staff", tilePos: CoordsXY): Staff[];
@@ -1775,6 +1776,7 @@ declare global {
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         getAllEntitiesOnTile(type: "balloon", tilePos: CoordsXY): Balloon[];
         getAllEntitiesOnTile(type: "money_effect", tilePos: CoordsXY): MoneyEffect[];
+        getAllEntitiesOnTile(type: "duck", tilePos: CoordsXY): Duck[];  
         createEntity(type: EntityType, initializer: object): Entity;
 
         /**
@@ -4094,8 +4096,8 @@ declare global {
         positionFrozen: boolean;
 
         /**
-         * Whether the duck's animation is frozen. The duck's sprite will not update, but it
-         * may still move unless `positionFrozen` is also set.
+         * Whether the duck's animation is frozen. The duck's sprite will not update.
+         * Requires position to be frozen as well, otherwise the flag will be cleared again.
          */
         animationFrozen: boolean;
 

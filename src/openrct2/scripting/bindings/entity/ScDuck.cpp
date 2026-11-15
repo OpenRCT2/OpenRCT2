@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2026 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
 #ifdef ENABLE_SCRIPTING
 
     #include "ScDuck.hpp"
@@ -45,7 +54,7 @@ namespace OpenRCT2::Scripting
         gScDuck.RegisterDerived(ctx, gScEntity, kFuncs);
     }
 
-    Duck* ScDuck::GetDuck(JSValue thisVal)
+    Duck* ScDuck::getDuck(JSValue thisVal)
     {
         auto id = GetEntityId(thisVal);
         return getGameState().entities.getEntity<Duck>(id);
@@ -53,7 +62,7 @@ namespace OpenRCT2::Scripting
 
     JSValue ScDuck::positionFrozen_get(JSContext* ctx, JSValue thisVal)
     {
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         return JS_NewBool(ctx, duck != nullptr && duck->getPositionFrozen());
     }
 
@@ -61,7 +70,7 @@ namespace OpenRCT2::Scripting
     {
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         if (duck != nullptr)
         {
             duck->setPositionFrozen(value);
@@ -71,7 +80,7 @@ namespace OpenRCT2::Scripting
 
     JSValue ScDuck::animationFrozen_get(JSContext* ctx, JSValue thisVal)
     {
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         return JS_NewBool(ctx, duck != nullptr && duck->getAnimationFrozen());
     }
 
@@ -79,7 +88,7 @@ namespace OpenRCT2::Scripting
     {
         JS_UNPACK_BOOL(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         if (duck != nullptr)
         {
             duck->setAnimationFrozen(value);
@@ -89,7 +98,7 @@ namespace OpenRCT2::Scripting
 
     JSValue ScDuck::orientation_get(JSContext* ctx, JSValue thisVal)
     {
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         return JS_NewUint32(ctx, duck != nullptr ? duck->orientation : 0);
     }
 
@@ -97,7 +106,7 @@ namespace OpenRCT2::Scripting
     {
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         if (duck != nullptr)
         {
             duck->orientation = static_cast<uint8_t>(std::min<uint32_t>(value, 31));
@@ -108,7 +117,7 @@ namespace OpenRCT2::Scripting
 
     JSValue ScDuck::animationFrame_get(JSContext* ctx, JSValue thisVal)
     {
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         return JS_NewUint32(ctx, duck != nullptr ? duck->frame : 0);
     }
 
@@ -116,7 +125,7 @@ namespace OpenRCT2::Scripting
     {
         JS_UNPACK_UINT32(value, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         if (duck != nullptr)
         {
             const auto length = Duck::getAnimationLength(duck->getState());
@@ -131,7 +140,7 @@ namespace OpenRCT2::Scripting
 
     JSValue ScDuck::animation_get(JSContext* ctx, JSValue thisVal)
     {
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         if (duck == nullptr)
         {
             return JSFromStdString(ctx, "");
@@ -151,7 +160,7 @@ namespace OpenRCT2::Scripting
             return JS_EXCEPTION;
         }
 
-        auto duck = GetDuck(thisVal);
+        auto duck = getDuck(thisVal);
         if (duck != nullptr)
         {
             duck->setState(*newState);
