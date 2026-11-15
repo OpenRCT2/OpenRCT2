@@ -72,8 +72,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
 
     void Duck::advanceFrozenAnimation()
     {
-        if ((getGameState().currentTicks & 3) != 0
-            && (getState() != DuckState::drink && getState() != DuckState::doubleDrink))
+        if ((getGameState().currentTicks & 3) != 0 && (getState() != DuckState::drink && getState() != DuckState::doubleDrink))
             return;
 
         if (getState() == DuckState::flyToWater)
