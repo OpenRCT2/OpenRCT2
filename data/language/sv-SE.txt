@@ -138,7 +138,7 @@ STR_0556    :Extra breda vagnar åker utför på helt lodräta spår för den ul
 STR_0557    :En bankomat besökarna kan använda om plånboken börjar sina
 STR_0558    :Passagerarna åker parvis i stolar som snurrar kring ändarna på tre långa roterande armar
 STR_0559    :Stor scenisk byggnad med skräckinjagande korridorer och kusliga rum
-STR_0560    :En plats dit krassliga besökare kan gå för at återhämta sig snabbare
+STR_0560    :En plats dit sjuka besökare kan gå för att återhämta sig snabbare
 STR_0561    :En djurföreställning i ett stort cirkustält
 STR_0562    :Motordrivna monsterformade vagnar som åker längs ett flernivåspår förbi spöklika scener och specialeffekter
 STR_0563    :Sittandes i bekväma vagnar njuter passagerare av enorma nedförsbackar och spännande svängar, samt mycket tid flygandes över topparna
@@ -160,10 +160,10 @@ STR_0581    :En ring med säten dras upp till toppen av ett högt torn medan det
 STR_0582    :Gästerna åker i svävare som de styr fritt
 STR_0583    :Byggnad med förvrängda rum och vinklade korridorer för att förvilla människorna som går igenom den
 STR_0584    :Speciella cyklar som passagerarna själva trampar fram längs en stålskensbana
-STR_0585    :Passagerarna sitter i par med ansiktena antingen bakåt eller framåt då de åker genom loopar och skruvar med snabba omkastningar
+STR_0585    :Passagerarna sitter parvis i säten som hänger under spåret medan de åker genom snäva loopar och skruvar.
 STR_0586    :Båtformade vagnar åker på berg- och dalbanespår med snurriga svängar och branta nedförsbackar, men plumsar då och då ner i lugna vattensektioner
 STR_0587    :Efter en luftdriven snabbstart susar vagnarna uppför och nedför en vertikal bana innan de återvänder till stationen
-STR_0588    :Vagnarna kör på ett träspår och lutar farligt då de korsar hårnålssvängar och gör skarpa dyk
+STR_0588    :Enskilda vagnar kör under ett sicksackformat spår med hårnålssvängar och skarpa fall.
 STR_0589    :En stor flygande matta som upprepande svängs upp i luften på fyra armar
 STR_0590    :Passagerarna åker i en nedsänkt ubåt genom en undervattensbana
 STR_0591    :Flottformade båtar som lugnt snirklar sig runt ett flodspår
@@ -571,7 +571,7 @@ STR_1199    :{COMMA16} person på åkturen
 STR_1200    :{COMMA16} personer på åkturen
 STR_1201    :Ingen i kön
 STR_1202    :1 person i kön
-STR_1203    :{COMMA16} personer i kön
+STR_1203    :{COMMA32} personer i kön
 STR_1204    :{COMMA16} minut kötid
 STR_1205    :{COMMA16} minuter kötid
 STR_1206    :{WINDOW_COLOUR_2}Vänta på:
@@ -689,8 +689,8 @@ STR_1317    :{COMMA16} spelare
 STR_1318    :{COMMA16} spelare
 STR_1319    :Spelare {COMMA16}
 STR_1320    :bana
-STR_1321    :bana
-STR_1322    :Banor
+STR_1321    :banor
+STR_1322    :Bana
 STR_1323    :Banor
 STR_1324    :{COMMA16} bana
 STR_1325    :{COMMA16} banor
@@ -1688,7 +1688,7 @@ STR_2378    :Justera ett mindre landområde
 STR_2379    :Justera ett större landområde
 STR_2380    :Justera ett mindre vattenområde
 STR_2381    :Justera ett större vattenområde
-STR_2382    :Land
+STR_2382    :Mark
 STR_2383    :Vatten
 STR_2384    :{WINDOW_COLOUR_2}Ditt uppdrag:
 STR_2385    :{BLACK}Inget
@@ -1820,11 +1820,11 @@ STR_2523    :Visa karta
 STR_2524    :Skärmdump
 STR_2533    :Backsteg
 STR_2534    :Tabb
-STR_2537    :Clear
+STR_2537    :Rensa
 STR_2538    :Retur
 STR_2543    :Alt / Meny
-STR_2544    :Pause
-STR_2545    :Caps
+STR_2544    :Paus
+STR_2545    :Caps Lock
 STR_2552    :Escape
 STR_2557    :Mellanslag
 STR_2558    :PgUp
@@ -1835,13 +1835,13 @@ STR_2562    :Vänster
 STR_2563    :Upp
 STR_2564    :Höger
 STR_2565    :Ner
-STR_2566    :Select
-STR_2567    :Print
-STR_2568    :Execute
-STR_2569    :Snapshot
-STR_2570    :Insert
-STR_2571    :Delete
-STR_2572    :Help
+STR_2566    :Välj
+STR_2567    :Skriv ut
+STR_2568    :Kör
+STR_2569    :Skärmbild
+STR_2570    :Infoga
+STR_2571    :Ta bort
+STR_2572    :Hjälp
 STR_2618    :Meny
 STR_2621    :NumPad 0
 STR_2622    :NumPad 1
@@ -2398,7 +2398,7 @@ STR_5189    :Forskning
 STR_5190    :Karta
 STR_5191    :Bildskärm
 STR_5192    :Senaste nyheter
-STR_5193    :Land
+STR_5193    :Mark
 STR_5194    :Vatten
 STR_5195    :Rensa land
 STR_5196    :Landrättigheter
@@ -2790,7 +2790,7 @@ STR_5724    :Åska
 STR_5725    :{BLACK}Ändra väder till:
 STR_5726    :Sätter vädret i parken
 # tooltip for tab in options window
-STR_5734    :Rendering
+STR_5734    :Återgivning
 STR_5735    :Nätverksstatus
 STR_5736    :Spelare
 STR_5737    :Stängd, {COMMA16} person fortfarande på åkturen
@@ -3405,10 +3405,10 @@ STR_6408    :Installera först ”innoextract” för att kunna packa ut GOG-ins
 STR_6409    :Den valda filen är inte GOG offline-installationsfilen för RollerCoaster Tycoon 2. Du kan ha valt GOG Galaxy-nedladdningsfilen eller en felaktig fil.
 STR_6410    :Zooma in/ut
 STR_6411    :Visa knappar för att zooma in och ut i verktygsfältet
-STR_6412    :NumPad Enter
-STR_6413    :Shift
-STR_6414    :L Shift
-STR_6415    :R Shift
+STR_6412    :Numeriskt Enter
+STR_6413    :Skift
+STR_6414    :Vänster Skift
+STR_6415    :Höger Skift
 STR_6416    :Ctrl
 STR_6417    :L Ctrl
 STR_6418    :R Ctrl
@@ -3418,14 +3418,14 @@ STR_6421    :Alt gr
 STR_6422    :Cmd
 STR_6423    :L Cmd
 STR_6424    :R Cmd
-STR_6425    :Joy Left
-STR_6426    :Joy Right
-STR_6427    :Joy Up
-STR_6428    :Joy Down
-STR_6429    :Joy {INT32}
+STR_6425    :Styrspak vänster
+STR_6426    :Styrspak höger
+STR_6427    :Styrspak upp
+STR_6428    :Styrspak ned
+STR_6429    :Styrspak {INT32}
 STR_6430    :LMB
 STR_6431    :RMB
-STR_6432    :Mouse {INT32}
+STR_6432    :Mus {INT32}
 STR_6433    :Ta bort
 STR_6434    :Ta bort alla tangentbindningar till denna genväg.
 STR_6435    :{WINDOW_COLOUR_2}Stoppade skadegörelser: {BLACK}{COMMA32}
@@ -3522,7 +3522,7 @@ STR_6526    :(grundläggande grafik, musik och ljudeffekter)
 STR_6527    :Tävlingar
 STR_6528    :Ogiltiga spårparametrar!
 STR_6529    :Ogiltig färgschemaparameter!
-STR_6530    :User Created Expansion Set
+STR_6530    :Användarskapat expansionspaket
 STR_6531    :Tidsmaskinen
 STR_6532    :Katys drömvärld
 STR_6533    :{WINDOW_COLOUR_2}Spänningsfaktor: {BLACK}-{COMMA16}%
@@ -3665,7 +3665,7 @@ STR_6669    :Visa personal fusk
 STR_6670    :Gästbeteende
 STR_6671    :Visa “riktiga” namn på personal
 STR_6672    :Växla mellan att visa “riktiga” namn och personalnummer
-STR_6673    :Transparent
+STR_6673    :Genomskinlig
 STR_6674    :{MONTH}, År {COMMA16}
 STR_6675    :Peep-namn
 STR_6676    :Minst ett peep-namns objekt måste vara valt
@@ -3760,7 +3760,7 @@ STR_6764    :Sparande och autospar
 STR_6765    :Avancerat
 STR_6766    :Rensa
 STR_6767    :Fönster
-STR_6768    :Rendering
+STR_6768    :Återgivning
 STR_6769    :Beteende
 STR_6770    :Bildfrekvensgräns:
 STR_6771    :Intern hastighet (standard)
@@ -3825,3 +3825,46 @@ STR_7035    :Affärsstil
 STR_7036    :Fordonsstil
 STR_7037    :Körläge
 STR_7038    :väntetid och last
+STR_7039    :Åkattraktionstyp
+STR_7040    :Tillägg till gångvägar
+STR_7041    :Parkinformationspanel
+STR_7042    :Datuminformationspanel
+STR_7043    :Det går inte att ändra markhöjden här…
+STR_7044    :Nyhetsremsa
+STR_7045    :Statusfält i RCT1-stil
+STR_7046    :Statusfält (RCT1-stil)
+STR_7047    :Stegstyrning (Bandesignern)
+STR_7048    :Stegstyrning (Scenarioredigeraren)
+STR_7049    :OpenRCT2
+STR_7050    :Besökare går
+STR_7051    :Besökare på väg till {STRINGID}
+STR_7052    :Besökare köar till {STRINGID}
+STR_7053    :Besökare drunknar
+STR_7054    :Besökare på {STRINGID}
+STR_7055    :Besökare i {STRINGID}
+STR_7056    :Besökare vid {STRINGID}
+STR_7057    :Besökare sitter
+STR_7058    :Besökare har hämtats upp
+STR_7059    :Besökare tittar på {STRINGID}
+STR_7060    :Besökare tittar på bygget av {STRINGID}
+STR_7061    :Besökare tittar på landskapet
+STR_7062    :Besökare lämnar parken
+STR_7063    :Besökare tittar på när en ny åkattraktion byggs
+STR_7064    :Guld
+STR_7065    :Bärnsten
+STR_7066    :Ametist
+STR_7067    :Sparrisgrön
+STR_7068    :Brun
+STR_7069    :Bränd rosa
+STR_7070    :Kaktusgrön
+STR_7071    :Karamell
+STR_7072    :Koppar
+STR_7073    :Karmosinröd
+STR_7074    :Mörkare vatten
+STR_7075    :Smaragdgrön
+STR_7076    :Indigo
+STR_7077    :Pestogrön
+STR_7078    :Tallgrön
+STR_7079    :Rubinröd
+STR_7080    :Djupblå
+STR_7081    :Silver

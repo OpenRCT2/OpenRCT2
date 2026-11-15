@@ -70,9 +70,9 @@ namespace OpenRCT2::Ui::Windows
     static constexpr uint16_t kDateTimeGap = 2;
 
     static std::vector<LoadSaveListItem> _listItems;
-    static char _directory[MAX_PATH];
-    static char _parentDirectory[MAX_PATH];
-    static char _currentFilename[MAX_PATH];
+    static u8string _directory;
+    static u8string _parentDirectory;
+    static u8string _currentFilename;
     static u8string _extensionPattern;
     static u8string _defaultPath;
     static TrackDesign* _trackDesign;
@@ -162,7 +162,7 @@ namespace OpenRCT2::Ui::Windows
         void PopulateList(const u8string& directory, std::string_view extensionPattern)
         {
             const auto absoluteDirectory = Path::GetAbsolute(directory);
-            String::safeUtf8Copy(_directory, absoluteDirectory.c_str(), std::size(_directory));
+            _directory = absoluteDirectory;
             // Note: This compares the pointers, not values
             _extensionPattern = extensionPattern;
 
@@ -192,32 +192,29 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 // Remove the separator at the end of the path, if present
-                String::safeUtf8Copy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
-                if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
-                    || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
-                    _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
+                _parentDirectory = absoluteDirectory;
+                if (_parentDirectory.ends_with(PATH_SEPARATOR) || _parentDirectory.ends_with('/'))
+                    _parentDirectory.pop_back();
 
                 // Remove everything past the now last separator
-                char* ch = strrchr(_parentDirectory, *PATH_SEPARATOR);
-                char* posix_ch = strrchr(_parentDirectory, '/');
-                ch = ch < posix_ch ? posix_ch : ch;
-                if (ch != nullptr)
+                auto pos = _parentDirectory.find_last_of(PATH_SEPARATOR "/");
+                if (pos != u8string::npos)
                 {
-                    *(ch + 1) = '\0';
+                    _parentDirectory.resize(pos + 1);
                 }
                 else if (drives)
                 {
                     // If on Windows, clear the entire path to show the drives
-                    _parentDirectory[0] = '\0';
+                    _parentDirectory.clear();
                 }
                 else
                 {
                     // Else, go to the root directory
-                    snprintf(_parentDirectory, MAX_PATH, "%c", *PATH_SEPARATOR);
+                    _parentDirectory.assign(PATH_SEPARATOR);
                 }
 
                 // Disable the Up button if the current directory is the root directory
-                setWidgetDisabled(WIDX_PARENT_FOLDER, String::isNullOrEmpty(_parentDirectory) && !drives);
+                setWidgetDisabled(WIDX_PARENT_FOLDER, _parentDirectory.empty() && !drives);
 
                 // Re-enable the "new" button if it was disabled
                 setWidgetDisabled(WIDX_NEW_FOLDER, false);
@@ -553,13 +550,13 @@ namespace OpenRCT2::Ui::Windows
 
             if (isSave)
             {
-                widgets[WIDX_FILENAME_TEXTBOX].string = _currentFilename;
-
                 // Set current filename
-                String::set(_currentFilename, sizeof(_currentFilename), _defaultPath.c_str());
+                _currentFilename = _defaultPath;
+
+                widgets[WIDX_FILENAME_TEXTBOX].string = _currentFilename.c_str();
 
                 // Focus textbox
-                WindowStartTextbox(*this, WIDX_FILENAME_TEXTBOX, _currentFilename, sizeof(_currentFilename));
+                WindowStartTextbox(*this, WIDX_FILENAME_TEXTBOX, _currentFilename, kTextInputSize);
             }
 
             // Populate file list
@@ -809,7 +806,7 @@ namespace OpenRCT2::Ui::Windows
                     u8string path = OpenSystemFileBrowser(isSave, type, _directory, _defaultPath, _trackDesign);
                     if (!path.empty())
                     {
-                        Select(path.c_str(), action, type, _trackDesign);
+                        Select(path, action, type, _trackDesign);
                     }
                     else
                     {
@@ -870,7 +867,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_FILENAME_TEXTBOX:
-                    WindowStartTextbox(*this, widgetIndex, _currentFilename, sizeof(_currentFilename));
+                    WindowStartTextbox(*this, widgetIndex, _currentFilename, kTextInputSize);
                     break;
 
                 case WIDX_SAVE:
@@ -881,7 +878,7 @@ namespace OpenRCT2::Ui::Windows
                     if (File::Exists(path))
                         WindowOverwritePromptOpen(_currentFilename, path, action, type, _trackDesign);
                     else
-                        Select(path.c_str(), action, type, _trackDesign);
+                        Select(path, action, type, _trackDesign);
                 }
             }
         }
@@ -992,12 +989,12 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_FILENAME_TEXTBOX:
                 {
-                    std::string tempText{ text };
-                    const char* cStr = tempText.c_str();
-                    if (strcmp(_currentFilename, cStr) == 0)
-                        return;
-
-                    String::safeUtf8Copy(_currentFilename, cStr, sizeof(_currentFilename));
+                    if (_currentFilename != text)
+                    {
+                        _currentFilename.assign(text);
+                        widgets[WIDX_FILENAME_TEXTBOX].string = _currentFilename.c_str();
+                    }
+                    break;
                 }
             }
         }
@@ -1035,9 +1032,7 @@ namespace OpenRCT2::Ui::Windows
                 numListItems = 0;
                 selectedListItem = -1;
 
-                char directory[MAX_PATH];
-                String::safeUtf8Copy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
-
+                const u8string directory = _listItems[selectedItem].path; // Copy, as PopulateList clears _listItems
                 PopulateList(directory, _extensionPattern);
                 initScrollWidgets();
 
@@ -1046,7 +1041,7 @@ namespace OpenRCT2::Ui::Windows
             else // FileType::file
             {
                 // Load or overwrite
-                String::set(_currentFilename, std::size(_currentFilename), _listItems[selectedItem].name.c_str());
+                _currentFilename = _listItems[selectedItem].name;
                 invalidateWidget(WIDX_FILENAME_TEXTBOX);
 
                 if (action == LoadSaveAction::save)
@@ -1056,7 +1051,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    Select(_listItems[selectedItem].path.c_str(), action, type, _trackDesign);
+                    Select(_listItems[selectedItem].path, action, type, _trackDesign);
                 }
             }
         }

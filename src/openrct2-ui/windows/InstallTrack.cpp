@@ -158,8 +158,8 @@ namespace OpenRCT2::Ui::Windows
             G1Element g1temp = {};
             g1temp.offset = reinterpret_cast<uint8_t*>(
                 _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize));
-            g1temp.width = 370;
-            g1temp.height = 217;
+            g1temp.width = kTrackPreviewWidth;
+            g1temp.height = kTrackPreviewHeight;
             g1temp.flags = { G1Flag::hasTransparency };
             GfxSetG1Element(SPR_TEMP_INSTALL_TRACK, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP_INSTALL_TRACK);

@@ -146,6 +146,7 @@ namespace OpenRCT2
         DefineSubCommand("sprite",          Sprite::kSpriteCommands   ),
         DefineSubCommand("simulate",        kSimulateCommands         ),
         DefineSubCommand("parkinfo",        kParkInfoCommands         ),
+        DefineSubCommand("track",           Track::kTrackCommands     ),
         kCommandTableEnd
     };
 
