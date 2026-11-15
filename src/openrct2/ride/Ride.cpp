@@ -297,14 +297,16 @@ namespace OpenRCT2
     }
 
     // Stops at n: counting all rides reads every ride slot, each ~16 KB apart in memory
-    bool RideCountIsBelow(int32_t n)
+    bool rideCountIsBelow(int32_t n)
     {
         const auto& gameState = getGameState();
         int32_t count = 0;
         for (size_t i = 0; i < gameState.ridesEndOfUsedRange && count < n; i++)
         {
             if (!gameState.rides[i].id.IsNull())
+            {
                 count++;
+            }
         }
         return count < n;
     }
@@ -830,7 +832,9 @@ namespace OpenRCT2
             for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide && stationsLeft > 0; i++)
             {
                 if (stations[i].start.isNull())
+                {
                     continue;
+                }
                 stationsLeft--;
                 RideUpdateStation(*this, StationIndex::FromUnderlying(i));
             }

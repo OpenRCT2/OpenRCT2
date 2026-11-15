@@ -430,7 +430,9 @@ namespace OpenRCT2
         // Keep the allocation for the next tick
         dirty.clear();
         if (_entitySpatialDirty.empty())
+        {
             _entitySpatialDirty.swap(dirty);
+        }
     }
 
     /**
