@@ -321,7 +321,7 @@ namespace OpenRCT2
         }
         else
         {
-            frame = frame == std::numeric_limits<uint16_t>::max() ? frame + 1 : frame;
+            frame = frame == std::numeric_limits<uint16_t>::max() ? 0 : frame;
         }
     }
 
