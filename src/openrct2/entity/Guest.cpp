@@ -1332,7 +1332,7 @@ namespace OpenRCT2
     {
         if (!peepFlags.has(PeepFlag::lost))
         {
-            if (RideCountIsBelow(2))
+            if (rideCountIsBelow(2))
                 return;
             peepFlags.flip(PeepFlag::unknown21);
 

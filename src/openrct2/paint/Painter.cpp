@@ -172,9 +172,11 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, ViewportFlags viewFlags, 
         // Only the quadrants it used last time can be set: clearing all of them (8 KB) for every
         // session, one per viewport column and per mouse pick, adds up on a slow machine.
         if (session->QuadrantBackIndex <= session->QuadrantFrontIndex)
+        {
             std::fill(
                 std::begin(session->Quadrants) + session->QuadrantBackIndex,
                 std::begin(session->Quadrants) + session->QuadrantFrontIndex + 1, nullptr);
+        }
     }
     else
     {
