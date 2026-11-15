@@ -258,7 +258,11 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, OpenRCT2::Ride& ride, co
 // Track design preview
 ///////////////////////////////////////////////////////////////////////////////
 using TrackDesignPreviewBuffer = std::array<OpenRCT2::Drawing::PaletteIndex, kTrackPreviewImageSize * kNumOrthogonalDirections>;
-void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery, bool autoloadScenery = false);
+/**
+ * @return The space required.
+ */
+TileCoordsXY TrackDesignDrawPreview(
+    TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery, bool autoloadScenery = false);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Track design saving

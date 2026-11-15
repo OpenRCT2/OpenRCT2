@@ -2085,8 +2085,10 @@ bool TrackDesignSceneryElement::operator!=(const TrackDesignSceneryElement& rhs)
  *
  *  rct2: 0x006D1EF0
  */
-void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery, bool autoloadScenery)
+TileCoordsXY TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, bool placeScenery, bool autoloadScenery)
 {
+    TileCoordsXY spaceRequired{};
+
     StashMap();
     TrackDesignPreviewClearMap();
 
@@ -2103,7 +2105,8 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
     {
         std::fill(std::begin(pixels), std::end(pixels), PaletteIndex::transparent);
         UnstashMap();
-        return;
+        spaceRequired.setNull();
+        return spaceRequired;
     }
     td.gameStateData = updatedGameStateData;
 
@@ -2113,6 +2116,8 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
     int32_t size_x = tds.previewMax.x - tds.previewMin.x;
     int32_t size_y = tds.previewMax.y - tds.previewMin.y;
     int32_t size_z = tds.previewMax.z - tds.previewMin.z;
+
+    spaceRequired = TileCoordsXY(CoordsXY(size_x + kCoordsXYStep, size_y + kCoordsXYStep));
 
     // Special case for flat rides - Z-axis info is irrelevant
     // and must be zeroed out lest the preview be off-centre
@@ -2175,6 +2180,8 @@ void TrackDesignDrawPreview(TrackDesign& td, TrackDesignPreviewBuffer& pixels, b
 
     ride->remove();
     UnstashMap();
+
+    return spaceRequired;
 }
 
 /**

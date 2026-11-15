@@ -212,7 +212,12 @@ namespace OpenRCT2::Ui::Windows
             _loadedTrackDesign = TrackDesignImport(path.c_str());
             if (_loadedTrackDesign != nullptr)
             {
-                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels, !gTrackDesignSceneryToggle);
+                auto spaceRequired = TrackDesignDrawPreview(
+                    *_loadedTrackDesign, _trackDesignPreviewPixels, !gTrackDesignSceneryToggle);
+                if (!spaceRequired.isNull())
+                {
+                    _loadedTrackDesign->statistics.spaceRequired = spaceRequired;
+                }
                 return true;
             }
             return false;
