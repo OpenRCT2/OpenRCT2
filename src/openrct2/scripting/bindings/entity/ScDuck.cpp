@@ -24,13 +24,13 @@ namespace OpenRCT2::Scripting
             "flyToWater", "swim", "drink", "doubleDrink", "flyAway",
         };
 
-        std::optional<OpenRCT2::Duck::DuckState> GetDuckStateFromName(std::string_view name)
+        std::optional<Duck::DuckState> getDuckStateFromName(std::string_view name)
         {
             for (size_t i = 0; i < std::size(kDuckAnimationNames); i++)
             {
                 if (name == kDuckAnimationNames[i])
                 {
-                    return static_cast<OpenRCT2::Duck::DuckState>(i);
+                    return static_cast<Duck::DuckState>(i);
                 }
             }
             return std::nullopt;
@@ -153,7 +153,7 @@ namespace OpenRCT2::Scripting
         JS_UNPACK_STR(name, ctx, jsValue);
         JS_THROW_IF_GAME_STATE_NOT_MUTABLE();
 
-        auto newState = GetDuckStateFromName(name);
+        auto newState = getDuckStateFromName(name);
         if (newState == std::nullopt)
         {
             JS_ThrowPlainError(ctx, "Invalid animation for this duck (%s)", name.data());
