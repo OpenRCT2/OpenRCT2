@@ -480,11 +480,6 @@ jobs:
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz"
           - platform: x86_64
             distro: Debian
-            release: bookworm
-            image: ghcr.io/openrct2/openrct2-build:26-bookworm
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
-          - platform: x86_64
-            distro: Debian
             release: trixie
             image: ghcr.io/openrct2/openrct2-build:26-trixie
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
