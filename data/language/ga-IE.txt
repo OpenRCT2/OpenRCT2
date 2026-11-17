@@ -3871,3 +3871,6 @@ STR_7078    :Glas péine
 STR_7079    :Rúibín
 STR_7080    :Gorm domhain
 STR_7081    :Airgead
+STR_7082    :Suiteáladh dearadh ráille go rathúil
+STR_7083    :Bhí dearadh ráille suiteáilte cheana féin
+STR_7084    :Roghnóir stíle talún. Cliceáil ar aon tíl ar an mapa chun an stíl chéanna a roghnú don choigeartú talún.
