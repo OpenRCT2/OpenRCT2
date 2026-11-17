@@ -70,15 +70,55 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         kDuckAnimationFlyAway,     //  DuckState::FlyAway,
     };
 
+    void Duck::advanceFrozenAnimation()
+    {
+        if ((getGameState().currentTicks & 3) != 0 && (getState() != DuckState::drink && getState() != DuckState::doubleDrink))
+            return;
+
+        if (getState() == DuckState::flyToWater)
+        {
+            // While frozen, flying to water only alternates between frames 1 and 2 (the landing flap).
+            frame = frame == 1 ? 2 : 1;
+            invalidate();
+            return;
+        }
+
+        const auto length = Duck::getAnimationLength(getState());
+        if (length == 0)
+            return;
+
+        frame++;
+        frame %= static_cast<uint16_t>(length);
+        invalidate();
+    }
+
+    size_t Duck::getAnimationLength(DuckState state)
+    {
+        switch (state)
+        {
+            case DuckState::flyToWater:
+                return std::size(kDuckAnimationFlyToWater);
+            case DuckState::swim:
+                return std::size(kDuckAnimationSwim);
+            case DuckState::drink:
+                return std::size(kDuckAnimationDrink) - 1;
+            case DuckState::doubleDrink:
+                return std::size(kDuckAnimationDoubleDrink) - 1;
+            case DuckState::flyAway:
+                return std::size(kDuckAnimationFlyAway);
+        }
+        return 0;
+    }
+
     template<>
     bool EntityBase::is<Duck>() const
     {
         return type == EntityType::duck;
     }
 
-    bool Duck::isFlying()
+    bool Duck::isFlying() const
     {
-        return this->state == DuckState::flyAway || this->state == DuckState::flyToWater;
+        return this->getState() == DuckState::flyAway || this->getState() == DuckState::flyToWater;
     }
 
     void Duck::remove()
@@ -110,7 +150,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->getWaterHeight() : 0;
         if (waterHeight == 0)
         {
-            state = DuckState::flyAway;
+            setState(DuckState::flyAway);
             updateFlyAway();
         }
         else
@@ -138,12 +178,12 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             {
                 if (destination.z > 4)
                 {
-                    state = DuckState::flyAway;
+                    setState(DuckState::flyAway);
                     updateFlyAway();
                 }
                 else
                 {
-                    state = DuckState::swim;
+                    setState(DuckState::swim);
                     frame = 0;
                     updateSwim();
                 }
@@ -163,13 +203,13 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         {
             if (randomNumber & 0x80000000)
             {
-                state = DuckState::doubleDrink;
+                setState(DuckState::doubleDrink);
                 frame = std::numeric_limits<uint16_t>::max();
                 updateDoubleDrink();
             }
             else
             {
-                state = DuckState::drink;
+                setState(DuckState::drink);
                 frame = std::numeric_limits<uint16_t>::max();
                 updateDrink();
             }
@@ -179,7 +219,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
             int32_t currentMonth = GetDate().GetMonth();
             if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
             {
-                state = DuckState::flyAway;
+                setState(DuckState::flyAway);
                 updateFlyAway();
             }
             else
@@ -190,7 +230,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
 
                 if (z < landZ || waterZ == 0)
                 {
-                    state = DuckState::flyAway;
+                    setState(DuckState::flyAway);
                     updateFlyAway();
                 }
                 else
@@ -224,7 +264,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         frame++;
         if (kDuckAnimationDrink[frame] == 0xFF)
         {
-            state = DuckState::swim;
+            setState(DuckState::swim);
             frame = 0;
             updateSwim();
         }
@@ -239,7 +279,7 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         frame++;
         if (kDuckAnimationDoubleDrink[frame] == 0xFF)
         {
-            state = DuckState::swim;
+            setState(DuckState::swim);
             frame = 0;
             updateSwim();
         }
@@ -278,10 +318,10 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
     uint32_t Duck::getFrameImage(int32_t direction) const
     {
         uint32_t imageId = 0;
-        if (EnumValue(state) < kDuckMaxStates)
+        if (EnumValue(getState()) < kDuckMaxStates)
         {
             // TODO: Check frame is in range
-            uint8_t imageOffset = kDuckAnimations[EnumValue(state)][frame];
+            uint8_t imageOffset = kDuckAnimations[EnumValue(getState())][frame];
             imageId = SPR_DUCK + (imageOffset * 4) + (direction / 8);
         }
         return imageId;
@@ -304,6 +344,8 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         duck->spriteData.heightMax = 9;
         duck->targetX = targetPos.x;
         duck->targetY = targetPos.y;
+        duck->setPositionFrozen(false);
+        duck->setAnimationFrozen(false);
         uint8_t direction = ScenarioRand() & 3;
         switch (direction)
         {
@@ -322,13 +364,28 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
         }
         duck->orientation = direction << 3;
         duck->moveTo({ targetPos.x, targetPos.y, 496 });
-        duck->state = DuckState::flyToWater;
+        duck->setState(DuckState::flyToWater);
         duck->frame = 0;
     }
 
     void Duck::update()
     {
-        switch (state)
+        if (getPositionFrozen())
+        {
+            if (!getAnimationFrozen())
+            {
+                advanceFrozenAnimation();
+            }
+            return;
+        }
+        else if (getAnimationFrozen())
+        {
+            // Animation is frozen while position is not. This can look glitchy.
+            // Clear the flag and continue with normal duck movement.
+            setAnimationFrozen(false);
+        }
+
+        switch (getState())
         {
             case DuckState::flyToWater:
                 updateFlyToWater();

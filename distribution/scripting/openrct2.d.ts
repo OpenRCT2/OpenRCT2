@@ -1768,6 +1768,7 @@ declare global {
         getAllEntities(type: "litter"): Litter[];
         getAllEntities(type: "balloon"): Balloon[];
         getAllEntities(type: "money_effect"): MoneyEffect[];
+        getAllEntities(type: "duck"): Duck[];
         getAllEntitiesOnTile(type: EntityType, tilePos: CoordsXY): Entity[];
         getAllEntitiesOnTile(type: "guest", tilePos: CoordsXY): Guest[];
         getAllEntitiesOnTile(type: "staff", tilePos: CoordsXY): Staff[];
@@ -1775,6 +1776,7 @@ declare global {
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         getAllEntitiesOnTile(type: "balloon", tilePos: CoordsXY): Balloon[];
         getAllEntitiesOnTile(type: "money_effect", tilePos: CoordsXY): MoneyEffect[];
+        getAllEntitiesOnTile(type: "duck", tilePos: CoordsXY): Duck[];  
         createEntity(type: EntityType, initializer: object): Entity;
 
         /**
@@ -4082,6 +4084,45 @@ declare global {
          */
         value: number;
     }
+
+    /**
+     * Represents duck entity.
+     */
+    interface Duck extends Entity {
+        /**
+         * Whether the duck's position is frozen in place. The duck will not move, but its
+         * animation will continue to play unless `animationFrozen` is also set.
+         */
+        positionFrozen: boolean;
+
+        /**
+         * Whether the duck's animation is frozen. The duck's sprite will not update.
+         * Requires position to be frozen as well, otherwise the flag will be cleared again.
+         */
+        animationFrozen: boolean;
+
+        /**
+         * The orientation of the duck, from 0 to 31.
+         */
+        orientation: number;
+
+        /**
+         * The current frame offset in the duck's animation.
+         */
+        animationFrame: number;
+
+        /**
+         * The animation the duck is currently exhibiting.
+         */
+        animation: DuckAnimation;
+    }
+
+    type DuckAnimation =
+        "flyToWater" |
+        "swim" |
+        "drink" |
+        "doubleDrink" |
+        "flyAway";
 
     /**
      * Network APIs
