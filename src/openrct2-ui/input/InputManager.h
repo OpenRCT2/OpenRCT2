@@ -13,7 +13,7 @@
 #include <queue>
 #include <string_view>
 
-typedef struct _SDL_GameController SDL_GameController;
+typedef struct SDL_Gamepad SDL_Gamepad;
 typedef union SDL_Event SDL_Event;
 
 namespace OpenRCT2::Ui
@@ -58,7 +58,7 @@ namespace OpenRCT2::Ui
     {
     private:
         uint32_t _lastJoystickCheck{};
-        std::vector<SDL_GameController*> _gameControllers;
+        std::vector<SDL_Gamepad*> _gameControllers;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
         ScreenCoordsXY _analogueScroll;     // analogue stick scroll values

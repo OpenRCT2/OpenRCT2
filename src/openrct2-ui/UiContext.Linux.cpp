@@ -13,7 +13,7 @@
 
     #include "UiStringIds.h"
 
-    #include <SDL_messagebox.h>
+    #include <SDL3/SDL_messagebox.h>
     #include <algorithm>
     #include <dlfcn.h>
     #include <openrct2/Diagnostic.h>

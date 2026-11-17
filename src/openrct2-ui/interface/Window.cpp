@@ -12,7 +12,7 @@
 #include "../UiStringIds.h"
 #include "Widget.h"
 
-#include <SDL_video.h>
+#include <SDL3/SDL.h>
 #include <algorithm>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>

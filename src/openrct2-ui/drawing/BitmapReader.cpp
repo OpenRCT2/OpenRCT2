@@ -9,7 +9,7 @@
 
 #include "BitmapReader.h"
 
-#include <SDL_surface.h>
+#include <SDL3/SDL.h>
 #include <cstring>
 #include <openrct2/core/Imaging.h>
 #include <stdexcept>
@@ -35,19 +35,20 @@ namespace OpenRCT2::Ui
     static Image ReadBitmap(std::istream& istream, ImageFormat format)
     {
         auto buffer = ReadToVector(istream);
-        auto sdlStream = SDL_RWFromConstMem(buffer.data(), static_cast<int>(buffer.size()));
-        auto bitmap = SDL_LoadBMP_RW(sdlStream, 1);
+        auto sdlStream = SDL_IOFromConstMem(buffer.data(), buffer.size());
+        auto bitmap = SDL_LoadBMP_IO(sdlStream, true);
         if (bitmap != nullptr)
         {
-            auto numChannels = bitmap->format->BytesPerPixel;
-            if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
+            auto formatDetails = SDL_GetPixelFormatDetails(bitmap->format);
+            auto numChannels = formatDetails->bytes_per_pixel;
+            if (numChannels < 3 || formatDetails->bits_per_pixel < 24)
             {
-                SDL_FreeSurface(bitmap);
+                SDL_DestroySurface(bitmap);
                 throw std::runtime_error("Only 24-bit bitmaps are supported.");
             }
 
             // Copy pixels over, then discard the surface
-            if (SDL_LockSurface(bitmap) == 0)
+            if (SDL_LockSurface(bitmap))
             {
                 Image image;
                 image.Width = bitmap->w;
@@ -85,12 +86,12 @@ namespace OpenRCT2::Ui
                     }
                 }
                 SDL_UnlockSurface(bitmap);
-                SDL_FreeSurface(bitmap);
+                SDL_DestroySurface(bitmap);
 
                 return image;
             }
 
-            SDL_FreeSurface(bitmap);
+            SDL_DestroySurface(bitmap);
             throw std::runtime_error("Unable to lock surface.");
         }
         else
