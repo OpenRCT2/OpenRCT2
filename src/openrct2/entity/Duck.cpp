@@ -27,55 +27,14 @@ namespace OpenRCT2
 {
     constexpr int32_t kDuckMaxStates = 5;
 
-    // clang-format off
-    static constexpr CoordsXY kDuckMoveOffset[] =
-    {
-        { -1,  0 },
-        {  0,  1 },
-        {  1,  0 },
-        {  0, -1 },
+    static constexpr CoordsXY kDuckMoveOffset[] = {
+        { -1, 0 },
+        { 0, 1 },
+        { 1, 0 },
+        { 0, -1 },
     };
 
-    void Duck::advanceFrozenAnimation()
-    {
-        if ((getGameState().currentTicks & 3) != 0 && (getState() != DuckState::drink && getState() != DuckState::doubleDrink))
-            return;
-
-        if (getState() == DuckState::flyToWater)
-        {
-            // While frozen, flying to water only alternates between frames 1 and 2 (the landing flap).
-            frame = frame == 1 ? 2 : 1;
-            invalidate();
-            return;
-        }
-
-        const auto length = Duck::getAnimationLength(getState());
-        if (length == 0)
-            return;
-
-        frame++;
-        frame %= static_cast<uint16_t>(length);
-        invalidate();
-    }
-
-    size_t Duck::getAnimationLength(DuckState state)
-    {
-        switch (state)
-        {
-            case DuckState::flyToWater:
-                return std::size(kDuckAnimationFlyToWater);
-            case DuckState::swim:
-                return std::size(kDuckAnimationSwim);
-            case DuckState::drink:
-                return std::size(kDuckAnimationDrink) - 1;
-            case DuckState::doubleDrink:
-                return std::size(kDuckAnimationDoubleDrink) - 1;
-            case DuckState::flyAway:
-                return std::size(kDuckAnimationFlyAway);
-        }
-        return 0;
-    }
-
+    // clang-format off
     static constexpr std::array kDuckAnimationFlyToWater = std::to_array<uint8_t>({
         8, 9, 10, 11, 12, 13
     });
@@ -114,6 +73,33 @@ namespace OpenRCT2
         { kDuckAnimationFlyAway },
     });
 
+    void Duck::advanceFrozenAnimation()
+    {
+        if ((getGameState().currentTicks & 3) != 0 && (getState() != DuckState::drink && getState() != DuckState::doubleDrink))
+            return;
+
+        if (getState() == DuckState::flyToWater)
+        {
+            // While frozen, flying to water only alternates between frames 1 and 2 (the landing flap).
+            frame = frame == 1 ? 2 : 1;
+            invalidate();
+            return;
+        }
+
+        const auto length = getAnimationLength(getState());
+        if (length == 0)
+            return;
+
+        frame++;
+        frame %= static_cast<uint16_t>(length);
+        invalidate();
+    }
+
+    size_t Duck::getAnimationLength(DuckState state)
+    {
+        return kDuckAnimations[EnumValue(state)].size();
+    }
+
     template<>
     bool EntityBase::is<Duck>() const
     {
@@ -139,7 +125,7 @@ namespace OpenRCT2
             return;
 
         frame++;
-        if (frame >= kDuckAnimations[EnumValue(state)].size())
+        if (frame >= kDuckAnimations[state].size())
         {
             frame = 0;
         }
@@ -300,7 +286,7 @@ namespace OpenRCT2
         if ((getGameState().currentTicks & 3) == 0)
         {
             frame++;
-            if (frame >= kDuckAnimations[EnumValue(state)].size())
+            if (frame >= kDuckAnimations[state].size())
             {
                 frame = 0;
             }
