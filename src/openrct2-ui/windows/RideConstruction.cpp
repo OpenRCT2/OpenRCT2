@@ -2261,6 +2261,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void QueryConstruct()
+        {
+            Construct(true);
+        }
+
+    private:
         void Construct(bool queryOnly = false)
         {
             RideId rideIndex;
@@ -2337,7 +2343,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-    private:
         void MouseUpDemolish()
         {
             int32_t direction;
@@ -3744,7 +3749,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Failed height probes must not open an error window before a later attempt succeeds.
             WindowRideConstructionUpdateEnabledTrackPieces();
-            static_cast<RideConstructionWindow*>(w)->Construct(true);
+            static_cast<RideConstructionWindow*>(w)->QueryConstruct();
 
             if (_trackPlaceCost == kMoney64Undefined)
             {
