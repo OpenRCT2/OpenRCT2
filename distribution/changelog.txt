@@ -1,6 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
 - Feature: [#26845] Terrain surface and edge styles can now be picked from existing map tiles.
+- Feature: [#27275] [Plugin] Expose ducks in scripting.
 - Feature: [#27404] Add Irish translation.
 - Feature: [#27420] CLI command to create a screenshot of a track design.
 - Improved: [#27357] Set up .td4, .td6 and .td7 file associations on Linux.
@@ -20,7 +21,6 @@
 
 0.5.7 (2026-11-01)
 ------------------------------------------------------------------------
-- Feature: [#27275] [Plugin] Expose ducks in scripting.
 - Fix: [#16807] Error messages when trying to load regular JSON files as custom objects.
 - Fix: [#18954] When researching Classic Mini Roller Coaster vehicles in Bumbly Beach, they all appear as new rides. 
 - Fix: [#21030, #26981] Slow object loading and index building when using RCT Classic or running from a Flatpak.
