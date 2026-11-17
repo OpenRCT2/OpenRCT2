@@ -50,7 +50,7 @@ namespace OpenRCT2
         uint64_t GetPosition() const override;
 
         void SetPosition(uint64_t position) override;
-        void Seek(int64_t offset, int32_t origin) override;
+        void Seek(int64_t offset, StreamSeekOrigin origin) override;
         void Read(void* buffer, uint64_t length) override;
         void Write(const void* buffer, uint64_t length) override;
         uint64_t TryRead(void* buffer, uint64_t length) override;

@@ -177,7 +177,7 @@ namespace OpenRCT2::RCT2
                 {
                     // When scanning, skip past packed object data to keep the stream
                     // position correct without importing objects into the repository.
-                    stream->Seek(sizeof(RCTObjectEntry), STREAM_SEEK_CURRENT);
+                    stream->Seek(sizeof(RCTObjectEntry), StreamSeekOrigin::current);
                     SawyerChunkReader(stream).SkipChunk();
                 }
                 else

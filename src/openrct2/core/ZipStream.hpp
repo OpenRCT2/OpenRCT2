@@ -57,7 +57,7 @@ namespace OpenRCT2
             _base->SetPosition(position);
         }
 
-        void Seek(int64_t offset, int32_t origin) override
+        void Seek(int64_t offset, StreamSeekOrigin origin) override
         {
             _base->Seek(offset, origin);
         }

@@ -14,10 +14,12 @@
 #include "SDLAudioSource.h"
 
 #include <SDL.h>
+#include <cassert>
 #include <memory>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioSource.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
 
 namespace OpenRCT2::Audio
@@ -177,9 +179,12 @@ namespace OpenRCT2::Audio
 
             rw->type = SDL_RWOPS_UNKNOWN;
             rw->hidden.unknown.data1 = stream.release();
-            rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) {
+            rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) -> Sint64 {
                 auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
-                ptr->Seek(offset, whence);
+                assert(
+                    whence == EnumValue(StreamSeekOrigin::begin) || whence == EnumValue(StreamSeekOrigin::current)
+                    || whence == EnumValue(StreamSeekOrigin::end));
+                ptr->Seek(offset, static_cast<StreamSeekOrigin>(whence));
                 return static_cast<Sint64>(ptr->GetPosition());
             };
             rw->read = [](SDL_RWops* ctx, void* buf, size_t size, size_t maxnum) {

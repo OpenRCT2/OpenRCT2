@@ -174,10 +174,10 @@ namespace OpenRCT2
 
     void FileStream::SetPosition(uint64_t position)
     {
-        Seek(position, STREAM_SEEK_BEGIN);
+        Seek(position, StreamSeekOrigin::begin);
     }
 
-    void FileStream::Seek(int64_t offset, int32_t origin)
+    void FileStream::Seek(int64_t offset, StreamSeekOrigin origin)
     {
         if (_asset != nullptr)
         {
@@ -186,13 +186,13 @@ namespace OpenRCT2
         }
         switch (origin)
         {
-            case STREAM_SEEK_BEGIN:
+            case StreamSeekOrigin::begin:
                 fseeko(_file, offset, SEEK_SET);
                 break;
-            case STREAM_SEEK_CURRENT:
+            case StreamSeekOrigin::current:
                 fseeko(_file, offset, SEEK_CUR);
                 break;
-            case STREAM_SEEK_END:
+            case StreamSeekOrigin::end:
                 fseeko(_file, offset, SEEK_END);
                 break;
         }
