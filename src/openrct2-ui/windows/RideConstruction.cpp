@@ -3466,7 +3466,8 @@ namespace OpenRCT2::Ui::Windows
         {
             PathElement* pathsByDir[kNumOrthogonalDirections];
 
-            bool keepOrientation = false;
+            bool wallsByDir[kNumOrthogonalDirections] = {};
+            int newOrientation = -1;
             for (Direction i : kAllDirections)
             {
                 const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
@@ -3500,29 +3501,56 @@ namespace OpenRCT2::Ui::Windows
                     pathsByDir[i] = nullptr;
                 }
 
-                if (pathsByDir[i] != nullptr && i == _currentTrackPieceDirection)
+                // Check current tile for walls
+                TileElement* tileElement = MapGetFirstElementAt(CoordsXYZ{*mapCoords, z});
+                do
                 {
-                    keepOrientation = true;
-                    break;
+                    if (tileElement->getType() == TileElementType::wall && tileElement->getDirection() == i)
+                    {
+                        wallsByDir[i] = true;
+                        break;
+                    }
+                } while (!(tileElement++)->isLastForTile());
+
+                // Check the adjacent tile for walls
+                TileElement* tileElementAdjacent = MapGetFirstElementAt(testLoc);
+                do
+                {
+                    if (tileElementAdjacent->getType() == TileElementType::wall && tileElementAdjacent->getDirection() == (i + 2) % 4)
+                    {
+                        wallsByDir[i] = true;
+                        break;
+                    }
+                } while (!(tileElementAdjacent++)->isLastForTile());
+
+                // If we found a footpath with no wall, set new orientation
+                if (pathsByDir[i] != nullptr && !wallsByDir[i] && (newOrientation == -1 || _currentTrackPieceDirection == i))
+                {
+                    newOrientation = i;
+                    if (_currentTrackPieceDirection == i)
+                        break;
                 }
             }
 
-            if (!keepOrientation)
+            if (newOrientation == -1)
             {
                 for (Direction i : kAllDirections)
                 {
                     if (pathsByDir[i] != nullptr)
                     {
-                        _currentTrackPieceDirection = i;
-
-                        CoordsXYZ trackPos{};
-                        WindowRideConstructionUpdateState(
-                            &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
-                        PlaceProvisionalTrackPiece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
-                        gMapSelectArrowDirection = _currentTrackPieceDirection;
+                        newOrientation = i;
                         break;
                     }
                 }
+            }
+            if (newOrientation != -1 && newOrientation != _currentTrackPieceDirection)
+            {
+                _currentTrackPieceDirection = newOrientation;
+                CoordsXYZ trackPos{};
+                WindowRideConstructionUpdateState(
+                    &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
+                PlaceProvisionalTrackPiece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
+                gMapSelectArrowDirection = _currentTrackPieceDirection;
             }
         }
 
