@@ -3502,7 +3502,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Check current tile for walls
-                TileElement* tileElement = MapGetFirstElementAt(CoordsXYZ{*mapCoords, z});
+                TileElement* tileElement = MapGetFirstElementAt(CoordsXYZ{ *mapCoords, z });
                 do
                 {
                     if (tileElement->getType() == TileElementType::wall && tileElement->getDirection() == i)
@@ -3516,7 +3516,8 @@ namespace OpenRCT2::Ui::Windows
                 TileElement* tileElementAdjacent = MapGetFirstElementAt(testLoc);
                 do
                 {
-                    if (tileElementAdjacent->getType() == TileElementType::wall && tileElementAdjacent->getDirection() == (i + 2) % 4)
+                    if (tileElementAdjacent->getType() == TileElementType::wall
+                        && tileElementAdjacent->getDirection() == (i + 2) % 4)
                     {
                         wallsByDir[i] = true;
                         break;
