@@ -12,6 +12,7 @@
 - Improved: [#27436] Shop/stall auto-rotation doesn’t orient towards walls/fences unless that’s the only option.
 - Change: [#27226] Crash Particles are now also visible when zoomed out.
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
+- Change: [#27418] Bumped the minimum macOS version to 13.3 (Ventura) and AppImage to Ubuntu Noble (24.04).
 - Fix: [#6142] `openrct2 <track file>` does not install the track design.
 - Fix: [#25395] `openrct2 <command> -h` fails instead of showing help for the command, and `openrct2 -ha` leaves out the command name.
 - Fix: [#26957] The frame 0 image is skipped when changing the state from `swim` to `flyAway`.
