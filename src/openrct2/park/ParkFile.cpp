@@ -1432,7 +1432,7 @@ namespace OpenRCT2
                     auto numBanners = GetNumBanners();
                     cs.write(static_cast<uint32_t>(numBanners));
 
-                    [[maybe_unused]] size_t numWritten = 0;
+                    size_t numWritten = 0;
                     for (BannerIndex::UnderlyingType i = 0; i < kMaxBanners; i++)
                     {
                         auto banner = GetBanner(BannerIndex::FromUnderlying(i));
