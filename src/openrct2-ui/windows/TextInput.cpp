@@ -201,8 +201,6 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = windowPos + ScreenCoordsXY{ kWindowSize.width / 2, widgets[WIDX_TITLE].bottom + 13 };
 
-            int32_t no_lines = 0;
-
             if (_descriptionStringId == kStringIdNone)
             {
                 drawTextWrapped(rt, screenCoords, kWindowSize.width, _description, { colours[1], TextAlignment::centre });
@@ -218,28 +216,26 @@ namespace OpenRCT2::Ui::Windows
 
             // String length needs to add 12 either side of box
             // +13 for cursor when max length.
-            u8string wrappedString;
-            wrapString(
-                u8string_view{ _buffer.data(), _buffer.size() }, kWindowSize.width - (24 + 13), FontStyle::medium,
-                &wrappedString, &no_lines);
+            auto wrappedString = wrapStringAndMeasure(
+                u8string_view{ _buffer.data(), _buffer.size() }, kWindowSize.width - (24 + 13), FontStyle::medium);
 
             Rectangle::fillInset(
                 rt,
                 { { windowPos.x + 10, screenCoords.y },
-                  { windowPos.x + kWindowSize.width - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
+                  { windowPos.x + kWindowSize.width - 10, screenCoords.y + 10 * wrappedString.metrics.lineCount + 3 } },
                 colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
                 Rectangle::FillMode::dontLightenWhenInset);
 
             screenCoords.y += 1;
 
-            const utf8* wrapPointer = wrappedString.data();
+            const utf8* wrapPointer = wrappedString.text.data();
             size_t char_count = 0;
             uint8_t cur_drawn = 0;
 
             auto* textInput = GetTextboxSession();
             int32_t cursorX = 0;
             int32_t cursorY = 0;
-            for (int32_t line = 0; line <= no_lines; line++)
+            for (int32_t line = 0; line < wrappedString.metrics.lineCount; line++)
             {
                 screenCoords.x = windowPos.x + 12;
                 drawText(
@@ -311,10 +307,8 @@ namespace OpenRCT2::Ui::Windows
         int32_t CalculateWindowHeight(std::string_view text)
         {
             // String length needs to add 12 either side of box +13 for cursor when max length.
-            int32_t numLines{};
-            wrapString(text, kWindowSize.width - (24 + 13), FontStyle::medium, nullptr, &numLines);
-
-            const auto textHeight = numLines * 10;
+            const auto metrics = measureWrappedString(text, kWindowSize.width - (24 + 13), FontStyle::medium);
+            const auto textHeight = (metrics.lineCount - 1) * 10;
             return kWindowSize.height + textHeight + getTitleBarDiffNormal();
         }
 
