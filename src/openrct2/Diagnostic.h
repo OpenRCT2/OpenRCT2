@@ -74,6 +74,9 @@ extern bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::count)];
 
 void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...);
 void DiagnosticLogWithLocation(const std::source_location location, DiagnosticLevel diagnosticLevel, const char* format, ...);
+void DiagnosticLogFmtArgs(DiagnosticLevel diagnosticLevel, std::string_view line, std::format_args args);
+void DiagnosticLogWithLocationFmtArgs(
+    const std::source_location location, DiagnosticLevel diagnosticLevel, std::string_view line, std::format_args args);
 
 #define LOG_FATAL(format, ...)                                                                                                 \
     DiagnosticLogWithLocation(std::source_location::current(), DiagnosticLevel::fatal, format, ##__VA_ARGS__)
@@ -84,3 +87,24 @@ void DiagnosticLogWithLocation(const std::source_location location, DiagnosticLe
 #define LOG_VERBOSE(format, ...) DiagnosticLog(DiagnosticLevel::verbose, format, ##__VA_ARGS__)
 #define LOG_INFO(format, ...)                                                                                                  \
     DiagnosticLogWithLocation(std::source_location::current(), DiagnosticLevel::information, format, ##__VA_ARGS__)
+
+template<typename... Args>
+void DiagnosticLogFmt(DiagnosticLevel lvl, std::format_string<Args...> fmt, Args&&... args)
+{
+    DiagnosticLogFmtArgs(lvl, fmt.get(), std::make_format_args(args...));
+}
+
+template<typename... Args>
+void DiagnosticLogWithLocationFmt(
+    const std::source_location loc, DiagnosticLevel lvl, std::format_string<Args...> fmt, Args&&... args)
+{
+    DiagnosticLogWithLocationFmtArgs(loc, lvl, fmt.get(), std::make_format_args(args...));
+}
+
+#define LOG_FATAL_FMT(...) DiagnosticLogWithLocationFmt(std::source_location::current(), DiagnosticLevel::fatal, __VA_ARGS__)
+#define LOG_ERROR_FMT(...) DiagnosticLogWithLocationFmt(std::source_location::current(), DiagnosticLevel::error, __VA_ARGS__)
+#define LOG_WARNING_FMT(...)                                                                                                   \
+    DiagnosticLogWithLocationFmt(std::source_location::current(), DiagnosticLevel::warning, __VA_ARGS__)
+#define LOG_VERBOSE_FMT(...) DiagnosticLogFmt(DiagnosticLevel::verbose, __VA_ARGS__)
+#define LOG_INFO_FMT(...)                                                                                                      \
+    DiagnosticLogWithLocationFmt(std::source_location::current(), DiagnosticLevel::information, __VA_ARGS__)
