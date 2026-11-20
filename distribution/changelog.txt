@@ -1,5 +1,6 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
+- Feature: [#] Add API for playing audio.
 - Feature: [#26845] Terrain surface and edge styles can now be picked from existing map tiles.
 - Feature: [#27275] [Plugin] Expose ducks in scripting.
 - Feature: [#27404] Add Irish translation.
