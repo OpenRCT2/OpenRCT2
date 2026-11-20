@@ -10,6 +10,8 @@
 #pragma once
 
 #include <cstdint>
+#include <format>
+#include <source_location>
 
 enum class DiagnosticLevel
 {
@@ -71,19 +73,14 @@ enum class DiagnosticLevel
 extern bool _log_levels[static_cast<uint8_t>(DiagnosticLevel::count)];
 
 void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...);
-void DiagnosticLogWithLocation(
-    DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...);
+void DiagnosticLogWithLocation(const std::source_location location, DiagnosticLevel diagnosticLevel, const char* format, ...);
 
-#ifdef _MSC_VER
-    #define DIAGNOSTIC_LOG_MACRO(level, format, ...)                                                                           \
-        DiagnosticLogWithLocation(level, __FILE__, __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
-#else
-    #define DIAGNOSTIC_LOG_MACRO(level, format, ...)                                                                           \
-        DiagnosticLogWithLocation(level, __FILE__, __func__, __LINE__, format, ##__VA_ARGS__)
-#endif // _MSC_VER
-
-#define LOG_FATAL(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::fatal, format, ##__VA_ARGS__)
-#define LOG_ERROR(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::error, format, ##__VA_ARGS__)
-#define LOG_WARNING(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::warning, format, ##__VA_ARGS__)
+#define LOG_FATAL(format, ...)                                                                                                 \
+    DiagnosticLogWithLocation(std::source_location::current(), DiagnosticLevel::fatal, format, ##__VA_ARGS__)
+#define LOG_ERROR(format, ...)                                                                                                 \
+    DiagnosticLogWithLocation(std::source_location::current(), DiagnosticLevel::error, format, ##__VA_ARGS__)
+#define LOG_WARNING(format, ...)                                                                                               \
+    DiagnosticLogWithLocation(std::source_location::current(), DiagnosticLevel::warning, format, ##__VA_ARGS__)
 #define LOG_VERBOSE(format, ...) DiagnosticLog(DiagnosticLevel::verbose, format, ##__VA_ARGS__)
-#define LOG_INFO(format, ...) DIAGNOSTIC_LOG_MACRO(DiagnosticLevel::information, format, ##__VA_ARGS__)
+#define LOG_INFO(format, ...)                                                                                                  \
+    DiagnosticLogWithLocation(std::source_location::current(), DiagnosticLevel::information, format, ##__VA_ARGS__)

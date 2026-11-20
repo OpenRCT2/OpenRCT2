@@ -57,19 +57,15 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
     va_end(args);
 }
 
-void DiagnosticLogWithLocation(
-    DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
+void DiagnosticLogWithLocation(const std::source_location location, DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
-    char buf[1024];
 
     if (!_log_levels[EnumValue(diagnosticLevel)])
         return;
 
-    snprintf(buf, 1024, "[%s:%d (%s)]: ", file, line, function);
-
     va_start(args, format);
-    __android_log_vprint(_android_log_priority[EnumValue(diagnosticLevel)], file, format, args);
+    __android_log_vprint(_android_log_priority[EnumValue(diagnosticLevel)], location.file_name(), format, args);
     va_end(args);
 }
 
@@ -105,8 +101,7 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
     }
 }
 
-void DiagnosticLogWithLocation(
-    DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
+void DiagnosticLogWithLocation(const std::source_location location, DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
     if (_log_levels[EnumValue(diagnosticLevel)])
@@ -115,11 +110,13 @@ void DiagnosticLogWithLocation(
         std::string prefix;
         if (_log_location_enabled)
         {
-            prefix = String::stdFormat("%s[%s:%d (%s)]: ", kLevelStrings[EnumValue(diagnosticLevel)], file, line, function);
+            prefix = std::format(
+                "{}[{}:{} ({})]: ", kLevelStrings[EnumValue(diagnosticLevel)], location.file_name(), location.line(),
+                location.function_name());
         }
         else
         {
-            prefix = String::stdFormat("%s: ", kLevelStrings[EnumValue(diagnosticLevel)]);
+            prefix = std::format("{}: ", kLevelStrings[EnumValue(diagnosticLevel)]);
         }
 
         // Message
