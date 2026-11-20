@@ -24,7 +24,7 @@
     #include <algorithm>
     #include <cstring>
     #include <optional>
-    #include <thirdparty/base64.hpp>
+    #include <base64.hpp>
 
 namespace OpenRCT2::Scripting
 {
