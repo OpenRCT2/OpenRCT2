@@ -29,12 +29,6 @@ namespace OpenRCT2::Scripting
 
         static JSValue freeSound(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
-        static JSValue stop(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
-
-        static JSValue setRate(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
-
-        static JSValue setLocation(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
-
     public:
         JSValue New(JSContext* ctx);
 

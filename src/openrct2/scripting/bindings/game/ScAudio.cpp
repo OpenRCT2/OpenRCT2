@@ -15,7 +15,6 @@
     #include "../../../audio/Audio.h"
     #include "../../../audio/AudioContext.h"
     #include "../../../audio/AudioSource.h"
-    #include "../../../audio/ManagedSounds.h"
     #include "../../../core/MemoryStream.h"
     #include "../../../world/Location.hpp"
     #include "../../Plugin.h"
@@ -24,6 +23,7 @@
 
     #include <algorithm>
     #include <cstring>
+    #include <optional>
     #include <thirdparty/base64.hpp>
 
 namespace OpenRCT2::Scripting
@@ -39,9 +39,8 @@ namespace OpenRCT2::Scripting
     static int32_t _nextCustomSoundHandle = 1;
     static bool _cleanupSubscribed = false;
 
-    static void FreePluginAudio(const std::shared_ptr<Plugin>& plugin)
+    static void FreePluginSounds(const std::shared_ptr<Plugin>& plugin)
     {
-        Audio::ManagedSounds::StopOwner(plugin);
         for (auto it = _customSounds.begin(); it != _customSounds.end();)
         {
             if (it->Owner == plugin)
@@ -62,8 +61,7 @@ namespace OpenRCT2::Scripting
         {
             _cleanupSubscribed = true;
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.SubscribeToPluginStoppedEvent(
-                [](std::shared_ptr<Plugin> stopped) -> void { FreePluginAudio(stopped); });
+            scriptEngine.SubscribeToPluginStoppedEvent([](std::shared_ptr<Plugin> stopped) -> void { FreePluginSounds(stopped); });
         }
     }
 
@@ -164,66 +162,49 @@ namespace OpenRCT2::Scripting
             return JS_EXCEPTION;
         }
 
-        // Stop anything still playing from this source before releasing it
-        Audio::ManagedSounds::StopSource(sound->Source);
-
+        // The mixer drops channels whose source has been released, so any playing instances stop.
         sound->Source->Release();
         _customSounds.erase(_customSounds.begin() + (sound - _customSounds.data()));
         return JS_UNDEFINED;
     }
 
-    // Shared by playSound and playMusic. Arguments after the first are: position?, rate?, repeat?, startTicks?
-    static JSValue PlaySource(
-        JSContext* ctx, int argc, JSValue* argv, Audio::IAudioSource* source, int32_t sampleModifier,
-        Audio::MixerGroup group, bool isMusic)
+    // Reads the optional arguments shared by playSound and playMusic: position?, rate?
+    // Returns false if a JS exception was raised.
+    static bool ParsePlayArgs(JSContext* ctx, int argc, JSValue* argv, std::optional<CoordsXYZ>& position, double& rate)
     {
-        Audio::ManagedSoundParams params;
-        params.sampleModifier = sampleModifier;
-        params.isMusic = isMusic;
-
         if (argc > 1 && JS_IsObject(argv[1]))
         {
-            params.hasLocation = true;
-            params.position = JStoCoordsXYZ(ctx, argv[1]);
+            position = JStoCoordsXYZ(ctx, argv[1]);
         }
 
         if (argc > 2 && !JS_IsUndefined(argv[2]) && !JS_IsNull(argv[2]))
         {
-            if (JS_ToFloat64(ctx, &params.rate, argv[2]) < 0)
-                return JS_EXCEPTION;
+            if (JS_ToFloat64(ctx, &rate, argv[2]) < 0)
+                return false;
         }
+        return true;
+    }
 
-        if (argc > 3 && !JS_IsUndefined(argv[3]) && !JS_IsNull(argv[3]))
-        {
-            if (JS_ToInt32(ctx, &params.repeat, argv[3]) < 0)
-                return JS_EXCEPTION;
-        }
+    static void PlaySource(Audio::IAudioSource* source, int32_t sampleModifier, Audio::MixerGroup group, const std::optional<CoordsXYZ>& position, double rate)
+    {
+        if (source == nullptr || !Audio::IsAvailable())
+            return;
 
-        double startTicks = 0;
-        if (argc > 4 && !JS_IsUndefined(argv[4]) && !JS_IsNull(argv[4]))
-        {
-            if (JS_ToFloat64(ctx, &startTicks, argv[4]) < 0)
-                return JS_EXCEPTION;
-        }
+        int32_t volume = Audio::kMixerVolumeMax;
+        float pan = Audio::DStoMixerPan(0);
+        if (position.has_value() && !Audio::GetLocationParams(sampleModifier, *position, volume, pan))
+            return;
 
-        if (source == nullptr)
-            return JS_NULL;
-
-        // 40 ticks per second
-        if (startTicks > 0)
-            params.startOffset = static_cast<uint64_t>(startTicks / 40.0 * source->GetBytesPerSecond());
-
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        SubscribeToCleanup();
-
-        auto id = Audio::ManagedSounds::Play(source, group, params, scriptEngine.GetExecInfo().GetCurrentPlugin());
-        if (id == 0)
-            return JS_NULL;
-        return JS_NewInt32(ctx, id);
+        Audio::CreateAudioChannel(source, group, false, volume, pan, rate, true);
     }
 
     JSValue ScAudio::playSound(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        std::optional<CoordsXYZ> position;
+        double rate = 1.0;
+        if (!ParsePlayArgs(ctx, argc, argv, position, rate))
+            return JS_EXCEPTION;
+
         if (JS_IsNumber(argv[0]))
         {
             JS_UNPACK_INT32(handle, ctx, argv[0]);
@@ -233,57 +214,37 @@ namespace OpenRCT2::Scripting
                 JS_ThrowPlainError(ctx, "Invalid sound handle.");
                 return JS_EXCEPTION;
             }
-            return PlaySource(ctx, argc, argv, sound->Source, 0, Audio::MixerGroup::sound, false);
+            PlaySource(sound->Source, 0, Audio::MixerGroup::sound, position, rate);
+            return JS_UNDEFINED;
         }
 
         JS_UNPACK_STR(soundName, ctx, argv[0]);
         auto soundId = GetSoundByName(soundName);
         int32_t sampleModifier = 0;
         auto* source = Audio::GetSoundSource(soundId, &sampleModifier);
-        return PlaySource(ctx, argc, argv, source, sampleModifier, Audio::MixerGroup::sound, false);
+        PlaySource(source, sampleModifier, Audio::MixerGroup::sound, position, rate);
+        return JS_UNDEFINED;
     }
 
     JSValue ScAudio::playMusic(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        JS_UNPACK_STR(songName, ctx, argv[0]);
-        return PlaySource(ctx, argc, argv, Audio::GetMusicSource(songName), 0, Audio::MixerGroup::rideMusic, true);
-    }
-
-    JSValue ScAudio::stop(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
-    {
-        JS_UNPACK_INT32(id, ctx, argv[0]);
-        Audio::ManagedSounds::Stop(id);
-        return JS_UNDEFINED;
-    }
-
-    JSValue ScAudio::setRate(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
-    {
-        JS_UNPACK_INT32(id, ctx, argv[0]);
+        std::optional<CoordsXYZ> position;
         double rate = 1.0;
-        if (JS_ToFloat64(ctx, &rate, argv[1]) < 0)
+        if (!ParsePlayArgs(ctx, argc, argv, position, rate))
             return JS_EXCEPTION;
 
-        return JS_NewBool(ctx, Audio::ManagedSounds::SetRate(id, rate));
-    }
-
-    JSValue ScAudio::setLocation(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
-    {
-        JS_UNPACK_INT32(id, ctx, argv[0]);
-        JS_UNPACK_OBJECT(pos, ctx, argv[1]);
-
-        return JS_NewBool(ctx, Audio::ManagedSounds::SetLocation(id, JStoCoordsXYZ(ctx, pos)));
+        JS_UNPACK_STR(songName, ctx, argv[0]);
+        PlaySource(Audio::GetMusicSource(songName), 0, Audio::MixerGroup::rideMusic, position, rate);
+        return JS_UNDEFINED;
     }
 
     void ScAudio::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry funcs[] = {
-            JS_CFUNC_DEF("playSound", 4, ScAudio::playSound),
-            JS_CFUNC_DEF("playMusic", 5, ScAudio::playMusic),
+            JS_CFUNC_DEF("playSound", 3, ScAudio::playSound),
+            JS_CFUNC_DEF("playMusic", 3, ScAudio::playMusic),
             JS_CFUNC_DEF("loadSound", 1, ScAudio::loadSound),
             JS_CFUNC_DEF("freeSound", 1, ScAudio::freeSound),
-            JS_CFUNC_DEF("stop", 1, ScAudio::stop),
-            JS_CFUNC_DEF("setRate", 2, ScAudio::setRate),
-            JS_CFUNC_DEF("setLocation", 2, ScAudio::setLocation),
         };
         RegisterBase(ctx, "Audio", nullptr, funcs);
     }

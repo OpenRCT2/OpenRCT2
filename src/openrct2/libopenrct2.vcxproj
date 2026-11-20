@@ -76,7 +76,6 @@
   <ItemGroup>
     <None Include="data\shaders\**\*.vert" />
     <None Include="data\shaders\**\*.frag" />
-    <None Include="scripting\bindings\game\ScAudio.cpp.new" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\resources\resource.h" />
@@ -178,7 +177,6 @@
     <ClInclude Include="audio\AudioContext.h" />
     <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="audio\AudioSource.h" />
-    <ClInclude Include="audio\ManagedSounds.h" />
     <ClInclude Include="Cheats.h" />
     <ClInclude Include="command_line\sprite\SpriteCommands.h" />
     <ClInclude Include="command_line\sprite\SpriteFile.h" />
@@ -852,7 +850,6 @@
     <ClCompile Include="AssetPackManager.cpp" />
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
-    <ClCompile Include="audio\ManagedSounds.cpp" />
     <ClCompile Include="Cheats.cpp" />
     <ClCompile Include="command_line\sprite\SpriteAppend.cpp" />
     <ClCompile Include="command_line\sprite\SpriteBuild.cpp" />

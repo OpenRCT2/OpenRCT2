@@ -4880,32 +4880,20 @@ declare global {
         /**
          * Plays a built-in sound effect, or a sound loaded with {@link loadSound}.
          * @param sound The name of a built-in sound (e.g. `"scream_1"`), or a handle returned by {@link loadSound}.
-         * @param position Optional world position. If given, volume and pan follow the camera.
-         * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1.
-         * @param repeat Optional. -1 repeats forever, 0 plays once, N repeats N times. Defaults to 0.
-         * @returns An id for use with {@link stop}, {@link setRate} and {@link setLocation},
-         * or null if the sound could not be played.
+         * @param position Optional world position. If given, the volume and pan are set from the position at the
+         * moment the sound starts. They are not updated afterwards.
+         * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1. Cannot be changed once playing.
          */
-        playSound(sound: SoundName | number, position?: CoordsXYZ | null, rate?: number, repeat?: number): number | null;
+        playSound(sound: SoundName | number, position?: CoordsXYZ | null, rate?: number): void;
 
         /**
-         * Plays a music object (e.g. `"rct2.music.gentle"`). Music fades with distance like ride music.
+         * Plays the first track of a music object (e.g. `"rct2.music.gentle"`).
          * @param name The identifier of the music object.
-         * @param position Optional world position.
-         * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1.
-         * @param repeat Optional. -1 repeats forever, 0 plays once, N repeats N times. Defaults to 0.
-         * @param startTicks Optional start offset into the song, in ticks (40 ticks per second).
-         * Repeats start again from the beginning of the song.
-         * @returns An id for use with {@link stop}, {@link setRate} and {@link setLocation},
-         * or null if the music could not be played.
+         * @param position Optional world position. If given, the volume and pan are set from the position at the
+         * moment the music starts. They are not updated afterwards.
+         * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1. Cannot be changed once playing.
          */
-        playMusic(
-            name: string,
-            position?: CoordsXYZ | null,
-            rate?: number,
-            repeat?: number,
-            startTicks?: number,
-        ): number | null;
+        playMusic(name: string, position?: CoordsXYZ | null, rate?: number): void;
 
         /**
          * Loads a sound effect from base64 encoded PCM WAV data (8 or 16 bit).
@@ -4915,27 +4903,9 @@ declare global {
         loadSound(base64Wav: string): number;
 
         /**
-         * Frees a sound loaded with {@link loadSound}, stopping any playing instances of it.
+         * Frees a sound loaded with {@link loadSound}.
          */
         freeSound(handle: number): void;
-
-        /**
-         * Stops a playing sound or music.
-         * @param id The id returned by {@link playSound} or {@link playMusic}.
-         */
-        stop(id: number): void;
-
-        /**
-         * Changes the playback rate (pitch) of a playing sound.
-         * @returns false if the sound is no longer playing.
-         */
-        setRate(id: number, rate: number): boolean;
-
-        /**
-         * Moves a playing sound to a new world position.
-         * @returns false if the sound is no longer playing.
-         */
-        setLocation(id: number, position: CoordsXYZ): boolean;
     }
 
     interface Climate {

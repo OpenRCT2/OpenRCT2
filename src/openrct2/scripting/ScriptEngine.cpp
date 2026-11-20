@@ -19,7 +19,6 @@
     #include "../actions/scenery/BannerPlaceAction.h"
     #include "../actions/scenery/LargeSceneryPlaceAction.h"
     #include "../actions/scenery/WallPlaceAction.h"
-    #include "../audio/ManagedSounds.h"
     #include "../config/Config.h"
     #include "../core/Console.hpp"
     #include "../core/EnumMap.hpp"
@@ -1216,7 +1215,6 @@ void ScriptEngine::Tick()
     UpdateSockets();
     ProcessREPL();
     DoAutoReloadPluginCheck();
-    Audio::ManagedSounds::Update();
 }
 
 void ScriptEngine::CheckAndStartPlugins()
