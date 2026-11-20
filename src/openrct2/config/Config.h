@@ -87,6 +87,7 @@ namespace OpenRCT2::Config
         int32_t edgeScrollingSpeed;
         bool trapCursor;
         bool invertViewportDrag;
+        bool nativeMacOSControls;
         bool zoomToCursor;
 
         // Gamepad
