@@ -61,7 +61,8 @@ namespace OpenRCT2::Scripting
         {
             _cleanupSubscribed = true;
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.SubscribeToPluginStoppedEvent([](std::shared_ptr<Plugin> stopped) -> void { FreePluginSounds(stopped); });
+            scriptEngine.SubscribeToPluginStoppedEvent(
+                [](std::shared_ptr<Plugin> stopped) -> void { FreePluginSounds(stopped); });
         }
     }
 
@@ -185,7 +186,9 @@ namespace OpenRCT2::Scripting
         return true;
     }
 
-    static void PlaySource(Audio::IAudioSource* source, int32_t sampleModifier, Audio::MixerGroup group, const std::optional<CoordsXYZ>& position, double rate)
+    static void PlaySource(
+        Audio::IAudioSource* source, int32_t sampleModifier, Audio::MixerGroup group, const std::optional<CoordsXYZ>& position,
+        double rate)
     {
         if (source == nullptr || !Audio::IsAvailable())
             return;
