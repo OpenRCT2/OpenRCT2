@@ -1732,8 +1732,10 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "ridesetsetting", GameCommand::setRideSetting },
     { "ridesetstatus", GameCommand::setRideStatus },
     { "ridesetvehicle", GameCommand::setRideVehicles },
+    { "ridesetvisibility", GameCommand::setRideVisibility },
     { "scenariosetsetting", GameCommand::editScenarioOptions },
     { "cheatset", GameCommand::cheat },
+    { "scenerysetrestricted", GameCommand::setRestrictedScenery },
     { "signsetname", GameCommand::setSignName },
     { "signsetstyle", GameCommand::setSignStyle },
     { "smallsceneryplace", GameCommand::placeScenery },
@@ -1761,7 +1763,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
 };
 // clang-format on
 
-static std::string GetActionName(GameCommand commandId)
+std::string Scripting::getActionName(GameCommand commandId)
 {
     auto it = ActionNameToType.find(commandId);
     if (it != ActionNameToType.end())
@@ -1808,7 +1810,7 @@ void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, Gam
         }
         else
         {
-            auto actionName = GetActionName(actionId);
+            auto actionName = getActionName(actionId);
             if (!actionName.empty())
             {
                 JS_SetPropertyStr(ctx, obj, "action", JSFromStdString(ctx, actionName));
