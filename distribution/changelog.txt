@@ -1,10 +1,10 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
-- Feature: [#27442] Add API for playing audio.
 - Feature: [#26845] Terrain surface and edge styles can now be picked from existing map tiles.
 - Feature: [#27275] [Plugin] Expose ducks in scripting.
 - Feature: [#27404] Add Irish translation.
 - Feature: [#27420] CLI command to create a screenshot of a track design.
+- Feature: [#27442] Add API for playing audio.
 - Improved: [#27357] Set up .td4, .td6 and .td7 file associations on Linux.
 - Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
 - Improved: [#27410] The Options window’s sliders no longer continuously save the configuration file while they’re dragged.
