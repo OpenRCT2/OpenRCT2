@@ -127,6 +127,7 @@ namespace OpenRCT2::GameActions
                 break;
             case CheatType::fastLiftHill:
                 gameState.cheats.unlockOperatingLimits = _param1 != 0;
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
             case CheatType::disableBrakesFailure:
                 gameState.cheats.disableBrakesFailure = _param1 != 0;
@@ -268,6 +269,7 @@ namespace OpenRCT2::GameActions
                 break;
             case CheatType::allowSpecialColourSchemes:
                 gameState.cheats.allowSpecialColourSchemes = static_cast<bool>(_param1);
+                windowMgr->InvalidateByClass(WindowClass::ride);
                 break;
             case CheatType::removeParkFences:
                 RemoveParkFences();
