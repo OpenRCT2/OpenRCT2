@@ -243,13 +243,13 @@ namespace OpenRCT2::Scripting
 
     void ScAudio::Register(JSContext* ctx)
     {
-        static constexpr JSCFunctionListEntry funcs[] = {
+        static constexpr JSCFunctionListEntry kFuncs[] = {
             JS_CFUNC_DEF("playSound", 3, ScAudio::playSound),
             JS_CFUNC_DEF("playMusic", 3, ScAudio::playMusic),
             JS_CFUNC_DEF("loadSound", 1, ScAudio::loadSound),
             JS_CFUNC_DEF("freeSound", 1, ScAudio::freeSound),
         };
-        RegisterBase(ctx, "Audio", nullptr, funcs);
+        RegisterBase(ctx, "Audio", nullptr, kFuncs);
     }
 
     JSValue ScAudio::New(JSContext* ctx)
