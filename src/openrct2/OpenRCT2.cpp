@@ -19,6 +19,7 @@ u8string gCustomRCT1DataPath = {};
 u8string gCustomRCT2DataPath = {};
 u8string gCustomPassword = {};
 u8string gSilentRecordingName = {};
+u8string gScriptedSessionPath = {};
 
 bool gOpenRCT2Headless = false;
 bool gOpenRCT2NoGraphics = false;
