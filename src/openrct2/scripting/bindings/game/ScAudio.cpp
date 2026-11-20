@@ -22,9 +22,9 @@
     #include "../../SoundNames.hpp"
 
     #include <algorithm>
+    #include <base64.hpp>
     #include <cstring>
     #include <optional>
-    #include <base64.hpp>
 
 namespace OpenRCT2::Scripting
 {
