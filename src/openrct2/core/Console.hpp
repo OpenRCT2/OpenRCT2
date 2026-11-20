@@ -12,6 +12,7 @@
 #include "../core/StringTypes.h"
 
 #include <cstdarg>
+#include <format>
 
 namespace OpenRCT2::Console
 {
@@ -21,6 +22,19 @@ namespace OpenRCT2::Console
     void WriteFormat(const utf8* format, ...);
     void WriteLine();
     void WriteLine(const utf8* format, ...);
+    void WriteLine(const std::string& str);
+
+    template<typename... Args>
+    void WriteFormatFmt(const std::format_string<Args...> fmt, Args&&... args)
+    {
+        Write(std::format(fmt, std::forward<Args>(args)...).c_str());
+    }
+
+    template<typename... Args>
+    void WriteLineFmt(const std::format_string<Args...> fmt, Args&&... args)
+    {
+        WriteLine(std::format(fmt, std::forward<Args>(args)...));
+    }
 
     namespace Error
     {
@@ -29,6 +43,19 @@ namespace OpenRCT2::Console
         void WriteFormat(const utf8* format, ...);
         void WriteLine();
         void WriteLine(const utf8* format, ...);
-        void WriteLine_VA(const utf8* format, va_list args);
+
+        void WriteLine(const std::string& str);
+
+        template<typename... Args>
+        void WriteFormatFmt(const std::format_string<Args...> fmt, Args&&... args)
+        {
+            Write(std::format(fmt, std::forward<Args>(args)...).c_str());
+        }
+
+        template<typename... Args>
+        void WriteLineFmt(const std::format_string<Args...> fmt, Args&&... args)
+        {
+            WriteLine(std::format(fmt, std::forward<Args>(args)...));
+        }
     } // namespace Error
 } // namespace OpenRCT2::Console
