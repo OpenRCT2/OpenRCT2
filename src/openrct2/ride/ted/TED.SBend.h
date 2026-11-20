@@ -68,36 +68,6 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kSBendRightSeq0 = {
-        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = blockedSegmentsFlipXAxis(kSBendLeftSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kSBendRightSeq1 = {
-        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .woodenSupports = { WoodenSupportSubType::corner2 },
-        .blockedSegments = blockedSegmentsFlipXAxis(kSBendLeftSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kSBendRightSeq2 = {
-        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, {} },
-        .allowedWallEdges = 0b0110,
-        .woodenSupports = { WoodenSupportSubType::corner0 },
-        .blockedSegments = blockedSegmentsFlipXAxis(kSBendLeftSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kSBendRightSeq3 = {
-        .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = blockedSegmentsFlipXAxis(kSBendLeftSeq3.blockedSegments),
-    };
-
     static constexpr SequenceDescriptor kSBendLeftCoveredSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
@@ -122,32 +92,6 @@ namespace OpenRCT2::TrackMetadata
         .allowedWallEdges = 0b1010,
         .flags = { SequenceFlag::hasHeightMarker },
         .blockedSegments = kSBendLeftSeq3.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kSBendRightCoveredSeq0 = {
-        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = kSBendRightSeq0.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kSBendRightCoveredSeq1 = {
-        .clearance = { -32, 0, 0, 0, { 0b1011, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = kSBendRightSeq1.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kSBendRightCoveredSeq2 = {
-        .clearance = { -32, 32, 0, 0, { 0b1110, 0 }, {} },
-        .allowedWallEdges = 0b0110,
-        .blockedSegments = kSBendRightSeq2.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kSBendRightCoveredSeq3 = {
-        .clearance = { -64, 32, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = kSBendRightSeq3.blockedSegments,
     };
 
     constexpr auto kTEDSBendLeft = TrackElementDescriptor{
@@ -177,7 +121,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::sBend, TrackPitch::none, TrackPitch::none, TrackRoll::none, TrackRoll::none, 0 },
         .spinFunction = SpinFunction::rl,
         .lateralFactor = EvaluatorSBendRight,
-        .sequenceData = { 4, { kSBendRightSeq0, kSBendRightSeq1, kSBendRightSeq2, kSBendRightSeq3 } },
+        .sequenceData = kTEDSBendLeft.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDSBendLeftCovered = TrackElementDescriptor{
@@ -205,7 +149,6 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::flat, TrackPitch::none, TrackPitch::none, TrackRoll::none, TrackRoll::none, 0 },
         .spinFunction = SpinFunction::rl,
         .lateralFactor = EvaluatorSBendRight,
-        .sequenceData = { 4,
-                          { kSBendRightCoveredSeq0, kSBendRightCoveredSeq1, kSBendRightCoveredSeq2, kSBendRightCoveredSeq3 } },
+        .sequenceData = kTEDSBendLeftCovered.sequenceData.flipXAxis(),
     };
 } // namespace OpenRCT2::TrackMetadata
