@@ -400,7 +400,7 @@
     <ClInclude Include="object\WaterEntry.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />
-    <ClInclude Include="openrct2_pch.h"/>
+    <ClInclude Include="openrct2_pch.h" />
     <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
@@ -660,6 +660,7 @@
     <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScStaff.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScVehicle.hpp" />
+    <ClInclude Include="scripting\bindings\game\ScAudio.hpp" />
     <ClInclude Include="scripting\bindings\game\ScCheats.hpp" />
     <ClInclude Include="scripting\bindings\game\ScConfiguration.hpp" />
     <ClInclude Include="scripting\bindings\game\ScConsole.hpp" />
@@ -1267,6 +1268,7 @@
     <ClCompile Include="scripting\bindings\entity\ScPeep.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScStaff.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScVehicle.cpp" />
+    <ClCompile Include="scripting\bindings\game\ScAudio.cpp" />
     <ClCompile Include="scripting\bindings\network\ScNetwork.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayer.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayerGroup.cpp" />
