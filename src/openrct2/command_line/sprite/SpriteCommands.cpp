@@ -175,13 +175,4 @@ namespace OpenRCT2::CommandLine::Sprite
             return std::nullopt;
         }
     }
-
-    // TODO: Remove when C++20 is enabled and std::format can be used
-    std::string PopStr(std::ostringstream& oss)
-    {
-        auto str = oss.str();
-        oss.str("");
-        oss.clear();
-        return str;
-    }
 } // namespace OpenRCT2::CommandLine::Sprite
