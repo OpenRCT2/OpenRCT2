@@ -18,7 +18,6 @@
 
 #include <cstring>
 #include <optional>
-#include <sstream>
 
 // FIXME: replace with a constexpr that will also work for string interpolation.
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)

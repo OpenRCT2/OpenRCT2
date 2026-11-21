@@ -14,7 +14,6 @@
 #include "../CommandLine.hpp"
 
 #include <cstring>
-#include <sstream>
 
 namespace OpenRCT2::CommandLine::Track
 {
