@@ -10,9 +10,12 @@
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/core/File.h>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/network/NetworkBase.h>
 #include <openrct2/network/NetworkConnection.h>
 #include <openrct2/network/NetworkPacket.h>
+#include <openrct2/network/NetworkUser.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Network;
@@ -144,4 +147,49 @@ TEST_F(NetworkTests, MapRequestWithoutPlayerDisconnectsAndDoesNotCrash)
     network.ServerHandleMapRequest(connection, packet);
 
     EXPECT_TRUE(connection.shouldDisconnect);
+}
+
+class NetworkUsersJsonTests : public NetworkTests
+{
+protected:
+    void SetUp() override
+    {
+        Path::CreateDirectory(_userDir);
+        gCustomUserDataPath = _userDir;
+        NetworkTests::SetUp();
+    }
+
+    void TearDown() override
+    {
+        _context.reset();
+        gCustomUserDataPath = {};
+        Path::DeleteDirectory(_userDir);
+    }
+
+    void SaveWithUsersJson(std::string_view usersJson)
+    {
+        const auto path = Path::Combine(_userDir, u8"users.json");
+        File::WriteAllBytes(path, usersJson.data(), usersJson.size());
+
+        UserManager userManager;
+        userManager.getOrAddUser("0123456789abcdef")->name = "Player";
+        userManager.save();
+
+        auto saved = File::ReadAllText(path);
+        EXPECT_NE(saved.find("0123456789abcdef"), std::string::npos);
+    }
+
+    u8string _userDir = u8"test-malformed-users";
+};
+
+TEST_F(NetworkUsersJsonTests, SaveSkipsEntriesThatAreNotObjects)
+{
+    // Before the fix, the entry that is not an object was never stepped past and this never returned.
+    SaveWithUsersJson(R"([ 1, { "hash": "fedcba9876543210", "name": "Other" } ])");
+}
+
+TEST_F(NetworkUsersJsonTests, SaveReplacesUsersJsonThatIsNotAList)
+{
+    // Before the fix, this never returned either, and adding a user to an object like this throws.
+    SaveWithUsersJson(R"({ "hash": "fedcba9876543210" })");
 }
