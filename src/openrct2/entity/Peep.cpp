@@ -124,24 +124,25 @@ namespace OpenRCT2
 
     uint8_t Peep::getNextDirection() const
     {
-        return nextFlags & PEEP_NEXT_FLAG_DIRECTION_MASK;
+        return nextFlags.getDirection();
     }
 
     bool Peep::getNextIsSloped() const
     {
-        return nextFlags & PEEP_NEXT_FLAG_IS_SLOPED;
+        return nextFlags.has(PeepNextFlag::isSloped);
     }
 
     bool Peep::getNextIsSurface() const
     {
-        return nextFlags & PEEP_NEXT_FLAG_IS_SURFACE;
+        return nextFlags.has(PeepNextFlag::isSurface);
     }
 
     void Peep::setNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface)
     {
-        nextFlags = next_direction & PEEP_NEXT_FLAG_DIRECTION_MASK;
-        nextFlags |= is_sloped ? PEEP_NEXT_FLAG_IS_SLOPED : 0;
-        nextFlags |= is_surface ? PEEP_NEXT_FLAG_IS_SURFACE : 0;
+        nextFlags = {};
+        nextFlags.setDirection(next_direction);
+        nextFlags.set(PeepNextFlag::isSloped, is_sloped);
+        nextFlags.set(PeepNextFlag::isSurface, is_surface);
     }
 
     bool Peep::canBePickedUp() const
@@ -1807,13 +1808,13 @@ namespace OpenRCT2
                     {
                         entranceFee /= 2;
                         guest->removeItem(ShopItem::voucher);
-                        guest->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                        guest->windowInvalidateFlags.set(PeepInvalidateFlag::inventory);
                     }
                     else if (guest->voucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                     {
                         entranceFee = 0;
                         guest->removeItem(ShopItem::voucher);
-                        guest->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                        guest->windowInvalidateFlags.set(PeepInvalidateFlag::inventory);
                     }
                 }
                 if (entranceFee > guest->cashInPocket)
@@ -2567,7 +2568,7 @@ namespace OpenRCT2
             if (peep->animationGroup == PeepAnimationGroup::balloon && peep->x != kLocationNull)
             {
                 Balloon::create({ peep->x, peep->y, spawn_height }, peep->balloonColour, false);
-                peep->windowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                peep->windowInvalidateFlags.set(PeepInvalidateFlag::inventory);
                 peep->updateAnimationGroup();
             }
         }
@@ -2612,7 +2613,7 @@ namespace OpenRCT2
             name = nullptr;
         }
         stream << nextLoc;
-        stream << nextFlags;
+        stream << nextFlags.holder;
         stream << state;
         stream << subState;
         stream << animationGroup;
