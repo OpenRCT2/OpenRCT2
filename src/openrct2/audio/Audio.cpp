@@ -64,11 +64,16 @@ namespace OpenRCT2::Audio
 
     bool IsAvailable()
     {
+        if (!Config::Get().sound.soundEnabled)
+            return false;
+        return IsMusicAvailable();
+    }
+
+    bool IsMusicAvailable()
+    {
         if (_currentAudioDevice == -1)
             return false;
         if (gGameSoundsOff)
-            return false;
-        if (!Config::Get().sound.soundEnabled)
             return false;
         if (gOpenRCT2Headless)
             return false;
@@ -251,7 +256,7 @@ namespace OpenRCT2::Audio
         }
     }
 
-    IAudioSource* GetSoundSource(SoundId soundId, int32_t* sampleModifier)
+    IAudioSource* getSoundSource(SoundId soundId, int32_t* sampleModifier)
     {
         auto [audioObject, sampleIndex] = GetAudioObjectAndSampleIndex(soundId);
         if (audioObject == nullptr)
@@ -262,22 +267,18 @@ namespace OpenRCT2::Audio
         return audioObject->GetSample(sampleIndex);
     }
 
-    IAudioSource* GetMusicSource(std::string_view identifier)
+    IAudioSource* getMusicSource(std::string_view identifier)
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto descriptor = ObjectEntryDescriptor(ObjectType::music, identifier);
         auto* object = objManager.GetLoadedObject(descriptor);
-        if (object == nullptr)
-        {
-            object = objManager.LoadObject(descriptor);
-        }
         if (object == nullptr || object->GetObjectType() != ObjectType::music)
             return nullptr;
 
         return static_cast<MusicObject*>(object)->GetTrackSample(0);
     }
 
-    bool GetLocationParams(int32_t sampleModifier, const CoordsXYZ& loc, int32_t& volume, float& pan)
+    bool getLocationParams(int32_t sampleModifier, const CoordsXYZ& loc, int32_t& volume, float& pan)
     {
         auto params = GetParametersFromLocation(sampleModifier, loc);
 

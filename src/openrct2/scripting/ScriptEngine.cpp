@@ -38,7 +38,6 @@
     #include "bindings/entity/ScParticle.hpp"
     #include "bindings/entity/ScStaff.hpp"
     #include "bindings/entity/ScVehicle.hpp"
-    #include "bindings/game/ScAudio.hpp"
     #include "bindings/game/ScCheats.hpp"
     #include "bindings/game/ScConsole.hpp"
     #include "bindings/game/ScContext.hpp"
@@ -516,7 +515,6 @@ ScWeatherState Scripting::gScWeatherState;
 ScConfiguration Scripting::gScConfiguration;
 ScConsole Scripting::gScConsole;
 ScContext Scripting::gScContext;
-ScAudio Scripting::gScAudio;
 ScDate Scripting::gScDate;
 ScDisposable Scripting::gScDisposable;
 ScMap Scripting::gScMap;
@@ -566,7 +564,6 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScConfiguration.Register(ctx);
     gScConsole.Register(ctx);
     gScContext.Register(ctx);
-    gScAudio.Register(ctx);
     gScDate.Register(ctx);
     gScDisposable.Register(ctx);
     gScMap.Register(ctx);
@@ -630,7 +627,6 @@ void ScriptEngine::UnregisterClasses()
     gScConfiguration.Unregister();
     gScConsole.Unregister();
     gScContext.Unregister();
-    gScAudio.Unregister();
     gScDate.Unregister();
     gScDisposable.Unregister();
     gScMap.Unregister();
@@ -708,7 +704,6 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     JS_SetPropertyStr(ctx, glb, "climate", gScWeather.New(ctx));
     JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
     JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));
-    JS_SetPropertyStr(ctx, glb, "audio", gScAudio.New(ctx));
     JS_SetPropertyStr(ctx, glb, "date", gScDate.New(ctx));
     JS_SetPropertyStr(ctx, glb, "map", gScMap.New(ctx));
     JS_SetPropertyStr(ctx, glb, "network", gScNetwork.New(ctx));

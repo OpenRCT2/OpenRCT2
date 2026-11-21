@@ -22,11 +22,8 @@ namespace OpenRCT2::Scripting
     {
     private:
         static JSValue playSound(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
-
         static JSValue playMusic(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
-
         static JSValue loadSound(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
-
         static JSValue freeSound(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv);
 
     public:

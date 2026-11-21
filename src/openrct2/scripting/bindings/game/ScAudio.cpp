@@ -13,8 +13,10 @@
 
     #include "../../../Context.h"
     #include "../../../audio/Audio.h"
+    #include "../../../audio/AudioChannel.h"
     #include "../../../audio/AudioContext.h"
     #include "../../../audio/AudioSource.h"
+    #include "../../../config/Config.h"
     #include "../../../core/MemoryStream.h"
     #include "../../../world/Location.hpp"
     #include "../../Plugin.h"
@@ -30,22 +32,60 @@ namespace OpenRCT2::Scripting
 {
     struct CustomSound
     {
-        int32_t Handle{};
-        std::shared_ptr<Plugin> Owner;
-        Audio::IAudioSource* Source{};
+        int32_t handle{};
+        std::shared_ptr<Plugin> owner;
+        Audio::IAudioSource* source{};
+    };
+
+    struct PlayingMusic
+    {
+        std::shared_ptr<Plugin> owner;
+        std::shared_ptr<Audio::IAudioChannel> channel;
+        Audio::IAudioSource* source{};
     };
 
     static std::vector<CustomSound> _customSounds;
+    static std::vector<PlayingMusic> _playingMusic;
     static int32_t _nextCustomSoundHandle = 1;
     static bool _cleanupSubscribed = false;
 
-    static void FreePluginSounds(const std::shared_ptr<Plugin>& plugin)
+    // Music sources are created per play, so they must be released once playback has finished.
+    static void releaseFinishedMusic()
     {
+        for (auto it = _playingMusic.begin(); it != _playingMusic.end();)
+        {
+            if (it->channel->IsDone())
+            {
+                it->source->Release();
+                it = _playingMusic.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+    }
+
+    static void freePluginSounds(const std::shared_ptr<Plugin>& plugin)
+    {
+        for (auto it = _playingMusic.begin(); it != _playingMusic.end();)
+        {
+            if (it->owner == plugin)
+            {
+                it->source->Release();
+                it = _playingMusic.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+
         for (auto it = _customSounds.begin(); it != _customSounds.end();)
         {
-            if (it->Owner == plugin)
+            if (it->owner == plugin)
             {
-                it->Source->Release();
+                it->source->Release();
                 it = _customSounds.erase(it);
             }
             else
@@ -55,26 +95,26 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    static void SubscribeToCleanup()
+    static void subscribeToCleanup()
     {
         if (!_cleanupSubscribed)
         {
             _cleanupSubscribed = true;
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.SubscribeToPluginStoppedEvent(
-                [](std::shared_ptr<Plugin> stopped) -> void { FreePluginSounds(stopped); });
+                [](std::shared_ptr<Plugin> stopped) -> void { freePluginSounds(stopped); });
         }
     }
 
-    static CustomSound* FindCustomSound(int32_t handle)
+    static CustomSound* findCustomSound(int32_t handle)
     {
         auto it = std::find_if(
-            _customSounds.begin(), _customSounds.end(), [handle](const CustomSound& s) { return s.Handle == handle; });
+            _customSounds.begin(), _customSounds.end(), [handle](const CustomSound& s) { return s.handle == handle; });
         return it != _customSounds.end() ? &*it : nullptr;
     }
 
     // Mirrors what the WAV loader accepts, so invalid files are rejected before reaching it.
-    static bool IsSupportedWav(const std::vector<uint8_t>& d)
+    static bool isSupportedWav(const std::vector<uint8_t>& d)
     {
         auto u16 = [&](size_t i) { return static_cast<uint32_t>(d[i] | (d[i + 1] << 8)); };
         auto u32 = [&](size_t i) { return u16(i) | (u16(i + 2) << 16); };
@@ -126,7 +166,7 @@ namespace OpenRCT2::Scripting
             return JS_EXCEPTION;
         }
 
-        if (!IsSupportedWav(bytes))
+        if (!isSupportedWav(bytes))
         {
             JS_ThrowPlainError(ctx, "Unable to load sound. Only PCM WAV files (8 or 16 bit) are supported.");
             return JS_EXCEPTION;
@@ -143,7 +183,7 @@ namespace OpenRCT2::Scripting
             return JS_EXCEPTION;
         }
 
-        SubscribeToCleanup();
+        subscribeToCleanup();
 
         auto handle = _nextCustomSoundHandle++;
         _customSounds.push_back({ handle, plugin, source });
@@ -156,22 +196,22 @@ namespace OpenRCT2::Scripting
 
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-        auto* sound = FindCustomSound(handle);
-        if (sound == nullptr || sound->Owner != plugin)
+        auto* sound = findCustomSound(handle);
+        if (sound == nullptr || sound->owner != plugin)
         {
             JS_ThrowPlainError(ctx, "This plugin did not load the specified sound.");
             return JS_EXCEPTION;
         }
 
         // The mixer drops channels whose source has been released, so any playing instances stop.
-        sound->Source->Release();
+        sound->source->Release();
         _customSounds.erase(_customSounds.begin() + (sound - _customSounds.data()));
         return JS_UNDEFINED;
     }
 
     // Reads the optional arguments shared by playSound and playMusic: position?, rate?
     // Returns false if a JS exception was raised.
-    static bool ParsePlayArgs(JSContext* ctx, int argc, JSValue* argv, std::optional<CoordsXYZ>& position, double& rate)
+    static bool parsePlayArgs(JSContext* ctx, int argc, JSValue* argv, std::optional<CoordsXYZ>& position, double& rate)
     {
         if (argc > 1 && JS_IsObject(argv[1]))
         {
@@ -186,58 +226,85 @@ namespace OpenRCT2::Scripting
         return true;
     }
 
-    static void PlaySource(
+    static std::shared_ptr<Audio::IAudioChannel> playSource(
         Audio::IAudioSource* source, int32_t sampleModifier, Audio::MixerGroup group, const std::optional<CoordsXYZ>& position,
         double rate)
     {
-        if (source == nullptr || !Audio::IsAvailable())
-            return;
+        if (source == nullptr)
+            return nullptr;
+        if (group == Audio::MixerGroup::rideMusic)
+        {
+            if (!Audio::IsMusicAvailable() || !Config::Get().sound.rideMusicEnabled)
+                return nullptr;
+        }
+        else if (!Audio::IsAvailable())
+        {
+            return nullptr;
+        }
 
         int32_t volume = Audio::kMixerVolumeMax;
         float pan = Audio::DStoMixerPan(0);
-        if (position.has_value() && !Audio::GetLocationParams(sampleModifier, *position, volume, pan))
-            return;
+        if (position.has_value() && !Audio::getLocationParams(sampleModifier, *position, volume, pan))
+            return nullptr;
 
-        Audio::CreateAudioChannel(source, group, false, volume, pan, rate, true);
+        rate = std::clamp(rate, 0.01, 100.0);
+        return Audio::CreateAudioChannel(source, group, false, volume, pan, rate, true);
     }
 
     JSValue ScAudio::playSound(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         std::optional<CoordsXYZ> position;
         double rate = 1.0;
-        if (!ParsePlayArgs(ctx, argc, argv, position, rate))
+        if (!parsePlayArgs(ctx, argc, argv, position, rate))
             return JS_EXCEPTION;
 
         if (JS_IsNumber(argv[0]))
         {
             JS_UNPACK_INT32(handle, ctx, argv[0]);
-            auto* sound = FindCustomSound(handle);
+            auto* sound = findCustomSound(handle);
             if (sound == nullptr)
             {
                 JS_ThrowPlainError(ctx, "Invalid sound handle.");
                 return JS_EXCEPTION;
             }
-            PlaySource(sound->Source, 0, Audio::MixerGroup::sound, position, rate);
+            playSource(sound->source, 0, Audio::MixerGroup::sound, position, rate);
             return JS_UNDEFINED;
         }
 
         JS_UNPACK_STR(soundName, ctx, argv[0]);
-        auto soundId = GetSoundByName(soundName);
+        auto soundId = getSoundByName(soundName);
         int32_t sampleModifier = 0;
-        auto* source = Audio::GetSoundSource(soundId, &sampleModifier);
-        PlaySource(source, sampleModifier, Audio::MixerGroup::sound, position, rate);
+        auto* source = Audio::getSoundSource(soundId, &sampleModifier);
+        playSource(source, sampleModifier, Audio::MixerGroup::sound, position, rate);
         return JS_UNDEFINED;
     }
 
     JSValue ScAudio::playMusic(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        releaseFinishedMusic();
         std::optional<CoordsXYZ> position;
         double rate = 1.0;
-        if (!ParsePlayArgs(ctx, argc, argv, position, rate))
+        if (!parsePlayArgs(ctx, argc, argv, position, rate))
             return JS_EXCEPTION;
 
         JS_UNPACK_STR(songName, ctx, argv[0]);
-        PlaySource(Audio::GetMusicSource(songName), 0, Audio::MixerGroup::rideMusic, position, rate);
+        auto* source = Audio::getMusicSource(songName);
+        if (source == nullptr)
+        {
+            JS_ThrowPlainError(ctx, "Unable to play music. The music object is not loaded.");
+            return JS_EXCEPTION;
+        }
+
+        auto channel = playSource(source, 0, Audio::MixerGroup::rideMusic, position, rate);
+        if (channel == nullptr)
+        {
+            source->Release();
+            return JS_UNDEFINED;
+        }
+
+        subscribeToCleanup();
+        auto plugin = GetContext()->GetScriptEngine().GetExecInfo().GetCurrentPlugin();
+        _playingMusic.push_back({ plugin, std::move(channel), source });
         return JS_UNDEFINED;
     }
 

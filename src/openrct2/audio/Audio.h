@@ -163,6 +163,7 @@ namespace OpenRCT2::Audio
      * Returns false when no audio device is available or when audio is turned off, otherwise true.
      */
     bool IsAvailable();
+    bool IsMusicAvailable();
 
     /*
      * Returns the amount of available audio devices.
@@ -239,18 +240,18 @@ namespace OpenRCT2::Audio
     /**
      * Gets the source of a built-in sound, and optionally its volume modifier. Returns nullptr if not available.
      */
-    IAudioSource* GetSoundSource(SoundId soundId, int32_t* sampleModifier = nullptr);
+    IAudioSource* getSoundSource(SoundId soundId, int32_t* sampleModifier = nullptr);
 
     /**
      * Gets the first track of a music object, loading the object if necessary. Returns nullptr if not found.
      */
-    IAudioSource* GetMusicSource(std::string_view identifier);
+    IAudioSource* getMusicSource(std::string_view identifier);
 
     /**
      * Gets the mixer volume and pan for a sound at a virtual location. Returns false if the location is out of range,
      * in which case the volume is 0.
      */
-    bool GetLocationParams(int32_t sampleModifier, const CoordsXYZ& loc, int32_t& volume, float& pan);
+    bool getLocationParams(int32_t sampleModifier, const CoordsXYZ& loc, int32_t& volume, float& pan);
 
     /**
      * Populates the gAudioDevices array with the available audio devices.

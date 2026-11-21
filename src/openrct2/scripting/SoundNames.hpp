@@ -21,7 +21,7 @@ namespace OpenRCT2::Scripting
 {
     // When adding to this map, also add to SoundName in openrct2.d.ts
 
-    static EnumMap<SoundId> SoundLookupTable = {
+    static EnumMap<SoundId> kSoundLookupTable = {
         // Sounds
         { "lift_classic", Audio::SoundId::liftClassic },
         { "track_friction_classic_wood", Audio::SoundId::trackFrictionClassicWood },
@@ -93,10 +93,10 @@ namespace OpenRCT2::Scripting
         { "null", SoundId::null }
     };
 
-    inline SoundId GetSoundByName(const std::string& input)
+    inline SoundId getSoundByName(const std::string& input)
     {
-        auto result = SoundLookupTable.find(input);
-        if (result != SoundLookupTable.end())
+        auto result = kSoundLookupTable.find(input);
+        if (result != kSoundLookupTable.end())
             return result->second;
         return SoundId::null;
     }
