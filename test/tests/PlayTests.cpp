@@ -212,4 +212,3 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
         gameStateUpdateLogic();
     }
 }
-
