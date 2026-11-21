@@ -71,7 +71,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_OVERWRITE_OVERWRITE:
                 {
-                    FileBrowser::Select(_path.c_str(), _action, _type, _trackDesign);
+                    FileBrowser::Select(_path, _action, _type, _trackDesign);
 
                     // As the LoadSaveWindow::Select function can change the order of the
                     // windows we can't use WindowClose(w).

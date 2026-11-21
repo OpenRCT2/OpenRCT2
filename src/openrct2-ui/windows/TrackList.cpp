@@ -212,7 +212,12 @@ namespace OpenRCT2::Ui::Windows
             _loadedTrackDesign = TrackDesignImport(path.c_str());
             if (_loadedTrackDesign != nullptr)
             {
-                TrackDesignDrawPreview(*_loadedTrackDesign, _trackDesignPreviewPixels, !gTrackDesignSceneryToggle);
+                auto spaceRequired = TrackDesignDrawPreview(
+                    *_loadedTrackDesign, _trackDesignPreviewPixels, !gTrackDesignSceneryToggle);
+                if (!spaceRequired.isNull())
+                {
+                    _loadedTrackDesign->statistics.spaceRequired = spaceRequired;
+                }
                 return true;
             }
             return false;
@@ -243,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
             }
             gTrackDesignSceneryToggle = false;
             WindowPushOthersRight(*this);
-            _currentTrackPieceDirection = 2;
+            _currentTrackPieceDirection = kTrackPreviewDefaultDirection;
             std::fill(_trackDesignPreviewPixels.begin(), _trackDesignPreviewPixels.end(), PaletteIndex::transparent);
 
             _loadedTrackDesign = nullptr;
@@ -505,8 +510,8 @@ namespace OpenRCT2::Ui::Windows
             G1Element g1temp = {};
             g1temp.offset = reinterpret_cast<uint8_t*>(
                 _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * kTrackPreviewImageSize));
-            g1temp.width = 370;
-            g1temp.height = 217;
+            g1temp.width = kTrackPreviewWidth;
+            g1temp.height = kTrackPreviewHeight;
             g1temp.flags = { G1Flag::hasTransparency };
             GfxSetG1Element(SPR_TEMP_TRACK_LIST, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP_TRACK_LIST);
@@ -664,7 +669,7 @@ namespace OpenRCT2::Ui::Windows
             if (_loadedTrackDesign->gameStateData.cost != 0)
             {
                 ft = Formatter();
-                ft.Add<uint32_t>(_loadedTrackDesign->gameStateData.cost);
+                ft.Add<money64>(_loadedTrackDesign->gameStateData.cost);
                 drawText(rt, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
             }
         }

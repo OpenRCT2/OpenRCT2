@@ -1532,6 +1532,12 @@
         "format": "raw"
     },
     {
+        "path": "latin/U+204A-tironian-et-small.png",
+        "y": 2,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
         "path": "latin/c-caron-uc-small.png",
         "y": 0,
         "palette": "keep",
@@ -3349,6 +3355,12 @@
     {
         "path": "ellipsis-bold.png",
         "y": 6,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+204A-tironian-et-bold.png",
+        "y": 2,
         "palette": "keep",
         "format": "raw"
     },
@@ -5174,6 +5186,12 @@
     {
         "path": "ellipsis-tiny.png",
         "y": 4,
+        "palette": "keep",
+        "format": "raw"
+    },
+    {
+        "path": "latin/U+204A-tironian-et-tiny.png",
+        "y": 1,
         "palette": "keep",
         "format": "raw"
     },

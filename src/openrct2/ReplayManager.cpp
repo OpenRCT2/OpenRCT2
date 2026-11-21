@@ -344,8 +344,8 @@ namespace OpenRCT2
 
             _currentRecording.reset();
 
-            News::Item* news = News::AddItemToQueue(
-                getGameState().park.newsItems, News::ItemType::blank, "Replay recording stopped", 0);
+            News::Item* news = getGameState().park.newsItems.addItemToQueue(
+                News::ItemType::blank, "Replay recording stopped", 0);
             news->setFlags(News::ItemFlags::hasButton); // Has no subject.
 
             return true;
@@ -471,8 +471,8 @@ namespace OpenRCT2
             // During normal playback we pause the game if stopped.
             if (_mode == ReplayMode::playing)
             {
-                News::Item* news = News::AddItemToQueue(
-                    getGameState().park.newsItems, News::ItemType::blank, "Replay playback complete", 0);
+                News::Item* news = getGameState().park.newsItems.addItemToQueue(
+                    News::ItemType::blank, "Replay playback complete", 0);
                 news->setFlags(News::ItemFlags::hasButton); // Has no subject.
             }
 

@@ -43,7 +43,7 @@ namespace OpenRCT2
 namespace OpenRCT2::Scripting
 {
     // Grepped from CI (.github/workflows/publish-plugin-types.yml); keep the format `kPluginApiVersion = N`.
-    static constexpr int32_t kPluginApiVersion = 124;
+    static constexpr int32_t kPluginApiVersion = 126;
 
     // Versions marking breaking changes.
     static constexpr int32_t kApiVersionPeepDeprecation = 33;
@@ -319,6 +319,9 @@ namespace OpenRCT2::Scripting
 
     std::string Stringify(JSContext* context, JSValue value);
 
+    // Returns the plugin API name for a game action, or an empty string if it is not exposed to scripts.
+    std::string getActionName(GameCommand commandId);
+
     class ScBase
     {
     private:
@@ -333,6 +336,8 @@ namespace OpenRCT2::Scripting
             classId = JS_INVALID_CLASS_ID;
             if (protoCtx != nullptr)
                 JS_FreeValue(protoCtx, proto);
+            proto = JS_NULL;
+            protoCtx = nullptr;
         }
 
         [[nodiscard]] JSValue GetProto() const

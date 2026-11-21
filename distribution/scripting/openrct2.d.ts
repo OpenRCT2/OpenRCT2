@@ -391,7 +391,9 @@ declare global {
         queryAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "scenerysetrestricted", args: ScenerySetRestrictedArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -482,7 +484,9 @@ declare global {
         executeAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "scenerysetrestricted", args: ScenerySetRestrictedArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -745,7 +749,9 @@ declare global {
         "ridesetsetting" |
         "ridesetstatus" |
         "ridesetvehicle" |
+        "ridesetvisibility" |
         "scenariosetsetting" |
+        "scenerysetrestricted" |
         "signsetname" |
         "signsetstyle" |
         "smallsceneryplace" |
@@ -1367,12 +1373,23 @@ declare global {
         colour: number;
     }
 
+    interface RideSetVisibilityArgs extends GameActionArgs {
+        ride: number;
+        visibility: number;
+    }
+
     interface ScenarioSetSettingArgs extends GameActionArgs {
         /**
          * @see ScenarioSetSetting in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/ScenarioSetSettingAction.h}
          */
         setting: number;
         value: number;
+    }
+
+    interface ScenerySetRestrictedArgs extends GameActionArgs {
+        objectType: number;
+        objectIndex: number;
+        isRestricted: boolean;
     }
 
     interface SignSetNameArgs extends GameActionArgs {
@@ -1768,6 +1785,7 @@ declare global {
         getAllEntities(type: "litter"): Litter[];
         getAllEntities(type: "balloon"): Balloon[];
         getAllEntities(type: "money_effect"): MoneyEffect[];
+        getAllEntities(type: "duck"): Duck[];
         getAllEntitiesOnTile(type: EntityType, tilePos: CoordsXY): Entity[];
         getAllEntitiesOnTile(type: "guest", tilePos: CoordsXY): Guest[];
         getAllEntitiesOnTile(type: "staff", tilePos: CoordsXY): Staff[];
@@ -1775,6 +1793,7 @@ declare global {
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         getAllEntitiesOnTile(type: "balloon", tilePos: CoordsXY): Balloon[];
         getAllEntitiesOnTile(type: "money_effect", tilePos: CoordsXY): MoneyEffect[];
+        getAllEntitiesOnTile(type: "duck", tilePos: CoordsXY): Duck[];  
         createEntity(type: EntityType, initializer: object): Entity;
 
         /**
@@ -4082,6 +4101,45 @@ declare global {
          */
         value: number;
     }
+
+    /**
+     * Represents duck entity.
+     */
+    interface Duck extends Entity {
+        /**
+         * Whether the duck's position is frozen in place. The duck will not move, but its
+         * animation will continue to play unless `animationFrozen` is also set.
+         */
+        positionFrozen: boolean;
+
+        /**
+         * Whether the duck's animation is frozen. The duck's sprite will not update.
+         * Requires position to be frozen as well, otherwise the flag will be cleared again.
+         */
+        animationFrozen: boolean;
+
+        /**
+         * The orientation of the duck, from 0 to 31.
+         */
+        orientation: number;
+
+        /**
+         * The current frame offset in the duck's animation.
+         */
+        animationFrame: number;
+
+        /**
+         * The animation the duck is currently exhibiting.
+         */
+        animation: DuckAnimation;
+    }
+
+    type DuckAnimation =
+        "flyToWater" |
+        "swim" |
+        "drink" |
+        "doubleDrink" |
+        "flyAway";
 
     /**
      * Network APIs

@@ -132,6 +132,6 @@ namespace OpenRCT2::Park
         std::vector<Award> currentAwards;
         std::vector<MarketingCampaign> marketingCampaigns;
 
-        News::ItemQueues newsItems;
+        News::Items newsItems;
     };
 } // namespace OpenRCT2::Park

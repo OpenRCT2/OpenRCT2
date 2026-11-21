@@ -37,7 +37,7 @@ namespace OpenRCT2::SawyerCoding
         try
         {
             auto header = _stream->ReadValue<ChunkHeader>();
-            _stream->Seek(header.length, STREAM_SEEK_CURRENT);
+            _stream->Seek(header.length, StreamSeekOrigin::current);
         }
         catch (const std::exception&)
         {

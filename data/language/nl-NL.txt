@@ -3861,3 +3861,6 @@ STR_7078    :Dennengroen
 STR_7079    :Robijn
 STR_7080    :Diepblauw
 STR_7081    :Zilver
+STR_7082    :Baanontwerp geïnstalleerd.
+STR_7083    :Baanontwerp was al geïnstalleerd.
+STR_7084    :Stijlpipet. Hiermee kun je op een vakje in het landschap klikken om het type land te kopiëren.

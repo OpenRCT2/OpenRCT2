@@ -218,6 +218,7 @@ static const std::unordered_map<UnicodeChar, int32_t> kCodepointOffsetMap = {
     { UnicodeChar::bullet, EnumValue(CSChar::bullet) - kCSSpriteFontOffset },
     { UnicodeChar::ellipsis, SPR_FONTS_ELLIPSIS - SPR_FONTS_BEGIN },
     { UnicodeChar::narrowNonBreakingSpace, ' ' - kCSSpriteFontOffset },
+    { UnicodeChar::tironianEt, SPR_FONTS_TIRONIAN_ET - SPR_FONTS_BEGIN },
     { UnicodeChar::quoteOpen, EnumValue(CSChar::quoteOpen) - kCSSpriteFontOffset },
     { UnicodeChar::quoteClose, EnumValue(CSChar::quoteClose) - kCSSpriteFontOffset },
 

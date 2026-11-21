@@ -31,12 +31,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
 
-template<typename T>
-static std::shared_ptr<T> ToShared(std::unique_ptr<T>&& src)
-{
-    return std::shared_ptr<T>(std::move(src));
-}
-
 /**
  * Main entry point for non-Windows systems. Windows instead uses its own DLL proxy.
  */

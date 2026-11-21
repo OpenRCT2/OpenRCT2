@@ -21,12 +21,12 @@ namespace OpenRCT2
 {
     void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        stream->Seek(6, STREAM_SEEK_CURRENT);
+        stream->Seek(6, StreamSeekOrigin::current);
         _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
         _legacyType.flags = stream->ReadValue<BannerEntryFlags>();
         _legacyType.price = stream->ReadValue<money16>();
         _legacyType.scenery_tab_id = kObjectEntryIndexNull;
-        stream->Seek(2, STREAM_SEEK_CURRENT);
+        stream->Seek(2, StreamSeekOrigin::current);
 
         GetStringTable().Read(context, stream, ObjectStringID::name);
 

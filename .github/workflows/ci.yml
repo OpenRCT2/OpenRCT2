@@ -34,7 +34,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.5.6
+  OPENRCT2_VERSION: 0.5.7
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
@@ -367,7 +367,7 @@ jobs:
           if-no-files-found: error
   macos-cmake:
     name: macOS (${{ matrix.arch }}) using CMake
-    runs-on: macos-15
+    runs-on: macos-latest
     needs: [check-code-formatting, build_variables]
     strategy:
       fail-fast: false
@@ -480,11 +480,6 @@ jobs:
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz"
           - platform: x86_64
             distro: Debian
-            release: bookworm
-            image: ghcr.io/openrct2/openrct2-build:26-bookworm
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
-          - platform: x86_64
-            distro: Debian
             release: trixie
             image: ghcr.io/openrct2/openrct2-build:26-trixie
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
@@ -517,7 +512,7 @@ jobs:
     name: Ubuntu Linux (AppImage, x86_64)
     runs-on: ubuntu-24.04
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:24-jammy
+    container: openrct2/openrct2-build:24-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -530,7 +525,7 @@ jobs:
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         run: |
-          . scripts/setenv -q && build -DCMAKE_CXX_COMPILER=clang++-20 -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
+          . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
       - name: Build AppImage
         env:
           APPIMAGE_FILE_NAME: OpenRCT2-${{ needs.build_variables.outputs.name }}-linux-x86_64.AppImage

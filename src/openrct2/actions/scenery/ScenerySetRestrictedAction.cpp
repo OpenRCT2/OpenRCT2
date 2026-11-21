@@ -21,6 +21,13 @@ namespace OpenRCT2::GameActions
     {
     }
 
+    void ScenerySetRestrictedAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("objectType", _objectType);
+        visitor.Visit("objectIndex", _objectIndex);
+        visitor.Visit("isRestricted", _isRestricted);
+    }
+
     void ScenerySetRestrictedAction::Serialise(DataSerialiser& stream)
     {
         GameAction::Serialise(stream);
