@@ -1998,8 +1998,8 @@ STR_2845    :{TOPAZ}¡Tu parque ha recibido el premio a ‘El parque con los esq
 STR_2846    :{TOPAZ}¡Tu parque ha recibido el premio a ‘El parque con la disposición más confusa’!
 STR_2847    :{TOPAZ}¡Tu parque ha recibido el premio a ‘El parque con las mejores atracciones suaves’!
 STR_2848    :{WINDOW_COLOUR_2}Sin premios recientes
-STR_2849    :Nuevo escenario instalado exitosamente
-STR_2850    :Nuevo diseño de vía instalado exitosamente
+STR_2849    :Nuevo escenario instalado con éxito
+STR_2850    :Nuevo diseño de vía instalado con éxito
 STR_2851    :Escenario ya instalado
 STR_2852    :Diseño de vía ya instalada
 STR_2853    :¡Prohibido por las autoridades locales!
@@ -3871,3 +3871,6 @@ STR_7078    :Verde pino
 STR_7079    :Rubí
 STR_7080    :Azul profundo
 STR_7081    :Plata
+STR_7082    :Diseño de vía instalado con éxito
+STR_7083    :Diseño de vía ya instalado
+STR_7084    :Selector de estilo de tierra. Haz clic en cualquier casilla del mapa para seleccionar el mismo estilo para terraformar.
