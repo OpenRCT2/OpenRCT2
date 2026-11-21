@@ -247,7 +247,7 @@ namespace OpenRCT2::Scripting
         if (position.has_value() && !Audio::getLocationParams(sampleModifier, *position, volume, pan))
             return nullptr;
 
-        rate = std::clamp(rate, 0.01, 100.0);
+        rate = std::clamp(rate, 0.05, 20.0);
         return Audio::CreateAudioChannel(source, group, false, volume, pan, rate, true);
     }
 
