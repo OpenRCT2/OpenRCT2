@@ -32,6 +32,7 @@
 #include <openrct2/ride/RideManager.hpp>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/management/Marketing.h>
 #include <string>
 
 using namespace OpenRCT2;
@@ -211,4 +212,29 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
         ASSERT_LE(numRiding, 2);
         gameStateUpdateLogic();
     }
+}
+TEST_F(PlayTests, DoNotOfferEntryCampaignIfTheresNoAdmissionFee)
+{
+    auto context = localStartGame(TestData::GetParkPath("small_park_with_ferris_wheel.sv6"));
+    ASSERT_NE(context.get(), nullptr);
+    auto& park = getGameState().park;
+    park.flags.unset(ParkFlag::noMoney);
+    park.flags.unset(ParkFlag::freeEntry);
+    park.entranceFee = 0;
+
+    EXPECT_FALSE(MarketingIsCampaignTypeApplicable(ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE));
+    EXPECT_FALSE(MarketingIsCampaignTypeApplicable(ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE));
+}
+
+TEST_F(PlayTests, DoOfferEntryCampaignIfTheresAdmissionFee)
+{
+    auto context = localStartGame(TestData::GetParkPath("small_park_with_ferris_wheel.sv6"));
+    ASSERT_NE(context.get(), nullptr);
+    auto& park = getGameState().park;
+    park.flags.unset(ParkFlag::noMoney);
+    park.flags.unset(ParkFlag::freeEntry);
+    park.entranceFee = 10.00_GBP;
+
+    EXPECT_TRUE(MarketingIsCampaignTypeApplicable(ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE));
+    EXPECT_TRUE(MarketingIsCampaignTypeApplicable(ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE));
 }
