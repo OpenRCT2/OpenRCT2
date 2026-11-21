@@ -22,7 +22,7 @@
     #include "ScWindow.h"
 
     #include <openrct2/scripting/ScriptEngine.h>
-#include <openrct2/scripting/bindings/game/ScAudio.hpp>
+    #include <openrct2/scripting/bindings/game/ScAudio.hpp>
 
 using namespace OpenRCT2::Scripting;
 
