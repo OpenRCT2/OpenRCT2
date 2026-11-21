@@ -150,7 +150,15 @@ namespace OpenRCT2::Network
             }
         }
 
-        Json::WriteToFile(path, jsonUsers);
+        // A read-only users.json is a way to keep users from being remembered, so failing to save is not fatal.
+        try
+        {
+            Json::WriteToFile(path, jsonUsers);
+        }
+        catch (const std::exception& ex)
+        {
+            Console::Error::WriteLine("Unable to save %s: %s", path.c_str(), ex.what());
+        }
     }
 
     void UserManager::unsetUsersOfGroup(uint8_t groupId)

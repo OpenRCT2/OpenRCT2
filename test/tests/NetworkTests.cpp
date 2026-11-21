@@ -10,9 +10,11 @@
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/network/NetworkBase.h>
 #include <openrct2/network/NetworkConnection.h>
 #include <openrct2/network/NetworkPacket.h>
+#include <openrct2/network/NetworkUser.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Network;
@@ -144,4 +146,35 @@ TEST_F(NetworkTests, MapRequestWithoutPlayerDisconnectsAndDoesNotCrash)
     network.ServerHandleMapRequest(connection, packet);
 
     EXPECT_TRUE(connection.shouldDisconnect);
+}
+
+class NetworkUsersTests : public NetworkTests
+{
+protected:
+    void SetUp() override
+    {
+        // A directory where users.json should be makes writing it fail on every platform, like a read-only file.
+        Path::CreateDirectory(Path::Combine(_userDir, u8"users.json"));
+
+        gCustomUserDataPath = _userDir;
+        NetworkTests::SetUp();
+    }
+
+    void TearDown() override
+    {
+        _context.reset();
+        gCustomUserDataPath = {};
+        Path::DeleteDirectory(_userDir);
+    }
+
+    u8string _userDir = u8"test-unwritable-users";
+};
+
+TEST_F(NetworkUsersTests, SaveWhenUsersJsonCannotBeWrittenDoesNotThrow)
+{
+    UserManager userManager;
+    userManager.getOrAddUser("0123456789abcdef")->name = "Player";
+
+    // Before the fix, the exception escaped and aborted a server on startup.
+    EXPECT_NO_THROW(userManager.save());
 }
