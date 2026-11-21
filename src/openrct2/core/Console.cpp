@@ -63,16 +63,25 @@ namespace OpenRCT2::Console
         va_end(args);
     }
 
+    void WriteLine(const std::string& str)
+    {
+        auto ctx = GetContext();
+        if (ctx != nullptr)
+            ctx->WriteLine(str);
+        else
+            std::printf("%s\n", str.c_str());
+    }
+
     namespace Error
     {
         void Write(char c)
         {
-            fputc(c, stderr);
+            std::fputc(c, stderr);
         }
 
         void Write(const utf8* str)
         {
-            fputs(str, stderr);
+            std::fputs(str, stderr);
         }
 
         void WriteFormat(const utf8* format, ...)
@@ -93,19 +102,25 @@ namespace OpenRCT2::Console
         {
             va_list args;
             va_start(args, format);
-            WriteLine_VA(format, args);
-            va_end(args);
-        }
 
-        void WriteLine_VA(const utf8* format, va_list args)
-        {
             char buffer[4096];
             std::vsnprintf(buffer, sizeof(buffer), format, args);
             auto ctx = GetContext();
             if (ctx != nullptr)
                 ctx->WriteErrorLine(buffer);
             else
-                std::printf("%s\n", buffer);
+                std::fprintf(stderr, "%s\n", buffer);
+
+            va_end(args);
+        }
+
+        void WriteLine(const std::string& str)
+        {
+            auto ctx = GetContext();
+            if (ctx != nullptr)
+                ctx->WriteErrorLine(str);
+            else
+                std::fprintf(stderr, "%s\n", str.c_str());
         }
     } // namespace Error
 } // namespace OpenRCT2::Console
