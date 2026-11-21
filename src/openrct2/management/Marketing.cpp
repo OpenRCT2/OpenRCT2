@@ -193,9 +193,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (!Park::EntranceFeeUnlocked(park))
-                return false;
-            return true;
+            return Park::GetEntranceFee(park) > 0;
 
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
             if (!Park::RidePricesUnlocked(park))
