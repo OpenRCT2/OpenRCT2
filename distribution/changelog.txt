@@ -17,6 +17,7 @@
 - Fix: [#23866] The `object_count` console command stops counting at the first empty object slot.
 - Fix: [#24082] [Plugin] `objectManager.getInstalledObject()` returns null for DAT objects.
 - Fix: [#25395] `openrct2 <command> -h` fails instead of showing help for the command, and `openrct2 -ha` leaves out the command name.
+- Fix: [#26929] Connecting to a server or plugin socket that refuses the connection is reported as connected.
 - Fix: [#26957] The frame 0 image is skipped when changing the state from `swim` to `flyAway`.
 - Fix: [#27279] Fixed RideSetVisibiltyAction parameter name from `visiblity` to `visibility`.
 - Fix: [#27304] Left corkscrews block supports incorrectly (original bug).
