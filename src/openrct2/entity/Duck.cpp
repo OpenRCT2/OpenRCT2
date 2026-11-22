@@ -409,6 +409,8 @@ namespace OpenRCT2
     {
         for (auto duck : EntityList<Duck>())
         {
+            if (duck->getPositionFrozen())
+                continue;
             duck->remove();
         }
     }
