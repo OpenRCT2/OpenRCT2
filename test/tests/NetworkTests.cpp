@@ -18,8 +18,8 @@
 #ifndef _WIN32
     #include <arpa/inet.h>
     #include <chrono>
+    #include <csignal>
     #include <netinet/in.h>
-    #include <signal.h>
     #include <sys/socket.h>
     #include <thread>
     #include <unistd.h>
@@ -176,7 +176,7 @@ TEST(SocketTests, SendDataToClosedPeerReturnsErrorInsteadOfSigpipe)
     // Restore the default disposition first: linked libraries (e.g. libcurl)
     // may have installed a handler, while the shipped game runs with the
     // default and dies.
-    ::signal(SIGPIPE, SIG_DFL);
+    std::signal(SIGPIPE, SIG_DFL);
     bool exercised = false;
     for (uint16_t port = 41100; port < 41120 && !exercised; port++)
     {
