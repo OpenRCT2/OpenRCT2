@@ -796,7 +796,6 @@ namespace OpenRCT2
         TileElement* saved_map = nullptr;
         int32_t saved_height = 0;
 
-        // TODO: Jacob
         for (auto* tileElement : TileElementsView(CoordsXY{ x, y }))
         {
             // If a path check if we are on it

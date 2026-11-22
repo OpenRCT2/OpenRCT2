@@ -263,7 +263,7 @@ namespace OpenRCT2
                 continue;
             if (pathElement->additionIsGhost())
                 continue;
-            if (pathElement->asPath()->hasAddition())
+            if (!pathElement->asPath()->hasAddition())
                 continue;
 
             auto* pathAdditionEntry = pathElement->getAdditionEntry();

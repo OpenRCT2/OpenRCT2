@@ -154,7 +154,7 @@ namespace OpenRCT2
                 if (!FootpathIsZAndDirectionValid(*adjacentPathElement, adjacPos.z / kCoordsZStep, adjac_dir))
                     continue;
 
-                /* testElement is a connected path */
+                /* adjacentPathElement is a connected path */
                 if (!pathfound)
                 {
                     pathfound = true;
