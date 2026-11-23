@@ -63,6 +63,8 @@ namespace OpenRCT2
         bool _entityFlashingList[kMaxEntities];
 
         std::array<std::vector<EntityId>, kSpatialIndexSize> _entitySpatialIndex;
+        // Entities marked with kSpatialIndexDirtyMask since the last updateEntitiesSpatialIndex
+        std::vector<EntityId> _entitySpatialDirty;
 
     public:
         uint16_t getEntityListCount(EntityType type);
@@ -175,6 +177,7 @@ namespace OpenRCT2
         uint16_t removeFloatingEntities();
         void updateEntitiesSpatialIndex();
         void updateEntitySpatialIndex(EntityBase& entity);
+        void markEntitySpatialIndexDirty(EntityBase& entity);
 
         void entitySetFlashing(EntityBase* entity, bool flashing);
         bool entityGetFlashing(EntityBase* entity);
