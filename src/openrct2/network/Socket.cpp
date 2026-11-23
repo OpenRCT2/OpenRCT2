@@ -221,12 +221,11 @@ namespace OpenRCT2::Network
         // Linux requests this per call via MSG_NOSIGNAL (FLAG_NO_PIPE), which does not
         // exist on other platforms such as macOS; there the equivalent is this socket
         // option. Windows has no SIGPIPE, so it is a no-op there.
-        static bool SetNoSigPipe(SOCKET socket)
+        static bool SetNoSigPipe([[maybe_unused]] SOCKET socket)
         {
     #ifdef __APPLE__
             return SetOption(socket, SOL_SOCKET, SO_NOSIGPIPE, true);
     #else
-            (void)socket;
             return true;
     #endif
         }
