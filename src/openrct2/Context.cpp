@@ -311,7 +311,7 @@ namespace OpenRCT2
         }
 #endif
 
-        int32_t RunOpenRCT2(int argc, const char** argv) override
+        int32_t RunOpenRCT2() override
         {
             if (Initialise())
             {
