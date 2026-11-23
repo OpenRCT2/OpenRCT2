@@ -3869,3 +3869,6 @@ STR_7078    :Vert sapin
 STR_7079    :Rubis
 STR_7080    :Bleu profond
 STR_7081    :Argent
+STR_7082    :Modèle de voie installé avec succès
+STR_7083    :Modèle de voie déjà installé
+STR_7084    :Pipette de style de paysage. Cliquez sur n’importe quelle case de la carte pour modifier le terrain en utilisant le même style.

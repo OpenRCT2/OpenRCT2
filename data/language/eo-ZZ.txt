@@ -3862,3 +3862,6 @@ STR_7078    :Pina verdo
 STR_7079    :Rubeno
 STR_7080    :Profunda bluo
 STR_7081    :Arĝento
+STR_7082    :Instalado de trakdesegnaĵo sukcesis
+STR_7083    :Trakdesegnaĵo jam estis instalita
+STR_7084    :Terostilo-elektilo. Alklaku iun ajn blokon sur la mapo por elekti la saman stilon por terecigi.
