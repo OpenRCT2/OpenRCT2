@@ -160,15 +160,9 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_JOIN_MULTIPLAYER_SERVER);
                 gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_HOST_NEW_SERVER);
 
-                Widget* widget = &widgets[widgetIndex];
-                int32_t yOffset = 0;
-                if (i > 5)
-                {
-                    yOffset = -(widget->height() - 1 + 5 + (i * 12));
-                }
-
+                auto& widget = widgets[widgetIndex];
                 WindowDropdownShowText(
-                    windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height(),
+                    windowPos + ScreenCoordsXY{ widget.left, widget.top }, widget.height(),
                     colours[0].withFlag(ColourFlag::translucent, true), {}, i);
             }
             else if (widgetIndex == WIDX_GAME_TOOLS)
