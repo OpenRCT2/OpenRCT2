@@ -25,6 +25,7 @@
 - Fix: [#27353] Some hacked colours appear differently between OpenGL and software drawing modes.
 - Fix: [#27361] Clicking the lower part of a colour button in the Themes window selects the colour below it.
 - Fix: [#27385] Crash in `BannerSetNameAction` when called on something that is not a banner.
+- Fix: [#27386] Server exits silently with SIGPIPE (exit code 141) when hosting multiplayer on macOS.
 - Fix: [#27392] Crash in `BannerSetStyleAction` when called on something that is not a banner.
 - Fix: [#27409] The ‘not enough cash’ message and track design costs show the wrong amount on big-endian systems.
 
