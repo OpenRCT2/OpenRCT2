@@ -59,10 +59,12 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/MapSelection.h>
+#include <openrct2/world/TileElementsView.h>
 #include <openrct2/world/tile_element/EntranceElement.h>
 #include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/TrackElement.h>
+#include <openrct2/world/tile_element/WallElement.h>
 
 constexpr int8_t kDefaultSpeedIncrement = 2;
 constexpr int8_t kDefaultMinimumSpeed = 2;
@@ -3466,7 +3468,8 @@ namespace OpenRCT2::Ui::Windows
         {
             PathElement* pathsByDir[kNumOrthogonalDirections];
 
-            bool keepOrientation = false;
+            bool wallsByDir[kNumOrthogonalDirections] = {};
+            int newOrientation = -1;
             for (Direction i : kAllDirections)
             {
                 const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
@@ -3500,29 +3503,54 @@ namespace OpenRCT2::Ui::Windows
                     pathsByDir[i] = nullptr;
                 }
 
-                if (pathsByDir[i] != nullptr && i == _currentTrackPieceDirection)
+                // Check current tile for walls
+                for (const auto* wallElement : TileElementsView<WallElement>(*mapCoords))
                 {
-                    keepOrientation = true;
-                    break;
+                    if (wallElement->getBaseZ() == z && wallElement->getDirection() == i)
+                    {
+                        wallsByDir[i] = true;
+                        break;
+                    }
+                }
+
+                // Check the adjacent tile for walls
+                for (const auto* wallElement : TileElementsView<WallElement>(testLoc))
+                {
+                    if (wallElement->getBaseZ() == z && wallElement->getDirection() == (i + 2) % 4)
+                    {
+                        wallsByDir[i] = true;
+                        break;
+                    }
+                }
+
+                // If we found a footpath with no wall, set new orientation
+                if (pathsByDir[i] != nullptr && !wallsByDir[i] && (newOrientation == -1 || _currentTrackPieceDirection == i))
+                {
+                    newOrientation = i;
+                    if (_currentTrackPieceDirection == i)
+                        break;
                 }
             }
 
-            if (!keepOrientation)
+            if (newOrientation == -1)
             {
                 for (Direction i : kAllDirections)
                 {
                     if (pathsByDir[i] != nullptr)
                     {
-                        _currentTrackPieceDirection = i;
-
-                        CoordsXYZ trackPos{};
-                        WindowRideConstructionUpdateState(
-                            &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
-                        PlaceProvisionalTrackPiece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
-                        gMapSelectArrowDirection = _currentTrackPieceDirection;
+                        newOrientation = i;
                         break;
                     }
                 }
+            }
+            if (newOrientation != -1 && newOrientation != _currentTrackPieceDirection)
+            {
+                _currentTrackPieceDirection = newOrientation;
+                CoordsXYZ trackPos{};
+                WindowRideConstructionUpdateState(
+                    &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
+                PlaceProvisionalTrackPiece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
+                gMapSelectArrowDirection = _currentTrackPieceDirection;
             }
         }
 

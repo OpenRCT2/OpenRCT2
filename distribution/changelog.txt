@@ -11,6 +11,7 @@
 - Improved: [#27407] Fewer cache misses in the game update and paint setup.
 - Improved: [#27410] The Options window’s sliders no longer continuously save the configuration file while they’re dragged.
 - Improved: [#27422] TD4 files now also show the space required in the Track List window.
+- Improved: [#27436] Shop/stall auto-rotation doesn’t orient towards walls/fences unless that’s the only option.
 - Improved: [#27449] The `simulate` CLI command now also shows the duration.
 - Change: [#27226] Crash Particles are now also visible when zoomed out.
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
