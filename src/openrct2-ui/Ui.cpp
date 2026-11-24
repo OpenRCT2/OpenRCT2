@@ -74,7 +74,7 @@ int main(int argc, const char** argv)
             auto uiContext = CreateUiContext(*env);
             context = CreateContext(std::move(env), std::move(audioContext), std::move(uiContext));
         }
-        rc = context->RunOpenRCT2(argc, argv);
+        rc = context->RunOpenRCT2();
     }
     else if (runGame == OpenRCT2::CommandLine::ExitCode::fail)
     {
