@@ -146,14 +146,6 @@ namespace OpenRCT2::Ui::Windows
                         GameActions::Execute(&loadOrQuitAction, getGameState());
                     }
                     break;
-                case WIDX_MULTIPLAYER:
-                    if (windowMgr->BringToFrontByClass(WindowClass::serverList) == nullptr)
-                    {
-                        windowMgr->CloseByClass(WindowClass::scenarioSelect);
-                        windowMgr->CloseByClass(WindowClass::loadsave);
-                        ContextOpenWindow(WindowClass::serverList);
-                    }
-                    break;
                 case WIDX_NEW_VERSION:
                     ContextOpenWindowView(WindowView::newVersionInfo);
                     break;
@@ -162,7 +154,24 @@ namespace OpenRCT2::Ui::Windows
 
         void onMouseDown(WidgetIndex widgetIndex) override
         {
-            if (widgetIndex == WIDX_GAME_TOOLS)
+            if (widgetIndex == WIDX_MULTIPLAYER)
+            {
+                int32_t i = 0;
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_JOIN_MULTIPLAYER_SERVER);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_HOST_NEW_SERVER);
+
+                Widget* widget = &widgets[widgetIndex];
+                int32_t yOffset = 0;
+                if (i > 5)
+                {
+                    yOffset = -(widget->height() - 1 + 5 + (i * 12));
+                }
+
+                WindowDropdownShowText(
+                    windowPos + ScreenCoordsXY{ widget->left, widget->top + yOffset }, widget->height(),
+                    colours[0].withFlag(ColourFlag::translucent, true), {}, i);
+            }
+            else if (widgetIndex == WIDX_GAME_TOOLS)
             {
                 int32_t i = 0;
                 gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_SCENARIO_EDITOR);
@@ -212,7 +221,27 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (widgetIndex == WIDX_GAME_TOOLS)
+
+            if (widgetIndex == WIDX_MULTIPLAYER)
+            {
+                auto* windowMgr = GetWindowManager();
+                switch (selectedIndex)
+                {
+                    case 0:
+                        if (windowMgr->BringToFrontByClass(WindowClass::serverList) == nullptr)
+                        {
+                            windowMgr->CloseByClass(WindowClass::scenarioSelect);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
+                            ContextOpenWindow(WindowClass::serverList);
+                        }
+                        break;
+
+                    case 1:
+                        ContextOpenWindow(WindowClass::serverStart);
+                        break;
+                }
+            }
+            else if (widgetIndex == WIDX_GAME_TOOLS)
             {
                 auto* sceneMgr = GetContext()->GetSceneManager();
                 switch (selectedIndex)
