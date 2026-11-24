@@ -23,9 +23,7 @@
 #include "StringTypes.h"
 
 #include <cstdio>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
+#include <format>
 #include <stdexcept>
 
 namespace OpenRCT2
@@ -53,10 +51,7 @@ namespace OpenRCT2
         }
         static void log(IStream* stream, const T& val)
         {
-            std::stringstream ss;
-            ss << std::hex << std::setw(sizeof(TUnderlying) * 2) << std::setfill('0') << static_cast<TUnderlying>(val);
-
-            std::string str = ss.str();
+            const std::string str = std::format("{:0{}x}", static_cast<TUnderlying>(val), sizeof(TUnderlying) * 2);
             stream->Write(str.c_str(), str.size());
         }
     };
@@ -77,10 +72,7 @@ namespace OpenRCT2
         }
         static void log(IStream* stream, const T& val)
         {
-            std::stringstream ss;
-            ss << std::hex << std::setw(sizeof(T) * 2) << std::setfill('0') << +val;
-
-            std::string str = ss.str();
+            const std::string str = std::format("{:0{}x}", +val, sizeof(T) * 2);
             stream->Write(str.c_str(), str.size());
         }
     };
