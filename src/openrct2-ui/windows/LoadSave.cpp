@@ -790,10 +790,13 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_PARENT_FOLDER:
-                    PopulateList(_parentDirectory, _extensionPattern);
+                {
+                    const std::string directory = _parentDirectory;
+                    PopulateList(directory, _extensionPattern);
                     initScrollWidgets();
                     numListItems = static_cast<uint16_t>(_listItems.size());
                     break;
+                }
 
                 case WIDX_NEW_FOLDER:
                     WindowTextInputRawOpen(
