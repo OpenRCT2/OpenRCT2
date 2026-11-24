@@ -221,7 +221,7 @@ namespace OpenRCT2::Network
         // Linux requests this per call via MSG_NOSIGNAL (FLAG_NO_PIPE), which does not
         // exist on other platforms such as macOS; there the equivalent is this socket
         // option. Windows has no SIGPIPE, so it is a no-op there.
-        static bool SetNoSigPipe([[maybe_unused]] SOCKET socket)
+        static bool setNoSigPipe([[maybe_unused]] SOCKET socket)
         {
     #ifdef __APPLE__
             return SetOption(socket, SOL_SOCKET, SO_NOSIGPIPE, true);
@@ -351,7 +351,7 @@ namespace OpenRCT2::Network
                 LOG_VERBOSE("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
             }
 
-            if (!SetNoSigPipe(_socket))
+            if (!setNoSigPipe(_socket))
             {
                 LOG_VERBOSE("setsockopt(socket, SO_NOSIGPIPE) failed: %d", LAST_SOCKET_ERROR());
             }
@@ -411,10 +411,9 @@ namespace OpenRCT2::Network
                 }
                 else
                 {
-                    // Not strictly required when the option is inherited from the
-                    // listening socket, but keep it explicit and independent of
-                    // platform-specific inheritance rules.
-                    if (!SetNoSigPipe(socket))
+                    // Not strictly required when the option is inherited from the listening socket,
+                    // but keep it explicit and independent of platform-specific inheritance rules.
+                    if (!setNoSigPipe(socket))
                     {
                         LOG_VERBOSE("setsockopt(socket, SO_NOSIGPIPE) failed: %d", LAST_SOCKET_ERROR());
                     }
@@ -472,7 +471,7 @@ namespace OpenRCT2::Network
                     throw SocketException("Failed to set non-blocking mode.");
                 }
 
-                if (!SetNoSigPipe(_socket))
+                if (!setNoSigPipe(_socket))
                 {
                     LOG_VERBOSE("setsockopt(socket, SO_NOSIGPIPE) failed: %d", LAST_SOCKET_ERROR());
                 }
