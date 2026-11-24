@@ -1923,48 +1923,32 @@ namespace OpenRCT2
 
     TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, TrackElemType trackType)
     {
-        auto tileElement = MapGetFirstElementAt(location);
-        if (tileElement != nullptr)
+        for (auto* trackElement : TileElementsView<TrackElement>(location))
         {
-            do
-            {
-                auto trackElement = tileElement->asTrack();
-                if (trackElement != nullptr)
-                {
-                    if (trackElement->getBaseZ() != location.z)
-                        continue;
-                    if (trackElement->getDirection() != location.direction)
-                        continue;
-                    if (trackElement->getTrackType() != trackType)
-                        continue;
-                    return trackElement;
-                }
-            } while (!(tileElement++)->isLastForTile());
+            if (trackElement->getBaseZ() != location.z)
+                continue;
+            if (trackElement->getDirection() != location.direction)
+                continue;
+            if (trackElement->getTrackType() != trackType)
+                continue;
+            return trackElement;
         }
         return nullptr;
     }
 
     TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, TrackElemType trackType, int32_t sequence)
     {
-        auto tileElement = MapGetFirstElementAt(location);
-        if (tileElement != nullptr)
+        for (auto* trackElement : TileElementsView<TrackElement>(location))
         {
-            do
-            {
-                auto trackElement = tileElement->asTrack();
-                if (trackElement != nullptr)
-                {
-                    if (trackElement->getBaseZ() != location.z)
-                        continue;
-                    if (trackElement->getDirection() != location.direction)
-                        continue;
-                    if (trackElement->getTrackType() != trackType)
-                        continue;
-                    if (trackElement->getSequenceIndex() != sequence)
-                        continue;
-                    return trackElement;
-                }
-            } while (!(tileElement++)->isLastForTile());
+            if (trackElement->getBaseZ() != location.z)
+                continue;
+            if (trackElement->getDirection() != location.direction)
+                continue;
+            if (trackElement->getTrackType() != trackType)
+                continue;
+            if (trackElement->getSequenceIndex() != sequence)
+                continue;
+            return trackElement;
         }
         return nullptr;
     }

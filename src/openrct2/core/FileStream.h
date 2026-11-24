@@ -13,6 +13,8 @@
 #include "IStream.hpp"
 #include "StringTypes.h"
 
+#include <concepts>
+
 namespace OpenRCT2
 {
     enum class FileMode : uint8_t
@@ -38,9 +40,14 @@ namespace OpenRCT2
 
     public:
         FileStream(const fs::path& path, FileMode fileMode);
-        FileStream(const std::string& path, FileMode fileMode);
         FileStream(std::string_view path, FileMode fileMode);
-        FileStream(const utf8* path, FileMode fileMode);
+
+        template<std::convertible_to<std::string_view> T>
+        FileStream(const T& path, FileMode fileMode)
+            : FileStream(std::string_view(path), fileMode)
+        {
+        }
+
         ~FileStream() override;
 
         bool CanRead() const override;

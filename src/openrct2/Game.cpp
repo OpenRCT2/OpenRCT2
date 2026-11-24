@@ -53,6 +53,7 @@
 #include "world/Map.h"
 #include "world/tile_element/SurfaceElement.h"
 
+#include <format>
 #include <memory>
 
 using namespace OpenRCT2;
@@ -608,10 +609,9 @@ void GameAutosave()
     auto currentDate = Platform::GetDateLocal();
     auto currentTime = Platform::GetTimeLocal();
 
-    utf8 timeName[44];
-    snprintf(
-        timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s", currentDate.year, currentDate.month,
-        currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
+    auto fileName = std::format(
+        "autosave_{0:04}-{1:02}-{2:02}_{3:02}-{4:02}-{5:02}{6}", currentDate.year, currentDate.month, currentDate.day,
+        currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
     int32_t autosavesToKeep = Config::Get().general.autosaveAmount;
     LimitAutosaveCount(autosavesToKeep - 1, isInEditorMode());
@@ -620,7 +620,7 @@ void GameAutosave()
     auto autosaveDir = Path::Combine(env.GetDirectoryPath(DirBase::user, subDirectory), u8"autosave");
     Path::CreateDirectory(autosaveDir);
 
-    auto path = Path::Combine(autosaveDir, timeName);
+    auto path = Path::Combine(autosaveDir, fileName);
     auto backupFileName = u8string(u8"autosave") + fileExtension + u8".bak";
     auto backupPath = Path::Combine(autosaveDir, backupFileName);
 

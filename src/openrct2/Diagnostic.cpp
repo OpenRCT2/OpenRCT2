@@ -57,19 +57,15 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
     va_end(args);
 }
 
-void DiagnosticLogWithLocation(
-    DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
+void DiagnosticLogWithLocation(const std::source_location location, DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
-    char buf[1024];
 
     if (!_log_levels[EnumValue(diagnosticLevel)])
         return;
 
-    snprintf(buf, 1024, "[%s:%d (%s)]: ", file, line, function);
-
     va_start(args, format);
-    __android_log_vprint(_android_log_priority[EnumValue(diagnosticLevel)], file, format, args);
+    __android_log_vprint(_android_log_priority[EnumValue(diagnosticLevel)], location.file_name(), format, args);
     va_end(args);
 }
 
@@ -78,6 +74,15 @@ void DiagnosticLogWithLocation(
 static constexpr const char* kLevelStrings[] = {
     "FATAL", "ERROR", "WARNING", "VERBOSE", "INFO",
 };
+
+static void DiagnosticPrint(DiagnosticLevel level, const std::string& msg)
+{
+    auto stream = diagnostic_get_stream(level);
+    if (stream == stdout)
+        Console::WriteLine(msg);
+    else
+        Console::Error::WriteLine(msg);
+}
 
 static void DiagnosticPrint(DiagnosticLevel level, const std::string& prefix, const std::string& msg)
 {
@@ -94,7 +99,7 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
     if (_log_levels[EnumValue(diagnosticLevel)])
     {
         // Level
-        auto prefix = String::stdFormat("%s: ", kLevelStrings[EnumValue(diagnosticLevel)]);
+        auto prefix = std::format("{}: ", kLevelStrings[EnumValue(diagnosticLevel)]);
 
         // Message
         va_start(args, format);
@@ -105,8 +110,7 @@ void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
     }
 }
 
-void DiagnosticLogWithLocation(
-    DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
+void DiagnosticLogWithLocation(const std::source_location location, DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
     if (_log_levels[EnumValue(diagnosticLevel)])
@@ -115,11 +119,13 @@ void DiagnosticLogWithLocation(
         std::string prefix;
         if (_log_location_enabled)
         {
-            prefix = String::stdFormat("%s[%s:%d (%s)]: ", kLevelStrings[EnumValue(diagnosticLevel)], file, line, function);
+            prefix = std::format(
+                "{}[{}:{} ({})]: ", kLevelStrings[EnumValue(diagnosticLevel)], location.file_name(), location.line(),
+                location.function_name());
         }
         else
         {
-            prefix = String::stdFormat("%s: ", kLevelStrings[EnumValue(diagnosticLevel)]);
+            prefix = std::format("{}: ", kLevelStrings[EnumValue(diagnosticLevel)]);
         }
 
         // Message
@@ -128,6 +134,40 @@ void DiagnosticLogWithLocation(
         va_end(args);
 
         DiagnosticPrint(diagnosticLevel, prefix, msg);
+    }
+}
+
+void DiagnosticLogFmtArgs(DiagnosticLevel diagnosticLevel, std::string_view line, std::format_args args)
+{
+    if (_log_levels[EnumValue(diagnosticLevel)])
+    {
+        std::string msg = std::format("{}: ", kLevelStrings[EnumValue(diagnosticLevel)]);
+        std::vformat_to(std::back_inserter(msg), line, args);
+
+        DiagnosticPrint(diagnosticLevel, msg);
+    }
+}
+
+void DiagnosticLogWithLocationFmtArgs(
+    const std::source_location location, DiagnosticLevel diagnosticLevel, std::string_view line, std::format_args args)
+{
+    if (_log_levels[EnumValue(diagnosticLevel)])
+    {
+        // Level and source code information
+        std::string msg;
+        if (_log_location_enabled)
+        {
+            std::format_to(
+                std::back_inserter(msg), "{}[{}:{} ({})]: ", kLevelStrings[EnumValue(diagnosticLevel)], location.file_name(),
+                location.line(), location.function_name());
+        }
+        else
+        {
+            std::format_to(std::back_inserter(msg), "{}: ", kLevelStrings[EnumValue(diagnosticLevel)]);
+        }
+        std::vformat_to(std::back_inserter(msg), line, args);
+
+        DiagnosticPrint(diagnosticLevel, msg);
     }
 }
 

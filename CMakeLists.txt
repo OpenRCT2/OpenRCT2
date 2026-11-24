@@ -34,14 +34,7 @@ if (APPLE)
     endif ()
 
     set(CMAKE_OSX_ARCHITECTURES "${ARCH}" CACHE STRING "")
-
-    if("${ARCH}" MATCHES "^x86_64")
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "")
-    elseif("${ARCH}" MATCHES "^arm64")
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "")
-    else()
-        message("Unknown macOS architecture: ${ARCH}. Behavior may be unexpected.")
-    endif()
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.3" CACHE STRING "")
 endif ()
 
 if (APPLE)

@@ -239,12 +239,12 @@ namespace OpenRCT2::Ui::Windows
         uint8_t _selectedTab = 0;
         int16_t _classIndex = -1;
         int8_t _buttonIndex = -1;
-        const uint8_t _max_row_height = 56;
-        const uint8_t _button_offset_x = 185;
-        const uint8_t _button_offset_y = 3;
-        const uint8_t _check_offset_y = 3;
-        const uint16_t _check_offset_x = 265;
-        const uint8_t _button_size = 12;
+        static constexpr uint8_t kMaxRowHeight = 56;
+        static constexpr uint8_t kButtonOffsetX = 185;
+        static constexpr uint8_t kButtonOffsetY = 3;
+        static constexpr uint8_t kCheckboxOffsetY = 3;
+        static constexpr uint16_t kCheckboxOffsetX = 265;
+        static constexpr uint8_t kButtonSize = 12;
 
     public:
 #pragma region Window Override Events
@@ -603,7 +603,7 @@ namespace OpenRCT2::Ui::Windows
             if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS || _selectedTab == WINDOW_THEMES_TAB_FEATURES)
                 return {};
 
-            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount()) * (_button_size + 2);
+            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount()) * (kButtonSize + 2);
             int32_t i = scrollHeight - widgets[WIDX_THEMES_LIST].bottom + widgets[WIDX_THEMES_LIST].top + 21;
             if (i < 0)
                 i = 0;
@@ -618,7 +618,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (screenCoords.y / _max_row_height < GetColourSchemeTabCount())
+            if (screenCoords.y / kMaxRowHeight < GetColourSchemeTabCount())
             {
                 _classIndex = GetClassIndex(screenCoords.y);
 
@@ -628,13 +628,23 @@ namespace OpenRCT2::Ui::Windows
                 numColours = AddGap(numColours, _classIndex);
 
                 // position of y relative to the current class
-                int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_classIndex + 1) - numColours) * (_button_size + 2);
-                _buttonIndex = (y2 / _button_size);
+                int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_classIndex + 1) - numColours) * (kButtonSize + 2);
+
+                // The palette buttons and checkboxes are drawn at different vertical offsets,
+                // so work out the row from the offset of the column that was clicked.
+                const bool isPaletteColumn = screenCoords.x >= kButtonOffsetX
+                    && screenCoords.x < kButtonOffsetX + (kButtonSize + 2);
+                const int32_t buttonTop = isPaletteColumn ? kButtonOffsetY + 1 : kCheckboxOffsetY;
+                if (y2 < buttonTop)
+                {
+                    _buttonIndex = -1;
+                    return;
+                }
+                _buttonIndex = (y2 - buttonTop) / kButtonSize;
 
                 if (_buttonIndex < numColours)
                 {
-                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + (_button_size + 2)
-                        && y2 >= _button_offset_y && y2 < _button_offset_y + (_button_size + 2) * 6)
+                    if (isPaletteColumn && y2 >= kButtonOffsetY && y2 < kButtonOffsetY + (kButtonSize + 2) * 6)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -644,9 +654,9 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto& colourButton = widgets[WIDX_THEMES_COLOURBTN_MASK];
                             colourButton.setVisible();
-                            colourButton.left = _button_offset_x + widgets[WIDX_THEMES_LIST].left + _button_size;
-                            colourButton.top = GetTotalColoursUpTo(_classIndex) * (_button_size + 2) - _button_offset_y - 4
-                                + _button_size * _buttonIndex - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
+                            colourButton.left = kButtonOffsetX + widgets[WIDX_THEMES_LIST].left + kButtonSize;
+                            colourButton.top = GetTotalColoursUpTo(_classIndex) * (kButtonSize + 2) - kButtonOffsetY - 4
+                                + kButtonSize * _buttonIndex - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
                             colourButton.right = colourButton.left + 12;
                             colourButton.bottom = colourButton.top + 12;
 
@@ -657,8 +667,8 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
                     else if (
-                        screenCoords.x >= _check_offset_x && screenCoords.x < _check_offset_x + _button_size
-                        && y2 >= _check_offset_y && y2 < _check_offset_y + _button_size * 6 - 1)
+                        screenCoords.x >= kCheckboxOffsetX && screenCoords.x < kCheckboxOffsetX + kButtonSize
+                        && y2 >= kCheckboxOffsetY && y2 < kCheckboxOffsetY + kButtonSize * 6 - 1)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -710,17 +720,17 @@ namespace OpenRCT2::Ui::Windows
                 {
                     break;
                 }
-                if (screenCoords.y + _max_row_height >= rt.y)
+                if (screenCoords.y + kMaxRowHeight >= rt.y)
                 {
                     if (i + 1 < GetColourSchemeTabCount())
                     {
                         auto colour = colours[1];
 
-                        int8_t colorOffset = (_button_size + 2) * (4 - numColours);
+                        int8_t colorOffset = (kButtonSize + 2) * (4 - numColours);
 
-                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _max_row_height - colorOffset + 1 };
+                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + kMaxRowHeight - colorOffset + 1 };
                         auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right,
-                                                           screenCoords.y + _max_row_height - colorOffset + 1 };
+                                                           screenCoords.y + kMaxRowHeight - colorOffset + 1 };
                         auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
 
                         if (colour.flags.has(ColourFlag::translucent))
@@ -754,12 +764,11 @@ namespace OpenRCT2::Ui::Windows
                         auto colour = ThemeGetColour(wc, j);
                         const bool isPressed = (i == _classIndex && j == _buttonIndex);
                         auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour.colour);
-                        GfxDrawSprite(
-                            rt, image, { _button_offset_x, screenCoords.y + _button_offset_y + _button_size * j + 1 });
+                        GfxDrawSprite(rt, image, { kButtonOffsetX, screenCoords.y + kButtonOffsetY + kButtonSize * j + 1 });
 
-                        ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + _button_size * j };
-                        ScreenCoordsXY bottomRight{ _check_offset_x + 10,
-                                                    screenCoords.y + _check_offset_y + 11 + _button_size * j };
+                        ScreenCoordsXY topLeft{ kCheckboxOffsetX, screenCoords.y + kCheckboxOffsetY + kButtonSize * j };
+                        ScreenCoordsXY bottomRight{ kCheckboxOffsetX + 10,
+                                                    screenCoords.y + kCheckboxOffsetY + 11 + kButtonSize * j };
                         Rectangle::fillInset(
                             rt, { topLeft, bottomRight }, colours[1], Rectangle::BorderStyle::inset,
                             Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
@@ -771,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                screenCoords.y += ((_button_size + 2) * numColours);
+                screenCoords.y += (kButtonSize + 2) * numColours;
             }
         }
 
@@ -809,7 +818,7 @@ namespace OpenRCT2::Ui::Windows
 
                 numRows += numColours;
 
-                if ((numRows * (_button_size + 2)) >= y)
+                if ((numRows * (kButtonSize + 2)) > y)
                 {
                     return i;
                 }

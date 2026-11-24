@@ -19,8 +19,9 @@
 #include "../object/PeepAnimationsObject.h"
 
 #include <algorithm>
+#include <format>
+#include <iterator>
 #include <random>
-#include <sstream>
 
 namespace OpenRCT2
 {
@@ -251,25 +252,22 @@ namespace OpenRCT2
         auto availCostumeObjects = findAllPeepAnimationsObjectForType(type);
 
         auto availableCostumes = std::vector<AvailableCostume>{};
-        for (auto i = 0u; i < availCostumeObjects.size(); i++)
+        for (size_t i = 0u; i < availCostumeObjects.size(); i++)
         {
             auto baseName = availCostumeObjects[i]->GetCostumeName();
             auto inlineImageId = availCostumeObjects[i]->GetInlineImageId();
 
-            // std::format doesn't appear to be available on macOS <13.3
-            std::stringstream out{};
-            out << "{INLINE_SPRITE}";
-            for (auto b = 0; b < 32; b += 8)
-                out << '{' << ((inlineImageId >> b) & 0xFF) << '}';
-            out << ' ';
-            out << baseName;
+            std::string out = "{INLINE_SPRITE}";
+            for (size_t b = 0; b < 32; b += 8)
+                std::format_to(std::back_inserter(out), "{{{}}}", (inlineImageId >> b) & 0xFF);
+            std::format_to(std::back_inserter(out), " {}", baseName);
 
             availableCostumes.push_back(
                 {
                     .index = availCostumeIndexes[i],
                     .object = availCostumeObjects[i],
-                    .rawName = baseName,
-                    .friendlyName = out.str(),
+                    .rawName = std::move(baseName),
+                    .friendlyName = std::move(out),
                 });
         }
 
