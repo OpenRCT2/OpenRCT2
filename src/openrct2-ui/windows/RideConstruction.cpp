@@ -63,6 +63,8 @@
 #include <openrct2/world/tile_element/PathElement.h>
 #include <openrct2/world/tile_element/SurfaceElement.h>
 #include <openrct2/world/tile_element/TrackElement.h>
+#include <openrct2/world/tile_element/WallElement.h>
+#include <openrct2/world/TileElementsView.h>
 
 constexpr int8_t kDefaultSpeedIncrement = 2;
 constexpr int8_t kDefaultMinimumSpeed = 2;
@@ -3502,27 +3504,24 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Check current tile for walls
-                TileElement* tileElement = MapGetFirstElementAt(CoordsXYZ{ *mapCoords, z });
-                do
+                for (const auto* wallElement : TileElementsView<WallElement>(*mapCoords))
                 {
-                    if (tileElement->getType() == TileElementType::wall && tileElement->getDirection() == i)
+                    if (wallElement->getBaseZ() == z && wallElement->getDirection() == i)
                     {
                         wallsByDir[i] = true;
                         break;
                     }
-                } while (!(tileElement++)->isLastForTile());
+                }
 
                 // Check the adjacent tile for walls
-                TileElement* tileElementAdjacent = MapGetFirstElementAt(testLoc);
-                do
+                for (const auto* wallElement : TileElementsView<WallElement>(testLoc))
                 {
-                    if (tileElementAdjacent->getType() == TileElementType::wall
-                        && tileElementAdjacent->getDirection() == (i + 2) % 4)
+                    if (wallElement->getBaseZ() == z && wallElement->getDirection() == (i + 2) % 4)
                     {
                         wallsByDir[i] = true;
                         break;
                     }
-                } while (!(tileElementAdjacent++)->isLastForTile());
+                }
 
                 // If we found a footpath with no wall, set new orientation
                 if (pathsByDir[i] != nullptr && !wallsByDir[i] && (newOrientation == -1 || _currentTrackPieceDirection == i))
