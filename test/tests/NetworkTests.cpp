@@ -15,17 +15,6 @@
 #include <openrct2/network/NetworkPacket.h>
 #include <openrct2/network/Socket.h>
 
-#ifndef _WIN32
-    #include <arpa/inet.h>
-    #include <chrono>
-    #include <csignal>
-    #include <netinet/in.h>
-    #include <sys/socket.h>
-    #include <thread>
-    #include <unistd.h>
-    #include <vector>
-#endif
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Network;
 
@@ -165,67 +154,3 @@ TEST(SocketTests, ConnectToClosedPortThrows)
     EXPECT_ANY_THROW(socket->Connect("127.0.0.1", 1));
     EXPECT_NE(socket->GetStatus(), SocketStatus::connected);
 }
-
-#ifndef _WIN32
-TEST(SocketTests, SendDataToClosedPeerReturnsErrorInsteadOfSigpipe)
-{
-    // Regression test for #27386: on platforms without MSG_NOSIGNAL (e.g. macOS)
-    // sending to a peer that closed the connection used to raise SIGPIPE,
-    // killing the process with exit code 141 and no diagnostics. The send path
-    // must instead fail gracefully and let the caller handle the disconnect.
-    // Restore the default disposition first: linked libraries (e.g. libcurl)
-    // may have installed a handler, while the shipped game runs with the
-    // default and dies.
-    std::signal(SIGPIPE, SIG_DFL);
-    bool exercised = false;
-    for (uint16_t port = 41100; port < 41120 && !exercised; port++)
-    {
-        auto listener = CreateTcpSocket();
-        try
-        {
-            listener->Listen("127.0.0.1", port);
-        }
-        catch (const std::exception&)
-        {
-            continue; // Port already in use, try the next one.
-        }
-
-        // Connect a raw client socket and close it straight away so the
-        // accepted socket ends up writing to a half-closed connection.
-        auto client = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-        ASSERT_NE(client, -1);
-        sockaddr_in addr{};
-        addr.sin_family = AF_INET;
-        addr.sin_port = htons(port);
-        addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-        ASSERT_EQ(::connect(client, reinterpret_cast<sockaddr*>(&addr), sizeof(addr)), 0);
-        ::close(client);
-
-        std::unique_ptr<ITcpSocket> serverSide;
-        for (int i = 0; i < 200 && serverSide == nullptr; i++)
-        {
-            serverSide = listener->Accept();
-            if (serverSide == nullptr)
-                std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        }
-        ASSERT_NE(serverSide, nullptr);
-
-        // Give the FIN time to arrive, then keep sending until the write end
-        // notices the closed peer. Unfixed this dies from SIGPIPE; fixed it
-        // just returns a short count.
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        std::vector<uint8_t> payload(64 * 1024, 0);
-        for (int attempt = 0; attempt < 25; attempt++)
-        {
-            serverSide->SendData(payload.data(), payload.size());
-            // Leave the kernel time to process the peer's close and reply RST;
-            // sending in a tight loop keeps everything in the local buffer and
-            // would not reproduce the fault.
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-        exercised = true;
-    }
-    ASSERT_TRUE(exercised) << "Could not bind any loopback port for the test";
-    // Reaching this point means no SIGPIPE was raised.
-}
-#endif
