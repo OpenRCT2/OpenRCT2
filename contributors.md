@@ -276,6 +276,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Yoshi Tacke (YoshKoz)
 * (GhostCoder6969)
 * Nazem Aldroubi (nazem-droubi)
+* Kyan Wai (Pi8765ggy)
 
 ## Toolchain
 * (Balletie) - macOS

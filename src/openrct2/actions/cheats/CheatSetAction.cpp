@@ -234,6 +234,7 @@ namespace OpenRCT2::GameActions
                 break;
             case CheatType::haveFun:
                 gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::haveFun;
+                gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
                 break;
             case CheatType::setForcedParkRating:
                 Park::SetForcedRating(park, _param1);

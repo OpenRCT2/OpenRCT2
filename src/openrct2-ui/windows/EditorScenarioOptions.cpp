@@ -643,6 +643,12 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Objective
 
+        // Allows for re-evaluation of objective completion. Clears previous win / loss.
+        void ClearObjectiveResult()
+        {
+            getGameState().scenarioCompletedCompanyValue = kMoney64Undefined;
+        }
+
         /**
          *
          *  rct2: 0x0067201D
@@ -653,6 +659,7 @@ namespace OpenRCT2::Ui::Windows
             auto& scenarioOptions = gameState.scenarioOptions;
 
             scenarioOptions.objective.Type = objective;
+            ClearObjectiveResult();
             invalidate();
 
             // Set default objective arguments
@@ -766,6 +773,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.Currency += kObjectiveCurrencyLoanAndValueAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -777,6 +785,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.Currency += kObjectiveCurrencyFoodAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -788,6 +797,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.MinimumLength += kObjectiveLengthAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -799,6 +809,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.MinimumExcitement += kObjectiveExcitementAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -810,6 +821,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.NumGuests += kObjectiveGuestsAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -833,6 +845,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.Currency -= kObjectiveCurrencyLoanAndValueAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -844,6 +857,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.Currency -= kObjectiveCurrencyFoodAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -855,6 +869,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.MinimumLength -= kObjectiveLengthAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -866,6 +881,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.MinimumExcitement -= kObjectiveExcitementAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -877,6 +893,7 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         scenarioOptions.objective.NumGuests -= kObjectiveGuestsAdjustment;
+                        ClearObjectiveResult();
                         invalidate();
                     }
                     break;
@@ -895,6 +912,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 scenarioOptions.objective.Year += kObjectiveYearAdjustment;
+                ClearObjectiveResult();
                 invalidate();
             }
         }
@@ -911,6 +929,7 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 scenarioOptions.objective.Year -= kObjectiveYearAdjustment;
+                ClearObjectiveResult();
                 invalidate();
             }
         }
