@@ -107,7 +107,7 @@ namespace OpenRCT2
         virtual Network::NetworkBase& GetNetwork() = 0;
 #endif
 
-        virtual int32_t RunOpenRCT2(int argc, const char** argv) = 0;
+        virtual int32_t RunOpenRCT2() = 0;
 
         virtual bool Initialise() = 0;
         virtual void ResetSubsystems() = 0;

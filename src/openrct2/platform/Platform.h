@@ -31,10 +31,6 @@
     #include <jni.h>
 #endif // __ANDROID__
 
-#ifndef MAX_PATH
-    #define MAX_PATH 260
-#endif
-
 static_assert(
     std::endian::native == std::endian::little, "OpenRCT2 is known to be broken on big endian. Proceed with caution!");
 
