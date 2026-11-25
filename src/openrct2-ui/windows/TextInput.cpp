@@ -115,7 +115,7 @@ namespace OpenRCT2::Ui::Windows
             text = String::utf8TruncateCodePoints(text, maxLength);
             _buffer = u8string{ text };
             _maxInputLength = maxLength;
-            SetTexboxSession(ContextStartTextInput(_buffer, maxLength));
+            setTextboxSession(ContextStartTextInput(_buffer, maxLength));
         }
 
         void setCallback(std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
