@@ -56,17 +56,17 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _windowServerStartWidgets = makeWidgets(
         makeWindowShim(STR_START_SERVER, kWindowSize),
-        makeWidget({ 120,  20 }, {   6, 13 }, WidgetType::label,   WindowColour::secondary, STR_PORT              ), // port label
+        makeWidget({   6,  20 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_PORT              ), // port label
         makeWidget({ 120,  20 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // port text box
-        makeWidget({ 120,  36 }, {   6, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_NAME       ), // name label
+        makeWidget({   6,  36 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_NAME       ), // name label
         makeWidget({ 120,  36 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // name text box
-        makeWidget({ 120,  52 }, {   6, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_DESCRIPTION), // description label
+        makeWidget({   6,  52 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_DESCRIPTION), // description label
         makeWidget({ 120,  52 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // description text box
-        makeWidget({ 120,  68 }, {   6, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_GREETING   ), // greeting label
+        makeWidget({   6,  68 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_GREETING   ), // greeting label
         makeWidget({ 120,  68 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // greeting text box
-        makeWidget({ 120,  84 }, {   6, 13 }, WidgetType::label,   WindowColour::secondary, STR_PASSWORD          ), // password label
+        makeWidget({   6,  84 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_PASSWORD          ), // password label
         makeWidget({ 120,  84 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // password text box
-        makeWidget({ 120, 100 }, {   6, 13 }, WidgetType::label,   WindowColour::secondary, STR_MAX_PLAYERS       ), // max players label
+        makeWidget({   6, 100 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_MAX_PLAYERS       ), // max players label
         makeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty), // max players (3 widgets)
         Widgets::Checkbox({ 6, 117 }, { 287, 14 }, WindowColour::secondary, STR_ADVERTISE, STR_ADVERTISE_SERVER_TIP), // advertise checkbox        makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
         makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
@@ -257,15 +257,6 @@ namespace OpenRCT2::Ui::Windows
         void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
-            drawText(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PORT_INPUT].top }, STR_PORT, { colours[1] });
-            drawText(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_NAME_INPUT].top }, STR_SERVER_NAME, { colours[1] });
-            drawText(
-                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_DESCRIPTION_INPUT].top }, STR_SERVER_DESCRIPTION,
-                { colours[1] });
-            drawText(
-                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_GREETING_INPUT].top }, STR_SERVER_GREETING, { colours[1] });
-            drawText(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PASSWORD_INPUT].top }, STR_PASSWORD, { colours[1] });
-            drawText(rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_MAXPLAYERS].top }, STR_MAX_PLAYERS, { colours[1] });
         }
 
     private:
