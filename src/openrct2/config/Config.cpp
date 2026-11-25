@@ -711,7 +711,7 @@ namespace OpenRCT2::Config
         }
         catch (const std::exception& ex)
         {
-            Console::WriteLine("Error saving to '%s'", u8string(path).c_str());
+            Console::WriteLineFmt("Error saving to '{}'", path);
             Console::WriteLine(ex.what());
             return false;
         }
