@@ -39,7 +39,10 @@ declare global {
     var scenario: Scenario;
     /** APIs for the climate and weather. */
     var climate: Climate;
-    /** APIs for playing sounds and music. */
+    /**
+     * APIs for playing sounds and music.
+     * These will only be available to clients that are not running headless mode.
+     */
     var audio: Audio;
     /** APIs for performance profiling. */
     var profiler: Profiler;
