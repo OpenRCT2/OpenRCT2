@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget = &this->widgets[WIDX_TAB_1];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
-                GfxDrawSprite(rt, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
+                GfxDrawSprite(rt, ImageId(SPR_PEEP_LARGE_FACE_HAPPY), screenCoords);
             }
 
             // Tab 2
@@ -550,7 +550,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height(), colours[1],
-                0, { Dropdown::Flag::autoClose }, numItems, widget->right - dropdownWidget->left);
+                0, {}, numItems, widget->right - dropdownWidget->left);
 
             for (int32_t i = 0; i < Network::GetNumGroups(); i++)
             {
