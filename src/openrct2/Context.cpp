@@ -419,13 +419,10 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless)
             {
                 _assetPackManager = std::make_unique<AssetPackManager>();
-            }
 #ifdef __ENABLE_DISCORD__
-            if (!gOpenRCT2Headless)
-            {
                 _discordService = std::make_unique<Network::DiscordService>();
-            }
 #endif
+            }
 
 #ifndef __HAIKU__ // Haiku's user is always root, skip warning them about it.
             if (Platform::ProcessIsElevated())
