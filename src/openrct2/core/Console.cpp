@@ -47,22 +47,6 @@ namespace OpenRCT2::Console
         puts("");
     }
 
-    void WriteLine(const utf8* format, ...)
-    {
-        va_list args;
-        va_start(args, format);
-
-        char buffer[4096];
-        std::vsnprintf(buffer, sizeof(buffer), format, args);
-        auto ctx = GetContext();
-        if (ctx != nullptr)
-            ctx->WriteLine(buffer);
-        else
-            std::printf("%s\n", buffer);
-
-        va_end(args);
-    }
-
     void WriteLine(std::string_view str)
     {
         auto ctx = GetContext();
@@ -101,22 +85,6 @@ namespace OpenRCT2::Console
         void WriteLine()
         {
             fputs(PLATFORM_NEWLINE, stderr);
-        }
-
-        void WriteLine(const utf8* format, ...)
-        {
-            va_list args;
-            va_start(args, format);
-
-            char buffer[4096];
-            std::vsnprintf(buffer, sizeof(buffer), format, args);
-            auto ctx = GetContext();
-            if (ctx != nullptr)
-                ctx->WriteErrorLine(buffer);
-            else
-                std::fprintf(stderr, "%s\n", buffer);
-
-            va_end(args);
         }
 
         void WriteLine(std::string_view str)
