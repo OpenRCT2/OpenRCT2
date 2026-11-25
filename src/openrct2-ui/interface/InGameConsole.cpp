@@ -31,6 +31,7 @@
 #include <openrct2/localisation/FormatCodes.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
+#include <ranges>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -238,23 +239,16 @@ void InGameConsole::Toggle()
     }
 }
 
-void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat)
+void InGameConsole::WriteLine(std::string_view input, FormatToken colourFormat)
 {
-    std::string line;
-    std::size_t splitPos = 0;
-    std::size_t stringOffset = 0;
-    while (splitPos != std::string::npos)
+    for (const auto line : std::views::split(input, '\n'))
     {
-        splitPos = input.find('\n', stringOffset);
-        line = input.substr(stringOffset, splitPos - stringOffset);
-        _consoleLines.emplace_back(line, colourFormat);
-        stringOffset = splitPos + 1;
+        _consoleLines.emplace_back(std::string_view(line.begin(), line.end()), colourFormat);
     }
 
     if (_consoleLines.size() > kConsoleMaxLines)
     {
-        const std::size_t linesToErase = _consoleLines.size() - kConsoleMaxLines;
-        _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
+        _consoleLines.erase(_consoleLines.begin(), _consoleLines.end() - kConsoleMaxLines);
     }
 }
 

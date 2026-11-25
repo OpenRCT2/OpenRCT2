@@ -63,13 +63,18 @@ namespace OpenRCT2::Console
         va_end(args);
     }
 
-    void WriteLine(const std::string& str)
+    void WriteLine(std::string_view str)
     {
         auto ctx = GetContext();
         if (ctx != nullptr)
+        {
             ctx->WriteLine(str);
+        }
         else
-            std::printf("%s\n", str.c_str());
+        {
+            std::fwrite(str.data(), 1, str.size(), stdout);
+            std::fputc('\n', stdout);
+        }
     }
 
     namespace Error
@@ -114,13 +119,18 @@ namespace OpenRCT2::Console
             va_end(args);
         }
 
-        void WriteLine(const std::string& str)
+        void WriteLine(std::string_view str)
         {
             auto ctx = GetContext();
             if (ctx != nullptr)
+            {
                 ctx->WriteErrorLine(str);
+            }
             else
-                std::fprintf(stderr, "%s\n", str.c_str());
+            {
+                std::fwrite(str.data(), 1, str.size(), stderr);
+                std::fputc('\n', stderr);
+            }
         }
     } // namespace Error
 } // namespace OpenRCT2::Console

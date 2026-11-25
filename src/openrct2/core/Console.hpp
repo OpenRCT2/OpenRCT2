@@ -22,7 +22,7 @@ namespace OpenRCT2::Console
     void WriteFormat(const utf8* format, ...);
     void WriteLine();
     void WriteLine(const utf8* format, ...);
-    void WriteLine(const std::string& str);
+    void WriteLine(std::string_view str);
 
     template<typename... Args>
     void WriteFormatFmt(const std::format_string<Args...> fmt, Args&&... args)
@@ -44,7 +44,7 @@ namespace OpenRCT2::Console
         void WriteLine();
         void WriteLine(const utf8* format, ...);
 
-        void WriteLine(const std::string& str);
+        void WriteLine(std::string_view str);
 
         template<typename... Args>
         void WriteFormatFmt(const std::format_string<Args...> fmt, Args&&... args)
