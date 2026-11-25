@@ -201,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = windowPos + ScreenCoordsXY{ kWindowSize.width / 2, widgets[WIDX_TITLE].bottom + 13 };
 
-            int32_t no_lines = 0;
+            int32_t numLines = 0;
 
             if (_descriptionStringId == kStringIdNone)
             {
@@ -221,12 +221,12 @@ namespace OpenRCT2::Ui::Windows
             u8string wrappedString;
             wrapString(
                 u8string_view{ _buffer.data(), _buffer.size() }, kWindowSize.width - (24 + 13), FontStyle::medium,
-                &wrappedString, &no_lines);
+                &wrappedString, &numLines);
 
             Rectangle::fillInset(
                 rt,
                 { { windowPos.x + 10, screenCoords.y },
-                  { windowPos.x + kWindowSize.width - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
+                  { windowPos.x + kWindowSize.width - 10, screenCoords.y + 10 * (numLines + 1) + 3 } },
                 colours[1], Rectangle::BorderStyle::inset, Rectangle::FillBrightness::light,
                 Rectangle::FillMode::dontLightenWhenInset);
 
@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
             auto* textInput = GetTextboxSession();
             int32_t cursorX = 0;
             int32_t cursorY = 0;
-            for (int32_t line = 0; line <= no_lines; line++)
+            for (int32_t line = 0; line <= numLines; line++)
             {
                 screenCoords.x = windowPos.x + 12;
                 drawText(
