@@ -613,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
     {
         return _textInput;
     }
-    void SetTexboxSession(TextInputSession* session)
+    void setTextboxSession(TextInputSession* session)
     {
         _textInput = session;
     }
