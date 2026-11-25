@@ -14,6 +14,7 @@
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
@@ -457,7 +458,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t x = 3;
             for (size_t i = 0; i < _tabs.size(); i++)
             {
-                auto tab = makeTab({ x, 17 }, kStringIdNone);
+                auto tab = Widgets::Tab({ x, 17 });
                 widgets.push_back(tab);
                 x += 31;
             }
