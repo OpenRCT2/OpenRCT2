@@ -22,9 +22,11 @@
     #include "ScWindow.h"
 
     #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/scripting/bindings/game/ScAudio.hpp>
 
 using namespace OpenRCT2::Scripting;
 
+ScAudio OpenRCT2::Scripting::gScAudio;
 ScGraphicsContext OpenRCT2::Scripting::gScGraphicsContext;
 ScImageManager OpenRCT2::Scripting::gScImageManager;
 ScTileSelection OpenRCT2::Scripting::gScTileSelection;
@@ -52,6 +54,7 @@ ScWindow OpenRCT2::Scripting::gScWindow;
 static void InitialiseContext(JSContext* ctx)
 {
     JSValue glb = JS_GetGlobalObject(ctx);
+    JS_SetPropertyStr(ctx, glb, "audio", gScAudio.New(ctx));
     JS_SetPropertyStr(ctx, glb, "titleSequenceManager", gScTitleSequenceManager.New(ctx));
     JS_SetPropertyStr(ctx, glb, "ui", gScUi.New(ctx, &OpenRCT2::GetContext()->GetScriptEngine()));
     JS_FreeValue(ctx, glb);
@@ -61,6 +64,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 {
     JSContext* ctx = scriptEngine.GetContext();
 
+    gScAudio.Register(ctx);
     gScGraphicsContext.Register(ctx);
     gScImageManager.Register(ctx);
     gScTileSelection.Register(ctx);
@@ -97,6 +101,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
 void UiScriptExtensions::Unregister()
 {
+    gScAudio.Unregister();
     gScGraphicsContext.Unregister();
     gScImageManager.Unregister();
     gScTileSelection.Unregister();

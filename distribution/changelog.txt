@@ -4,6 +4,7 @@
 - Feature: [#27275] [Plugin] Expose ducks in scripting.
 - Feature: [#27404] Add Irish translation.
 - Feature: [#27420] CLI command to create a screenshot of a track design.
+- Feature: [#27442] [Plugin] Add script API for playing audio.
 - Improved: [#14778] Free and half-price entries are no longer offered when park admission is free.
 - Improved: [#27279] Exposed RideSetVisibilityAction and ScenerySetRestrictedAction to script API.
 - Improved: [#27357] Set up .td4, .td6 and .td7 file associations on Linux.
