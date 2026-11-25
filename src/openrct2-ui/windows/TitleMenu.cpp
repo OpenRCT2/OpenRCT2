@@ -231,7 +231,12 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     case 1:
-                        ContextOpenWindow(WindowClass::serverStart);
+                        if (windowMgr->BringToFrontByClass(WindowClass::serverStart) == nullptr)
+                        {
+                            windowMgr->CloseByClass(WindowClass::scenarioSelect);
+                            windowMgr->CloseByClass(WindowClass::loadsave);
+                            ContextOpenWindow(WindowClass::serverStart);
+                        }
                         break;
                 }
             }
