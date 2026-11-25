@@ -39,4 +39,5 @@ namespace OpenRCT2
     void InputScrollViewport(const ScreenCoordsXY& screenCoords);
     void InputScrollViewportSmooth(const ScreenCoordsXY& screenCoords);
     void InputScrollViewportSmooth(const ScreenCoordsXY& screenCoords, WindowBase* targetWindow);
+    void InputScrollViewportSmooth(float x, float y, WindowBase* targetWindow);
 } // namespace OpenRCT2
