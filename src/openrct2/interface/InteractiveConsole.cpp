@@ -1984,17 +1984,17 @@ void InteractiveConsole::Execute(const std::string& s)
     }
 }
 
-void InteractiveConsole::WriteLine(const std::string& s)
+void InteractiveConsole::WriteLine(std::string_view s)
 {
     WriteLine(s, FormatToken::colourWindow2);
 }
 
-void InteractiveConsole::WriteLineError(const std::string& s)
+void InteractiveConsole::WriteLineError(std::string_view s)
 {
     WriteLine(s, FormatToken::colourRed);
 }
 
-void InteractiveConsole::WriteLineWarning(const std::string& s)
+void InteractiveConsole::WriteLineWarning(std::string_view s)
 {
     WriteLine(s, FormatToken::colourYellow);
 }

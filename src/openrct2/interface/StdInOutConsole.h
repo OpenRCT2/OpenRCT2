@@ -31,9 +31,9 @@ public:
     void Hide() override
     {
     }
-    void WriteLine(const std::string& s)
+    void WriteLine(std::string_view s)
     {
         InteractiveConsole::WriteLine(s);
     }
-    void WriteLine(const std::string& s, OpenRCT2::FormatToken colourFormat) override;
+    void WriteLine(std::string_view s, OpenRCT2::FormatToken colourFormat) override;
 };

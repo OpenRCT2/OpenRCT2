@@ -91,7 +91,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
         parameters[L"commit"] = String::toWideChar(gVersionInfoFull);
     }
 
-    auto assertMsg = Guard::GetLastAssertMessage();
+    const auto& assertMsg = Guard::GetLastAssertMessage();
     if (assertMsg.has_value())
     {
         parameters[L"assert_failure"] = String::toWideChar(assertMsg.value());
