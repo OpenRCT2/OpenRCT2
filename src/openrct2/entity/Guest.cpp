@@ -1332,7 +1332,7 @@ namespace OpenRCT2
     {
         if (!peepFlags.has(PeepFlag::lost))
         {
-            if (RideGetCount() < 2)
+            if (rideCountIsBelow(2))
                 return;
             peepFlags.flip(PeepFlag::unknown21);
 
@@ -1619,9 +1619,8 @@ namespace OpenRCT2
             ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
             if (Config::Get().notifications.guestBoughtItem)
             {
-                News::AddItemToQueue(
-                    getGameState().park.newsItems, News::ItemType::peepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X,
-                    guest.id, ft);
+                getGameState().park.newsItems.addItemToQueue(
+                    News::ItemType::peepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, guest.id, ft);
             }
         }
 
@@ -1630,19 +1629,19 @@ namespace OpenRCT2
 
         if (shopItemDescriptor.IsFood())
         {
-            guest.amountOfFood++;
+            guest.amountOfFood = AddClamp<uint8_t>(guest.amountOfFood, 1);
             expend_type = &guest.paidOnFood;
             expenditure = ExpenditureType::foodDrinkStock;
         }
         else if (shopItemDescriptor.IsDrink())
         {
-            guest.amountOfDrinks++;
+            guest.amountOfDrinks = AddClamp<uint8_t>(guest.amountOfDrinks, 1);
             expend_type = &guest.paidOnDrink;
             expenditure = ExpenditureType::foodDrinkStock;
         }
         else if (shopItemDescriptor.IsSouvenir())
         {
-            guest.amountOfSouvenirs++;
+            guest.amountOfSouvenirs = AddClamp<uint8_t>(guest.amountOfSouvenirs, 1);
         }
 
         if (!gameState.park.flags.has(ParkFlag::noMoney))
@@ -3553,9 +3552,8 @@ namespace OpenRCT2
             ride.formatNameTo(ft);
             if (Config::Get().notifications.rideWarnings)
             {
-                News::AddItemToQueue(
-                    getGameState().park.newsItems, News::ItemType::ride, STR_GUESTS_GETTING_STUCK_ON_RIDE,
-                    guest.currentRide.ToUnderlying(), ft);
+                getGameState().park.newsItems.addItemToQueue(
+                    News::ItemType::ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, guest.currentRide.ToUnderlying(), ft);
             }
         }
     }
@@ -3860,7 +3858,7 @@ namespace OpenRCT2
 
             if (Config::Get().notifications.guestOnRide)
             {
-                News::AddItemToQueue(getGameState().park.newsItems, News::ItemType::peepOnRide, msg_string, id, ft);
+                getGameState().park.newsItems.addItemToQueue(News::ItemType::peepOnRide, msg_string, id, ft);
             }
         }
 
@@ -5019,8 +5017,8 @@ namespace OpenRCT2
 
                 if (Config::Get().notifications.guestLeftRide)
                 {
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, id, ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, id, ft);
                 }
             }
         }
@@ -6875,20 +6873,18 @@ namespace OpenRCT2
             CoordsXY loc = { x, y };
             if (MapIsLocationValid(loc.toTileStart()))
             {
-                TileElement* tileElement = MapGetFirstElementAt(loc);
-                while (true)
+                for (const auto* tileElement : TileElementsView(loc))
                 {
-                    if (tileElement == nullptr)
-                        break;
                     if (z < tileElement->getBaseZ())
+                    {
                         break;
+                    }
 
                     if (tileElement->isLastForTile())
                     {
                         setAnimationGroup(PeepAnimationGroup::umbrella);
                         return;
                     }
-                    tileElement++;
                 }
             }
         }
@@ -7056,70 +7052,36 @@ namespace OpenRCT2
     static constexpr Drawing::Colour kTrouserColours[] = {
         Drawing::Colour::black,
         Drawing::Colour::grey,
-        Drawing::Colour::lightBrown,
-        Drawing::Colour::saturatedBrown,
-        Drawing::Colour::darkBrown,
-        Drawing::Colour::salmonPink,
-        Drawing::Colour::black,
-        Drawing::Colour::grey,
-        Drawing::Colour::lightBrown,
-        Drawing::Colour::saturatedBrown,
-        Drawing::Colour::darkBrown,
-        Drawing::Colour::salmonPink,
-        Drawing::Colour::black,
-        Drawing::Colour::grey,
-        Drawing::Colour::lightBrown,
-        Drawing::Colour::saturatedBrown,
-        Drawing::Colour::darkBrown,
-        Drawing::Colour::salmonPink,
-        Drawing::Colour::darkPurple,
-        Drawing::Colour::lightPurple,
-        Drawing::Colour::darkBlue,
-        Drawing::Colour::saturatedGreen,
-        Drawing::Colour::saturatedRed,
-        Drawing::Colour::darkOrange,
-        Drawing::Colour::bordeauxRed,
-        Drawing::Colour::armyGreen,
-        Drawing::Colour::hunterGreen,
-        Drawing::Colour::deepWater,
-        Drawing::Colour::umber,
-    };
-
-    /** rct2: 0x009823D5 */
-    static constexpr Drawing::Colour kTshirtColours[] = {
-        Drawing::Colour::black,
-        Drawing::Colour::grey,
-        Drawing::Colour::lightBrown,
-        Drawing::Colour::saturatedBrown,
-        Drawing::Colour::darkBrown,
-        Drawing::Colour::salmonPink,
-        Drawing::Colour::black,
-        Drawing::Colour::grey,
-        Drawing::Colour::lightBrown,
-        Drawing::Colour::saturatedBrown,
-        Drawing::Colour::darkBrown,
-        Drawing::Colour::salmonPink,
-        Drawing::Colour::darkPurple,
-        Drawing::Colour::lightPurple,
-        Drawing::Colour::darkBlue,
-        Drawing::Colour::saturatedGreen,
-        Drawing::Colour::saturatedRed,
-        Drawing::Colour::darkOrange,
-        Drawing::Colour::bordeauxRed,
         Drawing::Colour::white,
+        Drawing::Colour::darkPurple,
+        Drawing::Colour::lightPurple,
         Drawing::Colour::brightPurple,
+        Drawing::Colour::darkBlue,
         Drawing::Colour::lightBlue,
+        Drawing::Colour::icyBlue,
         Drawing::Colour::darkWater,
+        Drawing::Colour::lightWater,
+        Drawing::Colour::saturatedGreen,
         Drawing::Colour::darkGreen,
         Drawing::Colour::mossGreen,
         Drawing::Colour::brightGreen,
         Drawing::Colour::oliveGreen,
         Drawing::Colour::darkOliveGreen,
+        Drawing::Colour::brightYellow,
         Drawing::Colour::yellow,
+        Drawing::Colour::darkYellow,
         Drawing::Colour::lightOrange,
+        Drawing::Colour::darkOrange,
+        Drawing::Colour::lightBrown,
+        Drawing::Colour::saturatedBrown,
+        Drawing::Colour::darkBrown,
+        Drawing::Colour::salmonPink,
+        Drawing::Colour::bordeauxRed,
+        Drawing::Colour::saturatedRed,
         Drawing::Colour::brightRed,
         Drawing::Colour::darkPink,
         Drawing::Colour::brightPink,
+        Drawing::Colour::lightPink,
         Drawing::Colour::armyGreen,
         Drawing::Colour::honeyDew,
         Drawing::Colour::tan,
@@ -7142,6 +7104,100 @@ namespace OpenRCT2
         Drawing::Colour::pastelPink,
         Drawing::Colour::umber,
         Drawing::Colour::beige,
+        Drawing::Colour::gold,
+        Drawing::Colour::amber,
+        Drawing::Colour::amethyst,
+        Drawing::Colour::asparagus,
+        Drawing::Colour::brown,
+        Drawing::Colour::burntPink,
+        Drawing::Colour::cactus,
+        Drawing::Colour::caramel,
+        Drawing::Colour::copper,
+        Drawing::Colour::crimson,
+        Drawing::Colour::darkerWater,
+        Drawing::Colour::emerald,
+        Drawing::Colour::indigo,
+        Drawing::Colour::pesto,
+        Drawing::Colour::pineGreen,
+        Drawing::Colour::ruby,
+        Drawing::Colour::deepBlue,
+        Drawing::Colour::silver,
+    };
+
+    /** rct2: 0x009823D5 */
+    static constexpr Drawing::Colour kTshirtColours[] = {
+        Drawing::Colour::black,
+        Drawing::Colour::grey,
+        Drawing::Colour::white,
+        Drawing::Colour::darkPurple,
+        Drawing::Colour::lightPurple,
+        Drawing::Colour::brightPurple,
+        Drawing::Colour::darkBlue,
+        Drawing::Colour::lightBlue,
+        Drawing::Colour::icyBlue,
+        Drawing::Colour::darkWater,
+        Drawing::Colour::lightWater,
+        Drawing::Colour::saturatedGreen,
+        Drawing::Colour::darkGreen,
+        Drawing::Colour::mossGreen,
+        Drawing::Colour::brightGreen,
+        Drawing::Colour::oliveGreen,
+        Drawing::Colour::darkOliveGreen,
+        Drawing::Colour::brightYellow,
+        Drawing::Colour::yellow,
+        Drawing::Colour::darkYellow,
+        Drawing::Colour::lightOrange,
+        Drawing::Colour::darkOrange,
+        Drawing::Colour::lightBrown,
+        Drawing::Colour::saturatedBrown,
+        Drawing::Colour::darkBrown,
+        Drawing::Colour::salmonPink,
+        Drawing::Colour::bordeauxRed,
+        Drawing::Colour::saturatedRed,
+        Drawing::Colour::brightRed,
+        Drawing::Colour::darkPink,
+        Drawing::Colour::brightPink,
+        Drawing::Colour::lightPink,
+        Drawing::Colour::armyGreen,
+        Drawing::Colour::honeyDew,
+        Drawing::Colour::tan,
+        Drawing::Colour::maroon,
+        Drawing::Colour::coralPink,
+        Drawing::Colour::forestGreen,
+        Drawing::Colour::chartreuse,
+        Drawing::Colour::hunterGreen,
+        Drawing::Colour::celadon,
+        Drawing::Colour::limeGreen,
+        Drawing::Colour::sepia,
+        Drawing::Colour::peach,
+        Drawing::Colour::periwinkle,
+        Drawing::Colour::viridian,
+        Drawing::Colour::seafoamGreen,
+        Drawing::Colour::violet,
+        Drawing::Colour::lavender,
+        Drawing::Colour::pastelOrange,
+        Drawing::Colour::deepWater,
+        Drawing::Colour::pastelPink,
+        Drawing::Colour::umber,
+        Drawing::Colour::beige,
+        Drawing::Colour::gold,
+        Drawing::Colour::amber,
+        Drawing::Colour::amethyst,
+        Drawing::Colour::asparagus,
+        Drawing::Colour::brown,
+        Drawing::Colour::burntPink,
+        Drawing::Colour::cactus,
+        Drawing::Colour::caramel,
+        Drawing::Colour::copper,
+        Drawing::Colour::crimson,
+        Drawing::Colour::darkerWater,
+        Drawing::Colour::emerald,
+        Drawing::Colour::indigo,
+        Drawing::Colour::pesto,
+        Drawing::Colour::pineGreen,
+        Drawing::Colour::ruby,
+        Drawing::Colour::deepBlue,
+        Drawing::Colour::silver,
     };
     // clang-format on
 

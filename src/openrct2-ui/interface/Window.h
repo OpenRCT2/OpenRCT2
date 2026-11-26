@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowUpdateTextbox();
 
     const TextInputSession* GetTextboxSession();
-    void SetTexboxSession(TextInputSession* session);
+    void setTextboxSession(TextInputSession* session);
     void SetTextboxCaret(size_t position);
     bool IsUsingWidgetTextBox();
     bool TextBoxCaretIsFlashed();

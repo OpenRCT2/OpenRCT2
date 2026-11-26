@@ -39,6 +39,11 @@ declare global {
     var scenario: Scenario;
     /** APIs for the climate and weather. */
     var climate: Climate;
+    /**
+     * APIs for playing sounds and music.
+     * These will only be available to clients that are not running headless mode.
+     */
+    var audio: Audio;
     /** APIs for performance profiling. */
     var profiler: Profiler;
     /**
@@ -391,7 +396,9 @@ declare global {
         queryAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "scenerysetrestricted", args: ScenerySetRestrictedArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -482,7 +489,9 @@ declare global {
         executeAction(action: "ridesetsetting", args: RideSetSettingArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetstatus", args: RideSetStatusArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "ridesetvehicle", args: RideSetVehicleArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "ridesetvisibility", args: RideSetVisibilityArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "scenariosetsetting", args: ScenarioSetSettingArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "scenerysetrestricted", args: ScenerySetRestrictedArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetname", args: SignSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "signsetstyle", args: SignSetStyleArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "smallsceneryplace", args: SmallSceneryPlaceArgs, callback?: (result: GameActionResult) => void): void;
@@ -745,7 +754,9 @@ declare global {
         "ridesetsetting" |
         "ridesetstatus" |
         "ridesetvehicle" |
+        "ridesetvisibility" |
         "scenariosetsetting" |
+        "scenerysetrestricted" |
         "signsetname" |
         "signsetstyle" |
         "smallsceneryplace" |
@@ -1367,12 +1378,23 @@ declare global {
         colour: number;
     }
 
+    interface RideSetVisibilityArgs extends GameActionArgs {
+        ride: number;
+        visibility: number;
+    }
+
     interface ScenarioSetSettingArgs extends GameActionArgs {
         /**
          * @see ScenarioSetSetting in {@link https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/actions/ScenarioSetSettingAction.h}
          */
         setting: number;
         value: number;
+    }
+
+    interface ScenerySetRestrictedArgs extends GameActionArgs {
+        objectType: number;
+        objectIndex: number;
+        isRestricted: boolean;
     }
 
     interface SignSetNameArgs extends GameActionArgs {
@@ -1768,6 +1790,7 @@ declare global {
         getAllEntities(type: "litter"): Litter[];
         getAllEntities(type: "balloon"): Balloon[];
         getAllEntities(type: "money_effect"): MoneyEffect[];
+        getAllEntities(type: "duck"): Duck[];
         getAllEntitiesOnTile(type: EntityType, tilePos: CoordsXY): Entity[];
         getAllEntitiesOnTile(type: "guest", tilePos: CoordsXY): Guest[];
         getAllEntitiesOnTile(type: "staff", tilePos: CoordsXY): Staff[];
@@ -1775,6 +1798,7 @@ declare global {
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         getAllEntitiesOnTile(type: "balloon", tilePos: CoordsXY): Balloon[];
         getAllEntitiesOnTile(type: "money_effect", tilePos: CoordsXY): MoneyEffect[];
+        getAllEntitiesOnTile(type: "duck", tilePos: CoordsXY): Duck[];  
         createEntity(type: EntityType, initializer: object): Entity;
 
         /**
@@ -4084,6 +4108,45 @@ declare global {
     }
 
     /**
+     * Represents duck entity.
+     */
+    interface Duck extends Entity {
+        /**
+         * Whether the duck's position is frozen in place. The duck will not move, but its
+         * animation will continue to play unless `animationFrozen` is also set.
+         */
+        positionFrozen: boolean;
+
+        /**
+         * Whether the duck's animation is frozen. The duck's sprite will not update.
+         * Requires position to be frozen as well, otherwise the flag will be cleared again.
+         */
+        animationFrozen: boolean;
+
+        /**
+         * The orientation of the duck, from 0 to 31.
+         */
+        orientation: number;
+
+        /**
+         * The current frame offset in the duck's animation.
+         */
+        animationFrame: number;
+
+        /**
+         * The animation the duck is currently exhibiting.
+         */
+        animation: DuckAnimation;
+    }
+
+    type DuckAnimation =
+        "flyToWater" |
+        "swim" |
+        "drink" |
+        "doubleDrink" |
+        "flyAway";
+
+    /**
      * Network APIs
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.
      */
@@ -4825,6 +4888,44 @@ declare global {
     interface WeatherState {
         readonly weather: WeatherType;
         readonly temperature: number;
+    }
+
+    type SoundName =
+        "applause" | "balloon_pop" | "block_brake_close" | "block_brake_release" | "brake_release" | "click_1" | "click_2" | "click_3" | "cough_1" | "cough_2" | "cough_3" | "cough_4" | "crash" | "crowd_ambience" | "door_open" | "door_close" | "error" | "friction_classic" | "go_kart_engine" | "haunted_house_scare" | "haunted_house_scream_1" | "haunted_house_scream_2" | "laugh_1" | "laugh_2" | "laugh_3" | "laying_out_water" | "lift_arrow" | "lift_bm" | "lift_classic" | "lift_flume" | "lift_friction_wheels" | "lift_rmc" | "lift_wild_mouse" | "lift_wood" | "mechanic_fix" | "news_item" | "null" | "place_item" | "portcullis" | "purchase" | "quack" | "rain" | "ride_launch_1" | "ride_launch_2" | "thunder_1" | "thunder_2" | "toilet_flush" | "track_friction_bm" | "track_friction_classic_wood" | "track_friction_rmc" | "track_friction_train" | "track_friction_water" | "track_friction_wood" | "train_departing" | "train_whistle" | "tram" | "scream_1" | "scream_2" | "scream_3" | "scream_4" | "scream_5" | "scream_6" | "scream_7" | "scream_8" | "water_1" | "water_2" | "water_splash" | "window_open";
+	
+    /**
+     * APIs for playing sound effects and music.
+     */
+    interface Audio {	
+        /**
+         * Plays a built-in sound effect, or a sound loaded with {@link loadSound}.
+         * @param sound The name of a built-in sound (e.g. `"scream_1"`), or a handle returned by {@link loadSound}.
+         * @param position Optional world position. If given, the volume and pan are set from the position at the
+         * moment the sound starts. They are not updated afterwards.
+         * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1. Cannot be changed once playing.
+         */
+        playSound(sound: SoundName | number, position?: CoordsXYZ | null, rate?: number): void;
+
+        /**
+         * Plays the first track of a music object (e.g. `"rct2.music.gentle"`).
+         * @param name The identifier of the music object.
+         * @param position Optional world position. If given, the volume and pan are set from the position at the
+         * moment the music starts. They are not updated afterwards.
+         * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1. Cannot be changed once playing.
+         */
+        playMusic(name: string, position?: CoordsXYZ | null, rate?: number): void;
+
+        /**
+         * Loads a sound effect from base64 encoded PCM WAV data (8 or 16 bit).
+         * The sound is freed automatically when the plugin stops.
+         * @returns A handle that can be passed to {@link playSound}.
+         */
+        loadSound(base64Wav: string): number;
+
+        /**
+         * Frees a sound loaded with {@link loadSound}.
+         */
+        freeSound(handle: number): void;
     }
 
     interface Climate {

@@ -598,6 +598,7 @@ namespace OpenRCT2::Platform
             { L"es", LANGUAGE_SPANISH },
             { L"fr", LANGUAGE_FRENCH },
             { L"fr-CA", LANGUAGE_FRENCH_CA },
+            { L"ga", LANGUAGE_IRISH },
             { L"gl", LANGUAGE_GALICIAN },
             { L"it", LANGUAGE_ITALIAN },
             { L"ja", LANGUAGE_JAPANESE },

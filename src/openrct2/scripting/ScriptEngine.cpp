@@ -30,6 +30,7 @@
     #include "../platform/Platform.h"
     #include "../ride/ted/PitchAndRoll.h"
     #include "bindings/entity/ScBalloon.hpp"
+    #include "bindings/entity/ScDuck.hpp"
     #include "bindings/entity/ScEntity.hpp"
     #include "bindings/entity/ScGuest.hpp"
     #include "bindings/entity/ScLitter.hpp"
@@ -595,6 +596,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     gScEntity.Register(ctx);
     gScPeep.Register(ctx);
     gScGuest.Register(ctx);
+    gScDuck.Register(ctx);
     gScStaff.Register(ctx);
     gScHandyman.Register(ctx);
     gScMechanic.Register(ctx);
@@ -657,6 +659,7 @@ void ScriptEngine::UnregisterClasses()
     gScEntity.Unregister();
     gScPeep.Unregister();
     gScGuest.Unregister();
+    gScDuck.Unregister();
     gScStaff.Unregister();
     gScHandyman.Unregister();
     gScMechanic.Unregister();
@@ -1321,7 +1324,7 @@ void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::str
 {
     if (plugin == nullptr)
     {
-        _console.WriteLine(std::string(message));
+        _console.WriteLine(message);
     }
     else
     {
@@ -1724,8 +1727,10 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "ridesetsetting", GameCommand::setRideSetting },
     { "ridesetstatus", GameCommand::setRideStatus },
     { "ridesetvehicle", GameCommand::setRideVehicles },
+    { "ridesetvisibility", GameCommand::setRideVisibility },
     { "scenariosetsetting", GameCommand::editScenarioOptions },
     { "cheatset", GameCommand::cheat },
+    { "scenerysetrestricted", GameCommand::setRestrictedScenery },
     { "signsetname", GameCommand::setSignName },
     { "signsetstyle", GameCommand::setSignStyle },
     { "smallsceneryplace", GameCommand::placeScenery },
@@ -1753,7 +1758,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
 };
 // clang-format on
 
-static std::string GetActionName(GameCommand commandId)
+std::string Scripting::getActionName(GameCommand commandId)
 {
     auto it = ActionNameToType.find(commandId);
     if (it != ActionNameToType.end())
@@ -1800,7 +1805,7 @@ void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, Gam
         }
         else
         {
-            auto actionName = GetActionName(actionId);
+            auto actionName = getActionName(actionId);
             if (!actionName.empty())
             {
                 JS_SetPropertyStr(ctx, obj, "action", JSFromStdString(ctx, actionName));

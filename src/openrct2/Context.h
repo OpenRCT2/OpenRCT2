@@ -107,7 +107,7 @@ namespace OpenRCT2
         virtual Network::NetworkBase& GetNetwork() = 0;
 #endif
 
-        virtual int32_t RunOpenRCT2(int argc, const char** argv) = 0;
+        virtual int32_t RunOpenRCT2() = 0;
 
         virtual bool Initialise() = 0;
         virtual void ResetSubsystems() = 0;
@@ -123,8 +123,8 @@ namespace OpenRCT2
         virtual bool LoadParkFromStream(
             IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false, bool asScenario = false)
             = 0;
-        virtual void WriteLine(const std::string& s) = 0;
-        virtual void WriteErrorLine(const std::string& s) = 0;
+        virtual void WriteLine(std::string_view s) = 0;
+        virtual void WriteErrorLine(std::string_view s) = 0;
         virtual void Finish() = 0;
         virtual void Quit() = 0;
 

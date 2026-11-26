@@ -1,7 +1,7 @@
 {
   "objects": {
-    "url": "https://github.com/OpenRCT2/objects/releases/download/v1.8.0/objects.zip",
-    "sha256": "949bee5cac9e941be63bb923b792738a507c155a6fea73edab0b23bede21d302"
+    "url": "https://github.com/OpenRCT2/objects/releases/download/v1.8.1/objects.zip",
+    "sha256": "3252a55634db940ebca1df6c8e1f34eb53784d77d8ed99d668f4613196540c4f"
   },
   "openmusic": {
     "url": "https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6.1/openmusic.zip",
@@ -16,7 +16,7 @@
     "sha256": "37ac28985baf183bae27af72710613595f683dc24892c05989fb6bfd016bdb5d"
   },
   "replays": {
-    "url": "https://github.com/OpenRCT2/replays/releases/download/v0.0.97/replays.zip",
-    "sha256": "c32c93fea479c61e8ccf9f7afe09541680a6383360f39cd67420c24d7f739490"
+    "url": "https://github.com/OpenRCT2/replays/releases/download/v0.0.98/replays.zip",
+    "sha256": "8c64f3105e54969b6dda2d93835583975c76f684a806c6912e40b106d291b69a"
   }
 }

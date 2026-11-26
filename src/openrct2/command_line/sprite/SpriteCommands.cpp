@@ -18,7 +18,6 @@
 
 #include <cstring>
 #include <optional>
-#include <sstream>
 
 // FIXME: replace with a constexpr that will also work for string interpolation.
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
@@ -174,14 +173,5 @@ namespace OpenRCT2::CommandLine::Sprite
             fprintf(stderr, "%s\n", e.what());
             return std::nullopt;
         }
-    }
-
-    // TODO: Remove when C++20 is enabled and std::format can be used
-    std::string PopStr(std::ostringstream& oss)
-    {
-        auto str = oss.str();
-        oss.str("");
-        oss.clear();
-        return str;
     }
 } // namespace OpenRCT2::CommandLine::Sprite

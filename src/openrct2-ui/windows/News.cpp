@@ -9,6 +9,8 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -63,8 +65,8 @@ namespace OpenRCT2::Ui::Windows
         return makeWidgets(
             makeWindowShim(title, kWindowSize),
             makeWidget({  0, 43 }, { kWindowSize.width, 257 }, WidgetType::resize, WindowColour::secondary),
-            makeTab   ({  3, 17 }, STR_RECENT_MESSAGES),
-            makeTab   ({ 34, 17 }, STR_NOTIFICATION_SETTINGS)
+            Widgets::Tab({  3, 17 }, STR_RECENT_MESSAGES),
+            Widgets::Tab({ 34, 17 }, STR_NOTIFICATION_SETTINGS)
         );
     };
 
@@ -75,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kOptionsTabWidgets = makeWidgets(
         makeNewsWidgets(STR_NOTIFICATION_SETTINGS),
-        makeWidget({ 10, 49 }, { 380,  14 }, WidgetType::checkbox, WindowColour::secondary)
+        Widgets::Checkbox({ 10, 49 }, { 380,  14 }, WindowColour::secondary)
     );
     // clang-format on
 
@@ -114,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         int32_t _pressedNewsItemIndex{}, _pressedButtonIndex{}, _suspendUpdateTicks{};
         WidgetIndex _baseCheckboxIndex{};
-        News::ItemQueues& _queues;
+        News::Items& _queues;
 
         static int32_t CalculateNewsItemHeight()
         {
@@ -171,15 +173,9 @@ namespace OpenRCT2::Ui::Windows
                         y += 7;
                     }
 
-                    Widget groupWidget = {
-                        .type = WidgetType::groupbox,
-                        .colour = EnumValue(colours[1].colour),
-                        .left = static_cast<int16_t>(baseCheckBox.left - 5),
-                        .right = static_cast<int16_t>(baseCheckBox.right + 5),
-                        .top = y,
-                        .bottom = static_cast<int16_t>(y + kListRowHeight),
-                        .text = def.group,
-                    };
+                    Widget groupWidget = makeWidget(
+                        { baseCheckBox.left - 5, y }, { baseCheckBox.width() + 10, kListRowHeight }, WidgetType::groupbox,
+                        WindowColour::secondary, def.group);
 
                     groupWidgetsToInsert.emplace_back(groupWidget);
                     lastGroup = def.group;
@@ -187,15 +183,9 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Create checkbox widgets
-                Widget checkboxWidget = {
-                    .type = WidgetType::checkbox,
-                    .colour = EnumValue(colours[1].colour),
-                    .left = baseCheckBox.left,
-                    .right = baseCheckBox.right,
-                    .top = y,
-                    .bottom = static_cast<int16_t>(y + kListRowHeight + 3),
-                    .text = def.caption,
-                };
+                Widget checkboxWidget = Widgets::Checkbox(
+                    { baseCheckBox.left, y }, { baseCheckBox.width(), kListRowHeight + 3 }, WindowColour::secondary,
+                    def.caption);
 
                 checkboxWidgetsToInsert.emplace_back(checkboxWidget);
                 numGroupElements++;
@@ -365,12 +355,12 @@ namespace OpenRCT2::Ui::Windows
             size_t j = _pressedNewsItemIndex;
             _pressedNewsItemIndex = -1;
 
-            if (j >= _queues.getArchived().size())
+            if (j >= _queues.archive.size())
             {
                 return;
             }
 
-            const auto& newsItem = _queues.getArchived()[j];
+            const auto& newsItem = _queues.archive[j];
             if (newsItem.hasButton())
             {
                 return;
@@ -412,7 +402,7 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize onScrollGetSize(int32_t scrollIndex) override
         {
-            int32_t scrollHeight = static_cast<int32_t>(_queues.getArchived().size()) * CalculateNewsItemHeight()
+            int32_t scrollHeight = static_cast<int32_t>(_queues.archive.size()) * CalculateNewsItemHeight()
                 - kItemSeparatorHeight;
             return { kWindowSize.width, scrollHeight };
         }
@@ -423,7 +413,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t i = 0;
             int32_t buttonIndex = 0;
             auto mutableScreenCoords = screenCoords;
-            for (const auto& newsItem : _queues.getArchived())
+            for (const auto& newsItem : _queues.archive)
             {
                 if (mutableScreenCoords.y < itemHeight)
                 {
@@ -470,7 +460,7 @@ namespace OpenRCT2::Ui::Windows
             const bool scrollbarVisible = scrolls[0].contentHeight > widgets[WIDX_SCROLL].height() - 1;
             const auto scrollbarFill = scrollbarVisible ? 0 : kScrollBarWidth;
 
-            for (const auto& newsItem : _queues.getArchived())
+            for (const auto& newsItem : _queues.archive)
             {
                 if (y >= rt.y + rt.height)
                     break;
@@ -509,9 +499,8 @@ namespace OpenRCT2::Ui::Windows
                     auto screenCoords = ScreenCoordsXY{ 328 + scrollbarFill, y + lineHeight + 4 };
 
                     auto borderStyle = Rectangle::BorderStyle::outset;
-                    if (_pressedNewsItemIndex != -1)
+                    if (_pressedNewsItemIndex != -1 && _pressedNewsItemIndex < static_cast<int32_t>(_queues.archive.size()))
                     {
-                        News::IsValidIndex(_pressedNewsItemIndex + News::kItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 1)
                         {
                             borderStyle = Rectangle::BorderStyle::inset;
@@ -591,9 +580,8 @@ namespace OpenRCT2::Ui::Windows
                     auto screenCoords = ScreenCoordsXY{ 352 + scrollbarFill, y + lineHeight + 4 };
 
                     auto borderStyle = Rectangle::BorderStyle::outset;
-                    if (_pressedNewsItemIndex != -1)
+                    if (_pressedNewsItemIndex != -1 && _pressedNewsItemIndex < static_cast<int32_t>(_queues.archive.size()))
                     {
-                        News::IsValidIndex(_pressedNewsItemIndex + News::kItemHistoryStart);
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                             borderStyle = Rectangle::BorderStyle::inset;
                     }

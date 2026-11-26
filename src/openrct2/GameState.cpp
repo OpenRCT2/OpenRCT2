@@ -332,7 +332,7 @@ namespace OpenRCT2
         ResearchUpdate();
         RideRating::UpdateAll();
         RideMeasurementsUpdate();
-        News::UpdateCurrentItem(park.newsItems);
+        park.newsItems.updateActiveItem();
 
         MapAnimations::InvalidateAndUpdateAll();
         VehicleSoundsUpdate();

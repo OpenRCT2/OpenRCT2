@@ -28,7 +28,7 @@ int main(int argc, const char** argv)
 
         // Run OpenRCT2 with a plain context
         auto context = CreateContext();
-        rc = context->RunOpenRCT2(argc, argv);
+        rc = context->RunOpenRCT2();
     }
     else if (runGame == ExitCode::fail)
     {

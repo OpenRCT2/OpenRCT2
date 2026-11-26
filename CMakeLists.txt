@@ -34,14 +34,7 @@ if (APPLE)
     endif ()
 
     set(CMAKE_OSX_ARCHITECTURES "${ARCH}" CACHE STRING "")
-
-    if("${ARCH}" MATCHES "^x86_64")
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "")
-    elseif("${ARCH}" MATCHES "^arm64")
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "")
-    else()
-        message("Unknown macOS architecture: ${ARCH}. Behavior may be unexpected.")
-    endif()
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.3" CACHE STRING "")
 endif ()
 
 if (APPLE)
@@ -413,7 +406,8 @@ if (NOT CMAKE_CROSSCOMPILING)
         list(APPEND output_files "${output_file}")
     endforeach()
 
-    add_custom_target(graphics DEPENDS OpenRCT2::openrct2-cli ${output_files})
+    # Part of the default build, so the files exist for install even when only openrct2-cli is built (DISABLE_GUI).
+    add_custom_target(graphics ALL DEPENDS OpenRCT2::openrct2-cli ${output_files})
 
     if(NOT DISABLE_GUI)
         add_dependencies(openrct2 graphics)
@@ -528,6 +522,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                 install(FILES "distribution/linux/io.openrct2.openrct2.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
                 install(FILES "distribution/linux/io.openrct2.savegame.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
                 install(FILES "distribution/linux/io.openrct2.scenario.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
+                install(FILES "distribution/linux/io.openrct2.trackdesign.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
                 install(FILES "distribution/linux/io.openrct2.uri.desktop" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/applications")
             endif()
             install(FILES "distribution/linux/io.openrct2.mimeinfo.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages/" RENAME "openrct2.xml")

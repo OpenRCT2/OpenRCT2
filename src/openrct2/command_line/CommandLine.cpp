@@ -15,6 +15,7 @@
 #include "../platform/Platform.h"
 
 #include <cstring>
+#include <string>
 
 #pragma region CommandLineArgEnumerator
 
@@ -98,7 +99,7 @@ namespace OpenRCT2::CommandLine
     constexpr const char* kHelpText = "openrct2 -ha shows help for all commands. "
                                       "openrct2 <command> -h will show help and details for a given command.";
 
-    static void PrintHelpFor(const CommandLineCommand* commands);
+    static void PrintHelpFor(const CommandLineCommand* commands, const char* parentName = nullptr);
     static void PrintOptions(const CommandLineOptionDefinition* options);
     static void PrintExamples(const CommandLineExample* examples);
     static utf8* GetOptionCaption(utf8* buffer, size_t bufferSize, const CommandLineOptionDefinition* option);
@@ -113,6 +114,7 @@ namespace OpenRCT2::CommandLine
     static bool ParseOptionValue(const CommandLineOptionDefinition* option, const char* valueString);
 
     static bool HandleSpecialArgument(const char* argument);
+    static bool HasHelpOption(CommandLineArgEnumerator argEnumerator);
 
     void PrintHelp(bool allCommands)
     {
@@ -137,7 +139,7 @@ namespace OpenRCT2::CommandLine
                         Console::Write("-");
                     }
                     Console::WriteLine();
-                    PrintHelpFor(command->SubCommands);
+                    PrintHelpFor(command->SubCommands, command->Name);
                 }
             }
         }
@@ -147,12 +149,17 @@ namespace OpenRCT2::CommandLine
         }
     }
 
-    static void PrintHelpFor(const CommandLineCommand* commands)
+    static void PrintHelpFor(const CommandLineCommand* commands, const char* parentName)
     {
         // Print usage
-        const char* usageString = "usage: openrct2 ";
-        const size_t usageStringLength = String::lengthOf(usageString);
-        Console::Write(usageString);
+        std::string usageString = "usage: openrct2 ";
+        if (parentName != nullptr)
+        {
+            usageString += parentName;
+            usageString += ' ';
+        }
+        const size_t usageStringLength = usageString.size();
+        Console::Write(usageString.c_str());
 
         // Get the largest command name length and parameter length
         size_t maxNameLength = 0;
@@ -171,8 +178,12 @@ namespace OpenRCT2::CommandLine
                 Console::WriteSpace(usageStringLength);
             }
 
-            Console::Write(command->Name);
-            Console::WriteSpace(maxNameLength - String::lengthOf(command->Name) + 1);
+            // Tables with a single unnamed command, like simulate, have no name column.
+            if (maxNameLength > 0)
+            {
+                Console::Write(command->Name);
+                Console::WriteSpace(maxNameLength - String::lengthOf(command->Name) + 1);
+            }
 
             if (command->SubCommands == nullptr)
             {
@@ -282,7 +293,8 @@ namespace OpenRCT2::CommandLine
         return buffer;
     }
 
-    static const CommandLineCommand* FindCommandFor(const CommandLineCommand* commands, CommandLineArgEnumerator* argEnumerator)
+    static const CommandLineCommand* FindCommandFor(
+        const CommandLineCommand* commands, CommandLineArgEnumerator* argEnumerator, const CommandLineCommand** parent)
     {
         // Check if end of arguments or options have started
         const char* firstArgument;
@@ -315,7 +327,8 @@ namespace OpenRCT2::CommandLine
                 }
 
                 // Recurse for the sub command table
-                return FindCommandFor(command->SubCommands, argEnumerator);
+                *parent = command;
+                return FindCommandFor(command->SubCommands, argEnumerator, parent);
             }
         }
 
@@ -494,6 +507,19 @@ namespace OpenRCT2::CommandLine
         }
     }
 
+    static bool HasHelpOption(CommandLineArgEnumerator argEnumerator)
+    {
+        const char* argument;
+        while (argEnumerator.TryPopString(&argument))
+        {
+            if (String::equals(argument, "-h") || String::equals(argument, "--help"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     static bool HandleSpecialArgument([[maybe_unused]] const char* argument)
     {
         return Platform::HandleSpecialCommandLineArgument(argument);
@@ -533,11 +559,19 @@ namespace OpenRCT2
         // Pop process path
         argEnumerator.TryPop();
 
-        const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::kRootCommands, &argEnumerator);
+        const CommandLineCommand* parent = nullptr;
+        const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::kRootCommands, &argEnumerator, &parent);
 
         if (command == nullptr)
         {
             return CommandLine::ExitCode::fail;
+        }
+
+        // Sub commands don't define -h themselves, so show the help for the whole table, e.g. `openrct2 sprite -h`.
+        if (parent != nullptr && CommandLine::HasHelpOption(argEnumerator))
+        {
+            CommandLine::PrintHelpFor(parent->SubCommands, parent->Name);
+            return CommandLine::ExitCode::ok;
         }
 
         if (command->Options != nullptr)

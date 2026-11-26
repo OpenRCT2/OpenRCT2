@@ -17,7 +17,7 @@
 
 #include <cmath>
 #include <cstdint>
-#include <sstream>
+#include <format>
 
 namespace OpenRCT2::CommandLine::Sprite
 {
@@ -51,11 +51,9 @@ namespace OpenRCT2::CommandLine::Sprite
         const uint32_t maxIndex = metaObject->GetNumImages();
         const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
 
-        std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
         for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
         {
-            oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
-            auto path = Path::Combine(outputPath, PopStr(oss));
+            auto path = Path::Combine(outputPath, std::format("{:0{}}.png", spriteIndex, numbers));
 
             const auto& g1 = imageTableStart[spriteIndex];
             if (g1.width == 0 || g1.height == 0)

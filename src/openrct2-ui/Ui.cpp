@@ -31,12 +31,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
 
-template<typename T>
-static std::shared_ptr<T> ToShared(std::unique_ptr<T>&& src)
-{
-    return std::shared_ptr<T>(std::move(src));
-}
-
 /**
  * Main entry point for non-Windows systems. Windows instead uses its own DLL proxy.
  */
@@ -80,7 +74,7 @@ int main(int argc, const char** argv)
             auto uiContext = CreateUiContext(*env);
             context = CreateContext(std::move(env), std::move(audioContext), std::move(uiContext));
         }
-        rc = context->RunOpenRCT2(argc, argv);
+        rc = context->RunOpenRCT2();
     }
     else if (runGame == OpenRCT2::CommandLine::ExitCode::fail)
     {

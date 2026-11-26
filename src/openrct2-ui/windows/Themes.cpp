@@ -12,6 +12,8 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/SpriteIds.h>
@@ -88,15 +90,15 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _themesWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {320,  64},               WidgetType::resize,       WindowColour::secondary                                                                                ), // tab content panel
-        makeTab   ({  3, 17},                                                                              STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
-        makeTab   ({ 34, 17},                                                                              STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab
-        makeTab   ({ 65, 17},                                                                              STR_THEMES_TAB_PARK_TIP                                                       ), // park tab
-        makeTab   ({ 96, 17},                                                                              STR_THEMES_TAB_TOOLS_TIP                                                      ), // tools tab
-        makeTab   ({127, 17},                                                                              STR_THEMES_TAB_RIDES_AND_GUESTS_TIP                                           ), // rides and peeps tab
-        makeTab   ({158, 17},                                                                              STR_THEMES_TAB_EDITORS_TIP                                                    ), // editors tab
-        makeTab   ({189, 17},                                                                              STR_THEMES_TAB_MISC_TIP                                                       ), // misc tab
-        makeTab   ({220, 17},                                                                              STR_THEMES_TAB_PROMPTS_TIP                                                    ), // prompts tab
-        makeTab   ({251, 17},                                                                              STR_THEMES_TAB_FEATURES_TIP                                                   ), // features tab
+        Widgets::Tab({  3, 17}, STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
+        Widgets::Tab({ 34, 17}, STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
+        Widgets::Tab({ 65, 17}, STR_THEMES_TAB_PARK_TIP            ), // park tab
+        Widgets::Tab({ 96, 17}, STR_THEMES_TAB_TOOLS_TIP           ), // tools tab
+        Widgets::Tab({127, 17}, STR_THEMES_TAB_RIDES_AND_GUESTS_TIP), // rides and peeps tab
+        Widgets::Tab({158, 17}, STR_THEMES_TAB_EDITORS_TIP         ), // editors tab
+        Widgets::Tab({189, 17}, STR_THEMES_TAB_MISC_TIP            ), // misc tab
+        Widgets::Tab({220, 17}, STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
+        Widgets::Tab({251, 17}, STR_THEMES_TAB_FEATURES_TIP        ), // features tab
         makeWidget({  5, 46}, {kWindowHeaderWidth, 15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_WINDOW                                                      ), // Window header
         makeWidget({157, 46}, { 79,                15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_PALETTE                                                     ), // Palette header
         makeWidget({236, 46}, { 80,                15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_TRANSPARENCY                                                ), // Transparency header
@@ -107,11 +109,11 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({210, 82}, { 91,                12}, WidgetType::button,       WindowColour::secondary, STR_TRACK_MANAGE_RENAME,                       STR_THEMES_ACTION_RENAME_TIP   ), // Rename button
         makeWidget({  0,  0}, {  1,                 1}, WidgetType::colourBtn,    WindowColour::secondary                                                                                ), // colour button mask
         makeWidget({  3, 60}, {314,                44}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                               ), // staff list
-        makeWidget({ 10, 54}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
-        makeWidget({ 10, 69}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
-        makeWidget({ 10, 84}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
-        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_GAME_STATUS_BAR                                        ), // rct1 bottom toolbar
-        makeWidget({ 10,114}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_USE_3D_IMAGE_BUTTONS                                        )  // use 3D image buttons
+        Widgets::Checkbox({ 10, 54}, {290,         12},                           WindowColour::secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
+        Widgets::Checkbox({ 10, 69}, {290,         12},                           WindowColour::secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
+        Widgets::Checkbox({ 10, 84}, {290,         12},                           WindowColour::secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
+        Widgets::Checkbox({ 10, 99}, {290,         12},                           WindowColour::secondary, STR_THEMES_OPTION_RCT1_GAME_STATUS_BAR                                        ), // rct1 bottom toolbar
+        Widgets::Checkbox({ 10,114}, {290,         12},                           WindowColour::secondary, STR_THEMES_OPTION_USE_3D_IMAGE_BUTTONS                                        )  // use 3D image buttons
     );
     // clang-format on
 
@@ -239,12 +241,12 @@ namespace OpenRCT2::Ui::Windows
         uint8_t _selectedTab = 0;
         int16_t _classIndex = -1;
         int8_t _buttonIndex = -1;
-        const uint8_t _max_row_height = 56;
-        const uint8_t _button_offset_x = 185;
-        const uint8_t _button_offset_y = 3;
-        const uint8_t _check_offset_y = 3;
-        const uint16_t _check_offset_x = 265;
-        const uint8_t _button_size = 12;
+        static constexpr uint8_t kMaxRowHeight = 56;
+        static constexpr uint8_t kButtonOffsetX = 185;
+        static constexpr uint8_t kButtonOffsetY = 3;
+        static constexpr uint8_t kCheckboxOffsetY = 3;
+        static constexpr uint16_t kCheckboxOffsetX = 265;
+        static constexpr uint8_t kButtonSize = 12;
 
     public:
 #pragma region Window Override Events
@@ -603,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
             if (_selectedTab == WINDOW_THEMES_TAB_SETTINGS || _selectedTab == WINDOW_THEMES_TAB_FEATURES)
                 return {};
 
-            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount()) * (_button_size + 2);
+            int32_t scrollHeight = GetTotalColoursUpTo(GetColourSchemeTabCount()) * (kButtonSize + 2);
             int32_t i = scrollHeight - widgets[WIDX_THEMES_LIST].bottom + widgets[WIDX_THEMES_LIST].top + 21;
             if (i < 0)
                 i = 0;
@@ -618,7 +620,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (screenCoords.y / _max_row_height < GetColourSchemeTabCount())
+            if (screenCoords.y / kMaxRowHeight < GetColourSchemeTabCount())
             {
                 _classIndex = GetClassIndex(screenCoords.y);
 
@@ -628,13 +630,23 @@ namespace OpenRCT2::Ui::Windows
                 numColours = AddGap(numColours, _classIndex);
 
                 // position of y relative to the current class
-                int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_classIndex + 1) - numColours) * (_button_size + 2);
-                _buttonIndex = (y2 / _button_size);
+                int32_t y2 = screenCoords.y - (GetTotalColoursUpTo(_classIndex + 1) - numColours) * (kButtonSize + 2);
+
+                // The palette buttons and checkboxes are drawn at different vertical offsets,
+                // so work out the row from the offset of the column that was clicked.
+                const bool isPaletteColumn = screenCoords.x >= kButtonOffsetX
+                    && screenCoords.x < kButtonOffsetX + (kButtonSize + 2);
+                const int32_t buttonTop = isPaletteColumn ? kButtonOffsetY + 1 : kCheckboxOffsetY;
+                if (y2 < buttonTop)
+                {
+                    _buttonIndex = -1;
+                    return;
+                }
+                _buttonIndex = (y2 - buttonTop) / kButtonSize;
 
                 if (_buttonIndex < numColours)
                 {
-                    if (screenCoords.x >= _button_offset_x && screenCoords.x < _button_offset_x + (_button_size + 2)
-                        && y2 >= _button_offset_y && y2 < _button_offset_y + (_button_size + 2) * 6)
+                    if (isPaletteColumn && y2 >= kButtonOffsetY && y2 < kButtonOffsetY + (kButtonSize + 2) * 6)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -644,9 +656,9 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto& colourButton = widgets[WIDX_THEMES_COLOURBTN_MASK];
                             colourButton.setVisible();
-                            colourButton.left = _button_offset_x + widgets[WIDX_THEMES_LIST].left + _button_size;
-                            colourButton.top = GetTotalColoursUpTo(_classIndex) * (_button_size + 2) - _button_offset_y - 4
-                                + _button_size * _buttonIndex - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
+                            colourButton.left = kButtonOffsetX + widgets[WIDX_THEMES_LIST].left + kButtonSize;
+                            colourButton.top = GetTotalColoursUpTo(_classIndex) * (kButtonSize + 2) - kButtonOffsetY - 4
+                                + kButtonSize * _buttonIndex - scrolls[0].contentOffsetY + widgets[WIDX_THEMES_LIST].top;
                             colourButton.right = colourButton.left + 12;
                             colourButton.bottom = colourButton.top + 12;
 
@@ -657,8 +669,8 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
                     else if (
-                        screenCoords.x >= _check_offset_x && screenCoords.x < _check_offset_x + _button_size
-                        && y2 >= _check_offset_y && y2 < _check_offset_y + _button_size * 6 - 1)
+                        screenCoords.x >= kCheckboxOffsetX && screenCoords.x < kCheckboxOffsetX + kButtonSize
+                        && y2 >= kCheckboxOffsetY && y2 < kCheckboxOffsetY + kButtonSize * 6 - 1)
                     {
                         if (ThemeGetFlags() & UITHEME_FLAG_PREDEFINED)
                         {
@@ -710,17 +722,17 @@ namespace OpenRCT2::Ui::Windows
                 {
                     break;
                 }
-                if (screenCoords.y + _max_row_height >= rt.y)
+                if (screenCoords.y + kMaxRowHeight >= rt.y)
                 {
                     if (i + 1 < GetColourSchemeTabCount())
                     {
                         auto colour = colours[1];
 
-                        int8_t colorOffset = (_button_size + 2) * (4 - numColours);
+                        int8_t colorOffset = (kButtonSize + 2) * (4 - numColours);
 
-                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _max_row_height - colorOffset + 1 };
+                        auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + kMaxRowHeight - colorOffset + 1 };
                         auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right,
-                                                           screenCoords.y + _max_row_height - colorOffset + 1 };
+                                                           screenCoords.y + kMaxRowHeight - colorOffset + 1 };
                         auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
 
                         if (colour.flags.has(ColourFlag::translucent))
@@ -754,12 +766,11 @@ namespace OpenRCT2::Ui::Windows
                         auto colour = ThemeGetColour(wc, j);
                         const bool isPressed = (i == _classIndex && j == _buttonIndex);
                         auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour.colour);
-                        GfxDrawSprite(
-                            rt, image, { _button_offset_x, screenCoords.y + _button_offset_y + _button_size * j + 1 });
+                        GfxDrawSprite(rt, image, { kButtonOffsetX, screenCoords.y + kButtonOffsetY + kButtonSize * j + 1 });
 
-                        ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + _button_size * j };
-                        ScreenCoordsXY bottomRight{ _check_offset_x + 10,
-                                                    screenCoords.y + _check_offset_y + 11 + _button_size * j };
+                        ScreenCoordsXY topLeft{ kCheckboxOffsetX, screenCoords.y + kCheckboxOffsetY + kButtonSize * j };
+                        ScreenCoordsXY bottomRight{ kCheckboxOffsetX + 10,
+                                                    screenCoords.y + kCheckboxOffsetY + 11 + kButtonSize * j };
                         Rectangle::fillInset(
                             rt, { topLeft, bottomRight }, colours[1], Rectangle::BorderStyle::inset,
                             Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
@@ -771,7 +782,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                screenCoords.y += ((_button_size + 2) * numColours);
+                screenCoords.y += (kButtonSize + 2) * numColours;
             }
         }
 
@@ -809,7 +820,7 @@ namespace OpenRCT2::Ui::Windows
 
                 numRows += numColours;
 
-                if ((numRows * (_button_size + 2)) >= y)
+                if ((numRows * (kButtonSize + 2)) > y)
                 {
                     return i;
                 }

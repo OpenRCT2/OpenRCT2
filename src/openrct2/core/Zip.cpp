@@ -272,17 +272,17 @@ private:
             }
         }
 
-        void Seek(int64_t offset, int32_t origin) override
+        void Seek(int64_t offset, StreamSeekOrigin origin) override
         {
             switch (origin)
             {
-                case STREAM_SEEK_BEGIN:
+                case StreamSeekOrigin::begin:
                     SetPosition(offset);
                     break;
-                case STREAM_SEEK_CURRENT:
+                case StreamSeekOrigin::current:
                     SetPosition(_pos + offset);
                     break;
-                case STREAM_SEEK_END:
+                case StreamSeekOrigin::end:
                     SetPosition(_len - offset);
                     break;
             }

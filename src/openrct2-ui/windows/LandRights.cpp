@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/CheckboxWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -65,11 +66,11 @@ namespace OpenRCT2::Ui::Windows
         makeRemapWidget({ 54, 32}, { 16, 16}, WidgetType::trnBtn,   WindowColour::primary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_RIGHTS_TIP              ), // increment size
         makeRemapWidget({ 22, 53}, { 24, 24}, WidgetType::imgBtn,   WindowColour::primary, SPR_BUY_LAND_RIGHTS,             STR_BUY_LAND_RIGHTS_TIP                        ), // land rights
         makeRemapWidget({ 52, 53}, { 24, 24}, WidgetType::imgBtn,   WindowColour::primary, SPR_BUY_CONSTRUCTION_RIGHTS,     STR_BUY_CONSTRUCTION_RIGHTS_TIP                ), // construction rights
-        makeWidget     ({100, 22}, {170, 12}, WidgetType::checkbox, WindowColour::primary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
-        makeWidget     ({100, 38}, {170, 12}, WidgetType::checkbox, WindowColour::primary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
-        makeWidget     ({100, 54}, {170, 12}, WidgetType::checkbox, WindowColour::primary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
-        makeWidget     ({100, 70}, {170, 12}, WidgetType::checkbox, WindowColour::primary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
-        makeWidget     ({100, 86}, {170, 12}, WidgetType::checkbox, WindowColour::primary, STR_LAND_NOT_OWNED,              STR_SET_LAND_TO_BE_NOT_OWNED_TIP               )
+        Widgets::Checkbox({100, 22}, {170, 12},                     WindowColour::primary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
+        Widgets::Checkbox({100, 38}, {170, 12},                     WindowColour::primary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
+        Widgets::Checkbox({100, 54}, {170, 12},                     WindowColour::primary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
+        Widgets::Checkbox({100, 70}, {170, 12},                     WindowColour::primary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
+        Widgets::Checkbox({100, 86}, {170, 12},                     WindowColour::primary, STR_LAND_NOT_OWNED,              STR_SET_LAND_TO_BE_NOT_OWNED_TIP               )
     );
     // clang-format on
 

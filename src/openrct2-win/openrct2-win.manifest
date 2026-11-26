@@ -8,12 +8,14 @@
     </compatibility>
 
     <application xmlns="urn:schemas-microsoft-com:asm.v3">
-        <windowsSettings>
+        <windowsSettings xmlns:ws2016="http://schemas.microsoft.com/SMI/2016/WindowsSettings">
             <!-- PerMonitorV2: Windows 10 version 1703 and newer-->
             <!-- PerMonitor:   Windows 8.1 and newer -->
             <!-- System-aware: Windows Vista and newer -->
             <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true/PM</dpiAware>
-            <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2,PerMonitor</dpiAwareness>
+            <ws2016:dpiAwareness>PerMonitorV2,PerMonitor</ws2016:dpiAwareness>
+            <ws2016:longPathAware>true</ws2016:longPathAware>
+            <heapType xmlns="http://schemas.microsoft.com/SMI/2020/WindowsSettings">SegmentHeap</heapType>
         </windowsSettings>
     </application>
 </assembly>

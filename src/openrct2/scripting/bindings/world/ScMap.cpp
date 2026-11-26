@@ -22,6 +22,7 @@
     #include "../../../ride/TrainManager.h"
     #include "../../../ride/Vehicle.h"
     #include "../entity/ScBalloon.hpp"
+    #include "../entity/ScDuck.hpp"
     #include "../entity/ScGuest.hpp"
     #include "../entity/ScLitter.hpp"
     #include "../entity/ScMoneyEffect.hpp"
@@ -98,7 +99,7 @@ namespace OpenRCT2::Scripting
             auto sprite = getGameState().entities.getEntity(spriteId);
             if (sprite != nullptr && sprite->type != EntityType::null)
             {
-                return GetEntityAsDukValue(ctx, sprite);
+                return getEntityAsJSValue(ctx, sprite);
             }
         }
         return JS_NULL;
@@ -161,7 +162,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Duck>())
             {
-                JS_SetPropertyInt64(ctx, result, idx++, gScEntity.New(ctx, sprite->id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScDuck::New(ctx, sprite->id));
             }
         }
         else if (type == "peep")
@@ -268,7 +269,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<Duck>(pos))
             {
-                JS_SetPropertyInt64(ctx, result, idx++, ScEntity::New(ctx, sprite->id));
+                JS_SetPropertyInt64(ctx, result, idx++, ScDuck::New(ctx, sprite->id));
             }
         }
         else if (type == "guest")
@@ -424,7 +425,7 @@ namespace OpenRCT2::Scripting
         }
         else if (type == "duck")
         {
-            res = createEntityType<Duck, ScEntity>(ctx, initializer);
+            res = createEntityType<Duck, ScDuck>(ctx, initializer);
         }
         else if (type == "jumping_fountain")
         {
@@ -528,7 +529,7 @@ namespace OpenRCT2::Scripting
         return MakeWithOpaque(ctx, nullptr);
     }
 
-    JSValue ScMap::GetEntityAsDukValue(JSContext* ctx, const EntityBase* sprite)
+    JSValue ScMap::getEntityAsJSValue(JSContext* ctx, const EntityBase* sprite)
     {
         auto spriteId = sprite->id;
         switch (sprite->type)
@@ -569,6 +570,8 @@ namespace OpenRCT2::Scripting
                 return ScMoneyEffect::New(ctx, spriteId);
             case EntityType::crashedVehicleParticle:
                 return ScCrashedVehicleParticle::New(ctx, spriteId);
+            case EntityType::duck:
+                return ScDuck::New(ctx, spriteId);
             default:
                 return ScEntity::New(ctx, spriteId);
         }

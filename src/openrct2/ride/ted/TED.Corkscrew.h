@@ -45,83 +45,10 @@ namespace OpenRCT2::TrackMetadata
         .metalSupports = { MetalSupportPlace::centre },
         .invertSegmentBlocking = true,
         .blockedSegments = { {
-            { PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight },                     // narrow
+            { PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight },                   // narrow
             { PS::top, PS::right, PS::bottom, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight }, // inverted
             kSegmentsUnimplemented,                                                                     // wide
         } },
-    };
-
-    static constexpr SequenceDescriptor kRightCorkscrewUpSeq0 = {
-        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftCorkscrewUpSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightCorkscrewUpSeq1 = {
-        .clearance = { -32, 0, 24, 32, { 0b1011, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftCorkscrewUpSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightCorkscrewUpSeq2 = {
-        .clearance = { -32, 32, 48, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
-        .invertSegmentBlocking = true,
-        .blockedSegments = { {
-            { PS::left, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight },                   // narrow
-            { PS::top, PS::left, PS::right, PS::centre, PS::topLeft, PS::topRight, PS::bottomRight }, // inverted
-            kSegmentsUnimplemented,                                                                   // wide
-        } },
-    };
-
-    static constexpr SequenceDescriptor kLeftCorkscrewDownSeq0 = {
-        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(kRightCorkscrewUpSeq2.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kLeftCorkscrewDownSeq1 = {
-        .clearance = { -32, 0, -56, 32, { 0b0111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsRotate(kRightCorkscrewUpSeq1.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kLeftCorkscrewDownSeq2 = {
-        .clearance = { -32, -32, -80, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = blockedSegmentsRotate(kRightCorkscrewUpSeq0.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kRightCorkscrewDownSeq0 = {
-        .clearance = { 0, 0, -32, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(kLeftCorkscrewUpSeq2.blockedSegments, 3),
-    };
-
-    static constexpr SequenceDescriptor kRightCorkscrewDownSeq1 = {
-        .clearance = { -32, 0, -56, 32, { 0b1011, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsRotate(kLeftCorkscrewUpSeq1.blockedSegments, 3),
-    };
-
-    static constexpr SequenceDescriptor kRightCorkscrewDownSeq2 = {
-        .clearance = { -32, 32, -80, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .metalSupports = { MetalSupportPlace::centre },
-        .blockedSegments = blockedSegmentsRotate(kLeftCorkscrewUpSeq0.blockedSegments, 3),
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewUpSeq0 = {
@@ -143,27 +70,6 @@ namespace OpenRCT2::TrackMetadata
         .flags = { SequenceFlag::hasHeightMarker },
         .invertSegmentBlocking = true,
         .blockedSegments = kLeftCorkscrewUpSeq2.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq0 = {
-        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = kRightCorkscrewUpSeq0.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq1 = {
-        .clearance = { -32, 0, 24, 32, { 0b1011, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = kRightCorkscrewUpSeq1.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerCorkscrewUpSeq2 = {
-        .clearance = { -32, 32, 48, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = kRightCorkscrewUpSeq2.blockedSegments,
     };
 
     static constexpr SequenceDescriptor kLeftFlyerCorkscrewDownSeq0 = {
@@ -197,31 +103,6 @@ namespace OpenRCT2::TrackMetadata
             { PS::bottom, PS::centre, PS::topLeft, PS::bottomLeft, PS::bottomRight }, // inverted
             kSegmentsUnimplemented,                                                   // wide
         } },
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq0 = {
-        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = { {
-            kSegmentsUnimplemented,                                                    // narrow
-            { PS::bottom, PS::centre, PS::topRight, PS::bottomLeft, PS::bottomRight }, // inverted
-            kSegmentsUnimplemented,                                                    // wide
-        } },
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq1 = {
-        .clearance = { -32, 0, -24, 32, { 0b1011, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerCorkscrewDownSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightFlyerCorkscrewDownSeq2 = {
-        .clearance = { -32, 32, -48, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftFlyerCorkscrewDownSeq2.blockedSegments),
     };
 
     static constexpr SequenceDescriptor kLeftLargeCorkscrewUpSeq0 = {
@@ -288,126 +169,6 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq0 = {
-        .clearance = { 0, 0, 0, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewUpSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq1 = {
-        .clearance = { -32, 0, 8, 32, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewUpSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq2 = {
-        .clearance = { -64, 0, 32, 24, { 0b1011, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewUpSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq3 = {
-        .clearance = { -32, 32, 32, 24, { 0b0100, 0 }, {} },
-        .allowedWallEdges = 0b0110,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewUpSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq4 = {
-        .clearance = { -64, 32, 48, 40, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0001,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewUpSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewUpSeq5 = {
-        .clearance = { -64, 64, 72, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewUpSeq5.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq0 = {
-        .clearance = { 0, 0, -40, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(kRightLargeCorkscrewUpSeq5.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq1 = {
-        .clearance = { -32, 0, -64, 40, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0010,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsRotate(kRightLargeCorkscrewUpSeq4.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq2 = {
-        .clearance = { -32, -32, -80, 24, { 0b1000, 0 }, {} },
-        .allowedWallEdges = 0b1100,
-        .blockedSegments = blockedSegmentsRotate(kRightLargeCorkscrewUpSeq3.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq3 = {
-        .clearance = { -64, 0, -80, 24, { 0b0111, 0 }, {} },
-        .allowedWallEdges = 0b0011,
-        .blockedSegments = blockedSegmentsRotate(kRightLargeCorkscrewUpSeq2.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq4 = {
-        .clearance = { -64, -32, -104, 32, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0001,
-        .blockedSegments = blockedSegmentsRotate(kRightLargeCorkscrewUpSeq1.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kLeftLargeCorkscrewDownSeq5 = {
-        .clearance = { -64, -64, -112, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsRotate(kRightLargeCorkscrewUpSeq0.blockedSegments, 1),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq0 = {
-        .clearance = { 0, 0, -40, 24, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq1 = {
-        .clearance = { -32, 0, -64, 40, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1000,
-        .invertSegmentBlocking = true,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq2 = {
-        .clearance = { -32, 32, -80, 24, { 0b0100, 0 }, {} },
-        .allowedWallEdges = 0b0110,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq3 = {
-        .clearance = { -64, 0, -80, 24, { 0b1011, 0 }, {} },
-        .allowedWallEdges = 0b1001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq4 = {
-        .clearance = { -64, 32, -104, 32, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0001,
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightLargeCorkscrewDownSeq5 = {
-        .clearance = { -64, 64, -112, 16, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b0101,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftLargeCorkscrewDownSeq5.blockedSegments),
-    };
-
     constexpr auto kTEDLeftCorkscrewUp = TrackElementDescriptor{
         .description = STR_HALF_CORKSCREW_LEFT,
         .coordinates = { 0, 3, 0, 80, -32, -32 },
@@ -433,7 +194,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::corkscrew, TrackPitch::none, TrackPitch::none, TrackRoll::upsideDown, TrackRoll::none, 0 },
         .verticalFactor = EvaluatorConst<52>,
         .lateralFactor = EvaluatorConst<-70>,
-        .sequenceData = { 3, { kRightCorkscrewUpSeq0, kRightCorkscrewUpSeq1, kRightCorkscrewUpSeq2 } },
+        .sequenceData = kTEDLeftCorkscrewUp.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftCorkscrewDown = TrackElementDescriptor{
@@ -448,7 +209,7 @@ namespace OpenRCT2::TrackMetadata
                         -32 },
         .verticalFactor = EvaluatorConst<52>,
         .lateralFactor = EvaluatorConst<-70>,
-        .sequenceData = { 3, { kLeftCorkscrewDownSeq0, kLeftCorkscrewDownSeq1, kLeftCorkscrewDownSeq2 } },
+        .sequenceData = kTEDRightCorkscrewUp.sequenceData.rotate(1).offset({ -32, -32, -80 }).reverse({ 2, 1, 0 }),
     };
 
     constexpr auto kTEDRightCorkscrewDown = TrackElementDescriptor{
@@ -463,7 +224,7 @@ namespace OpenRCT2::TrackMetadata
                         -32 },
         .verticalFactor = EvaluatorConst<52>,
         .lateralFactor = EvaluatorConst<70>,
-        .sequenceData = { 3, { kRightCorkscrewDownSeq0, kRightCorkscrewDownSeq1, kRightCorkscrewDownSeq2 } },
+        .sequenceData = kTEDLeftCorkscrewDown.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftFlyerCorkscrewUp = TrackElementDescriptor{
@@ -493,7 +254,7 @@ namespace OpenRCT2::TrackMetadata
                         TrackRoll::none, 0 },
         .verticalFactor = EvaluatorConst<52>,
         .lateralFactor = EvaluatorConst<-70>,
-        .sequenceData = { 3, { kRightFlyerCorkscrewUpSeq0, kRightFlyerCorkscrewUpSeq1, kRightFlyerCorkscrewUpSeq2 } },
+        .sequenceData = kTEDLeftFlyerCorkscrewUp.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftFlyerCorkscrewDown = TrackElementDescriptor{
@@ -523,7 +284,7 @@ namespace OpenRCT2::TrackMetadata
                         TrackRoll::none, -32 },
         .verticalFactor = EvaluatorConst<52>,
         .lateralFactor = EvaluatorConst<70>,
-        .sequenceData = { 3, { kRightFlyerCorkscrewDownSeq0, kRightFlyerCorkscrewDownSeq1, kRightFlyerCorkscrewDownSeq2 } },
+        .sequenceData = kTEDLeftFlyerCorkscrewDown.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftLargeCorkscrewUp = TrackElementDescriptor{
@@ -555,9 +316,7 @@ namespace OpenRCT2::TrackMetadata
                         32 },
         .verticalFactor = EvaluatorConst<89>,
         .lateralFactor = EvaluatorConst<-117>,
-        .sequenceData = { 6,
-                          { kRightLargeCorkscrewUpSeq0, kRightLargeCorkscrewUpSeq1, kRightLargeCorkscrewUpSeq2,
-                            kRightLargeCorkscrewUpSeq3, kRightLargeCorkscrewUpSeq4, kRightLargeCorkscrewUpSeq5 } },
+        .sequenceData = kTEDLeftLargeCorkscrewUp.sequenceData.flipXAxis(),
     };
 
     constexpr auto kTEDLeftLargeCorkscrewDown = TrackElementDescriptor{
@@ -572,9 +331,9 @@ namespace OpenRCT2::TrackMetadata
                         -32 },
         .verticalFactor = EvaluatorConst<89>,
         .lateralFactor = EvaluatorConst<-117>,
-        .sequenceData = { 6,
-                          { kLeftLargeCorkscrewDownSeq0, kLeftLargeCorkscrewDownSeq1, kLeftLargeCorkscrewDownSeq2,
-                            kLeftLargeCorkscrewDownSeq3, kLeftLargeCorkscrewDownSeq4, kLeftLargeCorkscrewDownSeq5 } },
+        .sequenceData = kTEDRightLargeCorkscrewUp.sequenceData.rotate(1)
+                            .offset({ -64, -64, -112 })
+                            .reverse({ 5, 4, 3, 2, 1, 0 }),
     };
 
     constexpr auto kTEDRightLargeCorkscrewDown = TrackElementDescriptor{
@@ -589,9 +348,7 @@ namespace OpenRCT2::TrackMetadata
                         -32 },
         .verticalFactor = EvaluatorConst<89>,
         .lateralFactor = EvaluatorConst<117>,
-        .sequenceData = { 6,
-                          { kRightLargeCorkscrewDownSeq0, kRightLargeCorkscrewDownSeq1, kRightLargeCorkscrewDownSeq2,
-                            kRightLargeCorkscrewDownSeq3, kRightLargeCorkscrewDownSeq4, kRightLargeCorkscrewDownSeq5 } },
+        .sequenceData = kTEDLeftLargeCorkscrewDown.sequenceData.flipXAxis(),
     };
 
 } // namespace OpenRCT2::TrackMetadata

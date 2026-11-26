@@ -25,12 +25,6 @@ namespace OpenRCT2
     {
         PROFILED_FUNCTION();
 
-        auto& rt = session.rt;
-        if (rt.zoom_level > ZoomLevel{ 0 })
-        {
-            return;
-        }
-
         uint32_t imageId = kVehicleCrashParticleSprites[particle.crashedSpriteBase] + particle.frame / 256;
         auto image = ImageId(imageId, particle.colour[0], particle.colour[1]);
         PaintAddImageAsParent(session, image, { 0, 0, particle.z }, { 1, 1, 0 });

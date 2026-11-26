@@ -14,6 +14,8 @@
 #include "Windows.h"
 
 #include <algorithm>
+#include <openrct2-ui/widget/CheckboxWidget.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
@@ -205,12 +207,12 @@ namespace OpenRCT2::Ui::Windows
         return makeWidgets(
             makeWindowShim(title, size),
             makeWidget({  0, 43}, { size.width, 106 }, WidgetType::resize, WindowColour::secondary),
-            makeTab   ({  3, 17}, STR_SCENARIO_OPTIONS_OBJECTIVE_TIP             ),
-            makeTab   ({ 34, 17}, STR_SCENARIO_OPTIONS_SCENARIO_DETAILS_TIP      ),
-            makeTab   ({ 65, 17}, STR_SCENARIO_OPTIONS_FINANCIAL_TIP             ),
-            makeTab   ({ 96, 17}, STR_SCENARIO_OPTIONS_GUESTS_TIP                ),
-            makeTab   ({127, 17}, STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS_TIP     ),
-            makeTab   ({158, 17}, STR_SCENARIO_OPTIONS_PRESERVED_RIDES_TIP       )
+            Widgets::Tab({  3, 17}, STR_SCENARIO_OPTIONS_OBJECTIVE_TIP             ),
+            Widgets::Tab({ 34, 17}, STR_SCENARIO_OPTIONS_SCENARIO_DETAILS_TIP      ),
+            Widgets::Tab({ 65, 17}, STR_SCENARIO_OPTIONS_FINANCIAL_TIP             ),
+            Widgets::Tab({ 96, 17}, STR_SCENARIO_OPTIONS_GUESTS_TIP                ),
+            Widgets::Tab({127, 17}, STR_SCENARIO_OPTIONS_LAND_RESTRICTIONS_TIP     ),
+            Widgets::Tab({158, 17}, STR_SCENARIO_OPTIONS_PRESERVED_RIDES_TIP       )
         );
     };
 
@@ -223,7 +225,7 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({158,  65}, {120,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
         makeWidget                ({ 28,  85}, {140,  12}, WidgetType::label,        WindowColour::secondary, STR_WINDOW_OBJECTIVE_DATE                                               ),
         makeHoldableSpinnerWidgets({158,  84}, {120,  14}, WidgetType::spinner,      WindowColour::secondary                                                                          ), // NB: 3 widgets
-        makeWidget        ({ 14, 103}, {340,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP                  )
+        Widgets::Checkbox         ({ 14, 103}, {340,  12},                           WindowColour::secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP                  )
     );
 
     static constexpr auto window_editor_scenario_options_scenario_details_widgets = makeWidgets(
@@ -237,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_editor_scenario_options_financial_widgets = makeWidgets(
         makeOptionsWidgets(STR_SCENARIO_OPTIONS_FINANCIAL, kSizeFinancial),
-        makeWidget        ({  8,  48}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAKE_PARK_NO_MONEY,   STR_MAKE_PARK_NO_MONEY_TIP        ),
+        Widgets::Checkbox         ({  8,  48}, {kSizeFinancial.width - 16, 12},                           WindowColour::secondary, STR_MAKE_PARK_NO_MONEY,   STR_MAKE_PARK_NO_MONEY_TIP        ),
 
         makeWidget                ({  5,  63}, {kSizeFinancial.width - 10, 72}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_LOAN_OPTIONS                                      ),
         makeWidget                ({  9,  78}, {                      250, 12}, WidgetType::label,        WindowColour::secondary, STR_INIT_LOAN_LABEL                                         ),
@@ -246,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({268,  96}, {                      100, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
         makeWidget                ({  9, 116}, {                      280, 12}, WidgetType::label,        WindowColour::secondary, STR_INTEREST_RATE_LABEL                                     ),
         makeHoldableSpinnerWidgets({298, 115}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
-        makeWidget                ({ 10, 115}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RCT1_INTEREST,        STR_RCT1_INTEREST_TIP             ),
+        Widgets::Checkbox         ({ 10, 115}, {kSizeFinancial.width - 16, 12},                           WindowColour::secondary, STR_RCT1_INTEREST,        STR_RCT1_INTEREST_TIP             ),
 
         makeWidget                ({  5, 137}, {kSizeFinancial.width - 10, 89}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BUSINESS_MODEL                                    ),
         makeWidget                ({  9, 155}, {                      250, 12}, WidgetType::label,        WindowColour::secondary, STR_INIT_CASH_LABEL                                         ),
@@ -256,7 +258,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget                ({356, 173}, {                       11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
         makeWidget                ({  9, 191}, {                      280, 12}, WidgetType::label,        WindowColour::secondary, STR_ENTRY_PRICE_LABEL                                       ),
         makeHoldableSpinnerWidgets({298, 190}, {                       70, 14}, WidgetType::spinner,      WindowColour::secondary                                                              ), // NB: 3 widgets
-        makeWidget                ({ 10, 208}, {kSizeFinancial.width - 16, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_FORBID_MARKETING,     STR_FORBID_MARKETING_TIP          )
+        Widgets::Checkbox         ({ 10, 208}, {kSizeFinancial.width - 16, 12},                           WindowColour::secondary, STR_FORBID_MARKETING,     STR_FORBID_MARKETING_TIP          )
     );
 
     static constexpr auto window_editor_scenario_options_guests_widgets = makeWidgets(
@@ -272,7 +274,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget                ({  8, 124}, {      180,  12}, WidgetType::label,        WindowColour::secondary, STR_GUESTS_PREFER_INTENSITY_LABEL                                       ),
         makeWidget                ({198, 123}, {      170,  14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                        STR_GUESTS_PREFER_INTENSITY_TIP   ),
         makeWidget                ({357, 124}, {       11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                   STR_GUESTS_PREFER_INTENSITY_TIP   ),
-        makeWidget                ({  8, 143}, {      350,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     )
+        Widgets::Checkbox         ({  8, 143}, {      350,  12},                           WindowColour::secondary, STR_HARD_GUEST_GENERATION,            STR_HARD_GUEST_GENERATION_TIP     )
     );
 
     static constexpr auto window_editor_scenario_options_land_widgets = makeWidgets(
@@ -281,9 +283,9 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({188,  48}, {                  70,  14}, WidgetType::spinner,  WindowColour::secondary                                                                  ), // NB: 3 widgets
         makeWidget                ({  8,  66}, {                 170,  12}, WidgetType::label,    WindowColour::secondary, STR_RIGHTS_COST_LABEL                                           ),
         makeHoldableSpinnerWidgets({188,  65}, {                  70,  14}, WidgetType::spinner,  WindowColour::secondary                                                                  ), // NB: 3 widgets
-        makeWidget        ({  8,  82}, {kSizeLand.width - 16,  12}, WidgetType::checkbox, WindowColour::secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
-        makeWidget        ({  8,  99}, {kSizeLand.width - 16,  12}, WidgetType::checkbox, WindowColour::secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
-        makeWidget        ({  8, 116}, {kSizeLand.width - 16,  12}, WidgetType::checkbox, WindowColour::secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  )
+        Widgets::Checkbox         ({  8,  82}, {kSizeLand.width - 16,  12},                       WindowColour::secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+        Widgets::Checkbox         ({  8,  99}, {kSizeLand.width - 16,  12},                       WindowColour::secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+        Widgets::Checkbox         ({  8, 116}, {kSizeLand.width - 16,  12},                       WindowColour::secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  )
     );
 
     static constexpr auto window_editor_scenario_options_rides_widgets = makeWidgets(

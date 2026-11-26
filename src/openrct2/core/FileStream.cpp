@@ -14,6 +14,7 @@
 #include "String.hpp"
 
 #include <cinttypes>
+#include <format>
 #include <string_view>
 
 #ifndef _WIN32
@@ -34,17 +35,7 @@ namespace OpenRCT2
     {
     }
 
-    FileStream::FileStream(const std::string& path, FileMode fileMode)
-        : FileStream(path.c_str(), fileMode)
-    {
-    }
-
     FileStream::FileStream(std::string_view path, FileMode fileMode)
-        : FileStream(std::string(path), fileMode)
-    {
-    }
-
-    FileStream::FileStream(const utf8* path, FileMode fileMode)
     {
         if (fileMode == FileMode::open)
         {
@@ -97,30 +88,31 @@ namespace OpenRCT2
         auto modeW = String::toWideChar(mode);
         _file = _wfopen(pathW.c_str(), modeW.c_str());
 #else
+        const auto pathFs = fs::u8path(path);
         if (fileMode == FileMode::open)
         {
             struct stat fileStat;
             // Only allow regular files to be opened as its possible to open directories.
-            if (stat(path, &fileStat) == 0 && S_ISREG(fileStat.st_mode))
+            if (stat(pathFs.c_str(), &fileStat) == 0 && S_ISREG(fileStat.st_mode))
             {
-                _file = fopen(path, mode);
+                _file = fopen(pathFs.c_str(), mode);
             }
         }
         else
         {
-            _file = fopen(path, mode);
+            _file = fopen(pathFs.c_str(), mode);
         }
 #endif
         if (_file == nullptr)
         {
-            throw IOException(String::stdFormat("Unable to open '%s'", path));
+            throw IOException(std::format("Unable to open '{}'", path));
         }
 
 #ifdef _WIN32
         _fileSize = _filelengthi64(_fileno(_file));
 #else
         std::error_code ec;
-        _fileSize = fs::file_size(fs::u8path(path), ec);
+        _fileSize = fs::file_size(pathFs, ec);
 #endif
 
         _ownsFilePtr = true;
@@ -174,10 +166,10 @@ namespace OpenRCT2
 
     void FileStream::SetPosition(uint64_t position)
     {
-        Seek(position, STREAM_SEEK_BEGIN);
+        Seek(position, StreamSeekOrigin::begin);
     }
 
-    void FileStream::Seek(int64_t offset, int32_t origin)
+    void FileStream::Seek(int64_t offset, StreamSeekOrigin origin)
     {
         if (_asset != nullptr)
         {
@@ -186,13 +178,13 @@ namespace OpenRCT2
         }
         switch (origin)
         {
-            case STREAM_SEEK_BEGIN:
+            case StreamSeekOrigin::begin:
                 fseeko(_file, offset, SEEK_SET);
                 break;
-            case STREAM_SEEK_CURRENT:
+            case StreamSeekOrigin::current:
                 fseeko(_file, offset, SEEK_CUR);
                 break;
-            case STREAM_SEEK_END:
+            case StreamSeekOrigin::end:
                 fseeko(_file, offset, SEEK_END);
                 break;
         }

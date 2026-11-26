@@ -1147,19 +1147,20 @@ static void ConsoleCommandCountObjects(InteractiveConsole& console, [[maybe_unus
 {
     for (auto objectType : getAllObjectTypes())
     {
-        uint32_t entryGroupIndex = 0;
-        for (; entryGroupIndex < getObjectEntryGroupCount(objectType); entryGroupIndex++)
+        // Loaded objects don't have to be contiguous, e.g. after deselecting one, so count every slot.
+        uint32_t loadedCount = 0;
+        for (uint32_t entryGroupIndex = 0; entryGroupIndex < getObjectEntryGroupCount(objectType); entryGroupIndex++)
         {
-            if (ObjectEntryGetObject(objectType, entryGroupIndex) == nullptr)
+            if (ObjectEntryGetObject(objectType, entryGroupIndex) != nullptr)
             {
-                break;
+                loadedCount++;
             }
         }
 
         const auto objectStringId = _objectTypeNames[EnumValue(objectType)];
         const auto* objectString = LanguageGetString(objectStringId);
 
-        console.WriteFormatLine("%s: %d/%d", objectString, entryGroupIndex, getObjectEntryGroupCount(objectType));
+        console.WriteFormatLine("%s: %d/%d", objectString, loadedCount, getObjectEntryGroupCount(objectType));
     }
 }
 
@@ -1663,7 +1664,7 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
         }
     }
 
-    News::AddItemToQueue(getGameState().park.newsItems, itemType, msg, assoc);
+    getGameState().park.newsItems.addItemToQueue(itemType, msg, assoc);
     console.WriteLine("Successfully added News Item");
 }
 
@@ -1983,17 +1984,17 @@ void InteractiveConsole::Execute(const std::string& s)
     }
 }
 
-void InteractiveConsole::WriteLine(const std::string& s)
+void InteractiveConsole::WriteLine(std::string_view s)
 {
     WriteLine(s, FormatToken::colourWindow2);
 }
 
-void InteractiveConsole::WriteLineError(const std::string& s)
+void InteractiveConsole::WriteLineError(std::string_view s)
 {
     WriteLine(s, FormatToken::colourRed);
 }
 
-void InteractiveConsole::WriteLineWarning(const std::string& s)
+void InteractiveConsole::WriteLineWarning(std::string_view s)
 {
     WriteLine(s, FormatToken::colourYellow);
 }

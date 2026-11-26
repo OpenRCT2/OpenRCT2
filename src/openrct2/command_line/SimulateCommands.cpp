@@ -15,6 +15,7 @@
 #include "../network/NetworkTypes.h"
 #include "CommandLine.hpp"
 
+#include <chrono>
 #include <memory>
 
 using namespace OpenRCT2::CommandLine;
@@ -22,11 +23,6 @@ using namespace OpenRCT2::CommandLine;
 namespace OpenRCT2
 {
     // clang-format off
-    static constexpr CommandLineOptionDefinition kNoOptions[]
-    {
-        kOptionTableEnd
-    };
-
     static ExitCode HandleSimulate(CommandLineArgEnumerator* argEnumerator);
 
     const CommandLineCommand CommandLine::kSimulateCommands[]{
@@ -67,11 +63,17 @@ namespace OpenRCT2
             }
 
             Console::WriteLine("Running %d ticks...", ticks);
+            auto startTime = std::chrono::high_resolution_clock::now();
             for (int32_t i = 0; i < ticks; i++)
             {
                 gameStateUpdateLogic();
             }
-            Console::WriteLine("Completed: %s", getGameState().entities.getAllEntitiesChecksum().toString().c_str());
+            auto endTime = std::chrono::high_resolution_clock::now();
+
+            Console::WriteLine(
+                "Completed. Entity checksum is: %s", getGameState().entities.getAllEntitiesChecksum().toString().c_str());
+            auto duration = std::chrono::duration<float>(endTime - startTime);
+            Console::WriteLine("Simulation took %.2f seconds.", duration.count());
         }
         else
         {

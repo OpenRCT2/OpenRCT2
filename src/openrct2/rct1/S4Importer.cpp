@@ -2291,8 +2291,9 @@ namespace OpenRCT2::RCT1
 
             // News items
             auto recentMessages = convertNewsQueue(_s4.recentMessages);
+            park.newsItems.queue.importQueue(recentMessages);
             auto archivedMessages = convertNewsQueue(_s4.archivedMessages);
-            News::importNewsItems(park.newsItems, recentMessages, archivedMessages);
+            park.newsItems.archive.importQueue(archivedMessages);
 
             // Initial guest status
             gameState.scenarioOptions.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
@@ -3166,7 +3167,7 @@ namespace OpenRCT2::RCT1
         dst->frame = src->Frame;
         dst->targetX = src->TargetX;
         dst->targetY = src->TargetY;
-        dst->state = static_cast<Duck::DuckState>(src->State);
+        dst->setState(static_cast<Duck::DuckState>(src->State));
     }
 
     void S4Importer::ImportEntity(GameState_t& gameState, const RCT12EntityBase& src)

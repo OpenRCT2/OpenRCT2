@@ -24,6 +24,7 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
+#include "StartupHelpers.h"
 #include "Version.h"
 #include "actions/GameActionRunner.h"
 #include "audio/Audio.h"
@@ -310,7 +311,7 @@ namespace OpenRCT2
         }
 #endif
 
-        int32_t RunOpenRCT2(int argc, const char** argv) override
+        int32_t RunOpenRCT2() override
         {
             if (Initialise())
             {
@@ -320,12 +321,12 @@ namespace OpenRCT2
             return EXIT_FAILURE;
         }
 
-        void WriteLine(const std::string& s) override
+        void WriteLine(std::string_view s) override
         {
             _stdInOutConsole.WriteLine(s);
         }
 
-        void WriteErrorLine(const std::string& s) override
+        void WriteErrorLine(std::string_view s) override
         {
             _stdInOutConsole.WriteLineError(s);
         }
@@ -418,13 +419,10 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless)
             {
                 _assetPackManager = std::make_unique<AssetPackManager>();
-            }
 #ifdef __ENABLE_DISCORD__
-            if (!gOpenRCT2Headless)
-            {
                 _discordService = std::make_unique<Network::DiscordService>();
-            }
 #endif
+            }
 
 #ifndef __HAIKU__ // Haiku's user is always root, skip warning them about it.
             if (Platform::ProcessIsElevated())
@@ -432,7 +430,7 @@ namespace OpenRCT2
                 std::string elevationWarning = _localisationService->GetString(STR_ADMIN_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
                 {
-                    Console::Error::WriteLine(elevationWarning.c_str());
+                    Console::Error::WriteLine(elevationWarning);
                 }
                 else
                 {
@@ -446,7 +444,7 @@ namespace OpenRCT2
                 std::string wineWarning = _localisationService->GetString(STR_WINE_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
                 {
-                    Console::Error::WriteLine(wineWarning.c_str());
+                    Console::Error::WriteLine(wineWarning);
                 }
                 else
                 {
@@ -1020,6 +1018,7 @@ namespace OpenRCT2
 
         void SwitchToStartUpScene()
         {
+            StringId message = kStringIdNone;
             if (gOpenRCT2Headless)
             {
                 // NONE or OPEN are the only allowed actions for headless mode
@@ -1074,30 +1073,37 @@ namespace OpenRCT2
                             break;
                         }
 #endif
+                        nextScene = _sceneManager->getGameScene();
                     }
                     else
                     {
+                        StartupOpenResult result;
                         try
                         {
-                            if (!LoadParkFromFile(gOpenRCT2StartupActionPath, true))
-                            {
-                                nextScene = _sceneManager->getTitleScene();
-                                break;
-                            }
+                            result = loadStartupFile(*this, *_env, gOpenRCT2StartupActionPath);
                         }
                         catch (const std::exception& ex)
                         {
-                            Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
-                            Console::Error::WriteLine("%s", ex.what());
-                            nextScene = _sceneManager->getTitleScene();
-                            break;
+                            LOG_ERROR("Unable to open %s: %s", gOpenRCT2StartupActionPath, ex.what());
+                            result = { StartupOpenStatus::fileOpenFailure };
                         }
 
-                        rememberStartUpParkDirectory();
+                        switch (result.status)
+                        {
+                            case StartupOpenStatus::fileOpenFailure:
+                                Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
+                                nextScene = _sceneManager->getTitleScene();
+                                break;
+                            case StartupOpenStatus::loadedParkFile:
+                                rememberStartUpParkDirectory();
+                                nextScene = _sceneManager->getGameScene();
+                                break;
+                            case StartupOpenStatus::installedContent:
+                                nextScene = _sceneManager->getTitleScene();
+                                break;
+                        }
+                        message = result.message;
                     }
-
-                    // Successfully loaded a file
-                    nextScene = _sceneManager->getGameScene();
                     break;
                 }
 
@@ -1128,6 +1134,8 @@ namespace OpenRCT2
 
             _sceneManager->setActiveScene(nextScene);
             InitNetworkGame(nextScene == _sceneManager->getGameScene());
+            if (message != kStringIdNone)
+                ContextShowError(message, kStringIdNone, {});
         }
 
         void InitNetworkGame(bool isGameScene)

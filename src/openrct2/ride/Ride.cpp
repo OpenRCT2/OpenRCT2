@@ -296,6 +296,21 @@ namespace OpenRCT2
         return static_cast<int32_t>(RideManager(gameState).size());
     }
 
+    // Stops at n: counting all rides reads every ride slot, each ~16 KB apart in memory
+    bool rideCountIsBelow(int32_t n)
+    {
+        const auto& gameState = getGameState();
+        int32_t count = 0;
+        for (size_t i = 0; i < gameState.ridesEndOfUsedRange && count < n; i++)
+        {
+            if (!gameState.rides[i].id.IsNull())
+            {
+                count++;
+            }
+        }
+        return count < n;
+    }
+
     size_t Ride::getNumPrices() const
     {
         size_t result = 0;
@@ -808,11 +823,22 @@ namespace OpenRCT2
 
         RideMusicUpdate(*this);
 
-        // Update stations
+        // Update stations. Stop after the last one: the station array has room for 255 (over 10 KB
+        // per ride), and checking every empty slot each tick missed the cache for each of them.
         const auto& rtd = getRideTypeDescriptor();
         if (rtd.specialType != RtdSpecialType::maze)
-            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
+        {
+            uint32_t stationsLeft = numStations;
+            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide && stationsLeft > 0; i++)
+            {
+                if (stations[i].start.isNull())
+                {
+                    continue;
+                }
+                stationsLeft--;
                 RideUpdateStation(*this, StationIndex::FromUnderlying(i));
+            }
+        }
 
         // Update financial statistics
         numCustomersTimeout++;
@@ -985,10 +1011,12 @@ namespace OpenRCT2
 
         const uint8_t current_rotation = GetCurrentRotation();
         // Invalidate something related to station start
-        for (int32_t i = 0; i < Limits::kMaxStationsPerRide; i++)
+        uint32_t stationsLeft = ride.numStations;
+        for (int32_t i = 0; i < Limits::kMaxStationsPerRide && stationsLeft > 0; i++)
         {
             if (ride.stations[i].start.isNull())
                 continue;
+            stationsLeft--;
 
             auto startLoc = ride.stations[i].start;
 
@@ -1345,8 +1373,9 @@ namespace OpenRCT2
         {
             Formatter ft;
             ride.formatNameTo(ft);
-            News::AddItemToQueue(
-                getGameState().park.newsItems, News::ItemType::ride, STR_RIDE_IS_BROKEN_DOWN, ride.id.ToUnderlying(), ft);
+
+            getGameState().park.newsItems.addItemToQueue(
+                News::ItemType::ride, STR_RIDE_IS_BROKEN_DOWN, ride.id.ToUnderlying(), ft);
         }
     }
 
@@ -1373,9 +1402,8 @@ namespace OpenRCT2
                 {
                     Formatter ft;
                     ride.formatNameTo(ft);
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::ride, STR_RIDE_IS_STILL_NOT_FIXED,
-                        ride.id.ToUnderlying(), ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::ride, STR_RIDE_IS_STILL_NOT_FIXED, ride.id.ToUnderlying(), ft);
                 }
             }
         }
@@ -2065,9 +2093,8 @@ namespace OpenRCT2
                 ride.formatNameTo(ft);
                 if (Config::Get().notifications.rideWarnings)
                 {
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(),
-                        ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
                 }
                 ride.connectedMessageThrottle = 3;
             }
@@ -2079,9 +2106,8 @@ namespace OpenRCT2
                 ride.formatNameTo(ft);
                 if (Config::Get().notifications.rideWarnings)
                 {
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(),
-                        ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
                 }
                 ride.connectedMessageThrottle = 3;
             }
@@ -2148,8 +2174,9 @@ namespace OpenRCT2
         {
             Formatter ft;
             ride2->formatNameTo(ft);
-            News::AddItemToQueue(
-                getGameState().park.newsItems, News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride2->id.ToUnderlying(), ft);
+
+            getGameState().park.newsItems.addItemToQueue(
+                News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride2->id.ToUnderlying(), ft);
         }
 
         ride2->connectedMessageThrottle = 3;
@@ -5047,8 +5074,8 @@ namespace OpenRCT2
         {
             Formatter ft;
             formatNameTo(ft);
-            News::AddItemToQueue(
-                getGameState().park.newsItems, News::ItemType::ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
+
+            getGameState().park.newsItems.addItemToQueue(News::ItemType::ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
         }
     }
 

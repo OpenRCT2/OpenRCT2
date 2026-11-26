@@ -22,11 +22,6 @@ using namespace OpenRCT2::CommandLine;
 namespace OpenRCT2
 {
     // clang-format off
-    static constexpr CommandLineOptionDefinition kNoOptions[]
-    {
-        kOptionTableEnd
-    };
-
     static ExitCode HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
 
     const CommandLineCommand CommandLine::kParkInfoCommands[]{
@@ -153,7 +148,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    Console::WriteLine("%s", name.c_str());
+                    Console::WriteLine(name);
                 }
             }
             Console::WriteLine();

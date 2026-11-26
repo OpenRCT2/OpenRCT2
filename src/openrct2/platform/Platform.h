@@ -14,6 +14,7 @@
 #include "../core/StringTypes.h"
 
 #include <bit>
+#include <cstdint>
 #include <ctime>
 #include <optional>
 #include <sfl/static_vector.hpp>
@@ -29,10 +30,6 @@
 #ifdef __ANDROID__
     #include <jni.h>
 #endif // __ANDROID__
-
-#ifndef MAX_PATH
-    #define MAX_PATH 260
-#endif
 
 static_assert(
     std::endian::native == std::endian::little, "OpenRCT2 is known to be broken on big endian. Proceed with caution!");
@@ -58,6 +55,11 @@ enum class RCT2Variant : uint8_t
 struct RealWorldDate;
 struct RealWorldTime;
 struct TTFFontDescriptor;
+
+namespace OpenRCT2
+{
+    enum class StreamSeekOrigin : uint8_t;
+}
 
 namespace OpenRCT2::Platform
 {
@@ -153,7 +155,7 @@ namespace OpenRCT2::Platform
     AssetFileOpenResult OpenAssetFile(u8string_view path);
     void CloseAssetFile(AssetHandle handle);
     uint64_t GetAssetPosition(AssetHandle handle);
-    void SeekAsset(AssetHandle handle, int64_t offset, int32_t origin);
+    void SeekAsset(AssetHandle handle, int64_t offset, StreamSeekOrigin origin);
     uint64_t ReadAsset(AssetHandle handle, void* buffer, uint64_t length);
     uint64_t TryReadAsset(AssetHandle handle, void* buffer, uint64_t length);
     u8string GetAssetPath();

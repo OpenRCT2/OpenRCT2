@@ -177,7 +177,7 @@ namespace OpenRCT2::RCT2
                 {
                     // When scanning, skip past packed object data to keep the stream
                     // position correct without importing objects into the repository.
-                    stream->Seek(sizeof(RCTObjectEntry), STREAM_SEEK_CURRENT);
+                    stream->Seek(sizeof(RCTObjectEntry), StreamSeekOrigin::current);
                     SawyerChunkReader(stream).SkipChunk();
                 }
                 else
@@ -594,8 +594,9 @@ namespace OpenRCT2::RCT2
 
             // News items
             auto recentMessages = convertNewsQueue(_s6.recentMessages);
+            park.newsItems.queue.importQueue(recentMessages);
             auto archivedMessages = convertNewsQueue(_s6.archivedMessages);
-            News::importNewsItems(park.newsItems, recentMessages, archivedMessages);
+            park.newsItems.archive.importQueue(archivedMessages);
 
             // Pad13CE730
             // rct1_scenario_flags
@@ -2318,7 +2319,7 @@ namespace OpenRCT2::RCT2
         dst->frame = src->Frame;
         dst->targetX = src->TargetX;
         dst->targetY = src->TargetY;
-        dst->state = static_cast<::Duck::DuckState>(src->State);
+        dst->setState(static_cast<::Duck::DuckState>(src->State));
     }
 
     template<>

@@ -15,6 +15,7 @@
 #include <openrct2/network/NetworkBase.h>
 #include <openrct2/network/NetworkConnection.h>
 #include <openrct2/network/NetworkPacket.h>
+#include <openrct2/network/Socket.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Network;
@@ -179,4 +180,12 @@ TEST_F(NetworkGroupsTests, LoadGroupsWithEmptyGroupsArraySetsUpDefaultGroups)
     network.LoadGroups();
 
     EXPECT_EQ(network.group_list.size(), 3u);
+}
+
+TEST(SocketTests, ConnectToClosedPortThrows)
+{
+    // Nothing listens on port 1 on loopback, so the connection is refused.
+    auto socket = CreateTcpSocket();
+    EXPECT_ANY_THROW(socket->Connect("127.0.0.1", 1));
+    EXPECT_NE(socket->GetStatus(), SocketStatus::connected);
 }

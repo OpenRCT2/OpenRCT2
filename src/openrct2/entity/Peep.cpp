@@ -51,6 +51,7 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/QuarterTile.h"
+#include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SurfaceElement.h"
@@ -71,7 +72,6 @@ namespace OpenRCT2
     using namespace OpenRCT2::Drawing;
 
     static uint8_t _backupAnimationImageIdOffset;
-    static TileElement* _peepRideEntranceExitElement;
 
     static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
@@ -298,27 +298,23 @@ namespace OpenRCT2
             return true;
         }
 
-        TileElement* tile_element = MapGetFirstElementAt(nextLoc);
-
         auto mapType = TileElementType::path;
         if (getNextIsSurface())
         {
             mapType = TileElementType::surface;
         }
 
-        do
+        for (const auto* tileElement : TileElementsView(nextLoc))
         {
-            if (tile_element == nullptr)
-                break;
-            if (tile_element->getType() == mapType)
+            if (tileElement->getType() == mapType)
             {
-                if (nextLoc.z == tile_element->getBaseZ())
+                if (nextLoc.z == tileElement->getBaseZ())
                 {
                     // Found a suitable path or surface
                     return true;
                 }
             }
-        } while (!(tile_element++)->isLastForTile());
+        }
 
         // Found no suitable path
         setState(PeepState::falling);
@@ -787,7 +783,7 @@ namespace OpenRCT2
             {
                 auto ft = Formatter();
                 formatNameTo(ft);
-                News::AddItemToQueue(park.newsItems, News::ItemType::blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
+                park.newsItems.addItemToQueue(News::ItemType::blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
             }
 
             park.ratingCasualtyPenalty = std::min(park.ratingCasualtyPenalty + 25, 1000);
@@ -796,64 +792,60 @@ namespace OpenRCT2
         }
 
         // If not drowning then falling. Note: peeps 'fall' after leaving a ride/enter the park.
-        TileElement* tile_element = MapGetFirstElementAt(CoordsXY{ x, y });
         TileElement* saved_map = nullptr;
         int32_t saved_height = 0;
 
-        if (tile_element != nullptr)
+        for (auto* tileElement : TileElementsView(CoordsXY{ x, y }))
         {
-            do
+            // If a path check if we are on it
+            if (tileElement->getType() == TileElementType::path)
             {
-                // If a path check if we are on it
-                if (tile_element->getType() == TileElementType::path)
-                {
-                    int32_t height = MapHeightFromSlope(
-                                         { x, y }, tile_element->asPath()->getSlopeDirection(),
-                                         tile_element->asPath()->isSloped())
-                        + tile_element->getBaseZ();
+                int32_t height = MapHeightFromSlope(
+                                     { x, y }, tileElement->asPath()->getSlopeDirection(), tileElement->asPath()->isSloped())
+                    + tileElement->getBaseZ();
 
-                    if (height < z - 1 || height > z + 8)
-                        continue;
+                if (height < z - 1 || height > z + 8)
+                    continue;
 
-                    saved_height = height;
-                    saved_map = tile_element;
-                    break;
-                } // If a surface get the height and see if we are on it
-                else if (tile_element->getType() == TileElementType::surface)
+                saved_height = height;
+                saved_map = tileElement;
+                break;
+            } // If a surface get the height and see if we are on it
+            else if (tileElement->getType() == TileElementType::surface)
+            {
+                // If the surface is water check to see if we could be drowning
+                if (tileElement->asSurface()->getWaterHeight() > 0)
                 {
-                    // If the surface is water check to see if we could be drowning
-                    if (tile_element->asSurface()->getWaterHeight() > 0)
+                    int32_t height = tileElement->asSurface()->getWaterHeight();
+
+                    if (height - 4 >= z && height < z + 20)
                     {
-                        int32_t height = tile_element->asSurface()->getWaterHeight();
+                        // Looks like we are drowning!
+                        moveTo({ x, y, height });
 
-                        if (height - 4 >= z && height < z + 20)
+                        if (auto* guest = as<Guest>(); guest != nullptr)
                         {
-                            // Looks like we are drowning!
-                            moveTo({ x, y, height });
-
-                            if (auto* guest = as<Guest>(); guest != nullptr)
-                            {
-                                // Drop balloon if held
-                                GuestReleaseBalloon(guest, height);
-                                guest->insertNewThought(PeepThoughtType::drowning);
-                            }
-
-                            action = PeepActionType::drowning;
-                            animationFrameNum = 0;
-                            animationImageIdOffset = 0;
-
-                            updateCurrentAnimationType();
-                            PeepWindowStateUpdate(this);
-                            return;
+                            // Drop balloon if held
+                            GuestReleaseBalloon(guest, height);
+                            guest->insertNewThought(PeepThoughtType::drowning);
                         }
+
+                        action = PeepActionType::drowning;
+                        animationFrameNum = 0;
+                        animationImageIdOffset = 0;
+
+                        updateCurrentAnimationType();
+                        PeepWindowStateUpdate(this);
+                        return;
                     }
-                    int32_t map_height = TileElementHeight({ x, y });
-                    if (map_height < z || map_height - 4 > z)
-                        continue;
-                    saved_height = map_height;
-                    saved_map = tile_element;
-                } // If not a path or surface go see next element
-            } while (!(tile_element++)->isLastForTile());
+                }
+                int32_t map_height = TileElementHeight({ x, y });
+                if (map_height < z || map_height - 4 > z)
+                    continue;
+                saved_height = map_height;
+                saved_map = tileElement;
+            }
+            // If not a path or surface go see next element
         }
 
         // This will be null if peep is falling
@@ -1049,7 +1041,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::hungry);
-                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_ARE_HUNGRY, kThoughtId, {});
+                newsItems.addItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_HUNGRY, kThoughtId, {});
             }
         }
 
@@ -1061,7 +1053,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::thirsty);
-                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_ARE_THIRSTY, kThoughtId, {});
+                newsItems.addItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_THIRSTY, kThoughtId, {});
             }
         }
 
@@ -1073,7 +1065,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::toilet);
-                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_CANT_FIND_TOILET, kThoughtId, {});
+                newsItems.addItemToQueue(News::ItemType::peeps, STR_PEEPS_CANT_FIND_TOILET, kThoughtId, {});
             }
         }
 
@@ -1085,7 +1077,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::badLitter);
-                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_DISLIKE_LITTER, kThoughtId, {});
+                newsItems.addItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_LITTER, kThoughtId, {});
             }
         }
 
@@ -1097,7 +1089,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::pathDisgusting);
-                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_DISGUSTED_BY_PATHS, kThoughtId, {});
+                newsItems.addItemToQueue(News::ItemType::peeps, STR_PEEPS_DISGUSTED_BY_PATHS, kThoughtId, {});
             }
         }
 
@@ -1109,7 +1101,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::vandalism);
-                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_DISLIKE_VANDALISM, kThoughtId, {});
+                newsItems.addItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_VANDALISM, kThoughtId, {});
             }
         }
 
@@ -1121,7 +1113,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::cantFindExit);
-                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
+                newsItems.addItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
             }
         }
         else if (lostCounter >= kPeepLostWarningThreshold)
@@ -1130,7 +1122,7 @@ namespace OpenRCT2
             if (Config::Get().notifications.guestWarnings)
             {
                 constexpr auto kThoughtId = static_cast<uint32_t>(PeepThoughtType::lost);
-                News::AddItemToQueue(newsItems, News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
+                newsItems.addItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, kThoughtId, {});
             }
         }
 
@@ -1146,8 +1138,8 @@ namespace OpenRCT2
                     queueComplainingGuestsMap.begin(), queueComplainingGuestsMap.end(),
                     [](auto& lhs, auto& rhs) { return lhs.second < rhs.second; });
                 auto rideId = rideWithMostQueueComplaints->first.ToUnderlying();
-                News::AddItemToQueue(
-                    newsItems, News::ItemType::ride, STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING, rideId, {});
+
+                newsItems.addItemToQueue(News::ItemType::ride, STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING, rideId, {});
             }
         }
     }
@@ -1563,12 +1555,10 @@ namespace OpenRCT2
         if (entranceType == EntranceType::rideExit)
         {
             pathing_result |= PATHING_RIDE_EXIT;
-            _peepRideEntranceExitElement = tile_element;
         }
         else if (entranceType == EntranceType::rideEntrance)
         {
             pathing_result |= PATHING_RIDE_ENTRANCE;
-            _peepRideEntranceExitElement = tile_element;
         }
 
         if (entranceType == EntranceType::rideExit)
@@ -1652,9 +1642,8 @@ namespace OpenRCT2
                 ride->formatNameTo(ft);
                 if (Config::Get().notifications.guestQueuingForRide)
                 {
-                    News::AddItemToQueue(
-                        getGameState().park.newsItems, News::ItemType::peepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X,
-                        guest->id, ft);
+                    getGameState().park.newsItems.addItemToQueue(
+                        News::ItemType::peepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->id, ft);
                 }
             }
         }
@@ -1714,9 +1703,8 @@ namespace OpenRCT2
                     guest->formatNameTo(ft);
                     if (Config::Get().notifications.guestLeftPark)
                     {
-                        News::AddItemToQueue(
-                            getGameState().park.newsItems, News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->id,
-                            ft);
+                        getGameState().park.newsItems.addItemToQueue(
+                            News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->id, ft);
                     }
                 }
                 return true;
@@ -1751,23 +1739,17 @@ namespace OpenRCT2
                 auto nextLoc = coords.toTileStart() + CoordsDirectionDelta[entranceDirection];
 
                 // Make sure there is a path right behind the entrance, otherwise turn around
-                TileElement* nextTileElement = MapGetFirstElementAt(nextLoc);
-                do
+                for (auto const* pathElement : TileElementsView<PathElement>(nextLoc))
                 {
-                    if (nextTileElement == nullptr)
-                        break;
-                    if (nextTileElement->getType() != TileElementType::path)
+                    if (pathElement->isQueue())
                         continue;
 
-                    if (nextTileElement->asPath()->isQueue())
-                        continue;
-
-                    if (nextTileElement->asPath()->isSloped())
+                    if (pathElement->isSloped())
                     {
-                        uint8_t slopeDirection = nextTileElement->asPath()->getSlopeDirection();
+                        uint8_t slopeDirection = pathElement->getSlopeDirection();
                         if (slopeDirection == entranceDirection)
                         {
-                            if (z != nextTileElement->baseHeight)
+                            if (z != pathElement->baseHeight)
                             {
                                 continue;
                             }
@@ -1778,19 +1760,19 @@ namespace OpenRCT2
                         if (DirectionReverse(slopeDirection) != entranceDirection)
                             continue;
 
-                        if (z - 2 != nextTileElement->baseHeight)
+                        if (z - 2 != pathElement->baseHeight)
                             continue;
                         found = true;
                         break;
                     }
 
-                    if (z != nextTileElement->baseHeight)
+                    if (z != pathElement->baseHeight)
                     {
                         continue;
                     }
                     found = true;
                     break;
-                } while (!(nextTileElement++)->isLastForTile());
+                }
             }
 
             if (!found)
@@ -2108,9 +2090,8 @@ namespace OpenRCT2
                             ride->formatNameTo(ft);
                             if (Config::Get().notifications.guestQueuingForRide)
                             {
-                                News::AddItemToQueue(
-                                    getGameState().park.newsItems, News::ItemType::peepOnRide,
-                                    STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->id, ft);
+                                getGameState().park.newsItems.addItemToQueue(
+                                    News::ItemType::peepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->id, ft);
                             }
                         }
 
@@ -2228,7 +2209,7 @@ namespace OpenRCT2
                     : STR_PEEP_TRACKING_PEEP_IS_ON_X;
                 if (Config::Get().notifications.guestUsedFacility)
                 {
-                    News::AddItemToQueue(getGameState().park.newsItems, News::ItemType::peepOnRide, string_id, guest->id, ft);
+                    getGameState().park.newsItems.addItemToQueue(News::ItemType::peepOnRide, string_id, guest->id, ft);
                 }
             }
         }
