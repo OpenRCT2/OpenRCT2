@@ -47,13 +47,13 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAXPLAYERS_INCREASE,
         WIDX_MAXPLAYERS_DECREASE,
         WIDX_ADVERTISE_CHECKBOX,
-        WIDX_START_SERVER,
-        WIDX_LOAD_SERVER
+        WIDX_START_FROM_SCENARIO,
+        WIDX_START_FROM_SAVED_GAME
     };
 
     static constexpr ScreenSize kMinWindowSize = { 450, 154 };
     static constexpr ScreenSize kMaxWindowSize = { 900, 154 };
-    static constexpr ScreenSize kButtonSize = { 101, 14 };
+    static constexpr ScreenSize kButtonSize = { 150, 14 };
 
     // clang-format off
     static constexpr auto _windowServerStartWidgets = makeWidgets(
@@ -78,8 +78,8 @@ namespace OpenRCT2::Ui::Windows
 
         Widgets::Checkbox({ 6, 117 }, { 287, 12 }, WindowColour::secondary, STR_ADVERTISE, STR_ADVERTISE_SERVER_TIP), // advertise checkbox
 
-        makeWidget({   6, 132 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_NEW_GAME ),
-        makeWidget({ 112, 132 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME)
+        makeWidget({   6, 132 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SCENARIO),
+        makeWidget({ 158, 132 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SAVED_GAME)
     );
     // clang-format on
 
@@ -158,11 +158,11 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     invalidate();
                     break;
-                case WIDX_START_SERVER:
+                case WIDX_START_FROM_SCENARIO:
                     Network::SetPassword(_password.c_str());
                     ScenarioselectOpen(ScenarioSelectCallback);
                     break;
-                case WIDX_LOAD_SERVER:
+                case WIDX_START_FROM_SAVED_GAME:
                     Network::SetPassword(_password.c_str());
                     auto intent = Intent(WindowClass::loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
@@ -186,8 +186,8 @@ namespace OpenRCT2::Ui::Windows
             _maxPlayersCaption = std::to_string(Config::Get().network.maxplayers);
             widgets[WIDX_MAXPLAYERS].setString(_maxPlayersCaption.c_str());
 
-            widgets[WIDX_START_SERVER].moveToX(width - 12 - kButtonSize.width * 2 - 6);
-            widgets[WIDX_LOAD_SERVER].moveToX(width - 12 - kButtonSize.width);
+            widgets[WIDX_START_FROM_SCENARIO].moveToX(width - 12 - kButtonSize.width * 2 - 6);
+            widgets[WIDX_START_FROM_SAVED_GAME].moveToX(width - 12 - kButtonSize.width);
         }
 
         void onUpdate() override

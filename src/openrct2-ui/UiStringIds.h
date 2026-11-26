@@ -1878,6 +1878,8 @@ namespace OpenRCT2
         STR_SERVER_GREETING = 6032,
         STR_SERVER_NAME = 5574,
         STR_START_SERVER = 5501,
+        STR_START_FROM_SAVED_GAME = 7088,
+        STR_START_FROM_SCENARIO = 7087,
 
         // Window: ShortcutKeys
         STR_RESET = 6580,
