@@ -666,5 +666,11 @@
         "path": "icons/walls.png",
         "x": 1,
         "y": 1
+    },
+    {
+        "path": "icons/server_add.png"
+    },
+    {
+        "path": "icons/server_refresh.png"
     }
 ]

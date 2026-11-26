@@ -37,7 +37,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kMinimumWindowSize = { 500, 288 };
     static constexpr ScreenSize kMaximumWindowSize = { 1200, 788 };
     static constexpr ScreenSize kWindowSize = kMinimumWindowSize;
-    static constexpr ScreenSize kButtonSize = { 24, 24 };
+    static constexpr ScreenSize kButtonSize = { 22, 22 };
 
     static constexpr int32_t kItemHeight = (3 + 9 + 3);
     static constexpr int32_t kMargin = 6;
@@ -72,12 +72,12 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _serverListWidgets = makeWidgets(
         makeWindowShim(STR_SERVER_LIST, kWindowSize),
-        makeWidget({  6,  21}, { 200,  12}, WidgetType::label,       WindowColour::secondary, STR_PLAYER_NAME                     ), // player name label
-        makeWidget({100,  20}, { 200,  14}, WidgetType::textBox,     WindowColour::secondary                                      ), // player name text box
-        makeWidget({446,  18}, kButtonSize, WidgetType::flatBtn,     WindowColour::secondary, SPR_G2_RELOAD,     STR_FETCH_SERVERS), // fetch servers button
-        makeWidget({470,  18}, kButtonSize, WidgetType::flatBtn,     WindowColour::secondary, SPR_G2_FOLDER_NEW, STR_ADD_SERVER   ), // add server button
-        makeWidget({  6,  40}, { 489, 226}, WidgetType::scroll,      WindowColour::secondary, SCROLL_VERTICAL                     ), // server list
-        makeWidget({  6, 268}, { 489,  14}, WidgetType::placeholder, WindowColour::secondary                                      )  // status bar
+        makeWidget({  6,  21}, { 200,  12}, WidgetType::label,       WindowColour::secondary, STR_PLAYER_NAME                         ), // player name label
+        makeWidget({ 90,  20}, { 200,  14}, WidgetType::textBox,     WindowColour::secondary                                          ), // player name text box
+        makeWidget({446,  17}, kButtonSize, WidgetType::flatBtn,     WindowColour::secondary, SPR_G2_SERVER_ADD,     STR_ADD_SERVER   ), // add server button
+        makeWidget({470,  17}, kButtonSize, WidgetType::flatBtn,     WindowColour::secondary, SPR_G2_SERVER_REFRESH, STR_FETCH_SERVERS), // fetch servers button
+        makeWidget({  6,  40}, { 489, 226}, WidgetType::scroll,      WindowColour::secondary, SCROLL_VERTICAL                         ), // server list
+        makeWidget({  6, 268}, { 489,  14}, WidgetType::placeholder, WindowColour::secondary                                          )  // status bar
     );
     // clang-format on
 
@@ -517,7 +517,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            widgets[WIDX_PLAYER_NAME_INPUT].right = width - kMargin * 2 - kButtonSize.width * 2;
+            widgets[WIDX_PLAYER_NAME_INPUT].right = width - kMargin * 2 - kButtonSize.width * 2 - 15;
 
             widgets[WIDX_STATUS].bottom = height - kMargin;
             widgets[WIDX_STATUS].top = height - kMargin - 10;
