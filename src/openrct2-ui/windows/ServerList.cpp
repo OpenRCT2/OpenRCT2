@@ -345,14 +345,17 @@ namespace OpenRCT2::Ui::Windows
                 const auto& serverDetails = _serverList.GetServer(i);
                 bool highlighted = i == selectedListItem;
 
-                // Draw hover highlight
+                const auto screenRect = ScreenRect{ { 0, screenCoords.y },
+                                                    { listWidgetWidth, screenCoords.y + kItemHeight - 1 } };
+
+                // If hovering over item, change the color and fill the backdrop.
                 if (highlighted)
                 {
-                    Rectangle::filter(
-                        rt, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
-                        FilterPaletteID::paletteDarken1);
+                    Rectangle::fill(rt, screenRect, getColourMap(colours[1].colour).midDark);
                     _version = serverDetails.Version;
                 }
+                else if ((i & 1) != 0) // odd / even check
+                    Rectangle::fill(rt, screenRect, getColourMap(colours[1].colour).light);
 
                 auto colour = colours[1];
                 if (serverDetails.Favourite)
