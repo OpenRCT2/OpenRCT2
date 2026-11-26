@@ -37,7 +37,10 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kMinimumWindowSize = { 500, 288 };
     static constexpr ScreenSize kMaximumWindowSize = { 1200, 788 };
     static constexpr ScreenSize kWindowSize = kMinimumWindowSize;
+    static constexpr ScreenSize kButtonSize = { 24, 24 };
+
     static constexpr int32_t kItemHeight = (3 + 9 + 3);
+    static constexpr int32_t kMargin = 6;
 
     static constexpr size_t kMaxPlayerNameLength = 32;
 
@@ -46,11 +49,12 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND,
         WIDX_TITLE,
         WIDX_CLOSE,
+        WIDX_PLAYER_NAME_LABEL,
         WIDX_PLAYER_NAME_INPUT,
-        WIDX_LIST,
         WIDX_FETCH_SERVERS,
         WIDX_ADD_SERVER,
-        WIDX_START_SERVER
+        WIDX_LIST,
+        WIDX_STATUS,
     };
 
     enum
@@ -68,11 +72,12 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _serverListWidgets = makeWidgets(
         makeWindowShim(STR_SERVER_LIST, kWindowSize),
-        makeWidget({100, 20}, {245,  12}, WidgetType::textBox,  WindowColour::secondary                                         ), // player name text box
-        makeWidget({  6, 37}, {489, 226}, WidgetType::scroll,   WindowColour::secondary, SCROLL_VERTICAL                        ), // server list
-        makeWidget({  6, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
-        makeWidget({112, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_ADD_SERVER                         ), // add server button
-        makeWidget({218, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_START_SERVER                       )  // start server button
+        makeWidget({  6,  21}, { 200,  12}, WidgetType::label,       WindowColour::secondary, STR_PLAYER_NAME                     ), // player name label
+        makeWidget({100,  20}, { 200,  14}, WidgetType::textBox,     WindowColour::secondary                                      ), // player name text box
+        makeWidget({446,  18}, kButtonSize, WidgetType::flatBtn,     WindowColour::secondary, SPR_G2_RELOAD,     STR_FETCH_SERVERS), // fetch servers button
+        makeWidget({470,  18}, kButtonSize, WidgetType::flatBtn,     WindowColour::secondary, SPR_G2_FOLDER_NEW, STR_ADD_SERVER   ), // add server button
+        makeWidget({  6,  40}, { 489, 226}, WidgetType::scroll,      WindowColour::secondary, SCROLL_VERTICAL                     ), // server list
+        makeWidget({  6, 268}, { 489,  14}, WidgetType::placeholder, WindowColour::secondary                                      )  // status bar
     );
     // clang-format on
 
@@ -154,9 +159,6 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_ADD_SERVER:
                     textInputOpen(widgetIndex, STR_ADD_SERVER, STR_ENTER_HOSTNAME_OR_IP_ADDRESS, {}, kStringIdNone, 0, 128);
-                    break;
-                case WIDX_START_SERVER:
-                    ContextOpenWindow(WindowClass::serverStart);
                     break;
             }
         }
@@ -310,21 +312,21 @@ namespace OpenRCT2::Ui::Windows
         {
             drawWidgets(rt);
 
-            drawText(
-                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME,
-                { Drawing::Colour::white });
+            const auto& statusWidget = widgets[WIDX_STATUS];
 
             // Draw version number
             std::string version = Network::GetVersion();
             auto ft = Formatter();
             ft.Add<const char*>(version.c_str());
             drawText(
-                rt, windowPos + ScreenCoordsXY{ 324, widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
+                rt, windowPos + ScreenCoordsXY{ width - 160, statusWidget.top }, STR_NETWORK_VERSION, ft,
                 { Drawing::Colour::white });
 
             ft = Formatter();
             ft.Add<uint32_t>(_numPlayersOnline);
-            drawText(rt, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { Drawing::Colour::white });
+            drawText(
+                rt, windowPos + ScreenCoordsXY{ statusWidget.left, statusWidget.top }, _statusText, ft,
+                { Drawing::Colour::white });
         }
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
@@ -515,22 +517,19 @@ namespace OpenRCT2::Ui::Windows
 
         void onPrepareDraw() override
         {
-            int32_t margin = 6;
-            int32_t buttonHeight = 13;
-            int32_t buttonTop = height - margin - buttonHeight - 13;
-            int32_t buttonBottom = buttonTop + buttonHeight;
-            int32_t listBottom = buttonTop - margin;
+            widgets[WIDX_PLAYER_NAME_INPUT].right = width - kMargin * 2 - kButtonSize.width * 2;
 
-            widgets[WIDX_PLAYER_NAME_INPUT].right = width - 6;
-            widgets[WIDX_LIST].left = 6;
-            widgets[WIDX_LIST].right = width - 6;
-            widgets[WIDX_LIST].bottom = listBottom;
-            widgets[WIDX_FETCH_SERVERS].top = buttonTop;
-            widgets[WIDX_FETCH_SERVERS].bottom = buttonBottom;
-            widgets[WIDX_ADD_SERVER].top = buttonTop;
-            widgets[WIDX_ADD_SERVER].bottom = buttonBottom;
-            widgets[WIDX_START_SERVER].top = buttonTop;
-            widgets[WIDX_START_SERVER].bottom = buttonBottom;
+            widgets[WIDX_STATUS].bottom = height - kMargin;
+            widgets[WIDX_STATUS].top = height - kMargin - 10;
+
+            widgets[WIDX_LIST].left = kMargin;
+            widgets[WIDX_LIST].right = width - kMargin;
+            widgets[WIDX_LIST].bottom = height - kMargin - 15;
+
+            widgets[WIDX_FETCH_SERVERS].right = width - kMargin;
+            widgets[WIDX_FETCH_SERVERS].left = width - kMargin - kButtonSize.width;
+            widgets[WIDX_ADD_SERVER].right = width - kMargin - kButtonSize.width;
+            widgets[WIDX_ADD_SERVER].left = width - kMargin - kButtonSize.width * 2;
 
             numListItems = static_cast<uint16_t>(_serverList.GetCount());
         }
