@@ -47,12 +47,13 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAXPLAYERS_INCREASE,
         WIDX_MAXPLAYERS_DECREASE,
         WIDX_ADVERTISE_CHECKBOX,
+        WIDX_NETWORK_VERSION,
         WIDX_START_FROM_SCENARIO,
         WIDX_START_FROM_SAVED_GAME
     };
 
-    static constexpr ScreenSize kMinWindowSize = { 450, 154 };
-    static constexpr ScreenSize kMaxWindowSize = { 900, 154 };
+    static constexpr ScreenSize kMinWindowSize = { 450, 168 };
+    static constexpr ScreenSize kMaxWindowSize = { 900, 168 };
     static constexpr ScreenSize kButtonSize = { 150, 14 };
 
     // clang-format off
@@ -78,8 +79,10 @@ namespace OpenRCT2::Ui::Windows
 
         Widgets::Checkbox({ 6, 117 }, { 450, 12 }, WindowColour::secondary, STR_ADVERTISE_SERVER, STR_ADVERTISE_SERVER_TIP), // advertise checkbox
 
-        makeWidget({   6, 132 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SCENARIO),
-        makeWidget({ 158, 132 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SAVED_GAME)
+        makeWidget({   6, 132 }, { 200, 14 }, WidgetType::placeholder, WindowColour::secondary),
+
+        makeWidget({   6, 146 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SCENARIO),
+        makeWidget({ 158, 146 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SAVED_GAME)
     );
     // clang-format on
 
@@ -276,6 +279,14 @@ namespace OpenRCT2::Ui::Windows
         void onDraw(Drawing::RenderTarget& rt) override
         {
             drawWidgets(rt);
+
+            // Draw network version number
+            std::string version = Network::GetVersion();
+            auto ft = Formatter();
+            ft.Add<StringId>(STR_NETWORK_VERSION);
+            ft.Add<const char*>(version.c_str());
+            const auto& widget = widgets[WIDX_NETWORK_VERSION];
+            drawText(rt, windowPos + ScreenCoordsXY{ widget.left, widget.top }, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 
     private:
