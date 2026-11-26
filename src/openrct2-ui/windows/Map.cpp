@@ -257,6 +257,14 @@ namespace OpenRCT2::Ui::Windows
             initScrollWidgets();
             CalculateTextLayout();
 
+            // Auto-positioning uses the default size, before the map window grows to fit the map.
+            WindowSetPosition(
+                *this,
+                { std::clamp(windowPos.x, 0, std::max(0, ContextGetWidth() - width)),
+                  std::clamp(
+                      windowPos.y, static_cast<int32_t>(kTopToolbarHeight + 1),
+                      std::max<int32_t>(kTopToolbarHeight + 1, ContextGetHeight() - 34 - height)) });
+
             _rotation = GetCurrentRotation();
 
             initMap();
