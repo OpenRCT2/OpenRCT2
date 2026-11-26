@@ -36,7 +36,7 @@ namespace OpenRCT2::Guard
     void Fail(const char* message = nullptr, ...);
     void Fail_VA(const char* message, va_list args);
 
-    std::optional<std::string> GetLastAssertMessage();
+    const std::optional<std::string>& GetLastAssertMessage();
 
     template<typename T>
     static void ArgumentNotNull(T* argument, const char* message = nullptr, ...)

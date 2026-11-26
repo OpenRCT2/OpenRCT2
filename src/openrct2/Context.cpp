@@ -321,12 +321,12 @@ namespace OpenRCT2
             return EXIT_FAILURE;
         }
 
-        void WriteLine(const std::string& s) override
+        void WriteLine(std::string_view s) override
         {
             _stdInOutConsole.WriteLine(s);
         }
 
-        void WriteErrorLine(const std::string& s) override
+        void WriteErrorLine(std::string_view s) override
         {
             _stdInOutConsole.WriteLineError(s);
         }
@@ -419,13 +419,10 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless)
             {
                 _assetPackManager = std::make_unique<AssetPackManager>();
-            }
 #ifdef __ENABLE_DISCORD__
-            if (!gOpenRCT2Headless)
-            {
                 _discordService = std::make_unique<Network::DiscordService>();
-            }
 #endif
+            }
 
 #ifndef __HAIKU__ // Haiku's user is always root, skip warning them about it.
             if (Platform::ProcessIsElevated())
@@ -433,7 +430,7 @@ namespace OpenRCT2
                 std::string elevationWarning = _localisationService->GetString(STR_ADMIN_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
                 {
-                    Console::Error::WriteLine(elevationWarning.c_str());
+                    Console::Error::WriteLine(elevationWarning);
                 }
                 else
                 {
@@ -447,7 +444,7 @@ namespace OpenRCT2
                 std::string wineWarning = _localisationService->GetString(STR_WINE_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
                 {
-                    Console::Error::WriteLine(wineWarning.c_str());
+                    Console::Error::WriteLine(wineWarning);
                 }
                 else
                 {

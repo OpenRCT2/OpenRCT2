@@ -41,14 +41,13 @@ void StdInOutConsole::Start()
         linenoise::SetMultiLine(true);
         linenoise::SetHistoryMaxLen(32);
 
-        std::string prompt = "\033[32mopenrct2 $\x1b[0m ";
+        const char* prompt = "\033[32mopenrct2 $\x1b[0m ";
         bool lastPromptQuit = false;
         while (true)
         {
             std::string line;
-            std::string left = prompt;
             _isPromptShowing = true;
-            auto quit = linenoise::Readline(left.c_str(), line);
+            auto quit = linenoise::Readline(prompt, line);
             _isPromptShowing = false;
             if (quit)
             {
@@ -115,53 +114,54 @@ void StdInOutConsole::Close()
     GetContext()->Finish();
 }
 
-void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
+void StdInOutConsole::WriteLine(std::string_view s, FormatToken colourFormat)
 {
-    std::string formatBegin;
-    switch (colourFormat)
-    {
-        case FormatToken::colourRed:
-            formatBegin = "\033[31m";
-            break;
-        case FormatToken::colourYellow:
-            formatBegin = "\033[33m";
-            break;
-        default:
-            break;
-    }
-
     if (!Platform::IsColourTerminalSupported())
     {
-        std::printf("%s\n", s.c_str());
+        std::fwrite(s.data(), 1, s.size(), stdout);
+        std::fputc('\n', stdout);
         std::fflush(stdout);
     }
     else
     {
+        const char* formatBegin = "";
+        switch (colourFormat)
+        {
+            case FormatToken::colourRed:
+                formatBegin = "\033[31m";
+                break;
+            case FormatToken::colourYellow:
+                formatBegin = "\033[33m";
+                break;
+            default:
+                break;
+        }
+
         if (_isPromptShowing)
         {
-            auto* mainString = s.c_str();
+            std::string_view mainString(s);
 
             // If string contains \n, we need to replace with \r\n
             std::string newString;
             if (s.find('\n') != std::string::npos)
             {
+                newString.reserve(s.length() + 4); // Added arbitrary extra capactity for a few newlines
                 for (auto ch : s)
                 {
                     if (ch == '\n')
-                        newString += "\r\n";
-                    else
-                        newString += ch;
+                        newString += '\r';
+                    newString += ch;
                 }
-                mainString = newString.c_str();
+                mainString = newString;
             }
 
-            std::printf("\r%s%s\x1b[0m\x1b[0K\r\n", formatBegin.c_str(), mainString);
+            std::printf("\r%s%.*s\x1b[0m\x1b[0K\r\n", formatBegin, static_cast<int>(mainString.length()), mainString.data());
             std::fflush(stdout);
             linenoise::linenoiseEditRefreshLine();
         }
         else
         {
-            std::printf("%s%s\x1b[0m\n", formatBegin.c_str(), s.c_str());
+            std::printf("%s%.*s\x1b[0m\n", formatBegin, static_cast<int>(s.length()), s.data());
             std::fflush(stdout);
         }
     }

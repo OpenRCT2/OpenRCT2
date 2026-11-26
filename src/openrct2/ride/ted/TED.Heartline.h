@@ -89,35 +89,6 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kHeartLineTransferDownSeq0 = {
-        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .blockedSegments = kHeartLineTransferUpSeq3.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kHeartLineTransferDownSeq1 = {
-        .clearance = { -32, 0, -32, 32, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::up25DegToFlat },
-        .blockedSegments = kHeartLineTransferUpSeq2.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kHeartLineTransferDownSeq2 = {
-        .clearance = { -64, 0, -16, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = kHeartLineTransferUpSeq1.blockedSegments,
-    };
-
-    static constexpr SequenceDescriptor kHeartLineTransferDownSeq3 = {
-        .clearance = { 0, 0, -32, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .woodenSupports = { WoodenSupportSubType::neSw, WoodenSupportTransitionType::flatToUp25Deg },
-        .blockedSegments = kHeartLineTransferUpSeq0.blockedSegments,
-    };
-
     static constexpr SequenceDescriptor kLeftHeartLineRollSeq0 = {
         .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
         .allowedWallEdges = 0b1010,
@@ -186,50 +157,6 @@ namespace OpenRCT2::TrackMetadata
         } },
     };
 
-    static constexpr SequenceDescriptor kRightHeartLineRollSeq0 = {
-        .clearance = { 0, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq0.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightHeartLineRollSeq1 = {
-        .clearance = { -32, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq1.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightHeartLineRollSeq2 = {
-        .clearance = { -64, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq2.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightHeartLineRollSeq3 = {
-        .clearance = { -96, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq3.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightHeartLineRollSeq4 = {
-        .clearance = { -128, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq4.blockedSegments),
-    };
-
-    static constexpr SequenceDescriptor kRightHeartLineRollSeq5 = {
-        .clearance = { -160, 0, 0, 0, { 0b1111, 0 }, {} },
-        .allowedWallEdges = 0b1010,
-        .flags = { SequenceFlag::hasHeightMarker },
-        .woodenSupports = { WoodenSupportSubType::neSw },
-        .blockedSegments = blockedSegmentsFlipXAxis(kLeftHeartLineRollSeq5.blockedSegments),
-    };
-
     constexpr auto kTEDHeartLineTransferUp = TrackElementDescriptor{
         .description = STR_UPPER_TRANSFER,
         .coordinates = { 0, 2, 0, 32, 0, 0 },
@@ -257,9 +184,7 @@ namespace OpenRCT2::TrackMetadata
         .definition = { TrackGroup::heartlineTransfer, TrackPitch::none, TrackPitch::none, TrackRoll::none, TrackRoll::none,
                         0 },
         .verticalFactor = EvaluatorHeartLineTransferDown,
-        .sequenceData = { 4,
-                          { kHeartLineTransferDownSeq0, kHeartLineTransferDownSeq1, kHeartLineTransferDownSeq2,
-                            kHeartLineTransferDownSeq3 } },
+        .sequenceData = kTEDHeartLineTransferUp.sequenceData.offset({ 0, 0, -32 }).reverse({ 3, 1, 2, 0 }),
     };
 
     constexpr auto kTEDLeftHeartLineRoll = TrackElementDescriptor{
@@ -289,8 +214,6 @@ namespace OpenRCT2::TrackMetadata
                    TrackElementFlag::canBePartlyUnderground },
         .definition = { TrackGroup::heartlineRoll, TrackPitch::none, TrackPitch::none, TrackRoll::none, TrackRoll::none, 0 },
         .lateralFactor = EvaluatorConst<-98>,
-        .sequenceData = { 6,
-                          { kRightHeartLineRollSeq0, kRightHeartLineRollSeq1, kRightHeartLineRollSeq2, kRightHeartLineRollSeq3,
-                            kRightHeartLineRollSeq4, kRightHeartLineRollSeq5 } },
+        .sequenceData = kTEDLeftHeartLineRoll.sequenceData.flipXAxis(),
     };
 } // namespace OpenRCT2::TrackMetadata

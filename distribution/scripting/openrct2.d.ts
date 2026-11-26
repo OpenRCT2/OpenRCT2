@@ -39,6 +39,11 @@ declare global {
     var scenario: Scenario;
     /** APIs for the climate and weather. */
     var climate: Climate;
+    /**
+     * APIs for playing sounds and music.
+     * These will only be available to clients that are not running headless mode.
+     */
+    var audio: Audio;
     /** APIs for performance profiling. */
     var profiler: Profiler;
     /**
@@ -4883,6 +4888,44 @@ declare global {
     interface WeatherState {
         readonly weather: WeatherType;
         readonly temperature: number;
+    }
+
+    type SoundName =
+        "applause" | "balloon_pop" | "block_brake_close" | "block_brake_release" | "brake_release" | "click_1" | "click_2" | "click_3" | "cough_1" | "cough_2" | "cough_3" | "cough_4" | "crash" | "crowd_ambience" | "door_open" | "door_close" | "error" | "friction_classic" | "go_kart_engine" | "haunted_house_scare" | "haunted_house_scream_1" | "haunted_house_scream_2" | "laugh_1" | "laugh_2" | "laugh_3" | "laying_out_water" | "lift_arrow" | "lift_bm" | "lift_classic" | "lift_flume" | "lift_friction_wheels" | "lift_rmc" | "lift_wild_mouse" | "lift_wood" | "mechanic_fix" | "news_item" | "null" | "place_item" | "portcullis" | "purchase" | "quack" | "rain" | "ride_launch_1" | "ride_launch_2" | "thunder_1" | "thunder_2" | "toilet_flush" | "track_friction_bm" | "track_friction_classic_wood" | "track_friction_rmc" | "track_friction_train" | "track_friction_water" | "track_friction_wood" | "train_departing" | "train_whistle" | "tram" | "scream_1" | "scream_2" | "scream_3" | "scream_4" | "scream_5" | "scream_6" | "scream_7" | "scream_8" | "water_1" | "water_2" | "water_splash" | "window_open";
+	
+    /**
+     * APIs for playing sound effects and music.
+     */
+    interface Audio {	
+        /**
+         * Plays a built-in sound effect, or a sound loaded with {@link loadSound}.
+         * @param sound The name of a built-in sound (e.g. `"scream_1"`), or a handle returned by {@link loadSound}.
+         * @param position Optional world position. If given, the volume and pan are set from the position at the
+         * moment the sound starts. They are not updated afterwards.
+         * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1. Cannot be changed once playing.
+         */
+        playSound(sound: SoundName | number, position?: CoordsXYZ | null, rate?: number): void;
+
+        /**
+         * Plays the first track of a music object (e.g. `"rct2.music.gentle"`).
+         * @param name The identifier of the music object.
+         * @param position Optional world position. If given, the volume and pan are set from the position at the
+         * moment the music starts. They are not updated afterwards.
+         * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1. Cannot be changed once playing.
+         */
+        playMusic(name: string, position?: CoordsXYZ | null, rate?: number): void;
+
+        /**
+         * Loads a sound effect from base64 encoded PCM WAV data (8 or 16 bit).
+         * The sound is freed automatically when the plugin stops.
+         * @returns A handle that can be passed to {@link playSound}.
+         */
+        loadSound(base64Wav: string): number;
+
+        /**
+         * Frees a sound loaded with {@link loadSound}.
+         */
+        freeSound(handle: number): void;
     }
 
     interface Climate {

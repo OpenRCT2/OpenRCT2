@@ -40,9 +40,9 @@ public:
     }
 
     void Execute(const std::string& s);
-    void WriteLine(const std::string& s);
-    void WriteLineError(const std::string& s);
-    void WriteLineWarning(const std::string& s);
+    void WriteLine(std::string_view s);
+    void WriteLineError(std::string_view s);
+    void WriteLineWarning(std::string_view s);
     void WriteFormatLine(const char* format, ...);
 
     void BeginAsyncExecution();
@@ -53,5 +53,5 @@ public:
     virtual void Clear() = 0;
     virtual void Close() = 0;
     virtual void Hide() = 0;
-    virtual void WriteLine(const std::string& s, OpenRCT2::FormatToken colourFormat) = 0;
+    virtual void WriteLine(std::string_view s, OpenRCT2::FormatToken colourFormat) = 0;
 };

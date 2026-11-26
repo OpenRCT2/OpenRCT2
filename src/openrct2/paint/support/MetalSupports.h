@@ -85,6 +85,27 @@ enum class MetalSupportPlace : uint8_t
     none = 255,
 };
 
+namespace OpenRCT2
+{
+    constexpr MetalSupportPlace metalSupportPlaceFlipXAxis(const MetalSupportPlace place)
+    {
+        if (place == MetalSupportPlace::topCorner)
+            return MetalSupportPlace::rightCorner;
+        if (place == MetalSupportPlace::leftCorner)
+            return MetalSupportPlace::bottomCorner;
+        if (place == MetalSupportPlace::rightCorner)
+            return MetalSupportPlace::topCorner;
+        if (place == MetalSupportPlace::bottomCorner)
+            return MetalSupportPlace::leftCorner;
+        if (place == MetalSupportPlace::topLeftSide)
+            return MetalSupportPlace::bottomRightSide;
+        if (place == MetalSupportPlace::bottomRightSide)
+            return MetalSupportPlace::topLeftSide;
+        else
+            return place;
+    }
+} // namespace OpenRCT2
+
 struct ImageId;
 
 namespace OpenRCT2

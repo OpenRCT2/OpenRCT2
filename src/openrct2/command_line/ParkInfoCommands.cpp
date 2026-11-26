@@ -148,7 +148,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    Console::WriteLine("%s", name.c_str());
+                    Console::WriteLine(name);
                 }
             }
             Console::WriteLine();
