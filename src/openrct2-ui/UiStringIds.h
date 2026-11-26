@@ -1869,7 +1869,7 @@ namespace OpenRCT2
         STR_X_PLAYERS_ONLINE = 5787,
 
         // Window: ServerStart
-        STR_ADVERTISE = 5567,
+        STR_ADVERTISE_SERVER = 7089,
         STR_ADVERTISE_SERVER_TIP = 5805,
         STR_MAX_PLAYERS = 5575,
         STR_PASSWORD = 5566,

@@ -76,7 +76,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({   6, 100 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_MAX_PLAYERS       ), // max players label
         makeSpinnerWidgets({ 120, 99 }, { 120, 14 }, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty), // max players (3 widgets)
 
-        Widgets::Checkbox({ 6, 117 }, { 287, 12 }, WindowColour::secondary, STR_ADVERTISE, STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+        Widgets::Checkbox({ 6, 117 }, { 450, 12 }, WindowColour::secondary, STR_ADVERTISE_SERVER, STR_ADVERTISE_SERVER_TIP), // advertise checkbox
 
         makeWidget({   6, 132 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SCENARIO),
         makeWidget({ 158, 132 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SAVED_GAME)
