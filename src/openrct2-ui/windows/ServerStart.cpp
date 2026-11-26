@@ -32,8 +32,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND,
         WIDX_TITLE,
         WIDX_CLOSE,
-        WIDX_PORT_LABEL,
-        WIDX_PORT_INPUT,
         WIDX_NAME_LABEL,
         WIDX_NAME_INPUT,
         WIDX_DESCRIPTION_LABEL,
@@ -42,6 +40,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GREETING_INPUT,
         WIDX_PASSWORD_LABEL,
         WIDX_PASSWORD_INPUT,
+        WIDX_PORT_LABEL,
+        WIDX_PORT_INPUT,
         WIDX_MAXPLAYERS_LABEL,
         WIDX_MAXPLAYERS,
         WIDX_MAXPLAYERS_INCREASE,
@@ -53,25 +53,33 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr ScreenSize kMinWindowSize = { 450, 154 };
     static constexpr ScreenSize kMaxWindowSize = { 900, 154 };
+    static constexpr ScreenSize kButtonSize = { 101, 14 };
 
     // clang-format off
     static constexpr auto _windowServerStartWidgets = makeWidgets(
         makeWindowShim(STR_START_SERVER, kMinWindowSize),
-        makeWidget({   6,  20 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_PORT              ), // port label
-        makeWidget({ 120,  20 }, { 120, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // port text box
-        makeWidget({   6,  36 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_NAME       ), // name label
-        makeWidget({ 120,  36 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // name text box
-        makeWidget({   6,  52 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_DESCRIPTION), // description label
-        makeWidget({ 120,  52 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // description text box
-        makeWidget({   6,  68 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_GREETING   ), // greeting label
-        makeWidget({ 120,  68 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // greeting text box
-        makeWidget({   6,  84 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_PASSWORD          ), // password label
-        makeWidget({ 120,  84 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // password text box
-        makeWidget({   6, 100 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_MAX_PLAYERS       ), // max players label
-        makeSpinnerWidgets({ 120, 100 }, { 120, 12 }, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty), // max players (3 widgets)
-        Widgets::Checkbox({ 6, 117 }, { 287, 14 }, WindowColour::secondary, STR_ADVERTISE, STR_ADVERTISE_SERVER_TIP), // advertise checkbox        makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
-        makeWidget({ 6, 154 - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
-        makeWidget({ 112, 154 - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME) // None
+        makeWidget({   6,  20 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_NAME       ), // name label
+        makeWidget({ 120,  19 }, { 173, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // name text box
+
+        makeWidget({   6,  36 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_DESCRIPTION), // description label
+        makeWidget({ 120,  35 }, { 173, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // description text box
+
+        makeWidget({   6,  52 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_GREETING   ), // greeting label
+        makeWidget({ 120,  51 }, { 173, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // greeting text box
+
+        makeWidget({   6,  68 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_PASSWORD          ), // password label
+        makeWidget({ 120,  67 }, { 200, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // password text box
+
+        makeWidget({   6,  84 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_PORT              ), // port label
+        makeWidget({ 120,  83 }, { 120, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // port text box
+
+        makeWidget({   6, 100 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_MAX_PLAYERS       ), // max players label
+        makeSpinnerWidgets({ 120, 99 }, { 120, 14 }, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty), // max players (3 widgets)
+
+        Widgets::Checkbox({ 6, 117 }, { 287, 12 }, WindowColour::secondary, STR_ADVERTISE, STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+
+        makeWidget({   6, 132 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_NEW_GAME ),
+        makeWidget({ 112, 132 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME)
     );
     // clang-format on
 
@@ -174,10 +182,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NAME_INPUT].setWidth(width - 120 - 6);
             widgets[WIDX_DESCRIPTION_INPUT].setWidth(width - 120 - 6);
             widgets[WIDX_GREETING_INPUT].setWidth(width - 120 - 6);
-            widgets[WIDX_PASSWORD_INPUT].setWidth(width - 120 - 6);
 
             _maxPlayersCaption = std::to_string(Config::Get().network.maxplayers);
             widgets[WIDX_MAXPLAYERS].setString(_maxPlayersCaption.c_str());
+
+            widgets[WIDX_START_SERVER].moveToX(width - 12 - kButtonSize.width * 2 - 6);
+            widgets[WIDX_LOAD_SERVER].moveToX(width - 12 - kButtonSize.width);
         }
 
         void onUpdate() override
