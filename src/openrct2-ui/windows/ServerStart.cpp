@@ -51,13 +51,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LOAD_SERVER
     };
 
-    static constexpr ScreenSize kWindowSize = { 300, 154 };
+    static constexpr ScreenSize kMinWindowSize = { 450, 154 };
+    static constexpr ScreenSize kMaxWindowSize = { 900, 154 };
 
     // clang-format off
     static constexpr auto _windowServerStartWidgets = makeWidgets(
-        makeWindowShim(STR_START_SERVER, kWindowSize),
+        makeWindowShim(STR_START_SERVER, kMinWindowSize),
         makeWidget({   6,  20 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_PORT              ), // port label
-        makeWidget({ 120,  20 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // port text box
+        makeWidget({ 120,  20 }, { 120, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // port text box
         makeWidget({   6,  36 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_NAME       ), // name label
         makeWidget({ 120,  36 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // name text box
         makeWidget({   6,  52 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_DESCRIPTION), // description label
@@ -67,10 +68,10 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({   6,  84 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_PASSWORD          ), // password label
         makeWidget({ 120,  84 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary                        ), // password text box
         makeWidget({   6, 100 }, { 112, 13 }, WidgetType::label,   WindowColour::secondary, STR_MAX_PLAYERS       ), // max players label
-        makeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty), // max players (3 widgets)
+        makeSpinnerWidgets({ 120, 100 }, { 120, 12 }, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty), // max players (3 widgets)
         Widgets::Checkbox({ 6, 117 }, { 287, 14 }, WindowColour::secondary, STR_ADVERTISE, STR_ADVERTISE_SERVER_TIP), // advertise checkbox        makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
-        makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
-        makeWidget({ 112, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME) // None
+        makeWidget({ 6, 154 - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
+        makeWidget({ 112, 154 - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME) // None
     );
     // clang-format on
 
@@ -89,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
         {
             setWidgets(_windowServerStartWidgets);
             initScrollWidgets();
-            WindowSetResize(*this, { width, height }, { width, height });
+            WindowSetResize(*this, kMinWindowSize, kMaxWindowSize);
 
             currentFrame = 0;
             page = 0;
@@ -163,15 +164,22 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
+
         void onPrepareDraw() override
         {
             ColourSchemeUpdateByClass(this, WindowClass::serverList);
 
             setCheckboxValue(WIDX_ADVERTISE_CHECKBOX, Config::Get().network.advertise);
 
+            widgets[WIDX_NAME_INPUT].setWidth(width - 120 - 6);
+            widgets[WIDX_DESCRIPTION_INPUT].setWidth(width - 120 - 6);
+            widgets[WIDX_GREETING_INPUT].setWidth(width - 120 - 6);
+            widgets[WIDX_PASSWORD_INPUT].setWidth(width - 120 - 6);
+
             _maxPlayersCaption = std::to_string(Config::Get().network.maxplayers);
             widgets[WIDX_MAXPLAYERS].setString(_maxPlayersCaption.c_str());
         }
+
         void onUpdate() override
         {
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
@@ -183,6 +191,7 @@ namespace OpenRCT2::Ui::Windows
                 invalidateWidget(WIDX_PASSWORD_INPUT);
             }
         }
+
         void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
             std::string temp = static_cast<std::string>(text);
@@ -283,7 +292,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ServerStartOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::serverStart, kWindowSize, WindowFlag::centreScreen);
+        return windowMgr->FocusOrCreate<ServerStartWindow>(
+            WindowClass::serverStart, kMinWindowSize, WindowFlags(WindowFlag::centreScreen, WindowFlag::resizable));
     }
 } // namespace OpenRCT2::Ui::Windows
 
