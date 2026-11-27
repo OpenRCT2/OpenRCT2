@@ -492,7 +492,7 @@ namespace OpenRCT2::Ui::Windows
                         _serverList.AddOrUpdateRange(entries);
                         _serverList.WriteFavourites(); // Update favourites in case favourited server info changes
                         _numPlayersOnline = _serverList.GetTotalPlayerCount();
-                        _statusText = STR_X_PLAYERS_ONLINE;
+                        _statusText = STR_PLAYERS_ONLINE_NUM;
                         if (statusText != kStringIdNone)
                         {
                             _statusText = statusText;
