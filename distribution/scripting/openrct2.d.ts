@@ -4903,8 +4903,10 @@ declare global {
          * @param position Optional world position. If given, the volume and pan are set from the position at the
          * moment the sound starts. They are not updated afterwards.
          * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1. Cannot be changed once playing.
+         * @param volume Optional volume multiplier from 0 to 4, where 1 is normal. Applied after any position-based
+         * volume and capped at the maximum volume, so values above 1 only boost sounds that were attenuated.
          */
-        playSound(sound: SoundName | number, position?: CoordsXYZ | null, rate?: number): void;
+        playSound(sound: SoundName | number, position?: CoordsXYZ | null, rate?: number, volume?: number): void;
 
         /**
          * Plays the first track of a music object (e.g. `"rct2.music.gentle"`).
@@ -4912,8 +4914,10 @@ declare global {
          * @param position Optional world position. If given, the volume and pan are set from the position at the
          * moment the music starts. They are not updated afterwards.
          * @param rate Optional playback rate, where 1 is normal speed. Defaults to 1. Cannot be changed once playing.
+         * @param volume Optional volume multiplier from 0 to 4, where 1 is normal. Applied after any position-based
+         * volume and capped at the maximum volume, so values above 1 only boost music that was attenuated.
          */
-        playMusic(name: string, position?: CoordsXYZ | null, rate?: number): void;
+        playMusic(name: string, position?: CoordsXYZ | null, rate?: number, volume?: number): void;
 
         /**
          * Loads a sound effect from base64 encoded PCM WAV data (8 or 16 bit).
