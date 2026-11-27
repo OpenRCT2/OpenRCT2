@@ -317,16 +317,14 @@ namespace OpenRCT2::Ui::Windows
             // Draw version number
             std::string version = Network::GetVersion();
             auto ft = Formatter();
+            ft.Add<StringId>(STR_NETWORK_VERSION);
             ft.Add<const char*>(version.c_str());
-            drawText(
-                rt, windowPos + ScreenCoordsXY{ width - 160, statusWidget.top }, STR_NETWORK_VERSION, ft,
-                { Drawing::Colour::white });
+            drawText(rt, windowPos + ScreenCoordsXY{ width - 160, statusWidget.top }, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
             ft = Formatter();
+            ft.Add<StringId>(_statusText);
             ft.Add<uint32_t>(_numPlayersOnline);
-            drawText(
-                rt, windowPos + ScreenCoordsXY{ statusWidget.left, statusWidget.top }, _statusText, ft,
-                { Drawing::Colour::white });
+            drawText(rt, windowPos + ScreenCoordsXY{ statusWidget.left, statusWidget.top }, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 
         void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
