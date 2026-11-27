@@ -32,8 +32,10 @@ public:
     StaticLayout(u8string_view source, const TextPaint& paint, int32_t width)
         : Paint(paint)
     {
-        MaxWidth = wrapString(source, width, paint.fontStyle, &Buffer, &LineCount);
-        LineCount += 1;
+        auto wrappedString = wrapStringAndMeasure(source, width, paint.fontStyle);
+        Buffer = std::move(wrappedString.text);
+        MaxWidth = wrappedString.metrics.maxWidth;
+        LineCount = wrappedString.metrics.lineCount;
         LineHeight = FontGetLineHeight(paint.fontStyle);
     }
 
