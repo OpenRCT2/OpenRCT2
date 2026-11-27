@@ -103,6 +103,15 @@ namespace OpenRCT2::HybridRC
             return (session.TrackColours.WithSecondary(session.SupportColours.GetPrimary()));
     }
 
+    static ImageId GetTrackColourSeparateRails(PaintSession& session)
+    {
+        if (session.TrackColours == ConstructionMarker)
+            return session.TrackColours;
+        else
+            return session.TrackColours.WithSecondary(session.TrackColours.GetPrimary())
+                .WithTertiary(session.SupportColours.GetPrimary());
+    }
+
     static void TrackFlat(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
@@ -9967,34 +9976,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 0),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 0),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 1),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 1),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 6),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 6),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 7),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 7),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 12),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 12),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 13),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 13),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 18),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 18),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 19),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 19),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                 }
@@ -10012,34 +10029,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 2),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 2),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 3),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 3),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 8),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 8),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 9),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 9),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 14),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 14),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 15),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 15),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 20),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 20),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 21),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 21),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                 }
@@ -10053,34 +10078,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 4),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 4),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 5),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 5),
                             { 0, 0, height }, { { 0, 6, height + 56 }, { 32, 20, 0 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 10),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 10),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 11),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 11),
                             { 0, 0, height }, { { 0, 6, height + 56 }, { 32, 20, 0 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 16),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 16),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 17),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 17),
                             { 0, 0, height }, { { 0, 6, height + 56 }, { 32, 20, 0 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 22),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 22),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 23),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 23),
                             { 0, 0, height }, { { 0, 6, height + 56 }, { 32, 20, 0 } });
                         break;
                 }
@@ -10112,34 +10145,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 24),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 24),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 25),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 25),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 30),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 30),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 31),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 31),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 36),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 36),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 37),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 37),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 42),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 42),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 43),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 43),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                 }
@@ -10157,34 +10198,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 26),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 26),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 27),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 27),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 32),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 32),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 33),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 33),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 38),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 38),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 39),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 39),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 44),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 44),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 45),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 45),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 0 } });
                         break;
                 }
@@ -10198,34 +10247,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 28),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 28),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 29),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 29),
                             { 0, 0, height }, { { 0, 6, height + 56 }, { 32, 20, 0 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 34),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 34),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 35),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 35),
                             { 0, 0, height }, { { 0, 6, height + 56 }, { 32, 20, 0 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 40),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 40),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 41),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 41),
                             { 0, 0, height }, { { 0, 6, height + 56 }, { 32, 20, 0 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 46),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 46),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 47),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_BARREL_ROLL + 47),
                             { 0, 0, height }, { { 0, 6, height + 56 }, { 32, 20, 0 } });
                         break;
                 }
@@ -10271,28 +10328,34 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 0),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 0),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 1),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 1),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 1 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 6),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 6),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 7),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 7),
                             { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 12),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 12),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 16),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 16),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
@@ -10311,28 +10374,34 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 2),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 2),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 3),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 3),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 1 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 8),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 8),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 9),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 9),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 1 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 13),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 13),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 17),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 17),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
@@ -10346,34 +10415,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 4),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 4),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 5),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 5),
                             { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 1 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 10),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 10),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 11),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 11),
                             { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 1 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 14),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 14),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 15),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 15),
                             { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 0 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 18),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 18),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 19),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 19),
                             { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 0 } });
                         break;
                 }
@@ -10405,28 +10482,34 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 20),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 20),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 24),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 24),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 28),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 28),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 29),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 29),
                             { 0, 0, height }, { { 0, 31, height + 40 }, { 32, 1, 32 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 34),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 34),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 35),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 35),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 1 } });
                         break;
                 }
@@ -10444,28 +10527,34 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 21),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 21),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 25),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 25),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 30),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 30),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 31),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 31),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 1 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 36),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 36),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 37),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 37),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 1 } });
                         break;
                 }
@@ -10479,34 +10568,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 22),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 22),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 23),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 23),
                             { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 0 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 26),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 26),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 27),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 27),
                             { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 0 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 32),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 32),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 33),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 33),
                             { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 1 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 38),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 38),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 39),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_ZERO_G_ROLL + 39),
                             { 0, 0, height }, { { 0, 6, height + 48 }, { 32, 20, 1 } });
                         break;
                 }
@@ -10553,34 +10650,34 @@ namespace OpenRCT2::HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 0), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 0),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 7), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 7),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 8), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 96 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 8),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 15), { 0, 0, height },
-                            { { 1, 6, height }, { 30, 20, 16 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 15),
+                            { 0, 0, height }, { { 1, 6, height }, { 30, 20, 16 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 16), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 40 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 16),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 40 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 23), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 23),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -10598,38 +10695,38 @@ namespace OpenRCT2::HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 1), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 1),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 2), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 96 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 2),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 9), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 9),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 10), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 64 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 10),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 17), { 0, 0, height },
-                            { { -3, 0, height }, { 40, 8, 64 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 17),
+                            { 0, 0, height }, { { -3, 0, height }, { 40, 8, 64 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 18), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 64 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 18),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 24), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 24),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -10643,42 +10740,42 @@ namespace OpenRCT2::HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 3), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 3),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 4), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 64 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 4),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 11), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 11),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 12), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 48 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 12),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 19), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 19),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 20), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 48 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 20),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 25), { 0, 0, height },
-                            { { 0, 2, height }, { 32, 0, 32 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 25),
+                            { 0, 0, height }, { { 0, 2, height }, { 32, 0, 32 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 26), { 0, 0, height },
-                            { { 0, 6, height + 40 }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 26),
+                            { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -10694,42 +10791,42 @@ namespace OpenRCT2::HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 5), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 5),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 6), { 0, 0, height },
-                            { { 0, 0, height + 40 }, { 32, 32, 1 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 6),
+                            { 0, 0, height }, { { 0, 0, height + 40 }, { 32, 32, 1 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 13), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 13),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 14), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 48 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 14),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 21), { 0, 0, height },
-                            { { 0, 2, height }, { 32, 0, 32 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 21),
+                            { 0, 0, height }, { { 0, 2, height }, { 32, 0, 32 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 22), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 48 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 22),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 27), { 0, 0, height },
-                            { { 0, 2, height }, { 32, 0, 32 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 27),
+                            { 0, 0, height }, { { 0, 2, height }, { 32, 0, 32 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 28), { 0, 0, height },
-                            { { 0, 0, height + 40 }, { 32, 32, 1 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 28),
+                            { 0, 0, height }, { { 0, 0, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
                 switch (direction)
@@ -10761,34 +10858,34 @@ namespace OpenRCT2::HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 29), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 29),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 35), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 35),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 36), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 96 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 36),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 43), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 43),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 44), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 96 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 44),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 51), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 51),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -10806,38 +10903,38 @@ namespace OpenRCT2::HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 30), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 30),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 37), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 37),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 38), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 64 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 38),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 45), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 45),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 46), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 64 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 46),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 52), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 52),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 53), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 96 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 53),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 96 } });
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
@@ -10851,42 +10948,42 @@ namespace OpenRCT2::HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 31), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 31),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 32), { 0, 0, height },
-                            { { 0, 2, height }, { 32, 0, 32 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 32),
+                            { 0, 0, height }, { { 0, 2, height }, { 32, 0, 32 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 39), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 39),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 40), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 48 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 40),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 47), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 47),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 48), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 48 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 48),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 54), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 54),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 55), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 64 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 55),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 64 } });
                         break;
                 }
 
@@ -10901,42 +10998,42 @@ namespace OpenRCT2::HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 33), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 33),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 34), { 0, 0, height },
-                            { { 0, 0, height + 40 }, { 32, 32, 1 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 34),
+                            { 0, 0, height }, { { 0, 0, height + 40 }, { 32, 32, 1 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 41), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 41),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 42), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 48 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 42),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 49), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 49),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 50), { 0, 0, height },
-                            { { 0, 30, height }, { 32, 0, 48 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 50),
+                            { 0, 0, height }, { { 0, 30, height }, { 32, 0, 48 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 56), { 0, 0, height },
-                            { { 0, 6, height }, { 32, 20, 3 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 56),
+                            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 57), { 0, 0, height },
-                            { { 0, 0, height + 40 }, { 32, 32, 1 } });
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 57),
+                            { 0, 0, height }, { { 0, 0, height + 40 }, { 32, 32, 1 } });
                         break;
                 }
                 switch (direction)
@@ -10981,34 +11078,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 0),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 0),
                             { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 1),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 1),
                             { 0, 0, height }, { { 0, 28, height + 8 }, { 32, 1, 48 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 6),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 6),
                             { 0, 0, height }, { { 26, 4, height + 8 }, { 2, 20, 31 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 7),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 7),
                             { 0, 0, height }, { { 0, 28, height + 8 }, { 32, 1, 48 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 12),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 12),
                             { 0, 0, height }, { { 26, 4, height + 8 }, { 2, 20, 31 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 13),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 13),
                             { 0, 0, height }, { { 0, 28, height + 8 }, { 32, 1, 48 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 18),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 18),
                             { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 19),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 19),
                             { 0, 0, height }, { { 0, 28, height + 8 }, { 32, 1, 48 } });
                         break;
                 }
@@ -11020,34 +11125,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 2),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 2),
                             { 0, 0, height }, { { -2, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 3),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 3),
                             { 0, 0, height }, { { 0, 28, height }, { 32, 1, 55 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 8),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 8),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 9),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 9),
                             { 0, 0, height }, { { 0, 28, height }, { 32, 1, 55 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 14),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 14),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 15),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 15),
                             { 0, 0, height }, { { 0, 28, height }, { 32, 1, 55 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 20),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 20),
                             { 0, 0, height }, { { -2, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 21),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 21),
                             { 0, 0, height }, { { 0, 28, height }, { 32, 1, 55 } });
                         break;
                 }
@@ -11061,34 +11174,42 @@ namespace OpenRCT2::HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 4),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 4),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 5),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 5),
                             { 0, 0, height }, { { 0, 28, height }, { 32, 1, 32 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 10),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 10),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 11),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 11),
                             { 0, 0, height }, { { 0, 28, height }, { 32, 1, 32 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 16),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 16),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 17),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 17),
                             { 0, 0, height }, { { 0, 28, height }, { 32, 1, 32 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 22),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 22),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 23),
+                            session, direction,
+                            GetTrackColourSeparateRails(session).WithIndex(SPR_TRACKS_HYBRID_TRACK_QUARTER_LOOP + 23),
                             { 0, 0, height }, { { 0, 28, height }, { 32, 1, 32 } });
                         break;
                 }
