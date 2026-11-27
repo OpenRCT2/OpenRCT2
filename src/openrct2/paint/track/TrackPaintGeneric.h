@@ -164,23 +164,23 @@ namespace OpenRCT2
         }
     }
 
-    constexpr auto kTPFC1Spr1TunMetA = TrackPaintFunctionConfig{
+    constexpr auto kTPFC1Sprite1TunnelMetalSupportsA = TrackPaintFunctionConfig{
         .spriteCount = 1,
         .tunnelCount = 1,
     };
 
-    constexpr auto kTPFC1Spr1TunMetARev = TrackPaintFunctionConfig{
+    constexpr auto kTPFC1Sprite1TunnelMetalSupportsAReversed = TrackPaintFunctionConfig{
         .spriteCount = 1,
         .tunnelCount = 1,
         .reversed = true,
     };
 
-    constexpr auto kTPFC2Spr1TunMetA = TrackPaintFunctionConfig{
+    constexpr auto kTPFC2Sprites1TunnelMetalSupportsA = TrackPaintFunctionConfig{
         .spriteCount = 2,
         .tunnelCount = 1,
     };
 
-    constexpr auto kTPFC2Spr1TunMetARev = TrackPaintFunctionConfig{
+    constexpr auto kTPFC2Sprites1TunnelMetalSupportsAReversed = TrackPaintFunctionConfig{
         .spriteCount = 2,
         .tunnelCount = 1,
         .reversed = true,

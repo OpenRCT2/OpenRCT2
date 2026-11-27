@@ -20635,23 +20635,25 @@ TrackPaintFunction GetTrackPaintFunctionCorkscrewRC(TrackElemType trackType)
 
         // Quarter helices
         case TrackElemType::leftQuarterHelixLargeUp:
-            return trackPaintGeneric<kTPFC1Spr1TunMetA, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
+            return trackPaintGeneric<kTPFC1Sprite1TunnelMetalSupportsA, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
         case TrackElemType::rightQuarterHelixLargeUp:
-            return trackPaintGeneric<kTPFC1Spr1TunMetA, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
+            return trackPaintGeneric<kTPFC1Sprite1TunnelMetalSupportsA, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
         case TrackElemType::leftQuarterHelixLargeDown:
-            return trackPaintGeneric<kTPFC1Spr1TunMetARev, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
+            return trackPaintGeneric<kTPFC1Sprite1TunnelMetalSupportsAReversed, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
         case TrackElemType::rightQuarterHelixLargeDown:
-            return trackPaintGeneric<kTPFC1Spr1TunMetARev, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
+            return trackPaintGeneric<kTPFC1Sprite1TunnelMetalSupportsAReversed, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
 
         // Banked quarter helices
         case TrackElemType::leftQuarterBankedHelixLargeUp:
-            return trackPaintGeneric<kTPFC2Spr1TunMetA, kTrackPaintTrackArgs, kLeftQuarterBankedHelixArgs>;
+            return trackPaintGeneric<kTPFC2Sprites1TunnelMetalSupportsA, kTrackPaintTrackArgs, kLeftQuarterBankedHelixArgs>;
         case TrackElemType::rightQuarterBankedHelixLargeUp:
-            return trackPaintGeneric<kTPFC2Spr1TunMetA, kTrackPaintTrackArgs, kRightQuarterBankedHelixArgs>;
+            return trackPaintGeneric<kTPFC2Sprites1TunnelMetalSupportsA, kTrackPaintTrackArgs, kRightQuarterBankedHelixArgs>;
         case TrackElemType::leftQuarterBankedHelixLargeDown:
-            return trackPaintGeneric<kTPFC2Spr1TunMetARev, kTrackPaintTrackArgs, kRightQuarterBankedHelixArgs>;
+            return trackPaintGeneric<
+                kTPFC2Sprites1TunnelMetalSupportsAReversed, kTrackPaintTrackArgs, kRightQuarterBankedHelixArgs>;
         case TrackElemType::rightQuarterBankedHelixLargeDown:
-            return trackPaintGeneric<kTPFC2Spr1TunMetARev, kTrackPaintTrackArgs, kLeftQuarterBankedHelixArgs>;
+            return trackPaintGeneric<
+                kTPFC2Sprites1TunnelMetalSupportsAReversed, kTrackPaintTrackArgs, kLeftQuarterBankedHelixArgs>;
 
         default:
             return TrackPaintFunctionDummy;

@@ -2226,13 +2226,13 @@ TrackPaintFunction GetTrackPaintFunctionSteeplechase(TrackElemType trackType)
         case TrackElemType::diagBlockBrakes:
             return SteeplechaseTrackDiagBrakes;
         case TrackElemType::leftQuarterHelixLargeUp:
-            return trackPaintGeneric<kTPFC1Spr1TunMetA, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
+            return trackPaintGeneric<kTPFC1Sprite1TunnelMetalSupportsA, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
         case TrackElemType::rightQuarterHelixLargeUp:
-            return trackPaintGeneric<kTPFC1Spr1TunMetA, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
+            return trackPaintGeneric<kTPFC1Sprite1TunnelMetalSupportsA, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
         case TrackElemType::leftQuarterHelixLargeDown:
-            return trackPaintGeneric<kTPFC1Spr1TunMetARev, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
+            return trackPaintGeneric<kTPFC1Sprite1TunnelMetalSupportsAReversed, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
         case TrackElemType::rightQuarterHelixLargeDown:
-            return trackPaintGeneric<kTPFC1Spr1TunMetARev, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
+            return trackPaintGeneric<kTPFC1Sprite1TunnelMetalSupportsAReversed, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
         default:
             return TrackPaintFunctionDummy;
     }

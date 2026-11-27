@@ -21,26 +21,26 @@ namespace OpenRCT2::HybridRC
 {
     static constexpr TunnelGroup kTunnelGroup = TunnelGroup::square;
 
-    constexpr auto kTPFC1Spr1TunHyb = TrackPaintFunctionConfig{
+    constexpr auto kTPFC1Sprite1TunnelHybrid = TrackPaintFunctionConfig{
         .spriteCount = 1,
         .tunnelCount = 1,
         .woodenSupports = true,
         .trackSupportColours = true,
     };
-    constexpr auto kTPFC1Spr1TunRevHyb = TrackPaintFunctionConfig{
+    constexpr auto kTPFC1Sprite1TunnelReversedHybrid = TrackPaintFunctionConfig{
         .spriteCount = 1,
         .tunnelCount = 1,
         .woodenSupports = true,
         .reversed = true,
         .trackSupportColours = true,
     };
-    constexpr auto kTPFC2Spr1TunHyb = TrackPaintFunctionConfig{
+    constexpr auto kTPFC2Sprites1TunnelHybrid = TrackPaintFunctionConfig{
         .spriteCount = 2,
         .tunnelCount = 1,
         .woodenSupports = true,
         .trackSupportColours = true,
     };
-    constexpr auto kTPFC2Spr1TunRevHyb = TrackPaintFunctionConfig{
+    constexpr auto kTPFC2Sprites1TunnelReversedHybrid = TrackPaintFunctionConfig{
         .spriteCount = 2,
         .tunnelCount = 1,
         .woodenSupports = true,
@@ -15051,21 +15051,22 @@ namespace OpenRCT2::HybridRC
             case TrackElemType::diagDown25Brakes:
                 return TrackDiag25DegDownBrakes;
             case TrackElemType::leftQuarterHelixLargeUp:
-                return trackPaintGeneric<kTPFC1Spr1TunHyb, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
+                return trackPaintGeneric<kTPFC1Sprite1TunnelHybrid, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
             case TrackElemType::rightQuarterHelixLargeUp:
-                return trackPaintGeneric<kTPFC1Spr1TunHyb, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
+                return trackPaintGeneric<kTPFC1Sprite1TunnelHybrid, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
             case TrackElemType::leftQuarterHelixLargeDown:
-                return trackPaintGeneric<kTPFC1Spr1TunRevHyb, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
+                return trackPaintGeneric<kTPFC1Sprite1TunnelReversedHybrid, kTrackPaintTrackArgs, kRightQuarterHelixArgs>;
             case TrackElemType::rightQuarterHelixLargeDown:
-                return trackPaintGeneric<kTPFC1Spr1TunRevHyb, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
+                return trackPaintGeneric<kTPFC1Sprite1TunnelReversedHybrid, kTrackPaintTrackArgs, kLeftQuarterHelixArgs>;
             case TrackElemType::leftQuarterBankedHelixLargeUp:
-                return trackPaintGeneric<kTPFC2Spr1TunHyb, kTrackPaintTrackArgs, kLeftQuarterBankedHelixArgs>;
+                return trackPaintGeneric<kTPFC2Sprites1TunnelHybrid, kTrackPaintTrackArgs, kLeftQuarterBankedHelixArgs>;
             case TrackElemType::rightQuarterBankedHelixLargeUp:
-                return trackPaintGeneric<kTPFC2Spr1TunHyb, kTrackPaintTrackArgs, kRightQuarterBankedHelixArgs>;
+                return trackPaintGeneric<kTPFC2Sprites1TunnelHybrid, kTrackPaintTrackArgs, kRightQuarterBankedHelixArgs>;
             case TrackElemType::leftQuarterBankedHelixLargeDown:
-                return trackPaintGeneric<kTPFC2Spr1TunRevHyb, kTrackPaintTrackArgs, kRightQuarterBankedHelixArgs>;
+                return trackPaintGeneric<
+                    kTPFC2Sprites1TunnelReversedHybrid, kTrackPaintTrackArgs, kRightQuarterBankedHelixArgs>;
             case TrackElemType::rightQuarterBankedHelixLargeDown:
-                return trackPaintGeneric<kTPFC2Spr1TunRevHyb, kTrackPaintTrackArgs, kLeftQuarterBankedHelixArgs>;
+                return trackPaintGeneric<kTPFC2Sprites1TunnelReversedHybrid, kTrackPaintTrackArgs, kLeftQuarterBankedHelixArgs>;
             default:
                 return TrackPaintFunctionDummy;
         }
