@@ -28,6 +28,7 @@
 #include "Map.h"
 #include "MapAnimation.h"
 #include "MapOwnership.h"
+#include "TileElementsView.h"
 #include "Wall.h"
 #include "tile_element/BannerElement.h"
 #include "tile_element/EntranceElement.h"
@@ -122,6 +123,24 @@ namespace OpenRCT2
             if (pathElement != nullptr && pathElement->getBaseZ() == coords.z)
                 return pathElement;
         } while (!(tileElement++)->isLastForTile());
+
+        return nullptr;
+    }
+
+    PathElement* MapGetFootpathElementWithSlope(const CoordsXYZ& footpathPos, FootpathSlope slope)
+    {
+        const bool isSloped = slope.type == FootpathSlopeType::sloped;
+
+        for (auto* pathElement : TileElementsView<PathElement>(footpathPos))
+        {
+            if (pathElement->getBaseZ() != footpathPos.z)
+                continue;
+            if (pathElement->isSloped() != isSloped)
+                continue;
+            if (isSloped && pathElement->getSlopeDirection() != slope.direction)
+                continue;
+            return pathElement;
+        }
 
         return nullptr;
     }

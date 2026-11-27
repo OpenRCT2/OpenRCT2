@@ -1,6 +1,7 @@
 0.5.8 (in development)
 ------------------------------------------------------------------------
 - Feature: [#26845] Terrain surface and edge styles can now be picked from existing map tiles.
+- Feature: [#26846] Footpath styles and railings can be now picked from existing footpaths on the map.
 - Feature: [#27275] [Plugin] Expose ducks in scripting.
 - Feature: [#27404] Add Irish translation.
 - Feature: [#27420] CLI command to create a screenshot of a track design.
