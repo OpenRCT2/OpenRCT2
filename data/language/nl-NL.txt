@@ -3864,3 +3864,5 @@ STR_7081    :Zilver
 STR_7082    :Baanontwerp geïnstalleerd.
 STR_7083    :Baanontwerp was al geïnstalleerd.
 STR_7084    :Stijlpipet. Hiermee kun je op een vakje in het landschap klikken om het type land te kopiëren.
+STR_7085    :Meedoen op een server
+STR_7086    :Zelf een server hosten

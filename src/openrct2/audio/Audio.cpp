@@ -22,6 +22,7 @@
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
 #include "../object/AudioObject.h"
+#include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
@@ -63,11 +64,16 @@ namespace OpenRCT2::Audio
 
     bool IsAvailable()
     {
+        if (!Config::Get().sound.soundEnabled)
+            return false;
+        return IsMusicAvailable();
+    }
+
+    bool IsMusicAvailable()
+    {
         if (_currentAudioDevice == -1)
             return false;
         if (gGameSoundsOff)
-            return false;
-        if (!Config::Get().sound.soundEnabled)
             return false;
         if (gOpenRCT2Headless)
             return false;
@@ -143,7 +149,7 @@ namespace OpenRCT2::Audio
      * @param location The location at which the sound effect is to be played.
      * @return The audio parameters to be used when playing this sound effect.
      */
-    static AudioParams GetParametersFromLocation(AudioObject* obj, uint32_t sampleIndex, const CoordsXYZ& location)
+    static AudioParams GetParametersFromLocation(int32_t sampleModifier, const CoordsXYZ& location)
     {
         int32_t volumeDown = 0;
         AudioParams params;
@@ -168,7 +174,6 @@ namespace OpenRCT2::Audio
                 int16_t vx = pos2.x - viewport.viewPos.x;
                 params.pan = viewport.pos.x + viewport.zoom.ApplyInversedTo(vx);
 
-                auto sampleModifier = obj->GetSampleModifier(sampleIndex);
                 auto viewModifier = ((viewport.zoom.ApplyTo(-1024) - 1) * (1 << volumeDown)) + 1;
                 params.volume = sampleModifier + viewModifier;
 
@@ -222,7 +227,7 @@ namespace OpenRCT2::Audio
         auto [baseAudioObject, sampleIndex] = GetAudioObjectAndSampleIndex(soundId);
         if (baseAudioObject != nullptr)
         {
-            auto params = GetParametersFromLocation(baseAudioObject, sampleIndex, loc);
+            auto params = GetParametersFromLocation(baseAudioObject->GetSampleModifier(sampleIndex), loc);
             if (params.in_range)
             {
                 auto source = baseAudioObject->GetSample(sampleIndex);
@@ -249,6 +254,45 @@ namespace OpenRCT2::Audio
                 Play(source, volume, pan);
             }
         }
+    }
+
+    IAudioSource* getSoundSource(SoundId soundId, int32_t* sampleModifier)
+    {
+        auto [audioObject, sampleIndex] = GetAudioObjectAndSampleIndex(soundId);
+        if (audioObject == nullptr)
+            return nullptr;
+
+        if (sampleModifier != nullptr)
+            *sampleModifier = audioObject->GetSampleModifier(sampleIndex);
+        return audioObject->GetSample(sampleIndex);
+    }
+
+    IAudioSource* getMusicSource(std::string_view identifier)
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        auto descriptor = ObjectEntryDescriptor(ObjectType::music, identifier);
+        auto* object = objManager.GetLoadedObject(descriptor);
+        if (object == nullptr || object->GetObjectType() != ObjectType::music)
+            return nullptr;
+
+        return static_cast<MusicObject*>(object)->GetTrackSample(0);
+    }
+
+    bool getLocationParams(int32_t sampleModifier, const CoordsXYZ& loc, int32_t& volume, float& pan)
+    {
+        auto params = GetParametersFromLocation(sampleModifier, loc);
+
+        int32_t mixerPan = 0;
+        if (params.pan != kAudioPlayAtCentre)
+        {
+            int32_t x2 = params.pan << 16;
+            uint16_t screenWidth = std::max<int32_t>(64, ContextGetWidth());
+            mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
+        }
+
+        volume = params.in_range ? DStoMixerVolume(params.volume) : 0;
+        pan = DStoMixerPan(mixerPan);
+        return params.in_range;
     }
 
     static bool IsRCT1TitleMusicAvailable()

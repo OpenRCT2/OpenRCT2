@@ -14,6 +14,8 @@
     #include "../interface/Widget.h"
     #include "../scripting/ScGraphicsContext.hpp"
     #include "../scripting/ScWidget.hpp"
+    #include "../widget/CheckboxWidget.h"
+    #include "../widget/TabWidget.h"
     #include "../windows/Windows.h"
     #include "CustomListView.h"
 
@@ -899,15 +901,8 @@ namespace OpenRCT2::Ui::Windows
             }
             for (size_t tabDescIndex = 0; tabDescIndex < _info.Desc.Tabs.size(); tabDescIndex++)
             {
-                Widget widget{};
-                widget.type = WidgetType::tab;
-                widget.colour = 1;
-                widget.left = static_cast<int16_t>(3 + (tabDescIndex * 31));
-                widget.right = widget.left + 30;
-                widget.top = 17;
-                widget.bottom = kTabBarHeight;
-                widget.image = ImageId(SPR_TAB, FilterPaletteID::paletteNull);
-                widget.tooltip = kStringIdNone;
+                ScreenCoordsXY origin = { static_cast<int16_t>(3 + (tabDescIndex * 31)), 17 };
+                Widgets::Tab widget{ origin };
                 widgetList.push_back(widget);
                 _info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
             }
@@ -957,14 +952,14 @@ namespace OpenRCT2::Ui::Windows
 
         static void CreateWidget(std::vector<Widget>& widgetList, const CustomWidgetDesc& desc)
         {
-            Widget widget{};
-            widget.colour = 1;
-            widget.left = desc.X;
-            widget.top = desc.Y;
-            widget.right = desc.X + desc.Width - 1;
-            widget.bottom = desc.Y + desc.Height - 1;
-            widget.content = std::numeric_limits<uint32_t>::max();
-            widget.tooltip = kStringIdNone;
+            ScreenCoordsXY origin = { desc.X, desc.Y };
+            ScreenSize size = { desc.Width, desc.Height };
+            Widget widget;
+            if (desc.Type == "checkbox")
+                widget = Widgets::Checkbox{ origin, size, WindowColour::secondary };
+            else
+                widget = Widget(origin, size, WidgetType::empty, WindowColour::secondary, kStringIdNone, kStringIdNone);
+
             widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
             widget.flags.set(WidgetFlag::tooltipIsString);
             if (desc.IsDisabled)

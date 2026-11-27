@@ -10,6 +10,7 @@
 #include "Crash.h"
 
 #ifdef USE_BREAKPAD
+    #include <format>
     #include <iterator>
     #include <map>
     #include <memory>
@@ -35,6 +36,7 @@
     #include "../core/Compression.h"
     #include "../core/Console.hpp"
     #include "../core/FileStream.h"
+    #include "../core/FileSystem.hpp"
     #include "../core/Guard.hpp"
     #include "../core/Path.hpp"
     #include "../core/String.hpp"
@@ -89,7 +91,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
         parameters[L"commit"] = String::toWideChar(gVersionInfoFull);
     }
 
-    auto assertMsg = Guard::GetLastAssertMessage();
+    const auto& assertMsg = Guard::GetLastAssertMessage();
     if (assertMsg.has_value())
     {
         parameters[L"assert_failure"] = String::toWideChar(assertMsg.value());
@@ -119,22 +121,16 @@ static bool OnCrash(
     }
 
     // Get filenames
-    wchar_t dumpFilePath[MAX_PATH];
-    wchar_t saveFilePath[MAX_PATH];
-    wchar_t configFilePath[MAX_PATH];
-    wchar_t recordFilePathNew[MAX_PATH];
-    swprintf_s(dumpFilePath, std::size(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
-    swprintf_s(saveFilePath, std::size(saveFilePath), L"%s\\%s.park", dumpPath, miniDumpId);
-    swprintf_s(configFilePath, std::size(configFilePath), L"%s\\%s.ini", dumpPath, miniDumpId);
-    swprintf_s(recordFilePathNew, std::size(recordFilePathNew), L"%s\\%s.parkrep", dumpPath, miniDumpId);
+    const auto pathStem = fs::path(dumpPath) / miniDumpId;
+    auto dumpFilePath = fs::path(pathStem).replace_extension(".dmp");
+    const auto saveFilePath = fs::path(pathStem).replace_extension(".park");
+    const auto configFilePath = fs::path(pathStem).replace_extension(".ini");
+    const auto recordFilePathNew = fs::path(pathStem).replace_extension(".parkrep");
 
-    wchar_t dumpFilePathNew[MAX_PATH];
-    swprintf_s(
-        dumpFilePathNew, std::size(dumpFilePathNew), L"%s\\%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short,
-        _wszArchitecture);
-
-    wchar_t dumpFilePathGZIP[MAX_PATH];
-    swprintf_s(dumpFilePathGZIP, std::size(dumpFilePathGZIP), L"%s.gz", dumpFilePathNew);
+    const auto dumpFilePathNew = fs::path(pathStem)
+                                     .concat(std::format(L"({}_{})", _wszCommitSha1Short, _wszArchitecture))
+                                     .replace_extension(".dmp");
+    const auto dumpFilePathGZIP = fs::path(dumpFilePathNew).concat(L".gz"); // Add a second extension instead of replacing
 
     // Compress the dump
     {
@@ -159,23 +155,23 @@ static bool OnCrash(
     bool with_record = StopSilentRecord();
 
     // Try to rename the files
-    if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
+    if (_wrename(dumpFilePath.c_str(), dumpFilePathNew.c_str()) == 0)
     {
-        std::wcscpy(dumpFilePath, dumpFilePathNew);
+        dumpFilePath = dumpFilePathNew;
     }
     _uploadFiles[L"upload_file_minidump"] = dumpFilePath;
 
     // Compress to gzip-compatible stream
 
     // Log information to output
-    wprintf(L"Dump Path: %s\n", dumpPath);
-    wprintf(L"Dump File Path: %s\n", dumpFilePath);
-    wprintf(L"Dump Id: %s\n", miniDumpId);
-    wprintf(L"Version: %s\n", WSZ(kOpenRCT2Version));
-    wprintf(L"Commit: %s\n", _wszCommitSha1Short);
+    wprintf(L"Dump Path: %ls\n", dumpPath);
+    wprintf(L"Dump File Path: %ls\n", dumpFilePath.c_str());
+    wprintf(L"Dump Id: %ls\n", miniDumpId);
+    wprintf(L"Version: %ls\n", WSZ(kOpenRCT2Version));
+    wprintf(L"Commit: %ls\n", _wszCommitSha1Short);
 
     bool savedGameDumped = false;
-    auto saveFilePathUTF8 = String::toUtf8(saveFilePath);
+    auto saveFilePathUTF8 = saveFilePath.u8string();
     try
     {
         PrepareMapForSave();
@@ -187,7 +183,7 @@ static bool OnCrash(
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
         auto& gameState = getGameState();
-        exporter->Export(gameState, saveFilePathUTF8.c_str(), kParkFileSaveCompressionLevel);
+        exporter->Export(gameState, saveFilePathUTF8, kParkFileSaveCompressionLevel);
         savedGameDumped = true;
     }
     catch (const std::exception& e)
@@ -201,7 +197,7 @@ static bool OnCrash(
         _uploadFiles[L"attachment_park.park"] = saveFilePath;
     }
 
-    auto configFilePathUTF8 = String::toUtf8(configFilePath);
+    auto configFilePathUTF8 = configFilePath.u8string();
     if (Config::SaveToPath(configFilePathUTF8))
     {
         _uploadFiles[L"attachment_config.ini"] = configFilePath;
@@ -221,7 +217,7 @@ static bool OnCrash(
         std::string screenshotPath = ScreenshotDump();
         if (!screenshotPath.empty())
         {
-            auto screenshotPathW = String::toWideChar(screenshotPath.c_str());
+            auto screenshotPathW = String::toWideChar(screenshotPath);
             _uploadFiles[L"attachment_screenshot.png"] = screenshotPathW;
         }
     }
@@ -229,7 +225,7 @@ static bool OnCrash(
     if (with_record)
     {
         auto parkReplayPathW = String::toWideChar(gSilentRecordingName);
-        bool record_copied = CopyFileW(parkReplayPathW.c_str(), recordFilePathNew, true);
+        bool record_copied = CopyFileW(parkReplayPathW.c_str(), recordFilePathNew.c_str(), true);
         if (record_copied)
         {
             _uploadFiles[L"attachment_replay.parkrep"] = recordFilePathNew;
@@ -249,16 +245,16 @@ static bool OnCrash(
         return succeeded;
     }
 
-    constexpr const wchar_t* MessageFormat = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue "
+    constexpr const wchar_t* MessageFormat = L"A crash has occurred and a dump was created at\n{}.\n\nPlease file an issue "
                                              L"with OpenRCT2 on GitHub, and provide "
-                                             L"the dump and saved game there.\n\nVersion: %s\nCommit: %s\n\n"
+                                             L"the dump and saved game there.\n\nVersion: {}\nCommit: {}\n\n"
                                              L"We would like to upload the crash dump for automated analysis, do you agree?\n"
-                                             L"The automated analysis is done by courtesy of https://backtrace.io/";
-    wchar_t message[MAX_PATH * 2];
-    swprintf_s(message, MessageFormat, dumpFilePath, WSZ(kOpenRCT2Version), _wszCommitSha1Short);
+                                             L"The automated analysis is done by courtesy of https://backtrace.io/.";
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
-    int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
+    int answer = MessageBoxW(
+        nullptr, std::format(MessageFormat, dumpFilePath.native(), WSZ(kOpenRCT2Version), _wszCommitSha1Short).c_str(),
+        WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
     if (answer == IDYES)
     {
         int error;
@@ -266,16 +262,18 @@ static bool OnCrash(
         bool ok = UploadMinidump(_uploadFiles, error, response);
         if (!ok)
         {
-            const wchar_t* MessageFormat2 = L"There was a problem while uploading the dump. Please upload it manually to "
-                                            L"GitHub. It should be highlighted for you once you close this message.\n"
-                                            L"It might be because you are using outdated build and we have disabled its "
-                                            L"access token. Make sure you are running recent version.\n"
-                                            L"Dump file = %s\n"
-                                            L"Please provide following information as well:\n"
-                                            L"Error code = %d\n"
-                                            L"Response = %s";
-            swprintf_s(message, MessageFormat2, dumpFilePath, error, response.c_str());
-            MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
+            constexpr const wchar_t* MessageFormat2
+                = L"There was a problem while uploading the dump. Please upload it manually to "
+                  L"GitHub. It should be highlighted for you once you close this message.\n"
+                  L"It might be because you are using outdated build and we have disabled its "
+                  L"access token. Make sure you are running recent version.\n"
+                  L"Dump file = {}\n"
+                  L"Please provide following information as well:\n"
+                  L"Error code = {}\n"
+                  L"Response = {}";
+            MessageBoxW(
+                nullptr, std::format(MessageFormat2, dumpFilePath.native(), error, response).c_str(), WSZ(OPENRCT2_NAME),
+                MB_OK | MB_ICONERROR);
         }
         else
         {
@@ -289,18 +287,18 @@ static bool OnCrash(
         LPITEMIDLIST files[6];
         uint32_t numFiles = 0;
 
-        files[numFiles++] = ILCreateFromPathW(dumpFilePath);
+        files[numFiles++] = ILCreateFromPathW(dumpFilePath.c_str());
         // There should be no need to check if this file exists, if it doesn't
         // it simply shouldn't get selected.
-        files[numFiles++] = ILCreateFromPathW(dumpFilePathGZIP);
-        files[numFiles++] = ILCreateFromPathW(configFilePath);
+        files[numFiles++] = ILCreateFromPathW(dumpFilePathGZIP.c_str());
+        files[numFiles++] = ILCreateFromPathW(configFilePath.c_str());
         if (savedGameDumped)
         {
-            files[numFiles++] = ILCreateFromPathW(saveFilePath);
+            files[numFiles++] = ILCreateFromPathW(saveFilePath.c_str());
         }
         if (with_record)
         {
-            files[numFiles++] = ILCreateFromPathW(recordFilePathNew);
+            files[numFiles++] = ILCreateFromPathW(recordFilePathNew.c_str());
         }
         if (pidl != nullptr)
         {

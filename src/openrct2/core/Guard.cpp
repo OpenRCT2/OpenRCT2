@@ -35,7 +35,7 @@
 
 #include <cassert>
 #include <cstdlib>
-#include <sstream>
+#include <format>
 
 namespace OpenRCT2::Guard
 {
@@ -72,10 +72,7 @@ namespace OpenRCT2::Guard
         if (expression)
             return;
 
-        std::stringstream messageStream;
-        messageStream << "Assertion failed in " << location.file_name() << ":" << location.line();
-
-        std::string message = messageStream.str();
+        const std::string message = std::format("Assertion failed in {}:{}", location.file_name(), location.line());
 
         Assert(expression, message.c_str());
     }
@@ -101,7 +98,7 @@ namespace OpenRCT2::Guard
         if (message != nullptr)
         {
             formattedMessage = String::formatVA(message, args);
-            Console::Error::WriteLine(formattedMessage.c_str());
+            Console::Error::WriteLine(formattedMessage);
             _lastAssertMessage = std::make_optional(formattedMessage);
         }
 
@@ -147,7 +144,7 @@ namespace OpenRCT2::Guard
         Assert_VA(false, message, args);
     }
 
-    std::optional<std::string> GetLastAssertMessage()
+    const std::optional<std::string>& GetLastAssertMessage()
     {
         return _lastAssertMessage;
     }

@@ -447,8 +447,7 @@ namespace OpenRCT2
 
     static void PrintVersion()
     {
-        u8string versionInfo = gVersionInfoFull;
-        Console::WriteLine(versionInfo.c_str());
+        Console::WriteLine(gVersionInfoFull);
         Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
         Console::WriteLine();
         Console::WriteFormat("Network version: %s", Network::GetVersion().c_str());
@@ -480,8 +479,7 @@ namespace OpenRCT2
         struct tm* tmInfo;
 
         // Print name and version information
-        u8string versionInfo = gVersionInfoFull;
-        Console::WriteLine(versionInfo.c_str());
+        Console::WriteLine(gVersionInfoFull);
         Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
         Console::WriteLine();
         Console::WriteLine();

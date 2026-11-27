@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
@@ -121,13 +122,13 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMainGuestWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({ 0, 43 }, { 192, 114 }, WidgetType::resize, WindowColour::secondary), /* Resize */
-        makeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                      /* Tab 1 */
-        makeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                    /* Tab 2 */
-        makeTab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP),                            /* Tab 3 */
-        makeTab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),                                  /* Tab 4 */
-        makeTab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),                                /* Tab 5 */
-        makeTab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),                                   /* Tab 6 */
-        makeTab({ 189, 17 }, STR_DEBUG_TIP)                                               /* Tab 7 */
+        Widgets::Tab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),           /* Tab 1 */
+        Widgets::Tab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),         /* Tab 2 */
+        Widgets::Tab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP), /* Tab 3 */
+        Widgets::Tab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),       /* Tab 4 */
+        Widgets::Tab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),     /* Tab 5 */
+        Widgets::Tab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),        /* Tab 6 */
+        Widgets::Tab({ 189, 17 }, STR_DEBUG_TIP)                    /* Tab 7 */
     );
 
     static constexpr auto _guestWindowWidgetsOverview = makeWidgets(
@@ -907,9 +908,9 @@ namespace OpenRCT2::Ui::Windows
             invalidateWidget(WIDX_TAB_1);
             invalidateWidget(WIDX_TAB_2);
 
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::action))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::action);
                 invalidateWidget(WIDX_ACTION_LBL);
             }
 
@@ -1091,7 +1092,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_STATS;
+            peep->windowInvalidateFlags.unset(PeepInvalidateFlag::stats);
 
             invalidate();
         }
@@ -1256,6 +1257,12 @@ namespace OpenRCT2::Ui::Windows
             // If there are new items
             if (oldSize != _riddenRides.size())
             {
+                invalidate();
+            }
+
+            if (guest->windowInvalidateFlags.has(PeepInvalidateFlag::favouriteRide))
+            {
+                guest->windowInvalidateFlags.unset(PeepInvalidateFlag::favouriteRide);
                 invalidate();
             }
         }
@@ -1546,9 +1553,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_THOUGHTS)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::thoughts))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_THOUGHTS;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::thoughts);
                 invalidate();
             }
         }
@@ -1617,9 +1624,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            if (peep->windowInvalidateFlags & PEEP_INVALIDATE_PEEP_INVENTORY)
+            if (peep->windowInvalidateFlags.has(PeepInvalidateFlag::inventory))
             {
-                peep->windowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_INVENTORY;
+                peep->windowInvalidateFlags.unset(PeepInvalidateFlag::inventory);
                 invalidate();
             }
         }

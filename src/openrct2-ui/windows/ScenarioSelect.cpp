@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
@@ -114,17 +115,17 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _scenarioSelectWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowSize.width, 284 },         WidgetType::resize, WindowColour::secondary                     ), // tab content panel
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 2) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 03
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 3) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 04
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 4) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 05
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 5) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 06
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 6) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
+        makeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowSize.width, 284 },      WidgetType::resize, WindowColour::secondary), // tab content panel
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 01
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 02
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 2) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 03
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 3) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 04
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 4) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 05
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 5) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 06
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 6) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 07
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 08
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 09
+        Widgets::Tab({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight }, SPR_G2_SIDEWAYS_TAB), // tab 10
         makeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowSize.width - kPreviewPaneWidthRegular, 362 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL    ) // level list
     );
     // clang-format on

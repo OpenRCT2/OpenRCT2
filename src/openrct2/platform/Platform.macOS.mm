@@ -113,17 +113,19 @@ namespace OpenRCT2::Platform
 
     std::string GetCurrentExecutablePath()
     {
-        char exePath[MAX_PATH];
-        uint32_t size = MAX_PATH;
-        int result = _NSGetExecutablePath(exePath, &size);
-        if (result == 0)
+        uint32_t size = 0;
+        _NSGetExecutablePath(nullptr, &size);
+
+        std::string path(size, '\0');
+        if (_NSGetExecutablePath(path.data(), &size) == 0)
         {
-            return exePath;
+            path.resize(std::strlen(path.c_str()));
         }
         else
         {
-            return std::string();
+            path.clear();
         }
+        return path;
     }
 
     u8string StrDecompToPrecomp(u8string_view input)

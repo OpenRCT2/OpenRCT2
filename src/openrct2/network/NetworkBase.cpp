@@ -47,7 +47,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kStreamVersion = 1;
+constexpr uint8_t kStreamVersion = 2;
 
 const std::string kStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kStreamVersion);
 
@@ -1157,6 +1157,12 @@ namespace OpenRCT2::Network
             {
                 default_group = 0;
             }
+        }
+
+        // The host group below must exist, so a config without any groups gets the defaults.
+        if (group_list.empty())
+        {
+            SetupDefaultGroups();
         }
 
         // Host group should always contain all permissions.

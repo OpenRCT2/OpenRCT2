@@ -11,6 +11,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/widget/TabWidget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/Version.h>
@@ -61,8 +62,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMainWidgets = makeWidgets(
         makeWindowShim (kWindowTitle, kWindowSize),
         makeWidget     ({  0, kTabHeight }, { kWindowSize.width, kWindowSize.height - kTabHeight }, WidgetType::frame, WindowColour::secondary),
-        makeRemapWidget({  3, 17         }, { 91,                kTabHeight - 16                 }, WidgetType::tab,   WindowColour::secondary, SPR_TAB_LARGE),
-        makeRemapWidget({ 94, 17         }, { 91,                kTabHeight - 16                 }, WidgetType::tab,   WindowColour::secondary, SPR_TAB_LARGE)
+        Widgets::Tab   ({  3, 17         }, { 91,                kTabHeight - 16                 }, SPR_TAB_LARGE),
+        Widgets::Tab   ({ 94, 17         }, { 91,                kTabHeight - 16                 }, SPR_TAB_LARGE)
     );
 
     static constexpr auto _windowAboutOpenRCT2Widgets = makeWidgets(
