@@ -209,9 +209,10 @@ namespace OpenRCT2::Scripting
         return JS_UNDEFINED;
     }
 
-    // Reads the optional arguments shared by playSound and playMusic: position?, rate?
+    // Reads the optional arguments shared by playSound and playMusic: position?, rate?, volume?
     // Returns false if a JS exception was raised.
-    static bool parsePlayArgs(JSContext* ctx, int argc, JSValue* argv, std::optional<CoordsXYZ>& position, double& rate)
+    static bool parsePlayArgs(
+        JSContext* ctx, int argc, JSValue* argv, std::optional<CoordsXYZ>& position, double& rate, double& volume)
     {
         if (argc > 1 && JS_IsObject(argv[1]))
         {
@@ -223,12 +224,18 @@ namespace OpenRCT2::Scripting
             if (JS_ToFloat64(ctx, &rate, argv[2]) < 0)
                 return false;
         }
+
+        if (argc > 3 && !JS_IsUndefined(argv[3]) && !JS_IsNull(argv[3]))
+        {
+            if (JS_ToFloat64(ctx, &volume, argv[3]) < 0)
+                return false;
+        }
         return true;
     }
 
     static std::shared_ptr<Audio::IAudioChannel> playSource(
         Audio::IAudioSource* source, int32_t sampleModifier, Audio::MixerGroup group, const std::optional<CoordsXYZ>& position,
-        double rate)
+        double rate, double volumeMultiplier)
     {
         if (source == nullptr)
             return nullptr;
@@ -247,6 +254,9 @@ namespace OpenRCT2::Scripting
         if (position.has_value() && !Audio::getLocationParams(sampleModifier, *position, volume, pan))
             return nullptr;
 
+        volumeMultiplier = std::clamp(volumeMultiplier, 0.0, 4.0);
+        volume = std::clamp(static_cast<int32_t>(volume * volumeMultiplier), 0, Audio::kMixerVolumeMax);
+
         rate = std::clamp(rate, 0.05, 20.0);
         return Audio::CreateAudioChannel(source, group, false, volume, pan, rate, true);
     }
@@ -255,7 +265,8 @@ namespace OpenRCT2::Scripting
     {
         std::optional<CoordsXYZ> position;
         double rate = 1.0;
-        if (!parsePlayArgs(ctx, argc, argv, position, rate))
+        double volume = 1.0;
+        if (!parsePlayArgs(ctx, argc, argv, position, rate, volume))
             return JS_EXCEPTION;
 
         if (JS_IsNumber(argv[0]))
@@ -267,7 +278,7 @@ namespace OpenRCT2::Scripting
                 JS_ThrowPlainError(ctx, "Invalid sound handle.");
                 return JS_EXCEPTION;
             }
-            playSource(sound->source, 0, Audio::MixerGroup::sound, position, rate);
+            playSource(sound->source, 0, Audio::MixerGroup::sound, position, rate, volume);
             return JS_UNDEFINED;
         }
 
@@ -275,7 +286,7 @@ namespace OpenRCT2::Scripting
         auto soundId = getSoundByName(soundName);
         int32_t sampleModifier = 0;
         auto* source = Audio::getSoundSource(soundId, &sampleModifier);
-        playSource(source, sampleModifier, Audio::MixerGroup::sound, position, rate);
+        playSource(source, sampleModifier, Audio::MixerGroup::sound, position, rate, volume);
         return JS_UNDEFINED;
     }
 
@@ -284,7 +295,8 @@ namespace OpenRCT2::Scripting
         releaseFinishedMusic();
         std::optional<CoordsXYZ> position;
         double rate = 1.0;
-        if (!parsePlayArgs(ctx, argc, argv, position, rate))
+        double volume = 1.0;
+        if (!parsePlayArgs(ctx, argc, argv, position, rate, volume))
             return JS_EXCEPTION;
 
         JS_UNPACK_STR(songName, ctx, argv[0]);
@@ -295,7 +307,7 @@ namespace OpenRCT2::Scripting
             return JS_EXCEPTION;
         }
 
-        auto channel = playSource(source, 0, Audio::MixerGroup::rideMusic, position, rate);
+        auto channel = playSource(source, 0, Audio::MixerGroup::rideMusic, position, rate, volume);
         if (channel == nullptr)
         {
             source->Release();
@@ -311,8 +323,8 @@ namespace OpenRCT2::Scripting
     void ScAudio::Register(JSContext* ctx)
     {
         static constexpr JSCFunctionListEntry kFuncs[] = {
-            JS_CFUNC_DEF("playSound", 3, ScAudio::playSound),
-            JS_CFUNC_DEF("playMusic", 3, ScAudio::playMusic),
+            JS_CFUNC_DEF("playSound", 4, ScAudio::playSound),
+            JS_CFUNC_DEF("playMusic", 4, ScAudio::playMusic),
             JS_CFUNC_DEF("loadSound", 1, ScAudio::loadSound),
             JS_CFUNC_DEF("freeSound", 1, ScAudio::freeSound),
         };
