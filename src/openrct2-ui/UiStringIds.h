@@ -1869,7 +1869,7 @@ namespace OpenRCT2
         STR_X_PLAYERS_ONLINE = 5787,
 
         // Window: ServerStart
-        STR_ADVERTISE = 5567,
+        STR_ADVERTISE_SERVER = 7089,
         STR_ADVERTISE_SERVER_TIP = 5805,
         STR_MAX_PLAYERS = 5575,
         STR_PASSWORD = 5566,
@@ -1878,6 +1878,8 @@ namespace OpenRCT2
         STR_SERVER_GREETING = 6032,
         STR_SERVER_NAME = 5574,
         STR_START_SERVER = 5501,
+        STR_START_FROM_SAVED_GAME = 7088,
+        STR_START_FROM_SCENARIO = 7087,
 
         // Window: ShortcutKeys
         STR_RESET = 6580,

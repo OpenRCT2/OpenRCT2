@@ -15,6 +15,7 @@
 - Improved: [#27444] OpenRCT2 is now long-path aware on Windows 10 and newer.
 - Improved: [#27449] The `simulate` CLI command now also shows the duration.
 - Improved: [#27459] Multiplayer windows now have their own colour theme instead of blue.
+- Improved: [#27462] The ‘Start server’ window has been reworked to be more intuitive.
 - Change: [#27226] Crash Particles are now also visible when zoomed out.
 - Change: [#27272] Allow guests to spawn with any combination of normal colours for their shirts & trousers.
 - Change: [#27418] Bumped the minimum macOS version to 13.3 (Ventura) and AppImage to Ubuntu Noble (24.04).
