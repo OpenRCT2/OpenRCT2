@@ -3865,3 +3865,5 @@ STR_7081    :Prateado
 STR_7082    :Projeto de pista instalado com êxito
 STR_7083    :Projeto de pista já estava instalado
 STR_7084    :Seletor de base do terreno. Clique em qualquer azulejo do mapa para selecionar o mesmo estilo para terraformar.
+STR_7085    :Conectar a servidor multijogador
+STR_7086    :Iniciar novo servidor
