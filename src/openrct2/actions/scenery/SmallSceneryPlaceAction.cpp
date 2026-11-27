@@ -17,6 +17,7 @@
 #include "../../management/Finance.h"
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/SmallSceneryEntry.h"
+#include "../../rct12/Limits.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/ConstructionClearance.h"
 #include "../../world/Footpath.h"
@@ -165,6 +166,11 @@ namespace OpenRCT2::GameActions
         {
             targetHeight = surfaceHeight;
             res.position.z = targetHeight;
+        }
+
+        if (targetHeight + ceil2(sceneryEntry->height, kCoordsZStep) > RCT12::Limits::kMaxElementHeight * kCoordsZStep)
+        {
+            return Result(Status::invalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_HIGH);
         }
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode

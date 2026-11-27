@@ -22,6 +22,8 @@
 - Change: [#27453] Multiplayer games can now be hosted directly from the title scene menu.
 - Fix: [#6142] `openrct2 <track file>` does not install the track design.
 - Fix: [#16510] Changing the objective of a scenario does not re-evaluate loss state.
+- Fix: [#20015] When placing scenery in very high places, the height may overflow, causing buggy behaviour.
+- Fix: [#21418] Cannot place scenery in top 30 or so units, unless the terrain is raised.
 - Fix: [#23866] The `object_count` console command stops counting at the first empty object slot.
 - Fix: [#24082] [Plugin] `objectManager.getInstalledObject()` returns null for DAT objects.
 - Fix: [#25395] `openrct2 <command> -h` fails instead of showing help for the command, and `openrct2 -ha` leaves out the command name.
