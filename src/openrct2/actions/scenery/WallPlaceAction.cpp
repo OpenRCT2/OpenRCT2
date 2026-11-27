@@ -241,7 +241,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        uint16_t clearanceHeight = targetHeight / 8;
+        uint16_t clearanceHeight = targetHeight / kCoordsZStep;
         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
         {
             if (wallEntry->flags.has(WallSceneryFlag::cannotBuildOnSlope))
