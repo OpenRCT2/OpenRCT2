@@ -54,8 +54,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_START_FROM_SAVED_GAME
     };
 
-    static constexpr ScreenSize kMinWindowSize = { 450, 183 };
-    static constexpr ScreenSize kMaxWindowSize = { 900, 183 };
+    static constexpr ScreenSize kMinWindowSize = { 450, 186 };
+    static constexpr ScreenSize kMaxWindowSize = { 900, 186 };
     static constexpr ScreenSize kButtonSize = { 150, 14 };
 
     // clang-format off
@@ -70,21 +70,21 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({   6,  52 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_SERVER_GREETING   ), // greeting label
         makeWidget({ 120,  51 }, { 173, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // greeting text box
 
-        makeWidget({   6,  76 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_PASSWORD          ), // password label
-        makeWidget({ 120,  75 }, { 200, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // password text box
+        makeWidget({   6,  77 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_PASSWORD          ), // password label
+        makeWidget({ 120,  76 }, { 200, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // password text box
 
-        makeWidget({   6,  92 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_PORT              ), // port label
-        makeWidget({ 120,  91 }, { 120, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // port text box
+        makeWidget({   6,  93 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_PORT              ), // port label
+        makeWidget({ 120,  92 }, { 120, 14 }, WidgetType::textBox, WindowColour::secondary                        ), // port text box
 
-        makeWidget({   6, 108 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_MAX_PLAYERS       ), // max players label
-        makeSpinnerWidgets({ 120, 107 }, { 120, 14 }, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty), // max players (3 widgets)
+        makeWidget({   6, 109 }, { 112, 12 }, WidgetType::label,   WindowColour::secondary, STR_MAX_PLAYERS       ), // max players label
+        makeSpinnerWidgets({ 120, 108 }, { 120, 14 }, WidgetType::spinner, WindowColour::secondary, kStringIdEmpty), // max players (3 widgets)
 
-        Widgets::Checkbox({ 6, 131 }, { 450, 12 }, WindowColour::secondary, STR_ADVERTISE_SERVER, STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+        Widgets::Checkbox({ 6, 134 }, { 450, 12 }, WindowColour::secondary, STR_ADVERTISE_SERVER, STR_ADVERTISE_SERVER_TIP), // advertise checkbox
 
-        makeWidget({   6, 146 }, { 200, 14 }, WidgetType::placeholder, WindowColour::secondary),
+        makeWidget({   6, 149 }, { 200, 14 }, WidgetType::placeholder, WindowColour::secondary),
 
-        makeWidget({   6, 160 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SCENARIO),
-        makeWidget({ 158, 160 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SAVED_GAME)
+        makeWidget({   6, 163 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SCENARIO),
+        makeWidget({ 158, 163 }, { 150, 14 }, WidgetType::button, WindowColour::secondary, STR_START_FROM_SAVED_GAME)
     );
     // clang-format on
 
@@ -290,8 +290,8 @@ namespace OpenRCT2::Ui::Windows
                 GfxDrawLine(rt, { topLeft + offset, bottomRight + offset }, Drawing::getColourMap(colours[1].colour).midDark);
             };
 
-            drawSeparator(widgets[WIDX_PASSWORD_INPUT].top - 6);
-            drawSeparator(widgets[WIDX_ADVERTISE_CHECKBOX].top - 6);
+            drawSeparator(widgets[WIDX_PASSWORD_INPUT].top - 7);
+            drawSeparator(widgets[WIDX_ADVERTISE_CHECKBOX].top - 7);
 
             // Draw network version number
             std::string version = Network::GetVersion();
