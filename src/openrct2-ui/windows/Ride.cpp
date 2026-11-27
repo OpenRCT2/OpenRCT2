@@ -326,8 +326,12 @@ namespace OpenRCT2::Ui::Windows
         makeHoldableSpinnerWidgets({157, 150}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
         Widgets::Checkbox         ({  7, 168}, {150, 12},                           WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
         makeHoldableSpinnerWidgets({157, 167}, {152, 14}, WidgetType::spinner,      WindowColour::secondary, kStringIdEmpty                                                                      ), // NB: 3 widgets
-        Widgets::Checkbox         ({  7, 184}, {302, 12},                           WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  )
+        Widgets::Checkbox         ({  7, 184}, {302, 12},                           WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  ),
 
+        // Ride type group (cheat)
+        makeWidget                ({  3,   0}, {310, 35}, WidgetType::groupbox,     WindowColour::secondary, STR_RIDE_TYPE_GROUP                                                                 ),
+        makeWidget                ({  7, 225}, {302, 14}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                                      ),
+        makeWidget                ({297, 226}, { 11, 12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  )
     );
 
     // 0x009AE190
