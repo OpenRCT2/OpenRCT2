@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
 
     public:
         ParkSetResearchFundingAction() = default;
-        ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount);
+        ParkSetResearchFundingAction(ResearchPriorities priorities, uint8_t fundingAmount);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 
