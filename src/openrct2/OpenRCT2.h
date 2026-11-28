@@ -42,6 +42,7 @@ extern u8string gCustomOpenRCT2DataPath;
 extern u8string gCustomRCT1DataPath;
 extern u8string gCustomRCT2DataPath;
 extern u8string gCustomPassword;
+extern u8string gScriptedSessionPath;
 extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2NoGraphics;
 extern bool gOpenRCT2ShowChangelog;
