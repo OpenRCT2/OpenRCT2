@@ -14,31 +14,34 @@
 
         #include "../../../Context.h"
         #include "../../../config/Config.h"
+        #include "../../../core/EnumUtils.hpp"
         #include "../../../network/Socket.h"
         #include "../../ScriptEngine.h"
 
         #include <memory>
+        #include <optional>
         #include <vector>
 
 namespace OpenRCT2::Scripting
 {
+    template<typename TEvent>
     class EventList
     {
     private:
         std::vector<std::vector<JSCallback>> _listeners;
 
-        std::vector<JSCallback>& GetListenerList(uint32_t id)
+        std::vector<JSCallback>& GetListenerList(TEvent id)
         {
-            if (_listeners.size() <= id)
+            const auto index = static_cast<size_t>(EnumValue(id));
+            if (_listeners.size() <= index)
             {
-                _listeners.resize(static_cast<size_t>(id) + 1);
+                _listeners.resize(index + 1);
             }
-            return _listeners[id];
+            return _listeners[index];
         }
 
     public:
-        void Raise(
-            uint32_t id, const std::shared_ptr<Plugin>& plugin, const std::vector<JSValue>& args, bool isGameStateMutable)
+        void Raise(TEvent id, const std::shared_ptr<Plugin>& plugin, const std::vector<JSValue>& args, bool isGameStateMutable)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
 
@@ -57,13 +60,13 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void AddListener(uint32_t id, const JSCallback& listener)
+        void AddListener(TEvent id, const JSCallback& listener)
         {
             auto& listeners = GetListenerList(id);
             listeners.push_back(listener);
         }
 
-        void RemoveListener(uint32_t id, const JSCallback& value)
+        void RemoveListener(TEvent id, const JSCallback& value)
         {
             auto& listeners = GetListenerList(id);
             std::erase_if(listeners, [&value](const JSCallback& x) {
@@ -72,7 +75,7 @@ namespace OpenRCT2::Scripting
             });
         }
 
-        void RemoveAllListeners(uint32_t id)
+        void RemoveAllListeners(TEvent id)
         {
             auto& listeners = GetListenerList(id);
             listeners.clear();
@@ -108,7 +111,6 @@ namespace OpenRCT2::Scripting
 
     struct SocketDataBase
     {
-        EventList _eventList;
         std::unique_ptr<Network::ITcpSocket> _socket;
         std::shared_ptr<Plugin> _plugin;
         bool _disposed{};
@@ -120,12 +122,15 @@ namespace OpenRCT2::Scripting
 
     struct SocketData final : SocketDataBase
     {
-        static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
-        static constexpr uint32_t EVENT_CLOSE = 0;
-        static constexpr uint32_t EVENT_DATA = 1;
-        static constexpr uint32_t EVENT_CONNECT_ONCE = 2;
-        static constexpr uint32_t EVENT_ERROR = 3;
+        enum class Event
+        {
+            close,
+            data,
+            connectOnce,
+            error,
+        };
 
+        EventList<Event> _eventList;
         bool _connecting{};
         bool _wasConnected{};
 
@@ -153,24 +158,24 @@ namespace OpenRCT2::Scripting
         void RaiseOnClose(bool hadError)
         {
             JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
-            _eventList.Raise(EVENT_CLOSE, _plugin, { JS_NewBool(ctx, hadError) }, false);
+            _eventList.Raise(Event::close, _plugin, { JS_NewBool(ctx, hadError) }, false);
         }
 
         void RaiseOnData(std::string_view data)
         {
             JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
-            _eventList.Raise(EVENT_DATA, _plugin, { JSFromStdString(ctx, data) }, false);
+            _eventList.Raise(Event::data, _plugin, { JSFromStdString(ctx, data) }, false);
         }
 
-        static uint32_t GetEventType(std::string_view name)
+        static std::optional<Event> GetEventType(std::string_view name)
         {
             if (name == "close")
-                return EVENT_CLOSE;
+                return Event::close;
             if (name == "data")
-                return EVENT_DATA;
+                return Event::data;
             if (name == "error")
-                return EVENT_ERROR;
-            return EVENT_NONE;
+                return Event::error;
+            return std::nullopt;
         }
 
         void Update() override
@@ -187,8 +192,8 @@ namespace OpenRCT2::Scripting
                     {
                         _connecting = false;
                         _wasConnected = true;
-                        _eventList.Raise(EVENT_CONNECT_ONCE, _plugin, {}, false);
-                        _eventList.RemoveAllListeners(EVENT_CONNECT_ONCE);
+                        _eventList.Raise(Event::connectOnce, _plugin, {}, false);
+                        _eventList.RemoveAllListeners(Event::connectOnce);
                     }
                     else if (status == Network::SocketStatus::closed)
                     {
@@ -201,7 +206,7 @@ namespace OpenRCT2::Scripting
                             err = "";
                         }
                         auto jsErr = JSFromStdString(ctx, std::string_view(err));
-                        _eventList.Raise(EVENT_ERROR, _plugin, { jsErr }, true);
+                        _eventList.Raise(Event::error, _plugin, { jsErr }, true);
                     }
                 }
                 else if (status == Network::SocketStatus::connected)
@@ -310,7 +315,7 @@ namespace OpenRCT2::Scripting
                     data->_socket->ConnectAsync(host, port);
                     if (JS_IsFunction(ctx, argv[2]))
                     {
-                        data->_eventList.AddListener(SocketData::EVENT_CONNECT_ONCE, JSCallback(ctx, argv[2]));
+                        data->_eventList.AddListener(SocketData::Event::connectOnce, JSCallback(ctx, argv[2]));
                     }
                     data->_connecting = true;
                 }
@@ -395,9 +400,9 @@ namespace OpenRCT2::Scripting
                 return JS_ThrowInternalError(ctx, "Invalid socket");
 
             auto eventId = SocketData::GetEventType(eventType);
-            if (eventId != SocketData::EVENT_NONE)
+            if (eventId.has_value())
             {
-                data->_eventList.AddListener(eventId, callback);
+                data->_eventList.AddListener(eventId.value(), callback);
             }
             return JS_DupValue(ctx, thisVal);
         }
@@ -412,9 +417,9 @@ namespace OpenRCT2::Scripting
                 return JS_ThrowInternalError(ctx, "Invalid socket");
 
             auto eventId = SocketData::GetEventType(eventType);
-            if (eventId != SocketData::EVENT_NONE)
+            if (eventId.has_value())
             {
-                data->_eventList.RemoveListener(eventId, callback);
+                data->_eventList.RemoveListener(eventId.value(), callback);
             }
             return JS_DupValue(ctx, thisVal);
         }
@@ -461,8 +466,12 @@ namespace OpenRCT2::Scripting
 
     struct ListenerData final : SocketDataBase
     {
-        static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
-        static constexpr uint32_t EVENT_CONNECTION = 0;
+        enum class Event
+        {
+            connection,
+        };
+
+        EventList<Event> _eventList;
 
         ~ListenerData() override
         {
@@ -487,7 +496,7 @@ namespace OpenRCT2::Scripting
 
                     JSContext* ctx = GetContext()->GetScriptEngine().GetContext();
                     auto clientSocket = gScSocket.New(ctx, _plugin, std::move(client));
-                    _eventList.Raise(EVENT_CONNECTION, _plugin, { clientSocket }, false);
+                    _eventList.Raise(Event::connection, _plugin, { clientSocket }, false);
                 }
             }
         }
@@ -602,9 +611,9 @@ namespace OpenRCT2::Scripting
                 return JS_ThrowInternalError(ctx, "Invalid listener");
 
             auto eventId = GetEventType(eventType);
-            if (eventId != ListenerData::EVENT_NONE)
+            if (eventId.has_value())
             {
-                data->_eventList.AddListener(eventId, callback);
+                data->_eventList.AddListener(eventId.value(), callback);
             }
             return JS_DupValue(ctx, thisVal);
         }
@@ -619,18 +628,18 @@ namespace OpenRCT2::Scripting
                 return JS_ThrowInternalError(ctx, "Invalid listener");
 
             auto eventId = GetEventType(eventType);
-            if (eventId != ListenerData::EVENT_NONE)
+            if (eventId.has_value())
             {
-                data->_eventList.RemoveListener(eventId, callback);
+                data->_eventList.RemoveListener(eventId.value(), callback);
             }
             return JS_DupValue(ctx, thisVal);
         }
 
-        static uint32_t GetEventType(std::string_view name)
+        static std::optional<ListenerData::Event> GetEventType(std::string_view name)
         {
             if (name == "connection")
-                return ListenerData::EVENT_CONNECTION;
-            return ListenerData::EVENT_NONE;
+                return ListenerData::Event::connection;
+            return std::nullopt;
         }
 
     public:
