@@ -352,6 +352,8 @@ namespace OpenRCT2::Ui::Windows
                     WindowStartTextbox(*this, widgetIndex, _filteredSceneryTab.Filter, kTextInputSize);
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
+                    if (_activeTabIndex >= _tabEntries.size())
+                        break;
                     _tabEntries[_activeTabIndex].Filter.clear();
                     ContentUpdateScroll();
                     scrolls->contentOffsetY = 0;
@@ -647,7 +649,7 @@ namespace OpenRCT2::Ui::Windows
 
         void onTextInput(WidgetIndex widgetIndex, std::string_view text) override
         {
-            if (widgetIndex != WIDX_FILTER_TEXT_BOX)
+            if (widgetIndex != WIDX_FILTER_TEXT_BOX || _activeTabIndex >= _tabEntries.size())
                 return;
 
             if (text == _tabEntries[_activeTabIndex].Filter)
