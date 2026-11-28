@@ -2262,8 +2262,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void QueryConstruct()
+        {
+            Construct(true);
+        }
+
     private:
-        void Construct()
+        void Construct(bool queryOnly = false)
         {
             RideId rideIndex;
             TrackElemType trackType;
@@ -2300,7 +2305,8 @@ namespace OpenRCT2::Ui::Windows
                 trackPlaceAction.SetCallback(RideConstructPlacedForwardGameActionCallback);
             }
 
-            auto res = GameActions::Execute(&trackPlaceAction, getGameState());
+            auto res = queryOnly ? GameActions::Query(&trackPlaceAction, getGameState())
+                                 : GameActions::Execute(&trackPlaceAction, getGameState());
             if (res.error != GameActions::Status::ok)
             {
                 _trackPlaceCost = kMoney64Undefined;
@@ -2312,7 +2318,7 @@ namespace OpenRCT2::Ui::Windows
                 _trackPlaceErrorMessage = kStringIdNone;
             }
 
-            if (res.error != GameActions::Status::ok)
+            if (queryOnly || res.error != GameActions::Status::ok)
             {
                 return;
             }
@@ -3672,7 +3678,11 @@ namespace OpenRCT2::Ui::Windows
 
                 auto gameAction = GameActions::MazeSetTrackAction(
                     CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, MazeBuildMode::build);
-                auto mazeSetTrackResult = GameActions::Execute(&gameAction, getGameState());
+                auto mazeSetTrackResult = GameActions::Query(&gameAction, getGameState());
+                if (mazeSetTrackResult.error == GameActions::Status::ok)
+                {
+                    mazeSetTrackResult = GameActions::Execute(&gameAction, getGameState());
+                }
                 if (mazeSetTrackResult.error == GameActions::Status::ok)
                 {
                     _trackPlaceCost = mazeSetTrackResult.cost;
@@ -3696,6 +3706,9 @@ namespace OpenRCT2::Ui::Windows
                         || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND || errorText == STR_TOO_HIGH_FOR_SUPPORTS
                         || zAttempts == (numAttempts - 1) || z < 0)
                     {
+                        gDisableErrorWindowSound = true;
+                        windowMgr->ShowError(mazeSetTrackResult.getErrorTitle(), mazeSetTrackResult.getErrorMessage());
+                        gDisableErrorWindowSound = false;
                         Audio::Play(Audio::SoundId::error, 0, state->position.x);
                         w = windowMgr->FindByClass(WindowClass::rideConstruction);
                         if (w != nullptr)
@@ -3735,9 +3748,9 @@ namespace OpenRCT2::Ui::Windows
             if (w == nullptr)
                 break;
 
-            gDisableErrorWindowSound = true;
-            w->onMouseDown(WIDX_CONSTRUCT);
-            gDisableErrorWindowSound = false;
+            // Failed height probes must not open an error window before a later attempt succeeds.
+            WindowRideConstructionUpdateEnabledTrackPieces();
+            static_cast<RideConstructionWindow*>(w)->QueryConstruct();
 
             if (_trackPlaceCost == kMoney64Undefined)
             {
@@ -3749,6 +3762,11 @@ namespace OpenRCT2::Ui::Windows
                     || errorText == STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT
                     || zAttempts == (numAttempts - 1) || z < 0)
                 {
+                    // Execute the final failed attempt to report its error, including any formatting arguments.
+                    gDisableErrorWindowSound = true;
+                    w->onMouseDown(WIDX_CONSTRUCT);
+                    gDisableErrorWindowSound = false;
+
                     int32_t saveTrackDirection = _currentTrackPieceDirection;
                     auto saveCurrentTrackCurve = _currentlySelectedTrack;
                     auto savePreviousTrackPitchEnd = _previousTrackPitchEnd;
@@ -3777,6 +3795,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
+                w->onMouseDown(WIDX_CONSTRUCT);
                 break;
             }
         }
