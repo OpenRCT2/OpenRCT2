@@ -217,6 +217,19 @@ namespace OpenRCT2::Network
             return setsockopt(socket, a, b, reinterpret_cast<const char*>(&ivalue), sizeof(ivalue)) == 0;
         }
 
+        // Prevents send() from raising SIGPIPE when the peer has closed the connection.
+        // Linux requests this per call via MSG_NOSIGNAL (FLAG_NO_PIPE), which does not
+        // exist on other platforms such as macOS; there the equivalent is this socket
+        // option. Windows has no SIGPIPE, so it is a no-op there.
+        static bool setNoSigPipe([[maybe_unused]] SOCKET socket)
+        {
+    #ifdef __APPLE__
+            return SetOption(socket, SOL_SOCKET, SO_NOSIGPIPE, true);
+    #else
+            return true;
+    #endif
+        }
+
     private:
         static bool ResolveAddress(
             int32_t family, const std::string& address, uint16_t port, sockaddr_storage* ss, socklen_t* ss_len)
@@ -338,6 +351,11 @@ namespace OpenRCT2::Network
                 LOG_VERBOSE("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
             }
 
+            if (!setNoSigPipe(_socket))
+            {
+                LOG_VERBOSE("setsockopt(socket, SO_NOSIGPIPE) failed: %d", LAST_SOCKET_ERROR());
+            }
+
             try
             {
                 // Bind to address:port and listen
@@ -393,6 +411,13 @@ namespace OpenRCT2::Network
                 }
                 else
                 {
+                    // Not strictly required when the option is inherited from the listening socket,
+                    // but keep it explicit and independent of platform-specific inheritance rules.
+                    if (!setNoSigPipe(socket))
+                    {
+                        LOG_VERBOSE("setsockopt(socket, SO_NOSIGPIPE) failed: %d", LAST_SOCKET_ERROR());
+                    }
+
                     auto ipAddress = GetIpAddressFromSocket(reinterpret_cast<sockaddr_in*>(&client_addr));
 
                     char hostName[NI_MAXHOST];
@@ -444,6 +469,11 @@ namespace OpenRCT2::Network
                 if (!SetNonBlocking(_socket, true))
                 {
                     throw SocketException("Failed to set non-blocking mode.");
+                }
+
+                if (!setNoSigPipe(_socket))
+                {
+                    LOG_VERBOSE("setsockopt(socket, SO_NOSIGPIPE) failed: %d", LAST_SOCKET_ERROR());
                 }
 
                 // Connect
