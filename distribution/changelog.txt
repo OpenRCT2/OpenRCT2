@@ -11,6 +11,7 @@
 - Improved: [#27388] Add sprite font glyph for the Tironian et (⁊).
 - Improved: [#27407] Fewer cache misses in the game update and paint setup.
 - Improved: [#27410] The Options window’s sliders no longer continuously save the configuration file while they’re dragged.
+- Improved: [#27413] Add support for LOOPSTART and LOOPLENGTH parameters for .OGG-based custom music objects.
 - Improved: [#27422] TD4 files now also show the space required in the Track List window.
 - Improved: [#27444] OpenRCT2 is now long-path aware on Windows 10 and newer.
 - Improved: [#27449] The `simulate` CLI command now also shows the duration.

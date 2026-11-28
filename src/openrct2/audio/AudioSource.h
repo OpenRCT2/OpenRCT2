@@ -24,6 +24,8 @@ namespace OpenRCT2::Audio
         virtual bool IsReleased() const = 0;
         virtual int32_t GetBytesPerSecond() const = 0;
         virtual uint64_t GetLength() const = 0;
+        virtual uint64_t GetLoopStart() const = 0;
+        virtual uint64_t GetLoopEnd() const = 0;
         virtual size_t Read(void* dst, uint64_t offset, size_t len) = 0;
     };
 } // namespace OpenRCT2::Audio
