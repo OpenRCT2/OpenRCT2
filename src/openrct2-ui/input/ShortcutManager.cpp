@@ -163,13 +163,28 @@ void ShortcutManager::processEvent(const InputEvent& e)
     }
     else
     {
+        constexpr int32_t kMaxInputCountPerAction = 2;
+
         auto shortcut = getShortcut(_pendingShortcutChange);
         if (shortcut != nullptr && shortcut->isSuitableInputEvent(e))
         {
             auto shortcutInput = ShortcutInput::fromInputEvent(e);
             if (shortcutInput.has_value())
             {
-                shortcut->current.clear();
+                const auto matchingInput = std::find_if(
+                    shortcut->current.begin(), shortcut->current.end(), [e](const auto& input) { return input.matches(e); });
+
+                if (matchingInput != shortcut->current.end())
+                {
+                    // if any old input matches the new shortcut input, remove every other input from the shortcut
+                    shortcut->current.clear();
+                }
+                else if (shortcut->current.size() >= kMaxInputCountPerAction)
+                {
+                    // if max input count was reached, remove only the first one
+                    shortcut->current.erase(shortcut->current.begin());
+                }
+
                 shortcut->current.push_back(std::move(shortcutInput.value()));
             }
             _pendingShortcutChange.clear();
