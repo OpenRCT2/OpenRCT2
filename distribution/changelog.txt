@@ -12,6 +12,7 @@
 - Improved: [#27407] Fewer cache misses in the game update and paint setup.
 - Improved: [#27410] The Options window’s sliders no longer continuously save the configuration file while they’re dragged.
 - Improved: [#27422] TD4 files now also show the space required in the Track List window.
+- Improved: [#27436] Shop/stall auto-rotation doesn’t orient towards walls/fences unless that’s the only option.
 - Improved: [#27444] OpenRCT2 is now long-path aware on Windows 10 and newer.
 - Improved: [#27449] The `simulate` CLI command now also shows the duration.
 - Improved: [#27459] Multiplayer windows now have their own colour theme instead of blue.
