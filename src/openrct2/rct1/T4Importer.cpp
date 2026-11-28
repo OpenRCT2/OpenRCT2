@@ -39,6 +39,7 @@ namespace OpenRCT2::RCT1
     private:
         MemoryStream _stream;
         std::string _name;
+        RCT1Version _version;
 
     public:
         TD4Importer()
@@ -119,17 +120,26 @@ namespace OpenRCT2::RCT1
             }
         }
 
+        RCT1Version determineGameVersionByRideType(RideType rideType)
+        {
+            if (EnumValue(rideType) >= EnumValue(RideType::suspendedLoopingRollerCoaster))
+                return RCT1Version::loopyLandscapes;
+
+            return RCT1Version::addedAttractions;
+        }
+
         std::unique_ptr<TrackDesign> ImportAA()
         {
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
             TD4AA td4aa{};
             _stream.Read(&td4aa, sizeof(TD4AA));
+            _version = determineGameVersionByRideType(td4aa.Type);
 
             for (int32_t i = 0; i < Limits::kNumColourSchemes; i++)
             {
-                td->appearance.trackColours[i].main = getColour(td4aa.TrackSpineColour[i], RCT1Version::loopyLandscapes);
-                td->appearance.trackColours[i].additional = getColour(td4aa.TrackRailColour[i], RCT1Version::loopyLandscapes);
-                td->appearance.trackColours[i].supports = getColour(td4aa.TrackSupportColour[i], RCT1Version::loopyLandscapes);
+                td->appearance.trackColours[i].main = getColour(td4aa.TrackSpineColour[i], _version);
+                td->appearance.trackColours[i].additional = getColour(td4aa.TrackRailColour[i], _version);
+                td->appearance.trackColours[i].supports = getColour(td4aa.TrackSupportColour[i], _version);
             }
             // The maze style is saved in the support colour, but taking it through the conversion function
             // will mess up style 3 (wooden fences).
@@ -143,6 +153,7 @@ namespace OpenRCT2::RCT1
 
         std::unique_ptr<TrackDesign> ImportTD4()
         {
+            _version = RCT1Version::baseGame;
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
             TD4 td4{};
             _stream.Read(&td4, sizeof(TD4));
@@ -192,7 +203,6 @@ namespace OpenRCT2::RCT1
             td->version = static_cast<TD46Version>(td4Base.VersionAndColourScheme >> 2);
             td->appearance.vehicleColourSettings = static_cast<VehicleColourSettings>(td4Base.VersionAndColourScheme & 0x3);
 
-            auto gameVersion = (td->version == TD46Version::td4) ? RCT1Version::baseGame : RCT1Version::loopyLandscapes;
             // Vehicle colours
             for (int32_t i = 0; i < Limits::kMaxTrainsPerRide; i++)
             {
@@ -201,11 +211,11 @@ namespace OpenRCT2::RCT1
                     td4Base.VehicleType);
                 if (colourSchemeCopyDescriptor.colour1 == kCopyColour1)
                 {
-                    td->appearance.vehicleColours[i].Body = getColour(td4Base.VehicleColours[i].BodyColour, gameVersion);
+                    td->appearance.vehicleColours[i].Body = getColour(td4Base.VehicleColours[i].BodyColour, _version);
                 }
                 else if (colourSchemeCopyDescriptor.colour1 == kCopyColour2)
                 {
-                    td->appearance.vehicleColours[i].Body = getColour(td4Base.VehicleColours[i].TrimColour, gameVersion);
+                    td->appearance.vehicleColours[i].Body = getColour(td4Base.VehicleColours[i].TrimColour, _version);
                 }
                 else
                 {
@@ -214,11 +224,11 @@ namespace OpenRCT2::RCT1
 
                 if (colourSchemeCopyDescriptor.colour2 == kCopyColour1)
                 {
-                    td->appearance.vehicleColours[i].Trim = getColour(td4Base.VehicleColours[i].BodyColour, gameVersion);
+                    td->appearance.vehicleColours[i].Trim = getColour(td4Base.VehicleColours[i].BodyColour, _version);
                 }
                 else if (colourSchemeCopyDescriptor.colour2 == kCopyColour2)
                 {
-                    td->appearance.vehicleColours[i].Trim = getColour(td4Base.VehicleColours[i].TrimColour, gameVersion);
+                    td->appearance.vehicleColours[i].Trim = getColour(td4Base.VehicleColours[i].TrimColour, _version);
                 }
                 else
                 {
@@ -227,11 +237,11 @@ namespace OpenRCT2::RCT1
 
                 if (colourSchemeCopyDescriptor.colour3 == kCopyColour1)
                 {
-                    td->appearance.vehicleColours[i].Tertiary = getColour(td4Base.VehicleColours[i].BodyColour, gameVersion);
+                    td->appearance.vehicleColours[i].Tertiary = getColour(td4Base.VehicleColours[i].BodyColour, _version);
                 }
                 else if (colourSchemeCopyDescriptor.colour3 == kCopyColour2)
                 {
-                    td->appearance.vehicleColours[i].Tertiary = getColour(td4Base.VehicleColours[i].TrimColour, gameVersion);
+                    td->appearance.vehicleColours[i].Tertiary = getColour(td4Base.VehicleColours[i].TrimColour, _version);
                 }
                 else
                 {
